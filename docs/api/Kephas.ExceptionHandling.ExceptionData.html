@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ExceptionData
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -119,10 +119,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData__ctor.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData__ctor.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L25">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L25">View Source</a>
   </span>
   <a id="Kephas_ExceptionHandling_ExceptionData__ctor_" data-uid="Kephas.ExceptionHandling.ExceptionData.#ctor*"></a>
   <h4 id="Kephas_ExceptionHandling_ExceptionData__ctor" data-uid="Kephas.ExceptionHandling.ExceptionData.#ctor">ExceptionData()</h4>
@@ -135,19 +135,19 @@
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData__ctor_System_Exception_Kephas_ExceptionHandling_SeverityLevel_.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData.%23ctor(System.Exception%2CKephas.ExceptionHandling.SeverityLevel)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData__ctor_System_Exception_System_Nullable_Kephas_ExceptionHandling_SeverityLevel__.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData.%23ctor(System.Exception%2CSystem.Nullable%7BKephas.ExceptionHandling.SeverityLevel%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L35">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L35">View Source</a>
   </span>
   <a id="Kephas_ExceptionHandling_ExceptionData__ctor_" data-uid="Kephas.ExceptionHandling.ExceptionData.#ctor*"></a>
-  <h4 id="Kephas_ExceptionHandling_ExceptionData__ctor_System_Exception_Kephas_ExceptionHandling_SeverityLevel_" data-uid="Kephas.ExceptionHandling.ExceptionData.#ctor(System.Exception,Kephas.ExceptionHandling.SeverityLevel)">ExceptionData(Exception, SeverityLevel)</h4>
+  <h4 id="Kephas_ExceptionHandling_ExceptionData__ctor_System_Exception_System_Nullable_Kephas_ExceptionHandling_SeverityLevel__" data-uid="Kephas.ExceptionHandling.ExceptionData.#ctor(System.Exception,System.Nullable{Kephas.ExceptionHandling.SeverityLevel})">ExceptionData(Exception, Nullable&lt;SeverityLevel&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.ExceptionHandling.ExceptionData.html">ExceptionData</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ExceptionData(Exception exception, SeverityLevel severity = SeverityLevel.Error)</code></pre>
+    <pre><code class="lang-csharp hljs">public ExceptionData(Exception exception, SeverityLevel? severity = default(SeverityLevel? ))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -166,9 +166,9 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.ExceptionHandling.SeverityLevel.html">SeverityLevel</a></td>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Kephas.ExceptionHandling.SeverityLevel.html">SeverityLevel</a>&gt;</td>
         <td><span class="parametername">severity</span></td>
-        <td><p>The severity level (optional).</p>
+        <td><p>Optional. The severity level. If this value is set, it overwrites the severity level provided by the exception.</p>
 </td>
       </tr>
     </tbody>
@@ -177,10 +177,42 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData_Message.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData.Message%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData_ExceptionType.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData.ExceptionType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L55">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L63">View Source</a>
+  </span>
+  <a id="Kephas_ExceptionHandling_ExceptionData_ExceptionType_" data-uid="Kephas.ExceptionHandling.ExceptionData.ExceptionType*"></a>
+  <h4 id="Kephas_ExceptionHandling_ExceptionData_ExceptionType" data-uid="Kephas.ExceptionHandling.ExceptionData.ExceptionType">ExceptionType</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the type of the exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ExceptionType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The type of the exception.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData_Message.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData.Message%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L71">View Source</a>
   </span>
   <a id="Kephas_ExceptionHandling_ExceptionData_Message_" data-uid="Kephas.ExceptionHandling.ExceptionData.Message*"></a>
   <h4 id="Kephas_ExceptionHandling_ExceptionData_Message" data-uid="Kephas.ExceptionHandling.ExceptionData.Message">Message</h4>
@@ -209,10 +241,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData_Severity.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData.Severity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData_Severity.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData.Severity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L63">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L79">View Source</a>
   </span>
   <a id="Kephas_ExceptionHandling_ExceptionData_Severity_" data-uid="Kephas.ExceptionHandling.ExceptionData.Severity*"></a>
   <h4 id="Kephas_ExceptionHandling_ExceptionData_Severity" data-uid="Kephas.ExceptionHandling.ExceptionData.Severity">Severity</h4>
@@ -266,7 +298,7 @@
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
@@ -275,13 +307,16 @@
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
           </div>
@@ -291,10 +326,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_ExceptionHandling_ExceptionData.md&amp;value=---%0Auid%3A%20Kephas.ExceptionHandling.ExceptionData%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/ExceptionHandling/ExceptionData.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

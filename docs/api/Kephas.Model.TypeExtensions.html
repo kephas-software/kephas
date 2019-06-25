@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TypeExtensions
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -115,19 +115,169 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions_AsModelTypeInfo_Kephas_Reflection_ITypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions.AsModelTypeInfo(Kephas.Reflection.ITypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions_GetAbstractType_Kephas_Reflection_ITypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions.GetAbstractType(Kephas.Reflection.ITypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L67">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L87">View Source</a>
   </span>
-  <a id="Kephas_Model_TypeExtensions_AsModelTypeInfo_" data-uid="Kephas.Model.TypeExtensions.AsModelTypeInfo*"></a>
-  <h4 id="Kephas_Model_TypeExtensions_AsModelTypeInfo_Kephas_Reflection_ITypeInfo_" data-uid="Kephas.Model.TypeExtensions.AsModelTypeInfo(Kephas.Reflection.ITypeInfo)">AsModelTypeInfo(ITypeInfo)</h4>
-  <div class="markdown level1 summary"><p>A <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a> extension method that converts a type to a model type information.</p>
+  <a id="Kephas_Model_TypeExtensions_GetAbstractType_" data-uid="Kephas.Model.TypeExtensions.GetAbstractType*"></a>
+  <h4 id="Kephas_Model_TypeExtensions_GetAbstractType_Kephas_Reflection_ITypeInfo_" data-uid="Kephas.Model.TypeExtensions.GetAbstractType(Kephas.Reflection.ITypeInfo)">GetAbstractType(ITypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the abstract type for an implementation type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static ITypeInfo AsModelTypeInfo(this ITypeInfo type)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Type GetAbstractType(this ITypeInfo type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type to act on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The abstract type, or the type itself, if the type is not an implementation type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions_GetAbstractType_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions.GetAbstractType(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L101">View Source</a>
+  </span>
+  <a id="Kephas_Model_TypeExtensions_GetAbstractType_" data-uid="Kephas.Model.TypeExtensions.GetAbstractType*"></a>
+  <h4 id="Kephas_Model_TypeExtensions_GetAbstractType_System_Object_" data-uid="Kephas.Model.TypeExtensions.GetAbstractType(System.Object)">GetAbstractType(Object)</h4>
+  <div class="markdown level1 summary"><p>Gets the abstract type for which this instance is an implementation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type GetAbstractType(this object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object to act on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The abstract type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions_GetAbstractType_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions.GetAbstractType(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L73">View Source</a>
+  </span>
+  <a id="Kephas_Model_TypeExtensions_GetAbstractType_" data-uid="Kephas.Model.TypeExtensions.GetAbstractType*"></a>
+  <h4 id="Kephas_Model_TypeExtensions_GetAbstractType_System_Type_" data-uid="Kephas.Model.TypeExtensions.GetAbstractType(System.Type)">GetAbstractType(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets the abstract type for an implementation type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type GetAbstractType(this Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type to act on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The abstract type, or the type itself, if the type is not an implementation type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions_GetAbstractTypeInfo_Kephas_Reflection_ITypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions.GetAbstractTypeInfo(Kephas.Reflection.ITypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L52">View Source</a>
+  </span>
+  <a id="Kephas_Model_TypeExtensions_GetAbstractTypeInfo_" data-uid="Kephas.Model.TypeExtensions.GetAbstractTypeInfo*"></a>
+  <h4 id="Kephas_Model_TypeExtensions_GetAbstractTypeInfo_Kephas_Reflection_ITypeInfo_" data-uid="Kephas.Model.TypeExtensions.GetAbstractTypeInfo(Kephas.Reflection.ITypeInfo)">GetAbstractTypeInfo(ITypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the abstract type for an implementation type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ITypeInfo GetAbstractTypeInfo(this ITypeInfo type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -158,26 +308,26 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
-        <td><p>An ITypeInfo.</p>
+        <td><p>The abstract type, or the type itself, if the type is not an implementation type.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions_AsModelTypeInfo_System_Reflection_TypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions.AsModelTypeInfo(System.Reflection.TypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions.GetAbstractTypeInfo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L53">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L121">View Source</a>
   </span>
-  <a id="Kephas_Model_TypeExtensions_AsModelTypeInfo_" data-uid="Kephas.Model.TypeExtensions.AsModelTypeInfo*"></a>
-  <h4 id="Kephas_Model_TypeExtensions_AsModelTypeInfo_System_Reflection_TypeInfo_" data-uid="Kephas.Model.TypeExtensions.AsModelTypeInfo(System.Reflection.TypeInfo)">AsModelTypeInfo(TypeInfo)</h4>
-  <div class="markdown level1 summary"><p>A TypeInfo extension method that converts a type to a model type information.</p>
+  <a id="Kephas_Model_TypeExtensions_GetAbstractTypeInfo_" data-uid="Kephas.Model.TypeExtensions.GetAbstractTypeInfo*"></a>
+  <h4 id="Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_" data-uid="Kephas.Model.TypeExtensions.GetAbstractTypeInfo(System.Object)">GetAbstractTypeInfo(Object)</h4>
+  <div class="markdown level1 summary"><p>Gets the abstract type for which this instance is an implementation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static ITypeInfo AsModelTypeInfo(this TypeInfo type)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ITypeInfo GetAbstractTypeInfo(this object obj)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -190,9 +340,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Reflection.TypeInfo</span></td>
-        <td><span class="parametername">type</span></td>
-        <td><p>The type to act on.</p>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object to act on.</p>
 </td>
       </tr>
     </tbody>
@@ -208,26 +358,26 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
-        <td><p>An ITypeInfo.</p>
+        <td><p>The abstract type.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions_AsModelTypeInfo_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions.AsModelTypeInfo(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions.GetAbstractTypeInfo(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L39">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L38">View Source</a>
   </span>
-  <a id="Kephas_Model_TypeExtensions_AsModelTypeInfo_" data-uid="Kephas.Model.TypeExtensions.AsModelTypeInfo*"></a>
-  <h4 id="Kephas_Model_TypeExtensions_AsModelTypeInfo_System_Type_" data-uid="Kephas.Model.TypeExtensions.AsModelTypeInfo(System.Type)">AsModelTypeInfo(Type)</h4>
-  <div class="markdown level1 summary"><p>A Type extension method that converts a type to a model type information.</p>
+  <a id="Kephas_Model_TypeExtensions_GetAbstractTypeInfo_" data-uid="Kephas.Model.TypeExtensions.GetAbstractTypeInfo*"></a>
+  <h4 id="Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Type_" data-uid="Kephas.Model.TypeExtensions.GetAbstractTypeInfo(System.Type)">GetAbstractTypeInfo(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets the abstract type for an implementation type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static ITypeInfo AsModelTypeInfo(this Type type)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ITypeInfo GetAbstractTypeInfo(this Type type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -258,57 +408,7 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
-        <td><p>An ITypeInfo.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions.GetModelTypeInfo(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L88">View Source</a>
-  </span>
-  <a id="Kephas_Model_TypeExtensions_GetModelTypeInfo_" data-uid="Kephas.Model.TypeExtensions.GetModelTypeInfo*"></a>
-  <h4 id="Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_" data-uid="Kephas.Model.TypeExtensions.GetModelTypeInfo(System.Object)">GetModelTypeInfo(Object)</h4>
-  <div class="markdown level1 summary"><p>An object extension method that gets model type information.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static ITypeInfo GetModelTypeInfo(this object obj)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">obj</span></td>
-        <td><p>The obj to act on.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
-        <td><p>The model type information.</p>
+        <td><p>The abstract type, or the type itself, if the type is not an implementation type.</p>
 </td>
       </tr>
     </tbody>
@@ -321,10 +421,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_TypeExtensions.md&amp;value=---%0Auid%3A%20Kephas.Model.TypeExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L25" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Model/TypeExtensions.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

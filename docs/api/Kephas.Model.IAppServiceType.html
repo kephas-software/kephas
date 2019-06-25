@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IAppServiceType
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -78,6 +78,33 @@
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html#Kephas_Services_Reflection_IAppServiceInfo_Lifetime">IAppServiceInfo.Lifetime</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html#Kephas_Services_Reflection_IAppServiceInfo_AllowMultiple">IAppServiceInfo.AllowMultiple</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html#Kephas_Services_Reflection_IAppServiceInfo_AsOpenGeneric">IAppServiceInfo.AsOpenGeneric</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html#Kephas_Services_Reflection_IAppServiceInfo_MetadataAttributes">IAppServiceInfo.MetadataAttributes</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html#Kephas_Services_Reflection_IAppServiceInfo_ContractType">IAppServiceInfo.ContractType</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html#Kephas_Services_Reflection_IAppServiceInfo_Instance">IAppServiceInfo.Instance</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html#Kephas_Services_Reflection_IAppServiceInfo_InstanceType">IAppServiceInfo.InstanceType</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html#Kephas_Services_Reflection_IAppServiceInfo_InstanceFactory">IAppServiceInfo.InstanceFactory</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html#Kephas_Services_Reflection_IAppServiceInfo_ScopeName">IAppServiceInfo.ScopeName</a>
+    </div>
     <div>
       <a class="xref" href="Kephas.Model.IClassifier.html#Kephas_Model_IClassifier_QualifiedFullName">IClassifier.QualifiedFullName</a>
     </div>
@@ -173,145 +200,9 @@
   <h6><strong>Assembly</strong>: Kephas.Model.dll</h6>
   <h5 id="Kephas_Model_IAppServiceType_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IAppServiceType : IClassifier, IModelElement, INamedElement, IAggregatedElementInfo, ITypeInfo, IElementInfo, IExpando, IDynamicMetaObjectProvider, IIndexable, IAttributeProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IAppServiceType : IAppServiceInfo, IClassifier, IModelElement, INamedElement, IAggregatedElementInfo, ITypeInfo, IElementInfo, IExpando, IDynamicMetaObjectProvider, IIndexable, IAttributeProvider</code></pre>
   </div>
-  <h3 id="properties">Properties
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IAppServiceType_AllowMultiple.md&amp;value=---%0Auid%3A%20Kephas.Model.IAppServiceType.AllowMultiple%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IAppServiceType.cs/#L28">View Source</a>
-  </span>
-  <a id="Kephas_Model_IAppServiceType_AllowMultiple_" data-uid="Kephas.Model.IAppServiceType.AllowMultiple*"></a>
-  <h4 id="Kephas_Model_IAppServiceType_AllowMultiple" data-uid="Kephas.Model.IAppServiceType.AllowMultiple">AllowMultiple</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether the service allows multiple service types.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool AllowMultiple { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p>True if allow multiple, false if not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IAppServiceType_AsOpenGeneric.md&amp;value=---%0Auid%3A%20Kephas.Model.IAppServiceType.AsOpenGeneric%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IAppServiceType.cs/#L36">View Source</a>
-  </span>
-  <a id="Kephas_Model_IAppServiceType_AsOpenGeneric_" data-uid="Kephas.Model.IAppServiceType.AsOpenGeneric*"></a>
-  <h4 id="Kephas_Model_IAppServiceType_AsOpenGeneric" data-uid="Kephas.Model.IAppServiceType.AsOpenGeneric">AsOpenGeneric</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether the service is exported as an open generic.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool AsOpenGeneric { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p>True if the service is exported as an open generic, false if not.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IAppServiceType_ContractType.md&amp;value=---%0Auid%3A%20Kephas.Model.IAppServiceType.ContractType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IAppServiceType.cs/#L44">View Source</a>
-  </span>
-  <a id="Kephas_Model_IAppServiceType_ContractType_" data-uid="Kephas.Model.IAppServiceType.ContractType*"></a>
-  <h4 id="Kephas_Model_IAppServiceType_ContractType" data-uid="Kephas.Model.IAppServiceType.ContractType">ContractType</h4>
-  <div class="markdown level1 summary"><p>Gets the type of the contract.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Type ContractType { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Type</span></td>
-        <td><p>The type of the contract.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IAppServiceType_Lifetime.md&amp;value=---%0Auid%3A%20Kephas.Model.IAppServiceType.Lifetime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IAppServiceType.cs/#L52">View Source</a>
-  </span>
-  <a id="Kephas_Model_IAppServiceType_Lifetime_" data-uid="Kephas.Model.IAppServiceType.Lifetime*"></a>
-  <h4 id="Kephas_Model_IAppServiceType_Lifetime" data-uid="Kephas.Model.IAppServiceType.Lifetime">Lifetime</h4>
-  <div class="markdown level1 summary"><p>Gets the service lifetime.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">AppServiceLifetime Lifetime { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Services.AppServiceLifetime.html">AppServiceLifetime</a></td>
-        <td><p>The service lifetime.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
-  <div>
-      <a class="xref" href="Kephas.Model.ModelElementExtensions.html#Kephas_Model_ModelElementExtensions_GetDeclaredMembers_Kephas_Model_IModelElement_">ModelElementExtensions.GetDeclaredMembers(IModelElement)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Model.Reflection.RuntimeTypeInfoExtensions.html#Kephas_Model_Reflection_RuntimeTypeInfoExtensions_IsExcludedFromModel_Kephas_Runtime_IAttributeProvider_">RuntimeTypeInfoExtensions.IsExcludedFromModel(IAttributeProvider)</a>
-  </div>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
   </div>
@@ -334,7 +225,7 @@
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
@@ -343,13 +234,22 @@
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+      <a class="xref" href="Kephas.Model.ModelElementExtensions.html#Kephas_Model_ModelElementExtensions_GetDeclaredMembers_Kephas_Model_IModelElement_">ModelElementExtensions.GetDeclaredMembers(IModelElement)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.Reflection.RuntimeTypeInfoExtensions.html#Kephas_Model_Reflection_RuntimeTypeInfoExtensions_IsExcludedFromModel_Kephas_Runtime_IAttributeProvider_">RuntimeTypeInfoExtensions.IsExcludedFromModel(IAttributeProvider)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
           </div>
@@ -359,10 +259,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IAppServiceType.md&amp;value=---%0Auid%3A%20Kephas.Model.IAppServiceType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_IAppServiceType.md&amp;value=---%0Auid%3A%20Kephas.Model.IAppServiceType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Model/IAppServiceType.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/IAppServiceType.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

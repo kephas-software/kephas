@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class MongoDataContext
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -123,13 +123,13 @@
       <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_CreateCommand_System_Type_">DataContextBase.CreateCommand(Type)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_GetEntityInfo_System_Object_">DataContextBase.GetEntityInfo(Object)</a>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_GetEntityEntry_System_Object_">DataContextBase.GetEntityEntry(Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_AttachEntity_System_Object_">DataContextBase.AttachEntity(Object)</a>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Attach_System_Object_">DataContextBase.Attach(Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_DetachEntity_Kephas_Data_Capabilities_IEntityInfo_">DataContextBase.DetachEntity(IEntityInfo)</a>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Detach_Kephas_Data_Capabilities_IEntityEntry_">DataContextBase.Detach(IEntityEntry)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Dispose">DataContextBase.Dispose()</a>
@@ -138,19 +138,19 @@
       <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_GetIdEqualityExpression__1_System_Object_">DataContextBase.GetIdEqualityExpression&lt;T&gt;(Object)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_CreateEntityInfo_System_Object_System_Nullable_Kephas_Data_Capabilities_ChangeState__">DataContextBase.CreateEntityInfo(Object, Nullable&lt;ChangeState&gt;)</a>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_CreateEntityEntry_System_Object_System_Nullable_Kephas_Data_Capabilities_ChangeState__">DataContextBase.CreateEntityEntry(Object, Nullable&lt;ChangeState&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Dispose_System_Boolean_">DataContextBase.Dispose(Boolean)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_AttachEntityCore_System_Object_System_Boolean_">DataContextBase.AttachEntityCore(Object, Boolean)</a>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_AttachCore_System_Object_System_Boolean_">DataContextBase.AttachCore(Object, Boolean)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_ResolveAttachEntityConflict_Kephas_Data_Capabilities_IEntityInfo_System_Object_System_Boolean_">DataContextBase.ResolveAttachEntityConflict(IEntityInfo, Object, Boolean)</a>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_ResolveAttachConflict_Kephas_Data_Capabilities_IEntityEntry_System_Object_System_Boolean_">DataContextBase.ResolveAttachConflict(IEntityEntry, Object, Boolean)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_DetachEntityCore_Kephas_Data_Capabilities_IEntityInfo_System_Boolean_">DataContextBase.DetachEntityCore(IEntityInfo, Boolean)</a>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_DetachCore_Kephas_Data_Capabilities_IEntityEntry_System_Boolean_">DataContextBase.DetachCore(IEntityEntry, Boolean)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_AmbientServices">Context.AmbientServices</a>
@@ -269,10 +269,10 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext__ctor_Kephas_Composition_ICompositionContext_Kephas_Data_Commands_Factory_IDataCommandProvider_Kephas_Data_Behaviors_IDataBehaviorProvider_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.%23ctor(Kephas.Composition.ICompositionContext%2CKephas.Data.Commands.Factory.IDataCommandProvider%2CKephas.Data.Behaviors.IDataBehaviorProvider)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext__ctor_Kephas_Composition_ICompositionContext_Kephas_Data_Commands_Factory_IDataCommandProvider_Kephas_Data_Behaviors_IDataBehaviorProvider_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.%23ctor(Kephas.Composition.ICompositionContext%2CKephas.Data.Commands.Factory.IDataCommandProvider%2CKephas.Data.Behaviors.IDataBehaviorProvider)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L48">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L48">View Source</a>
   </span>
   <a id="Kephas_Data_MongoDB_MongoDataContext__ctor_" data-uid="Kephas.Data.MongoDB.MongoDataContext.#ctor*"></a>
   <h4 id="Kephas_Data_MongoDB_MongoDataContext__ctor_Kephas_Composition_ICompositionContext_Kephas_Data_Commands_Factory_IDataCommandProvider_Kephas_Data_Behaviors_IDataBehaviorProvider_" data-uid="Kephas.Data.MongoDB.MongoDataContext.#ctor(Kephas.Composition.ICompositionContext,Kephas.Data.Commands.Factory.IDataCommandProvider,Kephas.Data.Behaviors.IDataBehaviorProvider)">MongoDataContext(ICompositionContext, IDataCommandProvider, IDataBehaviorProvider)</h4>
@@ -317,10 +317,10 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_Client.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.Client%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_Client.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.Client%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L70">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L70">View Source</a>
   </span>
   <a id="Kephas_Data_MongoDB_MongoDataContext_Client_" data-uid="Kephas.Data.MongoDB.MongoDataContext.Client*"></a>
   <h4 id="Kephas_Data_MongoDB_MongoDataContext_Client" data-uid="Kephas.Data.MongoDB.MongoDataContext.Client">Client</h4>
@@ -349,10 +349,10 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_Database.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.Database%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_Database.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.Database%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L78">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L78">View Source</a>
   </span>
   <a id="Kephas_Data_MongoDB_MongoDataContext_Database_" data-uid="Kephas.Data.MongoDB.MongoDataContext.Database*"></a>
   <h4 id="Kephas_Data_MongoDB_MongoDataContext_Database" data-uid="Kephas.Data.MongoDB.MongoDataContext.Database">Database</h4>
@@ -381,10 +381,10 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_Logger.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_Logger.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L62">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L62">View Source</a>
   </span>
   <a id="Kephas_Data_MongoDB_MongoDataContext_Logger_" data-uid="Kephas.Data.MongoDB.MongoDataContext.Logger*"></a>
   <h4 id="Kephas_Data_MongoDB_MongoDataContext_Logger" data-uid="Kephas.Data.MongoDB.MongoDataContext.Logger">Logger</h4>
@@ -415,10 +415,10 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_GetCollectionName_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.GetCollectionName(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_GetCollectionName_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.GetCollectionName(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L87">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L87">View Source</a>
   </span>
   <a id="Kephas_Data_MongoDB_MongoDataContext_GetCollectionName_" data-uid="Kephas.Data.MongoDB.MongoDataContext.GetCollectionName*"></a>
   <h4 id="Kephas_Data_MongoDB_MongoDataContext_GetCollectionName_System_Type_" data-uid="Kephas.Data.MongoDB.MongoDataContext.GetCollectionName(System.Type)">GetCollectionName(Type)</h4>
@@ -465,10 +465,10 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_Initialize_Kephas_Data_IDataInitializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.Initialize(Kephas.Data.IDataInitializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_Initialize_Kephas_Data_IDataInitializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.Initialize(Kephas.Data.IDataInitializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L112">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L112">View Source</a>
   </span>
   <a id="Kephas_Data_MongoDB_MongoDataContext_Initialize_" data-uid="Kephas.Data.MongoDB.MongoDataContext.Initialize*"></a>
   <h4 id="Kephas_Data_MongoDB_MongoDataContext_Initialize_Kephas_Data_IDataInitializationContext_" data-uid="Kephas.Data.MongoDB.MongoDataContext.Initialize(Kephas.Data.IDataInitializationContext)">Initialize(IDataInitializationContext)</h4>
@@ -501,10 +501,10 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
   <div><a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Initialize_Kephas_Data_IDataInitializationContext_">DataContextBase.Initialize(IDataInitializationContext)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_QueryCore__1_Kephas_Data_IQueryOperationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.QueryCore%60%601(Kephas.Data.IQueryOperationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext_QueryCore__1_Kephas_Data_IQueryOperationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext.QueryCore%60%601(Kephas.Data.IQueryOperationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L100">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L100">View Source</a>
   </span>
   <a id="Kephas_Data_MongoDB_MongoDataContext_QueryCore_" data-uid="Kephas.Data.MongoDB.MongoDataContext.QueryCore*"></a>
   <h4 id="Kephas_Data_MongoDB_MongoDataContext_QueryCore__1_Kephas_Data_IQueryOperationContext_" data-uid="Kephas.Data.MongoDB.MongoDataContext.QueryCore``1(Kephas.Data.IQueryOperationContext)">QueryCore&lt;T&gt;(IQueryOperationContext)</h4>
@@ -622,7 +622,7 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
@@ -631,7 +631,10 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
@@ -646,10 +649,10 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
       <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_System_Object__">ContextExtensions.WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;Object&gt;)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_Kephas_Data_Capabilities_IChangeStateTrackableEntityInfo__">ContextExtensions.WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;IChangeStateTrackableEntityInfo&gt;)</a>
+      <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_Kephas_Data_Capabilities_IChangeStateTrackableEntityEntry__">ContextExtensions.WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;IChangeStateTrackableEntityEntry&gt;)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
           </div>
@@ -659,10 +662,10 @@ public class MongoDataContext : DataContextBase, IDataContext, IContext, IExpand
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_MongoDB_MongoDataContext.md&amp;value=---%0Auid%3A%20Kephas.Data.MongoDB.MongoDataContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L33" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.MongoDB/MongoDataContext.cs/#L33" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

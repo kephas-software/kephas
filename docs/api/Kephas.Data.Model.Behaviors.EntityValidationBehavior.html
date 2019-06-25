@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class EntityValidationBehavior
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class EntityValidationBehavior
+   ">
+    <meta name="generator" content="docfx 2.43.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.Model.Behaviors.EntityValidationBehavior">
+  
+  
+  <h1 id="Kephas_Data_Model_Behaviors_EntityValidationBehavior" data-uid="Kephas.Data.Model.Behaviors.EntityValidationBehavior" class="text-break">Class EntityValidationBehavior
+  </h1>
+  <div class="markdown level0 summary"><p>An entity validation behavior using the model space classifier, if applicable, for validating the entity using annotations.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html">DataBehaviorBase</a>&lt;<span class="xref">System.Object</span>&gt;</div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Behaviors.DataAnnotationsBehaviorBase-1.html">DataAnnotationsBehaviorBase</a>&lt;<span class="xref">System.Object</span>&gt;</div>
+    <div class="level3"><span class="xref">EntityValidationBehavior</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Data.Behaviors.IDataBehavior-1.html">IDataBehavior</a>&lt;<span class="xref">System.Object</span>&gt;</div>
+    <div><a class="xref" href="Kephas.Data.Behaviors.IDataBehavior.html">IDataBehavior</a></div>
+    <div><a class="xref" href="Kephas.Data.Behaviors.IOnPersistBehavior.html">IOnPersistBehavior</a></div>
+    <div><a class="xref" href="Kephas.Data.Behaviors.IOnInitializeBehavior.html">IOnInitializeBehavior</a></div>
+    <div><a class="xref" href="Kephas.Data.Validation.IOnValidateBehavior.html">IOnValidateBehavior</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataAnnotationsBehaviorBase-1.html#Kephas_Data_Behaviors_DataAnnotationsBehaviorBase_1_Validate__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_">DataAnnotationsBehaviorBase&lt;Object&gt;.Validate(Object, IEntityEntry, IDataOperationContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_Initialize__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_">DataBehaviorBase&lt;Object&gt;.Initialize(Object, IEntityEntry, IDataOperationContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_BeforePersist__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_">DataBehaviorBase&lt;Object&gt;.BeforePersist(Object, IEntityEntry, IDataOperationContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_AfterPersist__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_">DataBehaviorBase&lt;Object&gt;.AfterPersist(Object, IEntityEntry, IDataOperationContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnPersistBehavior_BeforePersistAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataBehaviorBase&lt;Object&gt;.IOnPersistBehavior.BeforePersistAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_BeforePersistAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataBehaviorBase&lt;Object&gt;.BeforePersistAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnPersistBehavior_AfterPersistAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataBehaviorBase&lt;Object&gt;.IOnPersistBehavior.AfterPersistAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_AfterPersistAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataBehaviorBase&lt;Object&gt;.AfterPersistAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnInitializeBehavior_InitializeAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataBehaviorBase&lt;Object&gt;.IOnInitializeBehavior.InitializeAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_InitializeAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataBehaviorBase&lt;Object&gt;.InitializeAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Validation_IOnValidateBehavior_ValidateAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataBehaviorBase&lt;Object&gt;.IOnValidateBehavior.ValidateAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_ValidateAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataBehaviorBase&lt;Object&gt;.ValidateAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Model.Behaviors.html">Kephas.Data.Model.Behaviors</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.Model.dll</h6>
+  <h5 id="Kephas_Data_Model_Behaviors_EntityValidationBehavior_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ProcessingPriority(Priority.High)]
+public class EntityValidationBehavior : DataAnnotationsBehaviorBase&lt;object&gt;, IDataBehavior&lt;object&gt;, IDataBehavior, IOnPersistBehavior, IOnInitializeBehavior, IOnValidateBehavior</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Model_Behaviors_EntityValidationBehavior__ctor_Kephas_Model_IModelSpaceProvider_.md&amp;value=---%0Auid%3A%20Kephas.Data.Model.Behaviors.EntityValidationBehavior.%23ctor(Kephas.Model.IModelSpaceProvider)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.Model/Behaviors/EntityValidationBehavior.cs/#L38">View Source</a>
+  </span>
+  <a id="Kephas_Data_Model_Behaviors_EntityValidationBehavior__ctor_" data-uid="Kephas.Data.Model.Behaviors.EntityValidationBehavior.#ctor*"></a>
+  <h4 id="Kephas_Data_Model_Behaviors_EntityValidationBehavior__ctor_Kephas_Model_IModelSpaceProvider_" data-uid="Kephas.Data.Model.Behaviors.EntityValidationBehavior.#ctor(Kephas.Model.IModelSpaceProvider)">EntityValidationBehavior(IModelSpaceProvider)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.Model.Behaviors.EntityValidationBehavior.html">EntityValidationBehavior</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EntityValidationBehavior(IModelSpaceProvider modelSpaceProvider)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Model.IModelSpaceProvider.html">IModelSpaceProvider</a></td>
+        <td><span class="parametername">modelSpaceProvider</span></td>
+        <td><p>The model space provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Model_Behaviors_EntityValidationBehavior_CreateValidationFn_Kephas_Reflection_ITypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Data.Model.Behaviors.EntityValidationBehavior.CreateValidationFn(Kephas.Reflection.ITypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.Model/Behaviors/EntityValidationBehavior.cs/#L48">View Source</a>
+  </span>
+  <a id="Kephas_Data_Model_Behaviors_EntityValidationBehavior_CreateValidationFn_" data-uid="Kephas.Data.Model.Behaviors.EntityValidationBehavior.CreateValidationFn*"></a>
+  <h4 id="Kephas_Data_Model_Behaviors_EntityValidationBehavior_CreateValidationFn_Kephas_Reflection_ITypeInfo_" data-uid="Kephas.Data.Model.Behaviors.EntityValidationBehavior.CreateValidationFn(Kephas.Reflection.ITypeInfo)">CreateValidationFn(ITypeInfo)</h4>
+  <div class="markdown level1 summary"><p>Creates the validation function.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override Func&lt;object, IEntityEntry, IDataOperationContext, IDataValidationResult&gt; CreateValidationFn(ITypeInfo typeInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><span class="parametername">typeInfo</span></td>
+        <td><p>Information describing the type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Object</span>, <a class="xref" href="Kephas.Data.Capabilities.IEntityEntry.html">IEntityEntry</a>, <a class="xref" href="Kephas.Data.IDataOperationContext.html">IDataOperationContext</a>, <a class="xref" href="Kephas.Data.Validation.IDataValidationResult.html">IDataValidationResult</a>&gt;</td>
+        <td><p>The new validation function.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Kephas.Data.Behaviors.DataAnnotationsBehaviorBase&lt;System.Object&gt;.CreateValidationFn(Kephas.Reflection.ITypeInfo)</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Behaviors.IDataBehavior-1.html">IDataBehavior&lt;TEntity&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Behaviors.IDataBehavior.html">IDataBehavior</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Behaviors.IOnPersistBehavior.html">IOnPersistBehavior</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Behaviors.IOnInitializeBehavior.html">IOnInitializeBehavior</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Validation.IOnValidateBehavior.html">IOnValidateBehavior</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Model_Behaviors_EntityValidationBehavior.md&amp;value=---%0Auid%3A%20Kephas.Data.Model.Behaviors.EntityValidationBehavior%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.Model/Behaviors/EntityValidationBehavior.cs/#L26" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

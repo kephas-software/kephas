@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ActivatorBase
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -80,6 +80,7 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">ActivatorBase</span></div>
+      <div class="level2"><a class="xref" href="Kephas.Data.LLBLGen.Entities.Activation.LLBLGenEntityActivator.html">LLBLGenEntityActivator</a></div>
       <div class="level2"><a class="xref" href="Kephas.Runtime.RuntimeActivator.html">RuntimeActivator</a></div>
   </div>
   <div classs="implements">
@@ -120,10 +121,72 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase_CreateInstance_Kephas_Reflection_ITypeInfo_System_Collections_Generic_IEnumerable_System_Object__Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase.CreateInstance(Kephas.Reflection.ITypeInfo%2CSystem.Collections.Generic.IEnumerable%7BSystem.Object%7D%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase_ComputeImplementationType_Kephas_Reflection_ITypeInfo_Kephas_Services_IContext_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase.ComputeImplementationType(Kephas.Reflection.ITypeInfo%2CKephas.Services.IContext%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L51">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L126">View Source</a>
+  </span>
+  <a id="Kephas_Activation_ActivatorBase_ComputeImplementationType_" data-uid="Kephas.Activation.ActivatorBase.ComputeImplementationType*"></a>
+  <h4 id="Kephas_Activation_ActivatorBase_ComputeImplementationType_Kephas_Reflection_ITypeInfo_Kephas_Services_IContext_System_Boolean_" data-uid="Kephas.Activation.ActivatorBase.ComputeImplementationType(Kephas.Reflection.ITypeInfo,Kephas.Services.IContext,System.Boolean)">ComputeImplementationType(ITypeInfo, IContext, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Computes the type implementing the abstract type provided as the parameter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual ITypeInfo ComputeImplementationType(ITypeInfo abstractType, IContext activationContext = null, bool throwOnNotFound = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><span class="parametername">abstractType</span></td>
+        <td><p>Indicates the abstract type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">activationContext</span></td>
+        <td><p>Context for the activation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">throwOnNotFound</span></td>
+        <td><p>Indicates whether to throw an exception if an implementation type is not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
+        <td><p>The implementation type for the provided <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase_CreateInstance_Kephas_Reflection_ITypeInfo_System_Collections_Generic_IEnumerable_System_Object__Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase.CreateInstance(Kephas.Reflection.ITypeInfo%2CSystem.Collections.Generic.IEnumerable%7BSystem.Object%7D%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L51">View Source</a>
   </span>
   <a id="Kephas_Activation_ActivatorBase_CreateInstance_" data-uid="Kephas.Activation.ActivatorBase.CreateInstance*"></a>
   <h4 id="Kephas_Activation_ActivatorBase_CreateInstance_Kephas_Reflection_ITypeInfo_System_Collections_Generic_IEnumerable_System_Object__Kephas_Services_IContext_" data-uid="Kephas.Activation.ActivatorBase.CreateInstance(Kephas.Reflection.ITypeInfo,System.Collections.Generic.IEnumerable{System.Object},Kephas.Services.IContext)">CreateInstance(ITypeInfo, IEnumerable&lt;Object&gt;, IContext)</h4>
@@ -186,10 +249,10 @@ If an abstract type is provided, then an implementation type is determined first
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase_GetImplementationType_Kephas_Reflection_ITypeInfo_Kephas_Services_IContext_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase.GetImplementationType(Kephas.Reflection.ITypeInfo%2CKephas.Services.IContext%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase_GetImplementationType_Kephas_Reflection_ITypeInfo_Kephas_Services_IContext_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase.GetImplementationType(Kephas.Reflection.ITypeInfo%2CKephas.Services.IContext%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L74">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L74">View Source</a>
   </span>
   <a id="Kephas_Activation_ActivatorBase_GetImplementationType_" data-uid="Kephas.Activation.ActivatorBase.GetImplementationType*"></a>
   <h4 id="Kephas_Activation_ActivatorBase_GetImplementationType_Kephas_Reflection_ITypeInfo_Kephas_Services_IContext_System_Boolean_" data-uid="Kephas.Activation.ActivatorBase.GetImplementationType(Kephas.Reflection.ITypeInfo,Kephas.Services.IContext,System.Boolean)">GetImplementationType(ITypeInfo, IContext, Boolean)</h4>
@@ -248,72 +311,10 @@ If an abstract type is provided, then an implementation type is determined first
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase_GetImplementationTypeCore_Kephas_Reflection_ITypeInfo_Kephas_Services_IContext_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase.GetImplementationTypeCore(Kephas.Reflection.ITypeInfo%2CKephas.Services.IContext%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase_GetImplementationTypes.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase.GetImplementationTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L126">View Source</a>
-  </span>
-  <a id="Kephas_Activation_ActivatorBase_GetImplementationTypeCore_" data-uid="Kephas.Activation.ActivatorBase.GetImplementationTypeCore*"></a>
-  <h4 id="Kephas_Activation_ActivatorBase_GetImplementationTypeCore_Kephas_Reflection_ITypeInfo_Kephas_Services_IContext_System_Boolean_" data-uid="Kephas.Activation.ActivatorBase.GetImplementationTypeCore(Kephas.Reflection.ITypeInfo,Kephas.Services.IContext,System.Boolean)">GetImplementationTypeCore(ITypeInfo, IContext, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Gets the type implementing the abstract type provided as the parameter.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual ITypeInfo GetImplementationTypeCore(ITypeInfo abstractType, IContext activationContext = null, bool throwOnNotFound = true)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
-        <td><span class="parametername">abstractType</span></td>
-        <td><p>Indicates the abstract type.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
-        <td><span class="parametername">activationContext</span></td>
-        <td><p>Context for the activation.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">throwOnNotFound</span></td>
-        <td><p>Indicates whether to throw an exception if an implementation type is not found.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a></td>
-        <td><p>The implementation type for the provided <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase_GetImplementationTypes.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase.GetImplementationTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L103">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L103">View Source</a>
   </span>
   <a id="Kephas_Activation_ActivatorBase_GetImplementationTypes_" data-uid="Kephas.Activation.ActivatorBase.GetImplementationTypes*"></a>
   <h4 id="Kephas_Activation_ActivatorBase_GetImplementationTypes" data-uid="Kephas.Activation.ActivatorBase.GetImplementationTypes">GetImplementationTypes()</h4>
@@ -348,10 +349,10 @@ otherwise only non-abstract types will be resolved.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase_TryGetTypeInfo_Kephas_Reflection_ITypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase.TryGetTypeInfo(Kephas.Reflection.ITypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase_TryGetTypeInfo_Kephas_Reflection_ITypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase.TryGetTypeInfo(Kephas.Reflection.ITypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L112">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L112">View Source</a>
   </span>
   <a id="Kephas_Activation_ActivatorBase_TryGetTypeInfo_" data-uid="Kephas.Activation.ActivatorBase.TryGetTypeInfo*"></a>
   <h4 id="Kephas_Activation_ActivatorBase_TryGetTypeInfo_Kephas_Reflection_ITypeInfo_" data-uid="Kephas.Activation.ActivatorBase.TryGetTypeInfo(Kephas.Reflection.ITypeInfo)">TryGetTypeInfo(ITypeInfo)</h4>
@@ -423,7 +424,7 @@ otherwise only non-abstract types will be resolved.</p>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
@@ -432,13 +433,16 @@ otherwise only non-abstract types will be resolved.</p>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
           </div>
@@ -448,10 +452,10 @@ otherwise only non-abstract types will be resolved.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Activation_ActivatorBase.md&amp;value=---%0Auid%3A%20Kephas.Activation.ActivatorBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L26" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Activation/ActivatorBase.cs/#L26" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DefaultMessageProcessor
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -84,7 +84,6 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Kephas.Messaging.IMessageProcessor.html">IMessageProcessor</a></div>
-    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -115,16 +114,16 @@
   <h5 id="Kephas_Messaging_DefaultMessageProcessor_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Low)]
-public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAware</code></pre>
+public class DefaultMessageProcessor : IMessageProcessor</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor__ctor_Kephas_Composition_ICompositionContext_Kephas_Messaging_IMessageMatchService_System_Collections_Generic_IList_Kephas_Composition_IExportFactory_Kephas_Messaging_HandlerSelectors_IMessageHandlerSelector_Kephas_Services_Composition_AppServiceMetadata___System_Collections_Generic_IList_Kephas_Composition_IExportFactory_Kephas_Messaging_Behaviors_IMessageProcessingBehavior_Kephas_Messaging_Behaviors_Composition_MessageProcessingBehaviorMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.%23ctor(Kephas.Composition.ICompositionContext%2CKephas.Messaging.IMessageMatchService%2CSystem.Collections.Generic.IList%7BKephas.Composition.IExportFactory%7BKephas.Messaging.HandlerSelectors.IMessageHandlerSelector%2CKephas.Services.Composition.AppServiceMetadata%7D%7D%2CSystem.Collections.Generic.IList%7BKephas.Composition.IExportFactory%7BKephas.Messaging.Behaviors.IMessageProcessingBehavior%2CKephas.Messaging.Behaviors.Composition.MessageProcessingBehaviorMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor__ctor_Kephas_Composition_ICompositionContext_Kephas_Messaging_IMessageMatchService_System_Collections_Generic_IList_Kephas_Composition_IExportFactory_Kephas_Messaging_HandlerSelectors_IMessageHandlerSelector_Kephas_Services_Composition_AppServiceMetadata___System_Collections_Generic_IList_Kephas_Composition_IExportFactory_Kephas_Messaging_Behaviors_IMessageProcessingBehavior_Kephas_Messaging_Behaviors_Composition_MessageProcessingBehaviorMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.%23ctor(Kephas.Composition.ICompositionContext%2CKephas.Messaging.IMessageMatchService%2CSystem.Collections.Generic.IList%7BKephas.Composition.IExportFactory%7BKephas.Messaging.HandlerSelectors.IMessageHandlerSelector%2CKephas.Services.Composition.AppServiceMetadata%7D%7D%2CSystem.Collections.Generic.IList%7BKephas.Composition.IExportFactory%7BKephas.Messaging.Behaviors.IMessageProcessingBehavior%2CKephas.Messaging.Behaviors.Composition.MessageProcessingBehaviorMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L71">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L70">View Source</a>
   </span>
   <a id="Kephas_Messaging_DefaultMessageProcessor__ctor_" data-uid="Kephas.Messaging.DefaultMessageProcessor.#ctor*"></a>
   <h4 id="Kephas_Messaging_DefaultMessageProcessor__ctor_Kephas_Composition_ICompositionContext_Kephas_Messaging_IMessageMatchService_System_Collections_Generic_IList_Kephas_Composition_IExportFactory_Kephas_Messaging_HandlerSelectors_IMessageHandlerSelector_Kephas_Services_Composition_AppServiceMetadata___System_Collections_Generic_IList_Kephas_Composition_IExportFactory_Kephas_Messaging_Behaviors_IMessageProcessingBehavior_Kephas_Messaging_Behaviors_Composition_MessageProcessingBehaviorMetadata___" data-uid="Kephas.Messaging.DefaultMessageProcessor.#ctor(Kephas.Composition.ICompositionContext,Kephas.Messaging.IMessageMatchService,System.Collections.Generic.IList{Kephas.Composition.IExportFactory{Kephas.Messaging.HandlerSelectors.IMessageHandlerSelector,Kephas.Services.Composition.AppServiceMetadata}},System.Collections.Generic.IList{Kephas.Composition.IExportFactory{Kephas.Messaging.Behaviors.IMessageProcessingBehavior,Kephas.Messaging.Behaviors.Composition.MessageProcessingBehaviorMetadata}})">DefaultMessageProcessor(ICompositionContext, IMessageMatchService, IList&lt;IExportFactory&lt;IMessageHandlerSelector, AppServiceMetadata&gt;&gt;, IList&lt;IExportFactory&lt;IMessageProcessingBehavior, MessageProcessingBehaviorMetadata&gt;&gt;)</h4>
@@ -175,10 +174,10 @@ public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAwa
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_CompositionContext.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.CompositionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_CompositionContext.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.CompositionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L99">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L98">View Source</a>
   </span>
   <a id="Kephas_Messaging_DefaultMessageProcessor_CompositionContext_" data-uid="Kephas.Messaging.DefaultMessageProcessor.CompositionContext*"></a>
   <h4 id="Kephas_Messaging_DefaultMessageProcessor_CompositionContext" data-uid="Kephas.Messaging.DefaultMessageProcessor.CompositionContext">CompositionContext</h4>
@@ -207,10 +206,10 @@ public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAwa
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_Logger.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_Logger.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L107">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L106">View Source</a>
   </span>
   <a id="Kephas_Messaging_DefaultMessageProcessor_Logger_" data-uid="Kephas.Messaging.DefaultMessageProcessor.Logger*"></a>
   <h4 id="Kephas_Messaging_DefaultMessageProcessor_Logger" data-uid="Kephas.Messaging.DefaultMessageProcessor.Logger">Logger</h4>
@@ -241,10 +240,134 @@ public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAwa
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_CreateProcessingContext_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageHandler_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.CreateProcessingContext(Kephas.Messaging.IMessage%2CKephas.Messaging.IMessageHandler)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_ApplyAfterProcessBehaviorsAsync_System_Collections_Generic_IEnumerable_Kephas_Messaging_Behaviors_IMessageProcessingBehavior__Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.ApplyAfterProcessBehaviorsAsync(System.Collections.Generic.IEnumerable%7BKephas.Messaging.Behaviors.IMessageProcessingBehavior%7D%2CKephas.Messaging.IMessageProcessingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L215">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L187">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_DefaultMessageProcessor_ApplyAfterProcessBehaviorsAsync_" data-uid="Kephas.Messaging.DefaultMessageProcessor.ApplyAfterProcessBehaviorsAsync*"></a>
+  <h4 id="Kephas_Messaging_DefaultMessageProcessor_ApplyAfterProcessBehaviorsAsync_System_Collections_Generic_IEnumerable_Kephas_Messaging_Behaviors_IMessageProcessingBehavior__Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.DefaultMessageProcessor.ApplyAfterProcessBehaviorsAsync(System.Collections.Generic.IEnumerable{Kephas.Messaging.Behaviors.IMessageProcessingBehavior},Kephas.Messaging.IMessageProcessingContext,System.Threading.CancellationToken)">ApplyAfterProcessBehaviorsAsync(IEnumerable&lt;IMessageProcessingBehavior&gt;, IMessageProcessingContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Applies the behaviors invoking the <a class="xref" href="Kephas.Messaging.Behaviors.IMessageProcessingBehavior.html#Kephas_Messaging_Behaviors_IMessageProcessingBehavior_AfterProcessAsync_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">AfterProcessAsync(IMessageProcessingContext, CancellationToken)</a> asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task ApplyAfterProcessBehaviorsAsync(IEnumerable&lt;IMessageProcessingBehavior&gt; reversedBehaviors, IMessageProcessingContext context, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Messaging.Behaviors.IMessageProcessingBehavior.html">IMessageProcessingBehavior</a>&gt;</td>
+        <td><span class="parametername">reversedBehaviors</span></td>
+        <td><p>The reversed behaviors.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.IMessageProcessingContext.html">IMessageProcessingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context for the message processing.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">token</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_ApplyBeforeProcessBehaviorsAsync_System_Collections_Generic_IEnumerable_Kephas_Messaging_Behaviors_IMessageProcessingBehavior__Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.ApplyBeforeProcessBehaviorsAsync(System.Collections.Generic.IEnumerable%7BKephas.Messaging.Behaviors.IMessageProcessingBehavior%7D%2CKephas.Messaging.IMessageProcessingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L207">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_DefaultMessageProcessor_ApplyBeforeProcessBehaviorsAsync_" data-uid="Kephas.Messaging.DefaultMessageProcessor.ApplyBeforeProcessBehaviorsAsync*"></a>
+  <h4 id="Kephas_Messaging_DefaultMessageProcessor_ApplyBeforeProcessBehaviorsAsync_System_Collections_Generic_IEnumerable_Kephas_Messaging_Behaviors_IMessageProcessingBehavior__Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.DefaultMessageProcessor.ApplyBeforeProcessBehaviorsAsync(System.Collections.Generic.IEnumerable{Kephas.Messaging.Behaviors.IMessageProcessingBehavior},Kephas.Messaging.IMessageProcessingContext,System.Threading.CancellationToken)">ApplyBeforeProcessBehaviorsAsync(IEnumerable&lt;IMessageProcessingBehavior&gt;, IMessageProcessingContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Applies the behaviors invoking the <a class="xref" href="Kephas.Messaging.Behaviors.IMessageProcessingBehavior.html#Kephas_Messaging_Behaviors_IMessageProcessingBehavior_BeforeProcessAsync_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">BeforeProcessAsync(IMessageProcessingContext, CancellationToken)</a> asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task ApplyBeforeProcessBehaviorsAsync(IEnumerable&lt;IMessageProcessingBehavior&gt; behaviors, IMessageProcessingContext context, CancellationToken token)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Messaging.Behaviors.IMessageProcessingBehavior.html">IMessageProcessingBehavior</a>&gt;</td>
+        <td><span class="parametername">behaviors</span></td>
+        <td><p>The reversed behaviors.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.IMessageProcessingContext.html">IMessageProcessingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Context for the message processing.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">token</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_CreateProcessingContext_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageHandler_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.CreateProcessingContext(Kephas.Messaging.IMessage%2CKephas.Messaging.IMessageHandler)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L248">View Source</a>
   </span>
   <a id="Kephas_Messaging_DefaultMessageProcessor_CreateProcessingContext_" data-uid="Kephas.Messaging.DefaultMessageProcessor.CreateProcessingContext*"></a>
   <h4 id="Kephas_Messaging_DefaultMessageProcessor_CreateProcessingContext_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageHandler_" data-uid="Kephas.Messaging.DefaultMessageProcessor.CreateProcessingContext(Kephas.Messaging.IMessage,Kephas.Messaging.IMessageHandler)">CreateProcessingContext(IMessage, IMessageHandler)</h4>
@@ -297,10 +420,10 @@ public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAwa
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_GetOrderedBehaviors_Kephas_Messaging_IMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.GetOrderedBehaviors(Kephas.Messaging.IMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_GetOrderedBehaviors_Kephas_Messaging_IMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.GetOrderedBehaviors(Kephas.Messaging.IMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L227">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L260">View Source</a>
   </span>
   <a id="Kephas_Messaging_DefaultMessageProcessor_GetOrderedBehaviors_" data-uid="Kephas.Messaging.DefaultMessageProcessor.GetOrderedBehaviors*"></a>
   <h4 id="Kephas_Messaging_DefaultMessageProcessor_GetOrderedBehaviors_Kephas_Messaging_IMessage_" data-uid="Kephas.Messaging.DefaultMessageProcessor.GetOrderedBehaviors(Kephas.Messaging.IMessage)">GetOrderedBehaviors(IMessage)</h4>
@@ -347,10 +470,10 @@ public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAwa
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_ProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.ProcessAsync(Kephas.Messaging.IMessage%2CKephas.Messaging.IMessageProcessingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_ProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.ProcessAsync(Kephas.Messaging.IMessage%2CKephas.Messaging.IMessageProcessingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L118">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L117">View Source</a>
   </span>
   <a id="Kephas_Messaging_DefaultMessageProcessor_ProcessAsync_" data-uid="Kephas.Messaging.DefaultMessageProcessor.ProcessAsync*"></a>
   <h4 id="Kephas_Messaging_DefaultMessageProcessor_ProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.DefaultMessageProcessor.ProcessAsync(Kephas.Messaging.IMessage,Kephas.Messaging.IMessageProcessingContext,System.Threading.CancellationToken)">ProcessAsync(IMessage, IMessageProcessingContext, CancellationToken)</h4>
@@ -409,10 +532,10 @@ public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAwa
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_ResolveMessageHandlers_Kephas_Messaging_IMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.ResolveMessageHandlers(Kephas.Messaging.IMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor_ResolveMessageHandlers_Kephas_Messaging_IMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor.ResolveMessageHandlers(Kephas.Messaging.IMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L190">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L223">View Source</a>
   </span>
   <a id="Kephas_Messaging_DefaultMessageProcessor_ResolveMessageHandlers_" data-uid="Kephas.Messaging.DefaultMessageProcessor.ResolveMessageHandlers*"></a>
   <h4 id="Kephas_Messaging_DefaultMessageProcessor_ResolveMessageHandlers_Kephas_Messaging_IMessage_" data-uid="Kephas.Messaging.DefaultMessageProcessor.ResolveMessageHandlers(Kephas.Messaging.IMessage)">ResolveMessageHandlers(IMessage)</h4>
@@ -461,9 +584,6 @@ public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAwa
   <div>
       <a class="xref" href="Kephas.Messaging.IMessageProcessor.html">IMessageProcessor</a>
   </div>
-  <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
-  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
@@ -487,7 +607,7 @@ public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAwa
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
@@ -496,13 +616,16 @@ public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAwa
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
           </div>
@@ -512,10 +635,10 @@ public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAwa
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_DefaultMessageProcessor.md&amp;value=---%0Auid%3A%20Kephas.Messaging.DefaultMessageProcessor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L34" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/DefaultMessageProcessor.cs/#L33" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

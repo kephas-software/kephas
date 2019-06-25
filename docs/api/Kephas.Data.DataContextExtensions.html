@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DataContextExtensions
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -115,10 +115,598 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_CreateCommand__1_Kephas_Data_IDataContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.CreateCommand%60%601(Kephas.Data.IDataContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_BulkDeleteAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IBulkDeleteContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.BulkDeleteAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.IBulkDeleteContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L54">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L395">View Source</a>
+  </span>
+  <a id="Kephas_Data_DataContextExtensions_BulkDeleteAsync_" data-uid="Kephas.Data.DataContextExtensions.BulkDeleteAsync*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_BulkDeleteAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IBulkDeleteContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.BulkDeleteAsync(Kephas.Data.IDataContext,Kephas.Data.Commands.IBulkDeleteContext,System.Threading.CancellationToken)">BulkDeleteAsync(IDataContext, IBulkDeleteContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Deletes the entities matching the provided criteria and returns the number of affected entities asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;long&gt; BulkDeleteAsync(this IDataContext dataContext, IBulkDeleteContext bulkDeleteContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">dataContext</span></td>
+        <td><p>The data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Commands.IBulkDeleteContext.html">IBulkDeleteContext</a></td>
+        <td><span class="parametername">bulkDeleteContext</span></td>
+        <td><p>The bulk delete context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+        <td><p>A promise of the number of affected entities.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Data_DataContextExtensions_BulkDeleteAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IBulkDeleteContext_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The entities are physically removed from the database without invoking any behavior.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_BulkDeleteAsync__1_Kephas_Data_IDataContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Boolean_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.BulkDeleteAsync%60%601(Kephas.Data.IDataContext%2CSystem.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2CSystem.Boolean%7D%7D%2CSystem.Boolean%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L420">View Source</a>
+  </span>
+  <a id="Kephas_Data_DataContextExtensions_BulkDeleteAsync_" data-uid="Kephas.Data.DataContextExtensions.BulkDeleteAsync*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_BulkDeleteAsync__1_Kephas_Data_IDataContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Boolean_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.BulkDeleteAsync``1(Kephas.Data.IDataContext,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Threading.CancellationToken)">BulkDeleteAsync&lt;T&gt;(IDataContext, Expression&lt;Func&lt;T, Boolean&gt;&gt;, Boolean, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Deletes the entities matching the provided criteria and returns the number of affected entities asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;long&gt; BulkDeleteAsync&lt;T&gt;(this IDataContext dataContext, Expression&lt;Func&lt;T, bool&gt;&gt; criteria, bool throwIfNotFound = true, CancellationToken cancellationToken = default(CancellationToken))
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">dataContext</span></td>
+        <td><p>The data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><span class="parametername">criteria</span></td>
+        <td><p>The matching criteria for entities to delete.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">throwIfNotFound</span></td>
+        <td><p>Optional. <code>true</code> to throw if not found.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+        <td><p>A promise of the number of affected entities.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of the entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Data_DataContextExtensions_BulkDeleteAsync__1_Kephas_Data_IDataContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Boolean_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The entities are physically removed from the database without invoking any behavior.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_BulkUpdateAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IBulkUpdateContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.BulkUpdateAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.IBulkUpdateContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L477">View Source</a>
+  </span>
+  <a id="Kephas_Data_DataContextExtensions_BulkUpdateAsync_" data-uid="Kephas.Data.DataContextExtensions.BulkUpdateAsync*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_BulkUpdateAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IBulkUpdateContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.BulkUpdateAsync(Kephas.Data.IDataContext,Kephas.Data.Commands.IBulkUpdateContext,System.Threading.CancellationToken)">BulkUpdateAsync(IDataContext, IBulkUpdateContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Updates the entities matching the provided criteria and returns the number of affected entities asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;long&gt; BulkUpdateAsync(this IDataContext dataContext, IBulkUpdateContext bulkUpdateContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">dataContext</span></td>
+        <td><p>The data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Commands.IBulkUpdateContext.html">IBulkUpdateContext</a></td>
+        <td><span class="parametername">bulkUpdateContext</span></td>
+        <td><p>The bulk update context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+        <td><p>A promise of the number of affected entities.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Data_DataContextExtensions_BulkUpdateAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IBulkUpdateContext_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The entities are physically updated in the database without invoking any behavior.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_BulkUpdateAsync__1_Kephas_Data_IDataContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Object_System_Boolean_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.BulkUpdateAsync%60%601(Kephas.Data.IDataContext%2CSystem.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2CSystem.Boolean%7D%7D%2CSystem.Object%2CSystem.Boolean%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L449">View Source</a>
+  </span>
+  <a id="Kephas_Data_DataContextExtensions_BulkUpdateAsync_" data-uid="Kephas.Data.DataContextExtensions.BulkUpdateAsync*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_BulkUpdateAsync__1_Kephas_Data_IDataContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Object_System_Boolean_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.BulkUpdateAsync``1(Kephas.Data.IDataContext,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean,System.Threading.CancellationToken)">BulkUpdateAsync&lt;T&gt;(IDataContext, Expression&lt;Func&lt;T, Boolean&gt;&gt;, Object, Boolean, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Updates the entities matching the provided criteria and returns the number of affected entities asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;long&gt; BulkUpdateAsync&lt;T&gt;(this IDataContext dataContext, Expression&lt;Func&lt;T, bool&gt;&gt; criteria, object values, bool throwIfNotFound = true, CancellationToken cancellationToken = default(CancellationToken))
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">dataContext</span></td>
+        <td><p>The data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><span class="parametername">criteria</span></td>
+        <td><p>The matching criteria for entities to delete.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">values</span></td>
+        <td><p>The values.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">throwIfNotFound</span></td>
+        <td><p>Optional. <code>true</code> to throw if not found.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int64</span>&gt;</td>
+        <td><p>A promise of the number of affected entities.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of the entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Data_DataContextExtensions_BulkUpdateAsync__1_Kephas_Data_IDataContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Object_System_Boolean_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The entities are physically updated in the database without invoking any behavior.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_CreateAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_ICreateEntityContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.CreateAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.ICreateEntityContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L94">View Source</a>
+  </span>
+  <a id="Kephas_Data_DataContextExtensions_CreateAsync_" data-uid="Kephas.Data.DataContextExtensions.CreateAsync*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_CreateAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_ICreateEntityContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.CreateAsync(Kephas.Data.IDataContext,Kephas.Data.Commands.ICreateEntityContext,System.Threading.CancellationToken)">CreateAsync(IDataContext, ICreateEntityContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Creates asynchronously a new entity of the provided type and returns it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;object&gt; CreateAsync(this IDataContext dataContext, ICreateEntityContext operationContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">dataContext</span></td>
+        <td><p>The data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Commands.ICreateEntityContext.html">ICreateEntityContext</a></td>
+        <td><span class="parametername">operationContext</span></td>
+        <td><p>Context for the create entity operation (optional).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><p>A promise of the created entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_CreateAsync_Kephas_Data_IDataContext_System_Type_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.CreateAsync(Kephas.Data.IDataContext%2CSystem.Type%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L72">View Source</a>
+  </span>
+  <a id="Kephas_Data_DataContextExtensions_CreateAsync_" data-uid="Kephas.Data.DataContextExtensions.CreateAsync*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_CreateAsync_Kephas_Data_IDataContext_System_Type_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.CreateAsync(Kephas.Data.IDataContext,System.Type,System.Threading.CancellationToken)">CreateAsync(IDataContext, Type, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Creates asynchronously a new entity of the provided type and returns it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;object&gt; CreateAsync(this IDataContext dataContext, Type entityType, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">dataContext</span></td>
+        <td><p>The data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">entityType</span></td>
+        <td><p>Type of the entity to create.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><p>A promise of the created entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_CreateAsync__1_Kephas_Data_IDataContext_Kephas_Data_Commands_ICreateEntityContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.CreateAsync%60%601(Kephas.Data.IDataContext%2CKephas.Data.Commands.ICreateEntityContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L135">View Source</a>
+  </span>
+  <a id="Kephas_Data_DataContextExtensions_CreateAsync_" data-uid="Kephas.Data.DataContextExtensions.CreateAsync*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_CreateAsync__1_Kephas_Data_IDataContext_Kephas_Data_Commands_ICreateEntityContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.CreateAsync``1(Kephas.Data.IDataContext,Kephas.Data.Commands.ICreateEntityContext,System.Threading.CancellationToken)">CreateAsync&lt;T&gt;(IDataContext, ICreateEntityContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Creates asynchronously a new entity of the provided type and returns it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; CreateAsync&lt;T&gt;(this IDataContext dataContext, ICreateEntityContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">dataContext</span></td>
+        <td><p>The data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Commands.ICreateEntityContext.html">ICreateEntityContext</a></td>
+        <td><span class="parametername">operationContext</span></td>
+        <td><p>Context for the create entity operation (optional).</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;T&gt;</td>
+        <td><p>A promise of the created entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of the entity to create.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_CreateAsync__1_Kephas_Data_IDataContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.CreateAsync%60%601(Kephas.Data.IDataContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L114">View Source</a>
+  </span>
+  <a id="Kephas_Data_DataContextExtensions_CreateAsync_" data-uid="Kephas.Data.DataContextExtensions.CreateAsync*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_CreateAsync__1_Kephas_Data_IDataContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.CreateAsync``1(Kephas.Data.IDataContext,System.Threading.CancellationToken)">CreateAsync&lt;T&gt;(IDataContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Creates asynchronously a new entity of the provided type and returns it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; CreateAsync&lt;T&gt;(this IDataContext dataContext, CancellationToken cancellationToken = default(CancellationToken))
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">dataContext</span></td>
+        <td><p>The data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token (optional).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;T&gt;</td>
+        <td><p>A promise of the created entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of the entity to create.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_CreateCommand__1_Kephas_Data_IDataContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.CreateCommand%60%601(Kephas.Data.IDataContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L55">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_CreateCommand_" data-uid="Kephas.Data.DataContextExtensions.CreateCommand*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_CreateCommand__1_Kephas_Data_IDataContext_" data-uid="Kephas.Data.DataContextExtensions.CreateCommand``1(Kephas.Data.IDataContext)">CreateCommand&lt;TCommand&gt;(IDataContext)</h4>
@@ -182,295 +770,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_CreateEntityAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_ICreateEntityContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.CreateEntityAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.ICreateEntityContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_Delete__1_Kephas_Data_IDataContext___0___.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.Delete%60%601(Kephas.Data.IDataContext%2C%60%600%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L93">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L355">View Source</a>
   </span>
-  <a id="Kephas_Data_DataContextExtensions_CreateEntityAsync_" data-uid="Kephas.Data.DataContextExtensions.CreateEntityAsync*"></a>
-  <h4 id="Kephas_Data_DataContextExtensions_CreateEntityAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_ICreateEntityContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.CreateEntityAsync(Kephas.Data.IDataContext,Kephas.Data.Commands.ICreateEntityContext,System.Threading.CancellationToken)">CreateEntityAsync(IDataContext, ICreateEntityContext, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Creates asynchronously a new entity of the provided type and returns it.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;object&gt; CreateEntityAsync(this IDataContext dataContext, ICreateEntityContext operationContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
-        <td><span class="parametername">dataContext</span></td>
-        <td><p>The data context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.Commands.ICreateEntityContext.html">ICreateEntityContext</a></td>
-        <td><span class="parametername">operationContext</span></td>
-        <td><p>Context for the create entity operation (optional).</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Object</span>&gt;</td>
-        <td><p>A promise of the created entity.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_CreateEntityAsync_Kephas_Data_IDataContext_System_Type_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.CreateEntityAsync(Kephas.Data.IDataContext%2CSystem.Type%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L71">View Source</a>
-  </span>
-  <a id="Kephas_Data_DataContextExtensions_CreateEntityAsync_" data-uid="Kephas.Data.DataContextExtensions.CreateEntityAsync*"></a>
-  <h4 id="Kephas_Data_DataContextExtensions_CreateEntityAsync_Kephas_Data_IDataContext_System_Type_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.CreateEntityAsync(Kephas.Data.IDataContext,System.Type,System.Threading.CancellationToken)">CreateEntityAsync(IDataContext, Type, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Creates asynchronously a new entity of the provided type and returns it.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;object&gt; CreateEntityAsync(this IDataContext dataContext, Type entityType, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
-        <td><span class="parametername">dataContext</span></td>
-        <td><p>The data context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Type</span></td>
-        <td><span class="parametername">entityType</span></td>
-        <td><p>Type of the entity to create.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Object</span>&gt;</td>
-        <td><p>A promise of the created entity.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_CreateEntityAsync__1_Kephas_Data_IDataContext_Kephas_Data_Commands_ICreateEntityContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.CreateEntityAsync%60%601(Kephas.Data.IDataContext%2CKephas.Data.Commands.ICreateEntityContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L134">View Source</a>
-  </span>
-  <a id="Kephas_Data_DataContextExtensions_CreateEntityAsync_" data-uid="Kephas.Data.DataContextExtensions.CreateEntityAsync*"></a>
-  <h4 id="Kephas_Data_DataContextExtensions_CreateEntityAsync__1_Kephas_Data_IDataContext_Kephas_Data_Commands_ICreateEntityContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.CreateEntityAsync``1(Kephas.Data.IDataContext,Kephas.Data.Commands.ICreateEntityContext,System.Threading.CancellationToken)">CreateEntityAsync&lt;T&gt;(IDataContext, ICreateEntityContext, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Creates asynchronously a new entity of the provided type and returns it.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; CreateEntityAsync&lt;T&gt;(this IDataContext dataContext, ICreateEntityContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
-    where T : class</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
-        <td><span class="parametername">dataContext</span></td>
-        <td><p>The data context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.Commands.ICreateEntityContext.html">ICreateEntityContext</a></td>
-        <td><span class="parametername">operationContext</span></td>
-        <td><p>Context for the create entity operation (optional).</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;T&gt;</td>
-        <td><p>A promise of the created entity.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td><p>The type of the entity to create.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_CreateEntityAsync__1_Kephas_Data_IDataContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.CreateEntityAsync%60%601(Kephas.Data.IDataContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L113">View Source</a>
-  </span>
-  <a id="Kephas_Data_DataContextExtensions_CreateEntityAsync_" data-uid="Kephas.Data.DataContextExtensions.CreateEntityAsync*"></a>
-  <h4 id="Kephas_Data_DataContextExtensions_CreateEntityAsync__1_Kephas_Data_IDataContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.CreateEntityAsync``1(Kephas.Data.IDataContext,System.Threading.CancellationToken)">CreateEntityAsync&lt;T&gt;(IDataContext, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Creates asynchronously a new entity of the provided type and returns it.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; CreateEntityAsync&lt;T&gt;(this IDataContext dataContext, CancellationToken cancellationToken = default(CancellationToken))
-    where T : class</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
-        <td><span class="parametername">dataContext</span></td>
-        <td><p>The data context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;T&gt;</td>
-        <td><p>A promise of the created entity.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td><p>The type of the entity to create.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_DeleteEntity__1_Kephas_Data_IDataContext___0_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.DeleteEntity%60%601(Kephas.Data.IDataContext%2C%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L354">View Source</a>
-  </span>
-  <a id="Kephas_Data_DataContextExtensions_DeleteEntity_" data-uid="Kephas.Data.DataContextExtensions.DeleteEntity*"></a>
-  <h4 id="Kephas_Data_DataContextExtensions_DeleteEntity__1_Kephas_Data_IDataContext___0_" data-uid="Kephas.Data.DataContextExtensions.DeleteEntity``1(Kephas.Data.IDataContext,``0)">DeleteEntity&lt;T&gt;(IDataContext, T)</h4>
+  <a id="Kephas_Data_DataContextExtensions_Delete_" data-uid="Kephas.Data.DataContextExtensions.Delete*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_Delete__1_Kephas_Data_IDataContext___0___" data-uid="Kephas.Data.DataContextExtensions.Delete``1(Kephas.Data.IDataContext,``0[])">Delete&lt;T&gt;(IDataContext, T[])</h4>
   <div class="markdown level1 summary"><p>Marks the provided entity for deletion in the data context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DeleteEntity&lt;T&gt;(this IDataContext dataContext, T entity)
+    <pre><code class="lang-csharp hljs">public static void Delete&lt;T&gt;(this IDataContext dataContext, params T[] entities)
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -490,9 +802,9 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">T</span></td>
-        <td><span class="parametername">entity</span></td>
-        <td><p>The entity.</p>
+        <td>T[]</td>
+        <td><span class="parametername">entities</span></td>
+        <td><p>The entities to delete.</p>
 </td>
       </tr>
     </tbody>
@@ -515,19 +827,76 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_DetachEntity_Kephas_Data_IDataContext_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.DetachEntity(Kephas.Data.IDataContext%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_Delete__1_Kephas_Data_IDataContext_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.Delete%60%601(Kephas.Data.IDataContext%2CSystem.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L37">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L372">View Source</a>
   </span>
-  <a id="Kephas_Data_DataContextExtensions_DetachEntity_" data-uid="Kephas.Data.DataContextExtensions.DetachEntity*"></a>
-  <h4 id="Kephas_Data_DataContextExtensions_DetachEntity_Kephas_Data_IDataContext_System_Object_" data-uid="Kephas.Data.DataContextExtensions.DetachEntity(Kephas.Data.IDataContext,System.Object)">DetachEntity(IDataContext, Object)</h4>
+  <a id="Kephas_Data_DataContextExtensions_Delete_" data-uid="Kephas.Data.DataContextExtensions.Delete*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_Delete__1_Kephas_Data_IDataContext_System_Collections_Generic_IEnumerable___0__" data-uid="Kephas.Data.DataContextExtensions.Delete``1(Kephas.Data.IDataContext,System.Collections.Generic.IEnumerable{``0})">Delete&lt;T&gt;(IDataContext, IEnumerable&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Marks the provided entities for deletion in the data context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Delete&lt;T&gt;(this IDataContext dataContext, IEnumerable&lt;T&gt; entities)
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><span class="parametername">dataContext</span></td>
+        <td><p>The data context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+        <td><span class="parametername">entities</span></td>
+        <td><p>The entities to delete.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type of the entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_Detach_Kephas_Data_IDataContext_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.Detach(Kephas.Data.IDataContext%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L38">View Source</a>
+  </span>
+  <a id="Kephas_Data_DataContextExtensions_Detach_" data-uid="Kephas.Data.DataContextExtensions.Detach*"></a>
+  <h4 id="Kephas_Data_DataContextExtensions_Detach_Kephas_Data_IDataContext_System_Object_" data-uid="Kephas.Data.DataContextExtensions.Detach(Kephas.Data.IDataContext,System.Object)">Detach(IDataContext, Object)</h4>
   <div class="markdown level1 summary"><p>Detaches the entity from the data context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IEntityInfo DetachEntity(this IDataContext dataContext, object entity)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IEntityEntry Detach(this IDataContext dataContext, object entity)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -563,7 +932,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityInfo.html">IEntityInfo</a></td>
+        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityEntry.html">IEntityEntry</a></td>
         <td><p>The entity extended information.</p>
 </td>
       </tr>
@@ -571,10 +940,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_DiscardChanges_Kephas_Data_IDataContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.DiscardChanges(Kephas.Data.IDataContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_DiscardChanges_Kephas_Data_IDataContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.DiscardChanges(Kephas.Data.IDataContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L338">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L339">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_DiscardChanges_" data-uid="Kephas.Data.DataContextExtensions.DiscardChanges*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_DiscardChanges_Kephas_Data_IDataContext_" data-uid="Kephas.Data.DataContextExtensions.DiscardChanges(Kephas.Data.IDataContext)">DiscardChanges(IDataContext)</h4>
@@ -621,10 +990,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_ExecuteAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IExecuteContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.ExecuteAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.IExecuteContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_ExecuteAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IExecuteContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.ExecuteAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.IExecuteContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L396">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L519">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_ExecuteAsync_" data-uid="Kephas.Data.DataContextExtensions.ExecuteAsync*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_ExecuteAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IExecuteContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.ExecuteAsync(Kephas.Data.IDataContext,Kephas.Data.Commands.IExecuteContext,System.Threading.CancellationToken)">ExecuteAsync(IDataContext, IExecuteContext, CancellationToken)</h4>
@@ -699,10 +1068,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_ExecuteAsync_Kephas_Data_IDataContext_System_String_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.ExecuteAsync(Kephas.Data.IDataContext%2CSystem.String%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_ExecuteAsync_Kephas_Data_IDataContext_System_String_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.ExecuteAsync(Kephas.Data.IDataContext%2CSystem.String%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L374">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L497">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_ExecuteAsync_" data-uid="Kephas.Data.DataContextExtensions.ExecuteAsync*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_ExecuteAsync_Kephas_Data_IDataContext_System_String_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.ExecuteAsync(Kephas.Data.IDataContext,System.String,System.Threading.CancellationToken)">ExecuteAsync(IDataContext, String, CancellationToken)</h4>
@@ -761,10 +1130,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.IFindContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.IFindContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L180">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L181">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_FindAsync_" data-uid="Kephas.Data.DataContextExtensions.FindAsync*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_FindAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.FindAsync(Kephas.Data.IDataContext,Kephas.Data.Commands.IFindContext,System.Threading.CancellationToken)">FindAsync(IDataContext, IFindContext, CancellationToken)</h4>
@@ -823,10 +1192,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindAsync_Kephas_Data_IDataContext_System_Type_System_Object_System_Boolean_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindAsync(Kephas.Data.IDataContext%2CSystem.Type%2CSystem.Object%2CSystem.Boolean%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindAsync_Kephas_Data_IDataContext_System_Type_System_Object_System_Boolean_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindAsync(Kephas.Data.IDataContext%2CSystem.Type%2CSystem.Object%2CSystem.Boolean%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L157">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L158">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_FindAsync_" data-uid="Kephas.Data.DataContextExtensions.FindAsync*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_FindAsync_Kephas_Data_IDataContext_System_Type_System_Object_System_Boolean_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.FindAsync(Kephas.Data.IDataContext,System.Type,System.Object,System.Boolean,System.Threading.CancellationToken)">FindAsync(IDataContext, Type, Object, Boolean, CancellationToken)</h4>
@@ -897,10 +1266,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindAsync__1_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindAsync%60%601(Kephas.Data.IDataContext%2CKephas.Data.Commands.IFindContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindAsync__1_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindAsync%60%601(Kephas.Data.IDataContext%2CKephas.Data.Commands.IFindContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L201">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L202">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_FindAsync_" data-uid="Kephas.Data.DataContextExtensions.FindAsync*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_FindAsync__1_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.FindAsync``1(Kephas.Data.IDataContext,Kephas.Data.Commands.IFindContext,System.Threading.CancellationToken)">FindAsync&lt;T&gt;(IDataContext, IFindContext, CancellationToken)</h4>
@@ -976,10 +1345,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindAsync__1_Kephas_Data_IDataContext_System_Object_System_Boolean_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindAsync%60%601(Kephas.Data.IDataContext%2CSystem.Object%2CSystem.Boolean%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindAsync__1_Kephas_Data_IDataContext_System_Object_System_Boolean_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindAsync%60%601(Kephas.Data.IDataContext%2CSystem.Object%2CSystem.Boolean%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L224">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L225">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_FindAsync_" data-uid="Kephas.Data.DataContextExtensions.FindAsync*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_FindAsync__1_Kephas_Data_IDataContext_System_Object_System_Boolean_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.FindAsync``1(Kephas.Data.IDataContext,System.Object,System.Boolean,System.Threading.CancellationToken)">FindAsync&lt;T&gt;(IDataContext, Object, Boolean, CancellationToken)</h4>
@@ -1061,10 +1430,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindOneAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindOneContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindOneAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.IFindOneContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindOneAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindOneContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindOneAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.IFindOneContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L246">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L247">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_FindOneAsync_" data-uid="Kephas.Data.DataContextExtensions.FindOneAsync*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_FindOneAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindOneContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.FindOneAsync(Kephas.Data.IDataContext,Kephas.Data.Commands.IFindOneContext,System.Threading.CancellationToken)">FindOneAsync(IDataContext, IFindOneContext, CancellationToken)</h4>
@@ -1123,10 +1492,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindOneAsync__1_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindOneContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindOneAsync%60%601(Kephas.Data.IDataContext%2CKephas.Data.Commands.IFindOneContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindOneAsync__1_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindOneContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindOneAsync%60%601(Kephas.Data.IDataContext%2CKephas.Data.Commands.IFindOneContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L267">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L268">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_FindOneAsync_" data-uid="Kephas.Data.DataContextExtensions.FindOneAsync*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_FindOneAsync__1_Kephas_Data_IDataContext_Kephas_Data_Commands_IFindOneContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.FindOneAsync``1(Kephas.Data.IDataContext,Kephas.Data.Commands.IFindOneContext,System.Threading.CancellationToken)">FindOneAsync&lt;T&gt;(IDataContext, IFindOneContext, CancellationToken)</h4>
@@ -1202,10 +1571,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindOneAsync__1_Kephas_Data_IDataContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Boolean_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindOneAsync%60%601(Kephas.Data.IDataContext%2CSystem.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2CSystem.Boolean%7D%7D%2CSystem.Boolean%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_FindOneAsync__1_Kephas_Data_IDataContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Boolean_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.FindOneAsync%60%601(Kephas.Data.IDataContext%2CSystem.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2CSystem.Boolean%7D%7D%2CSystem.Boolean%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L290">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L291">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_FindOneAsync_" data-uid="Kephas.Data.DataContextExtensions.FindOneAsync*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_FindOneAsync__1_Kephas_Data_IDataContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___System_Boolean_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.FindOneAsync``1(Kephas.Data.IDataContext,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,System.Threading.CancellationToken)">FindOneAsync&lt;T&gt;(IDataContext, Expression&lt;Func&lt;T, Boolean&gt;&gt;, Boolean, CancellationToken)</h4>
@@ -1287,10 +1656,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_PersistChangesAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.PersistChangesAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.IPersistChangesContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions_PersistChangesAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions.PersistChangesAsync(Kephas.Data.IDataContext%2CKephas.Data.Commands.IPersistChangesContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L313">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L314">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextExtensions_PersistChangesAsync_" data-uid="Kephas.Data.DataContextExtensions.PersistChangesAsync*"></a>
   <h4 id="Kephas_Data_DataContextExtensions_PersistChangesAsync_Kephas_Data_IDataContext_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.DataContextExtensions.PersistChangesAsync(Kephas.Data.IDataContext,Kephas.Data.Commands.IPersistChangesContext,System.Threading.CancellationToken)">PersistChangesAsync(IDataContext, IPersistChangesContext, CancellationToken)</h4>
@@ -1355,10 +1724,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextExtensions.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L27" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextExtensions.cs/#L28" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

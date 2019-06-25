@@ -1,0 +1,569 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class BulkOperationCommandBase&lt;TOperationContext, TOperationResult&gt;
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class BulkOperationCommandBase&lt;TOperationContext, TOperationResult&gt;
+   ">
+    <meta name="generator" content="docfx 2.43.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.Commands.BulkOperationCommandBase`2">
+  
+  
+  <h1 id="Kephas_Data_Commands_BulkOperationCommandBase_2" data-uid="Kephas.Data.Commands.BulkOperationCommandBase`2" class="text-break">Class BulkOperationCommandBase&lt;TOperationContext, TOperationResult&gt;
+  </h1>
+  <div class="markdown level0 summary"><p>Base abstract class for bulk operation commands.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;TOperationContext, TOperationResult&gt;</div>
+    <div class="level2"><span class="xref">BulkOperationCommandBase&lt;TOperationContext, TOperationResult&gt;</span></div>
+      <div class="level3"><a class="xref" href="Kephas.Data.Commands.BulkDeleteCommand.html">BulkDeleteCommand</a></div>
+      <div class="level3"><a class="xref" href="Kephas.Data.Commands.BulkUpdateCommand.html">BulkUpdateCommand</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand</a>&lt;TOperationContext, TOperationResult&gt;</div>
+    <div><a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_ExecuteAsync__0_System_Threading_CancellationToken_">DataCommandBase&lt;TOperationContext, TOperationResult&gt;.ExecuteAsync(TOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataCommandBase&lt;TOperationContext, TOperationResult&gt;.IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_GetIdEqualityExpression__1_Kephas_Data_IDataContext_System_Object_">DataCommandBase&lt;TOperationContext, TOperationResult&gt;.GetIdEqualityExpression&lt;T&gt;(IDataContext, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetLocalCache_Kephas_Data_IDataContext_">DataCommandBase&lt;TOperationContext, TOperationResult&gt;.TryGetLocalCache(IDataContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetEntityActivator_Kephas_Data_IDataContext_">DataCommandBase&lt;TOperationContext, TOperationResult&gt;.TryGetEntityActivator(IDataContext)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Commands.html">Kephas.Data.Commands</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
+  <h5 id="Kephas_Data_Commands_BulkOperationCommandBase_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class BulkOperationCommandBase&lt;TOperationContext, TOperationResult&gt; : DataCommandBase&lt;TOperationContext, TOperationResult&gt;, IDataCommand&lt;TOperationContext, TOperationResult&gt;, IDataCommand where TOperationContext : IBulkDataOperationContext where TOperationResult : IBulkDataOperationResult</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TOperationContext</span></td>
+        <td><p>Type of the operation context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TOperationResult</span></td>
+        <td><p>Type of the operation result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_BulkOperationCommandBase_2_CreateBulkOperationResult__1__0_System_Int64_System_Exception_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.BulkOperationCommandBase%602.CreateBulkOperationResult%60%601(%600%2CSystem.Int64%2CSystem.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/BulkOperationCommandBase.cs/#L80">View Source</a>
+  </span>
+  <a id="Kephas_Data_Commands_BulkOperationCommandBase_2_CreateBulkOperationResult_" data-uid="Kephas.Data.Commands.BulkOperationCommandBase`2.CreateBulkOperationResult*"></a>
+  <h4 id="Kephas_Data_Commands_BulkOperationCommandBase_2_CreateBulkOperationResult__1__0_System_Int64_System_Exception_" data-uid="Kephas.Data.Commands.BulkOperationCommandBase`2.CreateBulkOperationResult``1(`0,System.Int64,System.Exception)">CreateBulkOperationResult&lt;T&gt;(TOperationContext, Int64, Exception)</h4>
+  <div class="markdown level1 summary"><p>Creates a bulk operation result.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual TOperationResult CreateBulkOperationResult&lt;T&gt;(TOperationContext bulkOperationContext, long count, Exception exception)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TOperationContext</span></td>
+        <td><span class="parametername">bulkOperationContext</span></td>
+        <td><p>The bulk operation context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>The number of affected entities.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Exception</span></td>
+        <td><span class="parametername">exception</span></td>
+        <td><p>The exception.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TOperationResult</span></td>
+        <td><p>The new bulk operation result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_BulkOperationCommandBase_2_GetBulkOperationResult__1__0_System_Int64_System_Int64_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.BulkOperationCommandBase%602.GetBulkOperationResult%60%601(%600%2CSystem.Int64%2CSystem.Int64%2CSystem.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2CSystem.Boolean%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/BulkOperationCommandBase.cs/#L54">View Source</a>
+  </span>
+  <a id="Kephas_Data_Commands_BulkOperationCommandBase_2_GetBulkOperationResult_" data-uid="Kephas.Data.Commands.BulkOperationCommandBase`2.GetBulkOperationResult*"></a>
+  <h4 id="Kephas_Data_Commands_BulkOperationCommandBase_2_GetBulkOperationResult__1__0_System_Int64_System_Int64_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___" data-uid="Kephas.Data.Commands.BulkOperationCommandBase`2.GetBulkOperationResult``1(`0,System.Int64,System.Int64,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">GetBulkOperationResult&lt;T&gt;(TOperationContext, Int64, Int64, Expression&lt;Func&lt;T, Boolean&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the bulk operation result based on the affected entities.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual TOperationResult GetBulkOperationResult&lt;T&gt;(TOperationContext bulkOperationContext, long count, long localCacheCount, Expression&lt;Func&lt;T, bool&gt;&gt; criteria)
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TOperationContext</span></td>
+        <td><span class="parametername">bulkOperationContext</span></td>
+        <td><p>The bulk operation context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>The number of affected entities.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">localCacheCount</span></td>
+        <td><p>Number of affected entities in the local caches.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><span class="parametername">criteria</span></td>
+        <td><p>The criteria for matching entities.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TOperationResult</span></td>
+        <td><p>The bulk operation result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.NotFoundDataException.html">NotFoundDataException</a></td>
+        <td><p>Thrown when a Not Found Data error condition occurs.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_BulkOperationCommandBase_2_GetCriteriaString__1_Kephas_Data_Commands_IBulkDataOperationContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.BulkOperationCommandBase%602.GetCriteriaString%60%601(Kephas.Data.Commands.IBulkDataOperationContext%2CSystem.Linq.Expressions.Expression%7BSystem.Func%7B%60%600%2CSystem.Boolean%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/BulkOperationCommandBase.cs/#L94">View Source</a>
+  </span>
+  <a id="Kephas_Data_Commands_BulkOperationCommandBase_2_GetCriteriaString_" data-uid="Kephas.Data.Commands.BulkOperationCommandBase`2.GetCriteriaString*"></a>
+  <h4 id="Kephas_Data_Commands_BulkOperationCommandBase_2_GetCriteriaString__1_Kephas_Data_Commands_IBulkDataOperationContext_System_Linq_Expressions_Expression_System_Func___0_System_Boolean___" data-uid="Kephas.Data.Commands.BulkOperationCommandBase`2.GetCriteriaString``1(Kephas.Data.Commands.IBulkDataOperationContext,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">GetCriteriaString&lt;T&gt;(IBulkDataOperationContext, Expression&lt;Func&lt;T, Boolean&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the criteria string for exception display.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetCriteriaString&lt;T&gt;(IBulkDataOperationContext bulkOperationContext, Expression&lt;Func&lt;T, bool&gt;&gt; criteria)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Commands.IBulkDataOperationContext.html">IBulkDataOperationContext</a></td>
+        <td><span class="parametername">bulkOperationContext</span></td>
+        <td><p>The bulk operation context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><span class="parametername">criteria</span></td>
+        <td><p>The criteria for matching entities.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The criteria string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_BulkOperationCommandBase_2_GetMatchingCriteria__1__0_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.BulkOperationCommandBase%602.GetMatchingCriteria%60%601(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/BulkOperationCommandBase.cs/#L36">View Source</a>
+  </span>
+  <a id="Kephas_Data_Commands_BulkOperationCommandBase_2_GetMatchingCriteria_" data-uid="Kephas.Data.Commands.BulkOperationCommandBase`2.GetMatchingCriteria*"></a>
+  <h4 id="Kephas_Data_Commands_BulkOperationCommandBase_2_GetMatchingCriteria__1__0_" data-uid="Kephas.Data.Commands.BulkOperationCommandBase`2.GetMatchingCriteria``1(`0)">GetMatchingCriteria&lt;T&gt;(TOperationContext)</h4>
+  <div class="markdown level1 summary"><p>Gets the find criteria.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Expression&lt;Func&lt;T, bool&gt;&gt; GetMatchingCriteria&lt;T&gt;(TOperationContext bulkOperationContext)
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TOperationContext</span></td>
+        <td><span class="parametername">bulkOperationContext</span></td>
+        <td><p>The bulk operation context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.Expressions.Expression</span>&lt;<span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;&gt;</td>
+        <td><p>The matching criteria.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand&lt;TOperationContext, TResult&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_BulkOperationCommandBase_2.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.BulkOperationCommandBase%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/BulkOperationCommandBase.cs/#L23" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

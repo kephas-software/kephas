@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IActivity
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -79,6 +79,24 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="Kephas.Operations.IOperationResult.html#Kephas_Operations_IOperationResult_ReturnValue">IOperationResult.ReturnValue</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Operations.IOperationResult.html#Kephas_Operations_IOperationResult_OperationState">IOperationResult.OperationState</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Operations.IOperationResult.html#Kephas_Operations_IOperationResult_PercentCompleted">IOperationResult.PercentCompleted</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Operations.IOperationResult.html#Kephas_Operations_IOperationResult_Elapsed">IOperationResult.Elapsed</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Operations.IOperationResult.html#Kephas_Operations_IOperationResult_Messages">IOperationResult.Messages</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Operations.IOperationResult.html#Kephas_Operations_IOperationResult_Exceptions">IOperationResult.Exceptions</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasDynamicMember_System_String_">IExpando.HasDynamicMember(String)</a>
     </div>
     <div>
@@ -91,14 +109,17 @@
       <a class="xref" href="Kephas.Dynamic.IIndexable.html#Kephas_Dynamic_IIndexable_Item_System_String_">IIndexable.Item[String]</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.IInstance.html#Kephas_IInstance_GetTypeInfo">IInstance.GetTypeInfo()</a>
+      <span class="xref">System.ComponentModel.INotifyPropertyChanged.PropertyChanged</span>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.IInstance-1.html#Kephas_IInstance_1_GetTypeInfo">IInstance&lt;IActivityInfo&gt;.GetTypeInfo()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Workflow.html">Kephas.Workflow</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Workflow.dll</h6>
   <h5 id="Kephas_Workflow_IActivity_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IActivity : IExpando, IDynamicMetaObjectProvider, IIndexable, IInstance</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IActivity : IOperationResult, IExpando, IDynamicMetaObjectProvider, IIndexable, INotifyPropertyChanged, IInstance&lt;IActivityInfo&gt;, IInstance</code></pre>
   </div>
   <h5 id="Kephas_Workflow_IActivity_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>An activity instance may be executed only once. 
@@ -111,10 +132,10 @@ The state provide the flags during the execution.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IActivity_Arguments.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IActivity.Arguments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IActivity_Arguments.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IActivity.Arguments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Workflow/IActivity.cs/#L49">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Workflow/IActivity.cs/#L51">View Source</a>
   </span>
   <a id="Kephas_Workflow_IActivity_Arguments_" data-uid="Kephas.Workflow.IActivity.Arguments*"></a>
   <h4 id="Kephas_Workflow_IActivity_Arguments" data-uid="Kephas.Workflow.IActivity.Arguments">Arguments</h4>
@@ -143,10 +164,10 @@ The state provide the flags during the execution.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IActivity_Context.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IActivity.Context%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IActivity_Context.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IActivity.Context%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Workflow/IActivity.cs/#L57">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Workflow/IActivity.cs/#L59">View Source</a>
   </span>
   <a id="Kephas_Workflow_IActivity_Context_" data-uid="Kephas.Workflow.IActivity.Context*"></a>
   <h4 id="Kephas_Workflow_IActivity_Context" data-uid="Kephas.Workflow.IActivity.Context">Context</h4>
@@ -175,42 +196,10 @@ The state provide the flags during the execution.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IActivity_State.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IActivity.State%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IActivity_Target.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IActivity.Target%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Workflow/IActivity.cs/#L65">View Source</a>
-  </span>
-  <a id="Kephas_Workflow_IActivity_State_" data-uid="Kephas.Workflow.IActivity.State*"></a>
-  <h4 id="Kephas_Workflow_IActivity_State" data-uid="Kephas.Workflow.IActivity.State">State</h4>
-  <div class="markdown level1 summary"><p>Gets the activity state flags.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ActivityState State { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Workflow.ActivityState.html">ActivityState</a></td>
-        <td><p>The activity state flags.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IActivity_Target.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IActivity.Target%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Workflow/IActivity.cs/#L41">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Workflow/IActivity.cs/#L43">View Source</a>
   </span>
   <a id="Kephas_Workflow_IActivity_Target_" data-uid="Kephas.Workflow.IActivity.Target*"></a>
   <h4 id="Kephas_Workflow_IActivity_Target" data-uid="Kephas.Workflow.IActivity.Target">Target</h4>
@@ -242,76 +231,6 @@ The state provide the flags during the execution.</p>
 For example, a user entity may contain a ChangePassword activity,
 in which case the target is the user.</p>
 </div>
-  <h3 id="methods">Methods
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IActivity_ExecuteAsync_System_Object_Kephas_Dynamic_IExpando_Kephas_Workflow_IActivityContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IActivity.ExecuteAsync(System.Object%2CKephas.Dynamic.IExpando%2CKephas.Workflow.IActivityContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Workflow/IActivity.cs/#L77">View Source</a>
-  </span>
-  <a id="Kephas_Workflow_IActivity_ExecuteAsync_" data-uid="Kephas.Workflow.IActivity.ExecuteAsync*"></a>
-  <h4 id="Kephas_Workflow_IActivity_ExecuteAsync_System_Object_Kephas_Dynamic_IExpando_Kephas_Workflow_IActivityContext_System_Threading_CancellationToken_" data-uid="Kephas.Workflow.IActivity.ExecuteAsync(System.Object,Kephas.Dynamic.IExpando,Kephas.Workflow.IActivityContext,System.Threading.CancellationToken)">ExecuteAsync(Object, IExpando, IActivityContext, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Executes the activity asynchronously.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;IExpando&gt; ExecuteAsync(object target, IExpando arguments, IActivityContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td><span class="parametername">target</span></td>
-        <td><p>The target against which the activity is executed.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></td>
-        <td><span class="parametername">arguments</span></td>
-        <td><p>The arguments.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.Workflow.IActivityContext.html">IActivityContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>The execution context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Optional. The cancellation token.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a>&gt;</td>
-        <td><p>An asynchronous result that yields the execution result.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
@@ -335,7 +254,7 @@ in which case the target is the user.</p>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
@@ -344,13 +263,16 @@ in which case the target is the user.</p>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
           </div>
@@ -360,10 +282,10 @@ in which case the target is the user.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IActivity.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IActivity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IActivity.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IActivity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Workflow/IActivity.cs/#L28" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Workflow/IActivity.cs/#L30" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

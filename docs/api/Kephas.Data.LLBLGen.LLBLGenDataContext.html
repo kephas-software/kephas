@@ -1,0 +1,784 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class LLBLGenDataContext
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class LLBLGenDataContext
+   ">
+    <meta name="generator" content="docfx 2.43.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext">
+  
+  
+  <h1 id="Kephas_Data_LLBLGen_LLBLGenDataContext" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext" class="text-break">Class LLBLGenDataContext
+  </h1>
+  <div class="markdown level0 summary"><p>A data context for the LLBLGen infrastructure.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">System.Dynamic.DynamicObject</span></div>
+    <div class="level2"><a class="xref" href="Kephas.Dynamic.ExpandoBase.html">ExpandoBase</a></div>
+    <div class="level3"><a class="xref" href="Kephas.Dynamic.Expando.html">Expando</a></div>
+    <div class="level4"><a class="xref" href="Kephas.Services.Context.html">Context</a></div>
+    <div class="level5"><a class="xref" href="Kephas.Data.DataContextBase.html">DataContextBase</a></div>
+    <div class="level6"><span class="xref">LLBLGenDataContext</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Data.LLBLGen.ILLBLGenDataContext.html">ILLBLGenDataContext</a></div>
+    <div><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></div>
+    <div><a class="xref" href="Kephas.Services.IContext.html">IContext</a></div>
+    <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
+    <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
+    <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
+    <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
+    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
+    <div><a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a></div>
+    <div><span class="xref">System.IDisposable</span></div>
+    <div><a class="xref" href="Kephas.Services.IInitializable.html">IInitializable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_InitializationMonitor">DataContextBase.InitializationMonitor</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Id">DataContextBase.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_EntityActivator">DataContextBase.EntityActivator</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Initialize_Kephas_Services_IContext_">DataContextBase.Initialize(IContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Query__1_Kephas_Data_IQueryOperationContext_">DataContextBase.Query&lt;T&gt;(IQueryOperationContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_CreateCommand_System_Type_">DataContextBase.CreateCommand(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_GetEntityEntry_System_Object_">DataContextBase.GetEntityEntry(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Attach_System_Object_">DataContextBase.Attach(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Detach_Kephas_Data_Capabilities_IEntityEntry_">DataContextBase.Detach(IEntityEntry)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Dispose">DataContextBase.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_GetIdEqualityExpression__1_System_Object_">DataContextBase.GetIdEqualityExpression&lt;T&gt;(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Initialize_Kephas_Data_IDataInitializationContext_">DataContextBase.Initialize(IDataInitializationContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Dispose_System_Boolean_">DataContextBase.Dispose(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_AttachCore_System_Object_System_Boolean_">DataContextBase.AttachCore(Object, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_DetachCore_Kephas_Data_Capabilities_IEntityEntry_System_Boolean_">DataContextBase.DetachCore(IEntityEntry, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_AmbientServices">Context.AmbientServices</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_CompositionContext">Context.CompositionContext</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Identity">Context.Identity</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ContextLogger">Context.ContextLogger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ValidateIdentity_System_Security_Principal_IIdentity_System_Security_Principal_IIdentity_">Context.ValidateIdentity(IIdentity, IIdentity)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetCompositionContext_Kephas_Composition_ICompositionContext_">Context.SetCompositionContext(ICompositionContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetAmbientServices_Kephas_IAmbientServices_">Context.SetAmbientServices(IAmbientServices)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetDynamicMemberNames">ExpandoBase.GetDynamicMemberNames()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_HasDynamicMember_System_String_">ExpandoBase.HasDynamicMember(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryGetMember_System_Dynamic_GetMemberBinder_System_Object__">ExpandoBase.TryGetMember(GetMemberBinder, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetMember_System_Dynamic_SetMemberBinder_System_Object_">ExpandoBase.TrySetMember(SetMemberBinder, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetThisTypeInfo">ExpandoBase.GetThisTypeInfo()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryGetValue_System_String_System_Object__">ExpandoBase.TryGetValue(String, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.LLBLGen.html">Kephas.Data.LLBLGen</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.LLBLGen.dll</h6>
+  <h5 id="Kephas_Data_LLBLGen_LLBLGenDataContext_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[SupportedDataStoreKinds(new string[]{&quot;LLBLGen&quot;})]
+public class LLBLGenDataContext : DataContextBase, ILLBLGenDataContext, IDataContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware, IIdentifiable, IDisposable, IInitializable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenDataContext__ctor_Kephas_Composition_ICompositionContext_Kephas_Data_Commands_Factory_IDataCommandProvider_Kephas_Data_LLBLGen_IDataAccessAdapterFactory_Kephas_Model_IModelTypeResolver_Kephas_Data_Behaviors_IDataBehaviorProvider_Kephas_Data_LLBLGen_IQueryFactoryProvider_.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenDataContext.%23ctor(Kephas.Composition.ICompositionContext%2CKephas.Data.Commands.Factory.IDataCommandProvider%2CKephas.Data.LLBLGen.IDataAccessAdapterFactory%2CKephas.Model.IModelTypeResolver%2CKephas.Data.Behaviors.IDataBehaviorProvider%2CKephas.Data.LLBLGen.IQueryFactoryProvider)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenDataContext.cs/#L72">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenDataContext__ctor_" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.#ctor*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenDataContext__ctor_Kephas_Composition_ICompositionContext_Kephas_Data_Commands_Factory_IDataCommandProvider_Kephas_Data_LLBLGen_IDataAccessAdapterFactory_Kephas_Model_IModelTypeResolver_Kephas_Data_Behaviors_IDataBehaviorProvider_Kephas_Data_LLBLGen_IQueryFactoryProvider_" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.#ctor(Kephas.Composition.ICompositionContext,Kephas.Data.Commands.Factory.IDataCommandProvider,Kephas.Data.LLBLGen.IDataAccessAdapterFactory,Kephas.Model.IModelTypeResolver,Kephas.Data.Behaviors.IDataBehaviorProvider,Kephas.Data.LLBLGen.IQueryFactoryProvider)">LLBLGenDataContext(ICompositionContext, IDataCommandProvider, IDataAccessAdapterFactory, IModelTypeResolver, IDataBehaviorProvider, IQueryFactoryProvider)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.LLBLGen.LLBLGenDataContext.html">LLBLGenDataContext</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LLBLGenDataContext(ICompositionContext compositionContext, IDataCommandProvider dataCommandProvider, IDataAccessAdapterFactory dataAccessAdapterFactory, IModelTypeResolver modelTypeResolver, IDataBehaviorProvider dataBehaviorProvider, IQueryFactoryProvider queryFactoryProvider)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><span class="parametername">compositionContext</span></td>
+        <td><p>The composition context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Commands.Factory.IDataCommandProvider.html">IDataCommandProvider</a></td>
+        <td><span class="parametername">dataCommandProvider</span></td>
+        <td><p>The data command provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.LLBLGen.IDataAccessAdapterFactory.html">IDataAccessAdapterFactory</a></td>
+        <td><span class="parametername">dataAccessAdapterFactory</span></td>
+        <td><p>The data access adapter factory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Model.IModelTypeResolver.html">IModelTypeResolver</a></td>
+        <td><span class="parametername">modelTypeResolver</span></td>
+        <td><p>The model type resolver.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Behaviors.IDataBehaviorProvider.html">IDataBehaviorProvider</a></td>
+        <td><span class="parametername">dataBehaviorProvider</span></td>
+        <td><p>The data behavior provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.LLBLGen.IQueryFactoryProvider.html">IQueryFactoryProvider</a></td>
+        <td><span class="parametername">queryFactoryProvider</span></td>
+        <td><p>The query factory provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenDataContext_LLBLGenDataStoreKind.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenDataContext.LLBLGenDataStoreKind%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenDataContext.cs/#L36">View Source</a>
+  </span>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenDataContext_LLBLGenDataStoreKind" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.LLBLGenDataStoreKind">LLBLGenDataStoreKind</h4>
+  <div class="markdown level1 summary"><p>The LLBLGen data store kind.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const string LLBLGenDataStoreKind = &quot;LLBLGen&quot;</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenDataContext_DataAccessAdapter.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenDataContext.DataAccessAdapter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenDataContext.cs/#L92">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenDataContext_DataAccessAdapter_" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.DataAccessAdapter*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenDataContext_DataAccessAdapter" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.DataAccessAdapter">DataAccessAdapter</h4>
+  <div class="markdown level1 summary"><p>Gets the data access adapter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual DataAccessAdapterBase DataAccessAdapter { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SD.LLBLGen.Pro.ORMSupportClasses.DataAccessAdapterBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenDataContext_LocalCache.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenDataContext.LocalCache%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenDataContext.cs/#L109">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenDataContext_LocalCache_" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.LocalCache*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenDataContext_LocalCache" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.LocalCache">LocalCache</h4>
+  <div class="markdown level1 summary"><p>Gets the local cache where the session entities are stored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDataContextCache LocalCache { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Caching.IDataContextCache.html">IDataContextCache</a></td>
+        <td><p>The local cache.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenDataContext_QueryFactory.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenDataContext.QueryFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenDataContext.cs/#L100">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenDataContext_QueryFactory_" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.QueryFactory*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenDataContext_QueryFactory" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.QueryFactory">QueryFactory</h4>
+  <div class="markdown level1 summary"><p>Gets the meta-data for the construction of LINQ queries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IQueryFactory QueryFactory { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.LLBLGen.Entities.IQueryFactory.html">IQueryFactory</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenDataContext_CreateEntityEntry_System_Object_System_Nullable_Kephas_Data_Capabilities_ChangeState__.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenDataContext.CreateEntityEntry(System.Object%2CSystem.Nullable%7BKephas.Data.Capabilities.ChangeState%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenDataContext.cs/#L132">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenDataContext_CreateEntityEntry_" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.CreateEntityEntry*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenDataContext_CreateEntityEntry_System_Object_System_Nullable_Kephas_Data_Capabilities_ChangeState__" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.CreateEntityEntry(System.Object,System.Nullable{Kephas.Data.Capabilities.ChangeState})">CreateEntityEntry(Object, Nullable&lt;ChangeState&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new entity information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IEntityEntry CreateEntityEntry(object entity, ChangeState? changeState = default(ChangeState? ))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">entity</span></td>
+        <td><p>The entity.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<a class="xref" href="Kephas.Data.Capabilities.ChangeState.html">ChangeState</a>&gt;</td>
+        <td><span class="parametername">changeState</span></td>
+        <td><p>The entity&apos;s change state.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityEntry.html">IEntityEntry</a></td>
+        <td><p>The new entity information.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_CreateEntityEntry_System_Object_System_Nullable_Kephas_Data_Capabilities_ChangeState__">DataContextBase.CreateEntityEntry(Object, Nullable&lt;ChangeState&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenDataContext_QueryCore__1_Kephas_Data_IQueryOperationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenDataContext.QueryCore%60%601(Kephas.Data.IQueryOperationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenDataContext.cs/#L120">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenDataContext_QueryCore_" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.QueryCore*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenDataContext_QueryCore__1_Kephas_Data_IQueryOperationContext_" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.QueryCore``1(Kephas.Data.IQueryOperationContext)">QueryCore&lt;T&gt;(IQueryOperationContext)</h4>
+  <div class="markdown level1 summary"><p>Gets a query over the entity type for the given query operation context, if any is provided
+(core implementation).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IQueryable&lt;T&gt; QueryCore&lt;T&gt;(IQueryOperationContext queryOperationContext)
+    where T : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IQueryOperationContext.html">IQueryOperationContext</a></td>
+        <td><span class="parametername">queryOperationContext</span></td>
+        <td><p>Context for the query.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Linq.IQueryable</span>&lt;T&gt;</td>
+        <td><p>A query over the entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The entity type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_QueryCore__1_Kephas_Data_IQueryOperationContext_">DataContextBase.QueryCore&lt;T&gt;(IQueryOperationContext)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenDataContext_ResolveAttachConflict_Kephas_Data_Capabilities_IEntityEntry_System_Object_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenDataContext.ResolveAttachConflict(Kephas.Data.Capabilities.IEntityEntry%2CSystem.Object%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenDataContext.cs/#L158">View Source</a>
+  </span>
+  <a id="Kephas_Data_LLBLGen_LLBLGenDataContext_ResolveAttachConflict_" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.ResolveAttachConflict*"></a>
+  <h4 id="Kephas_Data_LLBLGen_LLBLGenDataContext_ResolveAttachConflict_Kephas_Data_Capabilities_IEntityEntry_System_Object_System_Boolean_" data-uid="Kephas.Data.LLBLGen.LLBLGenDataContext.ResolveAttachConflict(Kephas.Data.Capabilities.IEntityEntry,System.Object,System.Boolean)">ResolveAttachConflict(IEntityEntry, Object, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Resolves the attach conflict between an existing attached entity and a challenger.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IEntityEntry ResolveAttachConflict(IEntityEntry entityEntry, object entityChallenger, bool attachEntityGraph)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityEntry.html">IEntityEntry</a></td>
+        <td><span class="parametername">entityEntry</span></td>
+        <td><p>The entity information.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">entityChallenger</span></td>
+        <td><p>The entity challenger.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">attachEntityGraph</span></td>
+        <td><p><code>true</code> to attach the whole entity graph.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityEntry.html">IEntityEntry</a></td>
+        <td><p>An resolved <a class="xref" href="Kephas.Data.Capabilities.IEntityEntry.html">IEntityEntry</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_ResolveAttachConflict_Kephas_Data_Capabilities_IEntityEntry_System_Object_System_Boolean_">DataContextBase.ResolveAttachConflict(IEntityEntry, Object, Boolean)</a></div>
+  <h5 id="Kephas_Data_LLBLGen_LLBLGenDataContext_ResolveAttachConflict_Kephas_Data_Capabilities_IEntityEntry_System_Object_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>By default, the entity challenger is ignored. A derived class may decide to update the existing entity with refreshed information.</p>
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Data.LLBLGen.ILLBLGenDataContext.html">ILLBLGenDataContext</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Services.IContext.html">IContext</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a>
+  </div>
+  <div>
+      <span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a>
+  </div>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Services.IInitializable.html">IInitializable</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_System_ValueTuple_System_Object_Kephas_Data_Capabilities_ChangeState___">ContextExtensions.WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;(Object entity, ChangeState changeState)&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_System_Object__">ContextExtensions.WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;Object&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_Kephas_Data_Capabilities_IChangeStateTrackableEntityEntry__">ContextExtensions.WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;IChangeStateTrackableEntityEntry&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_LLBLGen_LLBLGenDataContext.md&amp;value=---%0Auid%3A%20Kephas.Data.LLBLGen.LLBLGenDataContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.LLBLGen/LLBLGenDataContext.cs/#L30" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class EntityBase
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -89,10 +89,11 @@
     <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
     <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
     <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
+    <div><a class="xref" href="Kephas.Data.IEntity.html">IEntity</a></div>
     <div><a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a></div>
-    <div><a class="xref" href="Kephas.Data.Capabilities.IChangeStateTrackable.html">IChangeStateTrackable</a></div>
     <div><a class="xref" href="Kephas.IInstance.html">IInstance</a></div>
-    <div><a class="xref" href="Kephas.Data.Capabilities.IEntityInfoAware.html">IEntityInfoAware</a></div>
+    <div><a class="xref" href="Kephas.Data.Capabilities.IChangeStateTrackable.html">IChangeStateTrackable</a></div>
+    <div><a class="xref" href="Kephas.Data.Capabilities.IEntityEntryAware.html">IEntityEntryAware</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -182,16 +183,16 @@
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_EntityBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class EntityBase : Expando, IExpando, IDynamicMetaObjectProvider, IIndexable, IIdentifiable, IChangeStateTrackable, IInstance, IEntityInfoAware</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class EntityBase : Expando, IExpando, IDynamicMetaObjectProvider, IIndexable, IEntity, IIdentifiable, IInstance, IChangeStateTrackable, IEntityEntryAware</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase__ctor.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase__ctor.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L45">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L45">View Source</a>
   </span>
   <a id="Kephas_Data_EntityBase__ctor_" data-uid="Kephas.Data.EntityBase.#ctor*"></a>
   <h4 id="Kephas_Data_EntityBase__ctor" data-uid="Kephas.Data.EntityBase.#ctor">EntityBase()</h4>
@@ -206,10 +207,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_ComputeTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.ComputeTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_ComputeTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.ComputeTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L107">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L107">View Source</a>
   </span>
   <a id="Kephas_Data_EntityBase_ComputeTypeInfo_" data-uid="Kephas.Data.EntityBase.ComputeTypeInfo*"></a>
   <h4 id="Kephas_Data_EntityBase_ComputeTypeInfo" data-uid="Kephas.Data.EntityBase.ComputeTypeInfo">ComputeTypeInfo()</h4>
@@ -238,19 +239,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_GetEntityInfo.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.GetEntityInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_GetEntityEntry.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.GetEntityEntry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L85">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L85">View Source</a>
   </span>
-  <a id="Kephas_Data_EntityBase_GetEntityInfo_" data-uid="Kephas.Data.EntityBase.GetEntityInfo*"></a>
-  <h4 id="Kephas_Data_EntityBase_GetEntityInfo" data-uid="Kephas.Data.EntityBase.GetEntityInfo">GetEntityInfo()</h4>
-  <div class="markdown level1 summary"><p>Gets the associated entity information.</p>
+  <a id="Kephas_Data_EntityBase_GetEntityEntry_" data-uid="Kephas.Data.EntityBase.GetEntityEntry*"></a>
+  <h4 id="Kephas_Data_EntityBase_GetEntityEntry" data-uid="Kephas.Data.EntityBase.GetEntityEntry">GetEntityEntry()</h4>
+  <div class="markdown level1 summary"><p>Gets the associated entity entry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEntityInfo GetEntityInfo()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEntityEntry GetEntityEntry()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -262,18 +263,18 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityInfo.html">IEntityInfo</a></td>
-        <td><p>The associated entity information.</p>
+        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityEntry.html">IEntityEntry</a></td>
+        <td><p>The associated entity entry.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_GetTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.GetTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_GetTypeInfo.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.GetTypeInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L74">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L74">View Source</a>
   </span>
   <a id="Kephas_Data_EntityBase_GetTypeInfo_" data-uid="Kephas.Data.EntityBase.GetTypeInfo*"></a>
   <h4 id="Kephas_Data_EntityBase_GetTypeInfo" data-uid="Kephas.Data.EntityBase.GetTypeInfo">GetTypeInfo()</h4>
@@ -302,19 +303,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_SetEntityInfo_Kephas_Data_Capabilities_IEntityInfo_.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.SetEntityInfo(Kephas.Data.Capabilities.IEntityInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_SetEntityEntry_Kephas_Data_Capabilities_IEntityEntry_.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.SetEntityEntry(Kephas.Data.Capabilities.IEntityEntry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L96">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L96">View Source</a>
   </span>
-  <a id="Kephas_Data_EntityBase_SetEntityInfo_" data-uid="Kephas.Data.EntityBase.SetEntityInfo*"></a>
-  <h4 id="Kephas_Data_EntityBase_SetEntityInfo_Kephas_Data_Capabilities_IEntityInfo_" data-uid="Kephas.Data.EntityBase.SetEntityInfo(Kephas.Data.Capabilities.IEntityInfo)">SetEntityInfo(IEntityInfo)</h4>
-  <div class="markdown level1 summary"><p>Sets the associated entity information.</p>
+  <a id="Kephas_Data_EntityBase_SetEntityEntry_" data-uid="Kephas.Data.EntityBase.SetEntityEntry*"></a>
+  <h4 id="Kephas_Data_EntityBase_SetEntityEntry_Kephas_Data_Capabilities_IEntityEntry_" data-uid="Kephas.Data.EntityBase.SetEntityEntry(Kephas.Data.Capabilities.IEntityEntry)">SetEntityEntry(IEntityEntry)</h4>
+  <div class="markdown level1 summary"><p>Sets the associated entity entry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetEntityInfo(IEntityInfo entityInfo)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetEntityEntry(IEntityEntry entityEntry)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -327,8 +328,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityInfo.html">IEntityInfo</a></td>
-        <td><span class="parametername">entityInfo</span></td>
+        <td><a class="xref" href="Kephas.Data.Capabilities.IEntityEntry.html">IEntityEntry</a></td>
+        <td><span class="parametername">entityEntry</span></td>
         <td><p>Information describing the entity.</p>
 </td>
       </tr>
@@ -336,10 +337,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_TrySetValue_System_String_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.TrySetValue(System.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_TrySetValue_System_String_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.TrySetValue(System.String%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L123">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L123">View Source</a>
   </span>
   <a id="Kephas_Data_EntityBase_TrySetValue_" data-uid="Kephas.Data.EntityBase.TrySetValue*"></a>
   <h4 id="Kephas_Data_EntityBase_TrySetValue_System_String_System_Object_" data-uid="Kephas.Data.EntityBase.TrySetValue(System.String,System.Object)">TrySetValue(String, Object)</h4>
@@ -401,10 +402,10 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_Kephas_Data_Capabilities_IChangeStateTrackable_ChangeState.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.Kephas%23Data%23Capabilities%23IChangeStateTrackable%23ChangeState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_Kephas_Data_Capabilities_IChangeStateTrackable_ChangeState.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.Kephas%23Data%23Capabilities%23IChangeStateTrackable%23ChangeState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L66">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L66">View Source</a>
   </span>
   <a id="Kephas_Data_EntityBase_Kephas_Data_Capabilities_IChangeStateTrackable_ChangeState_" data-uid="Kephas.Data.EntityBase.Kephas#Data#Capabilities#IChangeStateTrackable#ChangeState*"></a>
   <h4 id="Kephas_Data_EntityBase_Kephas_Data_Capabilities_IChangeStateTrackable_ChangeState" data-uid="Kephas.Data.EntityBase.Kephas#Data#Capabilities#IChangeStateTrackable#ChangeState">IChangeStateTrackable.ChangeState</h4>
@@ -433,10 +434,10 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_Kephas_Data_IIdentifiable_Id.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.Kephas%23Data%23IIdentifiable%23Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase_Kephas_Data_IIdentifiable_Id.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase.Kephas%23Data%23IIdentifiable%23Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L62">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L62">View Source</a>
   </span>
   <a id="Kephas_Data_EntityBase_Kephas_Data_IIdentifiable_Id_" data-uid="Kephas.Data.EntityBase.Kephas#Data#IIdentifiable#Id*"></a>
   <h4 id="Kephas_Data_EntityBase_Kephas_Data_IIdentifiable_Id" data-uid="Kephas.Data.EntityBase.Kephas#Data#IIdentifiable#Id">IIdentifiable.Id</h4>
@@ -474,16 +475,19 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
       <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a>
+      <a class="xref" href="Kephas.Data.IEntity.html">IEntity</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.IChangeStateTrackable.html">IChangeStateTrackable</a>
+      <a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a>
   </div>
   <div>
       <a class="xref" href="Kephas.IInstance.html">IInstance</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.IEntityInfoAware.html">IEntityInfoAware</a>
+      <a class="xref" href="Kephas.Data.Capabilities.IChangeStateTrackable.html">IChangeStateTrackable</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.IEntityEntryAware.html">IEntityEntryAware</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -508,7 +512,7 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
@@ -517,13 +521,16 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
           </div>
@@ -533,10 +540,10 @@ Lastly, if still a property by the provided name cannot be found, the inner dict
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_EntityBase.md&amp;value=---%0Auid%3A%20Kephas.Data.EntityBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L25" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/EntityBase.cs/#L25" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

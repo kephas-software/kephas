@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface ISerializationService
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -76,27 +76,21 @@
   <div class="markdown level0 summary"><p>Contract for serialization services.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html#Kephas_Composition_ICompositionContextAware_CompositionContext">ICompositionContextAware.CompositionContext</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Serialization.html">Kephas.Serialization</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Serialization_ISerializationService_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[SharedAppServiceContract]
-public interface ISerializationService : ICompositionContextAware</code></pre>
+public interface ISerializationService</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_ISerializationService_GetSerializer_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.ISerializationService.GetSerializer(Kephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_ISerializationService_GetSerializer_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.ISerializationService.GetSerializer(Kephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Serialization/ISerializationService.cs/#L29">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/ISerializationService.cs/#L28">View Source</a>
   </span>
   <a id="Kephas_Serialization_ISerializationService_GetSerializer_" data-uid="Kephas.Serialization.ISerializationService.GetSerializer*"></a>
   <h4 id="Kephas_Serialization_ISerializationService_GetSerializer_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.ISerializationService.GetSerializer(Kephas.Serialization.ISerializationContext)">GetSerializer(ISerializationContext)</h4>
@@ -164,7 +158,7 @@ public interface ISerializationService : ICompositionContextAware</code></pre>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Behavior.BehaviorValue.html#Kephas_Behavior_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
@@ -173,7 +167,10 @@ public interface ISerializationService : ICompositionContextAware</code></pre>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetModelTypeInfo_System_Object_">TypeExtensions.GetModelTypeInfo(Object)</a>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
@@ -236,7 +233,7 @@ public interface ISerializationService : ICompositionContextAware</code></pre>
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_CreateOrUpdateSerializationContext__1_Kephas_Serialization_ISerializationService_Kephas_Serialization_ISerializationContext_System_Action_Kephas_Serialization_ISerializationContext__">SerializationExtensions.CreateOrUpdateSerializationContext&lt;TMediaType&gt;(ISerializationService, ISerializationContext, Action&lt;ISerializationContext&gt;)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Data.Capabilities.EntityInfoExtensions.html#Kephas_Data_Capabilities_EntityInfoExtensions_TryGetAttachedEntityInfo_System_Object_">EntityInfoExtensions.TryGetAttachedEntityInfo(Object)</a>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
           </div>
@@ -246,10 +243,10 @@ public interface ISerializationService : ICompositionContextAware</code></pre>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_ISerializationService.md&amp;value=---%0Auid%3A%20Kephas.Serialization.ISerializationService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_ISerializationService.md&amp;value=---%0Auid%3A%20Kephas.Serialization.ISerializationService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/quartz-software/kephas/blob/master/src/Kephas.Core/Serialization/ISerializationService.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/ISerializationService.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -1,0 +1,429 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IEntityEntry
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IEntityEntry
+   ">
+    <meta name="generator" content="docfx 2.43.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Data.Capabilities.IEntityEntry">
+  
+  
+  <h1 id="Kephas_Data_Capabilities_IEntityEntry" data-uid="Kephas.Data.Capabilities.IEntityEntry" class="text-break">Interface IEntityEntry
+  </h1>
+  <div class="markdown level0 summary"><p>Provides extended entity entry like the <a class="xref" href="Kephas.Data.Capabilities.ChangeState.html">ChangeState</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasDynamicMember_System_String_">IExpando.HasDynamicMember(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">IExpando.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.IDynamicMetaObjectProvider.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.IIndexable.html#Kephas_Dynamic_IIndexable_Item_System_String_">IIndexable.Item[String]</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Capabilities.IChangeStateTrackableEntityEntry.html#Kephas_Data_Capabilities_IChangeStateTrackableEntityEntry_Entity">IChangeStateTrackableEntityEntry.Entity</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Capabilities.IChangeStateTrackable.html#Kephas_Data_Capabilities_IChangeStateTrackable_ChangeState">IChangeStateTrackable.ChangeState</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.IIdentifiable.html#Kephas_Data_IIdentifiable_Id">IIdentifiable.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Capabilities.IAggregatable.html#Kephas_Data_Capabilities_IAggregatable_GetGraphRoot">IAggregatable.GetGraphRoot()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Capabilities.IAggregatable.html#Kephas_Data_Capabilities_IAggregatable_GetStructuralEntityGraph">IAggregatable.GetStructuralEntityGraph()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Data.Capabilities.IAggregatable.html#Kephas_Data_Capabilities_IAggregatable_GetFlattenedEntityGraphAsync_Kephas_Data_Capabilities_IGraphOperationContext_System_Threading_CancellationToken_">IAggregatable.GetFlattenedEntityGraphAsync(IGraphOperationContext, CancellationToken)</a>
+    </div>
+    <div>
+      <span class="xref">System.IDisposable.Dispose()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Capabilities.html">Kephas.Data.Capabilities</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
+  <h5 id="Kephas_Data_Capabilities_IEntityEntry_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IEntityEntry : IExpando, IDynamicMetaObjectProvider, IIndexable, IChangeStateTrackableEntityEntry, IChangeStateTrackable, IIdentifiable, IAggregatable, IDisposable</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_IEntityEntry_DataContext.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.IEntityEntry.DataContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Capabilities/IEntityEntry.cs/#L45">View Source</a>
+  </span>
+  <a id="Kephas_Data_Capabilities_IEntityEntry_DataContext_" data-uid="Kephas.Data.Capabilities.IEntityEntry.DataContext*"></a>
+  <h4 id="Kephas_Data_Capabilities_IEntityEntry_DataContext" data-uid="Kephas.Data.Capabilities.IEntityEntry.DataContext">DataContext</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the entity owning data context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IDataContext DataContext { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.IDataContext.html">IDataContext</a></td>
+        <td><p>The data context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_IEntityEntry_EntityId.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.IEntityEntry.EntityId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Capabilities/IEntityEntry.cs/#L37">View Source</a>
+  </span>
+  <a id="Kephas_Data_Capabilities_IEntityEntry_EntityId_" data-uid="Kephas.Data.Capabilities.IEntityEntry.EntityId*"></a>
+  <h4 id="Kephas_Data_Capabilities_IEntityEntry_EntityId" data-uid="Kephas.Data.Capabilities.IEntityEntry.EntityId">EntityId</h4>
+  <div class="markdown level1 summary"><p>Gets the identifier of the entity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">object EntityId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>The identifier of the entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_IEntityEntry_OriginalEntity.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.IEntityEntry.OriginalEntity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Capabilities/IEntityEntry.cs/#L29">View Source</a>
+  </span>
+  <a id="Kephas_Data_Capabilities_IEntityEntry_OriginalEntity_" data-uid="Kephas.Data.Capabilities.IEntityEntry.OriginalEntity*"></a>
+  <h4 id="Kephas_Data_Capabilities_IEntityEntry_OriginalEntity" data-uid="Kephas.Data.Capabilities.IEntityEntry.OriginalEntity">OriginalEntity</h4>
+  <div class="markdown level1 summary"><p>Gets a copy of the original entity, before any changes occurred.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IExpando OriginalEntity { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></td>
+        <td><p>The original entity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_IEntityEntry_PrePersistChangeState.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.IEntityEntry.PrePersistChangeState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Capabilities/IEntityEntry.cs/#L60">View Source</a>
+  </span>
+  <a id="Kephas_Data_Capabilities_IEntityEntry_PrePersistChangeState_" data-uid="Kephas.Data.Capabilities.IEntityEntry.PrePersistChangeState*"></a>
+  <h4 id="Kephas_Data_Capabilities_IEntityEntry_PrePersistChangeState" data-uid="Kephas.Data.Capabilities.IEntityEntry.PrePersistChangeState">PrePersistChangeState</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the change state of the entity before persisting to the data store.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ChangeState PrePersistChangeState { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Data.Capabilities.ChangeState.html">ChangeState</a></td>
+        <td><p>The change state.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Data_Capabilities_IEntityEntry_PrePersistChangeState_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This value is typically used in the post processing part of the persist behavior
+(<a class="xref" href="Kephas.Data.Behaviors.IOnPersistBehavior.html#Kephas_Data_Behaviors_IOnPersistBehavior_AfterPersistAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">AfterPersistAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</a>) to perform specific tasks 
+depending on the value of <a class="xref" href="Kephas.Data.Capabilities.ChangeState.html">ChangeState</a> before  persisting to the data store.
+Outside this behavior this value is not reliable, as the behaviors may trigger multiple persist commands
+for an entity and this state is typically the value before the last persist command.</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_IEntityEntry_AcceptChanges.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.IEntityEntry.AcceptChanges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Capabilities/IEntityEntry.cs/#L74">View Source</a>
+  </span>
+  <a id="Kephas_Data_Capabilities_IEntityEntry_AcceptChanges_" data-uid="Kephas.Data.Capabilities.IEntityEntry.AcceptChanges*"></a>
+  <h4 id="Kephas_Data_Capabilities_IEntityEntry_AcceptChanges" data-uid="Kephas.Data.Capabilities.IEntityEntry.AcceptChanges">AcceptChanges()</h4>
+  <div class="markdown level1 summary"><p>Accepts the changes and resets the change state to <a class="xref" href="Kephas.Data.Capabilities.ChangeState.html#Kephas_Data_Capabilities_ChangeState_NotChanged">NotChanged</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void AcceptChanges()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_IEntityEntry_DiscardChanges.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.IEntityEntry.DiscardChanges%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Capabilities/IEntityEntry.cs/#L79">View Source</a>
+  </span>
+  <a id="Kephas_Data_Capabilities_IEntityEntry_DiscardChanges_" data-uid="Kephas.Data.Capabilities.IEntityEntry.DiscardChanges*"></a>
+  <h4 id="Kephas_Data_Capabilities_IEntityEntry_DiscardChanges" data-uid="Kephas.Data.Capabilities.IEntityEntry.DiscardChanges">DiscardChanges()</h4>
+  <div class="markdown level1 summary"><p>Discards the changes and resets the change state to <a class="xref" href="Kephas.Data.Capabilities.ChangeState.html#Kephas_Data_Capabilities_ChangeState_NotChanged">NotChanged</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void DiscardChanges()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_IEntityEntry_IsChanged_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.IEntityEntry.IsChanged(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Capabilities/IEntityEntry.cs/#L69">View Source</a>
+  </span>
+  <a id="Kephas_Data_Capabilities_IEntityEntry_IsChanged_" data-uid="Kephas.Data.Capabilities.IEntityEntry.IsChanged*"></a>
+  <h4 id="Kephas_Data_Capabilities_IEntityEntry_IsChanged_System_String_" data-uid="Kephas.Data.Capabilities.IEntityEntry.IsChanged(System.String)">IsChanged(String)</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the provided property changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsChanged(string property)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">property</span></td>
+        <td><p>The property name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if the property changed, false if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryAttachToEntity_Kephas_Data_Capabilities_IEntityEntry_System_Object_">EntityEntryExtensions.TryAttachToEntity(IEntityEntry, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Capabilities_IEntityEntry.md&amp;value=---%0Auid%3A%20Kephas.Data.Capabilities.IEntityEntry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Capabilities/IEntityEntry.cs/#L21" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

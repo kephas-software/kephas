@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace Kephas.Data.Commands
    ">
-    <meta name="generator" content="docfx 2.40.11.0">
+    <meta name="generator" content="docfx 2.43.2.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -77,6 +77,36 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
+      <h4><a class="xref" href="Kephas.Data.Commands.BulkDataOperationContext.html">BulkDataOperationContext</a></h4>
+      <section><p>Context for bulk operations.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.BulkDataOperationContext-1.html">BulkDataOperationContext&lt;T&gt;</a></h4>
+      <section><p>Generic context for bulk operations.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.BulkDataOperationResult.html">BulkDataOperationResult</a></h4>
+      <section><p>Encapsulates the result of a bulk operation.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.BulkDeleteCommand.html">BulkDeleteCommand</a></h4>
+      <section><p>Base class for bulk delete commands.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.BulkDeleteContext.html">BulkDeleteContext</a></h4>
+      <section><p>Context for the bulk delete operation.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.BulkDeleteContext-1.html">BulkDeleteContext&lt;T&gt;</a></h4>
+      <section><p>Generic context for the bulk delete operation.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.BulkOperationCommandBase-2.html">BulkOperationCommandBase&lt;TOperationContext, TOperationResult&gt;</a></h4>
+      <section><p>Base abstract class for bulk operation commands.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.BulkUpdateCommand.html">BulkUpdateCommand</a></h4>
+      <section><p>Base class for bulk update commands.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.BulkUpdateContext.html">BulkUpdateContext</a></h4>
+      <section><p>Context for the bulk update operation.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.BulkUpdateContext-1.html">BulkUpdateContext&lt;T&gt;</a></h4>
+      <section><p>Generic context for the bulk update operation.</p>
+</section>
       <h4><a class="xref" href="Kephas.Data.Commands.CreateEntityCommand.html">CreateEntityCommand</a></h4>
       <section><p>Base class for create entity commands.</p>
 </section>
@@ -141,7 +171,7 @@
       <section><p>The default implementation of a find operationContext.</p>
 </section>
       <h4><a class="xref" href="Kephas.Data.Commands.FindResult.html">FindResult</a></h4>
-      <section><p>Encapsulates the result of a find.</p>
+      <section><p>Encapsulates the result of a find command.</p>
 </section>
       <h4><a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html">PersistChangesCommand</a></h4>
       <section><p>Base class for commands which persist dataContext changes.</p>
@@ -154,6 +184,33 @@
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
+      <h4><a class="xref" href="Kephas.Data.Commands.IBulkDataOperationContext.html">IBulkDataOperationContext</a></h4>
+      <section><p>Interface for bulk data operation context.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.IBulkDataOperationContext-1.html">IBulkDataOperationContext&lt;TEntity&gt;</a></h4>
+      <section><p>Generic interface for contexts used in bulk data operations.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.IBulkDataOperationResult.html">IBulkDataOperationResult</a></h4>
+      <section><p>Interface for returning a bulk operation result.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.IBulkDeleteCommand.html">IBulkDeleteCommand</a></h4>
+      <section><p>Contract for commands deleting one or more entities based on a predicate, directly in the database.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.IBulkDeleteContext.html">IBulkDeleteContext</a></h4>
+      <section><p>Context for bulk delete operation.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.IBulkDeleteContext-1.html">IBulkDeleteContext&lt;TEntity&gt;</a></h4>
+      <section><p>Generic interface for data operation contexts of the <a class="xref" href="Kephas.Data.Commands.IBulkDeleteCommand.html">IBulkDeleteCommand</a>.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.IBulkUpdateCommand.html">IBulkUpdateCommand</a></h4>
+      <section><p>Contract for commands updating one or more entities based on a predicate, directly in the database.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.IBulkUpdateContext.html">IBulkUpdateContext</a></h4>
+      <section><p>Context for bulk update operation.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Data.Commands.IBulkUpdateContext-1.html">IBulkUpdateContext&lt;TEntity&gt;</a></h4>
+      <section><p>Generic interface for data operation contexts of the <a class="xref" href="Kephas.Data.Commands.IBulkUpdateCommand.html">IBulkUpdateCommand</a>.</p>
+</section>
       <h4><a class="xref" href="Kephas.Data.Commands.ICreateEntityCommand.html">ICreateEntityCommand</a></h4>
       <section><p>Application service contract for commands creating an entity.</p>
 </section>
