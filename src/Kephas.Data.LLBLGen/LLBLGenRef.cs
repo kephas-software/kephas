@@ -18,7 +18,7 @@ namespace Kephas.Data.LLBLGen
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// An entity reference specific to LLBLGen.
+    /// An entity reference specialized for the LLBLGen infrastructure.
     /// </summary>
     /// <typeparam name="T">The referenced entity type.</typeparam>
     public class LLBLGenRef<T> : Ref<T>

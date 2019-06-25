@@ -17,7 +17,7 @@ namespace Kephas.Data.LLBLGen
     using Kephas.Reflection;
 
     /// <summary>
-    /// Information about the entity.
+    /// The entity entry specialized for the LLBLGen infrastructure.
     /// </summary>
     public class LLBLGenEntityEntry : EntityEntry
     {

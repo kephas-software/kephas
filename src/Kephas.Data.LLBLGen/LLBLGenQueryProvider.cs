@@ -18,7 +18,7 @@ namespace Kephas.Data.LLBLGen
     using SD.LLBLGen.Pro.ORMSupportClasses;
 
     /// <summary>
-    /// A llbl generate query provider.
+    /// The query provider specialized for the LLBLGen infrastructure.
     /// </summary>
     public class LLBLGenQueryProvider : DataContextQueryProvider
     {

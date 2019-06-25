@@ -21,7 +21,7 @@ namespace Kephas.Data.LLBLGen
     using SD.LLBLGen.Pro.ORMSupportClasses;
 
     /// <summary>
-    /// A LLBLGen collection adapter.
+    /// A collection adapter mapping a collection of entity abstractions onto LLBLGen collections of entity implementations.
     /// </summary>
     /// <typeparam name="TEntityImplementation">Type of the entity implementation.</typeparam>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>

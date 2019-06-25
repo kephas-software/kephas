@@ -15,13 +15,13 @@ namespace Kephas.Data.LLBLGen
     using SD.LLBLGen.Pro.ORMSupportClasses;
 
     /// <summary>
-    /// Interface for LLBLGen data access adapter factory.
+    /// Shared application service contract for the data access adapter factory.
     /// </summary>
     [SharedAppServiceContract]
     public interface IDataAccessAdapterFactory
     {
         /// <summary>
-        /// Creates data access adapter.
+        /// Creates the data access adapter.
         /// </summary>
         /// <param name="context">Optional. The creation context.</param>
         /// <returns>

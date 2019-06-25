@@ -27,7 +27,7 @@ namespace Kephas.Data.LLBLGen.Entities
     }
 
     /// <summary>
-    /// Service contract for entity factories.
+    /// Application service contract for entity factories.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
     [AppServiceContract(ContractType = typeof(IEntityFactory), AllowMultiple = true)]

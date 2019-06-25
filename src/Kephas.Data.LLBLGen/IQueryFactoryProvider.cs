@@ -17,13 +17,13 @@ namespace Kephas.Data.LLBLGen
     using Context = SD.LLBLGen.Pro.ORMSupportClasses.Context;
 
     /// <summary>
-    /// Interface for LLBLGen query factory provider.
+    /// Shared application service contract for the query factory provider.
     /// </summary>
     [SharedAppServiceContract]
     public interface IQueryFactoryProvider
     {
         /// <summary>
-        /// Creates query factory.
+        /// Creates query factory based on the data access adapter and the context to use.
         /// </summary>
         /// <param name="adapter">The adapter.</param>
         /// <param name="contextToUse">The context to use.</param>

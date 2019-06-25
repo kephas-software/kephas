@@ -12,7 +12,7 @@ namespace Kephas.Data.LLBLGen.Entities
     using SD.LLBLGen.Pro.ORMSupportClasses;
 
     /// <summary>
-    /// Interface for entities.
+    /// Base interface for LLBLGen entities.
     /// </summary>
     public interface IEntityBase : IEntity2
     {

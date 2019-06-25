@@ -13,16 +13,16 @@ namespace Kephas.Data.LLBLGen.Entities
     using System.Linq;
 
     /// <summary>
-    /// Interface for linq meta data.
+    /// Factory contract for creating entity queries.
     /// </summary>
     public interface IQueryFactory
     {
         /// <summary>
-        /// Returns the datasource to use in a Linq query for the entity type specified.
+        /// Returns the data source to use in a Linq query for the entity type specified.
         /// </summary>
-        /// <typeparam name="TEntity">The type of the entity to get the datasource for.</typeparam>
+        /// <typeparam name="TEntity">The type of the entity to get the data source for.</typeparam>
         /// <returns>
-        /// The requested datasource.
+        /// The requested data source.
         /// </returns>
         IQueryable<TEntity> ToQueryable<TEntity>()
             where TEntity : class;

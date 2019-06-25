@@ -16,13 +16,13 @@ namespace Kephas.Data.LLBLGen.Entities
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for model provider.
+    /// Shared application service contract for providing the LLBLGen entity model.
     /// </summary>
     [SharedAppServiceContract]
     public interface IEntityModelProvider
     {
         /// <summary>
-        /// Gets the model <see cref="ITypeInfo"/>s.
+        /// Gets the <see cref="ITypeInfo"/>s containing the entity model.
         /// </summary>
         /// <returns>
         /// An enumeration of <see cref="ITypeInfo"/>s.
