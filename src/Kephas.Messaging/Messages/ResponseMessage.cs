@@ -1,28 +1,36 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PingBackMessage.cs" company="Kephas Software SRL">
+// <copyright file="ResponseMessage.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   The "pong" response.
+//   Implements the information response message class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Messaging.Messages
 {
-    using System;
+    using Kephas.ExceptionHandling;
 
     /// <summary>
-    /// The "ping back" response.
+    /// An information response message.
     /// </summary>
-    public class PingBackMessage : ResponseMessage
+    public class ResponseMessage : IMessage
     {
         /// <summary>
-        /// Gets or sets the server time.
+        /// Gets or sets the severity.
         /// </summary>
         /// <value>
-        /// The server time.
+        /// The severity.
         /// </value>
-        public DateTimeOffset ServerTime { get; set; }
+        public SeverityLevel Severity { get; set; } = SeverityLevel.Info;
+
+        /// <summary>
+        /// Gets or sets the informational message.
+        /// </summary>
+        /// <value>
+        /// The informational message.
+        /// </value>
+        public string Message { get; set; }
     }
 }

@@ -32,7 +32,10 @@ namespace Kephas.Messaging.Endpoints
         /// </returns>
         public override Task<PingBackMessage> ProcessAsync(PingMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            return Task.FromResult(new PingBackMessage { ServerTime = DateTimeOffset.Now });
+            return Task.FromResult(new PingBackMessage
+                                       {
+                                           ServerTime = DateTimeOffset.Now,
+                                       });
         }
     }
 }
