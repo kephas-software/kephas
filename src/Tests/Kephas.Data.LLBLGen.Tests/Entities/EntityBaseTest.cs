@@ -28,6 +28,13 @@ namespace Kephas.Data.LLBLGen.Tests.Entities
         }
 
         [Test]
+        public void Id_zero_when_new()
+        {
+            var entity = new TestEntity();
+            Assert.AreEqual(0, ((IEntityBase)entity).Id);
+        }
+
+        [Test]
         public void ImplementedInterfaces()
         {
             var entity = new TestEntity();

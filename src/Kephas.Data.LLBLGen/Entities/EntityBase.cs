@@ -137,7 +137,7 @@ namespace Kephas.Data.LLBLGen.Entities
         [IgnoreDataMember]
         long IEntityBase.Id
         {
-            get => (long)this.Fields[nameof(IIdentifiable.Id)].CurrentValue;
+            get => (long?)this.Fields?[nameof(IIdentifiable.Id)]?.CurrentValue ?? 0;
             set => this.Fields[nameof(IIdentifiable.Id)].CurrentValue = value;
         }
 
