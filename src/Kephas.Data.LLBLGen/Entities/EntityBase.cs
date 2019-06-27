@@ -125,7 +125,7 @@ namespace Kephas.Data.LLBLGen.Entities
         /// </summary>
         [XmlIgnore]
         [IgnoreDataMember]
-        object IIdentifiable.Id => this.Fields[nameof(IIdentifiable.Id)].CurrentValue;
+        object IIdentifiable.Id => this[nameof(IIdentifiable.Id)];
 
         /// <summary>
         /// Gets or sets the identifier for this instance.
@@ -137,8 +137,8 @@ namespace Kephas.Data.LLBLGen.Entities
         [IgnoreDataMember]
         long IEntityBase.Id
         {
-            get => (long?)this.Fields?[nameof(IIdentifiable.Id)]?.CurrentValue ?? 0;
-            set => this.Fields[nameof(IIdentifiable.Id)].CurrentValue = value;
+            get => (long?)this[nameof(IIdentifiable.Id)] ?? default;
+            set => this[nameof(IIdentifiable.Id)] = value;
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Kephas.Data.LLBLGen.Entities
         {
             get
             {
-                var field = this.Fields[key];
+                var field = this.Fields?[key];
                 if (field != null)
                 {
                     return field.CurrentValue;

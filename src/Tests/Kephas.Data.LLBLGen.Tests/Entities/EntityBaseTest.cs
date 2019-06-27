@@ -32,6 +32,19 @@ namespace Kephas.Data.LLBLGen.Tests.Entities
         {
             var entity = new TestEntity();
             Assert.AreEqual(0, ((IEntityBase)entity).Id);
+            Assert.AreEqual(0, ((IIdentifiable)entity).Id);
+        }
+
+        [Test]
+        public void Id_sync()
+        {
+            var entity = new TestEntity();
+
+            ((IEntityBase)entity).Id = 12;
+
+            Assert.AreEqual(12, entity.Id);
+            Assert.AreEqual(12, ((IEntityBase)entity).Id);
+            Assert.AreEqual(12, ((IIdentifiable)entity).Id);
         }
 
         [Test]
@@ -56,6 +69,8 @@ namespace Kephas.Data.LLBLGen.Tests.Entities
             {
                 throw new System.NotImplementedException();
             }
+
+            public long Id { get; set; }
         }
     }
 }
