@@ -9,12 +9,14 @@
 
 namespace Kephas.Data.LLBLGen.Entities
 {
+    using Kephas.Dynamic;
+
     using SD.LLBLGen.Pro.ORMSupportClasses;
 
     /// <summary>
     /// Base interface for LLBLGen entities.
     /// </summary>
-    public interface IEntityBase : IEntity2
+    public interface IEntityBase : IEntity2, IIndexable
     {
         /// <summary>
         /// Gets or sets the identifier.
