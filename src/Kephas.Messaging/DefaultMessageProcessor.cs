@@ -31,7 +31,7 @@ namespace Kephas.Messaging
     /// Provides the default implementation of the <see cref="IMessageProcessor"/> application service contract.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultMessageProcessor : IMessageProcessor
+    public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAware
     {
         /// <summary>
         /// The message match service.
