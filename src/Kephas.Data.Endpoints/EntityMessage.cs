@@ -24,12 +24,12 @@ namespace Kephas.Data.Endpoints
         public string EntityType { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the entity.
+        /// Gets or sets the entity reference, typically the ID.
         /// </summary>
         /// <value>
-        /// The identifier of the entity.
+        /// The entity reference.
         /// </value>
-        public object EntityId { get; set; }
+        public object EntityRef { get; set; }
 
         /// <summary>
         /// Gets or sets options for controlling the operation.
