@@ -25,6 +25,9 @@ namespace Kephas.Workflow
         /// <summary>
         /// Executes the activity asynchronously, enabling the activity execution behaviors.
         /// </summary>
+        /// <remarks>
+        /// The provided target and arguments may overwrite those set in the activity.
+        /// </remarks>
         /// <param name="activity">The activity to execute.</param>
         /// <param name="target">The activity target.</param>
         /// <param name="arguments">The execution arguments.</param>
