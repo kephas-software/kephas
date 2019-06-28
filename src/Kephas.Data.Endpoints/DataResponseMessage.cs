@@ -13,11 +13,12 @@ namespace Kephas.Data.Endpoints
     using System.Collections.Generic;
 
     using Kephas.Data.Client.Capabilities;
+    using Kephas.Messaging.Messages;
 
     /// <summary>
     /// A data response message.
     /// </summary>
-    public class DataResponseMessage : IDataResponseMessage
+    public class DataResponseMessage : ResponseMessage, IDataResponseMessage
     {
         /// <summary>
         /// Gets or sets the entity entries after a data operation.

@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ResponseMessage.cs" company="Kephas Software SRL">
+// <copyright file="IResponseMessage.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the information response message class.
+//   Declares the IResponseMessage interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,9 +13,9 @@ namespace Kephas.Messaging.Messages
     using Kephas.ExceptionHandling;
 
     /// <summary>
-    /// A simple response message.
+    /// Interface for a simple response message.
     /// </summary>
-    public class ResponseMessage : IResponseMessage
+    public interface IResponseMessage : IMessage
     {
         /// <summary>
         /// Gets or sets the severity.
@@ -23,7 +23,7 @@ namespace Kephas.Messaging.Messages
         /// <value>
         /// The severity.
         /// </value>
-        public SeverityLevel Severity { get; set; } = SeverityLevel.Info;
+        SeverityLevel Severity { get; set; }
 
         /// <summary>
         /// Gets or sets the informational message.
@@ -31,6 +31,6 @@ namespace Kephas.Messaging.Messages
         /// <value>
         /// The informational message.
         /// </value>
-        public string Message { get; set; }
+        string Message { get; set; }
     }
 }
