@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IActivityContext.cs" company="Kephas Software SRL">
+// <copyright file="ActivityContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IActivityContext interface.
+//   Implements the activity context class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,40 +15,52 @@ namespace Kephas.Workflow
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for workflow execution context.
+    /// An activity context.
     /// </summary>
-    public interface IActivityContext : IContext
+    public class ActivityContext : Context, IActivityContext
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActivityContext"/> class.
+        /// </summary>
+        /// <param name="parentContext">Optional. Context for the parent.</param>
+        public ActivityContext(IActivityContext parentContext = null)
+            : base(parentContext)
+        {
+            this.WorkflowProcessor = parentContext?.WorkflowProcessor;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActivityContext"/> class.
+        /// </summary>
+        /// <param name="workflowProcessor">The workflow processor.</param>
+        public ActivityContext(IWorkflowProcessor workflowProcessor)
+        {
+            this.WorkflowProcessor = workflowProcessor;
+        }
+
         /// <summary>
         /// Gets the workflow processor.
         /// </summary>
         /// <value>
         /// The workflow processor.
         /// </value>
-        IWorkflowProcessor WorkflowProcessor { get; }
+        public IWorkflowProcessor WorkflowProcessor { get; }
 
         /// <summary>
         /// Gets or sets the activity being executed.
         /// </summary>
-        /// <remarks>
-        /// The activity's input parameters are contained
-        /// in the activity itself as members.
-        /// </remarks>
         /// <value>
         /// The activity being executed.
         /// </value>
-        IActivity Activity { get; set; }
+        public IActivity Activity { get; set; }
 
         /// <summary>
         /// Gets or sets the execution result.
         /// </summary>
-        /// <remarks>
-        /// The result contains as values the activity's output parameters.
-        /// </remarks>
         /// <value>
         /// The execution result.
         /// </value>
-        object Result { get; set; }
+        public object Result { get; set; }
 
         /// <summary>
         /// Gets or sets the execution exception.
@@ -56,6 +68,6 @@ namespace Kephas.Workflow
         /// <value>
         /// The execution exception.
         /// </value>
-        Exception Exception { get; set; }
+        public Exception Exception { get; set; }
     }
 }
