@@ -10,6 +10,7 @@
 
 namespace Kephas.Workflow
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -73,6 +74,7 @@ namespace Kephas.Workflow
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(activity, nameof(activity));
+            Requires.NotNull(context, nameof(context));
 
             var logger = context.ContextLogger.Merge(this.Logger);
 
@@ -92,15 +94,33 @@ namespace Kephas.Workflow
             // get the behaviors for execution
             var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(activityInfo, context);
 
-            //...
+            cancellationToken.ThrowIfCancellationRequested();
+
+            //... TODO improve
             await this.ApplyBeforeExecuteBehaviorsAsync(behaviors, context, cancellationToken).PreserveThreadContext();
 
-            //...
+            //... TODO improve
+            try
+            {
+                var result = await activityInfo
+                                 .ExecuteAsync(activity, target, executionArgs, context, cancellationToken)
+                                 .PreserveThreadContext();
+                context.Result = result;
+            }
+            catch (Exception ex)
+            {
+                context.Exception = ex;
+            }
 
-            //...
+            //... TODO improve
             await this.ApplyAfterExecuteBehaviorsAsync(reversedBehaviors, context, cancellationToken).PreserveThreadContext();
 
-            return null;
+            if (context.Exception != null)
+            {
+                throw context.Exception;
+            }
+
+            return context.Result;
         }
 
         /// <summary>
@@ -147,7 +167,7 @@ namespace Kephas.Workflow
         /// </returns>
         protected virtual IActivityInfo GetActivityInfo(IActivity activity, IActivityContext activityContext)
         {
-            var activityInfo = activity.GetTypeInfo() as IActivityInfo;
+            var activityInfo = activity.GetTypeInfo();
             return activityInfo;
         }
 
