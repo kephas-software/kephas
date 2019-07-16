@@ -52,7 +52,8 @@ namespace Kephas.Model.Runtime.Construction
             Requires.NotNull(modelElementConstructors, nameof(modelElementConstructors));
 
             this.modelElementConstructors = modelElementConstructors
-                    .OrderBy(e => e.Metadata.ProcessingPriority)
+                    .OrderBy(e => e.Metadata.OverridePriority)
+                    .ThenBy(e => e.Metadata.ProcessingPriority)
                     .ToDictionary(e => e.CreateExport().Value, e => e.Metadata);
 
             this.modelElementConfigurators =
