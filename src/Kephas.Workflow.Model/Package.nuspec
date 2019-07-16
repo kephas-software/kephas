@@ -21,10 +21,12 @@
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
         <dependencies>
-            <dependency id="Kephas.Core" version="$refversion$" />
-            <dependency id="Kephas.Model" version="$refversion$" />
-            <dependency id="Kephas.Workflow" version="$refversion$" />
-            <dependency id="System.ValueTuple" version="4.3.0" />
+            <group>
+                <dependency id="Kephas.Core" version="$refversion$" />
+                <dependency id="Kephas.Model" version="$refversion$" />
+                <dependency id="Kephas.Workflow" version="$refversion$" />
+                <dependency id="System.ValueTuple" version="4.3.0" />
+            </group>
         </dependencies>
         <references>
             <reference file="Kephas.Workflow.Model.dll" />
