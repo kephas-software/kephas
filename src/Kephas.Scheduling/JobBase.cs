@@ -10,13 +10,15 @@
 
 namespace Kephas.Scheduling
 {
+    using System;
+
     using Kephas.Scheduling.Reflection;
     using Kephas.Workflow;
 
     /// <summary>
     /// Base implementation of a <see cref="IJob"/>.
     /// </summary>
-    public class JobBase : ActivityBase, IJob
+    public abstract class JobBase : ActivityBase, IJob
     {
         /// <summary>
         /// Gets the type information for this instance.
@@ -26,10 +28,29 @@ namespace Kephas.Scheduling
         /// </returns>
         public new IJobInfo GetTypeInfo() => (IJobInfo)base.GetTypeInfo();
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        /// <summary>
+        /// Releases the unmanaged resources used by the Kephas.Scheduling.JobBase and optionally
+        /// releases the managed resources.
+        /// </summary>
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the Kephas.Scheduling.JobBase and optionally
+        /// releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// True to release both managed and unmanaged resources; false to
+        /// release only unmanaged resources.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+            }
         }
     }
 }
