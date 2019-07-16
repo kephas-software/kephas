@@ -6,7 +6,7 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Description>Provides functionality for data import/export (input/output).</Description>
-        <Version>6.0.0-rc.6</Version>
+        <Version>6.0.0-rc.7</Version>
         <AssemblyVersion>6.0.0.0</AssemblyVersion>
         <FileVersion>6.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
