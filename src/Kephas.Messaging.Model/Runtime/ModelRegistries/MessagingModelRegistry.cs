@@ -24,7 +24,6 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
     using Kephas.Model.Reflection;
     using Kephas.Model.Runtime;
     using Kephas.Reflection;
-    using Kephas.Threading.Tasks;
 
     using IMessage = Kephas.Messaging.IMessage;
 
