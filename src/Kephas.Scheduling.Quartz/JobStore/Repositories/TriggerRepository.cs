@@ -13,6 +13,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -21,6 +22,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
 
     using Kephas.Data;
     using Kephas.Data.Linq;
+    using Kephas.Data.Linq.Expressions;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Scheduling.Quartz.JobStore.Model;
     using Kephas.Scheduling.Quartz.Linq;
@@ -388,56 +391,134 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
             return 1;
         }
 
-        public async Task<long> UpdateTriggersStates(GroupMatcher<TriggerKey> matcher, Model.TriggerState newState,
-            params Model.TriggerState[] oldStates)
+        /// <summary>
+        /// Updates the triggers states.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="matcher">The matcher.</param>
+        /// <param name="newState">State of the new.</param>
+        /// <param name="oldStates">List of old states.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the number of modified entities.
+        /// </returns>
+        public async Task<long> UpdateTriggersStatesAsync(
+            IDataContext dataContext,
+            GroupMatcher<TriggerKey> matcher,
+            Model.TriggerState newState,
+            Model.TriggerState[] oldStates,
+            CancellationToken cancellationToken = default)
         {
-            return 0;
-            /* TODO
-            var result = await this.Collection.UpdateManyAsync(this.FilterBuilder.And(
-                this.FilterBuilder.Eq(trigger => trigger.Id.InstanceName, this.InstanceName),
-                this.FilterBuilder.Regex(trigger => trigger.Id.Group, matcher.ToBsonRegularExpression()),
-                this.FilterBuilder.In(trigger => trigger.State, oldStates)),
-                this.UpdateBuilder.Set(trigger => trigger.State, newState));
-            return result.ModifiedCount;
-            */
+            Expression<Func<Model.ITrigger, bool>> ToExpr(Expression<Func<Model.ITrigger, bool>> expr) => expr;
+            var matcherExpr = matcher.ToFilterExpression<Model.ITrigger, TriggerKey>(this.InstanceName);
+            var stateExpr = ToExpr(trigger => oldStates.Contains(trigger.State));
+            var joinedBodyExpr = Expression.AndAlso(matcherExpr.Body, stateExpr.Body);
+
+            var substitute = new SubstituteExpressionExpressionVisitor(
+                stateExpr.Parameters[0],
+                matcherExpr.Parameters[0]);
+
+            var criteria = Expression.Lambda<Func<Model.ITrigger, bool>>(
+                substitute.Visit(joinedBodyExpr),
+                matcherExpr.Parameters);
+
+            var results = await dataContext.BulkUpdateAsync(
+                                  criteria,
+                                  new Expando
+                                      {
+                                          [nameof(Model.ITrigger.State)] = newState
+                                      },
+                                  cancellationToken: cancellationToken)
+                              .PreserveThreadContext();
+
+            return results;
         }
 
-        public async Task<long> UpdateTriggersStates(JobKey jobKey, Model.TriggerState newState,
-            params Model.TriggerState[] oldStates)
+        /// <summary>
+        /// Updates the triggers states.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="jobKey">The job key.</param>
+        /// <param name="newState">State of the new.</param>
+        /// <param name="oldState">State of the old.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the number of modified entities.
+        /// </returns>
+        public async Task<long> UpdateTriggersStatesAsync(
+            IDataContext dataContext,
+            JobKey jobKey,
+            Model.TriggerState newState,
+            Model.TriggerState oldState,
+            CancellationToken cancellationToken = default)
         {
-            return 0;
-            /* TODO
-            var result = await this.Collection.UpdateManyAsync(
-                trigger =>
-                    trigger.Id.InstanceName == this.InstanceName && trigger.JobKey == jobKey &&
-                    oldStates.Contains(trigger.State),
-                this.UpdateBuilder.Set(trigger => trigger.State, newState));
-            return result.ModifiedCount;
-            */
+            var result = await dataContext.BulkUpdateAsync<Model.ITrigger>(
+                                 trigger => trigger.InstanceName == this.InstanceName 
+                                            && trigger.JobGroup == jobKey.Group && trigger.JobName == jobKey.Name
+                                            && trigger.State == oldState,
+                                 new Expando
+                                     {
+                                         [nameof(Model.ITrigger.State)] = newState
+                                     },
+                                 cancellationToken: cancellationToken)
+                             .PreserveThreadContext();
+            return result;
         }
 
-        public async Task<long> UpdateTriggersStates(JobKey jobKey, Model.TriggerState newState)
+        /// <summary>
+        /// Updates the triggers states.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="jobKey">The job key.</param>
+        /// <param name="newState">State of the new.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the number of modified entities.
+        /// </returns>
+        public async Task<long> UpdateTriggersStatesAsync(
+            IDataContext dataContext,
+            JobKey jobKey,
+            Model.TriggerState newState,
+            CancellationToken cancellationToken = default)
         {
-            return 0;
-            /* TODO
-            var result = await this.Collection.UpdateManyAsync(
-                trigger =>
-                    trigger.Id.InstanceName == this.InstanceName && trigger.JobKey == jobKey,
-                this.UpdateBuilder.Set(trigger => trigger.State, newState));
-            return result.ModifiedCount;
-            */
+            var result = await dataContext.BulkUpdateAsync<Model.ITrigger>(
+                                 trigger => trigger.InstanceName == this.InstanceName
+                                            && trigger.JobGroup == jobKey.Group && trigger.JobName == jobKey.Name,
+                                 new Expando
+                                     {
+                                         [nameof(Model.ITrigger.State)] = newState
+                                     },
+                                 cancellationToken: cancellationToken)
+                             .PreserveThreadContext();
+            return result;
         }
 
-        public async Task<long> UpdateTriggersStates(Model.TriggerState newState, params Model.TriggerState[] oldStates)
+        /// <summary>
+        /// Updates the triggers states.
+        /// </summary>
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="newState">State of the new.</param>
+        /// <param name="oldStates">List of old states.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the number of modified entities.
+        /// </returns>
+        public async Task<long> UpdateTriggersStatesAsync(
+            IDataContext dataContext,
+            Model.TriggerState newState,
+            Model.TriggerState[] oldStates,
+            CancellationToken cancellationToken = default)
         {
-            return 0;
-            /* TODO
-            var result = await this.Collection.UpdateManyAsync(
-                trigger =>
-                    trigger.Id.InstanceName == this.InstanceName && oldStates.Contains(trigger.State),
-                this.UpdateBuilder.Set(trigger => trigger.State, newState));
-            return result.ModifiedCount;
-            */
+            var result = await dataContext.BulkUpdateAsync<Model.ITrigger>(
+                                 trigger => trigger.InstanceName == this.InstanceName
+                                            && oldStates.Contains(trigger.State),
+                                 new Expando
+                                     {
+                                         [nameof(Model.ITrigger.State)] = newState
+                                     },
+                                 cancellationToken: cancellationToken)
+                             .PreserveThreadContext();
+            return result;
         }
 
         /// <summary>
@@ -449,7 +530,10 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         /// <returns>
         /// An asynchronous result that yields a long.
         /// </returns>
-        public async Task<long> DeleteTrigger(IDataContext dataContext, TriggerKey triggerKey, CancellationToken cancellationToken = default)
+        public async Task<long> DeleteTriggerAsync(
+            IDataContext dataContext,
+            TriggerKey triggerKey,
+            CancellationToken cancellationToken = default)
         {
             var result = await dataContext.BulkDeleteAsync<Model.ITrigger>(
                                  t => t.InstanceName == this.InstanceName && t.Group == triggerKey.Group
@@ -469,7 +553,10 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         /// <returns>
         /// An asynchronous result that yields a long.
         /// </returns>
-        public async Task<long> DeleteTriggers(IDataContext dataContext, JobKey jobKey, CancellationToken cancellationToken = default)
+        public async Task<long> DeleteTriggersAsync(
+            IDataContext dataContext,
+            JobKey jobKey,
+            CancellationToken cancellationToken = default)
         {
             var result = await dataContext.BulkDeleteAsync<Model.ITrigger>(
                                  t => t.InstanceName == this.InstanceName && t.JobGroup == jobKey.Group
@@ -481,48 +568,31 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         }
 
         /// <summary>
-        /// Get the names of all of the triggers in the given state that have
-        /// misfired - according to the given timestamp.  No more than count will
-        /// be returned.
+        /// Get the names of all of the triggers in the given state that have misfired - according to the
+        /// given timestamp.  No more than count will be returned.
         /// </summary>
-        /// <param name="nextFireTime"></param>
-        /// <param name="maxResults"></param>
-        /// <param name="results"></param>
-        /// <returns></returns>
-        public bool HasMisfiredTriggers(DateTime nextFireTime, int maxResults, out List<TriggerKey> results)
+        /// <param name="dataContext">Context for the data.</param>
+        /// <param name="nextFireTime">The next fire time.</param>
+        /// <param name="maxResults">The maximum results.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields a list of.
+        /// </returns>
+        public async Task<List<TriggerKey>> GetMisfiredTriggersAsync(
+            IDataContext dataContext,
+            DateTime nextFireTime,
+            int maxResults,
+            CancellationToken cancellationToken = default)
         {
-            results = null; return false;
-            /* TODO
-            var cursor = this.Collection.Find(
-                trigger => trigger.Id.InstanceName == this.InstanceName &&
-                           trigger.MisfireInstruction != MisfireInstruction.IgnoreMisfirePolicy &&
-                           trigger.NextFireTime < nextFireTime &&
-                           trigger.State == Model.TriggerState.Waiting)
-                .Project(trigger => trigger.Id.GetTriggerKey())
-                .Sort(this.SortBuilder.Combine(
-                    this.SortBuilder.Ascending(trigger => trigger.NextFireTime),
-                    this.SortBuilder.Descending(trigger => trigger.Priority)
-                    )).ToCursor();
-
-            results = new List<TriggerKey>();
-
-            var hasReachedLimit = false;
-            while (cursor.MoveNext() && !hasReachedLimit)
-            {
-                foreach (var triggerKey in cursor.Current)
-                {
-                    if (results.Count == maxResults)
-                    {
-                        hasReachedLimit = true;
-                    }
-                    else
-                    {
-                        results.Add(triggerKey);
-                    }
-                }
-            }
-            return hasReachedLimit;
-            */
+            var query = from trigger in dataContext.Query<Model.ITrigger>()
+                        where trigger.InstanceName == this.InstanceName &&
+                              trigger.MisfireInstruction != MisfireInstruction.IgnoreMisfirePolicy &&
+                              trigger.NextFireTime < nextFireTime &&
+                              trigger.State == Model.TriggerState.Waiting
+                        orderby trigger.NextFireTime, trigger.Priority descending
+                        select trigger;
+            var results = await query.Take(maxResults).ToListAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            return results.Select(t => t.GetTriggerKey()).ToList();
         }
     }
 }
