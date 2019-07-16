@@ -64,7 +64,6 @@
         <ProjectReference Include="..\Kephas.Model\Kephas.Model.csproj" />
     </ItemGroup>
 
-
     <ItemGroup Condition="'$(TargetFramework)'=='net45'">
         <Reference Include="System.ComponentModel.DataAnnotations" />
     </ItemGroup>
