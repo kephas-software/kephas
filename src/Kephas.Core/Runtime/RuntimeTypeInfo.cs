@@ -657,16 +657,30 @@ namespace Kephas.Runtime
         /// <summary>
         /// Creates the member infos.
         /// </summary>
+        /// <param name="membersConfig">Optional. The members configuration.</param>
+        /// <returns>
+        /// The new member infos.
+        /// </returns>
+        protected virtual IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(Action<IDictionary<string, IRuntimeElementInfo>> membersConfig = null)
+        {
+            return CreateMemberInfos(this.Fields, this.Properties, this.Methods, membersConfig);
+        }
+
+        /// <summary>
+        /// Creates the member infos.
+        /// </summary>
         /// <param name="fieldInfos">The field infos.</param>
         /// <param name="propertyInfos">The property infos.</param>
         /// <param name="methodInfos">The method infos.</param>
+        /// <param name="membersConfig">The members configuration.</param>
         /// <returns>
         /// The new member infos.
         /// </returns>
         private static IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(
             IDictionary<string, IRuntimeFieldInfo> fieldInfos,
             IDictionary<string, IRuntimePropertyInfo> propertyInfos,
-            IDictionary<string, ICollection<IRuntimeMethodInfo>> methodInfos)
+            IDictionary<string, ICollection<IRuntimeMethodInfo>> methodInfos,
+            Action<IDictionary<string, IRuntimeElementInfo>> membersConfig)
         {
             var memberInfos = new Dictionary<string, IRuntimeElementInfo>();
             foreach (var kv in fieldInfos)
@@ -696,7 +710,48 @@ namespace Kephas.Runtime
                 }
             }
 
+            membersConfig?.Invoke(memberInfos);
+
             return new ReadOnlyDictionary<string, IRuntimeElementInfo>(memberInfos);
+        }
+
+        /// <summary>
+        /// Creates the members.
+        /// </summary>
+        /// <typeparam name="TRuntimeMemberInfo">Type of the runtime member.</typeparam>
+        /// <typeparam name="TMemberInfo">Type of the member.</typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="runtimeMembers">The runtime members.</param>
+        /// <param name="memberTypeGetter">The member type getter.</param>
+        /// <param name="criteria">Optional. The criteria.</param>
+        /// <returns>
+        /// A dictionary of members.
+        /// </returns>
+        protected static IDictionary<string, TMemberInfo> CreateMembers<TRuntimeMemberInfo, TMemberInfo>(Type type, IEnumerable<TRuntimeMemberInfo> runtimeMembers, Func<TRuntimeMemberInfo, Type> memberTypeGetter, Func<TRuntimeMemberInfo, bool> criteria = null)
+            where TRuntimeMemberInfo : MemberInfo
+        {
+            var memberInfos = new Dictionary<string, TMemberInfo>();
+            if (criteria != null)
+            {
+                runtimeMembers = runtimeMembers.Where(criteria);
+            }
+
+            var position = 0;
+            foreach (var runtimeMemberInfo in runtimeMembers)
+            {
+                var memberName = runtimeMemberInfo.Name;
+                if (memberInfos.ContainsKey(memberName))
+                {
+                    continue;
+                }
+
+                var memberType = memberTypeGetter(runtimeMemberInfo);
+                var memberCtor = memberType.GetTypeInfo().DeclaredConstructors.First();
+                var memberInfo = (TMemberInfo)memberCtor.Invoke(new object[] { runtimeMemberInfo, position++ });
+                memberInfos.Add(memberName, memberInfo);
+            }
+
+            return new ReadOnlyDictionary<string, TMemberInfo>(memberInfos);
         }
 
         /// <summary>
@@ -706,60 +761,36 @@ namespace Kephas.Runtime
         /// <returns>
         /// A dictionary of fields.
         /// </returns>
-        private static IDictionary<string, IRuntimeFieldInfo> CreateFieldInfos(Type type)
+        protected virtual IDictionary<string, IRuntimeFieldInfo> CreateFieldInfos(Type type, Func<FieldInfo, bool> criteria = null)
         {
-            var runtimeFieldInfos = new Dictionary<string, IRuntimeFieldInfo>();
-            var fieldInfos = type.GetRuntimeFields().Where(f => f.IsPublic);
-            var fieldAccessorTypeFn = type.GetTypeInfo().ContainsGenericParameters
-                                             ? (Func<Type, Type>)(fieldType => RuntimeFieldInfoTypeInfo.AsType())
-                                             : (fieldType => RuntimeFieldInfoGenericTypeInfo.MakeGenericType(type, fieldType));
+            var memberTypeGetter = type.GetTypeInfo().ContainsGenericParameters
+                                       ? (Func<FieldInfo, Type>)(fieldType => RuntimeFieldInfoTypeInfo.AsType())
+                                       : (field => RuntimeFieldInfoGenericTypeInfo.MakeGenericType(type, field.FieldType));
 
-            foreach (var fieldInfo in fieldInfos)
-            {
-                var fieldName = fieldInfo.Name;
-                if (runtimeFieldInfos.ContainsKey(fieldName))
-                {
-                    continue;
-                }
+            var runtimeMembers = type.GetRuntimeFields().Where(f => f.IsPublic);
 
-                var fieldAccessorType = fieldAccessorTypeFn(fieldInfo.FieldType);
-                var constructor = fieldAccessorType.GetTypeInfo().DeclaredConstructors.First();
-                var runtimeFieldInfo = (IRuntimeFieldInfo)constructor.Invoke(new object[] { fieldInfo });
-                runtimeFieldInfos.Add(fieldName, runtimeFieldInfo);
-            }
-
-            return new ReadOnlyDictionary<string, IRuntimeFieldInfo>(runtimeFieldInfos);
+            return CreateMembers<FieldInfo, IRuntimeFieldInfo>(type, runtimeMembers, memberTypeGetter, criteria);
         }
 
         /// <summary>
         /// Creates the properties.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <param name="type">The container type.</param>
+        /// <param name="criteria">The criteria.</param>
         /// <returns>
         /// A dictionary of properties.
         /// </returns>
-        private static IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type)
+        protected virtual IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type, Func<PropertyInfo, bool> criteria = null)
         {
-            var runtimePropertyInfos = new Dictionary<string, IRuntimePropertyInfo>();
-            var propertyInfos = type.GetRuntimeProperties().Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic);
-            var propertyAccessorTypeFn = type.GetTypeInfo().ContainsGenericParameters
-                                                ? (Func<Type, Type>)(propType => RuntimePropertyInfoTypeInfo.AsType())
-                                                : (propType => RuntimePropertyInfoGenericTypeInfo.MakeGenericType(type, propType));
-            foreach (var propertyInfo in propertyInfos)
-            {
-                var propertyName = propertyInfo.Name;
-                if (propertyInfo.GetIndexParameters().Length > 0 || runtimePropertyInfos.ContainsKey(propertyName))
-                {
-                    continue;
-                }
+            var memberTypeGetter = type.GetTypeInfo().ContainsGenericParameters
+                                       ? (Func<PropertyInfo, Type>)(prop => RuntimePropertyInfoTypeInfo.AsType())
+                                       : (prop => RuntimePropertyInfoGenericTypeInfo.MakeGenericType(type, prop.PropertyType));
 
-                var propertyAccessorType = propertyAccessorTypeFn(propertyInfo.PropertyType);
-                var constructor = propertyAccessorType.GetTypeInfo().DeclaredConstructors.First();
-                var runtimePropertyInfo = (IRuntimePropertyInfo)constructor.Invoke(new object[] { propertyInfo });
-                runtimePropertyInfos.Add(propertyName, runtimePropertyInfo);
-            }
+            var runtimeMembers = type.GetRuntimeProperties()
+                .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
+                            && p.GetIndexParameters().Length == 0);
 
-            return new ReadOnlyDictionary<string, IRuntimePropertyInfo>(runtimePropertyInfos);
+            return CreateMembers<PropertyInfo, IRuntimePropertyInfo>(type, runtimeMembers, memberTypeGetter, criteria);
         }
 
         /// <summary>
@@ -807,7 +838,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IDictionary<string, IRuntimeElementInfo> GetMembers()
         {
-            return this.members ?? (this.members = CreateMemberInfos(this.Fields, this.Properties, this.Methods));
+            return this.members ?? (this.members = this.CreateMemberInfos());
         }
 
         /// <summary>
@@ -818,7 +849,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IDictionary<string, IRuntimeFieldInfo> GetFields()
         {
-            return this.fields ?? (this.fields = CreateFieldInfos(this.Type));
+            return this.fields ?? (this.fields = this.CreateFieldInfos(this.Type));
         }
 
         /// <summary>
@@ -829,7 +860,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IDictionary<string, IRuntimePropertyInfo> GetProperties()
         {
-            return this.properties ?? (this.properties = CreatePropertyInfos(this.Type));
+            return this.properties ?? (this.properties = this.CreatePropertyInfos(this.Type));
         }
 
         /// <summary>

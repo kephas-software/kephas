@@ -31,7 +31,8 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimeFieldInfo"/> class.
         /// </summary>
         /// <param name="fieldInfo">The field information.</param>
-        internal RuntimeFieldInfo(FieldInfo fieldInfo)
+        /// <param name="position">The position.</param>
+        internal RuntimeFieldInfo(FieldInfo fieldInfo, int position = -1)
             : base(isThreadSafe: true)
         {
             this.FieldInfo = fieldInfo;
@@ -184,8 +185,9 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimeFieldInfo{T,TMember}"/> class.
         /// </summary>
         /// <param name="fieldInfo">The field information.</param>
-        internal RuntimeFieldInfo(FieldInfo fieldInfo)
-            : base(fieldInfo)
+        /// <param name="position">The position.</param>
+        internal RuntimeFieldInfo(FieldInfo fieldInfo, int position = -1)
+            : base(fieldInfo, position)
         {
         }
 

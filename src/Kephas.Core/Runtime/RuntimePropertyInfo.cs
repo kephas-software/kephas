@@ -32,7 +32,8 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimePropertyInfo"/> class.
         /// </summary>
         /// <param name="propertyInfo">The property information.</param>
-        internal RuntimePropertyInfo(PropertyInfo propertyInfo)
+        /// <param name="position">The position.</param>
+        internal RuntimePropertyInfo(PropertyInfo propertyInfo, int position = -1)
             : base(isThreadSafe: true)
         {
             this.PropertyInfo = propertyInfo;
@@ -225,8 +226,9 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimePropertyInfo{T,TMember}"/> class.
         /// </summary>
         /// <param name="propertyInfo">The property information.</param>
-        internal RuntimePropertyInfo(PropertyInfo propertyInfo)
-            : base(propertyInfo)
+        /// <param name="position">The position.</param>
+        internal RuntimePropertyInfo(PropertyInfo propertyInfo, int position = -1)
+            : base(propertyInfo, position)
         {
         }
 
