@@ -17,6 +17,8 @@ namespace Kephas.Data.Commands
 
     using Kephas.Activation;
     using Kephas.Data.Caching;
+    using Kephas.Operations;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -48,7 +50,34 @@ namespace Kephas.Data.Commands
         /// </returns>
         async Task<IDataCommandResult> IDataCommand.ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken)
         {
-            var result = await this.ExecuteAsync((TOperationContext)operationContext, cancellationToken).PreserveThreadContext();
+            if (!(operationContext is TOperationContext typedOperationContext))
+            {
+                // TODO localization
+                throw new DataException($"{typeof(TOperationContext)} context expected, instead provided an {operationContext?.GetType()}.");
+            }
+
+            var result = await this.ExecuteAsync(typedOperationContext, cancellationToken).PreserveThreadContext();
+            return result;
+        }
+
+        /// <summary>
+        /// Executes the asynchronous operation.
+        /// </summary>
+        /// <exception cref="DataException">Thrown when a Data error condition occurs.</exception>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token (optional).</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        async Task<object> IAsyncOperation.ExecuteAsync(IContext context = null, CancellationToken cancellationToken = default)
+        {
+            if (!(context is TOperationContext typedOperationContext))
+            {
+                // TODO localization
+                throw new DataException($"{typeof(TOperationContext)} context expected, instead provided an {context?.GetType()}.");
+            }
+
+            var result = await this.ExecuteAsync(typedOperationContext, cancellationToken).PreserveThreadContext();
             return result;
         }
 

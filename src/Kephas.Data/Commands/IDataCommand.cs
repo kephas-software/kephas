@@ -13,10 +13,12 @@ namespace Kephas.Data.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Operations;
+
     /// <summary>
     /// Contract for data commands.
     /// </summary>
-    public interface IDataCommand
+    public interface IDataCommand : IAsyncOperation
     {
         /// <summary>
         /// Executes the data command asynchronously.
