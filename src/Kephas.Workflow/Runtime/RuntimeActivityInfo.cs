@@ -12,12 +12,18 @@ namespace Kephas.Workflow.Runtime
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Collections;
     using Kephas.Dynamic;
+    using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Runtime.AttributedModel;
+    using Kephas.Threading.Tasks;
     using Kephas.Workflow.Reflection;
 
     /// <summary>
@@ -25,6 +31,13 @@ namespace Kephas.Workflow.Runtime
     /// </summary>
     public class RuntimeActivityInfo : RuntimeTypeInfo, IActivityInfo
     {
+        private static readonly IDictionary<string, PropertyInfo> ActivityProperties =
+            typeof(ActivityBase).GetProperties().ToDictionary(p => p.Name, p => p);
+
+        private IDictionary<string, IRuntimeParameterInfo> parameters;
+
+        private ITypeInfo returnType;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeActivityInfo"/> class.
         /// </summary>
@@ -40,7 +53,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        public ITypeInfo ReturnType { get; }
+        public ITypeInfo ReturnType => this.returnType ?? (this.returnType = this.ComputeReturnType());
 
         /// <summary>
         /// Gets the method parameters.
@@ -48,7 +61,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The method parameters.
         /// </value>
-        public IEnumerable<IParameterInfo> Parameters { get; }
+        public IEnumerable<IParameterInfo> Parameters => this.GetParameters();
 
         /// <summary>
         /// Executes the activity asynchronously.
@@ -68,7 +81,92 @@ namespace Kephas.Workflow.Runtime
             IActivityContext context,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            if (activity is IOperation operation)
+            {
+                return operation.Execute(context);
+            }
+
+            if (activity is IAsyncOperation asyncOperation)
+            {
+                return await asyncOperation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
+            }
+
+            // TODO localization
+            throw new NotImplementedException($"Either implement the {typeof(IOperation).Name} or {typeof(IAsyncOperation).Name} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+        }
+
+        /// <summary>
+        /// Creates the properties.
+        /// </summary>
+        /// <param name="type">The container type.</param>
+        /// <param name="criteria">Optional. The criteria.</param>
+        /// <returns>
+        /// A dictionary of properties.
+        /// </returns>
+        protected override IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type, Func<PropertyInfo, bool> criteria = null)
+        {
+            return base.CreatePropertyInfos(type, p => ActivityProperties.ContainsKey(p.Name));
+        }
+
+        /// <summary>
+        /// Creates the member infos.
+        /// </summary>
+        /// <param name="membersConfig">Optional. The members configuration.</param>
+        /// <returns>
+        /// The new member infos.
+        /// </returns>
+        protected override IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(Action<IDictionary<string, IRuntimeElementInfo>> membersConfig = null)
+        {
+            void AddParameters(IDictionary<string, IRuntimeElementInfo> m)
+            {
+                this.Parameters.ForEach(p => m.Add(p.Name, (IRuntimeParameterInfo)p));
+
+                membersConfig?.Invoke(m);
+            }
+
+            return base.CreateMemberInfos(AddParameters);
+        }
+
+        /// <summary>
+        /// Creates the parameters.
+        /// </summary>
+        /// <param name="type">The container type.</param>
+        /// <returns>
+        /// A dictionary of parameters.
+        /// </returns>
+        protected virtual IDictionary<string, IRuntimeParameterInfo> CreateParameterInfos(Type type)
+        {
+            var memberTypeGetter = (Func<PropertyInfo, Type>)(prop => typeof(RuntimeActivityParameterInfo));
+
+            var runtimeMembers = type.GetRuntimeProperties()
+                .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
+                            && p.GetIndexParameters().Length == 0
+                            && !ActivityProperties.ContainsKey(p.Name));
+
+            return CreateMembers<PropertyInfo, IRuntimeParameterInfo>(type, runtimeMembers, memberTypeGetter);
+        }
+
+        /// <summary>
+        /// Calculates the return type.
+        /// </summary>
+        /// <returns>
+        /// The calculated return type.
+        /// </returns>
+        private ITypeInfo ComputeReturnType()
+        {
+            var returnTypeAttr = this.Type.GetCustomAttribute<ReturnTypeAttribute>();
+            return RuntimeTypeInfo.GetRuntimeType(returnTypeAttr?.Value ?? typeof(void));
+        }
+
+        /// <summary>
+        /// Gets the parameters collection.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the parameters in this collection.
+        /// </returns>
+        private IEnumerable<IParameterInfo> GetParameters()
+        {
+            return (this.parameters ?? (this.parameters = this.CreateParameterInfos(this.Type))).Values;
         }
     }
 }
