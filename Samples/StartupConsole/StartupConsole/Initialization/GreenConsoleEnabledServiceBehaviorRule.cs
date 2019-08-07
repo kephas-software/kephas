@@ -1,8 +1,8 @@
 ﻿namespace StartupConsole.Initialization
 {
     using Kephas.Application;
-    using Kephas.Behavior;
-    using Kephas.Services.Behavior;
+    using Kephas.Behaviors;
+    using Kephas.Services.Behaviors;
 
     public class GreenConsoleEnabledServiceBehaviorRule : EnabledServiceBehaviorRuleBase<IFeatureManager, GreenConsoleFeatureManager>
     {

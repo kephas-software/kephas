@@ -36,14 +36,14 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Kephas.Composition.Mef, Version=5.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.5.1.0\lib\net45\Kephas.Composition.Mef.dll</HintPath>
+    <Reference Include="Kephas.Composition.Mef, Version=6.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.6.0.0\lib\net45\Kephas.Composition.Mef.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Core, Version=5.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Core.5.1.0\lib\net45\Kephas.Core.dll</HintPath>
+    <Reference Include="Kephas.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Core.6.0.0\lib\net45\Kephas.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Logging.NLog, Version=5.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.5.1.0\lib\net45\Kephas.Logging.NLog.dll</HintPath>
+    <Reference Include="Kephas.Logging.NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.6.0.0\lib\net45\Kephas.Logging.NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NLog.4.5.4\lib\net45\NLog.dll</HintPath>

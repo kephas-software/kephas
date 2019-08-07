@@ -25,6 +25,7 @@ namespace RoleGame.Application
     using RoleGame.Composition.ScopeFactory;
     using RoleGame.Services;
 
+    using CompositionHelper = RoleGame.Composition.CompositionHelper;
     using ScopeNames = RoleGame.Composition.ScopeNames;
 
     public class RoleGameShell : AppBase
