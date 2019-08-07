@@ -720,12 +720,10 @@ namespace Kephas.Services.Composition
                 // for open generics select a single implementation type
                 if (appServiceInfo.AsOpenGeneric)
                 {
-                    var (isOverride, selectedInstanceType) = appServiceInfo.InstanceType == null
-                                                                 ? this.TrySelectSingleServiceImplementationType(
+                    var (isOverride, selectedInstanceType) = this.TrySelectSingleServiceImplementationType(
                                                                      serviceContract,
                                                                      typeInfos,
-                                                                     t => this.MatchOpenGenericContractType(t, serviceContractType))
-                                                                 : (true, appServiceInfo.InstanceType);
+                                                                     t => this.MatchOpenGenericContractType(t, serviceContractType));
                     if (logger.IsDebugEnabled())
                     {
                         logger.Debug($"Service {serviceContractType} matches open generic implementation type {selectedInstanceType?.ToString() ?? "<not found>"}.");
