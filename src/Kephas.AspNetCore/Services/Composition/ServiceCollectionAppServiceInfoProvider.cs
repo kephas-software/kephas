@@ -42,7 +42,9 @@ namespace Kephas.AspNetCore.Services.Composition
             var serviceCollection = ambientServices.GetService<IServiceCollection>();
             var openGenericServiceTypes = new List<Type>();
 
-            foreach (var descriptor in serviceCollection.OrderBy(d => !d.ServiceType.IsGenericTypeDefinition))
+            // make sure to register first the open generics, so that the constructed generics
+            // are later ignored
+            foreach (var descriptor in serviceCollection.OrderBy(d => d.ServiceType.IsGenericTypeDefinition ? 0 : 1))
             {
                 var serviceType = descriptor.ServiceType;
                 if (serviceType.IsGenericTypeDefinition)
@@ -74,7 +76,7 @@ namespace Kephas.AspNetCore.Services.Composition
                                            ? AppServiceLifetime.ScopeShared
                                            : AppServiceLifetime.Instance;
 
-                    yield return (serviceType.GetTypeInfo(), new AppServiceInfo(serviceType, instanceType, lifetime));
+                    yield return (serviceType.GetTypeInfo(), new AppServiceInfo(serviceType, instanceType, lifetime, serviceType.IsGenericTypeDefinition));
                 }
             }
         }
