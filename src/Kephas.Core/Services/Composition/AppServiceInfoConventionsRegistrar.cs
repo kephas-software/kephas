@@ -717,6 +717,27 @@ namespace Kephas.Services.Composition
                     logger.Debug($"Service {serviceContractType} matches open generic contract types.");
                 }
 
+                // for singleton open generics select a single implementation type
+                if (appServiceInfo.AsOpenGeneric && !appServiceInfo.AllowMultiple)
+                {
+                    var selectedInstanceType = appServiceInfo.InstanceType
+                                               ?? this.TrySelectSingleServiceImplementationType(
+                                                   serviceContract,
+                                                   typeInfos,
+                                                   t => this.MatchOpenGenericContractType(t, serviceContractType));
+                    if (logger.IsDebugEnabled())
+                    {
+                        logger.Debug($"Service {serviceContractType} matches open generic implementation type {selectedInstanceType}.");
+                    }
+
+                    return selectedInstanceType == null ? null : conventions.ForType(selectedInstanceType);
+                }
+
+                if (logger.IsDebugEnabled())
+                {
+                    logger.Debug($"Service {serviceContractType} matches open generic contract types.");
+                }
+
                 // if there is non-generic service contract with the same full name
                 // then add just the conventions for the derived types.
                 return conventions.ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType));
@@ -734,11 +755,13 @@ namespace Kephas.Services.Composition
                 return conventions.ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract));
             }
 
-            var parts = typeInfos.Where(part => this.MatchDerivedFromContractType(part, serviceContract)).ToList();
-            if (parts.Count == 1)
-            {
-                var selectedPart = parts[0].AsType();
+            var selectedPart = this.TrySelectSingleServiceImplementationType(
+                serviceContract,
+                typeInfos,
+                part => this.MatchDerivedFromContractType(part, serviceContract));
 
+            if (selectedPart != null)
+            {
                 if (logger.IsDebugEnabled())
                 {
                     logger.Debug($"Service {serviceContractType} matches {selectedPart}.");
@@ -747,15 +770,34 @@ namespace Kephas.Services.Composition
                 return conventions.ForType(selectedPart);
             }
 
+            return null;
+        }
+
+        /// <summary>
+        /// Select a single service implementation type based on the provided implementation criteria
+        /// and the override priority of the possible implementations.
+        /// </summary>
+        /// <param name="serviceContract">The service contract.</param>
+        /// <param name="typeInfos">The type infos.</param>
+        /// <param name="criteria">The criteria.</param>
+        /// <returns>
+        /// An implementation type.
+        /// </returns>
+        private Type TrySelectSingleServiceImplementationType(TypeInfo serviceContract, IEnumerable<TypeInfo> typeInfos, Func<TypeInfo, bool> criteria)
+        {
+            var parts = typeInfos.Where(criteria).ToList();
+            if (parts.Count == 1)
+            {
+                var selectedPart = parts[0].AsType();
+                return selectedPart;
+            }
+
             if (parts.Count > 1)
             {
-                var overrideChain =
-                    parts.ToDictionary(
-                        ti => ti,
-                        ti =>
-                        ti.GetCustomAttribute<OverridePriorityAttribute>() ?? new OverridePriorityAttribute(Priority.Normal))
-                        .OrderBy(item => item.Value.Value)
-                        .ToList();
+                var overrideChain = parts.ToDictionary(
+                    ti => ti,
+                    ti => ti.GetCustomAttribute<OverridePriorityAttribute>()
+                          ?? new OverridePriorityAttribute(Priority.Normal)).OrderBy(item => item.Value.Value).ToList();
 
                 var selectedPart = overrideChain[0].Key;
                 if (overrideChain[0].Value.Value == overrideChain[1].Value.Value)
@@ -765,15 +807,12 @@ namespace Kephas.Services.Composition
                             Strings.AmbiguousOverrideForAppServiceContract,
                             serviceContract,
                             selectedPart,
-                            string.Join(", ", overrideChain.Select(item => item.Key.ToString() + ":" + item.Value.Value))));
+                            string.Join(
+                                ", ",
+                                overrideChain.Select(item => item.Key.ToString() + ":" + item.Value.Value))));
                 }
 
-                if (logger.IsDebugEnabled())
-                {
-                    logger.Debug($"Service {serviceContractType} matches {selectedPart}.");
-                }
-
-                return conventions.ForType(selectedPart.AsType());
+                return selectedPart.AsType();
             }
 
             return null;
@@ -792,11 +831,11 @@ namespace Kephas.Services.Composition
         /// The part builder or <c>null</c>.
         /// </returns>
         private IPartBuilder TryGetPartBuilder(
-            IAppServiceInfo appServiceInfo,
-            TypeInfo serviceContract,
-            IConventionsBuilder conventions,
-            IEnumerable<TypeInfo> typeInfos,
-            ILogger logger)
+        IAppServiceInfo appServiceInfo,
+        TypeInfo serviceContract,
+        IConventionsBuilder conventions,
+        IEnumerable<TypeInfo> typeInfos,
+        ILogger logger)
         {
             var serviceContractType = serviceContract.AsType();
 
