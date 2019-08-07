@@ -167,21 +167,6 @@ namespace Kephas.Services
         string IAppServiceInfo.ScopeName => this.scopeName;
 
         /// <summary>
-        /// Returns a string that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A string that represents the current object.
-        /// </returns>
-        public override string ToString()
-        {
-            var multiple = this.AllowMultiple ? ", multi" : string.Empty;
-            var openGeneric = this.AsOpenGeneric ? ", open generic" : string.Empty;
-            var scope = this.scopeName != null ? $"/scope:{this.scopeName}" : string.Empty;
-
-            return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{scope}";
-        }
-
-        /// <summary>
         /// Registers the provided metadata attribute types as default attributes.
         /// </summary>
         /// <param name="attributeTypes">A variable-length parameters list containing attribute types.</param>
@@ -194,6 +179,21 @@ namespace Kephas.Services
                     WritableDefaultMetadataAttributeTypes.Add(attributeType);
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var multiple = this.AllowMultiple ? ", multi" : string.Empty;
+            var openGeneric = this.AsOpenGeneric ? ", open generic" : string.Empty;
+            var scope = this.scopeName != null ? $"/scope:{this.scopeName}" : string.Empty;
+
+            return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{scope}";
         }
     }
 }
