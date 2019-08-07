@@ -717,20 +717,27 @@ namespace Kephas.Services.Composition
                     logger.Debug($"Service {serviceContractType} matches open generic contract types.");
                 }
 
-                // for singleton open generics select a single implementation type
-                if (appServiceInfo.AsOpenGeneric && !appServiceInfo.AllowMultiple)
+                // for open generics select a single implementation type
+                if (appServiceInfo.AsOpenGeneric)
                 {
-                    var selectedInstanceType = appServiceInfo.InstanceType
-                                               ?? this.TrySelectSingleServiceImplementationType(
-                                                   serviceContract,
-                                                   typeInfos,
-                                                   t => this.MatchOpenGenericContractType(t, serviceContractType));
+                    var (isOverride, selectedInstanceType) = appServiceInfo.InstanceType == null
+                                                                 ? this.TrySelectSingleServiceImplementationType(
+                                                                     serviceContract,
+                                                                     typeInfos,
+                                                                     t => this.MatchOpenGenericContractType(t, serviceContractType))
+                                                                 : (true, appServiceInfo.InstanceType);
                     if (logger.IsDebugEnabled())
                     {
-                        logger.Debug($"Service {serviceContractType} matches open generic implementation type {selectedInstanceType}.");
+                        logger.Debug($"Service {serviceContractType} matches open generic implementation type {selectedInstanceType?.ToString() ?? "<not found>"}.");
                     }
 
-                    return selectedInstanceType == null ? null : conventions.ForType(selectedInstanceType);
+                    // TODO HACK: remove the *isOverride* check when the BUG https://github.com/dotnet/corefx/issues/40094 is fixed
+                    // the meaning is that for non-overrides (no multiple implementations) it is safe to let the matching
+                    // to be done through the lambda criteria
+                    if (isOverride && selectedInstanceType != null)
+                    {
+                        return conventions.ForType(selectedInstanceType);
+                    }
                 }
 
                 if (logger.IsDebugEnabled())
@@ -755,7 +762,7 @@ namespace Kephas.Services.Composition
                 return conventions.ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract));
             }
 
-            var selectedPart = this.TrySelectSingleServiceImplementationType(
+            var (_, selectedPart) = this.TrySelectSingleServiceImplementationType(
                 serviceContract,
                 typeInfos,
                 part => this.MatchDerivedFromContractType(part, serviceContract));
@@ -781,15 +788,15 @@ namespace Kephas.Services.Composition
         /// <param name="typeInfos">The type infos.</param>
         /// <param name="criteria">The criteria.</param>
         /// <returns>
-        /// An implementation type.
+        /// An implementation type and a flag indicating if the selected implementation type is an override.
         /// </returns>
-        private Type TrySelectSingleServiceImplementationType(TypeInfo serviceContract, IEnumerable<TypeInfo> typeInfos, Func<TypeInfo, bool> criteria)
+        private (bool isOverride, Type implementationType) TrySelectSingleServiceImplementationType(TypeInfo serviceContract, IEnumerable<TypeInfo> typeInfos, Func<TypeInfo, bool> criteria)
         {
             var parts = typeInfos.Where(criteria).ToList();
             if (parts.Count == 1)
             {
                 var selectedPart = parts[0].AsType();
-                return selectedPart;
+                return (false, selectedPart);
             }
 
             if (parts.Count > 1)
@@ -812,10 +819,10 @@ namespace Kephas.Services.Composition
                                 overrideChain.Select(item => item.Key.ToString() + ":" + item.Value.Value))));
                 }
 
-                return selectedPart.AsType();
+                return (true, selectedPart.AsType());
             }
 
-            return null;
+            return (false, null);
         }
 
         /// <summary>
