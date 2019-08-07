@@ -47,7 +47,7 @@ namespace Kephas.Services
                       typeof(ProcessingPriorityAttribute),
                       typeof(OverridePriorityAttribute),
                       typeof(OptionalServiceAttribute),
-                      typeof(ServiceNameAttribute)
+                      typeof(ServiceNameAttribute),
                   };
 
         /// <summary>
@@ -165,6 +165,21 @@ namespace Kephas.Services
         /// The name of the scope for scoped shared services.
         /// </value>
         string IAppServiceInfo.ScopeName => this.scopeName;
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var multiple = this.AllowMultiple ? ", multi" : string.Empty;
+            var openGeneric = this.AsOpenGeneric ? ", open generic" : string.Empty;
+            var scope = this.scopeName != null ? $"/scope:{this.scopeName}" : string.Empty;
+
+            return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{scope}";
+        }
 
         /// <summary>
         /// Registers the provided metadata attribute types as default attributes.

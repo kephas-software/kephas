@@ -185,6 +185,24 @@ namespace Kephas.Services.Reflection
         /// </value>
         public string ScopeName { get; private set; }
 
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var multiple = this.AllowMultiple ? ", multi" : string.Empty;
+            var openGeneric = this.AsOpenGeneric ? ", open generic" : string.Empty;
+            var instanceType = this.InstanceType != null ? $"/type:{this.InstanceType}" : string.Empty;
+            var instance = this.Instance != null ? $"/instance:{this.Instance}" : string.Empty;
+            var factory = this.InstanceFactory != null ? $"/instanceFactory" : string.Empty;
+            var scope = this.ScopeName != null ? $"/scope:{this.ScopeName}" : string.Empty;
+
+            return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{instanceType}{instance}{factory}{scope}";
+        }
+
         private void SetContractType(Type contractType)
         {
             this.ContractType = contractType;
