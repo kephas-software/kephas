@@ -2,6 +2,7 @@ namespace Kephas.AspNetCore.InteractiveTests
 {
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
 
     public class Program
     {
@@ -12,6 +13,7 @@ namespace Kephas.AspNetCore.InteractiveTests
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .ConfigureAppConfiguration(b => b.AddJsonFile("appSettings.json"));
     }
 }

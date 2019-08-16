@@ -4,7 +4,7 @@ namespace Kephas.AspNetCore.InteractiveTests
 
     using Kephas;
     using Kephas.Application;
-    using Kephas.Logging.NLog;
+    using Kephas.Logging.Serilog;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -12,6 +12,8 @@ namespace Kephas.AspNetCore.InteractiveTests
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+
+    using Serilog;
 
     public class Startup : Kephas.AspNetCore.StartupBase
     {
@@ -47,8 +49,11 @@ namespace Kephas.AspNetCore.InteractiveTests
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
         protected override void ConfigureAmbientServices(string[] appArgs, AmbientServicesBuilder ambientServicesBuilder)
         {
+            var serilogConfig = new LoggerConfiguration()
+                .ReadFrom.Configuration(this.Configuration);
+
             ambientServicesBuilder
-                .WithNLogManager()
+                .WithSerilogManager(serilogConfig)
                 .WithDefaultAppRuntime()
                 .WithMefCompositionContainer();
         }
