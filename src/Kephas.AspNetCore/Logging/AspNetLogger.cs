@@ -113,4 +113,21 @@ namespace Kephas.AspNetCore.Logging
             }
         }
     }
+
+    /// <summary>
+    /// An ASP net logger.
+    /// </summary>
+    /// <typeparam name="T">The type.</typeparam>
+    public class AspNetLogger<T> : Logger<T>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AspNetLogger{T}"/> class.
+        /// </summary>
+        public AspNetLogger()
+            : base(AmbientServices.Instance.CompositionContainer.GetExport<ILoggerFactory>())
+        {
+            // TODO until the https://github.com/dotnet/corefx/issues/40094 bug is fixed, make this constructor parameterless.
+            // TODO remove this class when the bug is corrected and its registration.
+        }
+    }
 }

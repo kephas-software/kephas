@@ -30,7 +30,7 @@ namespace Kephas.AspNetCore.Options
                 AmbientServices.Instance.CompositionContainer.GetExports<IPostConfigureOptions<T>>())
         {
             // TODO until the https://github.com/dotnet/corefx/issues/40094 bug is fixed, make this constructor parameterless.
-            // TODO remove this class when the bug is corrected.
+            // TODO remove this class when the bug is corrected and its registration.
         }
     }
 }
