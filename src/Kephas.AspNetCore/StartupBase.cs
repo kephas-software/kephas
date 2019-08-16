@@ -21,8 +21,10 @@ namespace Kephas.AspNetCore
     using Kephas.AspNetCore.Configuration;
     using Kephas.AspNetCore.Hosting;
     using Kephas.AspNetCore.Logging;
+    using Kephas.AspNetCore.Options;
     using Kephas.Composition;
     using Kephas.Configuration;
+    using Kephas.Logging;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
@@ -30,6 +32,7 @@ namespace Kephas.AspNetCore
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Logging;
 
     using ILogger = Kephas.Logging.ILogger;
@@ -109,14 +112,22 @@ namespace Kephas.AspNetCore
         {
             try
             {
-                serviceCollection.AddTransient<IServiceScopeFactory, CompositionServiceScopeFactory>();
-                serviceCollection.AddSingleton<ILoggerFactory, LoggerFactory>();
+                serviceCollection.Replace(ServiceDescriptor.Transient<IServiceScopeFactory, CompositionServiceScopeFactory>());
+
+                serviceCollection.Replace(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
+                serviceCollection.Replace(ServiceDescriptor.Singleton(typeof(Microsoft.Extensions.Logging.ILogger<>), typeof(AspNetLogger<>)));
+
+                serviceCollection.Replace(ServiceDescriptor.Singleton(typeof(Microsoft.Extensions.Options.IOptions<>), typeof(Options<>)));
+                serviceCollection.Replace(ServiceDescriptor.Scoped(typeof(Microsoft.Extensions.Options.IOptionsSnapshot<>), typeof(OptionsSnapshot<>)));
+                serviceCollection.Replace(ServiceDescriptor.Singleton(typeof(Microsoft.Extensions.Options.IOptionsFactory<>), typeof(OptionsFactory<>)));
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
 
                 this.ambientServices = this.ambientServices ?? AmbientServices.Instance;
                 this.ambientServices.RegisterService(serviceCollection);
                 this.ambientServices.RegisterService<IConfigurationStore>(new AspNetConfigurationStore(this.Configuration));
+
+                serviceCollection.TryAddSingleton<IServiceProvider>(provider => provider);
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
                 var ambientServicesBuilder = new AmbientServicesBuilder(this.ambientServices);
