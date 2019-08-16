@@ -15,3 +15,12 @@ and then hit ENTER.
 }
 
 6. Go back in the command prompt and hit any key, to assemble the assembly again. The output file will have the ending <original>.signed.dll.
+
+-------------
+
+For MongoDB packages:
+
+1. Start the Visual Studio Developer Command Prompt (for ildasm and ilasm).
+2. Copy in the sign folder the MongoDB packages and unzip them.
+3. Run: powershell .\mongo-sign.ps1
+4. Indicate the version of the packages.
