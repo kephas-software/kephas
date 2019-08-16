@@ -1,5 +1,7 @@
 param (
-    [string]$version = $( Read-Host "Please provide package version to sign" )
+    [string]$version = $( Read-Host "Please provide package version to sign" ),
+    [string]$CertificateSubjectName = "CRIŞAN IOAN SOFT PERSOANĂ FIZICĂ AUTORIZATĂ",
+    [string]$Timestamper = "http://timestamp.digicert.com"
 )
 
 $targetNugetPath = "..\..\externals\nugets\"
@@ -12,6 +14,12 @@ $packages = @(
 )
 
 foreach ($package in $packages) {
+    $targetLicense = "$targetNugetPath\$package.signed.$version\License.txt"
+	Remove-Item -path "$targetLicense"
+
+	$sourceLicense = ".\$package.$version\License.txt"
+	Copy-Item "$sourceLicense" "$targetLicense"
+
     $targetAssemblyNet45 = "$targetNugetPath\$package.signed.$version\lib\net452\$package"
 	Remove-Item -path "$targetAssemblyNet45.dll"
 	Remove-Item -path "$targetAssemblyNet45.xml"
@@ -28,5 +36,9 @@ foreach ($package in $packages) {
 	Copy-Item "$sourceAssemblyNetStandard.signed.dll" "$targetAssemblyNetStandard.dll"
 	Copy-Item "$sourceAssemblyNetStandard.xml" "$targetAssemblyNetStandard.xml"
 	
-	iex "$targetNugetPath\.\nuget.exe pack $targetNugetPath$package.signed.$version\$package.signed.nuspec -BasePath $targetNugetPath$package.signed.$version"
+	.\NuGet.exe pack $targetNugetPath$package.signed.$version\$package.signed.nuspec -BasePath $targetNugetPath$package.signed.$version
+	
+	.\NuGet.exe sign .\$package.signed.$version.nupkg -CertificateSubjectName "$CertificateSubjectName" -Timestamper "$Timestamper"
+
+	Copy-Item .\$package.signed.$version.nupkg $targetNugetPath
 }
