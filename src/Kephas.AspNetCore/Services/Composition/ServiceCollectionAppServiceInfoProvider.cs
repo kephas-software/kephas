@@ -14,6 +14,7 @@ namespace Kephas.AspNetCore.Services.Composition
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Composition;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Services;
@@ -59,13 +60,28 @@ namespace Kephas.AspNetCore.Services.Composition
                     }
                 }
 
+                if (!candidateTypes.Contains(serviceType))
+                {
+                    candidateTypes.Add(serviceType);
+                }
+
                 if (descriptor.ImplementationInstance != null)
                 {
-                    yield return (serviceType, new AppServiceInfo(serviceType, descriptor.ImplementationInstance) { ImportProperties = false });
+                    yield return (serviceType,
+                                     new AppServiceInfo(serviceType, descriptor.ImplementationInstance)
+                                         {
+                                             ImportProperties = false,
+                                         });
                 }
                 else if (descriptor.ImplementationFactory != null)
                 {
-                    yield return (serviceType, new AppServiceInfo(serviceType, descriptor.ImplementationFactory) { ImportProperties = false });
+                    yield return (serviceType,
+                                     new AppServiceInfo(
+                                         serviceType,
+                                         ctx => descriptor.ImplementationFactory(ctx.ToServiceProvider()))
+                                         {
+                                             ImportProperties = false,
+                                         });
                 }
                 else
                 {
@@ -80,7 +96,15 @@ namespace Kephas.AspNetCore.Services.Composition
                         candidateTypes.Add(instanceType);
                     }
 
-                    yield return (serviceType, new AppServiceInfo(serviceType, instanceType, lifetime, serviceType.IsGenericTypeDefinition) { ImportProperties = false });
+                    yield return (serviceType,
+                                     new AppServiceInfo(
+                                         serviceType,
+                                         instanceType,
+                                         lifetime,
+                                         serviceType.IsGenericTypeDefinition)
+                                         {
+                                             ImportProperties = false,
+                                         });
                 }
             }
         }
