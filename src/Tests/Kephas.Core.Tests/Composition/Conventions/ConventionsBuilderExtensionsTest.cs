@@ -82,7 +82,10 @@ namespace Kephas.Core.Tests.Composition.Conventions
 
     public class CalculatorConventionsRegistrar : IConventionsRegistrar
     {
-        public void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext)
+        public void RegisterConventions(
+            IConventionsBuilder builder,
+            IList<Type> candidateTypes,
+            ICompositionRegistrationContext registrationContext)
         {
             builder
                 .ForTypesDerivedFrom(typeof(ICalculator))

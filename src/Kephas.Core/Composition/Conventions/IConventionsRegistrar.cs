@@ -10,11 +10,10 @@
 
 namespace Kephas.Composition.Conventions
 {
+    using System;
     using System.Collections.Generic;
-    using System.Reflection;
 
     using Kephas.Composition.Hosting;
-    using Kephas.Services.Composition;
 
     /// <summary>
     /// Registrar for composition conventions.
@@ -24,9 +23,15 @@ namespace Kephas.Composition.Conventions
         /// <summary>
         /// Registers the conventions.
         /// </summary>
+        /// <remarks>
+        /// The candidate types provided may be changed, typically by adding new types.
+        /// </remarks>
         /// <param name="builder">The registration builder.</param>
         /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
         /// <param name="registrationContext">Context for the registration.</param>
-        void RegisterConventions(IConventionsBuilder builder, IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext);
+        void RegisterConventions(
+            IConventionsBuilder builder,
+            IList<Type> candidateTypes,
+            ICompositionRegistrationContext registrationContext);
     }
 }

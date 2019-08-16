@@ -54,11 +54,11 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
             var ambientServices = new AmbientServices();
-            var appServicesInfos = new List<(TypeInfo contractType, IAppServiceInfo appServiceInfo)>
+            var appServicesInfos = new List<(Type contractType, IAppServiceInfo appServiceInfo)>
                                        {
-                                           (typeof(int).GetTypeInfo(), Substitute.For<IAppServiceInfo>()),
-                                           (typeof(string).GetTypeInfo(), Substitute.For<IAppServiceInfo>()),
-                                           (typeof(bool).GetTypeInfo(), Substitute.For<IAppServiceInfo>()),
+                                           (typeof(int), Substitute.For<IAppServiceInfo>()),
+                                           (typeof(string), Substitute.For<IAppServiceInfo>()),
+                                           (typeof(bool), Substitute.For<IAppServiceInfo>()),
                                        };
 
             ambientServices.SetAppServiceInfos(appServicesInfos);

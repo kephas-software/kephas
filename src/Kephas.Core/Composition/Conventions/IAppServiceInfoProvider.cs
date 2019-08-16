@@ -10,6 +10,7 @@
 
 namespace Kephas.Composition.Conventions
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
@@ -29,6 +30,8 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// An enumeration of application service information objects and their associated contract type.
         /// </returns>
-        IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext);
+        IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(
+            IList<Type> candidateTypes,
+            ICompositionRegistrationContext registrationContext);
     }
 }

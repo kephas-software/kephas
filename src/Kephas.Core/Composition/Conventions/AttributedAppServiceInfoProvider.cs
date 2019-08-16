@@ -10,6 +10,7 @@
 
 namespace Kephas.Composition.Conventions
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
@@ -30,7 +31,9 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// An enumeration of application service information objects and their associated contract type.
         /// </returns>
-        public IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext)
+        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(
+            IList<Type> candidateTypes,
+            ICompositionRegistrationContext registrationContext)
         {
             foreach (var candidateType in candidateTypes)
             {
@@ -45,13 +48,13 @@ namespace Kephas.Composition.Conventions
         /// <summary>
         /// Tries to get the <see cref="IAppServiceInfo"/> for the provided type.
         /// </summary>
-        /// <param name="typeInfo">Information describing the type.</param>
+        /// <param name="type">The type.</param>
         /// <returns>
         /// An <see cref="IAppServiceInfo"/> or <c>null</c>, if the provided type is not a service contract.
         /// </returns>
-        protected virtual IAppServiceInfo TryGetAppServiceInfo(TypeInfo typeInfo)
+        protected virtual IAppServiceInfo TryGetAppServiceInfo(Type type)
         {
-            return typeInfo.GetCustomAttribute<AppServiceContractAttribute>();
+            return type.GetCustomAttribute<AppServiceContractAttribute>();
         }
     }
 }

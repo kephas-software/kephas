@@ -24,7 +24,7 @@
         [Test]
         public void RegisterConventions_hierarchy_with_properties_with_same_name()
         {
-            var serviceContracts = new List<TypeInfo>
+            var serviceContracts = new List<Type>
                                        {
                                            typeof(ICloneable).GetTypeInfo(),
                                            typeof(IConvertible).GetTypeInfo(),
@@ -34,7 +34,7 @@
 
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var parts = new List<TypeInfo>(serviceContracts)
+            var parts = new List<Type>(serviceContracts)
                             {
                                 typeof(TestBaseImporter).GetTypeInfo(),
                                 typeof(TestDerivedImporter).GetTypeInfo(),
@@ -59,7 +59,7 @@
         [Test]
         public void RegisterConventions_hierarchy_with_missing_default_constructor()
         {
-            var serviceContracts = new List<TypeInfo>
+            var serviceContracts = new List<Type>
                                        {
                                            typeof(IGeneric2<,>).GetTypeInfo(),
                                            typeof(INonGeneric).GetTypeInfo()
@@ -68,7 +68,7 @@
 
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var parts = new List<TypeInfo>(serviceContracts)
+            var parts = new List<Type>(serviceContracts)
                             {
                                 typeof(Generic2Base<,>).GetTypeInfo(),
                                 typeof(Generic2).GetTypeInfo(),
@@ -88,7 +88,7 @@
         [Test]
         public void RegisterConventions_hierarchy_with_multiple_constructors_in_abstract_base()
         {
-            var serviceContracts = new List<TypeInfo>
+            var serviceContracts = new List<Type>
                                        {
                                            typeof(IClassifierFactory).GetTypeInfo(),
                                        };
@@ -96,7 +96,7 @@
 
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var parts = new List<TypeInfo>(serviceContracts)
+            var parts = new List<Type>(serviceContracts)
                             {
                                 typeof(ClassifierFactoryBase).GetTypeInfo(),
                                 typeof(StringClassifierFactory).GetTypeInfo(),
@@ -121,7 +121,7 @@
         [Test]
         public void RegisterConventions_exported_classes()
         {
-            var serviceContracts = new List<TypeInfo>
+            var serviceContracts = new List<Type>
                                        {
                                            typeof(ExportedClass).GetTypeInfo(),
                                            typeof(DerivedExportedClass).GetTypeInfo()
@@ -130,7 +130,7 @@
 
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var parts = new List<TypeInfo>(serviceContracts)
+            var parts = new List<Type>(serviceContracts)
                             {
                             };
 
@@ -148,7 +148,7 @@
         [Test]
         public void RegisterConventions_hierarchy_with_non_generic_contract_and_non_abstract_generic_implementation()
         {
-            var serviceContracts = new List<TypeInfo>
+            var serviceContracts = new List<Type>
                                        {
                                            typeof(IConverter).GetTypeInfo(),
                                        };
@@ -156,9 +156,9 @@
 
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
-            var parts = new List<TypeInfo>(serviceContracts)
+            var parts = new List<Type>(serviceContracts)
                             {
-                                typeof(ConverterBase<,>).GetTypeInfo(),
+                                typeof(ConverterBase<,>),
                             };
 
             registrar.RegisterConventions(conventions, parts, new TestRegistrationContext());
@@ -171,30 +171,30 @@
         [ExcludeFromComposition]
         public class TestRegistrar : AppServiceInfoConventionsRegistrar
         {
-            private readonly Func<TypeInfo, AppServiceContractAttribute> attrProvider;
+            private readonly Func<Type, AppServiceContractAttribute> attrProvider;
 
-            public TestRegistrar(Func<TypeInfo, AppServiceContractAttribute> attrProvider)
+            public TestRegistrar(Func<Type, AppServiceContractAttribute> attrProvider)
             {
                 this.attrProvider = attrProvider;
             }
 
-            protected override IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IList<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext)
+            protected override IEnumerable<IAppServiceInfoProvider> GetAppServiceInfoProviders(IList<Type> candidateTypes, ICompositionRegistrationContext registrationContext)
             {
                 yield return new TestAppServiceInfoProvider(this.attrProvider);
             }
 
             private class TestAppServiceInfoProvider : AttributedAppServiceInfoProvider
             {
-                private readonly Func<TypeInfo, AppServiceContractAttribute> attrProvider;
+                private readonly Func<Type, AppServiceContractAttribute> attrProvider;
 
-                public TestAppServiceInfoProvider(Func<TypeInfo, AppServiceContractAttribute> attrProvider)
+                public TestAppServiceInfoProvider(Func<Type, AppServiceContractAttribute> attrProvider)
                 {
                     this.attrProvider = attrProvider;
                 }
 
-                protected override IAppServiceInfo TryGetAppServiceInfo(TypeInfo typeInfo)
+                protected override IAppServiceInfo TryGetAppServiceInfo(Type type)
                 {
-                    return this.attrProvider(typeInfo);
+                    return this.attrProvider(type);
                 }
             }
         }

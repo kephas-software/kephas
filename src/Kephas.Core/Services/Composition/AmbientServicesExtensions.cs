@@ -10,8 +10,8 @@
 
 namespace Kephas.Services.Composition
 {
+    using System;
     using System.Collections.Generic;
-    using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services.Reflection;
@@ -31,12 +31,12 @@ namespace Kephas.Services.Composition
         /// An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
         /// value is the <see cref="IAppServiceInfo"/>.
         /// </returns>
-        internal static IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(this IAmbientServices ambientServices)
+        internal static IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(this IAmbientServices ambientServices)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             return ambientServices[AppServiceInfosKey] as
-                       IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)>;
+                       IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)>;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Kephas.Services.Composition
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="appServiceInfos">An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
         /// value is the <see cref="IAppServiceInfo"/></param>
-        internal static void SetAppServiceInfos(this IAmbientServices ambientServices, IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)> appServiceInfos)
+        internal static void SetAppServiceInfos(this IAmbientServices ambientServices, IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> appServiceInfos)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 

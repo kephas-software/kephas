@@ -344,7 +344,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var registrar = Substitute.For<IConventionsRegistrar>();
             registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IEnumerable<TypeInfo>>(), Arg.Any<ICompositionRegistrationContext>()))
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<ICompositionRegistrationContext>()))
                 .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstance(typeof(string), "123"); });
 
             var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
@@ -364,7 +364,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var registrar = Substitute.For<IConventionsRegistrar>();
             registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IEnumerable<TypeInfo>>(), Arg.Any<ICompositionRegistrationContext>()))
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<ICompositionRegistrationContext>()))
                 .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstance<string>("123"); });
 
             var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
@@ -384,7 +384,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var registrar = Substitute.For<IConventionsRegistrar>();
             registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IEnumerable<TypeInfo>>(), Arg.Any<ICompositionRegistrationContext>()))
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<ICompositionRegistrationContext>()))
                 .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstanceFactory(typeof(string), ctx => "123"); });
 
             var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
@@ -404,7 +404,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var registrar = Substitute.For<IConventionsRegistrar>();
             registrar
-                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IEnumerable<TypeInfo>>(), Arg.Any<ICompositionRegistrationContext>()))
+                .WhenForAnyArgs(r => r.RegisterConventions(Arg.Any<IConventionsBuilder>(), Arg.Any<IList<Type>>(), Arg.Any<ICompositionRegistrationContext>()))
                 .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstanceFactory<string>(ctx => "123"); });
 
             var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });

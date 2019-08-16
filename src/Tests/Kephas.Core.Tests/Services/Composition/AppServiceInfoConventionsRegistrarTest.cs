@@ -425,10 +425,10 @@ namespace Kephas.Core.Tests.Services.Composition
                 () => registrar.RegisterConventions(
                     conventions,
                     new[] {
-                            typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
-                            typeof(IBadAppService).GetTypeInfo(), 
-                            typeof(BadAppService).GetTypeInfo(),
-                    },
+                                  typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
+                                  typeof(IBadAppService).GetTypeInfo(), 
+                                  typeof(BadAppService).GetTypeInfo(),
+                              },
                     new TestRegistrationContext()));
         }
 

@@ -15,6 +15,7 @@ namespace Kephas.Composition.Conventions
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Collections;
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
@@ -68,7 +69,7 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// The convention builder.
         /// </returns>
-        public static IConventionsBuilder RegisterConventions(this IConventionsBuilder builder, IEnumerable<Type> registrarTypes, IEnumerable<Type> parts, ICompositionRegistrationContext registrationContext)
+        public static IConventionsBuilder RegisterConventions(this IConventionsBuilder builder, IEnumerable<Type> registrarTypes, IList<Type> parts, ICompositionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(registrarTypes, nameof(registrarTypes));
@@ -89,7 +90,7 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// The convention builder.
         /// </returns>
-        public static IConventionsBuilder RegisterConventionsFrom(this IConventionsBuilder builder, IEnumerable<Assembly> assemblies, IEnumerable<Type> parts, ICompositionRegistrationContext registrationContext)
+        public static IConventionsBuilder RegisterConventionsFrom(this IConventionsBuilder builder, IEnumerable<Assembly> assemblies, IList<Type> parts, ICompositionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
             Requires.NotNull(assemblies, nameof(assemblies));
@@ -109,17 +110,15 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// The registration builder.
         /// </returns>
-        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, Func<IEnumerable<IRuntimeTypeInfo>> registrarTypesProvider, IEnumerable<Type> parts, ICompositionRegistrationContext registrationContext)
+        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, Func<IEnumerable<IRuntimeTypeInfo>> registrarTypesProvider, IList<Type> parts, ICompositionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
 
-            var partsList = parts.ToList();
             if (registrationContext.Parts != null)
             {
-                partsList.AddRange(registrationContext.Parts);
+                parts.AddRange(registrationContext.Parts);
             }
 
-            var partInfos = partsList.Select(p => p.GetTypeInfo()).ToList();
             var registrarTypes = registrarTypesProvider();
             var registrars = registrarTypes.Select(t => (IConventionsRegistrar)t.CreateInstance()).ToList();
             if (registrationContext.Registrars != null)
@@ -137,7 +136,7 @@ namespace Kephas.Composition.Conventions
                     logger.Debug($"Registering conventions from '{registrar.GetType()}...");
                 }
 
-                registrar.RegisterConventions(builder, partInfos, registrationContext);
+                registrar.RegisterConventions(builder, parts, registrationContext);
             }
 
             return builder;
