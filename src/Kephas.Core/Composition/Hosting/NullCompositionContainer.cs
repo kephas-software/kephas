@@ -95,6 +95,19 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
+        /// Gets a service.
+        /// </summary>
+        /// <exception cref="NullServiceException">Thrown when a Null Service error condition occurs.</exception>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        /// The service.
+        /// </returns>
+        public object GetService(Type serviceType)
+        {
+            throw new NullServiceException(this);
+        }
+
+        /// <summary>
         /// Creates a new scoped composition context.
         /// </summary>
         /// <param name="scopeName">The scope name. If not provided the <see cref="CompositionScopeNames.Default"/>

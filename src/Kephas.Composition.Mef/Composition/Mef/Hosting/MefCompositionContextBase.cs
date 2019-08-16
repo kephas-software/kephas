@@ -163,6 +163,18 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
+        /// Gets a service.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        /// The service.
+        /// </returns>
+        public object GetService(Type serviceType)
+        {
+            return this.GetExport(serviceType);
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
