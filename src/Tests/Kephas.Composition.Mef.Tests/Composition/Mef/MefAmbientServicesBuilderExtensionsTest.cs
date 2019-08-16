@@ -52,6 +52,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
+        [Ignore("Until a fix is found for BUG https://github.com/dotnet/corefx/issues/40094, ignore this test.")]
         public void WithMefCompositionContainer_with_open_generic_override_and_dependency()
         {
             var ambientServices = new AmbientServices();
@@ -66,6 +67,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
+        [Ignore("Until a fix is found for BUG https://github.com/dotnet/corefx/issues/40094, ignore this test.")]
         public void SystemComposition_generic_export_with_ctor_dependency()
         {
             var conventions = new ConventionBuilder();
