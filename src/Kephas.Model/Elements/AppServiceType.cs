@@ -75,6 +75,14 @@ namespace Kephas.Model.Elements
         public bool AsOpenGeneric => this.appServiceInfo.AsOpenGeneric;
 
         /// <summary>
+        /// Gets a value indicating whether the properties should be imported.
+        /// </summary>
+        /// <value>
+        /// True if import properties, false if not.
+        /// </value>
+        public bool ImportProperties => this.appServiceInfo.ImportProperties;
+
+        /// <summary>
         /// Gets the supported metadata attributes.
         /// </summary>
         /// <value>
