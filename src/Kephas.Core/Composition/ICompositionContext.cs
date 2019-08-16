@@ -25,7 +25,7 @@ namespace Kephas.Composition
     /// <summary>
     /// Public interface for the composition context.
     /// </summary>
-    public interface ICompositionContext : IServiceProvider, IDisposable
+    public interface ICompositionContext : IDisposable
     {
         /// <summary>
         /// Resolves the specified contract type.
