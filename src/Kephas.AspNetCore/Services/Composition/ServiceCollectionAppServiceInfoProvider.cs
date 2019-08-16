@@ -13,9 +13,7 @@ namespace Kephas.AspNetCore.Services.Composition
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
-    using Kephas.Composition;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Services;
@@ -36,7 +34,9 @@ namespace Kephas.AspNetCore.Services.Composition
         /// <returns>
         /// An enumeration of application service information objects and their associated contract type.
         /// </returns>
-        public IEnumerable<(TypeInfo contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IEnumerable<TypeInfo> candidateTypes, ICompositionRegistrationContext registrationContext)
+        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(
+            IList<Type> candidateTypes,
+            ICompositionRegistrationContext registrationContext)
         {
             var ambientServices = registrationContext.AmbientServices;
             var serviceCollection = ambientServices.GetService<IServiceCollection>();
@@ -61,11 +61,11 @@ namespace Kephas.AspNetCore.Services.Composition
 
                 if (descriptor.ImplementationInstance != null)
                 {
-                    yield return (serviceType.GetTypeInfo(), new AppServiceInfo(serviceType, descriptor.ImplementationInstance));
+                    yield return (serviceType, new AppServiceInfo(serviceType, descriptor.ImplementationInstance) { ImportProperties = false });
                 }
                 else if (descriptor.ImplementationFactory != null)
                 {
-                    yield return (serviceType.GetTypeInfo(), new AppServiceInfo(serviceType, descriptor.ImplementationFactory));
+                    yield return (serviceType, new AppServiceInfo(serviceType, descriptor.ImplementationFactory) { ImportProperties = false });
                 }
                 else
                 {
@@ -75,8 +75,12 @@ namespace Kephas.AspNetCore.Services.Composition
                                        : descriptor.Lifetime == ServiceLifetime.Scoped
                                            ? AppServiceLifetime.ScopeShared
                                            : AppServiceLifetime.Instance;
+                    if (!candidateTypes.Contains(instanceType))
+                    {
+                        candidateTypes.Add(instanceType);
+                    }
 
-                    yield return (serviceType.GetTypeInfo(), new AppServiceInfo(serviceType, instanceType, lifetime, serviceType.IsGenericTypeDefinition));
+                    yield return (serviceType, new AppServiceInfo(serviceType, instanceType, lifetime, serviceType.IsGenericTypeDefinition) { ImportProperties = false });
                 }
             }
         }
