@@ -10,6 +10,8 @@
 
 namespace Kephas.Logging.Serilog
 {
+    using global::Serilog;
+
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -21,14 +23,15 @@ namespace Kephas.Logging.Serilog
         /// Sets the Serilog log manager to the ambient services.
         /// </summary>
         /// <param name="ambientServicesBuilder">The ambient services builder.</param>
+        /// <param name="configuration">Optional. The logger configuration.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithSerilogManager(this AmbientServicesBuilder ambientServicesBuilder)
+        public static AmbientServicesBuilder WithSerilogManager(this AmbientServicesBuilder ambientServicesBuilder, LoggerConfiguration configuration = null)
         {
             Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
 
-            return ambientServicesBuilder.WithLogManager(new SerilogManager());
+            return ambientServicesBuilder.WithLogManager(new SerilogManager(configuration));
         }
     }
 }

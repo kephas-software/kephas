@@ -18,7 +18,7 @@ namespace Kephas.Logging.Serilog
     /// <summary>
     /// The Serilog logger adapter.
     /// </summary>
-    public class SerilogLogger : ILogger
+    public class SerilogLogger : global::Kephas.Logging.ILogger
     {
         private readonly global::Serilog.ILogger logger;
 
@@ -26,9 +26,10 @@ namespace Kephas.Logging.Serilog
         /// Initializes a new instance of the <see cref="SerilogLogger"/> class.
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>
-        public SerilogLogger(string loggerName)
+        /// <param name="rootLogger">The root logger.</param>
+        internal SerilogLogger(string loggerName, Logger rootLogger)
         {
-            this.logger = global::Serilog.Log.ForContext(new LoggerEnricher(loggerName));
+            this.logger = rootLogger.ForContext(new LoggerEnricher(loggerName));
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace Kephas.Logging.Serilog
         /// </summary>
         /// <remarks>
         /// Note for implementors: the <paramref name="exception"/> may be <c>null</c>, so be cautious and handle this case too.
-        /// For example, the <see cref="LoggerExtensions.Log"/> extension method passes a <c>null</c> exception.
+        /// For example, the <see cref="Logging.LoggerExtensions.Log"/> extension method passes a <c>null</c> exception.
         /// </remarks>
         /// <param name="level">The logging level.</param>
         /// <param name="exception">The exception.</param>
