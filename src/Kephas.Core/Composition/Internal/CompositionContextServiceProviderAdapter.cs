@@ -12,6 +12,8 @@ namespace Kephas.Composition.Internal
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
@@ -21,6 +23,12 @@ namespace Kephas.Composition.Internal
     /// </summary>
     internal class CompositionContextServiceProviderAdapter : IServiceProvider
     {
+        private static MethodInfo ToEnumerableMethod = ReflectionHelper.GetGenericMethodOf(
+            _ => ((CompositionContextServiceProviderAdapter)null).ToEnumerable<int>(null));
+
+        private static MethodInfo ToListMethod = ReflectionHelper.GetGenericMethodOf(
+            _ => ((CompositionContextServiceProviderAdapter)null).ToList<int>(null));
+
         /// <summary>
         /// Context for the composition.
         /// </summary>
@@ -81,10 +89,32 @@ namespace Kephas.Composition.Internal
                         var metadataType = exportType.GenericTypeArguments[1];
                         return this.compositionContext.GetExportFactories(contractType, metadataType);
                     }
+
+                    var exports = this.compositionContext.GetExports(exportType);
+                    if (serviceType.IsClass)
+                    {
+                        var toList = ToListMethod.MakeGenericMethod(exportType);
+                        return toList.Call(this, exports);
+                    }
+                    else
+                    {
+                        var toEnumerable = ToEnumerableMethod.MakeGenericMethod(serviceType);
+                        return toEnumerable.Call(this, exports);
+                    }
                 }
             }
 
             return this.compositionContext.GetExport(serviceType);
+        }
+
+        private TEnumerable ToEnumerable<TEnumerable>(IEnumerable<object> exports)
+        {
+            return (TEnumerable)exports;
+        }
+
+        private List<TItem> ToList<TItem>(IEnumerable<object> exports)
+        {
+            return exports.Cast<TItem>().ToList();
         }
     }
 }

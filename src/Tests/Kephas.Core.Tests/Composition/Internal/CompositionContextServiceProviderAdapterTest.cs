@@ -143,6 +143,58 @@ namespace Kephas.Core.Tests.Composition.Internal
             Assert.AreEqual("metadata", result2.First().CreateExport().Metadata);
         }
 
+        [Test]
+        public void GetService_Enumerable_string_success()
+        {
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
+            var adapter = new CompositionContextServiceProviderAdapter(context);
+
+            var result = (IEnumerable<string>)adapter.GetService(typeof(IEnumerable<string>));
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual("hello", result.First());
+            Assert.AreEqual("world", result.Skip(1).First());
+        }
+
+        [Test]
+        public void GetService_Collection_string_success()
+        {
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
+            var adapter = new CompositionContextServiceProviderAdapter(context);
+
+            var result = (ICollection<string>)adapter.GetService(typeof(ICollection<string>));
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("hello", result.First());
+            Assert.AreEqual("world", result.Skip(1).First());
+        }
+
+        [Test]
+        public void GetService_IList_string_success()
+        {
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
+            var adapter = new CompositionContextServiceProviderAdapter(context);
+
+            var result = (IList<string>)adapter.GetService(typeof(IList<string>));
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("hello", result.First());
+            Assert.AreEqual("world", result.Skip(1).First());
+        }
+
+        [Test]
+        public void GetService_List_string_success()
+        {
+            var context = Substitute.For<ICompositionContext>();
+            context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
+            var adapter = new CompositionContextServiceProviderAdapter(context);
+
+            var result = (List<string>)adapter.GetService(typeof(List<string>));
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("hello", result.First());
+            Assert.AreEqual("world", result.Skip(1).First());
+        }
+
         private IExportFactoryImporter<T> CreateExportFactoryImporter<T>(T value)
         {
             return new ExportFactoryImporter<T>(new ExportFactory<T>(() => value));

@@ -18,6 +18,8 @@ namespace Kephas.Tests.Composition.Mef
     using System.Linq;
 
     using Kephas.Composition;
+    using Kephas.Composition.Conventions;
+    using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -174,6 +176,35 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
+        public void GetExports_various_same_contract_registrations()
+        {
+            var container = this.CreateContainer(
+                parts: new[] { typeof(IFilter), typeof(OneFilter), typeof(TwoFilter) },
+                config: b => { b.WithConventionsRegistrar(new MultiFilterConventionsRegistrar()); });
+
+            var filters = container.GetExports(typeof(IFilter));
+
+            Assert.AreEqual(3, filters.Count());
+            Assert.IsTrue(filters.OfType<OneFilter>().Any());
+            Assert.IsTrue(filters.OfType<TwoFilter>().Any());
+        }
+
+        [Test]
+        public void GetService_various_same_contract_registrations()
+        {
+            var container = this.CreateContainer(
+                parts: new[] { typeof(IFilter), typeof(OneFilter), typeof(TwoFilter) },
+                config: b => { b.WithConventionsRegistrar(new MultiFilterConventionsRegistrar()); });
+
+            var rawFilters = container.ToServiceProvider().GetService(typeof(IEnumerable<IFilter>));
+            var filters = rawFilters as IEnumerable<IFilter>;
+
+            Assert.AreEqual(3, filters.Count());
+            Assert.IsTrue(filters.OfType<OneFilter>().Any());
+            Assert.IsTrue(filters.OfType<TwoFilter>().Any());
+        }
+
+        [Test]
         public void Dispose()
         {
             var container = this.CreateContainer();
@@ -327,5 +358,29 @@ namespace Kephas.Tests.Composition.Mef
             [Import]
             public ExportedClass ExportedClass { get; set; }
         }
+
+        public class MultiFilterConventionsRegistrar : IConventionsRegistrar
+        {
+            public void RegisterConventions(
+                IConventionsBuilder builder,
+                IList<Type> candidateTypes,
+                ICompositionRegistrationContext registrationContext)
+            {
+                builder.ForType(typeof(OneFilter)).ExportInterfaces(
+                    t => t == typeof(IFilter),
+                    (t, b) => b.AsContractType(typeof(IFilter)))
+                    .Shared();
+                builder.ForType(typeof(TwoFilter)).ExportInterfaces(
+                        t => t == typeof(IFilter),
+                        (t, b) => b.AsContractType(typeof(IFilter)));
+                builder.ForInstance(typeof(IFilter), Substitute.For<IFilter>());
+            }
+        }
+
+        public interface IFilter { }
+
+        public class OneFilter : IFilter { }
+
+        public class TwoFilter : IFilter { }
     }
 }
