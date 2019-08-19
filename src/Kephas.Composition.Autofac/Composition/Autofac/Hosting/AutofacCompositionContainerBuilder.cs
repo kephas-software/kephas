@@ -13,6 +13,7 @@ namespace Kephas.Composition.Autofac.Hosting
     using System;
     using System.Collections.Generic;
 
+    using Kephas.Composition.Autofac.Conventions;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
 
@@ -67,7 +68,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>A newly created conventions builder.</returns>
         protected override IConventionsBuilder CreateConventionsBuilder()
         {
-            throw new NotImplementedException();
+            return new AutofacConventionsBuilder();
         }
 
         /// <summary>
@@ -80,7 +81,9 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
-            throw new NotImplementedException();
+            var containerBuilder = ((IAutofacContainerBuilderProvider)conventions).GetContainerBuilder();
+
+            return new AutofacCompositionContainer(containerBuilder.Build());
         }
     }
 }
