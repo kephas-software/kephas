@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DependencyInjectionCompositionContainerBuilder.cs" company="Kephas Software SRL">
+// <copyright file="MediCompositionContainerBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,18 +15,21 @@ namespace Kephas.Composition.Medi.Hosting
 
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
+    using Kephas.Composition.Medi.Conventions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// A dependency injection composition container builder.
     /// </summary>
-    public class DependencyInjectionCompositionContainerBuilder : CompositionContainerBuilderBase<DependencyInjectionCompositionContainerBuilder>
+    public class MediCompositionContainerBuilder : CompositionContainerBuilderBase<MediCompositionContainerBuilder>
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="DependencyInjectionCompositionContainerBuilder"/> class.
+        /// <see cref="MediCompositionContainerBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public DependencyInjectionCompositionContainerBuilder(ICompositionRegistrationContext context)
+        public MediCompositionContainerBuilder(ICompositionRegistrationContext context)
             : base(context)
         {
         }
@@ -68,7 +71,7 @@ namespace Kephas.Composition.Medi.Hosting
         /// </returns>
         protected override IConventionsBuilder CreateConventionsBuilder()
         {
-            throw new NotImplementedException();
+            return new MediConventionsBuilder();
         }
 
         /// <summary>
@@ -81,7 +84,9 @@ namespace Kephas.Composition.Medi.Hosting
         /// </returns>
         protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
-            throw new NotImplementedException();
+            var serviceCollection = ((IMediServiceCollectionProvider)conventions).GetServiceCollection();
+
+            return new MediCompositionContainer(serviceCollection.BuildServiceProvider());
         }
     }
 }
