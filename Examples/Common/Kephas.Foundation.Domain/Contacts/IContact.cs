@@ -7,15 +7,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ProjectAssistant.Contacts.Domain
+namespace Kephas.Foundation.Domain.Contacts
 {
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.Data;
-    using Kephas.Model.AttributedModel.Behaviors;
+    using Kephas.Data.Model.Abstractions;
 
     /// <summary>
     /// Defines a contact person.
     /// </summary>
-    public interface IContact : IIdentifiable
+    [Abstract]
+    public interface IContact : IIdentifiable<long>
     {
         /// <summary>
         /// Gets or sets the full name of the contact person.

@@ -7,10 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ProjectAssistant.Contacts.Domain
+namespace Kephas.Foundation.Domain.Contacts
 {
-    using Kephas.Data;
-
     /// <summary>
     /// Defines a physical person.
     /// </summary>

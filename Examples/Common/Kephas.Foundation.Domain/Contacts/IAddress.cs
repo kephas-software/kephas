@@ -7,23 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ProjectAssistant.Contacts.Domain
+namespace Kephas.Foundation.Domain.Contacts
 {
-    using Kephas.Data;
+    using Kephas.Data.Model.Abstractions;
 
     /// <summary>
     /// Defines an address.
     /// </summary>
-    public interface IAddress : IIdentifiable
+    public interface IAddress : IIdentifiable<long>, INamed
     {
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        string Name { get; set; }
-
         /// <summary>
         /// Gets or sets the street.
         /// </summary>
@@ -55,6 +47,14 @@ namespace ProjectAssistant.Contacts.Domain
         /// The zip code.
         /// </value>
         string ZipCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the country code.
+        /// </summary>
+        /// <value>
+        /// The country code.
+        /// </value>
+        string CountryCode { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the country.

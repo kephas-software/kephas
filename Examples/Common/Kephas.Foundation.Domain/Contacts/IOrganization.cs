@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace ProjectAssistant.Contacts.Domain
+namespace Kephas.Foundation.Domain.Contacts
 {
     /// <summary>
     /// Defines an organization.
