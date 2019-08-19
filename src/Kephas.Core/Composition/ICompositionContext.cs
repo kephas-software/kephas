@@ -200,7 +200,8 @@ namespace Kephas.Composition
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
-            return new CompositionContextServiceProviderAdapter(compositionContext);
+            return compositionContext as IServiceProvider
+                   ?? new CompositionContextServiceProviderAdapter(compositionContext);
         }
 
         /// <summary>
