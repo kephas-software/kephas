@@ -77,4 +77,19 @@
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Composition\Autofac\Resources\Strings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Strings.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Composition\Autofac\Resources\Strings.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>
