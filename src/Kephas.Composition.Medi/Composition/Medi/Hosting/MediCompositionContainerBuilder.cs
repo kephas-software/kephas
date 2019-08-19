@@ -84,9 +84,14 @@ namespace Kephas.Composition.Medi.Hosting
         /// </returns>
         protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
-            var serviceCollection = ((IMediServiceCollectionProvider)conventions).GetServiceCollection();
+            var serviceProvider = conventions is IMediServiceProviderBuilder mediServiceProviderBuilder
+                                      ? mediServiceProviderBuilder.BuildServiceProvider(parts)
+                                      : conventions is IMediServiceCollectionProvider mediServiceCollectionProvider
+                                          ? mediServiceCollectionProvider.GetServiceCollection().BuildServiceProvider()
+                                          : throw new InvalidOperationException(
+                                                $"The conventions instance must implement either {typeof(IMediServiceProviderBuilder)} or {typeof(IMediServiceCollectionProvider)}.");
 
-            return new MediCompositionContainer(serviceCollection.BuildServiceProvider());
+            return new MediCompositionContainer(serviceProvider);
         }
     }
 }

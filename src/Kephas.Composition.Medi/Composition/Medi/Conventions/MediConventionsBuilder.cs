@@ -11,6 +11,7 @@
 namespace Kephas.Composition.Medi.Conventions
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Composition.Conventions;
     using Kephas.Diagnostics.Contracts;
@@ -20,9 +21,11 @@ namespace Kephas.Composition.Medi.Conventions
     /// <summary>
     /// A conventions builder for Microsoft.Extensions.DependencyInjection.
     /// </summary>
-    public class MediConventionsBuilder : IConventionsBuilder, IMediServiceCollectionProvider
+    public class MediConventionsBuilder : IConventionsBuilder, IMediServiceCollectionProvider, IMediServiceProviderBuilder
     {
         private readonly IServiceCollection serviceCollection;
+
+        private IList<ServiceDescriptorBuilder> descriptorBuilders = new List<ServiceDescriptorBuilder>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MediConventionsBuilder"/> class.
@@ -53,19 +56,60 @@ namespace Kephas.Composition.Medi.Conventions
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Define a rule that will apply to the specified type.
+        /// </summary>
+        /// <param name="type">The type from which matching types derive.</param>
+        /// <returns>
+        /// A <see cref="T:Kephas.Composition.Conventions.IPartConventionsBuilder" /> that must be used
+        /// to specify the rule.
+        /// </returns>
         public IPartConventionsBuilder ForType(Type type)
         {
-            throw new NotImplementedException();
+            var descriptorBuilder = new ServiceDescriptorBuilder
+                                        {
+                                            ImplementationType = type,
+                                        };
+            this.descriptorBuilders.Add(descriptorBuilder);
+            return new MediPartConventionsBuilder(descriptorBuilder);
         }
 
+        /// <summary>
+        /// Defines a registration for the specified type and its singleton instance.
+        /// </summary>
+        /// <param name="type">The registered service type.</param>
+        /// <param name="instance">The instance.</param>
+        /// <returns>
+        /// A <see cref="T:Kephas.Composition.Conventions.IPartBuilder" /> to further configure the rule.
+        /// </returns>
         public IPartBuilder ForInstance(Type type, object instance)
         {
-            throw new NotImplementedException();
+            var descriptorBuilder = new ServiceDescriptorBuilder
+                                     {
+                                         ServiceType = type,
+                                         Instance = instance,
+                                     };
+            this.descriptorBuilders.Add(descriptorBuilder);
+            return new MediPartBuilder(descriptorBuilder);
         }
 
+        /// <summary>
+        /// Defines a registration for the specified type and its instance factory.
+        /// </summary>
+        /// <param name="type">The registered service type.</param>
+        /// <param name="factory">The service factory.</param>
+        /// <returns>
+        /// A <see cref="T:Kephas.Composition.Conventions.IPartBuilder" /> to further configure the rule.
+        /// </returns>
         public IPartBuilder ForInstanceFactory(Type type, Func<ICompositionContext, object> factory)
         {
-            throw new NotImplementedException();
+            var descriptorBuilder = new ServiceDescriptorBuilder
+                                        {
+                                            ServiceType = type,
+                                            Factory = serviceProvider => factory(serviceProvider.GetService<ICompositionContext>()),
+                                        };
+            this.descriptorBuilders.Add(descriptorBuilder);
+            return new MediPartBuilder(descriptorBuilder);
         }
 
         /// <summary>
@@ -75,5 +119,22 @@ namespace Kephas.Composition.Medi.Conventions
         /// The service collection.
         /// </returns>
         public IServiceCollection GetServiceCollection() => this.serviceCollection;
+
+        /// <summary>
+        /// Builds service provider.
+        /// </summary>
+        /// <param name="parts">The parts being built.</param>
+        /// <returns>
+        /// A ServiceProvider.
+        /// </returns>
+        public ServiceProvider BuildServiceProvider(IEnumerable<Type> parts)
+        {
+            foreach (var descriptorBuilder in this.descriptorBuilders)
+            {
+                this.serviceCollection.Add(descriptorBuilder.Build());
+            }
+
+            return this.serviceCollection.BuildServiceProvider();
+        }
     }
 }
