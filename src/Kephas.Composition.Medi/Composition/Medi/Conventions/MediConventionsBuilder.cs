@@ -13,6 +13,7 @@ namespace Kephas.Composition.Medi.Conventions
     using System;
     using System.Collections.Generic;
 
+    using Kephas.Collections;
     using Kephas.Composition.Conventions;
     using Kephas.Diagnostics.Contracts;
 
@@ -46,14 +47,35 @@ namespace Kephas.Composition.Medi.Conventions
             this.serviceCollection = serviceCollection;
         }
 
+        /// <summary>
+        /// Define a rule that will apply to all types that derive from (or implement) the specified type.
+        /// </summary>
+        /// <param name="type">The type from which matching types derive.</param>
+        /// <returns>
+        /// A <see cref="T:Kephas.Composition.Conventions.IPartConventionsBuilder" /> that must be used
+        /// to specify the rule.
+        /// </returns>
         public IPartConventionsBuilder ForTypesDerivedFrom(Type type)
         {
-            throw new NotImplementedException();
+            return this.ForTypesMatching(t => t.IsClass && !t.IsAbstract && t.IsAssignableFrom(type));
         }
 
+        /// <summary>
+        /// Define a rule that will apply to all types that derive from (or implement) the specified type.
+        /// </summary>
+        /// <param name="typePredicate">The type predicate.</param>
+        /// <returns>
+        /// A <see cref="T:Kephas.Composition.Conventions.IPartConventionsBuilder" /> that must be used
+        /// to specify the rule.
+        /// </returns>
         public IPartConventionsBuilder ForTypesMatching(Predicate<Type> typePredicate)
         {
-            throw new NotImplementedException();
+            var descriptorBuilder = new ServiceDescriptorBuilder
+                                        {
+                                            ImplementationTypePredicate = typePredicate,
+                                        };
+            this.descriptorBuilders.Add(descriptorBuilder);
+            return new MediPartConventionsBuilder(descriptorBuilder);
         }
 
         /// <summary>
@@ -131,7 +153,7 @@ namespace Kephas.Composition.Medi.Conventions
         {
             foreach (var descriptorBuilder in this.descriptorBuilders)
             {
-                this.serviceCollection.Add(descriptorBuilder.Build());
+                this.serviceCollection.AddRange(descriptorBuilder.Build(parts));
             }
 
             return this.serviceCollection.BuildServiceProvider();

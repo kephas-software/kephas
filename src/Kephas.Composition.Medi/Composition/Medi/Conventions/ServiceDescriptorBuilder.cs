@@ -11,13 +11,17 @@
 namespace Kephas.Composition.Medi.Conventions
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Kephas.Composition.Conventions;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// A service descriptor builder.
     /// </summary>
-    internal class ServiceDescriptorBuilder
+    internal class ServiceDescriptorBuilder : IExportConventionsBuilder
     {
         /// <summary>
         /// Gets or sets the type of the service.
@@ -52,6 +56,14 @@ namespace Kephas.Composition.Medi.Conventions
         public Type ImplementationType { get; set; }
 
         /// <summary>
+        /// Gets or sets the implementation type predicate.
+        /// </summary>
+        /// <value>
+        /// The implementation type predicate.
+        /// </value>
+        public Predicate<Type> ImplementationTypePredicate { get; set; }
+
+        /// <summary>
         /// Gets or sets the lifetime.
         /// </summary>
         /// <value>
@@ -60,21 +72,89 @@ namespace Kephas.Composition.Medi.Conventions
         public ServiceLifetime Lifetime { get; set; } = ServiceLifetime.Transient;
 
         /// <summary>
+        /// Gets or sets the export configuration.
+        /// </summary>
+        /// <value>
+        /// The export configuration.
+        /// </value>
+        public Action<Type, IExportConventionsBuilder> ExportConfiguration { get; set; }
+
+        /// <summary>
         /// Builds the information into a service descriptor.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <param name="parts">The parts.</param>
         /// <returns>
         /// A ServiceDescriptor.
         /// </returns>
-        public ServiceDescriptor Build()
+        public IEnumerable<ServiceDescriptor> Build(IEnumerable<Type> parts)
         {
-            return this.Instance != null
-                       ? new ServiceDescriptor(this.ServiceType, this.Instance)
-                       : this.ImplementationType != null
-                            ? new ServiceDescriptor(this.ServiceType, this.ImplementationType, this.Lifetime)
-                            : this.Factory != null
-                                ? new ServiceDescriptor(this.ServiceType, this.Factory, this.Lifetime)
-                                : throw new InvalidOperationException($"One of Instance, ImplementationType, or Factory must be set.");
+            var descriptor = this.Instance != null
+                                 ? new ServiceDescriptor(this.ServiceType ?? this.Instance.GetType(), this.Instance)
+                                 : this.ImplementationType != null
+                                     ? new ServiceDescriptor(this.ServiceType ?? this.ImplementationType, this.ImplementationType, this.Lifetime)
+                                     : this.Factory != null
+                                         ? new ServiceDescriptor(this.ServiceType, this.Factory, this.Lifetime)
+                                         : null;
+
+            if (descriptor != null)
+            {
+                this.ExportConfiguration?.Invoke(this.ImplementationType, this);
+                yield return descriptor;
+                yield break;
+            }
+
+            if (this.ImplementationTypePredicate != null)
+            {
+                foreach (var type in parts.Where(t => this.ImplementationTypePredicate(t)))
+                {
+                    this.ExportConfiguration?.Invoke(type, this);
+                    yield return new ServiceDescriptor(this.ServiceType ?? type, type, this.Lifetime);
+                }
+
+                yield break;
+            }
+
+            throw new InvalidOperationException(
+                $"One of {nameof(Instance)}, {nameof(ImplementationType)}, {nameof(ImplementationTypePredicate)}, or {nameof(Factory)} must be set.");
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var implementationString = this.ImplementationType?.ToString()
+                                       ?? (this.ImplementationTypePredicate != null ? "type predicate" :
+                                           this.Factory != null ? "factory" :
+                                           this.Instance != null ? "instance" : "unknown");
+            return $"{this.ServiceType}/{this.Lifetime}/{implementationString}";
+        }
+
+        /// <summary>
+        /// Specify the contract type for the export.
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <returns>
+        /// An export builder allowing further configuration.
+        /// </returns>
+        public IExportConventionsBuilder AsContractType(Type contractType)
+        {
+            this.ServiceType = contractType;
+            return this;
+        }
+
+        public IExportConventionsBuilder AddMetadata(string name, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
+        {
+            throw new NotImplementedException();
         }
     }
 }
