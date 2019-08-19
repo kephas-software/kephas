@@ -9,32 +9,32 @@
 
 namespace Kephas.Foundation.Domain.Contacts
 {
-    using System.ComponentModel.DataAnnotations;
-
-    using Kephas.Data;
-    using Kephas.Data.Model.Abstractions;
+    using Kephas.Foundation.Domain.Abstractions;
+    using Kephas.Model.AttributedModel;
 
     /// <summary>
     /// Defines a contact person.
     /// </summary>
     [Abstract]
-    public interface IContact : IIdentifiable<long>
+    public interface IContact : INamedEntityBase
     {
-        /// <summary>
-        /// Gets or sets the full name of the contact person.
-        /// </summary>
-        /// <value>
-        /// The full name of the contact person.
-        /// </value>
-        [Required]
-        string FullName { get; set; }
-
         /// <summary>
         /// Gets or sets the main address.
         /// </summary>
         /// <value>
         /// The main address.
         /// </value>
-        IAddress MainAddress { get; set; } 
+        IAddress MainAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets the legal identifier.
+        /// </summary>
+        /// <remarks>
+        /// This can be the social security number for persons and the registration number for organizations.
+        /// </remarks>
+        /// <value>
+        /// The legal identifier.
+        /// </value>
+        string LegalId { get; set; }
     }
 }

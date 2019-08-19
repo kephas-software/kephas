@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{95A1B8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Foundation.Domain", "Common\Kephas.Foundation.Domain\Kephas.Foundation.Domain.csproj", "{B8BFB54B-10B4-4B06-BD0F-06D5A4948C76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Foundation.Model", "Common\Kephas.Foundation.Model\Kephas.Foundation.Model.csproj", "{B845570D-F0B1-4F62-A7FE-1B8AE2CCC974}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{B8BFB54B-10B4-4B06-BD0F-06D5A4948C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8BFB54B-10B4-4B06-BD0F-06D5A4948C76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8BFB54B-10B4-4B06-BD0F-06D5A4948C76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B845570D-F0B1-4F62-A7FE-1B8AE2CCC974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B845570D-F0B1-4F62-A7FE-1B8AE2CCC974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B845570D-F0B1-4F62-A7FE-1B8AE2CCC974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B845570D-F0B1-4F62-A7FE-1B8AE2CCC974}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B8BFB54B-10B4-4B06-BD0F-06D5A4948C76} = {95A1B85D-D68C-4BDF-80A4-FE8D3C137074}
+		{B845570D-F0B1-4F62-A7FE-1B8AE2CCC974} = {95A1B85D-D68C-4BDF-80A4-FE8D3C137074}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CC8D762A-EFD4-426A-AEF4-E6855C8C2A61}

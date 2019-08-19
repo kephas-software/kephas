@@ -1,21 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITenant.cs" company="Kephas Software SRL">
+// <copyright file="ITenantsModuleDimensionElement.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the ITenant interface.
+//   Declares the ITenantsModuleDimensionElement interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Foundation.Domain.Tenants
+namespace Kephas.Foundation.Model.Dimensions.Module
 {
-    using Kephas.Foundation.Domain.Abstractions;
+    using Kephas.Model.AttributedModel;
+    using Kephas.Model.Dimensions;
 
     /// <summary>
-    /// Interface for tenant.
+    /// The Tenants element of the <see cref="IModuleDimension"/>.
     /// </summary>
-    public interface ITenant : INamedEntityBase
+    [ModelDimensionElement]
+    interface ITenantsModuleDimensionElement
     {
     }
 }

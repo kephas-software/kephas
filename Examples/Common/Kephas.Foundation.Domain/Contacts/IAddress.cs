@@ -9,12 +9,12 @@
 
 namespace Kephas.Foundation.Domain.Contacts
 {
-    using Kephas.Data.Model.Abstractions;
+    using Kephas.Foundation.Domain.Abstractions;
 
     /// <summary>
     /// Defines an address.
     /// </summary>
-    public interface IAddress : IIdentifiable<long>, INamed
+    public interface IAddress : INamedEntityBase
     {
         /// <summary>
         /// Gets or sets the street.

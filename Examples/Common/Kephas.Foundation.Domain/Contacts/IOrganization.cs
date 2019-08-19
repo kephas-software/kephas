@@ -14,12 +14,5 @@ namespace Kephas.Foundation.Domain.Contacts
     /// </summary>
     public interface IOrganization : IContact
     {
-        /// <summary>
-        /// Gets or sets the VAT identifier.
-        /// </summary>
-        /// <value>
-        /// The VAT identifier.
-        /// </value>
-        string VatId { get; set; }
     }
 }
