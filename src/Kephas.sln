@@ -159,9 +159,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Configuration.Legacy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.Tests", "Tests\Kephas.AspNetCore.Tests\Kephas.AspNetCore.Tests.csproj", "{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.LLBLGen", "Kephas.Data.LLBLGen\Kephas.Data.LLBLGen.csproj", "{922BFA02-87C9-45B0-B212-6C94069D0C97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.LLBLGen", "Kephas.Data.LLBLGen\Kephas.Data.LLBLGen.csproj", "{922BFA02-87C9-45B0-B212-6C94069D0C97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Data.LLBLGen.Tests", "Tests\Kephas.Data.LLBLGen.Tests\Kephas.Data.LLBLGen.Tests.csproj", "{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.LLBLGen.Tests", "Tests\Kephas.Data.LLBLGen.Tests\Kephas.Data.LLBLGen.Tests.csproj", "{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Composition.Medi", "Kephas.Composition.Medi\Kephas.Composition.Medi.csproj", "{F7064F6A-DDC6-4590-B896-79015002242C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -425,6 +427,10 @@ Global
 		{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86AF4D75-5606-4DB1-A0EB-475A0C5A2FBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7064F6A-DDC6-4590-B896-79015002242C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7064F6A-DDC6-4590-B896-79015002242C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7064F6A-DDC6-4590-B896-79015002242C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7064F6A-DDC6-4590-B896-79015002242C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
