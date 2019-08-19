@@ -235,7 +235,9 @@ namespace Kephas.Core.Tests.Composition
                 return this;
             }
 
-            public IPartConventionsBuilder ExportInterfaces(Predicate<Type> interfaceFilter = null, Action<Type, IExportConventionsBuilder> exportConfiguration = null)
+            public IPartConventionsBuilder ExportInterface(
+                Type exportInterface,
+                Action<Type, IExportConventionsBuilder> exportConfiguration = null)
             {
                 return this;
             }

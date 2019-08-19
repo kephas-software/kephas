@@ -366,12 +366,12 @@ namespace Kephas.Tests.Composition.Mef
                 IList<Type> candidateTypes,
                 ICompositionRegistrationContext registrationContext)
             {
-                builder.ForType(typeof(OneFilter)).ExportInterfaces(
-                    t => t == typeof(IFilter),
+                builder.ForType(typeof(OneFilter)).ExportInterface(
+                    typeof(IFilter),
                     (t, b) => b.AsContractType(typeof(IFilter)))
                     .Shared();
-                builder.ForType(typeof(TwoFilter)).ExportInterfaces(
-                        t => t == typeof(IFilter),
+                builder.ForType(typeof(TwoFilter)).ExportInterface(
+                        typeof(IFilter),
                         (t, b) => b.AsContractType(typeof(IFilter)));
                 builder.ForInstance(typeof(IFilter), Substitute.For<IFilter>());
             }

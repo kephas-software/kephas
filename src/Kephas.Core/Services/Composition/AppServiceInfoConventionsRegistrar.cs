@@ -235,8 +235,8 @@ namespace Kephas.Services.Composition
             {
                 if (appServiceInfo.AsOpenGeneric)
                 {
-                    partBuilder.ExportInterfaces(
-                        t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
+                    partBuilder.ExportInterface(
+                        exportedContract,
                         (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes));
 
                     if (metadataAttributes.Count > 0)
@@ -253,8 +253,8 @@ namespace Kephas.Services.Composition
                 }
                 else
                 {
-                    partBuilder.ExportInterfaces(
-                        t => this.IsClosedGenericOf(exportedContract, t.GetTypeInfo()),
+                    partBuilder.ExportInterface(
+                        exportedContract,
                         (t, b) => this.ConfigureExport(serviceContract, b, t, t, metadataAttributes));
                 }
             }
@@ -440,17 +440,6 @@ namespace Kephas.Services.Composition
             exportBuilder.AsContractType(exportedContractType);
             this.AddCompositionMetadata(exportBuilder, serviceImplementationType, metadataAttributes);
             this.AddCompositionMetadataForGenerics(exportBuilder, serviceContract);
-        }
-
-        /// <summary>
-        /// Determines whether the provided interface is a closed generic of the specified open generic contract.
-        /// </summary>
-        /// <param name="openGenericContract">The open generic contract.</param>
-        /// <param name="exportInterface">The export interface.</param>
-        /// <returns><c>true</c> if the provided interface is a closed generic of the specified open generic contract, otherwise <c>false</c>.</returns>
-        private bool IsClosedGenericOf(TypeInfo openGenericContract, TypeInfo exportInterface)
-        {
-            return exportInterface.IsGenericType && exportInterface.GetGenericTypeDefinition() == openGenericContract.AsType();
         }
 
         /// <summary>

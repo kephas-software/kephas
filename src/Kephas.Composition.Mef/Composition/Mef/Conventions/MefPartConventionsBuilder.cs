@@ -84,25 +84,24 @@ namespace Kephas.Composition.Mef.Conventions
         }
 
         /// <summary>
-        /// Select the interfaces on the part type that will be exported.
+        /// Select the interface on the part type that will be exported.
         /// </summary>
-        /// <param name="interfaceFilter">The interface filter.</param>
+        /// <param name="exportInterface">The interface to export.</param>
         /// <param name="exportConfiguration">The export configuration.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder ExportInterfaces(Predicate<Type> interfaceFilter = null, Action<Type, IExportConventionsBuilder> exportConfiguration = null)
+        public IPartConventionsBuilder ExportInterface(
+            Type exportInterface,
+            Action<Type, IExportConventionsBuilder> exportConfiguration = null)
         {
-            if (interfaceFilter == null && exportConfiguration != null)
-            {
-                throw new ArgumentException("If an export configuration is specified, then you must also specify an interface filter.");
-            }
+            Requires.NotNull(exportInterface, nameof(exportInterface));
 
-            if (interfaceFilter == null)
-            {
-                this.innerConventionBuilder.ExportInterfaces();
-            }
-            else if (exportConfiguration == null)
+            var interfaceFilter = exportInterface.IsGenericTypeDefinition
+                                      ? (Predicate<Type>)(t => this.IsClosedGenericOf(exportInterface, t))
+                                      : t => ReferenceEquals(exportInterface, t);
+
+            if (exportConfiguration == null)
             {
                 this.innerConventionBuilder.ExportInterfaces(interfaceFilter);
             }
@@ -163,6 +162,17 @@ namespace Kephas.Composition.Mef.Conventions
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// Determines whether the provided interface is a closed generic of the specified open generic contract.
+        /// </summary>
+        /// <param name="openGenericContract">The open generic contract.</param>
+        /// <param name="exportInterface">The export interface.</param>
+        /// <returns><c>true</c> if the provided interface is a closed generic of the specified open generic contract, otherwise <c>false</c>.</returns>
+        private bool IsClosedGenericOf(Type openGenericContract, Type exportInterface)
+        {
+            return exportInterface.IsGenericType && exportInterface.GetGenericTypeDefinition() == openGenericContract;
         }
     }
 }
