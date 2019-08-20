@@ -9,7 +9,7 @@
         <description>Provides the abstract infrastructure for mailing.</description>
         <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
         <summary>
-            Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </summary>
         <language>en-US</language>
         <projectUrl>https://github.com/kephas-software/kephas</projectUrl>

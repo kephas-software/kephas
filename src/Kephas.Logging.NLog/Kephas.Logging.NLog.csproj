@@ -20,8 +20,8 @@
         <RepositoryType>github</RepositoryType>
         <PackageTags>kephas logging nlog</PackageTags>
         <PackageReleaseNotes>
-            Check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-            Kephas Framework ("stone" in aramaic) is an ambitious project aiming to deliver a framework for an application ecosystem.
+            Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </PackageReleaseNotes>
         <NeutralLanguage>en</NeutralLanguage>
         <SignAssembly>True</SignAssembly>
