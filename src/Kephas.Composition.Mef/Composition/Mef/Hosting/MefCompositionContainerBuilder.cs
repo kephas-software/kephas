@@ -55,6 +55,14 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
+        /// Gets the export providers.
+        /// </summary>
+        /// <value>
+        /// The export providers.
+        /// </value>
+        protected IList<IExportProvider> ExportProviders { get; } = new List<IExportProvider>();
+
+        /// <summary>
         /// Sets the composition conventions.
         /// </summary>
         /// <param name="conventions">The conventions.</param>
@@ -96,6 +104,25 @@ namespace Kephas.Composition.Mef.Hosting
             where TFactory : IMefScopeFactory
         {
             this.scopeFactories.Add(typeof(TFactory));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the export provider.
+        /// </summary>
+        /// <remarks>
+        /// Can be used multiple times, the factories are added to the existing ones.
+        /// </remarks>
+        /// <param name="exportProvider">The export provider.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public virtual MefCompositionContainerBuilder WithExportProvider(IExportProvider exportProvider)
+        {
+            Requires.NotNull(exportProvider, nameof(exportProvider));
+
+            this.ExportProviders.Add(exportProvider);
 
             return this;
         }
@@ -146,27 +173,13 @@ namespace Kephas.Composition.Mef.Hosting
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="factory">The factory.</param>
-        /// <param name="isShared">If set to <c>true</c>, the factory returns a shared component, otherwise an instance component.</param>
+        /// <param name="isSingleton">If set to <c>true</c>, the factory returns a shared component, otherwise an instance component.</param>
         /// <returns>
         /// The export provider.
         /// </returns>
-        protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
+        protected virtual IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isSingleton = false)
         {
-            var provider = new FactoryExportDescriptorProvider<TContract>(factory, isShared);
-            return provider;
-        }
-
-        /// <summary>
-        /// Creates a new export provider based on a <see cref="IServiceProvider"/>.
-        /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
-        /// <param name="isServiceRegisteredFunc">Function used to query whether the service provider registers a specific service.</param>
-        /// <returns>
-        /// The export provider.
-        /// </returns>
-        protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc)
-        {
-            var provider = new ServiceProviderExportDescriptorProvider(serviceProvider, isServiceRegisteredFunc);
+            var provider = new FactoryExportDescriptorProvider<TContract>(factory, isSingleton);
             return provider;
         }
 

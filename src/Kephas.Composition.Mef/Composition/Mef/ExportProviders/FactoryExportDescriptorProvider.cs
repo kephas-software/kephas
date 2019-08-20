@@ -35,7 +35,7 @@ namespace Kephas.Composition.Mef.ExportProviders
         /// <summary>
         /// The is shared.
         /// </summary>
-        private readonly bool isShared;
+        private readonly bool isSingleton;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider" /> class.
@@ -52,15 +52,15 @@ namespace Kephas.Composition.Mef.ExportProviders
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="factory">The value factory.</param>
-        /// <param name="isShared">If set to <c>true</c> the factory provides a shared instance.</param>
-        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, bool isShared)
+        /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
+        public FactoryExportDescriptorProvider(Type contractType, Func<object> factory, bool isSingleton)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(factory, nameof(factory));
 
             this.ContractType = contractType;
             this.factory = factory;
-            this.isShared = isShared;
+            this.isSingleton = isSingleton;
         }
 
         /// <summary>
@@ -68,15 +68,15 @@ namespace Kephas.Composition.Mef.ExportProviders
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="contextFactory">The value factory.</param>
-        /// <param name="isShared">If set to <c>true</c> the factory provides a shared instance.</param>
-        public FactoryExportDescriptorProvider(Type contractType, Func<ICompositionContext, object> contextFactory, bool isShared)
+        /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
+        public FactoryExportDescriptorProvider(Type contractType, Func<ICompositionContext, object> contextFactory, bool isSingleton)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(contextFactory, nameof(contextFactory));
 
             this.ContractType = contractType;
             this.contextFactory = contextFactory;
-            this.isShared = isShared;
+            this.isSingleton = isSingleton;
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Kephas.Composition.Mef.ExportProviders
                     new ExportDescriptorPromise(
                         contract,
                         contract.ContractType.Name,
-                        this.isShared,
+                        this.isSingleton,
                         ExportDescriptorProvider.NoDependencies,
                         dependencies => ExportDescriptor.Create(
                             (c, o) =>
@@ -152,9 +152,9 @@ namespace Kephas.Composition.Mef.ExportProviders
         /// Initializes a new instance of the <see cref="FactoryExportDescriptorProvider{TContract}" /> class.
         /// </summary>
         /// <param name="factory">The value factory.</param>
-        /// <param name="isShared">If set to <c>true</c> the factory provides a shared instance.</param>
-        public FactoryExportDescriptorProvider(Func<TContract> factory, bool isShared)
-            : base(typeof(TContract), () => factory(), isShared)
+        /// <param name="isSingleton">If set to <c>true</c> the factory provides a shared instance.</param>
+        public FactoryExportDescriptorProvider(Func<TContract> factory, bool isSingleton)
+            : base(typeof(TContract), () => factory(), isSingleton)
         {
         }
     }

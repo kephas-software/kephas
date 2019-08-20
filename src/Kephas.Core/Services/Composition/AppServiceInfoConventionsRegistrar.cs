@@ -201,6 +201,15 @@ namespace Kephas.Services.Composition
                 yield return registrationContext.AmbientServices;
             }
 
+            var appServiceInfoProviders = registrationContext.AppServiceInfoProviders;
+            if (appServiceInfoProviders != null)
+            {
+                foreach (var provider in appServiceInfoProviders)
+                {
+                    yield return provider;
+                }
+            }
+
             foreach (var candidateType in candidateTypes.Where(t => t.IsInstantiableAppServiceInfoProviderType()).ToList())
             {
                 yield return (IAppServiceInfoProvider)candidateType.AsRuntimeTypeInfo().CreateInstance();

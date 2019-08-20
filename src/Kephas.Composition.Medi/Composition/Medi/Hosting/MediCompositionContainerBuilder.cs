@@ -35,35 +35,6 @@ namespace Kephas.Composition.Medi.Hosting
         }
 
         /// <summary>
-        /// Creates a new factory export provider.
-        /// </summary>
-        /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <param name="factory">The factory.</param>
-        /// <param name="isShared">Optional. If set to <c>true</c>, the factory returns a shared
-        ///                        component, otherwise an instance component.</param>
-        /// <returns>
-        /// The export provider.
-        /// </returns>
-        protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Creates a new export provider based on a <see cref="T:System.IServiceProvider" />.
-        /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
-        /// <param name="isServiceRegisteredFunc">Function used to query whether the service provider
-        ///                                       registers a specific service.</param>
-        /// <returns>
-        /// The export provider.
-        /// </returns>
-        protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Factory method for creating the conventions builder.
         /// </summary>
         /// <returns>

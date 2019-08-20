@@ -39,7 +39,7 @@ namespace Kephas.Model.Tests
         {
             var container = this.CreateContainer(
                 new [] { typeof(IModelSpace).GetTypeInfo().Assembly }, 
-                config: b => b.WithFactoryExportProvider(() => this.GetModelRegistry(elements), isShared: true));
+                config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true));
 
             return container;
         }
@@ -49,7 +49,7 @@ namespace Kephas.Model.Tests
             var container = this.CreateContainer(
                 new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
                 parts,
-                config: b => b.WithFactoryExportProvider(() => this.GetModelRegistry(elements), isShared: true));
+                config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true));
 
             return container;
         }

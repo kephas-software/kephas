@@ -26,6 +26,8 @@ namespace Kephas.Composition.Hosting
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Services;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Base class for composition container builders.
@@ -61,7 +63,6 @@ namespace Kephas.Composition.Hosting
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             this.context = context;
-            this.ExportProviders = new List<IExportProvider>();
 
             this.LogManager = ambientServices.GetService<ILogManager>();
             this.AssertRequiredService(this.LogManager);
@@ -124,12 +125,12 @@ namespace Kephas.Composition.Hosting
         protected HashSet<Type> CompositionParts { get; private set; }
 
         /// <summary>
-        /// Gets the export providers.
+        /// Gets the <see cref="IAppServiceInfo"/> registry.
         /// </summary>
         /// <value>
-        /// The export providers.
+        /// The registry.
         /// </value>
-        protected IList<IExportProvider> ExportProviders { get; }
+        protected AppServiceInfoRegistry Registry { get; } = new AppServiceInfoRegistry();
 
         /// <summary>
         /// Adds the assemblies containing the conventions.
@@ -275,23 +276,22 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
-        /// Adds the factory export provider.
+        /// Adds the factory export.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="factory">The factory.</param>
-        /// <param name="isShared">If set to <c>true</c>, the factory returns a shared component, otherwise an instance component.</param>
+        /// <param name="isSingleton">If set to <c>true</c>, the factory returns a shared component, otherwise an instance component.</param>
         /// <returns>
         /// This builder.
         /// </returns>
         /// <remarks>
         /// Can be used multiple times, the factories are added to the existing ones.
         /// </remarks>
-        public virtual TBuilder WithFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
+        public virtual TBuilder WithFactory<TContract>(Func<TContract> factory, bool isSingleton = false)
         {
             Requires.NotNull(factory, nameof(factory));
 
-            var exportProvider = this.CreateFactoryExportProvider(factory, isShared);
-            this.ExportProviders.Add(exportProvider);
+            this.Registry.Add(new AppServiceInfo(typeof(TContract), isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient));
 
             return (TBuilder)this;
         }
@@ -318,25 +318,6 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
-        /// Adds the export provider.
-        /// </summary>
-        /// <remarks>
-        /// Can be used multiple times, the factories are added to the existing ones.
-        /// </remarks>
-        /// <param name="exportProvider">The export provider.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public virtual TBuilder WithExportProvider(IExportProvider exportProvider)
-        {
-            Requires.NotNull(exportProvider, nameof(exportProvider));
-
-            this.ExportProviders.Add(exportProvider);
-
-            return (TBuilder)this;
-        }
-
-        /// <summary>
         /// Creates the container with the provided configuration asynchronously.
         /// </summary>
         /// <returns>A new container with the provided configuration.</returns>
@@ -354,31 +335,6 @@ namespace Kephas.Composition.Hosting
 
             return container;
         }
-
-        /// <summary>
-        /// Creates a new factory export provider.
-        /// </summary>
-        /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <param name="factory">The factory.</param>
-        /// <param name="isShared">If set to <c>true</c>, the factory returns a shared component, otherwise an instance component.</param>
-        /// <returns>
-        /// The export provider.
-        /// </returns>
-        protected abstract IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false);
-
-        /// <summary>
-        /// Creates a new export provider based on a <see cref="IServiceProvider"/>.
-        /// </summary>
-        /// <remarks>
-        /// This allows for the services registered in the <see cref="IAmbientServices"/> before the composition container was created
-        /// to be registered also in the composition container.
-        /// </remarks>
-        /// <param name="serviceProvider">The service provider.</param>
-        /// <param name="isServiceRegisteredFunc">Function used to query whether the service provider registers a specific service.</param>
-        /// <returns>
-        /// The export provider.
-        /// </returns>
-        protected abstract IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc);
 
         /// <summary>
         /// Factory method for creating the conventions builder.
@@ -434,6 +390,10 @@ namespace Kephas.Composition.Hosting
 
             var assemblyNames = string.Join(", ", assemblies.Select(a => a.GetName().Name));
             this.Logger.Debug($"{nameof(this.GetConventions)}. Convention assemblies: {assemblyNames}.");
+
+            this.context.AppServiceInfoProviders = this.context.AppServiceInfoProviders == null
+                                                       ? new List<IAppServiceInfoProvider> { this.Registry }
+                                                       : new List<IAppServiceInfoProvider>(this.context.AppServiceInfoProviders) { this.Registry };
 
             Profiler.WithInfoStopwatch(
                 () =>
@@ -546,6 +506,36 @@ namespace Kephas.Composition.Hosting
             }
 
             return parts;
+        }
+
+        /// <summary>
+        /// An application service information registry.
+        /// </summary>
+        protected class AppServiceInfoRegistry : IAppServiceInfoProvider
+        {
+            private IList<IAppServiceInfo> appServiceInfos = new List<IAppServiceInfo>();
+
+            /// <summary>
+            /// Adds an <see cref="IAppServiceInfo"/>.
+            /// </summary>
+            /// <param name="appServiceInfo">The Application service Information to add.</param>
+            public void Add(IAppServiceInfo appServiceInfo)
+            {
+                this.appServiceInfos.Add(appServiceInfo);
+            }
+
+            /// <summary>
+            /// Gets an enumeration of application service information objects.
+            /// </summary>
+            /// <param name="candidateTypes">The candidate types which can take part in the composition.</param>
+            /// <param name="registrationContext">Context for the registration.</param>
+            /// <returns>
+            /// An enumeration of application service information objects and their associated contract type.
+            /// </returns>
+            public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type> candidateTypes, ICompositionRegistrationContext registrationContext)
+            {
+                return this.appServiceInfos.Select(i => (i.ContractType, i));
+            }
         }
     }
 }

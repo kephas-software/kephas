@@ -41,9 +41,6 @@ namespace Kephas.Core.Tests.Composition
 
             Assert.AreEqual(logManager, builder.LogManager);
             Assert.AreEqual(appRuntime, builder.AppRuntime);
-
-            // The IServiceProvider export providers.
-            Assert.AreEqual(1, builder.InternalExportProviders.Count);
         }
 
         [Test]
@@ -81,21 +78,6 @@ namespace Kephas.Core.Tests.Composition
             public IConventionsBuilder InternalConventionsBuilder
             {
                 get { return this.ConventionsBuilder; }
-            }
-
-            public IList<IExportProvider> InternalExportProviders
-            {
-                get { return this.ExportProviders; }
-            }
-
-            protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
-            {
-                return Substitute.For<IExportProvider>();
-            }
-
-            protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc)
-            {
-                return Substitute.For<IExportProvider>();
             }
 
             protected override IConventionsBuilder CreateConventionsBuilder()

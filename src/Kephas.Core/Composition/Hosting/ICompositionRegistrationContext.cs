@@ -36,5 +36,13 @@ namespace Kephas.Composition.Hosting
         /// The registrars.
         /// </value>
         IEnumerable<IConventionsRegistrar> Registrars { get; set; }
+
+        /// <summary>
+        /// Gets or sets the application service information providers.
+        /// </summary>
+        /// <value>
+        /// The application service information providers.
+        /// </value>
+        IEnumerable<IAppServiceInfoProvider> AppServiceInfoProviders { get; set; }
     }
 }

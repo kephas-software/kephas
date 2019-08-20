@@ -16,7 +16,6 @@ namespace Kephas.Composition.Conventions
     using System.Reflection;
 
     using Kephas.Collections;
-    using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;

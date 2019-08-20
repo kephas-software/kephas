@@ -98,16 +98,6 @@ namespace Kephas.Core.Tests
             {
             }
 
-            protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
-            {
-                return Substitute.For<IExportProvider>();
-            }
-
-            protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc)
-            {
-                return Substitute.For<IExportProvider>();
-            }
-
             protected override IConventionsBuilder CreateConventionsBuilder()
             {
                 return Substitute.For<IConventionsBuilder>();
@@ -127,16 +117,6 @@ namespace Kephas.Core.Tests
             public BadTestCompositionContainerBuilder()
                 : base(Substitute.For<ICompositionRegistrationContext>())
             {
-            }
-
-            protected override IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isShared = false)
-            {
-                return Substitute.For<IExportProvider>();
-            }
-
-            protected override IExportProvider CreateServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc)
-            {
-                return Substitute.For<IExportProvider>();
             }
 
             protected override IConventionsBuilder CreateConventionsBuilder()
