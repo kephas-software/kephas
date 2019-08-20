@@ -119,7 +119,7 @@ namespace Kephas.Composition.Mef.ExportProviders
                             (c, o) =>
                                 {
                                     var instance = this.factory == null
-                                                       ? this.contextFactory(MefCompositionContextBase.TryGetCompositionContext(c))
+                                                       ? this.contextFactory(MefCompositionContextBase.TryGetCompositionContext(c, createNewIfMissing: false))
                                                        : this.factory();
                                     if (instance is IDisposable disposable)
                                     {

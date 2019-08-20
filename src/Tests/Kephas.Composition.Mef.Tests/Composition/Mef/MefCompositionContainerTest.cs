@@ -241,10 +241,10 @@ namespace Kephas.Tests.Composition.Mef
         public void GetExport_ambient_services()
         {
             var ambientServices = new AmbientServices();
-            var container = this.CreateContainerWithBuilder(ambientServices);
-
             var service = Substitute.For<IAsyncInitializable>();
             ambientServices.RegisterService(typeof(IAsyncInitializable), service);
+
+            var container = this.CreateContainerWithBuilder(ambientServices);
 
             var actualService = container.GetExport<IAsyncInitializable>();
             Assert.AreSame(service, actualService);
@@ -254,9 +254,9 @@ namespace Kephas.Tests.Composition.Mef
         public void GetExport_ambient_services_factory()
         {
             var ambientServices = new AmbientServices();
-            var container = this.CreateContainerWithBuilder(ambientServices);
-
             ambientServices.RegisterService(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
+
+            var container = this.CreateContainerWithBuilder(ambientServices);
 
             var service1 = container.GetExport<IAsyncInitializable>();
             var service2 = container.GetExport<IAsyncInitializable>();

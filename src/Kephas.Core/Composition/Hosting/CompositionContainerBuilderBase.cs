@@ -291,7 +291,7 @@ namespace Kephas.Composition.Hosting
         {
             Requires.NotNull(factory, nameof(factory));
 
-            this.Registry.Add(new AppServiceInfo(typeof(TContract), isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient));
+            this.Registry.Add(new AppServiceInfo(typeof(TContract), ctx => factory(), isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient));
 
             return (TBuilder)this;
         }
@@ -383,13 +383,16 @@ namespace Kephas.Composition.Hosting
         {
             var conventions = this.ConventionsBuilder ?? this.CreateConventionsBuilder();
 
-            if (assemblies == null || !assemblies.Any())
+            if (this.Logger.IsDebugEnabled())
             {
-                return conventions;
-            }
+                var assemblyNames = string.Join(", ", assemblies.Select(a => a.GetName().Name));
+                if (string.IsNullOrEmpty(assemblyNames))
+                {
+                    assemblyNames = "<none>";
+                }
 
-            var assemblyNames = string.Join(", ", assemblies.Select(a => a.GetName().Name));
-            this.Logger.Debug($"{nameof(this.GetConventions)}. Convention assemblies: {assemblyNames}.");
+                this.Logger.Debug($"{nameof(this.GetConventions)}. Convention assemblies: {assemblyNames}.");
+            }
 
             this.context.AppServiceInfoProviders = this.context.AppServiceInfoProviders == null
                                                        ? new List<IAppServiceInfoProvider> { this.Registry }

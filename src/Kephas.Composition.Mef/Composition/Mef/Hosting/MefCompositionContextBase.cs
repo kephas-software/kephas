@@ -174,17 +174,18 @@ namespace Kephas.Composition.Mef.Hosting
         /// Tries to get the composition context wrapper for the provided composition context.
         /// </summary>
         /// <param name="context">The inner container.</param>
+        /// <param name="createNewIfMissing">True to create new if missing.</param>
         /// <returns>
         /// The composition context wrapper.
         /// </returns>
-        internal static ICompositionContext TryGetCompositionContext(CompositionContext context)
+        internal static ICompositionContext TryGetCompositionContext(CompositionContext context, bool createNewIfMissing)
         {
             if (map.TryGetValue(context, out var compositionContext))
             {
                 return compositionContext;
             }
 
-            return new MefScopedCompositionContext(new Export<CompositionContext>(context, () => { }));
+            return createNewIfMissing ? new MefScopedCompositionContext(new Export<CompositionContext>(context, () => { })) : null;
         }
 
         /// <summary>
@@ -198,7 +199,7 @@ namespace Kephas.Composition.Mef.Hosting
                 return;
             }
 
-            map.TryRemove(this.innerCompositionContext, out var _);
+            map.TryRemove(this.innerCompositionContext, out _);
             var disposableInnerContainer = this.innerCompositionContext as IDisposable;
             disposableInnerContainer?.Dispose();
 

@@ -44,16 +44,16 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public async Task CreateContainer_simple_ambient_services_exported()
         {
-            var factory = this.CreateCompositionContainerBuilder();
-            var mockPlatformManager = factory.AppRuntime;
+            var builder = this.CreateCompositionContainerBuilder();
+            var mockPlatformManager = builder.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
 
-            var container = factory.CreateContainer();
+            var container = builder.CreateContainer();
 
             var loggerManager = container.GetExport<ILogManager>();
-            Assert.AreEqual(factory.LogManager, loggerManager);
+            Assert.AreEqual(builder.LogManager, loggerManager);
 
             var platformManager = container.GetExport<IAppRuntime>();
             Assert.AreEqual(mockPlatformManager, platformManager);
@@ -62,16 +62,17 @@ namespace Kephas.Tests.Composition.Mef
         [Test]
         public void CreateContainer_simple_ambient_services_exported_no_assemblies()
         {
-            var factory = this.CreateCompositionContainerBuilder();
-            var container = factory
+            var builder = this.CreateCompositionContainerBuilder();
+            var container = builder
                 .WithAssemblies(new Assembly[0])
+                .WithPart(typeof(AppServiceInfoConventionsRegistrar))
                 .CreateContainer();
 
             var loggerManager = container.GetExport<ILogManager>();
-            Assert.AreEqual(factory.LogManager, loggerManager);
+            Assert.AreEqual(builder.LogManager, loggerManager);
 
             var platformManager = container.GetExport<IAppRuntime>();
-            Assert.AreEqual(factory.AppRuntime, platformManager);
+            Assert.AreEqual(builder.AppRuntime, platformManager);
         }
 
         [Test]

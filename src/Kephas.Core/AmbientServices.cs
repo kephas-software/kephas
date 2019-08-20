@@ -223,7 +223,12 @@ namespace Kephas
         /// </returns>
         public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type> candidateTypes, ICompositionRegistrationContext registrationContext)
         {
-            return this.services.Select(kv => (kv.Key, kv.Value)).ToList();
+            // exclude the composition context from the list as it is the responsibility
+            // of each composition context implementation to register itself in the DI container.
+            return this.services
+                .Where(kv => !ReferenceEquals(kv.Key, typeof(ICompositionContext)))
+                .Select(kv => (kv.Key, kv.Value))
+                .ToList();
         }
     }
 }
