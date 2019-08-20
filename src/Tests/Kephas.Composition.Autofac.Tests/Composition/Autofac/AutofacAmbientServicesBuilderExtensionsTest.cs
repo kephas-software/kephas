@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefAmbientServicesBuilderExtensionsTest.cs" company="Kephas Software SRL">
+// <copyright file="AutofacAmbientServicesBuilderExtensionsTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,43 +8,40 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Composition.Mef
+namespace Kephas.Tests.Composition.Autofac
 {
-    using System.Composition;
-    using System.Composition.Convention;
-    using System.Composition.Hosting;
-    using System.Linq;
+    using global::Autofac;
 
     using Kephas.Application;
-    using Kephas.Composition.Mef.Hosting;
+    using Kephas.Composition.Autofac.Hosting;
     using Kephas.Services;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class MefAmbientServicesBuilderExtensionsTest
+    public class AutofacAmbientServicesBuilderExtensionsTest
     {
         [Test]
-        public void WithMefCompositionContainer_defaults()
+        public void WithAutofacCompositionContainer_defaults()
         {
             var ambientServices = new AmbientServices();
             var builder = new AmbientServicesBuilder(ambientServices);
             builder
-                .WithDefaultAppRuntime(a => !a.Name.Contains("Test"))
-                .WithMefCompositionContainer();
+                .WithDefaultAppRuntime(a => a.Name.Contains("Kephas") && !a.Name.Contains("Test"))
+                .WithAutofacCompositionContainer();
 
             var compositionContext = ambientServices.CompositionContainer;
-            Assert.IsInstanceOf<MefCompositionContainer>(compositionContext);
+            Assert.IsInstanceOf<AutofacCompositionContainer>(compositionContext);
         }
 
         [Test]
-        public void WithMefCompositionContainer_with_open_generic_override()
+        public void WithAutofacCompositionContainer_with_open_generic_override()
         {
             var ambientServices = new AmbientServices();
             var builder = new AmbientServicesBuilder(ambientServices);
             builder
                 .WithDefaultAppRuntime(a => !a.Name.Contains("Test"))
-                .WithMefCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
+                .WithAutofacCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
 
             var compositionContext = ambientServices.CompositionContainer;
             var moreOpen = compositionContext.GetExport<IOpen<int>>();
@@ -53,13 +50,13 @@ namespace Kephas.Tests.Composition.Mef
 
         [Test]
         [Ignore("Until a fix is found for BUG https://github.com/dotnet/corefx/issues/40094, ignore this test.")]
-        public void WithMefCompositionContainer_with_open_generic_override_and_dependency()
+        public void WithAutofacCompositionContainer_with_open_generic_override_and_dependency()
         {
             var ambientServices = new AmbientServices();
             var builder = new AmbientServicesBuilder(ambientServices);
             builder
                 .WithDefaultAppRuntime(a => !a.Name.Contains("Test"))
-                .WithMefCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
+                .WithAutofacCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
 
             var compositionContext = ambientServices.CompositionContainer;
             var moreOpen = compositionContext.GetExport<IOpen<int>>();
@@ -67,28 +64,20 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        [Ignore("Until a fix is found for BUG https://github.com/dotnet/corefx/issues/40094, ignore this test.")]
-        public void SystemComposition_generic_export_with_ctor_dependency()
+        public void Autofac_generic_export_with_ctor_dependency()
         {
-            var conventions = new ConventionBuilder();
+            var conventions = new ContainerBuilder();
 
             conventions
-                .ForType<Dependency>()
-                .Export<Dependency>();
+                .RegisterType<Dependency>()
+                .As<Dependency>();
             conventions
-                .ForType(typeof(MoreOpenWithDependency<>))
-                .ExportInterfaces(
-                i => i.GetGenericTypeDefinition() == typeof(IOpen<>),
-                (type, builder) => builder.AsContractType(typeof(IOpen<>)))
-                .SelectConstructor(ctors => ctors.First());
+                .RegisterGeneric(typeof(MoreOpenWithDependency<>))
+                .As(typeof(IOpen<>));
 
-            var configuration = new ContainerConfiguration()
-                .WithParts(new[] { typeof(IOpen<>), typeof(MoreOpenWithDependency<>) })
-                .WithAssembly(this.GetType().Assembly, conventions);
-
-            using (var container = configuration.CreateContainer())
+            using (var container = conventions.Build())
             {
-                var myService = container.GetExport(typeof(IOpen<object>));
+                var myService = container.Resolve(typeof(IOpen<object>));
                 Assert.IsInstanceOf<MoreOpenWithDependency<object>>(myService);
             }
         }

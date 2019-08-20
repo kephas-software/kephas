@@ -102,17 +102,7 @@ namespace Kephas.Composition.Autofac.Conventions
         {
             if (this.ImplementationType != null)
             {
-                var registration = this.containerBuilder.RegisterType(this.ImplementationType);
-                this.SetLifetime(registration);
-                this.ExportConfiguration?.Invoke(this.ImplementationType, new ExportConventionsBuilder(this, this.ImplementationType, registration));
-                if (this.ServiceType != null)
-                {
-                    registration.As(this.ServiceType);
-                }
-
-                this.SelectConstructor(registration, this.ImplementationType);
-                this.SelectProperties(registration, this.ImplementationType);
-
+                this.RegisterService(this.ImplementationType);
                 return;
             }
 
@@ -120,46 +110,14 @@ namespace Kephas.Composition.Autofac.Conventions
             {
                 foreach (var type in parts.Where(t => this.ImplementationTypePredicate(t)))
                 {
-                    var registration = this.containerBuilder.RegisterType(type);
-                    this.SetLifetime(registration);
-                    this.ExportConfiguration?.Invoke(type, new ExportConventionsBuilder(this, type, registration));
-                    if (this.ServiceType != null)
-                    {
-                        registration.As(this.ServiceType);
-                    }
-
-                    this.SelectConstructor(registration, type);
-                    this.SelectProperties(registration, type);
+                    this.RegisterService(type);
                 }
+
+                return;
             }
 
             throw new InvalidOperationException(
                 $"One of {nameof(ImplementationType)} or {nameof(ImplementationTypePredicate)} must be set.");
-        }
-
-        private void SelectConstructor(
-            IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registration,
-            Type type)
-        {
-            if (this.ConstructorSelector == null)
-            {
-                return;
-            }
-
-            var constructor = this.ConstructorSelector(type.GetConstructors());
-            registration.UsingConstructor(constructor.GetParameters().Select(p => p.ParameterType).ToArray());
-        }
-
-        private void SelectProperties(
-            IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registration,
-            Type type)
-        {
-            if (this.PropertyFilter == null)
-            {
-                return;
-            }
-
-            registration.PropertiesAutowired((pi, obj) => this.PropertyFilter(pi));
         }
 
         /// <summary>
@@ -175,7 +133,38 @@ namespace Kephas.Composition.Autofac.Conventions
             return $"{this.ServiceType}/{this.Lifetime}/{implementationString}";
         }
 
-        private void SetLifetime(IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registration)
+        private void RegisterService(Type implementationType)
+        {
+            if (implementationType.IsGenericTypeDefinition)
+            {
+                var registration = this.containerBuilder.RegisterGeneric(implementationType);
+                this.RegisterService(implementationType, registration);
+            }
+            else
+            {
+                var registration = this.containerBuilder.RegisterType(implementationType);
+                this.RegisterService(implementationType, registration);
+            }
+        }
+
+        private void RegisterService<TActivatorData, TRegistrationStyle>(
+            Type implementationType,
+            IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration)
+            where TActivatorData : ReflectionActivatorData
+        {
+            this.SetLifetime(registration);
+            this.ExportConfiguration?.Invoke(implementationType, new ExportConventionsBuilder<TActivatorData, TRegistrationStyle>(this, implementationType, registration));
+            if (this.ServiceType != null)
+            {
+                registration.As(this.ServiceType);
+            }
+
+            this.SelectConstructor(registration, implementationType);
+            this.SelectProperties(registration, implementationType);
+        }
+
+        private void SetLifetime<TActivatorData, TRegistrationStyle>(
+            IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration)
         {
             switch (this.Lifetime)
             {
@@ -191,18 +180,44 @@ namespace Kephas.Composition.Autofac.Conventions
             }
         }
 
-        private class ExportConventionsBuilder : IExportConventionsBuilder
+        private void SelectConstructor<TActivatorData, TRegistrationStyle>(
+            IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration,
+            Type type)
+            where TActivatorData : ReflectionActivatorData
+        {
+            if (this.ConstructorSelector == null)
+            {
+                return;
+            }
+
+            var constructor = this.ConstructorSelector(type.GetConstructors());
+            registration.UsingConstructor(constructor.GetParameters().Select(p => p.ParameterType).ToArray());
+        }
+
+        private void SelectProperties<TActivatorData, TRegistrationStyle>(
+            IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration,
+            Type type)
+        {
+            if (this.PropertyFilter == null)
+            {
+                return;
+            }
+
+            registration.PropertiesAutowired((pi, obj) => this.PropertyFilter(pi));
+        }
+
+        private class ExportConventionsBuilder<TActivatorData, TRegistrationStyle> : IExportConventionsBuilder
         {
             private readonly ServiceDescriptorBuilder descriptorBuilder;
 
             private readonly Type partType;
 
-            private readonly IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registration;
+            private readonly IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration;
 
             public ExportConventionsBuilder(
                 ServiceDescriptorBuilder descriptorBuilder,
                 Type partType,
-                IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registration)
+                IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration)
             {
                 this.descriptorBuilder = descriptorBuilder;
                 this.partType = partType;

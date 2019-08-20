@@ -1,16 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefCompositionContainerBuilderTest.cs" company="Kephas Software SRL">
+// <copyright file="AutofacCompositionContainerBuilderTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Tests.Composition.Mef
+namespace Kephas.Tests.Composition.Autofac
 {
     using System;
     using System.Collections.Generic;
-    using System.Composition;
-    using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
@@ -19,12 +17,10 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
+    using Kephas.Composition.Autofac.Conventions;
+    using Kephas.Composition.Autofac.Hosting;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
-    using Kephas.Composition.Mef;
-    using Kephas.Composition.Mef.Conventions;
-    using Kephas.Composition.Mef.Hosting;
-    using Kephas.Composition.Mef.ScopeFactory;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -35,11 +31,17 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="MefCompositionContainerBuilder"/>.
+    /// Tests for <see cref="AutofacCompositionContainerBuilder"/>.
     /// </summary>
+    /// <content>
+    /// .
+    /// </content>
+    /// <example>
+    /// .
+    /// </example>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class MefCompositionContainerBuilderTest : CompositionTestBase
+    public class AutofacCompositionContainerBuilderTest : CompositionTestBase
     {
         [Test]
         public async Task CreateContainer_simple_ambient_services_exported()
@@ -48,7 +50,7 @@ namespace Kephas.Tests.Composition.Mef
             var mockAppRuntime = builder.AppRuntime;
 
             mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacCompositionContainer).GetTypeInfo().Assembly });
 
             var container = builder.CreateContainer();
 
@@ -81,11 +83,11 @@ namespace Kephas.Tests.Composition.Mef
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
                 .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
-                .WithAssembly(typeof(MefConventionsBuilder).GetTypeInfo().Assembly)
+                .WithAssembly(typeof(AutofacConventionsBuilder).GetTypeInfo().Assembly)
                 .CreateContainer();
 
-            var logger = container.GetExport<ILogger<MefCompositionContainerTest.ExportedClass>>();
-            Assert.IsInstanceOf<TypedLogger<MefCompositionContainerTest.ExportedClass>>(logger);
+            var logger = container.GetExport<ILogger<AutofacCompositionContainerTest.ExportedClass>>();
+            Assert.IsInstanceOf<TypedLogger<AutofacCompositionContainerTest.ExportedClass>>(logger);
         }
 
         [Test]
@@ -198,7 +200,7 @@ namespace Kephas.Tests.Composition.Mef
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
                 .CreateContainer();
 
-            Assert.Throws<CompositionFailedException>(() => container.GetExport<ITestScopedExport>());
+            Assert.Throws<Exception>(() => container.GetExport<ITestScopedExport>());
         }
 
         [Test]
@@ -227,47 +229,47 @@ namespace Kephas.Tests.Composition.Mef
             }
         }
 
-        [Test]
-        public void GetExport_ScopeSharedAppService_custom_scope_export()
-        {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
-            var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
-                .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport) })
-                .WithScopeFactory<MyScopeFactory>()
-                .CreateContainer();
+        //[Test, Ignore("Named scopes not supported by Autofac")]
+        //public void GetExport_ScopeSharedAppService_custom_scope_export()
+        //{
+        //    var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+        //    var container = builder
+        //        .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+        //        .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport) })
+        //        .WithScopeFactory<MyScopeFactory>()
+        //        .CreateContainer();
 
-            ITestMyScopedExport exportScope1;
-            using (var scopedContext = container.CreateScopedContext("my-scope"))
-            {
-                exportScope1 = scopedContext.GetExport<ITestMyScopedExport>();
-                Assert.IsInstanceOf<TestMyScopedExport>(exportScope1);
+        //    ITestMyScopedExport exportScope1;
+        //    using (var scopedContext = container.CreateScopedContext("my-scope"))
+        //    {
+        //        exportScope1 = scopedContext.GetExport<ITestMyScopedExport>();
+        //        Assert.IsInstanceOf<TestMyScopedExport>(exportScope1);
 
-                var export = scopedContext.GetExport<ITestMyScopedExport>();
-                Assert.AreSame(exportScope1, export);
-            }
+        //        var export = scopedContext.GetExport<ITestMyScopedExport>();
+        //        Assert.AreSame(exportScope1, export);
+        //    }
 
-            using (var scopedContext2 = container.CreateScopedContext("my-scope"))
-            {
-                var export2 = scopedContext2.GetExport<ITestMyScopedExport>();
-                Assert.AreNotSame(exportScope1, export2);
-            }
-        }
+        //    using (var scopedContext2 = container.CreateScopedContext("my-scope"))
+        //    {
+        //        var export2 = scopedContext2.GetExport<ITestMyScopedExport>();
+        //        Assert.AreNotSame(exportScope1, export2);
+        //    }
+        //}
 
-        [Test]
-        public void GetExport_ScopeSharedAppService_scopefactory_composed_only_once()
-        {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
-            var container = builder
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
-                .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport), typeof(MyScopeFactory) })
-                .WithScopeFactory<MyScopeFactory>()
-                .CreateContainer();
+        //[Test, Ignore("Named scopes not supported by Autofac")]
+        //public void GetExport_ScopeSharedAppService_scopefactory_composed_only_once()
+        //{
+        //    var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+        //    var container = builder
+        //        .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+        //        .WithParts(new[] { typeof(ITestMyScopedExport), typeof(TestMyScopedExport), typeof(MyScopeFactory) })
+        //        .WithScopeFactory<MyScopeFactory>()
+        //        .CreateContainer();
 
-            var scopedContext = container.CreateScopedContext("my-scope");
-            Assert.AreNotSame(container, scopedContext);
-            Assert.IsNotNull(scopedContext);
-        }
+        //    var scopedContext = container.CreateScopedContext("my-scope");
+        //    Assert.AreNotSame(container, scopedContext);
+        //    Assert.IsNotNull(scopedContext);
+        //}
 
         [Test]
         public void GetExport_AppService_no_constructor()
@@ -349,10 +351,10 @@ namespace Kephas.Tests.Composition.Mef
                 .Do(ci => { ci.Arg<IConventionsBuilder>().ForInstance(typeof(string), "123"); });
 
             var factory = this.CreateCompositionContainerBuilder(ctx => ctx.Registrars = new[] { registrar });
-            var mockPlatformManager = factory.AppRuntime;
+            var mockAppRuntime = factory.AppRuntime;
 
-            mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
+            mockAppRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacCompositionContainer).GetTypeInfo().Assembly });
 
             var container = factory.CreateContainer();
 
@@ -372,7 +374,7 @@ namespace Kephas.Tests.Composition.Mef
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacCompositionContainer).GetTypeInfo().Assembly });
 
             var container = factory.CreateContainer();
 
@@ -392,7 +394,7 @@ namespace Kephas.Tests.Composition.Mef
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacCompositionContainer).GetTypeInfo().Assembly });
 
             var container = factory.CreateContainer();
 
@@ -412,7 +414,7 @@ namespace Kephas.Tests.Composition.Mef
             var mockPlatformManager = factory.AppRuntime;
 
             mockPlatformManager.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
-                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(MefCompositionContainer).GetTypeInfo().Assembly });
+                .Returns(new[] { typeof(ILogger).GetTypeInfo().Assembly, typeof(AutofacCompositionContainer).GetTypeInfo().Assembly });
 
             var container = factory.CreateContainer();
 
@@ -420,7 +422,7 @@ namespace Kephas.Tests.Composition.Mef
             Assert.AreEqual("123", instance);
         }
 
-        private MefCompositionContainerBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
+        private AutofacCompositionContainerBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
@@ -429,11 +431,11 @@ namespace Kephas.Tests.Composition.Mef
                                         .RegisterService(mockLoggerManager)
                                         .RegisterService(mockPlatformManager));
             config?.Invoke(context);
-            var factory = new MefCompositionContainerBuilder(context);
+            var factory = new AutofacCompositionContainerBuilder(context);
             return factory;
         }
 
-        private MefCompositionContainerBuilder CreateCompositionContainerBuilderWithStringLogger()
+        private AutofacCompositionContainerBuilder CreateCompositionContainerBuilderWithStringLogger()
         {
             var builder = this.CreateCompositionContainerBuilder();
 
@@ -443,10 +445,10 @@ namespace Kephas.Tests.Composition.Mef
             return builder;
         }
 
-        [Export]
+        // [Export]
         public class ComposedTestLogConsumer
         {
-            public ComposedTestLogConsumer(ILogger<MefCompositionContainerBuilderTest.ComposedTestLogConsumer> logger)
+            public ComposedTestLogConsumer(ILogger<ComposedTestLogConsumer> logger)
             {
                 this.Logger = logger;
             }
@@ -462,7 +464,7 @@ namespace Kephas.Tests.Composition.Mef
             /// <summary>
             /// Gets or sets the logger.
             /// </summary>
-            [Kephas.Composition.AttributedModel.Import]
+            [Import]
             public ILogger<NonComposedTestLogConsumer> Logger { get; set; }
         }
 
@@ -491,14 +493,14 @@ namespace Kephas.Tests.Composition.Mef
             public IEnumerable<IExportFactory<ITestMultiAppService, AppServiceMetadata>> MetadataFactories { get; set; }
         }
 
-        public class TestMetadataConsumer
-        {
-            /// <summary>
-            /// Gets or sets the test services.
-            /// </summary>
-            [Kephas.Composition.AttributedModel.ImportMany]
-            public ICollection<ExportFactoryAdapter<ITestAppService, AppServiceMetadata>> TestServices { get; set; }
-        }
+        //public class TestMetadataConsumer
+        //{
+        //    /// <summary>
+        //    /// Gets or sets the test services.
+        //    /// </summary>
+        //    [Kephas.Composition.AttributedModel.ImportMany]
+        //    public ICollection<ExportFactoryAdapter<ITestAppService, AppServiceMetadata>> TestServices { get; set; }
+        //}
 
         public interface IConverter { }
 
@@ -511,32 +513,32 @@ namespace Kephas.Tests.Composition.Mef
 
         public class SecondStringToIntConverter : IConverter<string, int> { }
 
-        public class TestConverterConsumer
-        {
-            /// <summary>
-            /// Gets or sets the converters.
-            /// </summary>
-            [Kephas.Composition.AttributedModel.ImportMany]
-            public ICollection<ExportFactoryAdapter<IConverter, AppServiceMetadata>> Converters { get; set; }
-        }
+        //public class TestConverterConsumer
+        //{
+        //    /// <summary>
+        //    /// Gets or sets the converters.
+        //    /// </summary>
+        //    [ImportMany]
+        //    public ICollection<ExportFactoryAdapter<IConverter, AppServiceMetadata>> Converters { get; set; }
+        //}
 
         [ScopedAppServiceContract("my-scope")]
         public interface ITestMyScopedExport { }
 
         public class TestMyScopedExport : ITestMyScopedExport { }
 
-        [SharingBoundaryScope("my-scope")]
-        public class MyScopeFactory : MefScopeFactoryBase
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="MefScopeFactoryBase"/> class.
-            /// </summary>
-            /// <param name="scopedContextFactory">The scoped context factory.</param>
-            public MyScopeFactory([SharingBoundary("my-scope")] ExportFactory<CompositionContext> scopedContextFactory)
-                : base(scopedContextFactory)
-            {
-            }
-        }
+        //[SharingBoundaryScope("my-scope")]
+        //public class MyScopeFactory : MefScopeFactoryBase
+        //{
+        //    /// <summary>
+        //    /// Initializes a new instance of the <see cref="MefScopeFactoryBase"/> class.
+        //    /// </summary>
+        //    /// <param name="scopedContextFactory">The scoped context factory.</param>
+        //    public MyScopeFactory([SharingBoundary("my-scope")] ExportFactory<CompositionContext> scopedContextFactory)
+        //        : base(scopedContextFactory)
+        //    {
+        //    }
+        //}
 
         [ScopedAppServiceContract]
         public interface ITestScopedExport { }

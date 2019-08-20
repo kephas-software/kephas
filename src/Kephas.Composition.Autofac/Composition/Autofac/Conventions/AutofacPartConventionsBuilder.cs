@@ -107,9 +107,19 @@ namespace Kephas.Composition.Autofac.Conventions
             return this;
         }
 
+        /// <summary>
+        /// Select properties to import into the part.
+        /// </summary>
+        /// <param name="propertyFilter">Filter to select matching properties.</param>
+        /// <param name="importConfiguration">Optional. Action to configure selected properties.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
         public IPartConventionsBuilder ImportProperties(Predicate<PropertyInfo> propertyFilter, Action<PropertyInfo, IImportConventionsBuilder> importConfiguration = null)
         {
-            throw new NotImplementedException();
+            this.descriptorBuilder.PropertyFilter = propertyFilter;
+
+            return this;
         }
     }
 }
