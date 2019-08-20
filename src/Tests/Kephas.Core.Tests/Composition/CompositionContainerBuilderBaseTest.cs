@@ -150,8 +150,7 @@ namespace Kephas.Core.Tests.Composition
             /// </summary>
             /// <param name="type">The registered service type.</param>
             /// <param name="instance">The instance.</param>
-            /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-            public IPartBuilder ForInstance(Type type, object instance)
+            public void ForInstance(Type type, object instance)
             {
                 throw new NotImplementedException();
             }

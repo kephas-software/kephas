@@ -34,12 +34,11 @@ namespace Kephas.Composition.Conventions
         /// <typeparam name="TService">Type of the registered service.</typeparam>
         /// <param name="conventionsBuilder">The conventionsBuilder to act on.</param>
         /// <param name="instance">The singleton instance.</param>
-        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-        public static IPartBuilder ForInstance<TService>(this IConventionsBuilder conventionsBuilder, TService instance)
+        public static void ForInstance<TService>(this IConventionsBuilder conventionsBuilder, TService instance)
         {
             Requires.NotNull(conventionsBuilder, nameof(conventionsBuilder));
 
-            return conventionsBuilder.ForInstance(typeof(TService), instance);
+            conventionsBuilder.ForInstance(typeof(TService), instance);
         }
 
         /// <summary>
