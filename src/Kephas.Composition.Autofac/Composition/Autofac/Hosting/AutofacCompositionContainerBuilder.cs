@@ -81,9 +81,14 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
-            var containerBuilder = ((IAutofacContainerBuilderProvider)conventions).GetContainerBuilder();
+            var container = conventions is IAutofacContainerBuilder autofacContainerBuilder
+                                      ? autofacContainerBuilder.Build(parts)
+                                      : conventions is IAutofacContainerBuilderProvider autofacContainerBuilderProvider
+                                          ? autofacContainerBuilderProvider.GetContainerBuilder().Build()
+                                          : throw new InvalidOperationException(
+                                                $"The conventions instance must implement either {typeof(IAutofacContainerBuilder)} or {typeof(IAutofacContainerBuilderProvider)}.");
 
-            return new AutofacCompositionContainer(containerBuilder.Build());
+            return new AutofacCompositionContainer(container);
         }
     }
 }
