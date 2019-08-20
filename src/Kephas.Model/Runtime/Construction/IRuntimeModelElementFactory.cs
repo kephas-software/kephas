@@ -16,7 +16,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <summary>
     /// Contract for creating a model element based on the runtime element.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IRuntimeModelElementFactory
     {
         /// <summary>

@@ -151,7 +151,7 @@ namespace Kephas.Application
                 var shutdownException = new ShutdownException(Strings.App_ShutdownAsync_ErrorDuringFinalization_Exception, ex)
                 {
                     AmbientServices = ambientServices,
-                    AppContext = appContext
+                    AppContext = appContext,
                 };
                 this.Log(LogLevel.Fatal, shutdownException);
                 throw shutdownException;

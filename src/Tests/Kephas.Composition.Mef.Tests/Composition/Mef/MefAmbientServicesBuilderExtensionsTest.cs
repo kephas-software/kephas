@@ -92,7 +92,7 @@ namespace Kephas.Tests.Composition.Mef
             }
         }
 
-        [SharedAppServiceContract(AsOpenGeneric = true)]
+        [SingletonAppServiceContract(AsOpenGeneric = true)]
         public interface IOpen<T> { }
 
         public class DefaultOpen<T> : IOpen<T> { }

@@ -465,13 +465,13 @@ namespace Kephas.Tests.Composition.Mef
             public ILogger<NonComposedTestLogConsumer> Logger { get; set; }
         }
 
-        [SharedAppServiceContract(MetadataAttributes = new[] { typeof(OverridePriorityAttribute) })]
+        [SingletonAppServiceContract(MetadataAttributes = new[] { typeof(OverridePriorityAttribute) })]
         public interface ITestAppService { }
 
-        [SharedAppServiceContract(AllowMultiple = true)]
+        [SingletonAppServiceContract(AllowMultiple = true)]
         public interface ITestMultiAppService { }
 
-        [SharedAppServiceContract]
+        [SingletonAppServiceContract]
         public interface ITestMultiAppServiceConsumer { }
 
         public class TestAppService : ITestAppService { }
@@ -501,7 +501,7 @@ namespace Kephas.Tests.Composition.Mef
 
         public interface IConverter { }
 
-        [SharedAppServiceContract(MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) }, 
+        [SingletonAppServiceContract(MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) }, 
             ContractType = typeof(IConverter))]
         public interface IConverter<TSource, TTarget> : IConverter { }
 
@@ -519,7 +519,7 @@ namespace Kephas.Tests.Composition.Mef
             public ICollection<ExportFactoryAdapter<IConverter, AppServiceMetadata>> Converters { get; set; }
         }
 
-        [ScopeSharedAppServiceContract("my-scope")]
+        [ScopedAppServiceContract("my-scope")]
         public interface ITestMyScopedExport { }
 
         public class TestMyScopedExport : ITestMyScopedExport { }
@@ -537,17 +537,17 @@ namespace Kephas.Tests.Composition.Mef
             }
         }
 
-        [ScopeSharedAppServiceContract]
+        [ScopedAppServiceContract]
         public interface ITestScopedExport { }
 
         public class TestScopedExport : ITestScopedExport { }
 
-        [SharedAppServiceContract]
+        [SingletonAppServiceContract]
         public interface ITestGenericExport<T> { }
 
         public class TestGenericExport : ITestGenericExport<string> { }
 
-        [SharedAppServiceContract]
+        [SingletonAppServiceContract]
         public interface IConstructorAppService { }
 
         public class DefaultConstructorAppService : IConstructorAppService

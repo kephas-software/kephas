@@ -18,9 +18,9 @@ namespace Kephas.Data.DataSources
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract providing the data source for editors.
+    /// Singleton application service contract providing the data source for editors.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IDataSourceProvider
     {
         /// <summary>

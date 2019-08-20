@@ -17,7 +17,7 @@ namespace Kephas.Data.Client.Queries.Conversion
     /// <summary>
     /// Contract for a service converting client queries to server-side executable queries.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IClientQueryConverter
     {
         /// <summary>

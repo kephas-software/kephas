@@ -14,9 +14,9 @@ namespace Kephas.ServiceStack.Hosting
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract for configurating a host.
+    /// Singleton application service contract for configurating a host.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(RequiredFeatureAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(RequiredFeatureAttribute) })]
     public interface IHostConfigurator
     {
         /// <summary>

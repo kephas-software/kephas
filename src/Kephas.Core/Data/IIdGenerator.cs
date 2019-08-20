@@ -15,7 +15,7 @@ namespace Kephas.Data
     /// <summary>
     /// Contract for a shared application service generating ID values.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IIdGenerator
     {
         /// <summary>

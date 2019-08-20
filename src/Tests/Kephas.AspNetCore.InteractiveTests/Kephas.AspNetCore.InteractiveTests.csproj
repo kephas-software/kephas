@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Kephas.AspNetCore\Kephas.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj" />
+    <ProjectReference Include="..\..\Kephas.Composition.Autofac\Kephas.Composition.Autofac.csproj" />
     <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
     <ProjectReference Include="..\..\Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj" />
   </ItemGroup>

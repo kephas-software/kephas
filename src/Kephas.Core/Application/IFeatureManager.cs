@@ -16,13 +16,13 @@ namespace Kephas.Application
     using Kephas.Services;
 
     /// <summary>
-    /// Shared service contract for managers of features within the application.
+    /// Singleton service contract for managers of features within the application.
     /// </summary>
     /// <remarks>
     /// An application feature is a functional area of the application.
     /// It supports initialization and finalization.
     /// </remarks>
-    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(FeatureInfoAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(FeatureInfoAttribute) })]
     public interface IFeatureManager : IAsyncInitializable, IAsyncFinalizable
     {
         /// <summary>

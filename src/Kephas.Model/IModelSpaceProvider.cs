@@ -15,7 +15,7 @@ namespace Kephas.Model
     /// <summary>
     /// Contract for providing a model space.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IModelSpaceProvider : IAsyncInitializable
     {
         /// <summary>

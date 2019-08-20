@@ -20,7 +20,7 @@ namespace Kephas.Data.IO.DataStreams
     /// <summary>
     /// Reader for <see cref="DataStream"/>s.
     /// </summary>
-    [SharedAppServiceContract(
+    [SingletonAppServiceContract(
         AllowMultiple = true,
         MetadataAttributes = new[] { typeof(SupportedMediaTypesAttribute) })]
     public interface IDataStreamReader

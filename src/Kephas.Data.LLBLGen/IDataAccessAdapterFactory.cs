@@ -15,9 +15,9 @@ namespace Kephas.Data.LLBLGen
     using SD.LLBLGen.Pro.ORMSupportClasses;
 
     /// <summary>
-    /// Shared application service contract for the data access adapter factory.
+    /// Singleton application service contract for the data access adapter factory.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataAccessAdapterFactory
     {
         /// <summary>

@@ -17,7 +17,7 @@ namespace Kephas.Services.Behaviors
     /// <summary>
     /// Interface for service behavior provider.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IServiceBehaviorProvider
     {
         /// <summary>

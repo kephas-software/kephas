@@ -18,7 +18,7 @@ namespace Kephas.Data.Conversion
     /// <summary>
     /// Application service contract for data conversions.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataConversionService
     {
         /// <summary>

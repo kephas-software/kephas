@@ -18,7 +18,7 @@ namespace Kephas.Cryptography
     /// <summary>
     /// Application service contract for hashing.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IHashingService
     {
         /// <summary>

@@ -15,7 +15,7 @@ namespace Kephas.Serialization.ServiceStack.Text
     /// <summary>
     /// Interface for JSON serializer configurator.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IJsonSerializerConfigurator
     {
         /// <summary>

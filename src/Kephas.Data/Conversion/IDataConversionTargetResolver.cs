@@ -18,7 +18,7 @@ namespace Kephas.Data.Conversion
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract for resolving targets during data conversion.
+    /// Singleton application service contract for resolving targets during data conversion.
     /// </summary>
     public interface IDataConversionTargetResolver
     {
@@ -42,11 +42,11 @@ namespace Kephas.Data.Conversion
     }
 
     /// <summary>
-    /// Shared application service contract for resolving targets during data conversion.
+    /// Singleton application service contract for resolving targets during data conversion.
     /// </summary>
     /// <typeparam name="TSource">Type of the source.</typeparam>
     /// <typeparam name="TTarget">Type of the target.</typeparam>
-    [SharedAppServiceContract(ContractType = typeof(IDataConversionTargetResolver))]
+    [SingletonAppServiceContract(ContractType = typeof(IDataConversionTargetResolver))]
     public interface IDataConversionTargetResolver<TSource, TTarget> : IDataConversionTargetResolver
     {
     }

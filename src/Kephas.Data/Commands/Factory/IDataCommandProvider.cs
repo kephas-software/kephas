@@ -15,9 +15,9 @@ namespace Kephas.Data.Commands.Factory
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract creating commands for specific data contexts.
+    /// Singleton application service contract creating commands for specific data contexts.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataCommandProvider
     {
         /// <summary>

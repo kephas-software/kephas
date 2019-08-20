@@ -18,9 +18,9 @@ namespace Kephas.Security.Authorization
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Shared application service contract for handling authorization.
+    /// Singleton application service contract for handling authorization.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IAuthorizationService
     {
         /// <summary>

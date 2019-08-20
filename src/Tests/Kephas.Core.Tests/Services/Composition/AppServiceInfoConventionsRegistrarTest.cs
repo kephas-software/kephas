@@ -451,10 +451,10 @@ namespace Kephas.Core.Tests.Services.Composition
             return ambientServices;
         }
 
-        [SharedAppServiceContract(AllowMultiple = false)]
+        [SingletonAppServiceContract(AllowMultiple = false)]
         public interface ISingleTestAppService { }
 
-        [SharedAppServiceContract(AllowMultiple = true)]
+        [SingletonAppServiceContract(AllowMultiple = true)]
         public interface IMultipleTestAppService { }
 
         public class SingleTestService : AppServiceInfoConventionsRegistrarTest.ISingleTestAppService { }
@@ -469,17 +469,17 @@ namespace Kephas.Core.Tests.Services.Composition
         public class NewMultipleTestService : IMultipleTestAppService { }
 
 
-        [SharedAppServiceContract]
+        [SingletonAppServiceContract]
         public interface IGenericAppService<T> { }
 
         public interface IOneGenericAppService { }
 
-        [SharedAppServiceContract(ContractType = typeof(IOneGenericAppService))]
+        [SingletonAppServiceContract(ContractType = typeof(IOneGenericAppService))]
         public interface IOneGenericAppService<T> : IOneGenericAppService { }
 
         public interface ITwoGenericAppService { }
 
-        [SharedAppServiceContract(ContractType = typeof(ITwoGenericAppService))]
+        [SingletonAppServiceContract(ContractType = typeof(ITwoGenericAppService))]
         public interface ITwoGenericAppService<TFrom, ToType> : ITwoGenericAppService { }
 
         public class GenericAppService<T> : IGenericAppService<T> { }
@@ -488,7 +488,7 @@ namespace Kephas.Core.Tests.Services.Composition
 
         public class TwoGenericAppServiceIntBool : ITwoGenericAppService<int, bool> { }
 
-        [SharedAppServiceContract(ContractType = typeof(IDisposable))]
+        [SingletonAppServiceContract(ContractType = typeof(IDisposable))]
         public interface IBadAppService { }
 
         public class BadAppService : IBadAppService { }
@@ -496,7 +496,7 @@ namespace Kephas.Core.Tests.Services.Composition
 
     namespace CustomValueAppServiceMetadata
     {
-        [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(CustomValueMetadataAttribute) })]
+        [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(CustomValueMetadataAttribute) })]
         public interface ICustomValueMetadataAppService { }
 
         [CustomValueMetadata("hi there")]
@@ -519,7 +519,7 @@ namespace Kephas.Core.Tests.Services.Composition
 
     namespace CustomNamedValueAppServiceMetadata
     {
-        [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(CustomNamedValueMetadataAttribute) })]
+        [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(CustomNamedValueMetadataAttribute) })]
         public interface ICustomNamedValueMetadataAppService { }
 
         [CustomNamedValueMetadata("hi there", "bob", IconName = "ICXP")]
@@ -557,7 +557,7 @@ namespace Kephas.Core.Tests.Services.Composition
 
     namespace DefaultExplicitAppServiceMetadata
     {
-        [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
+        [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(ProcessingPriorityAttribute) })]
         public interface IExplicitMetadataAppService { }
 
         [ProcessingPriority(100)]

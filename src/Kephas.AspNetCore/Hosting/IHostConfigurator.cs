@@ -16,7 +16,7 @@ namespace Kephas.AspNetCore.Hosting
     /// <summary>
     /// Interface for host configurator.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IHostConfigurator
     {
         /// <summary>

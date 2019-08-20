@@ -93,7 +93,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             Assert.AreSame(typeof(ITestOpenGenericService<>).AsRuntimeTypeInfo(), modelElement.Parts.First());
         }
 
-        [SharedAppServiceContract]
+        [SingletonAppServiceContract]
         public interface ISharedTestAppService {}
 
 

@@ -13,7 +13,7 @@ namespace Kephas.Services
     /// <summary>
     /// Contract for a shared application service providing named services.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface INamedServiceProvider
     {
         /// <summary>

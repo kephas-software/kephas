@@ -67,7 +67,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <value>
         /// The lifetime.
         /// </value>
-        public AppServiceLifetime Lifetime { get; set; } = AppServiceLifetime.Instance;
+        public AppServiceLifetime Lifetime { get; set; } = AppServiceLifetime.Transient;
 
         /// <summary>
         /// Gets or sets the constructor selector.
@@ -179,10 +179,10 @@ namespace Kephas.Composition.Autofac.Conventions
         {
             switch (this.Lifetime)
             {
-                case AppServiceLifetime.Shared:
+                case AppServiceLifetime.Singleton:
                     registration.SingleInstance();
                     break;
-                case AppServiceLifetime.ScopeShared:
+                case AppServiceLifetime.Scoped:
                     registration.InstancePerLifetimeScope();
                     break;
                 default:

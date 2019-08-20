@@ -34,7 +34,7 @@ namespace Kephas.Services.Reflection
         ///                             <c>true</c> if the contract should be exported as an open generic;
         ///                             otherwise, <c>false</c>.
         /// </param>
-        public AppServiceInfo(Type contractType, AppServiceLifetime lifetime = AppServiceLifetime.Shared, bool allowMultiple = false, bool asOpenGeneric = false)
+        public AppServiceInfo(Type contractType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool allowMultiple = false, bool asOpenGeneric = false)
         {
             Requires.NotNull(contractType, nameof(contractType));
 
@@ -56,7 +56,7 @@ namespace Kephas.Services.Reflection
 
             this.SetContractType(contractType);
             this.Instance = serviceInstance;
-            this.SetLifetime(AppServiceLifetime.Shared);
+            this.SetLifetime(AppServiceLifetime.Singleton);
         }
 
         /// <summary>
@@ -64,14 +64,15 @@ namespace Kephas.Services.Reflection
         /// </summary>
         /// <param name="contractType">The contract type of the export.</param>
         /// <param name="serviceInstanceFactory">The service instance factory.</param>
-        public AppServiceInfo(Type contractType, Func<ICompositionContext, object> serviceInstanceFactory)
+        /// <param name="lifetime">Optional. The application service lifetime.</param>
+        public AppServiceInfo(Type contractType, Func<ICompositionContext, object> serviceInstanceFactory, AppServiceLifetime lifetime = AppServiceLifetime.Transient)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(serviceInstanceFactory, nameof(serviceInstanceFactory));
 
             this.SetContractType(contractType);
             this.InstanceFactory = serviceInstanceFactory;
-            this.SetLifetime(AppServiceLifetime.Instance);
+            this.SetLifetime(lifetime);
         }
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace Kephas.Services.Reflection
         ///                             <c>true</c> if the contract should be exported as an open generic;
         ///                             otherwise, <c>false</c>.
         /// </param>
-        public AppServiceInfo(Type contractType, Type serviceInstanceType, AppServiceLifetime lifetime = AppServiceLifetime.Shared, bool asOpenGeneric = false)
+        public AppServiceInfo(Type contractType, Type serviceInstanceType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool asOpenGeneric = false)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(serviceInstanceType, nameof(serviceInstanceType));
@@ -109,7 +110,7 @@ namespace Kephas.Services.Reflection
 
             this.SetContractType(contractType);
             this.InstanceType = serviceInstanceType;
-            this.SetLifetime(AppServiceLifetime.ScopeShared, scopeName);
+            this.SetLifetime(AppServiceLifetime.Scoped, scopeName);
         }
 
         /// <summary>
@@ -224,7 +225,7 @@ namespace Kephas.Services.Reflection
         private void SetLifetime(AppServiceLifetime lifetime, string scopeName = null)
         {
             this.Lifetime = lifetime;
-            if (lifetime == AppServiceLifetime.ScopeShared)
+            if (lifetime == AppServiceLifetime.Scoped)
             {
                 this.ScopeName = scopeName ?? CompositionScopeNames.Default;
             }

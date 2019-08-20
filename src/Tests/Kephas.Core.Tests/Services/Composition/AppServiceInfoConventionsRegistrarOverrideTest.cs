@@ -238,7 +238,7 @@
         {
         }
 
-        [SharedAppServiceContract(AllowMultiple = true)]
+        [SingletonAppServiceContract(AllowMultiple = true)]
         public interface IConverter
         {
         }
@@ -247,7 +247,7 @@
         {
         }
 
-        [SharedAppServiceContract(AllowMultiple = true)]
+        [SingletonAppServiceContract(AllowMultiple = true)]
         public interface IClassifierFactory
         {
         }

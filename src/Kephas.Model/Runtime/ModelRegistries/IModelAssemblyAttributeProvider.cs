@@ -19,7 +19,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     /// <summary>
     /// Interface for model assembly attribute provider.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IModelAssemblyAttributeProvider
     {
         /// <summary>

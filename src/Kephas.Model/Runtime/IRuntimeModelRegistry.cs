@@ -19,7 +19,7 @@ namespace Kephas.Model.Runtime
     /// <summary>
     /// Application service for providing runtime elements used in building the model space.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IRuntimeModelRegistry
     {
         /// <summary>

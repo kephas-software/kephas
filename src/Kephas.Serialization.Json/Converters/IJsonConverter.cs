@@ -15,7 +15,7 @@ namespace Kephas.Serialization.Json.Converters
     /// <summary>
     /// Marker interface for composable JSON converters.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IJsonConverter
     {
     }

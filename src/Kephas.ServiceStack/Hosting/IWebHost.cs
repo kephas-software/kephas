@@ -19,9 +19,9 @@ namespace Kephas.ServiceStack.Hosting
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract for the web host.
+    /// Singleton application service contract for the web host.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IWebHost : IAppHost, IFunqlet, IHasContainer, IDisposable, IAsyncInitializable, IAsyncFinalizable
     {
     }

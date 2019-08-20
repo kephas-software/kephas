@@ -17,14 +17,14 @@ namespace Kephas.Application
     using Kephas.Services;
 
     /// <summary>
-    /// Shared service contract for feature lifecycle behaviors.
+    /// Singleton service contract for feature lifecycle behaviors.
     /// </summary>
     /// <remarks>
     /// A feature lifecycle behavior intercepts the initialization and finalization of one or more features
     /// and reacts to them. Such features could log the performance of initialization,
     /// check prerequisites like proper licensing or whatever the application needs.
     /// </remarks>
-    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(TargetFeatureAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(TargetFeatureAttribute) })]
     public interface IFeatureLifecycleBehavior
     {
         /// <summary>

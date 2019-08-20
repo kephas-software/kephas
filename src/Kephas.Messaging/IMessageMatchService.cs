@@ -18,7 +18,7 @@ namespace Kephas.Messaging
     /// <summary>
     /// Interface for message match service.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IMessageMatchService
     {
         /// <summary>

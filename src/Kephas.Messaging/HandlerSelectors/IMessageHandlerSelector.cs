@@ -18,7 +18,7 @@ namespace Kephas.Messaging.HandlerSelectors
     /// <summary>
     /// Interface for message handler selector.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IMessageHandlerSelector
     {
         /// <summary>

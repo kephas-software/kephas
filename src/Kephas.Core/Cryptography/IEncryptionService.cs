@@ -19,7 +19,7 @@ namespace Kephas.Cryptography
     /// <summary>
     /// Application service contract for encryption.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IEncryptionService
     {
         /// <summary>

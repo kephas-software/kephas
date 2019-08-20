@@ -23,7 +23,7 @@ namespace Kephas.Data.Setup
     /// The typical implementation aggregates multiple <see cref="IDataInstaller"/> services
     /// and calls them in their priority order.
     /// </remarks>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataSetupManager
     {
         /// <summary>

@@ -17,9 +17,9 @@ namespace Kephas.Scripting
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service for executing scripts.
+    /// Singleton application service for executing scripts.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IScriptingEngine
     {
         /// <summary>

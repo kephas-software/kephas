@@ -18,9 +18,9 @@ namespace Kephas.Data.DataSources
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract providing the data source for a specific property.
+    /// Singleton application service contract providing the data source for a specific property.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataSourceService
     {
         /// <summary>

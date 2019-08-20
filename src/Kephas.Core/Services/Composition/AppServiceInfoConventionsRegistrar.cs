@@ -196,6 +196,11 @@ namespace Kephas.Services.Composition
             IList<Type> candidateTypes,
             ICompositionRegistrationContext registrationContext)
         {
+            if (registrationContext.AmbientServices != null)
+            {
+                yield return registrationContext.AmbientServices;
+            }
+
             foreach (var candidateType in candidateTypes.Where(t => t.IsInstantiableAppServiceInfoProviderType()).ToList())
             {
                 yield return (IAppServiceInfoProvider)candidateType.AsRuntimeTypeInfo().CreateInstance();

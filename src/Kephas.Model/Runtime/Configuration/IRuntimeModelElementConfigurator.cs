@@ -42,7 +42,7 @@ namespace Kephas.Model.Runtime.Configuration
     /// </summary>
     /// <typeparam name="TElement">The type of the element.</typeparam>
     /// <typeparam name="TRuntimeElement">The type of the runtime element.</typeparam>
-    [SharedAppServiceContract(
+    [SingletonAppServiceContract(
         AllowMultiple = true,
         ContractType = typeof(IRuntimeModelElementConfigurator))]
     public interface IRuntimeModelElementConfigurator<TElement, TRuntimeElement> : IRuntimeModelElementConfigurator

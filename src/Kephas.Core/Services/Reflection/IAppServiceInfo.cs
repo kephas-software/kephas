@@ -120,7 +120,7 @@ namespace Kephas.Services.Reflection
         {
             Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 
-            return appServiceInfo.Lifetime == AppServiceLifetime.Shared;
+            return appServiceInfo.Lifetime == AppServiceLifetime.Singleton;
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Kephas.Services.Reflection
         {
             Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 
-            return appServiceInfo.Lifetime == AppServiceLifetime.ScopeShared;
+            return appServiceInfo.Lifetime == AppServiceLifetime.Scoped;
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Kephas.Services.Reflection
         {
             Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 
-            return appServiceInfo.Lifetime == AppServiceLifetime.Instance;
+            return appServiceInfo.Lifetime == AppServiceLifetime.Transient;
         }
     }
 }

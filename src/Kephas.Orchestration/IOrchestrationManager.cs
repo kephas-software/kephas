@@ -19,7 +19,7 @@ namespace Kephas.Orchestration
     /// <summary>
     /// Interface for orchestration manager.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IOrchestrationManager : IAsyncInitializable, IAsyncFinalizable
     {
         /// <summary>

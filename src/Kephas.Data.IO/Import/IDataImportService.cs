@@ -20,7 +20,7 @@ namespace Kephas.Data.IO.Import
     /// <summary>
     /// Interface for data import service.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataImportService
     {
         /// <summary>

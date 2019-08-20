@@ -17,9 +17,9 @@ namespace Kephas.Data.IO.DataStreams
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Shared application service contract for reading data streams.
+    /// Singleton application service contract for reading data streams.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataStreamReadService
     {
         /// <summary>

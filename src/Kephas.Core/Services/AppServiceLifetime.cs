@@ -18,16 +18,16 @@ namespace Kephas.Services
         /// <summary>
         /// The application service is shared (default).
         /// </summary>
-        Shared,
+        Singleton,
 
         /// <summary>
-        /// The application service in instanciated on every request.
+        /// The application service in instantiated with every request.
         /// </summary>
-        Instance,
+        Transient,
 
         /// <summary>
         /// The application service is shared within a scope.
         /// </summary>
-        ScopeShared,
+        Scoped,
     }
 }

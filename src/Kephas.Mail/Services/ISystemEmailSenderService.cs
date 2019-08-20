@@ -13,9 +13,9 @@ namespace Kephas.Mail.Services
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service for sending system emails.
+    /// Singleton application service for sending system emails.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface ISystemEmailSenderService : IEmailSenderService
     {
     }

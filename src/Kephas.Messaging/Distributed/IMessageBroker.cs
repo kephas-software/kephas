@@ -17,9 +17,9 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract for distributed message broker.
+    /// Singleton application service contract for distributed message broker.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IMessageBroker : IDisposable
     {
         /// <summary>

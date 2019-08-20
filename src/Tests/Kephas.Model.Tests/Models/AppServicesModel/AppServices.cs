@@ -14,7 +14,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
 
     using Kephas.Services;
 
-    [ScopeSharedAppServiceContract]
+    [ScopedAppServiceContract]
     interface ISimpleService
     {
         void DoSomething(IDisposableService disposableService);
@@ -24,7 +24,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
 
     interface IDisposableService : IDisposable {}
 
-    [SharedAppServiceContract(ContractType = typeof(IDisposableService))]
+    [SingletonAppServiceContract(ContractType = typeof(IDisposableService))]
     interface IGenericDisposableService<TArg> : IDisposableService, ICloneable {}
 
     [AppServiceContract(AsOpenGeneric = true)]

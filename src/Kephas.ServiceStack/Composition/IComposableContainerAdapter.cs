@@ -15,9 +15,9 @@ namespace Kephas.ServiceStack.Composition
     using Kephas.Services;
 
     /// <summary>
-    /// Shared container adapter application service contract.
+    /// Singleton container adapter application service contract.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IComposableContainerAdapter : IContainerAdapter
     {
     }

@@ -16,9 +16,9 @@ namespace Kephas.Security.Authorization
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract for providing the authorization scope for a message.
+    /// Singleton application service contract for providing the authorization scope for a message.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IAuthorizationScopeProvider
     {
         /// <summary>

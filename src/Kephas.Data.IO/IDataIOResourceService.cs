@@ -17,7 +17,7 @@ namespace Kephas.Data.IO
     /// <summary>
     /// Interface for data I/O resource service.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataIOResourceService
     {
         /// <summary>

@@ -14,9 +14,9 @@ namespace Kephas.Data.LLBLGen.Entities
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract for the entity activator.
+    /// Singleton application service contract for the entity activator.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IEntityActivator : IActivator
     {
     }

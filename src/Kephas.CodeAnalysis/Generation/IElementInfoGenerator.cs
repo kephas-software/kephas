@@ -20,7 +20,7 @@ namespace Kephas.Generation
     /// <summary>
     /// Interface for element information generator.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IElementInfoGenerator
     {
         /// <summary>

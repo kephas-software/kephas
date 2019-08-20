@@ -17,9 +17,9 @@ namespace Kephas.Scripting
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract responsible for adding behavior to script execution for a specified language.
+    /// Singleton application service contract responsible for adding behavior to script execution for a specified language.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(LanguageAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(LanguageAttribute) })]
     public interface IScriptingBehavior
     {
         /// <summary>

@@ -16,7 +16,7 @@ namespace Kephas.Application
     using Kephas.Services;
 
     /// <summary>
-    /// Shared service contract for the application manager.
+    /// Singleton service contract for the application manager.
     /// </summary>
     /// <remarks>
     /// The application manager is a service whose concern is to initialize and finalize the application.
@@ -30,7 +30,7 @@ namespace Kephas.Application
     /// await appManager.FinalizeAppAsync(appContext);
     /// </code>
     /// </example>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IAppManager
     {
         /// <summary>

@@ -17,7 +17,7 @@ namespace Kephas.Data.Analysis
     /// <summary>
     /// Interface for reference properties provider.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IRefPropertiesProvider
     {
         /// <summary>

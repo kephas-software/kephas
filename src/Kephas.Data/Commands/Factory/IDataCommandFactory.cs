@@ -30,10 +30,10 @@ namespace Kephas.Data.Commands.Factory
     }
 
     /// <summary>
-    /// Shared application service contract for data command factory.
+    /// Singleton application service contract for data command factory.
     /// </summary>
     /// <typeparam name="TCommand">Type of the command.</typeparam>
-    [SharedAppServiceContract(AsOpenGeneric = true)]
+    [SingletonAppServiceContract(AsOpenGeneric = true)]
     public interface IDataCommandFactory<out TCommand> : IDataCommandFactory
         where TCommand : IDataCommand
     {

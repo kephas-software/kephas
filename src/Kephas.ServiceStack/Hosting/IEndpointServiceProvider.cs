@@ -18,7 +18,7 @@ namespace Kephas.ServiceStack.Hosting
     /// The endpoint service provider is a shared application service which collects a list of assemblies
     /// containing the endpoint service classes.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IEndpointServiceProvider
     {
         /// <summary>

@@ -42,10 +42,10 @@ namespace Kephas.Workflow.Behaviors
     }
 
     /// <summary>
-    /// Shared application service contract for controlling the execution of activities.
+    /// Singleton application service contract for controlling the execution of activities.
     /// </summary>
     /// <typeparam name="TActivity">Type of the activity.</typeparam>
-    [SharedAppServiceContract(AllowMultiple = true, ContractType = typeof(IActivityBehavior))]
+    [SingletonAppServiceContract(AllowMultiple = true, ContractType = typeof(IActivityBehavior))]
     public interface IActivityBehavior<TActivity> : IActivityBehavior
         where TActivity : IActivity
     {

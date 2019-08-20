@@ -20,7 +20,7 @@ namespace Kephas.Model.Construction
     /// <summary>
     /// Contract for providers of element infos.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IModelInfoProvider
     {
         /// <summary>

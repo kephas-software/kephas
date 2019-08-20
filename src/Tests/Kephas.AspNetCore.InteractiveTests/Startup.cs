@@ -55,7 +55,7 @@ namespace Kephas.AspNetCore.InteractiveTests
             ambientServicesBuilder
                 .WithSerilogManager(serilogConfig)
                 .WithDefaultAppRuntime()
-                .WithMefCompositionContainer();
+                .WithAutofacCompositionContainer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

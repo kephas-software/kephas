@@ -18,7 +18,7 @@ namespace Kephas.Security.Authorization
     /// <summary>
     /// Interface for authorization scope service.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IAuthorizationScopeService
     {
         /// <summary>

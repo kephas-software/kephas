@@ -19,7 +19,7 @@ namespace Kephas.Data.Client.Queries
     /// <summary>
     /// Interface for client query executor.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IClientQueryExecutor
     {
         /// <summary>

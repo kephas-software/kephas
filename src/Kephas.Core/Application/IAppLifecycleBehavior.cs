@@ -16,13 +16,13 @@ namespace Kephas.Application
     using Kephas.Services;
 
     /// <summary>
-    /// Shared service contract for application lifecycle behavior.
+    /// Singleton service contract for application lifecycle behavior.
     /// </summary>
     /// <remarks>
     /// An application lifecycle behavior intercepts the initialization and finalization of the application
     /// and reacts to them.
     /// </remarks>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IAppLifecycleBehavior
     {
         /// <summary>

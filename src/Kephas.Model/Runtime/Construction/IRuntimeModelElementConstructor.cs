@@ -47,7 +47,7 @@ namespace Kephas.Model.Runtime.Construction
     /// <typeparam name="TModel">The model type.</typeparam>
     /// <typeparam name="TModelContract">The model contract type.</typeparam>
     /// <typeparam name="TRuntime">The runtime type.</typeparam>
-    [SharedAppServiceContract(
+    [SingletonAppServiceContract(
         AllowMultiple = true, 
         ContractType = typeof(IRuntimeModelElementConstructor))]
     public interface IRuntimeModelElementConstructor<TModel, TModelContract, TRuntime> : IRuntimeModelElementConstructor

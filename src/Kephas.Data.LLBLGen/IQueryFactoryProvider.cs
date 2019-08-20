@@ -17,9 +17,9 @@ namespace Kephas.Data.LLBLGen
     using Context = SD.LLBLGen.Pro.ORMSupportClasses.Context;
 
     /// <summary>
-    /// Shared application service contract for the query factory provider.
+    /// Singleton application service contract for the query factory provider.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IQueryFactoryProvider
     {
         /// <summary>

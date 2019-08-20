@@ -17,7 +17,7 @@ namespace Kephas.Model
     /// <summary>
     /// Interface for projected type resolver.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IProjectedTypeResolver
     {
         /// <summary>

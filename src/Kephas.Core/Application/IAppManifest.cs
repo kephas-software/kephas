@@ -20,7 +20,7 @@ namespace Kephas.Application
     /// <summary>
     /// Contract for the application manifest.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IAppManifest : IExpando
     {
         /// <summary>

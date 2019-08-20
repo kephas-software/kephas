@@ -26,7 +26,7 @@ namespace Kephas.Data
     /// there must be a factory service that creates a data context for a given connection.
     /// This is the data context factory application service.
     /// </remarks>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataContextFactory
     {
         /// <summary>

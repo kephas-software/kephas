@@ -20,7 +20,7 @@ namespace Kephas.Data.Setup
     /// <summary>
     /// Application service contract for handling initial data.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(TargetPackageAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(TargetPackageAttribute) })]
     public interface IDataInstaller
     {
         /// <summary>

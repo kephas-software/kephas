@@ -21,7 +21,7 @@ namespace Kephas.Messaging
     /// <remarks>
     /// The message processor is defined as a shared service.
     /// </remarks>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IMessageProcessor
     {
         /// <summary>

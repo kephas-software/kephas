@@ -17,7 +17,7 @@ namespace Kephas.Serialization.Json
     /// <summary>
     /// Interface for JSON serializer settings provider.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IJsonSerializerSettingsProvider
     {
         /// <summary>

@@ -15,7 +15,7 @@ namespace Kephas.Net.Mime
     /// <summary>
     /// Contract for serialization formats.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(SupportedMediaTypesAttribute) })]
+    [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(SupportedMediaTypesAttribute) })]
     public interface IMediaType
     {
     }

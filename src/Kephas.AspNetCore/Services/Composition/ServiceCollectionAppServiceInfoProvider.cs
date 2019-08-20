@@ -87,10 +87,10 @@ namespace Kephas.AspNetCore.Services.Composition
                 {
                     var instanceType = descriptor.ImplementationType ?? serviceType;
                     var lifetime = descriptor.Lifetime == ServiceLifetime.Singleton
-                                       ? AppServiceLifetime.Shared
+                                       ? AppServiceLifetime.Singleton
                                        : descriptor.Lifetime == ServiceLifetime.Scoped
-                                           ? AppServiceLifetime.ScopeShared
-                                           : AppServiceLifetime.Instance;
+                                           ? AppServiceLifetime.Scoped
+                                           : AppServiceLifetime.Transient;
                     if (!candidateTypes.Contains(instanceType))
                     {
                         candidateTypes.Add(instanceType);

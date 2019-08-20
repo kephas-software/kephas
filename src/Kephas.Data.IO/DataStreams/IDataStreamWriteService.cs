@@ -17,9 +17,9 @@ namespace Kephas.Data.IO.DataStreams
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract for writing data streams.
+    /// Singleton application service contract for writing data streams.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataStreamWriteService
     {
         /// <summary>

@@ -21,7 +21,7 @@ namespace Kephas.Data.IO.Import
     /// <summary>
     /// Application service contract for adding behaviors to the data import.
     /// </summary>
-    [SharedAppServiceContract(AllowMultiple = true)]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IDataImportBehavior
     {
         /// <summary>

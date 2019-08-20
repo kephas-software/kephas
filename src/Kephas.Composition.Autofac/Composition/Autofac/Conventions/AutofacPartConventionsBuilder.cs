@@ -41,7 +41,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// </returns>
         public IPartConventionsBuilder Shared()
         {
-            this.descriptorBuilder.Lifetime = AppServiceLifetime.Shared;
+            this.descriptorBuilder.Lifetime = AppServiceLifetime.Singleton;
             return this;
         }
 
@@ -54,7 +54,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// </returns>
         public IPartConventionsBuilder ScopeShared(string scopeName = CompositionScopeNames.Default)
         {
-            this.descriptorBuilder.Lifetime = AppServiceLifetime.ScopeShared;
+            this.descriptorBuilder.Lifetime = AppServiceLifetime.Scoped;
             return this;
         }
 

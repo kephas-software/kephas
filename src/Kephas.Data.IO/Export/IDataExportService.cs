@@ -19,7 +19,7 @@ namespace Kephas.Data.IO.Export
     /// <summary>
     /// Interface for data export service.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataExportService
     {
         /// <summary>

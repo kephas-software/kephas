@@ -15,10 +15,10 @@ namespace Kephas.Configuration
     using Kephas.Services;
 
     /// <summary>
-    /// Shared service contract for getting.
+    /// Singleton service contract for getting.
     /// </summary>
     /// <typeparam name="TSettings">Type of the settings.</typeparam>
-    [SharedAppServiceContract(AsOpenGeneric = true)]
+    [SingletonAppServiceContract(AsOpenGeneric = true)]
     public interface IConfiguration<out TSettings> : IExpando
     {
         /// <summary>

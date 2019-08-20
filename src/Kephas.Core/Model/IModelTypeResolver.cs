@@ -16,7 +16,7 @@ namespace Kephas.Model
     /// <summary>
     /// Interface for model type resolver.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IModelTypeResolver
     {
         /// <summary>

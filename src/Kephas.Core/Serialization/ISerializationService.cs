@@ -15,7 +15,7 @@ namespace Kephas.Serialization
     /// <summary>
     /// Contract for serialization services.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface ISerializationService
     {
         /// <summary>

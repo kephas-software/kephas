@@ -68,7 +68,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
         /// </summary>
         public AppServiceContractAttribute()
-            : this(AppServiceLifetime.Instance)
+            : this(AppServiceLifetime.Transient)
         {
         }
 
@@ -86,7 +86,7 @@ namespace Kephas.Services
         /// </summary>
         /// <param name="scopeName">Name of the scope.</param>
         protected AppServiceContractAttribute(string scopeName)
-            : this(AppServiceLifetime.ScopeShared)
+            : this(AppServiceLifetime.Scoped)
         {
             Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
 

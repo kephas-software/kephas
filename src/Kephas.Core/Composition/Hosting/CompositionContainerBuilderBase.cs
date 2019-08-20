@@ -73,8 +73,6 @@ namespace Kephas.Composition.Hosting
             this.AssertRequiredService(this.TypeLoader);
 
             this.Logger = this.LogManager.GetLogger(this.GetType());
-
-            this.WithServiceProviderExportProvider(ambientServices, (a, t) => ((IAmbientServices)a).IsRegistered(t));
         }
 
         /// <summary>
@@ -293,28 +291,6 @@ namespace Kephas.Composition.Hosting
             Requires.NotNull(factory, nameof(factory));
 
             var exportProvider = this.CreateFactoryExportProvider(factory, isShared);
-            this.ExportProviders.Add(exportProvider);
-
-            return (TBuilder)this;
-        }
-
-        /// <summary>
-        /// Adds an export provider based on the given <see cref="IServiceProvider"/>.
-        /// </summary>
-        /// <remarks>
-        /// Can be used multiple times, the factories are added to the existing ones.
-        /// </remarks>
-        /// <param name="serviceProvider">The service provider.</param>
-        /// <param name="isServiceRegisteredFunc">Function used to query whether the service provider registers a specific service.</param>
-        /// <returns>
-        /// This builder.
-        /// </returns>
-        public virtual TBuilder WithServiceProviderExportProvider(IServiceProvider serviceProvider, Func<IServiceProvider, Type, bool> isServiceRegisteredFunc)
-        {
-            Requires.NotNull(serviceProvider, nameof(serviceProvider));
-            Requires.NotNull(isServiceRegisteredFunc, nameof(isServiceRegisteredFunc));
-
-            var exportProvider = this.CreateServiceProviderExportProvider(serviceProvider, isServiceRegisteredFunc);
             this.ExportProviders.Add(exportProvider);
 
             return (TBuilder)this;

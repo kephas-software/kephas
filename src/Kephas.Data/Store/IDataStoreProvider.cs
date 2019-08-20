@@ -17,7 +17,7 @@ namespace Kephas.Data.Store
     /// <summary>
     /// Provides the <see cref="GetDataStore"/> method for getting a data store by name.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataStoreProvider
     {
         /// <summary>

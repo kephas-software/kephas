@@ -15,9 +15,9 @@ namespace Kephas.Net.Mime
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract providing the media type based on its name.
+    /// Singleton application service contract providing the media type based on its name.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IMediaTypeProvider
     {
         /// <summary>

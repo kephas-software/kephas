@@ -17,9 +17,9 @@ namespace Kephas.Workflow
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service for processing activities.
+    /// Singleton application service for processing activities.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IWorkflowProcessor
     {
         /// <summary>

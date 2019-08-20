@@ -21,7 +21,7 @@ namespace Kephas.Messaging.Events
     /// <summary>
     /// Contract for the shared application service publishing events.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IEventPublisher
     {
         /// <summary>

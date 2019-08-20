@@ -17,7 +17,7 @@ namespace Kephas.Reflection
     /// <summary>
     /// Service for resolving types from type names.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface ITypeResolver
     {
         /// <summary>

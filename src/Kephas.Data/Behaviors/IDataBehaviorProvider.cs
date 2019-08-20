@@ -18,7 +18,7 @@ namespace Kephas.Data.Behaviors
     /// <summary>
     /// Application service contract for providing data behaviors.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IDataBehaviorProvider
     {
         /// <summary>

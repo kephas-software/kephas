@@ -16,9 +16,9 @@ namespace Kephas.Data.LLBLGen.Entities
     using Kephas.Services;
 
     /// <summary>
-    /// Shared application service contract for providing the LLBLGen entity model.
+    /// Singleton application service contract for providing the LLBLGen entity model.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IEntityModelProvider
     {
         /// <summary>
