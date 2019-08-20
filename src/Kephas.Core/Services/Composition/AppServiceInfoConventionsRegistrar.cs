@@ -98,14 +98,14 @@ namespace Kephas.Services.Composition
                 var appServiceContract = appServiceContractInfo.contractType;
                 var appServiceInfo = appServiceContractInfo.appServiceInfo;
 
-                var partBuilder = this.TryGetPartBuilder(
+                var isPartBuilder = this.TryConfigurePartBuilder(
                     appServiceInfo,
                     appServiceContract,
                     conventions,
                     typeInfos,
                     logger);
 
-                if (partBuilder == null)
+                if (!isPartBuilder)
                 {
                     var partConventionsBuilder = this.TryGetPartConventionsBuilder(
                         appServiceInfo,
@@ -277,8 +277,7 @@ namespace Kephas.Services.Composition
             }
             else if (appServiceInfo.IsScopeShared())
             {
-                var scopeName = appServiceInfo.ScopeName;
-                partBuilder.ScopeShared(scopeName);
+                partBuilder.ScopeShared(appServiceInfo.ScopeName);
             }
         }
 
@@ -828,7 +827,7 @@ namespace Kephas.Services.Composition
         }
 
         /// <summary>
-        /// Tries to get the conventions part builder.
+        /// Tries to configure the conventions part builder.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when there is an ambiguous override in the service implementations.</exception>
         /// <param name="appServiceInfo">The service contract metadata.</param>
@@ -837,9 +836,9 @@ namespace Kephas.Services.Composition
         /// <param name="typeInfos">The type infos.</param>
         /// <param name="logger">The logger.</param>
         /// <returns>
-        /// The part builder or <c>null</c>.
+        /// True if a part builder could be configured, false otherwise.
         /// </returns>
-        private IPartBuilder TryGetPartBuilder(
+        private bool TryConfigurePartBuilder(
             IAppServiceInfo appServiceInfo,
             Type serviceContract,
             IConventionsBuilder conventions,
@@ -850,15 +849,26 @@ namespace Kephas.Services.Composition
 
             if (appServiceInfo.Instance != null)
             {
-                return conventions.ForInstance(serviceContractType, appServiceInfo.Instance);
+                conventions.ForInstance(serviceContractType, appServiceInfo.Instance);
+                return true;
             }
 
             if (appServiceInfo.InstanceFactory != null)
             {
-                return conventions.ForInstanceFactory(serviceContractType, appServiceInfo.InstanceFactory);
+                var partBuilder = conventions.ForInstanceFactory(serviceContractType, appServiceInfo.InstanceFactory);
+                if (appServiceInfo.IsShared())
+                {
+                    partBuilder.Shared();
+                }
+                else if (appServiceInfo.IsScopeShared())
+                {
+                    partBuilder.ScopeShared(appServiceInfo.ScopeName);
+                }
+
+                return true;
             }
 
-            return null;
+            return false;
         }
 
         /// <summary>
