@@ -45,8 +45,7 @@ namespace Kephas.Composition.Conventions
         /// </summary>
         /// <param name="type">The registered service type.</param>
         /// <param name="instance">The instance.</param>
-        /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
-        IPartBuilder ForInstance(Type type, object instance);
+        void ForInstance(Type type, object instance);
 
         /// <summary>
         /// Defines a registration for the specified type and its instance factory.
