@@ -12,11 +12,14 @@ namespace Kephas
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Composition;
+    using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Hosting;
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
@@ -24,6 +27,7 @@ namespace Kephas
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Provides the global ambient services.
@@ -36,6 +40,7 @@ namespace Kephas
     /// (like in the case of the entities instatiated by the ORMs). Those are cases where the
     /// <see cref="AmbientServices"/> can be safely used.
     /// </remarks>
+    [ExcludeFromComposition]
     public class AmbientServices : Expando, IAmbientServices
     {
         /// <summary>
@@ -46,7 +51,7 @@ namespace Kephas
         /// <summary>
         /// The services.
         /// </summary>
-        private readonly ConcurrentDictionary<Type, ServiceRegistration> services = new ConcurrentDictionary<Type, ServiceRegistration>();
+        private readonly ConcurrentDictionary<Type, IAppServiceInfo> services = new ConcurrentDictionary<Type, IAppServiceInfo>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
@@ -157,12 +162,7 @@ namespace Kephas
                           serviceType));
             }
 
-            this.services[serviceType] = new ServiceRegistration
-            {
-                ServiceContract = serviceType,
-                ServiceFactory = () => service
-            };
-
+            this.services[serviceType] = new AppServiceInfo(serviceType, service);
             return this;
         }
 
@@ -179,11 +179,7 @@ namespace Kephas
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
-            this.services[serviceType] = new ServiceRegistration
-            {
-                ServiceContract = serviceType,
-                ServiceFactory = serviceFactory
-            };
+            this.services[serviceType] = new AppServiceInfo(serviceType, ctx => serviceFactory());
             return this;
         }
 
@@ -208,30 +204,26 @@ namespace Kephas
         /// <param name="serviceType">An object that specifies the type of service object to get. </param>
         public object GetService(Type serviceType)
         {
-            var serviceRegistration = this.services.TryGetValue(serviceType);
-            return serviceRegistration?.ServiceFactory();
+            if (this.services.TryGetValue(serviceType, out var serviceRegistration))
+            {
+                return serviceRegistration.Instance ?? serviceRegistration.InstanceFactory(null);
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// A service registration.
+        /// Gets the application service infos in this collection.
         /// </summary>
-        private class ServiceRegistration
+        /// <param name="candidateTypes">List of types of the candidates.</param>
+        /// <param name="registrationContext">Context for the registration.</param>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the application service infos in this
+        /// collection.
+        /// </returns>
+        public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type> candidateTypes, ICompositionRegistrationContext registrationContext)
         {
-            /// <summary>
-            /// Gets or sets the service contract.
-            /// </summary>
-            /// <value>
-            /// The service contract.
-            /// </value>
-            public Type ServiceContract { get; set; }
-
-            /// <summary>
-            /// Gets or sets the service factory.
-            /// </summary>
-            /// <value>
-            /// The service factory.
-            /// </value>
-            public Func<object> ServiceFactory { get; set; }
+            return this.services.Select(kv => (kv.Key, kv.Value)).ToList();
         }
     }
 }
