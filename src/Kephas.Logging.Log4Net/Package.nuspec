@@ -11,8 +11,7 @@
             Check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
             Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
         </description>
-        <releaseNotes>
-        </releaseNotes>
+        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
         <summary>
             Provides the log4net 2 (and later) logging services implementation.
             Check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.

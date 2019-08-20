@@ -9,8 +9,7 @@
         <description>
             Provides the Kephas adapters for the Npgsql library.
         </description>
-        <releaseNotes>
-        </releaseNotes>
+        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
         <summary>
             Provides the Kephas adapters for the Npgsql library.
         </summary>

@@ -7,8 +7,7 @@
         <authors>Kephas Software SRL</authors>
         <owners>Kephas Software SRL</owners>
         <description>Provides the model for data, including the Entity classifier and the related scope dimensions.</description>
-        <releaseNotes>
-        </releaseNotes>
+        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
         <summary>Provides the model for data, including the Entity classifier and the related scope dimensions.</summary>
         <language>en-US</language>
         <projectUrl>https://github.com/kephas-software/kephas</projectUrl>

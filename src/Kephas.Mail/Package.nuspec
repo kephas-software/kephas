@@ -7,8 +7,7 @@
         <authors>Kephas Software SRL</authors>
         <owners>Kephas Software SRL</owners>
         <description>Provides the abstract infrastructure for mailing.</description>
-        <releaseNotes>
-        </releaseNotes>
+        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
         <summary>
             Kephas Framework ("stone" in aramaic) is a very ambitious project aiming to deliver a framework for an application ecosystem.
         </summary>

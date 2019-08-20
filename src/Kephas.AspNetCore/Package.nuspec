@@ -7,8 +7,7 @@
         <authors>Kephas Software SRL</authors>
         <owners>Kephas Software SRL</owners>
         <description>Provides the infrastructure for the Kephas Framework integration with ASP.NET Core.</description>
-        <releaseNotes>
-        </releaseNotes>
+        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
         <summary>Provides the infrastructure for the Kephas Framework integration with ASP.NET Core.</summary>
         <language>en-US</language>
         <projectUrl>https://github.com/kephas-software/kephas</projectUrl>

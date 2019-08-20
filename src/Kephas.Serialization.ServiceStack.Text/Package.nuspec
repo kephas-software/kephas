@@ -9,8 +9,7 @@
         <description>
             Provides JSON and XML serialization infrastructure using the ServiceStack.Text implementation.
         </description>
-        <releaseNotes>
-        </releaseNotes>
+        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
         <summary>
             Provides JSON and XML serialization infrastructure using the ServiceStack.Text implementation.
         </summary>

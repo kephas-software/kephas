@@ -9,8 +9,7 @@
         <description>
             Provides data access implementation using Microsoft Entity Framework.
         </description>
-        <releaseNotes>
-        </releaseNotes>
+        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
         <summary>Provides abstractions for managing data: retrieving, persisting, querying, so on.</summary>
         <language>en-US</language>
         <projectUrl>https://github.com/kephas-software/kephas</projectUrl>
