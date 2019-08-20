@@ -57,7 +57,7 @@ namespace Kephas.Composition.Medi.Conventions
         /// </returns>
         public IPartConventionsBuilder ForTypesDerivedFrom(Type type)
         {
-            return this.ForTypesMatching(t => t.IsClass && !t.IsAbstract && t.IsAssignableFrom(type));
+            return this.ForTypesMatching(t => t.IsClass && !t.IsAbstract && !ReferenceEquals(type, t) && type.IsAssignableFrom(t));
         }
 
         /// <summary>
@@ -101,10 +101,7 @@ namespace Kephas.Composition.Medi.Conventions
         /// </summary>
         /// <param name="type">The registered service type.</param>
         /// <param name="instance">The instance.</param>
-        /// <returns>
-        /// A <see cref="T:Kephas.Composition.Conventions.IPartBuilder" /> to further configure the rule.
-        /// </returns>
-        public IPartBuilder ForInstance(Type type, object instance)
+        public void ForInstance(Type type, object instance)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
                                      {
@@ -112,7 +109,6 @@ namespace Kephas.Composition.Medi.Conventions
                                          Instance = instance,
                                      };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new MediPartBuilder(descriptorBuilder);
         }
 
         /// <summary>
