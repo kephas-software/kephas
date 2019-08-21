@@ -14,13 +14,11 @@ namespace Kephas.Composition.Autofac.Hosting
     using System.Collections.Generic;
 
     using global::Autofac;
-    using global::Autofac.Builder;
 
     using Kephas.Composition.Autofac.Conventions;
     using Kephas.Composition.Autofac.Metadata;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
-    using Kephas.Services;
 
     /// <summary>
     /// An Autofac composition container builder.
@@ -56,6 +54,7 @@ namespace Kephas.Composition.Autofac.Hosting
         protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
             var autofacBuilder = ((IAutofacContainerBuilderProvider)conventions).GetContainerBuilder();
+
             autofacBuilder.RegisterSource(new ExportFactoryRegistrationSource());
             autofacBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource());
 

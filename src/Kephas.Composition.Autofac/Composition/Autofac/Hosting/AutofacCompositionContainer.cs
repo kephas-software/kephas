@@ -13,8 +13,8 @@ namespace Kephas.Composition.Autofac.Hosting
     using System.Collections.Concurrent;
 
     using global::Autofac;
+    using global::Autofac.Core.Resolving;
 
-    using Kephas.Composition.Autofac.Metadata;
     using Kephas.Composition.Autofac.Resources;
 
     /// <summary>
@@ -33,7 +33,9 @@ namespace Kephas.Composition.Autofac.Hosting
         {
             this.map = new ConcurrentDictionary<IComponentContext, ICompositionContext>();
 
-            containerBuilder.RegisterSource(new CompositionContextRegistrationSource(this));
+            containerBuilder.Register((c, p) => this.TryGetCompositionContext(c, createNewIfMissing: true))
+                .As<ICompositionContext>()
+                .InstancePerLifetimeScope();
 
             var container = containerBuilder.Build();
             this.Initialize(container);
@@ -63,6 +65,11 @@ namespace Kephas.Composition.Autofac.Hosting
             if (container is ILifetimeScope lifetimeScope)
             {
                 return this.GetCompositionContext(lifetimeScope);
+            }
+
+            if (container is IInstanceLookup instanceLookup)
+            {
+                return this.GetCompositionContext(instanceLookup.ActivationScope);
             }
 
             throw new CompositionException(Strings.AutofacCompositionContainer_MismatchedLifetimeScope_Exception);

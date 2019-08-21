@@ -54,6 +54,7 @@ namespace Kephas.Composition.Autofac.Metadata
             Requires.NotNull(registrationAccessor, nameof(registrationAccessor));
 
             if (!(service is IServiceWithType swt)
+                || swt.ServiceType.IsClosedTypeOf(typeof(IExportFactory<,>))
                 || !swt.ServiceType.IsClosedTypeOf(typeof(IExportFactory<>)))
             {
                 return Enumerable.Empty<IComponentRegistration>();
