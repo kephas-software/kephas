@@ -17,7 +17,7 @@ namespace Kephas.Composition.Mef.ScopeFactory
     /// <summary>
     /// A MEF scope provider.
     /// </summary>
-    [SharingBoundaryScope(CompositionScopeNames.Default)]
+    [CompositionScope]
     public class DefaultMefScopeFactory : MefScopeFactoryBase
     {
         /// <summary>

@@ -134,15 +134,12 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <summary>
         /// Creates a new scoped composition context.
         /// </summary>
-        /// <param name="scopeName">Optional. The scope name. If not provided the
-        ///                         <see cref="F:Kephas.Composition.CompositionScopeNames.Default" />
-        ///                         scope name is used.</param>
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public ICompositionContext CreateScopedContext(string scopeName = CompositionScopeNames.Default)
+        public ICompositionContext CreateScopedContext()
         {
-            var scopedContext = this.innerContainer.BeginLifetimeScope(scopeName);
+            var scopedContext = this.innerContainer.BeginLifetimeScope();
             return GetOrAddCompositionContext(scopedContext);
         }
 

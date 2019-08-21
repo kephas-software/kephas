@@ -136,15 +136,12 @@ namespace Kephas.Composition.Mef.Hosting
         /// <summary>
         /// Creates a new scoped composition context.
         /// </summary>
-        /// <param name="scopeName">The scope name. If not provided the
-        ///                         <see cref="F:Kephas.Composition.ScopeNames.Default" /> scope name is
-        ///                         used.</param>
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public virtual ICompositionContext CreateScopedContext(string scopeName = CompositionScopeNames.Default)
+        public virtual ICompositionContext CreateScopedContext()
         {
-            var scopeProvider = this.GetExport<IMefScopeFactory>(scopeName);
+            var scopeProvider = this.GetExport<IMefScopeFactory>(CompositionScopeNames.Default);
 
             var scopedContextExport = scopeProvider.CreateScopedContextExport();
             return GetOrAddCompositionContext(scopedContextExport);

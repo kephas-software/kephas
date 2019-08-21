@@ -101,16 +101,14 @@ namespace Kephas.Services.Reflection
         /// </summary>
         /// <param name="contractType">The contract type of the export.</param>
         /// <param name="serviceInstanceType">Type of the service instance.</param>
-        /// <param name="scopeName">The name of the scope for scoped shared services.</param>
-        public AppServiceInfo(Type contractType, Type serviceInstanceType, string scopeName)
+        public AppServiceInfo(Type contractType, Type serviceInstanceType)
         {
             Requires.NotNull(contractType, nameof(contractType));
             Requires.NotNull(serviceInstanceType, nameof(serviceInstanceType));
-            Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
 
             this.SetContractType(contractType);
             this.InstanceType = serviceInstanceType;
-            this.SetLifetime(AppServiceLifetime.Scoped, scopeName);
+            this.SetLifetime(AppServiceLifetime.Scoped);
         }
 
         /// <summary>
@@ -188,14 +186,6 @@ namespace Kephas.Services.Reflection
         public Func<ICompositionContext, object> InstanceFactory { get; }
 
         /// <summary>
-        /// Gets the name of the scope for scoped shared services.
-        /// </summary>
-        /// <value>
-        /// The name of the scope for scoped shared services.
-        /// </value>
-        public string ScopeName { get; private set; }
-
-        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>
@@ -208,9 +198,8 @@ namespace Kephas.Services.Reflection
             var instanceType = this.InstanceType != null ? $"/type:{this.InstanceType}" : string.Empty;
             var instance = this.Instance != null ? $"/instance:{this.Instance}" : string.Empty;
             var factory = this.InstanceFactory != null ? $"/instanceFactory" : string.Empty;
-            var scope = this.ScopeName != null ? $"/scope:{this.ScopeName}" : string.Empty;
 
-            return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{instanceType}{instance}{factory}{scope}";
+            return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{instanceType}{instance}{factory}";
         }
 
         private void SetContractType(Type contractType)
@@ -222,13 +211,9 @@ namespace Kephas.Services.Reflection
             }
         }
 
-        private void SetLifetime(AppServiceLifetime lifetime, string scopeName = null)
+        private void SetLifetime(AppServiceLifetime lifetime)
         {
             this.Lifetime = lifetime;
-            if (lifetime == AppServiceLifetime.Scoped)
-            {
-                this.ScopeName = scopeName ?? CompositionScopeNames.Default;
-            }
         }
     }
 }

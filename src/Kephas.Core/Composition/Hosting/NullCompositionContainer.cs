@@ -97,12 +97,10 @@ namespace Kephas.Composition.Hosting
         /// <summary>
         /// Creates a new scoped composition context.
         /// </summary>
-        /// <param name="scopeName">The scope name. If not provided the <see cref="CompositionScopeNames.Default"/>
-        ///                         scope name is used.</param>
         /// <returns>
         /// The new scoped context.
         /// </returns>
-        public ICompositionContext CreateScopedContext(string scopeName = CompositionScopeNames.Default)
+        public ICompositionContext CreateScopedContext()
         {
             return this;
         }

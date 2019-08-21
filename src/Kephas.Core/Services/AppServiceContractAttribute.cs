@@ -51,11 +51,6 @@ namespace Kephas.Services
                   };
 
         /// <summary>
-        /// Name of the scope.
-        /// </summary>
-        private readonly string scopeName;
-
-        /// <summary>
         /// Initializes static members of the <see cref="AppServiceContractAttribute"/> class.
         /// </summary>
         static AppServiceContractAttribute()
@@ -79,18 +74,6 @@ namespace Kephas.Services
         protected AppServiceContractAttribute(AppServiceLifetime lifetime)
         {
             this.Lifetime = lifetime;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceContractAttribute"/> class.
-        /// </summary>
-        /// <param name="scopeName">Name of the scope.</param>
-        protected AppServiceContractAttribute(string scopeName)
-            : this(AppServiceLifetime.Scoped)
-        {
-            Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
-
-            this.scopeName = scopeName;
         }
 
         /// <summary>
@@ -168,14 +151,6 @@ namespace Kephas.Services
         Func<ICompositionContext, object> IAppServiceInfo.InstanceFactory { get; }
 
         /// <summary>
-        /// Gets the name of the scope for scoped shared services.
-        /// </summary>
-        /// <value>
-        /// The name of the scope for scoped shared services.
-        /// </value>
-        string IAppServiceInfo.ScopeName => this.scopeName;
-
-        /// <summary>
         /// Registers the provided metadata attribute types as default attributes.
         /// </summary>
         /// <param name="attributeTypes">A variable-length parameters list containing attribute types.</param>
@@ -200,9 +175,8 @@ namespace Kephas.Services
         {
             var multiple = this.AllowMultiple ? ", multi" : string.Empty;
             var openGeneric = this.AsOpenGeneric ? ", open generic" : string.Empty;
-            var scope = this.scopeName != null ? $"/scope:{this.scopeName}" : string.Empty;
 
-            return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}{scope}";
+            return $"{this.ContractType}{multiple}{openGeneric}, {this.Lifetime}";
         }
     }
 }

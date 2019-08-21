@@ -131,20 +131,20 @@ namespace Kephas.Composition.Autofac.Conventions
         public ContainerBuilder GetContainerBuilder() => this.containerBuilder;
 
         /// <summary>
-        /// Builds the container with the given parts.
+        /// Configures the container builder with the given parts.
         /// </summary>
         /// <param name="parts">The parts.</param>
         /// <returns>
-        /// An IContainer.
+        /// The container builder.
         /// </returns>
-        public IContainer Build(IEnumerable<Type> parts)
+        public ContainerBuilder GetContainerBuilder(IEnumerable<Type> parts)
         {
             foreach (var descriptorBuilder in this.descriptorBuilders)
             {
                 descriptorBuilder.Build(parts);
             }
 
-            return this.containerBuilder.Build();
+            return this.containerBuilder;
         }
     }
 }

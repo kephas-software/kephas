@@ -13,8 +13,6 @@ namespace Kephas.Services
     using System;
     using System.ComponentModel;
 
-    using Kephas.Composition;
-
     /// <summary>
     /// Marks an interface to be contract for singleton application services within a specific scope.
     /// Application services are automatically identified by the composition
@@ -28,9 +26,8 @@ namespace Kephas.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="ScopeSharedAppServiceContractAttribute"/> class.
         /// </summary>
-        /// <param name="scopeName">Name of the scope.</param>
-        public ScopeSharedAppServiceContractAttribute(string scopeName = CompositionScopeNames.Default)
-            : base(scopeName)
+        public ScopeSharedAppServiceContractAttribute()
+            : base(AppServiceLifetime.Scoped)
         {
         }
     }

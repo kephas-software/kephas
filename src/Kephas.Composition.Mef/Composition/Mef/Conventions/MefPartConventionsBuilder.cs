@@ -43,7 +43,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// Mark the part as being shared within the entire composition.
         /// </summary>
         /// <returns>A part builder allowing further configuration of the part.</returns>
-        public IPartConventionsBuilder Shared()
+        public IPartConventionsBuilder Singleton()
         {
             this.innerConventionBuilder.Shared();
             return this;
@@ -52,15 +52,12 @@ namespace Kephas.Composition.Mef.Conventions
         /// <summary>
         /// Mark the part as being shared within the scope.
         /// </summary>
-        /// <param name="scopeName">Name of the scope.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder ScopeShared(string scopeName = CompositionScopeNames.Default)
+        public IPartConventionsBuilder Scoped()
         {
-            Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
-
-            this.innerConventionBuilder.Shared(scopeName);
+            this.innerConventionBuilder.Shared(CompositionScopeNames.Default);
             return this;
         }
 

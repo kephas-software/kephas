@@ -100,7 +100,7 @@ namespace Kephas.Composition.Mef.Conventions
             Requires.NotNull(instance, nameof(instance));
 
             var partBuilder = new MefPartBuilder(type, instance);
-            partBuilder.Shared();
+            partBuilder.Singleton();
             this.partBuilders[type] = partBuilder;
         }
 

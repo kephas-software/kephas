@@ -124,14 +124,6 @@ namespace Kephas.Model.Elements
         public Func<ICompositionContext, object> InstanceFactory => this.appServiceInfo.InstanceFactory;
 
         /// <summary>
-        /// Gets the name of the scope for scoped shared services.
-        /// </summary>
-        /// <value>
-        /// The name of the scope for scoped shared services.
-        /// </value>
-        public string ScopeName => this.appServiceInfo.ScopeName;
-
-        /// <summary>
         /// Gets the service lifetime.
         /// </summary>
         /// <value>

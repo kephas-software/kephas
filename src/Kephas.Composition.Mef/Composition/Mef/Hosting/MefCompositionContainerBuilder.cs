@@ -153,12 +153,7 @@ namespace Kephas.Composition.Mef.Hosting
         {
             var mefConventions = ((IMefConventionBuilderProvider)conventions).GetConventionBuilder();
 
-            var scopeName = factoryType.ExtractMetadataValue<SharingBoundaryScopeAttribute, string>(a => a.Value);
-            if (string.IsNullOrEmpty(scopeName))
-            {
-                throw new InvalidOperationException(string.Format(Strings.MefCompositionContainerBuilder_MissingScopeName_Exception, factoryType.FullName));
-            }
-
+            var scopeName = factoryType.ExtractMetadataValue<CompositionScopeAttribute, string>(a => a.Value);
             mefConventions
                 .ForType(factoryType)
                 .Export(b => b.AsContractType<IMefScopeFactory>()
@@ -216,7 +211,7 @@ namespace Kephas.Composition.Mef.Hosting
                 }
                 else
                 {
-                    containerConfiguration.WithProvider(new FactoryExportDescriptorProvider(partBuilder.ContractType, ctx => partBuilder.InstanceFactory(ctx), partBuilder.IsShared));
+                    containerConfiguration.WithProvider(new FactoryExportDescriptorProvider(partBuilder.ContractType, ctx => partBuilder.InstanceFactory(ctx), partBuilder.IsSingleton || partBuilder.IsScoped));
                 }
             }
 

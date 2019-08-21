@@ -287,11 +287,11 @@ namespace Kephas.Services.Composition
 
             if (appServiceInfo.IsShared())
             {
-                partBuilder.Shared();
+                partBuilder.Singleton();
             }
             else if (appServiceInfo.IsScopeShared())
             {
-                partBuilder.ScopeShared(appServiceInfo.ScopeName);
+                partBuilder.Scoped();
             }
         }
 
@@ -872,11 +872,11 @@ namespace Kephas.Services.Composition
                 var partBuilder = conventions.ForInstanceFactory(serviceContractType, appServiceInfo.InstanceFactory);
                 if (appServiceInfo.IsShared())
                 {
-                    partBuilder.Shared();
+                    partBuilder.Singleton();
                 }
                 else if (appServiceInfo.IsScopeShared())
                 {
-                    partBuilder.ScopeShared(appServiceInfo.ScopeName);
+                    partBuilder.Scoped();
                 }
 
                 return true;

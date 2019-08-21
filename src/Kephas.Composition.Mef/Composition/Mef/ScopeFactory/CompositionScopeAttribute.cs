@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SharingBoundaryScopeAttribute.cs" company="Kephas Software SRL">
+// <copyright file="CompositionScopeAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,17 +19,14 @@ namespace Kephas.Composition.Mef.ScopeFactory
     /// Attribute for MEF scope.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class SharingBoundaryScopeAttribute : Attribute, IMetadataValue<string>
+    public class CompositionScopeAttribute : Attribute, IMetadataValue<string>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SharingBoundaryScopeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="CompositionScopeAttribute"/> class.
         /// </summary>
-        /// <param name="scopeName">Name of the scope.</param>
-        public SharingBoundaryScopeAttribute(string scopeName)
+        public CompositionScopeAttribute()
         {
-            Requires.NotNullOrEmpty(scopeName, nameof(scopeName));
-
-            this.Value = scopeName;
+            this.Value = CompositionScopeNames.Default;
         }
 
         /// <summary>

@@ -289,7 +289,7 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         //[Export]
-        //[Shared(CompositionScopeNames.Default)]
+        //[Scoped(CompositionScopeNames.Default)]
         public class ScopeExportedClass
         {
             public ICompositionContext CompositionContext { get; }
@@ -371,7 +371,7 @@ namespace Kephas.Tests.Composition.Autofac
                 builder.ForType(typeof(OneFilter)).ExportInterface(
                     typeof(IFilter),
                     (t, b) => b.AsContractType(typeof(IFilter)))
-                    .Shared();
+                    .Singleton();
                 builder.ForType(typeof(TwoFilter)).ExportInterface(
                         typeof(IFilter),
                         (t, b) => b.AsContractType(typeof(IFilter)));

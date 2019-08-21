@@ -32,7 +32,7 @@ namespace Kephas.Composition.Mef.Conventions
 
             this.ContractType = contractType;
             this.Instance = instance;
-            this.IsShared = true;
+            this.IsSingleton = true;
         }
 
         /// <summary>
@@ -79,29 +79,37 @@ namespace Kephas.Composition.Mef.Conventions
         /// <value>
         /// True if this object is shared, false if not.
         /// </value>
-        public bool IsShared { get; private set; }
+        public bool IsSingleton { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this object is scoped.
+        /// </summary>
+        /// <value>
+        /// True if this object is scoped, false if not.
+        /// </value>
+        public bool IsScoped { get; private set; }
 
         /// <summary>
         /// Mark the part as being shared within the entire composition.
         /// </summary>
         /// <returns>A part builder allowing further configuration of the part.</returns>
-        public IPartBuilder Shared()
+        public IPartBuilder Singleton()
         {
-            this.IsShared = true;
+            this.IsSingleton = true;
+            this.IsScoped = false;
             return this;
         }
 
         /// <summary>
         /// Mark the part as being shared within the scope.
         /// </summary>
-        /// <param name="scopeName">Name of the scope.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartBuilder ScopeShared(string scopeName = CompositionScopeNames.Default)
+        public IPartBuilder Scoped()
         {
-            // TODO What to do with the scope?
-            this.IsShared = true;
+            this.IsSingleton = false;
+            this.IsScoped = true;
             return this;
         }
     }

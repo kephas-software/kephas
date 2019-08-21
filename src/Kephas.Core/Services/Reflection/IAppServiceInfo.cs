@@ -93,14 +93,6 @@ namespace Kephas.Services.Reflection
         /// The service instance factory.
         /// </value>
         Func<ICompositionContext, object> InstanceFactory { get; }
-
-        /// <summary>
-        /// Gets the name of the scope for scoped shared services.
-        /// </summary>
-        /// <value>
-        /// The name of the scope for scoped shared services.
-        /// </value>
-        string ScopeName { get; }
     }
 
     /// <summary>

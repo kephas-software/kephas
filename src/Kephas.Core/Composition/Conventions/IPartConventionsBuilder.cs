@@ -23,16 +23,15 @@ namespace Kephas.Composition.Conventions
         /// Mark the part as being shared within the entire composition.
         /// </summary>
         /// <returns>A part builder allowing further configuration of the part.</returns>
-        IPartConventionsBuilder Shared();
+        IPartConventionsBuilder Singleton();
 
         /// <summary>
         /// Mark the part as being shared within the scope.
         /// </summary>
-        /// <param name="scopeName">Name of the scope.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        IPartConventionsBuilder ScopeShared(string scopeName = CompositionScopeNames.Default);
+        IPartConventionsBuilder Scoped();
 
         /// <summary>
         /// Exports the part using the specified conventions builder.

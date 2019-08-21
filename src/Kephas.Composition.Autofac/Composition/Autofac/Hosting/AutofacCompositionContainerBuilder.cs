@@ -59,14 +59,14 @@ namespace Kephas.Composition.Autofac.Hosting
             autofacBuilder.RegisterSource(new ExportFactoryRegistrationSource());
             autofacBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource());
 
-            var container = conventions is IAutofacContainerBuilder autofacContainerBuilder
-                                      ? autofacContainerBuilder.Build(parts)
+            var containerBuilder = conventions is IAutofacContainerBuilder autofacContainerBuilder
+                                      ? autofacContainerBuilder.GetContainerBuilder(parts)
                                       : conventions is IAutofacContainerBuilderProvider autofacContainerBuilderProvider
-                                          ? autofacContainerBuilderProvider.GetContainerBuilder().Build()
+                                          ? autofacContainerBuilderProvider.GetContainerBuilder()
                                           : throw new InvalidOperationException(
                                                 $"The conventions instance must implement either {typeof(IAutofacContainerBuilder)} or {typeof(IAutofacContainerBuilderProvider)}.");
 
-            return new AutofacCompositionContainer(container);
+            return new AutofacCompositionContainer(containerBuilder);
         }
     }
 }

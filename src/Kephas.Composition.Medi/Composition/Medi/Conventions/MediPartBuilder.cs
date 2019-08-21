@@ -36,7 +36,7 @@ namespace Kephas.Composition.Medi.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartBuilder Shared()
+        public IPartBuilder Singleton()
         {
             this.descriptorBuilder.Lifetime = ServiceLifetime.Singleton;
             return this;
@@ -45,11 +45,10 @@ namespace Kephas.Composition.Medi.Conventions
         /// <summary>
         /// Mark the part as being shared within the scope.
         /// </summary>
-        /// <param name="scopeName">Optional. Name of the scope.</param>
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartBuilder ScopeShared(string scopeName = CompositionScopeNames.Default)
+        public IPartBuilder Scoped()
         {
             this.descriptorBuilder.Lifetime = ServiceLifetime.Scoped;
             return this;

@@ -181,31 +181,26 @@ namespace Kephas.Core.Tests.Composition
 
             public Predicate<Type> TypePredicate { get; set; }
 
-            public bool IsShared { get; set; }
+            public bool IsSingleton { get; set; }
+            public bool IsScoped { get; set; }
 
             public List<Tuple<Predicate<PropertyInfo>, Action<PropertyInfo, IImportConventionsBuilder>>> ImportedProperties { get; }
 
-            public IPartConventionsBuilder Shared()
+            public IPartConventionsBuilder Singleton()
             {
-                this.IsShared = true;
+                this.IsSingleton = true;
                 return this;
             }
 
             /// <summary>
             /// Mark the part as being shared within the scope.
             /// </summary>
-            /// <param name="scopeName"></param>
             /// <returns>A part builder allowing further configuration of the part.</returns>
-            public IPartConventionsBuilder ScopeShared(string scopeName = CompositionScopeNames.Default)
+            public IPartConventionsBuilder Scoped()
             {
-                // TODO test this
-                this.IsShared = true;
-                this.ScopeName = scopeName;
-
+                this.IsScoped = true;
                 return this;
             }
-
-            public string ScopeName { get; private set; }
 
             public Func<IEnumerable<ConstructorInfo>, ConstructorInfo> ConstructorSelector { get; private set; }
 

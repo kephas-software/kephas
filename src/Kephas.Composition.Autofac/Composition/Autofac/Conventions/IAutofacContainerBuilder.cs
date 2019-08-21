@@ -21,12 +21,12 @@ namespace Kephas.Composition.Autofac.Conventions
     public interface IAutofacContainerBuilder
     {
         /// <summary>
-        /// Builds the container with the given parts.
+        /// Configures the container builder with the given parts.
         /// </summary>
         /// <param name="parts">The parts.</param>
         /// <returns>
-        /// An IContainer.
+        /// The container builder.
         /// </returns>
-        IContainer Build(IEnumerable<Type> parts);
+        ContainerBuilder GetContainerBuilder(IEnumerable<Type> parts);
     }
 }

@@ -38,7 +38,7 @@ namespace Kephas.Core.Tests.Composition.Conventions
             Assert.AreSame(builder, newBuilder);
             Assert.AreEqual(1, builder.DerivedConventionsBuilders.Count);
             var partBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builder.DerivedConventionsBuilders.First().Value;
-            Assert.IsTrue(partBuilder.IsShared);
+            Assert.IsTrue(partBuilder.IsSingleton);
             Assert.AreEqual(typeof(ICalculator), partBuilder.Type);
             var exportBuilder = partBuilder.ExportBuilder;
             Assert.AreEqual(typeof(ICalculator), exportBuilder.ContractType);
@@ -64,7 +64,7 @@ namespace Kephas.Core.Tests.Composition.Conventions
             Assert.AreSame(builder, newBuilder);
             Assert.AreEqual(1, builder.DerivedConventionsBuilders.Count);
             var partBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builder.DerivedConventionsBuilders.First().Value;
-            Assert.IsTrue(partBuilder.IsShared);
+            Assert.IsTrue(partBuilder.IsSingleton);
             Assert.AreEqual(typeof(ICalculator), partBuilder.Type);
             var exportBuilder = partBuilder.ExportBuilder;
             Assert.AreEqual(typeof(ICalculator), exportBuilder.ContractType);
@@ -92,7 +92,7 @@ namespace Kephas.Core.Tests.Composition.Conventions
                 .Export(
                     b => b.AsContractType(typeof(ICalculator))
                           .AddMetadata("type", t => t.Name.StartsWith("Scientific") ? "Scientific" : "Classical"))
-                .Shared();
+                .Singleton();
         }
     }
 

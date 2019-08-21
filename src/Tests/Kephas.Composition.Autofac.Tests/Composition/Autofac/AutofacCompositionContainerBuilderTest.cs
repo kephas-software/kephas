@@ -240,7 +240,7 @@ namespace Kephas.Tests.Composition.Autofac
         //        .CreateContainer();
 
         //    ITestMyScopedExport exportScope1;
-        //    using (var scopedContext = container.CreateScopedContext("my-scope"))
+        //    using (var scopedContext = container.CreateScopedContext())
         //    {
         //        exportScope1 = scopedContext.GetExport<ITestMyScopedExport>();
         //        Assert.IsInstanceOf<TestMyScopedExport>(exportScope1);
@@ -249,7 +249,7 @@ namespace Kephas.Tests.Composition.Autofac
         //        Assert.AreSame(exportScope1, export);
         //    }
 
-        //    using (var scopedContext2 = container.CreateScopedContext("my-scope"))
+        //    using (var scopedContext2 = container.CreateScopedContext())
         //    {
         //        var export2 = scopedContext2.GetExport<ITestMyScopedExport>();
         //        Assert.AreNotSame(exportScope1, export2);
@@ -266,7 +266,7 @@ namespace Kephas.Tests.Composition.Autofac
         //        .WithScopeFactory<MyScopeFactory>()
         //        .CreateContainer();
 
-        //    var scopedContext = container.CreateScopedContext("my-scope");
+        //    var scopedContext = container.CreateScopedContext();
         //    Assert.AreNotSame(container, scopedContext);
         //    Assert.IsNotNull(scopedContext);
         //}
@@ -522,19 +522,19 @@ namespace Kephas.Tests.Composition.Autofac
         //    public ICollection<ExportFactoryAdapter<IConverter, AppServiceMetadata>> Converters { get; set; }
         //}
 
-        [ScopedAppServiceContract("my-scope")]
+        [ScopedAppServiceContract()]
         public interface ITestMyScopedExport { }
 
         public class TestMyScopedExport : ITestMyScopedExport { }
 
-        //[SharingBoundaryScope("my-scope")]
+        //[CompositionScope]
         //public class MyScopeFactory : MefScopeFactoryBase
         //{
         //    /// <summary>
         //    /// Initializes a new instance of the <see cref="MefScopeFactoryBase"/> class.
         //    /// </summary>
         //    /// <param name="scopedContextFactory">The scoped context factory.</param>
-        //    public MyScopeFactory([SharingBoundary("my-scope")] ExportFactory<CompositionContext> scopedContextFactory)
+        //    public MyScopeFactory([SharingBoundary(CompositionScopeNames.Default)] ExportFactory<CompositionContext> scopedContextFactory)
         //        : base(scopedContextFactory)
         //    {
         //    }

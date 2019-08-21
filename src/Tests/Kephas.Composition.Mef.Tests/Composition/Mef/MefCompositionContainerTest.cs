@@ -369,7 +369,7 @@ namespace Kephas.Tests.Composition.Mef
                 builder.ForType(typeof(OneFilter)).ExportInterface(
                     typeof(IFilter),
                     (t, b) => b.AsContractType(typeof(IFilter)))
-                    .Shared();
+                    .Singleton();
                 builder.ForType(typeof(TwoFilter)).ExportInterface(
                         typeof(IFilter),
                         (t, b) => b.AsContractType(typeof(IFilter)));

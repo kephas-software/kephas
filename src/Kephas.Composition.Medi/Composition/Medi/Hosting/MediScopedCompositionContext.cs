@@ -23,21 +23,11 @@ namespace Kephas.Composition.Medi.Hosting
         /// Initializes a new instance of the <see cref="MediScopedCompositionContext"/> class.
         /// </summary>
         /// <param name="serviceScope">The service scope.</param>
-        /// <param name="scopeName">The name of the scope.</param>
-        public MediScopedCompositionContext(IServiceScope serviceScope, string scopeName)
+        public MediScopedCompositionContext(IServiceScope serviceScope)
             : base(serviceScope.ServiceProvider)
         {
-            this.ScopeName = scopeName;
             this.serviceScope = serviceScope;
         }
-
-        /// <summary>
-        /// Gets the name of the scope.
-        /// </summary>
-        /// <value>
-        /// The name of the scope.
-        /// </value>
-        public string ScopeName { get; }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
