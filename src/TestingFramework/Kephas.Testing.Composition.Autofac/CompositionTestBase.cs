@@ -75,12 +75,12 @@ namespace Kephas.Testing.Composition.Mef
             return container;
         }
 
-        public ICompositionContext CreateContainerWithBuilder(params Type[] types)
+        public ICompositionContext CreateContainerWithBuilder(Action<AutofacCompositionContainerBuilder> config = null)
         {
-            return this.WithContainerBuilder()
-                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
-                .WithParts(types)
-                .CreateContainer();
+            var builder = this.WithContainerBuilder()
+                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly);
+            config?.Invoke(builder);
+            return builder.CreateContainer();
         }
 
         public ICompositionContext CreateContainerWithBuilder(IAmbientServices ambientServices, params Type[] types)

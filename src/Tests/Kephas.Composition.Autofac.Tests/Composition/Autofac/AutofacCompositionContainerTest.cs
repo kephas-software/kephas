@@ -16,6 +16,7 @@ namespace Kephas.Tests.Composition.Autofac
     using System.Linq;
 
     using global::Autofac;
+    using global::Autofac.Core.Registration;
 
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
@@ -24,6 +25,7 @@ namespace Kephas.Tests.Composition.Autofac
     using Kephas.Composition.Hosting;
     using Kephas.Services;
     using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
     using Kephas.Testing.Composition.Mef;
 
     using NSubstitute;
@@ -42,13 +44,6 @@ namespace Kephas.Tests.Composition.Autofac
             var builder = this.WithEmptyConfiguration();
             builder.RegisterTypes(types);
             return new AutofacCompositionContainer(builder);
-        }
-
-        public AutofacCompositionContainer CreateExportProvidersContainer(params Type[] types)
-        {
-            var config = this.WithEmptyConfiguration();
-            this.WithExportProviders(config).RegisterTypes(types);
-            return new AutofacCompositionContainer(config);
         }
 
         [Test]
@@ -110,48 +105,10 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void GetExport_with_exportfactory_success()
-        {
-            var container = this.CreateExportProvidersContainer(typeof(ExportedClass), typeof(ExportedClassImplicitFactoryImporter));
-            var importer = container.GetExport<ExportedClassImplicitFactoryImporter>();
-
-            Assert.IsNotNull(importer);
-            Assert.IsNotNull(importer.ExportedClassFactory);
-            var exportedService = importer.ExportedClassFactory.CreateExport().Value;
-            Assert.IsInstanceOf<ExportedClass>(exportedService);
-        }
-
-        [Test]
-        public void GetExport_with_importmany_exportfactory_success()
-        {
-            var container = this.CreateExportProvidersContainer(typeof(ExportedClass), typeof(ExportedClassImplicitFactoryImporter));
-            var importer = container.GetExport<ExportedClassImplicitFactoryImporter>();
-
-            Assert.IsNotNull(importer);
-            Assert.IsNotNull(importer.ExportedClassFactory);
-            var exportedService = importer.ExportedClassFactory.CreateExport().Value;
-            Assert.IsInstanceOf<ExportedClass>(exportedService);
-        }
-
-        [Test]
-        public void GetExport_with_exportfactory_metadata_success()
-        {
-            var container = this.CreateExportProvidersContainer(typeof(ExportedClass), typeof(ExportedClassImplicitFactoryMetadataImporter));
-            var importer = container.GetExport<ExportedClassImplicitFactoryMetadataImporter>();
-
-            Assert.IsNotNull(importer);
-            Assert.IsNotNull(importer.ExportedClassMetadataFactory);
-            var exportedService = importer.ExportedClassMetadataFactory.CreateExport().Value;
-            var metadata = importer.ExportedClassMetadataFactory.Metadata;
-            Assert.IsInstanceOf<ExportedClass>(exportedService);
-            Assert.IsNotNull(metadata);
-        }
-
-        [Test]
         public void GetExport_failure()
         {
             var container = this.CreateContainer();
-            Assert.Throws<Exception>(() => container.GetExport(typeof(ExportedClass)));
+            Assert.Throws<ComponentNotRegisteredException>(() => container.GetExport(typeof(ExportedClass)));
         }
 
         [Test]
@@ -170,7 +127,7 @@ namespace Kephas.Tests.Composition.Autofac
         public void GetExports_empty()
         {
             var container = this.CreateContainer(typeof(ExportedClass));
-            var exported = container.GetExports(typeof(IEnumerable<object>));
+            var exported = container.GetExports(typeof(string));
 
             Assert.IsNotNull(exported);
             var exportedList = exported.ToList();
@@ -225,7 +182,12 @@ namespace Kephas.Tests.Composition.Autofac
         [Test]
         public void CreateScopedContext_ScopeExportedClass()
         {
-            var container = this.CreateContainerWithBuilder(typeof(ScopeExportedClass));
+            var container = this.CreateContainerWithBuilder(
+                b => b.WithRegistration(
+                    new AppServiceInfo(
+                        typeof(ScopeExportedClass),
+                        typeof(ScopeExportedClass),
+                        AppServiceLifetime.Scoped)));
             using (var scopedContext = container.CreateScopedContext())
             using (var otherScopedContext = container.CreateScopedContext())
             {

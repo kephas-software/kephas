@@ -14,6 +14,8 @@ namespace Kephas.Tests.Composition.Autofac
 
     using Kephas.Composition;
     using Kephas.Composition.Autofac.Hosting;
+    using Kephas.Services;
+    using Kephas.Services.Reflection;
     using Kephas.Testing.Composition.Mef;
 
     using NUnit.Framework;
@@ -28,7 +30,12 @@ namespace Kephas.Tests.Composition.Autofac
         [Test]
         public void CreateScopedContext_NestedScopes()
         {
-            var container = this.CreateContainerWithBuilder(typeof(AutofacCompositionContainerTest.ScopeExportedClass));
+            var container = this.CreateContainerWithBuilder(
+                b => b.WithRegistration(
+                    new AppServiceInfo(
+                        typeof(AutofacCompositionContainerTest.ScopeExportedClass),
+                        typeof(AutofacCompositionContainerTest.ScopeExportedClass),
+                        AppServiceLifetime.Scoped)));
             using (var scopedContext = container.CreateScopedContext())
             {
                 Assert.IsInstanceOf<AutofacScopedCompositionContext>(scopedContext);
@@ -66,7 +73,12 @@ namespace Kephas.Tests.Composition.Autofac
         [Test]
         public void CreateScopedContext_CompositionContext_registration_scope_consumers()
         {
-            var container = this.CreateContainerWithBuilder(typeof(AutofacCompositionContainerTest.ScopeExportedClass));
+            var container = this.CreateContainerWithBuilder(
+                b => b.WithRegistration(
+                    new AppServiceInfo(
+                        typeof(AutofacCompositionContainerTest.ScopeExportedClass),
+                        typeof(AutofacCompositionContainerTest.ScopeExportedClass),
+                        AppServiceLifetime.Scoped)));
             using (var scopedContext = container.CreateScopedContext())
             {
                 var scopedInstance = scopedContext.GetExport<AutofacCompositionContainerTest.ScopeExportedClass>();

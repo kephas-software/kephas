@@ -297,6 +297,22 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
+        /// Adds the registrations.
+        /// </summary>
+        /// <param name="registrations">A variable-length parameters list containing registrations.</param>
+        /// <returns>
+        /// A TBuilder.
+        /// </returns>
+        public virtual TBuilder WithRegistration(params IAppServiceInfo[] registrations)
+        {
+            Requires.NotNull(registrations, nameof(registrations));
+
+            registrations.ForEach(r => this.Registry.Add(r));
+
+            return (TBuilder)this;
+        }
+
+        /// <summary>
         /// Adds the export provider.
         /// </summary>
         /// <remarks>
