@@ -57,7 +57,7 @@ namespace Kephas.Composition.Autofac.Hosting
         {
             var autofacBuilder = ((IAutofacContainerBuilderProvider)conventions).GetContainerBuilder();
             autofacBuilder.RegisterSource(new ExportFactoryRegistrationSource());
-            autofacBuilder.RegisterSource(new ExportFactoryMetadataRegistrationSource());
+            autofacBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource());
 
             var container = conventions is IAutofacContainerBuilder autofacContainerBuilder
                                       ? autofacContainerBuilder.Build(parts)

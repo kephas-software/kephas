@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExportFactoryMetadataRegistrationSource.cs" company="Kephas Software SRL">
+// <copyright file="ExportFactoryWithMetadataRegistrationSource.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the export factory metadata registration source class.
+//   Implements the export factory with metadata registration source class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -24,12 +24,12 @@ namespace Kephas.Composition.Autofac.Metadata
     using Kephas.Reflection;
 
     /// <summary>
-    /// An export factory metadata registration source.
+    /// An export factory with metadata registration source.
     /// </summary>
-    public class ExportFactoryMetadataRegistrationSource : IRegistrationSource
+    public class ExportFactoryWithMetadataRegistrationSource : IRegistrationSource
     {
         private static readonly MethodInfo CreateMetaRegistrationMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ExportFactoryMetadataRegistrationSource.CreateMetaRegistration<string, string>(null, null, null));
+            _ => ExportFactoryWithMetadataRegistrationSource.CreateMetaRegistration<string, string>(null, null, null));
 
         /// <summary>
         /// Gets a value indicating whether the registrations provided by this source are 1:1 adapters on

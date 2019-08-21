@@ -39,7 +39,7 @@ namespace Kephas.Testing.Composition.Mef
         public virtual ContainerBuilder WithExportProviders(ContainerBuilder configuration)
         {
             configuration.RegisterSource(new ExportFactoryRegistrationSource());
-            configuration.RegisterSource(new ExportFactoryMetadataRegistrationSource());
+            configuration.RegisterSource(new ExportFactoryWithMetadataRegistrationSource());
             return configuration;
         }
 

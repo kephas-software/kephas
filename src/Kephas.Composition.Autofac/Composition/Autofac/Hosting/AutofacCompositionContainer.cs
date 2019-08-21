@@ -20,10 +20,19 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacCompositionContainer"/> class.
         /// </summary>
+        /// <param name="containerBuilder">The container builder.</param>
+        public AutofacCompositionContainer(ContainerBuilder containerBuilder)
+        {
+            this.Initialize(containerBuilder.Build());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutofacCompositionContainer"/> class.
+        /// </summary>
         /// <param name="container">The container.</param>
         public AutofacCompositionContainer(IContainer container)
-            : base(container)
         {
+            this.Initialize(container);
         }
     }
 }

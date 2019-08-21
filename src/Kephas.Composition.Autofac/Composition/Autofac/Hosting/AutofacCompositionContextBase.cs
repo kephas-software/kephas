@@ -11,25 +11,22 @@
 namespace Kephas.Composition.Autofac.Hosting
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
 
     using global::Autofac;
+
+    using Kephas.Composition.Autofac.Resources;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// An Autofac composition context base.
     /// </summary>
     public abstract class AutofacCompositionContextBase : ICompositionContext
     {
-        private readonly ILifetimeScope container;
+        private static ConcurrentDictionary<ILifetimeScope, ICompositionContext> map = new ConcurrentDictionary<ILifetimeScope, ICompositionContext>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacCompositionContextBase"/> class.
-        /// </summary>
-        /// <param name="container">The container.</param>
-        protected AutofacCompositionContextBase(ILifetimeScope container)
-        {
-            this.container = container;
-        }
+        private ILifetimeScope innerContainer;
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -41,7 +38,9 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         public object GetExport(Type contractType, string contractName = null)
         {
-            return this.container.Resolve(contractType);
+            this.AssertNotDisposed();
+
+            return this.innerContainer.Resolve(contractType);
         }
 
         /// <summary>
@@ -54,8 +53,10 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         public IEnumerable<object> GetExports(Type contractType, string contractName = null)
         {
+            this.AssertNotDisposed();
+
             var collectionContract = typeof(IEnumerable<>).MakeGenericType(contractType);
-            return (IEnumerable<object>)this.container.Resolve(collectionContract);
+            return (IEnumerable<object>)this.innerContainer.Resolve(collectionContract);
         }
 
         /// <summary>
@@ -68,7 +69,9 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         public T GetExport<T>(string contractName = null)
         {
-            return this.container.Resolve<T>();
+            this.AssertNotDisposed();
+
+            return this.innerContainer.Resolve<T>();
         }
 
         /// <summary>
@@ -81,7 +84,9 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         public IEnumerable<T> GetExports<T>(string contractName = null)
         {
-            return this.container.Resolve<IEnumerable<T>>();
+            this.AssertNotDisposed();
+
+            return this.innerContainer.Resolve<IEnumerable<T>>();
         }
 
         /// <summary>
@@ -95,7 +100,9 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         public object TryGetExport(Type contractType, string contractName = null)
         {
-            if (this.container.TryResolve(contractType, out var service))
+            this.AssertNotDisposed();
+
+            if (this.innerContainer.TryResolve(contractType, out var service))
             {
                 return service;
             }
@@ -114,7 +121,9 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         public T TryGetExport<T>(string contractName = null)
         {
-            if (this.container.TryResolve<T>(out var service))
+            this.AssertNotDisposed();
+
+            if (this.innerContainer.TryResolve<T>(out var service))
             {
                 return service;
             }
@@ -133,16 +142,85 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         public ICompositionContext CreateScopedContext(string scopeName = CompositionScopeNames.Default)
         {
-            return new AutofacScopedCompositionContext(this.container.BeginLifetimeScope(scopeName));
+            var scopedContext = this.innerContainer.BeginLifetimeScope(scopeName);
+            return GetOrAddCompositionContext(scopedContext);
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
-        /// resources.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
-            this.container.Dispose();
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// Tries to get the composition context wrapper for the provided composition context.
+        /// </summary>
+        /// <param name="container">The inner container.</param>
+        /// <param name="createNewIfMissing">True to create new if missing.</param>
+        /// <returns>
+        /// The composition context wrapper.
+        /// </returns>
+        internal static ICompositionContext TryGetCompositionContext(ILifetimeScope container, bool createNewIfMissing)
+        {
+            if (map.TryGetValue(container, out var compositionContext))
+            {
+                return compositionContext;
+            }
+
+            return createNewIfMissing ? new AutofacScopedCompositionContext(container) : null;
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.innerContainer == null)
+            {
+                return;
+            }
+
+            map.TryRemove(this.innerContainer, out _);
+            this.innerContainer.Dispose();
+            this.innerContainer = null;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutofacCompositionContextBase"/> class.
+        /// </summary>
+        /// <param name="container">The inner container.</param>
+        protected void Initialize(ILifetimeScope container)
+        {
+            Requires.NotNull(container, nameof(container));
+
+            this.innerContainer = container;
+            map.TryAdd(container, this);
+        }
+
+        /// <summary>
+        /// Asserts that the container is not disposed.
+        /// </summary>
+        protected void AssertNotDisposed()
+        {
+            if (this.innerContainer == null)
+            {
+                throw new ObjectDisposedException(Strings.AutofacCompositionContainer_Disposed_Exception);
+            }
+        }
+
+        /// <summary>
+        /// Gets the composition context wrapper for the provided composition context.
+        /// </summary>
+        /// <param name="scopedContextExport">The scoped context export.</param>
+        /// <returns>
+        /// The composition context.
+        /// </returns>
+        private static ICompositionContext GetOrAddCompositionContext(ILifetimeScope scopedContextExport)
+        {
+            return map.GetOrAdd(scopedContextExport, _ => new AutofacScopedCompositionContext(scopedContextExport));
         }
     }
 }

@@ -22,8 +22,8 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </summary>
         /// <param name="scope">The scope.</param>
         public AutofacScopedCompositionContext(ILifetimeScope scope)
-            : base(scope)
         {
+            this.Initialize(scope);
         }
     }
 }

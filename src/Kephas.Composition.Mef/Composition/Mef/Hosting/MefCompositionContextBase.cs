@@ -24,20 +24,9 @@ namespace Kephas.Composition.Mef.Hosting
     /// </summary>
     public abstract class MefCompositionContextBase : ICompositionContext
     {
-        /// <summary>
-        /// The composition context map.
-        /// </summary>
         private static ConcurrentDictionary<CompositionContext, ICompositionContext> map = new ConcurrentDictionary<CompositionContext, ICompositionContext>();
 
-        /// <summary>
-        /// The inner container.
-        /// </summary>
         private CompositionContext innerCompositionContext;
-
-        /// <summary>
-        /// Gets the inner composition context.
-        /// </summary>
-        protected CompositionContext InnerCompositionContext => this.innerCompositionContext;
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -138,9 +127,8 @@ namespace Kephas.Composition.Mef.Hosting
         {
             this.AssertNotDisposed();
 
-            T component;
             var successful = string.IsNullOrEmpty(contractName)
-                              ? this.innerCompositionContext.TryGetExport(out component)
+                              ? this.innerCompositionContext.TryGetExport(out T component)
                               : this.innerCompositionContext.TryGetExport(contractName, out component);
             return component;
         }

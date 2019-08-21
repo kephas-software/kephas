@@ -61,6 +61,15 @@ namespace Kephas.Composition.Autofac.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The composition container is disposed!.
+        /// </summary>
+        public static string AutofacCompositionContainer_Disposed_Exception {
+            get {
+                return ResourceManager.GetString("AutofacCompositionContainer_Disposed_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The provided conventions must implement {0}..
         /// </summary>
         public static string InvalidConventions {

@@ -169,21 +169,6 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
-        /// Creates a new factory provider.
-        /// </summary>
-        /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <param name="factory">The factory.</param>
-        /// <param name="isSingleton">If set to <c>true</c>, the factory returns a shared component, otherwise an instance component.</param>
-        /// <returns>
-        /// The export provider.
-        /// </returns>
-        protected virtual IExportProvider CreateFactoryExportProvider<TContract>(Func<TContract> factory, bool isSingleton = false)
-        {
-            var provider = new FactoryExportDescriptorProvider<TContract>(factory, isSingleton);
-            return provider;
-        }
-
-        /// <summary>
         /// Factory method for creating the MEF conventions builder.
         /// </summary>
         /// <returns>A newly created MEF conventions builder.</returns>

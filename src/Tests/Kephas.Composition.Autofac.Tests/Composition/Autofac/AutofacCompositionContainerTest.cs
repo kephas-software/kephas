@@ -41,14 +41,14 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var builder = this.WithEmptyConfiguration();
             builder.RegisterTypes(types);
-            return new AutofacCompositionContainer(builder.Build());
+            return new AutofacCompositionContainer(builder);
         }
 
         public AutofacCompositionContainer CreateExportProvidersContainer(params Type[] types)
         {
             var config = this.WithEmptyConfiguration();
             this.WithExportProviders(config).RegisterTypes(types);
-            return new AutofacCompositionContainer(config.Build());
+            return new AutofacCompositionContainer(config);
         }
 
         [Test]

@@ -24,7 +24,7 @@ namespace Kephas.Testing.Composition.Autofac
         {
             Requires.NotNull(configuration, nameof(configuration));
 
-            return new AutofacCompositionContainer(configuration.Build());
+            return new AutofacCompositionContainer(configuration);
         }
     }
 }
