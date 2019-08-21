@@ -9,6 +9,7 @@ $packages = @(
     "Kephas.Logging.NLog",
     "Kephas.Logging.Log4Net",
     "Kephas.Logging.Serilog",
+    "Kephas.Composition.Autofac",
     "Kephas.Composition.Mef",
     "Kephas.Messaging",
     "Kephas.Messaging.Model",
@@ -31,8 +32,9 @@ $packages = @(
     "Kephas.Scripting",
     "Kephas.Scripting.CSharp",
     "Kephas.Orchestration",
-    "Kephas.AspNetCore"
-    "Kephas.Testing.Composition.Mef"
+    "Kephas.AspNetCore",
+    "Kephas.Testing.Composition.Autofac",
+    "Kephas.Testing.Composition.Mef",
     "Kephas.Testing.Model"
 )
 
