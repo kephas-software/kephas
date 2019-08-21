@@ -22,8 +22,9 @@ namespace Kephas.AspNetCore.Options
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionsSnapshot{T}"/> class.
         /// </summary>
-        public OptionsSnapshot()
-            : base(AmbientServices.Instance.CompositionContainer.GetExport<IOptionsFactory<T>>())
+        /// <param name="optionsFactory">The options factory.</param>
+        public OptionsSnapshot(IOptionsFactory<T> optionsFactory)
+            : base(optionsFactory)
         {
             // TODO until the https://github.com/dotnet/corefx/issues/40094 bug is fixed, make this constructor parameterless.
             // Options and OptionsSnapshot main purpose is to split the registration of the OptionsManager with two contracts,

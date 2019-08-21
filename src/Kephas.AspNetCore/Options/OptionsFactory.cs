@@ -24,10 +24,10 @@ namespace Kephas.AspNetCore.Options
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionsFactory{T}"/> class.
         /// </summary>
-        public OptionsFactory()
-            : base(
-                AmbientServices.Instance.CompositionContainer.GetExports<IConfigureOptions<T>>(),
-                AmbientServices.Instance.CompositionContainer.GetExports<IPostConfigureOptions<T>>())
+        /// <param name="setups">The setups.</param>
+        /// <param name="postConfigures">The post configures.</param>
+        public OptionsFactory(IEnumerable<IConfigureOptions<T>> setups, IEnumerable<IPostConfigureOptions<T>> postConfigures)
+            : base(setups, postConfigures)
         {
             // TODO until the https://github.com/dotnet/corefx/issues/40094 bug is fixed, make this constructor parameterless.
             // TODO remove this class when the bug is corrected and its registration.
