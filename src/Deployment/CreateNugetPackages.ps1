@@ -2,7 +2,7 @@
     [string]$version = $( Read-Host "Please provide package version" ),
     [string]$refversion = $( Read-Host "Please provide the referenced package version" ),
     [string]$build = "Debug",
-    [string]$CertificateSubjectName = "CRIŞAN IOAN SOFT PERSOANĂ FIZICĂ AUTORIZATĂ",
+    [string]$CertificateSubjectName = "Kephas Software SRL",
     [string]$Timestamper = "http://timestamp.digicert.com"
 )
 
@@ -21,6 +21,7 @@ $paths = @(
     "..\Kephas.Logging.NLog",
     "..\Kephas.Logging.Log4Net",
     "..\Kephas.Logging.Serilog",
+    "..\Kephas.Composition.Autofac",
     "..\Kephas.Composition.Mef",
     "..\Kephas.Messaging",
     "..\Kephas.Messaging.Model",
@@ -48,6 +49,7 @@ $paths = @(
     "..\Kephas.AspNetCore",
     "..\Kephas.Workflow",
     "..\Kephas.Workflow.Model",
+    "..\TestingFramework\Kephas.Testing.Composition.Autofac",
     "..\TestingFramework\Kephas.Testing.Composition.Mef",
     "..\TestingFramework\Kephas.Testing.Model"
 )
