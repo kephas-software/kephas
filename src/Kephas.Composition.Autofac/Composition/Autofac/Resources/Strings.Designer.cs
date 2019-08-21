@@ -61,11 +61,20 @@ namespace Kephas.Composition.Autofac.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The composition container is disposed!.
+        ///   Looks up a localized string similar to The composition container is disposed..
         /// </summary>
         public static string AutofacCompositionContainer_Disposed_Exception {
             get {
                 return ResourceManager.GetString("AutofacCompositionContainer_Disposed_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided component context is not a lifetime scope..
+        /// </summary>
+        public static string AutofacCompositionContainer_MismatchedLifetimeScope_Exception {
+            get {
+                return ResourceManager.GetString("AutofacCompositionContainer_MismatchedLifetimeScope_Exception", resourceCulture);
             }
         }
         

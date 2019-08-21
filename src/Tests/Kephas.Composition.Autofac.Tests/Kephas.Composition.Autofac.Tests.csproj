@@ -4,6 +4,8 @@
         <TargetFrameworks>netcoreapp2.2;net45</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <RootNamespace>Kephas.Tests</RootNamespace>
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.2'">

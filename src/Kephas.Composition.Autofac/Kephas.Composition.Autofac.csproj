@@ -50,10 +50,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Properties\" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Remove="stylecop.json" />
     </ItemGroup>
 

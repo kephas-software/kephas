@@ -15,13 +15,15 @@ namespace Kephas.Composition.Autofac.Hosting
     /// <summary>
     /// An Autofac scoped composition context.
     /// </summary>
-    public class AutofacScopedCompositionContext : AutofacCompositionContextBase
+    internal class AutofacScopedCompositionContext : AutofacCompositionContextBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacScopedCompositionContext"/> class.
         /// </summary>
+        /// <param name="root">The root.</param>
         /// <param name="scope">The scope.</param>
-        public AutofacScopedCompositionContext(ILifetimeScope scope)
+        public AutofacScopedCompositionContext(ICompositionContainer root, ILifetimeScope scope)
+            : base(root)
         {
             this.Initialize(scope);
         }

@@ -10,29 +10,83 @@
 
 namespace Kephas.Composition.Autofac.Hosting
 {
+    using System.Collections.Concurrent;
+
     using global::Autofac;
+
+    using Kephas.Composition.Autofac.Metadata;
+    using Kephas.Composition.Autofac.Resources;
 
     /// <summary>
     /// An Autofac composition container.
     /// </summary>
-    public class AutofacCompositionContainer : AutofacCompositionContextBase
+    public class AutofacCompositionContainer : AutofacCompositionContextBase, ICompositionContainer
     {
+        private readonly ConcurrentDictionary<IComponentContext, ICompositionContext> map;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacCompositionContainer"/> class.
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
         public AutofacCompositionContainer(ContainerBuilder containerBuilder)
+            : base(null)
         {
-            this.Initialize(containerBuilder.Build());
+            this.map = new ConcurrentDictionary<IComponentContext, ICompositionContext>();
+
+            containerBuilder.RegisterSource(new CompositionContextRegistrationSource(this));
+
+            var container = containerBuilder.Build();
+            this.Initialize(container);
+            this.map.TryAdd(container, this);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutofacCompositionContainer"/> class.
+        /// Tries to get the composition context wrapper for the provided composition context.
         /// </summary>
-        /// <param name="container">The container.</param>
-        public AutofacCompositionContainer(IContainer container)
+        /// <param name="container">The inner container.</param>
+        /// <param name="createNewIfMissing">True to create new if missing.</param>
+        /// <returns>
+        /// The composition context wrapper.
+        /// </returns>
+        public ICompositionContext TryGetCompositionContext(IComponentContext container, bool createNewIfMissing)
         {
-            this.Initialize(container);
+            if (this.map.TryGetValue(container, out var compositionContext))
+            {
+                return compositionContext;
+            }
+
+            if (!createNewIfMissing)
+            {
+                return null;
+            }
+
+            if (container is ILifetimeScope lifetimeScope)
+            {
+                return this.GetCompositionContext(lifetimeScope);
+            }
+
+            throw new CompositionException(Strings.AutofacCompositionContainer_MismatchedLifetimeScope_Exception);
+        }
+
+        /// <summary>
+        /// Cleanups the given composition context.
+        /// </summary>
+        /// <param name="lifetimeScope">The lifetime scope.</param>
+        public void HandleDispose(ILifetimeScope lifetimeScope)
+        {
+            this.map.TryRemove(lifetimeScope, out _);
+        }
+
+        /// <summary>
+        /// Gets the composition context wrapper for the provided composition context.
+        /// </summary>
+        /// <param name="scope">The lifetime scope.</param>
+        /// <returns>
+        /// The composition context.
+        /// </returns>
+        public ICompositionContext GetCompositionContext(ILifetimeScope scope)
+        {
+            return this.map.GetOrAdd(scope, _ => new AutofacScopedCompositionContext(this, scope));
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExportFactoryRegistrationSource.cs" company="Kephas Software SRL">
+// <copyright file="CompositionContextRegistrationSource.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the export factory registration source class.
+//   Implements the composition context registration source class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,23 +13,30 @@ namespace Kephas.Composition.Autofac.Metadata
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using global::Autofac;
     using global::Autofac.Builder;
     using global::Autofac.Core;
 
-    using Kephas.Composition.ExportFactories;
+    using Kephas.Composition.Autofac.Hosting;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Reflection;
 
     /// <summary>
-    /// An export factory registration source.
+    /// A composition context registration source.
     /// </summary>
-    public class ExportFactoryRegistrationSource : IRegistrationSource
+    internal class CompositionContextRegistrationSource : IRegistrationSource
     {
-        private static readonly MethodInfo CreateMetaRegistrationMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ExportFactoryRegistrationSource.CreateMetaRegistration<string>(null, null, null));
+        private readonly ICompositionContainer compositionContainer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositionContextRegistrationSource"/>
+        /// class.
+        /// </summary>
+        /// <param name="compositionContainer">Context for the root composition.</param>
+        public CompositionContextRegistrationSource(ICompositionContainer compositionContainer)
+        {
+            this.compositionContainer = compositionContainer;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the registrations provided by this source are 1:1 adapters on
@@ -54,20 +61,13 @@ namespace Kephas.Composition.Autofac.Metadata
             Requires.NotNull(registrationAccessor, nameof(registrationAccessor));
 
             if (!(service is IServiceWithType swt)
-                || !swt.ServiceType.IsClosedTypeOf(typeof(IExportFactory<>)))
+                || !ReferenceEquals(swt.ServiceType, typeof(ICompositionContext)))
             {
                 return Enumerable.Empty<IComponentRegistration>();
             }
 
-            var valueType = swt.ServiceType.GetTypeInfo().GenericTypeArguments.First();
-
-            var valueService = swt.ChangeType(valueType);
-
-            var registrationCreator = CreateMetaRegistrationMethod.MakeGenericMethod(valueType);
-
-            return registrationAccessor(valueService)
-                .Select(v => registrationCreator.Call(null, service, valueService, v))
-                .Cast<IComponentRegistration>();
+            return registrationAccessor(service)
+                .Select(v => this.CreateMetaRegistration(service, service, v));
         }
 
         /// <summary>
@@ -78,13 +78,13 @@ namespace Kephas.Composition.Autofac.Metadata
         /// </returns>
         public override string ToString()
         {
-            return "IExportFactory<T> support";
+            return "ICompositionContext<T> support";
         }
 
-        private static IComponentRegistration CreateMetaRegistration<T>(Service providedService, Service valueService, IComponentRegistration valueRegistration)
+        private IComponentRegistration CreateMetaRegistration(Service providedService, Service valueService, IComponentRegistration valueRegistration)
         {
             var rb = RegistrationBuilder
-                .ForDelegate((c, p) => new ExportFactory<T>(() => (T)c.ResolveComponent(valueRegistration, p)))
+                .ForDelegate<ICompositionContext>((c, p) => this.compositionContainer.TryGetCompositionContext(c, createNewIfMissing: true))
                 .As(providedService)
                 .Targeting(valueRegistration)
                 .InheritRegistrationOrderFrom(valueRegistration);

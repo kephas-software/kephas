@@ -11,7 +11,6 @@
 namespace Kephas.Composition.Autofac.Hosting
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
 
     using global::Autofac;
@@ -24,9 +23,18 @@ namespace Kephas.Composition.Autofac.Hosting
     /// </summary>
     public abstract class AutofacCompositionContextBase : ICompositionContext
     {
-        private static ConcurrentDictionary<ILifetimeScope, ICompositionContext> map = new ConcurrentDictionary<ILifetimeScope, ICompositionContext>();
+        private readonly ICompositionContainer root;
 
         private ILifetimeScope innerContainer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutofacCompositionContextBase"/> class.
+        /// </summary>
+        /// <param name="root">The root.</param>
+        internal AutofacCompositionContextBase(ICompositionContainer root)
+        {
+            this.root = root;
+        }
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -139,8 +147,8 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         public ICompositionContext CreateScopedContext()
         {
-            var scopedContext = this.innerContainer.BeginLifetimeScope();
-            return GetOrAddCompositionContext(scopedContext);
+            var scope = this.innerContainer.BeginLifetimeScope();
+            return (this.root ?? (ICompositionContainer)this).GetCompositionContext(scope);
         }
 
         /// <summary>
@@ -149,24 +157,6 @@ namespace Kephas.Composition.Autofac.Hosting
         public void Dispose()
         {
             this.Dispose(true);
-        }
-
-        /// <summary>
-        /// Tries to get the composition context wrapper for the provided composition context.
-        /// </summary>
-        /// <param name="container">The inner container.</param>
-        /// <param name="createNewIfMissing">True to create new if missing.</param>
-        /// <returns>
-        /// The composition context wrapper.
-        /// </returns>
-        internal static ICompositionContext TryGetCompositionContext(ILifetimeScope container, bool createNewIfMissing)
-        {
-            if (map.TryGetValue(container, out var compositionContext))
-            {
-                return compositionContext;
-            }
-
-            return createNewIfMissing ? new AutofacScopedCompositionContext(container) : null;
         }
 
         /// <summary>
@@ -180,7 +170,7 @@ namespace Kephas.Composition.Autofac.Hosting
                 return;
             }
 
-            map.TryRemove(this.innerContainer, out _);
+            (this.root ?? (ICompositionContainer)this).HandleDispose(this.innerContainer);
             this.innerContainer.Dispose();
             this.innerContainer = null;
         }
@@ -194,7 +184,6 @@ namespace Kephas.Composition.Autofac.Hosting
             Requires.NotNull(container, nameof(container));
 
             this.innerContainer = container;
-            map.TryAdd(container, this);
         }
 
         /// <summary>
@@ -206,18 +195,6 @@ namespace Kephas.Composition.Autofac.Hosting
             {
                 throw new ObjectDisposedException(Strings.AutofacCompositionContainer_Disposed_Exception);
             }
-        }
-
-        /// <summary>
-        /// Gets the composition context wrapper for the provided composition context.
-        /// </summary>
-        /// <param name="scopedContextExport">The scoped context export.</param>
-        /// <returns>
-        /// The composition context.
-        /// </returns>
-        private static ICompositionContext GetOrAddCompositionContext(ILifetimeScope scopedContextExport)
-        {
-            return map.GetOrAdd(scopedContextExport, _ => new AutofacScopedCompositionContext(scopedContextExport));
         }
     }
 }
