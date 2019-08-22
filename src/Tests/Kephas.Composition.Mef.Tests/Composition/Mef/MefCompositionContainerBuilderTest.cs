@@ -89,7 +89,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_AppService_Shared()
+        public void GetExport_AppService_Singleton()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -132,7 +132,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExports_AppService_Multiple_Shared()
+        public void GetExports_AppService_Multiple_Singleton()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -190,7 +190,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_ScopeSharedAppService_no_scope()
+        public void GetExport_ScopedAppService_no_scope()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -202,7 +202,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_ScopeSharedAppService_export()
+        public void GetExport_ScopedAppService_export()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -228,7 +228,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_ScopeSharedAppService_custom_scope_export()
+        public void GetExport_ScopedAppService_custom_scope_export()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -255,7 +255,7 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
-        public void GetExport_ScopeSharedAppService_scopefactory_composed_only_once()
+        public void GetExport_ScopedAppService_scopefactory_composed_only_once()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder

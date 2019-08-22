@@ -61,7 +61,7 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
-        public void RegisterService_service_factory_non_shared()
+        public void RegisterService_service_factory_non_singleton()
         {
             var ambientServices = new AmbientServices();
             ambientServices.RegisterService(typeof(ILogManager), () => Substitute.For<ILogManager>());

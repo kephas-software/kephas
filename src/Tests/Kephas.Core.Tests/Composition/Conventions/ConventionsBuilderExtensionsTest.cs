@@ -27,7 +27,7 @@ namespace Kephas.Core.Tests.Composition.Conventions
     public class ConventionsBuilderExtensionsTest
     {
         [Test]
-        public void RegisterConventions_shared_derived_conventions_with_metadata()
+        public void RegisterConventions_singleton_derived_conventions_with_metadata()
         {
             var builder = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
             var newBuilder = builder.RegisterConventions(
@@ -50,7 +50,7 @@ namespace Kephas.Core.Tests.Composition.Conventions
         }
 
         [Test]
-        public void RegisterConventions_shared_derived_conventions_with_metadata_from_context_registrar()
+        public void RegisterConventions_singleton_derived_conventions_with_metadata_from_context_registrar()
         {
             var builder = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
             var newBuilder = builder.RegisterConventions(

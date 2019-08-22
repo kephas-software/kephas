@@ -85,7 +85,7 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void GetExport_AppService_Shared()
+        public void GetExport_AppService_Singleton()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -128,7 +128,7 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void GetExports_AppService_Multiple_Shared()
+        public void GetExports_AppService_Multiple_Singleton()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -186,7 +186,7 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void GetExport_ScopeSharedAppService_no_scope()
+        public void GetExport_ScopedAppService_no_scope()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder
@@ -198,7 +198,7 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void GetExport_ScopeSharedAppService_export()
+        public void GetExport_ScopedAppService_export()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
             var container = builder

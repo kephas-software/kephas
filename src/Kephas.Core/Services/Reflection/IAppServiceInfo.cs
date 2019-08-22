@@ -100,7 +100,7 @@ namespace Kephas.Services.Reflection
         /// <c>true</c> if shared; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsShared(this IAppServiceInfo appServiceInfo)
+        public static bool IsSingleton(this IAppServiceInfo appServiceInfo)
         {
             Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 
@@ -115,7 +115,7 @@ namespace Kephas.Services.Reflection
         /// <c>true</c> if shared within a scope; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsScopeShared(this IAppServiceInfo appServiceInfo)
+        public static bool IsScoped(this IAppServiceInfo appServiceInfo)
         {
             Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 
@@ -130,7 +130,7 @@ namespace Kephas.Services.Reflection
         /// <c>true</c> if instanced per request; otherwise, <c>false</c>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsInstance(this IAppServiceInfo appServiceInfo)
+        public static bool IsTransient(this IAppServiceInfo appServiceInfo)
         {
             Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
 

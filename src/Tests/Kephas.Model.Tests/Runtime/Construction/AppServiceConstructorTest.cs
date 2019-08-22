@@ -39,14 +39,14 @@ namespace Kephas.Model.Tests.Runtime.Construction
         }
 
         [Test]
-        public void TryCreateModelElement_shared_app_service()
+        public void TryCreateModelElement_singleton_app_service()
         {
-            var modelElement = this.TryCreateTestModelElement<ISharedTestAppService>();
+            var modelElement = this.TryCreateTestModelElement<ISingletonTestAppService>();
 
             Assert.IsNotNull(modelElement);
             Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
-            Assert.AreSame(typeof(ISharedTestAppService).AsRuntimeTypeInfo(), modelElement.Parts.First());
+            Assert.AreSame(typeof(ISingletonTestAppService).AsRuntimeTypeInfo(), modelElement.Parts.First());
         }
 
         [Test]
@@ -94,8 +94,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         }
 
         [SingletonAppServiceContract]
-        public interface ISharedTestAppService {}
-
+        public interface ISingletonTestAppService {}
 
         [AppServiceContract]
         public interface ITestAppService {}

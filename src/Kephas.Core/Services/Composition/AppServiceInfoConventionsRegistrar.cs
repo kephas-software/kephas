@@ -280,11 +280,11 @@ namespace Kephas.Services.Composition
 
             partBuilder.SelectConstructor(ctorInfos => this.SelectAppServiceConstructor(serviceContract, ctorInfos));
 
-            if (appServiceInfo.IsShared())
+            if (appServiceInfo.IsSingleton())
             {
                 partBuilder.Singleton();
             }
-            else if (appServiceInfo.IsScopeShared())
+            else if (appServiceInfo.IsScoped())
             {
                 partBuilder.Scoped();
             }
@@ -865,11 +865,11 @@ namespace Kephas.Services.Composition
             if (appServiceInfo.InstanceFactory != null)
             {
                 var partBuilder = conventions.ForInstanceFactory(serviceContractType, appServiceInfo.InstanceFactory);
-                if (appServiceInfo.IsShared())
+                if (appServiceInfo.IsSingleton())
                 {
                     partBuilder.Singleton();
                 }
-                else if (appServiceInfo.IsScopeShared())
+                else if (appServiceInfo.IsScoped())
                 {
                     partBuilder.Scoped();
                 }
