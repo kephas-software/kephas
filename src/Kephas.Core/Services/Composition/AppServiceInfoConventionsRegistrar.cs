@@ -499,17 +499,7 @@ namespace Kephas.Services.Composition
         {
             var constructorsList = constructors.Where(c => !c.IsStatic && c.IsPublic).ToList();
 
-            if (constructorsList.Count == 0)
-            {
-                throw new CompositionException(string.Format(Strings.AppServiceMissingCompositionConstructor, constructors.FirstOrDefault()?.DeclaringType, serviceContract));
-            }
-
-            if (constructorsList.Count == 1)
-            {
-                return constructorsList[0];
-            }
-
-            // two or more eligible constructors, get the one marked as CompositionConstructor.
+            // get the one constructor marked as CompositionConstructor.
             var explicitlyMarkedConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
             if (explicitlyMarkedConstructors.Count == 0)
             {
