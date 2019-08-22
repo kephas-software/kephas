@@ -458,7 +458,6 @@ namespace Kephas.Tests.Composition.Autofac
             /// <summary>
             /// Gets or sets the logger.
             /// </summary>
-            [Import]
             public ILogger<NonComposedTestLogConsumer> Logger { get; set; }
         }
 

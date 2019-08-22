@@ -280,11 +280,6 @@ namespace Kephas.Services.Composition
 
             partBuilder.SelectConstructor(ctorInfos => this.SelectAppServiceConstructor(serviceContract, ctorInfos));
 
-            if (appServiceInfo.ImportProperties)
-            {
-                partBuilder.ImportProperties(pi => this.IsAppServiceImport(pi, appServiceContracts));
-            }
-
             if (appServiceInfo.IsShared())
             {
                 partBuilder.Singleton();

@@ -279,7 +279,6 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsFalse(log.ToString().Contains(LogLevel.Warning.ToString()));
 
             Assert.AreEqual(0, metadata.Count);
-            Assert.AreEqual(1, testBuilder.ImportedProperties.Count);
         }
 
         [Test]

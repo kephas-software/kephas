@@ -67,21 +67,14 @@ namespace Kephas.AspNetCore.Services.Composition
 
                 if (descriptor.ImplementationInstance != null)
                 {
-                    yield return (serviceType,
-                                     new AppServiceInfo(serviceType, descriptor.ImplementationInstance)
-                                         {
-                                             ImportProperties = false,
-                                         });
+                    yield return (serviceType, new AppServiceInfo(serviceType, descriptor.ImplementationInstance));
                 }
                 else if (descriptor.ImplementationFactory != null)
                 {
                     yield return (serviceType,
                                      new AppServiceInfo(
                                          serviceType,
-                                         ctx => descriptor.ImplementationFactory(ctx.ToServiceProvider()))
-                                         {
-                                             ImportProperties = false,
-                                         });
+                                         ctx => descriptor.ImplementationFactory(ctx.ToServiceProvider())));
                 }
                 else
                 {
@@ -101,10 +94,7 @@ namespace Kephas.AspNetCore.Services.Composition
                                          serviceType,
                                          instanceType,
                                          lifetime,
-                                         serviceType.IsGenericTypeDefinition)
-                                         {
-                                             ImportProperties = false,
-                                         });
+                                         serviceType.IsGenericTypeDefinition));
                 }
             }
         }

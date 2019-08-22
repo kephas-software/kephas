@@ -462,7 +462,6 @@ namespace Kephas.Tests.Composition.Mef
             /// <summary>
             /// Gets or sets the logger.
             /// </summary>
-            [Kephas.Composition.AttributedModel.Import]
             public ILogger<NonComposedTestLogConsumer> Logger { get; set; }
         }
 
@@ -496,7 +495,6 @@ namespace Kephas.Tests.Composition.Mef
             /// <summary>
             /// Gets or sets the test services.
             /// </summary>
-            [Kephas.Composition.AttributedModel.ImportMany]
             public ICollection<ExportFactoryAdapter<ITestAppService, AppServiceMetadata>> TestServices { get; set; }
         }
 
@@ -516,7 +514,6 @@ namespace Kephas.Tests.Composition.Mef
             /// <summary>
             /// Gets or sets the converters.
             /// </summary>
-            [Kephas.Composition.AttributedModel.ImportMany]
             public ICollection<ExportFactoryAdapter<IConverter, AppServiceMetadata>> Converters { get; set; }
         }
 

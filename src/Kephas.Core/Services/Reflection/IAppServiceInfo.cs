@@ -46,14 +46,6 @@ namespace Kephas.Services.Reflection
         bool AsOpenGeneric { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the properties should be considered when resolving dependencies.
-        /// </summary>
-        /// <value>
-        /// True if the properties should be considered when resolving dependencies, false if not.
-        /// </value>
-        bool ImportProperties { get; }
-
-        /// <summary>
         /// Gets the supported metadata attributes.
         /// </summary>
         /// <value>

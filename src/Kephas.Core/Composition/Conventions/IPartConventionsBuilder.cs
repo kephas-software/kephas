@@ -60,13 +60,5 @@ namespace Kephas.Composition.Conventions
         /// A part builder allowing further configuration of the part.
         /// </returns>
         IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null);
-
-        /// <summary>
-        /// Select properties to import into the part.
-        /// </summary>
-        /// <param name="propertyFilter">Filter to select matching properties.</param>
-        /// <param name="importConfiguration">Action to configure selected properties.</param>
-        /// <returns>A part builder allowing further configuration of the part.</returns>
-        IPartConventionsBuilder ImportProperties(Predicate<PropertyInfo> propertyFilter, Action<PropertyInfo, IImportConventionsBuilder> importConfiguration = null);
     }
 }

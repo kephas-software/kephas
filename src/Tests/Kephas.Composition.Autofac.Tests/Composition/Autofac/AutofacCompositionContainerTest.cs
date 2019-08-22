@@ -244,12 +244,6 @@ namespace Kephas.Tests.Composition.Autofac
             Assert.IsNull(service);
         }
 
-        private class ContainerServicesImporter
-        {
-            [Import]
-            public ICompositionContext CompositionContainer { get; set; }
-        }
-
         //[Export]
         //[Scoped(CompositionScopeNames.Default)]
         public class ScopeExportedClass
@@ -276,14 +270,12 @@ namespace Kephas.Tests.Composition.Autofac
         //[Export]
         public class ExportedClassImplicitImporter
         {
-            [Import]
             public ExportedClass ExportedClass { get; set; }
         }
 
         //[Export]
         public class ExportedClassImplicitFactoryImporter
         {
-            [Import]
             public IExportFactory<ExportedClass> ExportedClassFactory { get; set; }
         }
 
@@ -296,31 +288,12 @@ namespace Kephas.Tests.Composition.Autofac
             public IExportFactory<ExportedClass>[] ExportedClassFactoryArray { get; set; }
         }
 
-        //[Export]
-        public class ExportedClassImplicitFactoryMetadataImporter
-        {
-            [Import]
-            public IExportFactory<ExportedClass, TestMetadata> ExportedClassMetadataFactory { get; set; }
-        }
-
         public class TestMetadata : AppServiceMetadata
         {
             public TestMetadata(IDictionary<string, object> metadata)
                 : base(metadata)
             {
             }
-        }
-
-        private class ConsumerOfExportedClassImplicitImporter
-        {
-            [Import]
-            public ExportedClassImplicitImporter ImplicitImporter { get; set; }
-        }
-
-        private class ConsumerOfExportedClass
-        {
-            [Import]
-            public ExportedClass ExportedClass { get; set; }
         }
 
         public class MultiFilterConventionsRegistrar : IConventionsRegistrar

@@ -46,14 +46,6 @@
             var builderEntry = conventions.MatchingConventionsBuilders.First();
             Assert.IsTrue(builderEntry.Key(typeof(TestBaseImporter)));
             Assert.IsTrue(builderEntry.Key(typeof(TestDerivedImporter)));
-
-            var conventionBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
-            Assert.AreEqual(1, conventionBuilder.ImportedProperties.Count);
-            var filter = conventionBuilder.ImportedProperties[0].Item1;
-            var baseProperty = typeof(TestBaseImporter).GetTypeInfo().GetDeclaredProperty(nameof(TestBaseImporter.ImportedService));
-            var derivedProperty = typeof(TestDerivedImporter).GetTypeInfo().GetDeclaredProperty(nameof(TestDerivedImporter.ImportedService));
-            Assert.IsTrue(filter(baseProperty));
-            Assert.IsTrue(filter(derivedProperty));
         }
 
         [Test]

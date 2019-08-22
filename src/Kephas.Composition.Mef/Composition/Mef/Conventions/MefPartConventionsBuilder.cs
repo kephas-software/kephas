@@ -138,30 +138,6 @@ namespace Kephas.Composition.Mef.Conventions
         }
 
         /// <summary>
-        /// Select properties to import into the part.
-        /// </summary>
-        /// <param name="propertyFilter">Filter to select matching properties.</param>
-        /// <param name="importConfiguration">Action to configure selected properties.</param>
-        /// <returns>A part builder allowing further configuration of the part.</returns>
-        public IPartConventionsBuilder ImportProperties(Predicate<PropertyInfo> propertyFilter, Action<PropertyInfo, IImportConventionsBuilder> importConfiguration = null)
-        {
-            Requires.NotNull(propertyFilter, nameof(propertyFilter));
-
-            if (importConfiguration == null)
-            {
-                this.innerConventionBuilder.ImportProperties(propertyFilter);
-            }
-            else
-            {
-                this.innerConventionBuilder.ImportProperties(
-                    propertyFilter,
-                    (pi, config) => importConfiguration(pi, new MefImportConventionsBuilder(config)));
-            }
-
-            return this;
-        }
-
-        /// <summary>
         /// Determines whether the provided interface is a closed generic of the specified open generic contract.
         /// </summary>
         /// <param name="openGenericContract">The open generic contract.</param>
