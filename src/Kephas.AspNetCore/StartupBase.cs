@@ -133,7 +133,7 @@ namespace Kephas.AspNetCore
                 var ambientServicesBuilder = new AmbientServicesBuilder(this.ambientServices);
                 this.ConfigureAmbientServices(this.appArgs, ambientServicesBuilder);
 
-                this.Logger = this.Logger ?? this.ambientServices.GetLogger(this.GetType());
+                this.Logger = this.ambientServices.GetLogger(this.GetType());
             }
             catch (Exception ex)
             {
