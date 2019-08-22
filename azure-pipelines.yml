@@ -34,7 +34,6 @@ steps:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    restoreNugetPackages: true
     msbuildArchitecture: 'x64'
 
 - task: VSTest@2
