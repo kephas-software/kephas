@@ -85,7 +85,11 @@ namespace Kephas.Composition.Autofac.Metadata
         private static IComponentRegistration CreateMetaRegistration<T>(Service providedService, Service valueService, IComponentRegistration valueRegistration)
         {
             var rb = RegistrationBuilder
-                .ForDelegate((c, p) => new ExportFactory<T>(() => (T)c.ResolveComponent(valueRegistration, p)))
+                .ForDelegate((c, p) =>
+                    {
+                        var lifetimeScope = c.GetLifetimeScope();
+                        return new ExportFactory<T>(() => (T)lifetimeScope.ResolveComponent(valueRegistration, p));
+                    })
                 .As(providedService)
                 .Targeting(valueRegistration)
                 .InheritRegistrationOrderFrom(valueRegistration);

@@ -62,17 +62,7 @@ namespace Kephas.Composition.Autofac.Hosting
                 return null;
             }
 
-            if (container is ILifetimeScope lifetimeScope)
-            {
-                return this.GetCompositionContext(lifetimeScope);
-            }
-
-            if (container is IInstanceLookup instanceLookup)
-            {
-                return this.GetCompositionContext(instanceLookup.ActivationScope);
-            }
-
-            throw new CompositionException(Strings.AutofacCompositionContainer_MismatchedLifetimeScope_Exception);
+            return this.GetCompositionContext(container.GetLifetimeScope());
         }
 
         /// <summary>

@@ -70,7 +70,7 @@ namespace Kephas.Composition.Autofac.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The provided component context is not a lifetime scope..
+        ///   Looks up a localized string similar to Cannot get a lifetime scope from the provided component context: {0}..
         /// </summary>
         public static string AutofacCompositionContainer_MismatchedLifetimeScope_Exception {
             get {
