@@ -22,9 +22,9 @@ steps:
 - task: DotNetCoreInstaller@0
   inputs:
     packageType: 'sdk'
-    version: '2.2.401'
+    version: '2.2.105'
 
-- script: dotnet restore
+- script: dotnet restore src/Kephas.sln
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
