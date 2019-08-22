@@ -758,6 +758,7 @@ namespace Kephas.Runtime
         /// Creates the fields.
         /// </summary>
         /// <param name="type">The type.</param>
+        /// <param name="criteria">Optional. The criteria.</param>
         /// <returns>
         /// A dictionary of fields.
         /// </returns>
