@@ -10,6 +10,7 @@
 
 namespace Kephas.Services
 {
+    using System;
     using System.Security;
     using System.Security.Principal;
 
@@ -132,10 +133,23 @@ namespace Kephas.Services
         /// <summary>
         /// Gets or sets the context logger.
         /// </summary>
+        /// <value>
+        /// The context logger.
+        /// </value>
+        public ILogger Logger { get; set; }
+
+        /// <summary>
+        /// Gets or sets the context logger.
+        /// </summary>
         /// <newValue>
         /// The context logger.
         /// </newValue>
-        public ILogger ContextLogger { get; set; }
+        [Obsolete("Please use the Logger property instead.")]
+        public ILogger ContextLogger
+        {
+            get => this.Logger;
+            set => this.Logger = value;
+        }
 
         /// <summary>
         /// Validates the identity before changing it.

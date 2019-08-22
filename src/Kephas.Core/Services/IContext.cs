@@ -10,6 +10,7 @@
 
 namespace Kephas.Services
 {
+    using System;
     using System.Security.Principal;
 
     using Kephas.Composition;
@@ -20,7 +21,7 @@ namespace Kephas.Services
     /// <summary>
     /// Defines a base contract for context-dependent operations.
     /// </summary>
-    public interface IContext : IExpando, IAmbientServicesAware, ICompositionContextAware
+    public interface IContext : IExpando, IAmbientServicesAware, ICompositionContextAware, ILoggable
     {
         /// <summary>
         /// Gets or sets the authenticated identity.
@@ -36,6 +37,7 @@ namespace Kephas.Services
         /// <value>
         /// The context logger.
         /// </value>
+        [Obsolete("Please use the Logger property instead.")]
         ILogger ContextLogger { get; set; }
     }
 
@@ -76,7 +78,15 @@ namespace Kephas.Services
         {
             Requires.NotNull(context, nameof(context));
 
-            context.ContextLogger = contextLogger;
+            if (context is Context loggableContext)
+            {
+                loggableContext.Logger = contextLogger;
+            }
+            else
+            {
+                context.SetPropertyValue(nameof(ILoggable.Logger), contextLogger);
+            }
+
             return context;
         }
     }
