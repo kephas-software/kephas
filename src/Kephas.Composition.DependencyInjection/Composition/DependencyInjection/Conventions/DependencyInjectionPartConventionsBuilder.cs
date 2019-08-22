@@ -22,11 +22,9 @@ namespace Kephas.Composition.DependencyInjection.Conventions
     /// <summary>
     /// A Microsoft.Extensions.DependencyInjection part conventions builder.
     /// </summary>
-    public class DependencyInjectionPartConventionsBuilder : IPartConventionsBuilder
+    public class DependencyInjectionPartConventionsBuilder : Loggable, IPartConventionsBuilder
     {
         private readonly ServiceDescriptorBuilder descriptorBuilder;
-
-        private ILogger logger = typeof(DependencyInjectionPartConventionsBuilder).GetLogger();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DependencyInjectionPartConventionsBuilder"/> class.
@@ -106,7 +104,7 @@ namespace Kephas.Composition.DependencyInjection.Conventions
         public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
         {
             // TODO not supported.
-            this.logger.Warn($"Selecting a specific constructor is not supported ({this.descriptorBuilder}).");
+            this.Logger.Warn($"Selecting a specific constructor is not supported ({this.descriptorBuilder}).");
             return this;
         }
     }
