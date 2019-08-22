@@ -117,9 +117,7 @@ namespace Kephas.AspNetCore
                 serviceCollection.Replace(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
                 serviceCollection.Replace(ServiceDescriptor.Singleton(typeof(Microsoft.Extensions.Logging.ILogger<>), typeof(AspNetLogger<>)));
 
-                serviceCollection.Replace(ServiceDescriptor.Singleton(typeof(Microsoft.Extensions.Options.IOptions<>), typeof(Options<>)));
                 serviceCollection.Replace(ServiceDescriptor.Scoped(typeof(Microsoft.Extensions.Options.IOptionsSnapshot<>), typeof(OptionsSnapshot<>)));
-                serviceCollection.Replace(ServiceDescriptor.Singleton(typeof(Microsoft.Extensions.Options.IOptionsFactory<>), typeof(OptionsFactory<>)));
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
 
