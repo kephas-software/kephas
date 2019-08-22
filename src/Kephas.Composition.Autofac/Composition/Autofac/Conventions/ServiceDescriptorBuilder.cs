@@ -182,6 +182,12 @@ namespace Kephas.Composition.Autofac.Conventions
             }
 
             var constructor = this.ConstructorSelector(type.GetConstructors());
+            if (constructor == null)
+            {
+                // no constructor selected, it means we leave the selection up to Autofac.
+                return;
+            }
+
             registration.UsingConstructor(constructor.GetParameters().Select(p => p.ParameterType).ToArray());
         }
 

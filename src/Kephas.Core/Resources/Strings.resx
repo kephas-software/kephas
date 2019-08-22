@@ -168,9 +168,6 @@
   <data name="AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException" xml:space="preserve">
     <value>Cannot load all exported types from {0}. Only the loadable types will be considered.</value>
   </data>
-  <data name="AppServiceAmbiguousCompositionConstructor" xml:space="preserve">
-    <value>Multiple eligible constructors declared for service implementation '{0}' with contract '{1}'. Use '{2}' to disambiguate among them.</value>
-  </data>
   <data name="AppServiceCompositionContractTypeDoesNotMatchServiceContract" xml:space="preserve">
     <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
   </data>

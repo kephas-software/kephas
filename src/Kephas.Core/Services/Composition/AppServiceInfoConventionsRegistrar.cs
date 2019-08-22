@@ -509,24 +509,20 @@ namespace Kephas.Services.Composition
                 return constructorsList[0];
             }
 
-            var explicitelyMarkedConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
-            if (explicitelyMarkedConstructors.Count == 0)
+            // two or more eligible constructors, get the one marked as CompositionConstructor.
+            var explicitlyMarkedConstructors = constructorsList.Where(c => c.GetCustomAttribute<CompositionConstructorAttribute>() != null).ToList();
+            if (explicitlyMarkedConstructors.Count == 0)
             {
-                var sortedConstructors = constructorsList.ToDictionary(c => c, c => c.GetParameters().Length).OrderByDescending(kv => kv.Value).ToList();
-                if (sortedConstructors[0].Value == sortedConstructors[1].Value)
-                {
-                    throw new CompositionException(string.Format(Strings.AppServiceAmbiguousCompositionConstructor, constructorsList[0].DeclaringType, serviceContract, typeof(CompositionConstructorAttribute)));
-                }
-
-                return sortedConstructors[0].Key;
+                // none marked explicitly, leave the decision up to the IoC implementation.
+                return null;
             }
 
-            if (explicitelyMarkedConstructors.Count > 1)
+            if (explicitlyMarkedConstructors.Count > 1)
             {
                 throw new CompositionException(string.Format(Strings.AppServiceMultipleCompositionConstructors, typeof(CompositionConstructorAttribute), constructorsList[0].DeclaringType, serviceContract));
             }
 
-            return explicitelyMarkedConstructors[0];
+            return explicitlyMarkedConstructors[0];
         }
 
         /// <summary>

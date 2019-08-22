@@ -13,9 +13,12 @@ namespace Kephas.Composition.Mef.Conventions
     using System;
     using System.Collections.Generic;
     using System.Composition.Convention;
+    using System.Linq;
     using System.Reflection;
 
+    using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Conventions;
+    using Kephas.Composition.Mef.Resources;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -123,14 +126,33 @@ namespace Kephas.Composition.Mef.Conventions
         {
             Requires.NotNull(constructorSelector, nameof(constructorSelector));
 
+            ConstructorInfo NewConstructorSelector(IEnumerable<ConstructorInfo> ctorInfos)
+            {
+                var ctor = constructorSelector(ctorInfos);
+
+                if (ctor == null)
+                {
+                    var constructorsList = ctorInfos;
+                    var sortedConstructors = constructorsList.ToDictionary(c => c, c => c.GetParameters().Length).OrderByDescending(kv => kv.Value).ToList();
+                    if (sortedConstructors[0].Value == sortedConstructors[1].Value)
+                    {
+                        throw new CompositionException(string.Format(Strings.MefPartConventionsBuilder_AmbiguousCompositionConstructor, constructorsList.First().DeclaringType, typeof(CompositionConstructorAttribute)));
+                    }
+
+                    return sortedConstructors[0].Key;
+                }
+
+                return ctor;
+            }
+
             if (importConfiguration == null)
             {
-                this.innerConventionBuilder.SelectConstructor(constructorSelector);
+                this.innerConventionBuilder.SelectConstructor(NewConstructorSelector);
             }
             else
             {
                 this.innerConventionBuilder.SelectConstructor(
-                    constructorSelector,
+                    NewConstructorSelector,
                     (pi, config) => importConfiguration(pi, new MefImportConventionsBuilder(config)));
             }
 

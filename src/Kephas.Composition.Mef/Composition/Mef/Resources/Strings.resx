@@ -129,4 +129,7 @@
   <data name="MetadataViewProvider_MissingMetadata" xml:space="preserve">
     <value>Export metadata for '{0}' is missing and no default value was supplied.</value>
   </data>
+  <data name="MefPartConventionsBuilder_AmbiguousCompositionConstructor" xml:space="preserve">
+    <value>Multiple eligible constructors declared for service implementation '{0}'. Use '{1}' to disambiguate among them.</value>
+  </data>
 </root>

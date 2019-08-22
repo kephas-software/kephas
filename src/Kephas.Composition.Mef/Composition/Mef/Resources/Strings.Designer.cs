@@ -10,7 +10,6 @@
 
 namespace Kephas.Composition.Mef.Resources {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -20,10 +19,10 @@ namespace Kephas.Composition.Mef.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings {
+    public class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -37,10 +36,10 @@ namespace Kephas.Composition.Mef.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Composition.Mef.Resources.Strings", typeof(Strings).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Composition.Mef.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -52,7 +51,7 @@ namespace Kephas.Composition.Mef.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -64,7 +63,7 @@ namespace Kephas.Composition.Mef.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The provided conventions must implement {0}..
         /// </summary>
-        internal static string InvalidConventions {
+        public static string InvalidConventions {
             get {
                 return ResourceManager.GetString("InvalidConventions", resourceCulture);
             }
@@ -73,16 +72,25 @@ namespace Kephas.Composition.Mef.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The composition container is disposed!.
         /// </summary>
-        internal static string MefCompositionContainer_Disposed_Exception {
+        public static string MefCompositionContainer_Disposed_Exception {
             get {
                 return ResourceManager.GetString("MefCompositionContainer_Disposed_Exception", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple eligible constructors declared for service implementation &apos;{0}&apos;. Use &apos;{1}&apos; to disambiguate among them..
+        /// </summary>
+        public static string MefPartConventionsBuilder_AmbiguousCompositionConstructor {
+            get {
+                return ResourceManager.GetString("MefPartConventionsBuilder_AmbiguousCompositionConstructor", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to The type &apos;{0}&apos; cannot be used as a metadata view. A metadata view must be a concrete class with a parameterless or dictionary constructor..
         /// </summary>
-        internal static string MetadataViewProvider_InvalidViewImplementation {
+        public static string MetadataViewProvider_InvalidViewImplementation {
             get {
                 return ResourceManager.GetString("MetadataViewProvider_InvalidViewImplementation", resourceCulture);
             }
@@ -91,7 +99,7 @@ namespace Kephas.Composition.Mef.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Export metadata for &apos;{0}&apos; is missing and no default value was supplied..
         /// </summary>
-        internal static string MetadataViewProvider_MissingMetadata {
+        public static string MetadataViewProvider_MissingMetadata {
             get {
                 return ResourceManager.GetString("MetadataViewProvider_MissingMetadata", resourceCulture);
             }
