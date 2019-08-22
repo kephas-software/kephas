@@ -78,14 +78,6 @@ namespace Kephas.Composition.Autofac.Conventions
         public Func<IEnumerable<ConstructorInfo>, ConstructorInfo> ConstructorSelector { get; set; }
 
         /// <summary>
-        /// Gets or sets the property filter.
-        /// </summary>
-        /// <value>
-        /// The property filter.
-        /// </value>
-        public Predicate<PropertyInfo> PropertyFilter { get; set; }
-
-        /// <summary>
         /// Gets or sets the export configuration.
         /// </summary>
         /// <value>
@@ -160,7 +152,6 @@ namespace Kephas.Composition.Autofac.Conventions
             }
 
             this.SelectConstructor(registration, implementationType);
-            this.SelectProperties(registration, implementationType);
         }
 
         private void SetLifetime<TActivatorData, TRegistrationStyle>(
@@ -192,18 +183,6 @@ namespace Kephas.Composition.Autofac.Conventions
 
             var constructor = this.ConstructorSelector(type.GetConstructors());
             registration.UsingConstructor(constructor.GetParameters().Select(p => p.ParameterType).ToArray());
-        }
-
-        private void SelectProperties<TActivatorData, TRegistrationStyle>(
-            IRegistrationBuilder<object, TActivatorData, TRegistrationStyle> registration,
-            Type type)
-        {
-            if (this.PropertyFilter == null)
-            {
-                return;
-            }
-
-            registration.PropertiesAutowired((pi, obj) => this.PropertyFilter(pi));
         }
 
         private class ExportConventionsBuilder<TActivatorData, TRegistrationStyle> : IExportConventionsBuilder

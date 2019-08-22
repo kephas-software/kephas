@@ -77,12 +77,9 @@ namespace Kephas.Messaging.Tests.Distributed
             var sb = new StringBuilder();
             var logger = this.GetLogger<IMessageBroker>(sb);
 
-            var ambientServices = new AmbientServices();
-            ambientServices.RegisterService(Substitute.For<ILogManager>());
-            ambientServices.LogManager.GetLogger(typeof(InProcessMessageBroker).FullName).Returns(logger);
-
-            var container = this.CreateContainer(ambientServices, parts: new[] { typeof(TimeoutMessageHandler) });
+            var container = this.CreateContainer(parts: new[] { typeof(TimeoutMessageHandler), typeof(LoggableMessageBroker) });
             var messageBroker = (InProcessMessageBroker)container.GetExport<IMessageBroker>();
+            ((LoggableMessageBroker)messageBroker).SetLogger(logger);
 
             var brokeredMessage = new BrokeredMessage
                                       {
@@ -285,6 +282,20 @@ namespace Kephas.Messaging.Tests.Distributed
                                               serializedMessage,
                                               cancellationToken: cancellationToken);
                 await base.SendAsync((IBrokeredMessage)deserializedMessage, context, cancellationToken);
+            }
+        }
+
+        [OverridePriority(Priority.High)]
+        public class LoggableMessageBroker : InProcessMessageBroker
+        {
+            public LoggableMessageBroker(ICollection<IExportFactory<IBrokeredMessageBuilder, BrokeredMessageBuilderMetadata>> messageBuilderFactories, IMessageProcessor messageProcessor)
+                : base(messageBuilderFactories, messageProcessor)
+            {
+            }
+
+            public void SetLogger(ILogger logger)
+            {
+                this.Logger = logger;
             }
         }
     }

@@ -194,7 +194,7 @@ namespace Kephas.Tests.Composition.Autofac
                 .WithParts(new[] { typeof(ITestScopedExport), typeof(TestScopedExport) })
                 .CreateContainer();
 
-            Assert.Throws<Exception>(() => container.GetExport<ITestScopedExport>());
+            Assert.IsInstanceOf<TestScopedExport>(container.GetExport<ITestScopedExport>());
         }
 
         [Test]
@@ -481,6 +481,14 @@ namespace Kephas.Tests.Composition.Autofac
 
         public class TestMultiAppServiceConsumer : ITestMultiAppServiceConsumer
         {
+            public TestMultiAppServiceConsumer(
+                IEnumerable<IExportFactory<ITestMultiAppService>> factories,
+                IEnumerable<IExportFactory<ITestMultiAppService, AppServiceMetadata>> metadataFactories)
+            {
+                this.Factories = factories;
+                this.MetadataFactories = metadataFactories;
+            }
+
             public IEnumerable<IExportFactory<ITestMultiAppService>> Factories { get; set; }
 
             public IEnumerable<IExportFactory<ITestMultiAppService, AppServiceMetadata>> MetadataFactories { get; set; }
