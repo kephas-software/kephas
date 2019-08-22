@@ -10,6 +10,10 @@
 
 namespace Kephas.Composition.Autofac.Conventions
 {
+    using System;
+    using System.Collections.Generic;
+
+    using global::Autofac;
     using global::Autofac.Builder;
 
     using Kephas.Composition.Conventions;
@@ -19,14 +23,18 @@ namespace Kephas.Composition.Autofac.Conventions
     /// </summary>
     public class AutofacPartBuilder : IPartBuilder
     {
+        private readonly ContainerBuilder containerBuilder;
+
         private readonly IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacPartBuilder"/> class.
         /// </summary>
+        /// <param name="containerBuilder">The container builder.</param>
         /// <param name="registrationBuilder">The registration builder.</param>
-        public AutofacPartBuilder(IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder)
+        public AutofacPartBuilder(ContainerBuilder containerBuilder, IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder)
         {
+            this.containerBuilder = containerBuilder;
             this.registrationBuilder = registrationBuilder;
         }
 
@@ -52,6 +60,17 @@ namespace Kephas.Composition.Autofac.Conventions
         {
             this.registrationBuilder.InstancePerLifetimeScope();
             return this;
+        }
+
+        /// <summary>
+        /// Builds the information into a service descriptor.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <param name="parts">The parts.</param>
+        public void Build(IEnumerable<Type> parts)
+        {
+            var registration = this.registrationBuilder.CreateRegistration();
+            this.containerBuilder.RegisterComponent(registration);
         }
     }
 }

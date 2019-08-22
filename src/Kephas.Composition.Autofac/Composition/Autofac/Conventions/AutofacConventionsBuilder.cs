@@ -14,6 +14,7 @@ namespace Kephas.Composition.Autofac.Conventions
     using System.Collections.Generic;
 
     using global::Autofac;
+    using global::Autofac.Builder;
 
     using Kephas.Composition.Conventions;
 
@@ -25,6 +26,8 @@ namespace Kephas.Composition.Autofac.Conventions
         private readonly ContainerBuilder containerBuilder;
 
         private readonly IList<ServiceDescriptorBuilder> descriptorBuilders = new List<ServiceDescriptorBuilder>();
+
+        private readonly IList<AutofacPartBuilder> factoryBuilders = new List<AutofacPartBuilder>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacConventionsBuilder"/> class.
@@ -67,9 +70,9 @@ namespace Kephas.Composition.Autofac.Conventions
         public IPartConventionsBuilder ForTypesMatching(Predicate<Type> typePredicate)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder(this.containerBuilder)
-                                        {
-                                            ImplementationTypePredicate = typePredicate,
-                                        };
+            {
+                ImplementationTypePredicate = typePredicate,
+            };
             this.descriptorBuilders.Add(descriptorBuilder);
 
             return new AutofacPartConventionsBuilder(descriptorBuilder);
@@ -86,9 +89,9 @@ namespace Kephas.Composition.Autofac.Conventions
         public IPartConventionsBuilder ForType(Type type)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder(this.containerBuilder)
-                                        {
-                                            ImplementationType = type,
-                                        };
+            {
+                ImplementationType = type,
+            };
             this.descriptorBuilders.Add(descriptorBuilder);
 
             return new AutofacPartConventionsBuilder(descriptorBuilder);
@@ -116,10 +119,17 @@ namespace Kephas.Composition.Autofac.Conventions
         /// </returns>
         public IPartBuilder ForInstanceFactory(Type type, Func<ICompositionContext, object> factory)
         {
-            return new AutofacPartBuilder(
-                this.containerBuilder
-                    .Register(ctx => factory(ctx.Resolve<ICompositionContext>()))
-                    .As(type));
+            var registrationBuilder = RegistrationBuilder.ForDelegate(
+                    type,
+                    (context, parameters) =>
+                    {
+                        var serviceProvider = context.Resolve<ICompositionContext>();
+                        return factory(serviceProvider);
+                    });
+            var partBuilder = new AutofacPartBuilder(this.containerBuilder, registrationBuilder);
+            this.factoryBuilders.Add(partBuilder);
+
+            return partBuilder;
         }
 
         /// <summary>
@@ -142,6 +152,11 @@ namespace Kephas.Composition.Autofac.Conventions
             foreach (var descriptorBuilder in this.descriptorBuilders)
             {
                 descriptorBuilder.Build(parts);
+            }
+
+            foreach (var factoryBuilder in this.factoryBuilders)
+            {
+                factoryBuilder.Build(parts);
             }
 
             return this.containerBuilder;
