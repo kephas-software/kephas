@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
-        <AssemblyName>Kephas.Composition.Medi</AssemblyName>
+        <AssemblyName>Kephas.Composition.DependencyInjection</AssemblyName>
         <RootNamespace>Kephas</RootNamespace>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -30,7 +30,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Kephas.Composition.Medi.xml</DocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Kephas.Composition.DependencyInjection.xml</DocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
@@ -74,7 +74,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Composition\Medi\Resources\Strings.Designer.cs">
+        <Compile Update="Composition\DependencyInjection\Resources\Strings.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>Strings.resx</DependentUpon>
@@ -82,10 +82,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Update="Composition\Medi\Resources\Strings.resx">
+        <EmbeddedResource Update="Composition\DependencyInjection\Resources\Strings.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Strings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Composition\DependencyInjection\Resources\" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MediPartBuilder.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionPartBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Medi.Conventions
+namespace Kephas.Composition.DependencyInjection.Conventions
 {
     using Kephas.Composition.Conventions;
 
@@ -17,15 +17,15 @@ namespace Kephas.Composition.Medi.Conventions
     /// <summary>
     /// A Microsoft.Extensions.DependencyInjection part builder.
     /// </summary>
-    public class MediPartBuilder : IPartBuilder
+    public class DependencyInjectionPartBuilder : IPartBuilder
     {
         private readonly ServiceDescriptorBuilder descriptorBuilder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediPartBuilder"/> class.
+        /// Initializes a new instance of the <see cref="DependencyInjectionPartBuilder"/> class.
         /// </summary>
         /// <param name="descriptorBuilder">The descriptor builder.</param>
-        internal MediPartBuilder(ServiceDescriptorBuilder descriptorBuilder)
+        internal DependencyInjectionPartBuilder(ServiceDescriptorBuilder descriptorBuilder)
         {
             this.descriptorBuilder = descriptorBuilder;
         }

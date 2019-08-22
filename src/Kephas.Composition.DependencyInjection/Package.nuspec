@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <id>Kephas.Composition.Medi</id>
+        <id>Kephas.Composition.DependencyInjection</id>
         <version>$version$</version>
-        <title>Kephas.Composition.Medi</title>
+        <title>Kephas.Composition.DependencyInjection</title>
         <authors>Kephas Software SRL</authors>
         <owners>Kephas Software SRL</owners>
         <description>
@@ -27,18 +27,18 @@
         </dependencies>
         <references>
             <group>
-                <reference file="Kephas.Composition.Medi.dll" />
+                <reference file="Kephas.Composition.DependencyInjection.dll" />
             </group>
         </references>
         <tags>kephas composition extensions dependencyinjection di</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
-        <file src="bin\$configuration$\netstandard2.0\Kephas.Composition.Medi.dll" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\netstandard2.0\Kephas.Composition.Medi.pdb" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\netstandard2.0\Kephas.Composition.Medi.xml" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\net461\Kephas.Composition.Medi.dll" target="lib\net461" />
-        <file src="bin\$configuration$\net461\Kephas.Composition.Medi.pdb" target="lib\net461" />
-        <file src="bin\$configuration$\net461\Kephas.Composition.Medi.xml" target="lib\net461" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Composition.DependencyInjection.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Composition.DependencyInjection.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Composition.DependencyInjection.xml" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\net461\Kephas.Composition.DependencyInjection.dll" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Composition.DependencyInjection.pdb" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Composition.DependencyInjection.xml" target="lib\net461" />
     </files>
 </package>

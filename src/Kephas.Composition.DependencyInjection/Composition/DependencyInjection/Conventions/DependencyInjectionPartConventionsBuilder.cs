@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MediPartConventionsBuilder.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionPartConventionsBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Medi.Conventions
+namespace Kephas.Composition.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
@@ -22,17 +22,17 @@ namespace Kephas.Composition.Medi.Conventions
     /// <summary>
     /// A Microsoft.Extensions.DependencyInjection part conventions builder.
     /// </summary>
-    public class MediPartConventionsBuilder : IPartConventionsBuilder
+    public class DependencyInjectionPartConventionsBuilder : IPartConventionsBuilder
     {
         private readonly ServiceDescriptorBuilder descriptorBuilder;
 
-        private ILogger logger = typeof(MediPartConventionsBuilder).GetLogger();
+        private ILogger logger = typeof(DependencyInjectionPartConventionsBuilder).GetLogger();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediPartConventionsBuilder"/> class.
+        /// Initializes a new instance of the <see cref="DependencyInjectionPartConventionsBuilder"/> class.
         /// </summary>
         /// <param name="descriptorBuilder">The descriptor builder.</param>
-        internal MediPartConventionsBuilder(ServiceDescriptorBuilder descriptorBuilder)
+        internal DependencyInjectionPartConventionsBuilder(ServiceDescriptorBuilder descriptorBuilder)
         {
             this.descriptorBuilder = descriptorBuilder;
         }

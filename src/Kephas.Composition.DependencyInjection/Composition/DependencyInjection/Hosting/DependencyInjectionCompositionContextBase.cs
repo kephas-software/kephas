@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MediCompositionContextBase.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionCompositionContextBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Medi.Hosting
+namespace Kephas.Composition.DependencyInjection.Hosting
 {
     using System;
     using System.Collections.Generic;
@@ -18,13 +18,13 @@ namespace Kephas.Composition.Medi.Hosting
     /// <summary>
     /// A composition context base for Microsoft.Extensions.DependencyInjection.
     /// </summary>
-    public abstract class MediCompositionContextBase : ICompositionContext, IServiceProvider
+    public abstract class DependencyInjectionCompositionContextBase : ICompositionContext, IServiceProvider
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediCompositionContextBase"/> class.
+        /// Initializes a new instance of the <see cref="DependencyInjectionCompositionContextBase"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
-        protected MediCompositionContextBase(IServiceProvider serviceProvider)
+        protected DependencyInjectionCompositionContextBase(IServiceProvider serviceProvider)
         {
             this.ServiceProvider = serviceProvider;
         }
@@ -125,7 +125,7 @@ namespace Kephas.Composition.Medi.Hosting
         /// </returns>
         public ICompositionContext CreateScopedContext()
         {
-            return new MediScopedCompositionContext(this.ServiceProvider.CreateScope());
+            return new DependencyInjectionScopedCompositionContext(this.ServiceProvider.CreateScope());
         }
 
         /// <summary>

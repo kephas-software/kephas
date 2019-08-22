@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MediCompositionContainerBuilder.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionCompositionContainerBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,28 +8,28 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Medi.Hosting
+namespace Kephas.Composition.DependencyInjection.Hosting
 {
     using System;
     using System.Collections.Generic;
 
     using Kephas.Composition.Conventions;
+    using Kephas.Composition.DependencyInjection.Conventions;
     using Kephas.Composition.Hosting;
-    using Kephas.Composition.Medi.Conventions;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// A dependency injection composition container builder.
     /// </summary>
-    public class MediCompositionContainerBuilder : CompositionContainerBuilderBase<MediCompositionContainerBuilder>
+    public class DependencyInjectionCompositionContainerBuilder : CompositionContainerBuilderBase<DependencyInjectionCompositionContainerBuilder>
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="MediCompositionContainerBuilder"/> class.
+        /// <see cref="DependencyInjectionCompositionContainerBuilder"/> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public MediCompositionContainerBuilder(ICompositionRegistrationContext context)
+        public DependencyInjectionCompositionContainerBuilder(ICompositionRegistrationContext context)
             : base(context)
         {
         }
@@ -42,7 +42,7 @@ namespace Kephas.Composition.Medi.Hosting
         /// </returns>
         protected override IConventionsBuilder CreateConventionsBuilder()
         {
-            return new MediConventionsBuilder();
+            return new ConventionsBuilder();
         }
 
         /// <summary>
@@ -55,14 +55,14 @@ namespace Kephas.Composition.Medi.Hosting
         /// </returns>
         protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
         {
-            var serviceProvider = conventions is IMediServiceProviderBuilder mediServiceProviderBuilder
+            var serviceProvider = conventions is IServiceProviderBuilder mediServiceProviderBuilder
                                       ? mediServiceProviderBuilder.BuildServiceProvider(parts)
-                                      : conventions is IMediServiceCollectionProvider mediServiceCollectionProvider
+                                      : conventions is IServiceCollectionProvider mediServiceCollectionProvider
                                           ? mediServiceCollectionProvider.GetServiceCollection().BuildServiceProvider()
                                           : throw new InvalidOperationException(
-                                                $"The conventions instance must implement either {typeof(IMediServiceProviderBuilder)} or {typeof(IMediServiceCollectionProvider)}.");
+                                                $"The conventions instance must implement either {typeof(IServiceProviderBuilder)} or {typeof(IServiceCollectionProvider)}.");
 
-            return new MediCompositionContainer(serviceProvider);
+            return new DependencyInjectionCompositionContainer(serviceProvider);
         }
     }
 }

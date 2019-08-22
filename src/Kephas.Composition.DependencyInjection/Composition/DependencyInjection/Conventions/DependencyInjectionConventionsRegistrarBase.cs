@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MediConventionsRegistrarBase.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionConventionsRegistrarBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,14 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Medi.Conventions
+namespace Kephas.Composition.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
 
     using Kephas.Composition.Conventions;
+    using Kephas.Composition.DependencyInjection.Resources;
     using Kephas.Composition.Hosting;
-    using Kephas.Composition.Medi.Resources;
     using Kephas.Diagnostics.Contracts;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +23,7 @@ namespace Kephas.Composition.Medi.Conventions
     /// <summary>
     /// A Microsoft.Extensions.DependencyInjection conventions registrar base.
     /// </summary>
-    public abstract class MediConventionsRegistrarBase : IConventionsRegistrar
+    public abstract class DependencyInjectionConventionsRegistrarBase : IConventionsRegistrar
     {
         /// <summary>
         /// Registers the conventions.
@@ -40,9 +40,9 @@ namespace Kephas.Composition.Medi.Conventions
             Requires.NotNull(candidateTypes, nameof(candidateTypes));
             Requires.NotNull(registrationContext, nameof(registrationContext));
 
-            if (!(builder is IMediServiceCollectionProvider mediBuilder))
+            if (!(builder is IServiceCollectionProvider mediBuilder))
             {
-                throw new InvalidOperationException(string.Format(Strings.InvalidConventions, typeof(IMediServiceCollectionProvider)));
+                throw new InvalidOperationException(string.Format(Strings.InvalidConventions, typeof(IServiceCollectionProvider)));
             }
 
             this.RegisterConventions(mediBuilder.GetServiceCollection(), candidateTypes, registrationContext);

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Medi.Conventions
+namespace Kephas.Composition.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
@@ -116,7 +116,7 @@ namespace Kephas.Composition.Medi.Conventions
             }
 
             throw new InvalidOperationException(
-                $"One of {nameof(Instance)}, {nameof(ImplementationType)}, {nameof(ImplementationTypePredicate)}, or {nameof(Factory)} must be set.");
+                $"One of {nameof(this.Instance)}, {nameof(this.ImplementationType)}, {nameof(this.ImplementationTypePredicate)}, or {nameof(this.Factory)} must be set.");
         }
 
         /// <summary>

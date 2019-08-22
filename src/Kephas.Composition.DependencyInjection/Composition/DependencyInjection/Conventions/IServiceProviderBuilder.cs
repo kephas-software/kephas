@@ -1,28 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMediServiceCollectionProvider.cs" company="Kephas Software SRL">
+// <copyright file="IServiceProviderBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IMediServiceCollectionProvider interface.
+//   Declares the IServiceProviderBuilder interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Medi.Conventions
+namespace Kephas.Composition.DependencyInjection.Conventions
 {
+    using System;
+    using System.Collections.Generic;
+
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// Interface for Microsoft.Extensions.DependencyInjection service collection provider.
+    /// Interface for Microsoft.Extensions.DependencyInjection service provider builder.
     /// </summary>
-    public interface IMediServiceCollectionProvider
+    public interface IServiceProviderBuilder
     {
         /// <summary>
-        /// Gets service collection.
+        /// Builds service provider.
         /// </summary>
+        /// <param name="parts">The parts being built.</param>
         /// <returns>
-        /// The service collection.
+        /// A ServiceProvider.
         /// </returns>
-        IServiceCollection GetServiceCollection();
+        ServiceProvider BuildServiceProvider(IEnumerable<Type> parts);
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MediConventionsBuilder.cs" company="Kephas Software SRL">
+// <copyright file="ConventionsBuilder.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Medi.Conventions
+namespace Kephas.Composition.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
@@ -22,25 +22,25 @@ namespace Kephas.Composition.Medi.Conventions
     /// <summary>
     /// A conventions builder for Microsoft.Extensions.DependencyInjection.
     /// </summary>
-    public class MediConventionsBuilder : IConventionsBuilder, IMediServiceCollectionProvider, IMediServiceProviderBuilder
+    public class ConventionsBuilder : IConventionsBuilder, IServiceCollectionProvider, IServiceProviderBuilder
     {
         private readonly IServiceCollection serviceCollection;
 
         private IList<ServiceDescriptorBuilder> descriptorBuilders = new List<ServiceDescriptorBuilder>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediConventionsBuilder"/> class.
+        /// Initializes a new instance of the <see cref="ConventionsBuilder"/> class.
         /// </summary>
-        public MediConventionsBuilder()
+        public ConventionsBuilder()
             : this(new ServiceCollection())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediConventionsBuilder"/> class.
+        /// Initializes a new instance of the <see cref="ConventionsBuilder"/> class.
         /// </summary>
         /// <param name="serviceCollection">Collection of services.</param>
-        public MediConventionsBuilder(IServiceCollection serviceCollection)
+        public ConventionsBuilder(IServiceCollection serviceCollection)
         {
             Requires.NotNull(serviceCollection, nameof(serviceCollection));
 
@@ -75,7 +75,7 @@ namespace Kephas.Composition.Medi.Conventions
                                             ImplementationTypePredicate = typePredicate,
                                         };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new MediPartConventionsBuilder(descriptorBuilder);
+            return new DependencyInjectionPartConventionsBuilder(descriptorBuilder);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Kephas.Composition.Medi.Conventions
                                             ImplementationType = type,
                                         };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new MediPartConventionsBuilder(descriptorBuilder);
+            return new DependencyInjectionPartConventionsBuilder(descriptorBuilder);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Kephas.Composition.Medi.Conventions
                                             Factory = serviceProvider => factory(serviceProvider.GetService<ICompositionContext>()),
                                         };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new MediPartBuilder(descriptorBuilder);
+            return new DependencyInjectionPartBuilder(descriptorBuilder);
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MediScopedCompositionContext.cs" company="Kephas Software SRL">
+// <copyright file="DependencyInjectionScopedCompositionContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,22 +8,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Medi.Hosting
+namespace Kephas.Composition.DependencyInjection.Hosting
 {
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// A scoped composition context for Microsoft.Extensions.DependencyInjection.
     /// </summary>
-    public class MediScopedCompositionContext : MediCompositionContextBase
+    public class DependencyInjectionScopedCompositionContext : DependencyInjectionCompositionContextBase
     {
         private readonly IServiceScope serviceScope;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediScopedCompositionContext"/> class.
+        /// Initializes a new instance of the <see cref="DependencyInjectionScopedCompositionContext"/> class.
         /// </summary>
         /// <param name="serviceScope">The service scope.</param>
-        public MediScopedCompositionContext(IServiceScope serviceScope)
+        public DependencyInjectionScopedCompositionContext(IServiceScope serviceScope)
             : base(serviceScope.ServiceProvider)
         {
             this.serviceScope = serviceScope;
