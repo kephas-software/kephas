@@ -233,15 +233,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are no constructors defined for service implementation &apos;{0}&apos; with contract &apos;{1}&apos;..
-        /// </summary>
-        internal static string AppServiceMissingCompositionConstructor {
-            get {
-                return ResourceManager.GetString("AppServiceMissingCompositionConstructor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Multiple constructors marked with {0} are declared for service implementation &apos;{1}&apos; with contract &apos;{2}&apos;..
         /// </summary>
         internal static string AppServiceMultipleCompositionConstructors {

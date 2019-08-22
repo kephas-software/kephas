@@ -31,6 +31,8 @@ namespace Kephas.Composition.Mef.Conventions
         /// </summary>
         private readonly PartConventionBuilder innerConventionBuilder;
 
+        private Type contractType;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MefPartConventionsBuilder"/> class.
         /// </summary>
@@ -97,6 +99,8 @@ namespace Kephas.Composition.Mef.Conventions
         {
             Requires.NotNull(exportInterface, nameof(exportInterface));
 
+            this.contractType = exportInterface;
+
             var interfaceFilter = exportInterface.IsGenericTypeDefinition
                                       ? (Predicate<Type>)(t => this.IsClosedGenericOf(exportInterface, t))
                                       : t => ReferenceEquals(exportInterface, t);
@@ -132,7 +136,18 @@ namespace Kephas.Composition.Mef.Conventions
 
                 if (ctor == null)
                 {
-                    var constructorsList = ctorInfos;
+                    var constructorsList = ctorInfos.Where(c => !c.IsStatic && c.IsPublic).ToList();
+
+                    if (constructorsList.Count == 0)
+                    {
+                        throw new CompositionException(string.Format(Strings.MefPartConventionsBuilder_MissingCompositionConstructor, ctorInfos.FirstOrDefault()?.DeclaringType?.ToString() ?? "<unknown>", this.contractType));
+                    }
+
+                    if (constructorsList.Count == 1)
+                    {
+                        return constructorsList[0];
+                    }
+
                     var sortedConstructors = constructorsList.ToDictionary(c => c, c => c.GetParameters().Length).OrderByDescending(kv => kv.Value).ToList();
                     if (sortedConstructors[0].Value == sortedConstructors[1].Value)
                     {

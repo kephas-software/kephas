@@ -88,6 +88,15 @@ namespace Kephas.Composition.Mef.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no constructors defined for service implementation &apos;{0}&apos; with contract &apos;{1}&apos;..
+        /// </summary>
+        public static string MefPartConventionsBuilder_MissingCompositionConstructor {
+            get {
+                return ResourceManager.GetString("MefPartConventionsBuilder_MissingCompositionConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The type &apos;{0}&apos; cannot be used as a metadata view. A metadata view must be a concrete class with a parameterless or dictionary constructor..
         /// </summary>
         public static string MetadataViewProvider_InvalidViewImplementation {

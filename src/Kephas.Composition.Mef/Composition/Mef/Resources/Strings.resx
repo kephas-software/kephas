@@ -132,4 +132,7 @@
   <data name="MefPartConventionsBuilder_AmbiguousCompositionConstructor" xml:space="preserve">
     <value>Multiple eligible constructors declared for service implementation '{0}'. Use '{1}' to disambiguate among them.</value>
   </data>
+  <data name="MefPartConventionsBuilder_MissingCompositionConstructor" xml:space="preserve">
+    <value>There are no constructors defined for service implementation '{0}' with contract '{1}'.</value>
+  </data>
 </root>

@@ -171,9 +171,6 @@
   <data name="AppServiceCompositionContractTypeDoesNotMatchServiceContract" xml:space="preserve">
     <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
   </data>
-  <data name="AppServiceMissingCompositionConstructor" xml:space="preserve">
-    <value>There are no constructors defined for service implementation '{0}' with contract '{1}'.</value>
-  </data>
   <data name="AppServiceMultipleCompositionConstructors" xml:space="preserve">
     <value>Multiple constructors marked with {0} are declared for service implementation '{1}' with contract '{2}'.</value>
   </data>
