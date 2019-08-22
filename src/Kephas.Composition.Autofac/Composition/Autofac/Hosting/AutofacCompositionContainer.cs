@@ -13,9 +13,7 @@ namespace Kephas.Composition.Autofac.Hosting
     using System.Collections.Concurrent;
 
     using global::Autofac;
-    using global::Autofac.Core.Resolving;
-
-    using Kephas.Composition.Autofac.Resources;
+    using global::Autofac.Builder;
 
     /// <summary>
     /// An Autofac composition container.
@@ -23,6 +21,8 @@ namespace Kephas.Composition.Autofac.Hosting
     public class AutofacCompositionContainer : AutofacCompositionContextBase, ICompositionContainer
     {
         private readonly ConcurrentDictionary<IComponentContext, ICompositionContext> map;
+
+        private IContainer container;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacCompositionContainer"/> class.
@@ -33,26 +33,31 @@ namespace Kephas.Composition.Autofac.Hosting
         {
             this.map = new ConcurrentDictionary<IComponentContext, ICompositionContext>();
 
-            containerBuilder.Register((c, p) => this.TryGetCompositionContext(c, createNewIfMissing: true))
+            var registration = RegistrationBuilder
+                .ForDelegate((c, p) => this.TryGetCompositionContext(c, createNewIfMissing: true))
                 .As<ICompositionContext>()
-                .InstancePerLifetimeScope();
+                .InstancePerLifetimeScope()
+                .CreateRegistration();
+            containerBuilder.RegisterComponent(registration);
 
-            var container = containerBuilder.Build();
-            this.Initialize(container);
-            this.map.TryAdd(container, this);
+            this.container = containerBuilder.Build();
+            this.Initialize(this.container);
+            this.map.TryAdd(this.container, this);
         }
 
         /// <summary>
         /// Tries to get the composition context wrapper for the provided composition context.
         /// </summary>
-        /// <param name="container">The inner container.</param>
+        /// <param name="context">The component context.</param>
         /// <param name="createNewIfMissing">True to create new if missing.</param>
         /// <returns>
         /// The composition context wrapper.
         /// </returns>
-        public ICompositionContext TryGetCompositionContext(IComponentContext container, bool createNewIfMissing)
+        public ICompositionContext TryGetCompositionContext(IComponentContext context, bool createNewIfMissing)
         {
-            if (this.map.TryGetValue(container, out var compositionContext))
+            var lifetimeScope = context.GetLifetimeScope();
+            var key = "root".Equals(lifetimeScope.Tag) ? this.container : lifetimeScope;
+            if (this.map.TryGetValue(key, out var compositionContext))
             {
                 return compositionContext;
             }
@@ -62,7 +67,7 @@ namespace Kephas.Composition.Autofac.Hosting
                 return null;
             }
 
-            return this.GetCompositionContext(container.GetLifetimeScope());
+            return this.GetCompositionContext(lifetimeScope);
         }
 
         /// <summary>

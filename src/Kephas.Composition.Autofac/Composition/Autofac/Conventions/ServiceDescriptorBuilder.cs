@@ -145,10 +145,15 @@ namespace Kephas.Composition.Autofac.Conventions
             where TActivatorData : ReflectionActivatorData
         {
             this.SetLifetime(registration);
-            this.ExportConfiguration?.Invoke(implementationType, new ExportConventionsBuilder<TActivatorData, TRegistrationStyle>(this, implementationType, registration));
-            if (this.ServiceType != null)
+            var typeBuilder =
+                new ExportConventionsBuilder<TActivatorData, TRegistrationStyle>(
+                    this,
+                    implementationType,
+                    registration);
+            this.ExportConfiguration?.Invoke(implementationType, typeBuilder);
+            if (typeBuilder.ServiceType != null)
             {
-                registration.As(this.ServiceType);
+                registration.As(typeBuilder.ServiceType);
             }
 
             this.SelectConstructor(registration, implementationType);
@@ -207,11 +212,30 @@ namespace Kephas.Composition.Autofac.Conventions
                 this.descriptorBuilder = descriptorBuilder;
                 this.partType = partType;
                 this.registration = registration;
+                this.ServiceType = descriptorBuilder.ServiceType;
             }
+
+            public Type ServiceType { get; set; }
 
             public IExportConventionsBuilder AsContractType(Type contractType)
             {
-                this.descriptorBuilder.ServiceType = contractType;
+                if (this.ServiceType == null)
+                {
+                    this.ServiceType = contractType;
+                }
+                else if (this.ServiceType == contractType)
+                {
+                    // nothing to do
+                }
+                else if (this.ServiceType.IsGenericTypeDefinition && !contractType.IsGenericTypeDefinition)
+                {
+                    var closedContractType = contractType.GetInterfaces().First(t => t.IsClosedTypeOf(this.ServiceType));
+                    this.ServiceType = closedContractType;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Provided contract type {contractType} differs from the original contract type {this.ServiceType}.");
+                }
 
                 return this;
             }

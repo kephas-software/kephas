@@ -29,12 +29,12 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <summary>
         /// Tries to get the composition context wrapper for the provided composition context.
         /// </summary>
-        /// <param name="container">The inner container.</param>
+        /// <param name="context">The inner container.</param>
         /// <param name="createNewIfMissing">True to create new if missing.</param>
         /// <returns>
         /// The composition context wrapper.
         /// </returns>
-        ICompositionContext TryGetCompositionContext(IComponentContext container, bool createNewIfMissing);
+        ICompositionContext TryGetCompositionContext(IComponentContext context, bool createNewIfMissing);
 
         /// <summary>
         /// Cleanups the given composition context.
