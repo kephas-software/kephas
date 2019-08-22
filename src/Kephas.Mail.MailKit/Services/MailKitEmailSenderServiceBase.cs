@@ -28,7 +28,7 @@ namespace Kephas.Mail.Services
     /// <summary>
     /// A MailKit email sender service.
     /// </summary>
-    public abstract class MailKitEmailSenderServiceBase : IEmailSenderService
+    public abstract class MailKitEmailSenderServiceBase : Loggable, IEmailSenderService
     {
         /// <summary>
         /// Information describing the connection (cached).
@@ -62,14 +62,6 @@ namespace Kephas.Mail.Services
                 throw;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<MailKitEmailSenderServiceBase> Logger { get; set; }
 
         /// <summary>
         /// Creates email message builder.

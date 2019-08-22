@@ -35,11 +35,15 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     [TestFixture]
     public class AppServicesRegistryTest : CompositionTestBase
     {
-        public override ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies, IEnumerable<Type> parts = null, Action<MefCompositionContainerBuilder> config = null)
+        public override ICompositionContext CreateContainer(
+            IAmbientServices ambientServices = null,
+            IEnumerable<Assembly> assemblies = null,
+            IEnumerable<Type> parts = null,
+            Action<MefCompositionContainerBuilder> config = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(AppServicesRegistry).GetTypeInfo().Assembly); /* Kephas.Model */
-            return base.CreateContainer(assemblyList, parts, config);
+            return base.CreateContainer(ambientServices, assemblyList, parts, config);
         }
 
         [Test]

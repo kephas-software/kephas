@@ -32,7 +32,7 @@ namespace Kephas.Data.Conversion
     /// A default data conversion service.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultDataConversionService : IDataConversionService
+    public class DefaultDataConversionService : Loggable, IDataConversionService
     {
         /// <summary>
         /// The converter export factories.
@@ -75,14 +75,6 @@ namespace Kephas.Data.Conversion
             this.converterExportFactories = converterExportFactories;
             this.targetResolverFactories = targetResolverFactories;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultDataConversionService> Logger { get; set; }
 
         /// <summary>
         /// Gets a context for the dependency injection/composition.

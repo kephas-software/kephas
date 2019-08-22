@@ -31,7 +31,7 @@ namespace Kephas.Orchestration
     /// The default orchestration manager.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultOrchestrationManager : IOrchestrationManager
+    public class DefaultOrchestrationManager : Loggable, IOrchestrationManager
     {
         /// <summary>
         /// The application manifest.
@@ -101,14 +101,6 @@ namespace Kephas.Orchestration
             this.eventHub = eventHub;
             this.messageBroker = messageBroker;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultOrchestrationManager> Logger { get; set; }
 
         /// <summary>
         /// Gets or sets the timer due time.

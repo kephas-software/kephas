@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Testing.Composition.Mef
+namespace Kephas.Testing.Composition.Autofac
 {
     using System;
     using System.Collections.Generic;
@@ -57,12 +57,16 @@ namespace Kephas.Testing.Composition.Mef
 
         public ICompositionContext CreateContainer(params Assembly[] assemblies)
         {
-            return this.CreateContainer((IEnumerable<Assembly>)assemblies);
+            return this.CreateContainer(assemblies: (IEnumerable<Assembly>)assemblies);
         }
 
-        public virtual ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies = null, IEnumerable<Type> parts = null, Action<AutofacCompositionContainerBuilder> config = null)
+        public virtual ICompositionContext CreateContainer(
+            IAmbientServices ambientServices = null,
+            IEnumerable<Assembly> assemblies = null,
+            IEnumerable<Type> parts = null,
+            Action<AutofacCompositionContainerBuilder> config = null)
         {
-            var ambientServices = new AmbientServices();
+            ambientServices = ambientServices ?? new AmbientServices();
             var containerBuilder = this.WithContainerBuilder(ambientServices)
                     .WithAssemblies(this.GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? new Assembly[0])

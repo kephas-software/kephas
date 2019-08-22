@@ -24,7 +24,7 @@ namespace Kephas.Tests.Composition.Autofac
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition.Autofac;
 
     using NSubstitute;
 
@@ -33,12 +33,6 @@ namespace Kephas.Tests.Composition.Autofac
     /// <summary>
     /// Tests for <see cref="AutofacCompositionContainerBuilder"/>.
     /// </summary>
-    /// <content>
-    /// .
-    /// </content>
-    /// <example>
-    /// .
-    /// </example>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AutofacCompositionContainerBuilderTest : CompositionTestBase

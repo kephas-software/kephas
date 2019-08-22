@@ -49,14 +49,6 @@ namespace Kephas.Messaging.Distributed.Behaviors
         }
 
         /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<EnsureReplyBrokeredMessageProcessingBehavior> Logger { get; set; }
-
-        /// <summary>
         /// Interception called after invoking the handler to process the message.
         /// </summary>
         /// <param name="message">The message.</param>

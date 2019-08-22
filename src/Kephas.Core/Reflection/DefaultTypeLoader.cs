@@ -17,35 +17,25 @@ namespace Kephas.Reflection
 
     using Kephas.Logging;
     using Kephas.Resources;
-    using Kephas.Services;
 
     /// <summary>
-    /// The default implementtion of <see cref="ITypeLoader"/>.
+    /// The default implementation of <see cref="ITypeLoader"/>.
     /// </summary>
-    [OverridePriority(Priority.Low)]
-    public class DefaultTypeLoader : ITypeLoader
+    public class DefaultTypeLoader : Loggable, ITypeLoader, IAmbientServicesAware
     {
-        /// <summary>
-        /// The ambient services.
-        /// </summary>
-        private readonly IAmbientServices ambientServices;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultTypeLoader"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services (optional).</param>
         public DefaultTypeLoader(IAmbientServices ambientServices = null)
         {
-            this.ambientServices = ambientServices;
+            this.AmbientServices = ambientServices ?? global::Kephas.AmbientServices.Instance;
         }
 
         /// <summary>
-        /// Gets or sets the logger.
+        /// Gets the ambient services.
         /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultTypeLoader> Logger { get; set; }
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets the loadable exported types from the provided assembly.
@@ -64,18 +54,18 @@ namespace Kephas.Reflection
             }
             catch (ReflectionTypeLoadException e)
             {
-                this.GetLogger().Error(e, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly.FullName));
+                this.Logger.Error(e, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly.FullName));
                 return e.Types.Where(t => t != null);
             }
             catch (TypeLoadException tle)
             {
-                this.GetLogger().Error(tle, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException, tle.TypeName, assembly.FullName));
+                this.Logger.Error(tle, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException, tle.TypeName, assembly.FullName));
 
                 return this.GetLoadableDefinedTypes(assembly);
             }
             catch (Exception e)
             {
-                this.GetLogger().Error(e, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly.FullName));
+                this.Logger.Error(e, string.Format(Strings.AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly.FullName));
 
                 return this.GetLoadableDefinedTypes(assembly);
             }
@@ -96,22 +86,9 @@ namespace Kephas.Reflection
             }
             catch (ReflectionTypeLoadException e)
             {
-                this.GetLogger().Error(e, string.Format(Strings.AssemblyExtensions_GetLoadableDefinedTypes_ReflectionTypeLoadException, assembly.FullName));
+                this.Logger.Error(e, string.Format(Strings.AssemblyExtensions_GetLoadableDefinedTypes_ReflectionTypeLoadException, assembly.FullName));
                 return e.Types.Where(t => t != null);
             }
-        }
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <returns>
-        /// The logger.
-        /// </returns>
-        private ILogger GetLogger()
-        {
-            // if the Logger property is set, it means it was instantiated by the
-            // composition container, otherwise it resided in the ambient services.
-            return this.Logger ?? this.ambientServices?.GetLogger<DefaultTypeLoader>();
         }
     }
 }

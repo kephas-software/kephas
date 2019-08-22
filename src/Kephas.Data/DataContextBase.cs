@@ -76,6 +76,7 @@ namespace Kephas.Data
             this.LocalCache = localCache ?? new DataContextCache();
             this.Id = Guid.NewGuid();
             this.InitializationMonitor = new InitializationMonitor<DataContextBase>(this.GetType());
+            this.Logger = this.AmbientServices.GetLogger(this.GetType());
         }
 
         /// <summary>

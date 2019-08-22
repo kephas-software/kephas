@@ -30,7 +30,7 @@ namespace Kephas.Data.IO.Setup
     /// <summary>
     /// An initial data i/o handler base.
     /// </summary>
-    public abstract class DataIOInstallerBase : IDataInstaller
+    public abstract class DataIOInstallerBase : Loggable, IDataInstaller
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOInstallerBase"/> class.
@@ -47,14 +47,6 @@ namespace Kephas.Data.IO.Setup
             this.DataImportService = dataImportService;
             this.DataSpaceFactory = dataSpaceFactory;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<IDataInstaller> Logger { get; set; }
 
         /// <summary>
         /// Gets the data import service.

@@ -13,10 +13,12 @@ namespace Kephas.Application
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Logging;
+
     /// <summary>
     /// Base class for application lifecycle behaviors.
     /// </summary>
-    public abstract class AppLifecycleBehaviorBase : IAppLifecycleBehavior
+    public abstract class AppLifecycleBehaviorBase : Loggable, IAppLifecycleBehavior
     {
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.

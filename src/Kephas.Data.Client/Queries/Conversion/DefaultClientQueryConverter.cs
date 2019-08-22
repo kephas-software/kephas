@@ -35,7 +35,7 @@ namespace Kephas.Data.Client.Queries.Conversion
     /// A default client query converter.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultClientQueryConverter : IClientQueryConverter
+    public class DefaultClientQueryConverter : Loggable, IClientQueryConverter
     {
         /// <summary>
         /// The data context query method.
@@ -79,14 +79,6 @@ namespace Kephas.Data.Client.Queries.Conversion
                 f => f.Metadata.Operator,
                 f => f.CreateExportedValue());
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultClientQueryConverter> Logger { get; set; }
 
         /// <summary>
         /// Converts the provided client query to a queryable which can be executed.

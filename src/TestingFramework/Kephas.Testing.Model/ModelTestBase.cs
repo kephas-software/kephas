@@ -38,7 +38,7 @@ namespace Kephas.Model.Tests
         public ICompositionContext CreateContainerForModel(params Type[] elements)
         {
             var container = this.CreateContainer(
-                new [] { typeof(IModelSpace).GetTypeInfo().Assembly }, 
+                assemblies: new [] { typeof(IModelSpace).GetTypeInfo().Assembly }, 
                 config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true));
 
             return container;
@@ -47,8 +47,8 @@ namespace Kephas.Model.Tests
         public ICompositionContext CreateContainerForModel(Type[] parts, Type[] elements)
         {
             var container = this.CreateContainer(
-                new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
-                parts,
+                assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
+                parts: parts,
                 config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true));
 
             return container;

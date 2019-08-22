@@ -28,11 +28,15 @@ namespace Kephas.Scripting.Tests
     [TestFixture]
     public class DefaultScriptingEngineTest : CompositionTestBase
     {
-        public override ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies = null, IEnumerable<Type> parts = null, Action<MefCompositionContainerBuilder> config = null)
+        public override ICompositionContext CreateContainer(
+            IAmbientServices ambientServices = null,
+            IEnumerable<Assembly> assemblies = null,
+            IEnumerable<Type> parts = null,
+            Action<MefCompositionContainerBuilder> config = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(DefaultScriptingEngine).Assembly); /* Kephas.Scripting */
-            return base.CreateContainer(assemblyList, parts, config);
+            return base.CreateContainer(ambientServices, assemblyList, parts, config);
         }
 
         [Test]

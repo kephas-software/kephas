@@ -31,9 +31,9 @@ namespace Kephas.ServiceStack.Hosting
     [OverridePriority(Priority.Low)]
     public class DefaultWebHost
 #if NETSTANDARD2_0
-        : AppHostBase, IWebHost
+        : AppHostBase, IWebHost, ILoggable
 #else
-        : AppSelfHostBase, IWebHost
+        : AppSelfHostBase, IWebHost, ILoggable
 #endif
     {
         /// <summary>
@@ -61,6 +61,8 @@ namespace Kephas.ServiceStack.Hosting
         /// </summary>
         private string[] baseUrls;
 
+        private ILogger logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultWebHost"/> class.
         /// </summary>
@@ -87,7 +89,11 @@ namespace Kephas.ServiceStack.Hosting
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger<DefaultWebHost> Logger { get; set; }
+        public ILogger Logger
+        {
+            get => this.logger ?? (this.logger = this.GetLogger());
+            set => this.logger = value;
+        }
 
         /// <summary>
         ///     Configures the specified container.

@@ -50,14 +50,6 @@ namespace Kephas.ServiceStack.Application
         }
 
         /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<WebHostFeatureManager> Logger { get; set; }
-
-        /// <summary>
         /// Initializes the application asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>

@@ -14,6 +14,7 @@ namespace Kephas.Application
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
     using Kephas.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace Kephas.Application
     /// <summary>
     /// Base class for application initializers providing an initialization monitor.
     /// </summary>
-    public abstract class FeatureManagerBase : IFeatureManager
+    public abstract class FeatureManagerBase : Loggable, IFeatureManager
     {
 #pragma warning disable SA1401 // Fields must be private
         /// <summary>

@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Events
     /// A default event hub.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultEventHub : IEventHub
+    public class DefaultEventHub : Loggable, IEventHub
     {
         /// <summary>
         /// The message match service.
@@ -47,14 +47,6 @@ namespace Kephas.Messaging.Events
 
             this.messageMatchService = messageMatchService;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultEventHub> Logger { get; set; }
 
         /// <summary>
         /// Publishes the event asynchronously to its subscribers.

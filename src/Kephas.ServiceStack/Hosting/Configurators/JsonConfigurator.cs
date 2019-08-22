@@ -16,7 +16,7 @@ namespace Kephas.ServiceStack.Hosting.Configurators
     /// <summary>
     /// A JSON support configurator.
     /// </summary>
-    public class JsonConfigurator : IHostConfigurator
+    public class JsonConfigurator : Loggable, IHostConfigurator
     {
         /// <summary>
         /// The JSON serializer configurator.
@@ -31,14 +31,6 @@ namespace Kephas.ServiceStack.Hosting.Configurators
         {
             this.jsonSerializerConfigurator = jsonSerializerConfigurator;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<JsonConfigurator> Logger { get; set; }
 
         /// <summary>
         /// Configure application host.

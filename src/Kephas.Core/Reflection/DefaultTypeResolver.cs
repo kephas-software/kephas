@@ -25,7 +25,7 @@ namespace Kephas.Reflection
     /// A default service implementation of the <see cref="ITypeResolver"/> service contract.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultTypeResolver : ITypeResolver
+    public class DefaultTypeResolver : Loggable, ITypeResolver
     {
         /// <summary>
         /// The assembly loader.
@@ -47,14 +47,6 @@ namespace Kephas.Reflection
 
             this.assemblyLoader = assemblyLoader;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultTypeResolver> Logger { get; set; }
 
         /// <summary>
         /// Resolves a type based on the provided type name.

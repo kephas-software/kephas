@@ -26,7 +26,7 @@ namespace Kephas.Tests.Composition.Autofac
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition.Autofac;
 
     using NSubstitute;
 

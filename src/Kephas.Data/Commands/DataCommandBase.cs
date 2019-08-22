@@ -17,6 +17,7 @@ namespace Kephas.Data.Commands
 
     using Kephas.Activation;
     using Kephas.Data.Caching;
+    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace Kephas.Data.Commands
     /// </summary>
     /// <typeparam name="TOperationContext">Type of the operationContext.</typeparam>
     /// <typeparam name="TResult">Type of the result.</typeparam>
-    public abstract class DataCommandBase<TOperationContext, TResult> : IDataCommand<TOperationContext, TResult>
+    public abstract class DataCommandBase<TOperationContext, TResult> : Loggable, IDataCommand<TOperationContext, TResult>
         where TOperationContext : IDataOperationContext
         where TResult : IDataCommandResult
     {

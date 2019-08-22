@@ -14,18 +14,16 @@ namespace Kephas.Data.MongoDB
     using System.Collections.Concurrent;
     using System.Linq;
 
+    using global::MongoDB.Driver;
+
     using Kephas.Composition;
+    using Kephas.Data.Behaviors;
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.MongoDB.Diagnostics;
     using Kephas.Data.MongoDB.Linq;
     using Kephas.Data.MongoDB.Resources;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Logging;
-
-    using global::MongoDB.Driver;
-
-    using Kephas.Data.Behaviors;
 
     /// <summary>
     /// A data context for MongoDB.
@@ -52,14 +50,6 @@ namespace Kephas.Data.MongoDB
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
             Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<MongoDataContext> Logger { get; set; }
 
         /// <summary>
         /// Gets the MongoDB client.

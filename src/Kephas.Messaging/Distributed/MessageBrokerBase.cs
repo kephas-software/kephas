@@ -27,7 +27,7 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// Base implementation of a <see cref="IMessageBroker"/>.
     /// </summary>
-    public abstract class MessageBrokerBase : IMessageBroker
+    public abstract class MessageBrokerBase : Loggable, IMessageBroker
     {
         /// <summary>
         /// The dictionary for message synchronization.
@@ -47,14 +47,6 @@ namespace Kephas.Messaging.Distributed
         {
             this.builderMap = messageBuilderFactories.ToPrioritizedDictionary(f => f.Metadata.MessageType);
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<IMessageBroker> Logger { get; set; }
 
         /// <summary>
         /// Dispatches the brokered message asynchronously.

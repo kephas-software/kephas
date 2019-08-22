@@ -32,7 +32,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
     /// <summary>
     /// A trigger repository.
     /// </summary>
-    internal class TriggerRepository
+    internal class TriggerRepository : Loggable
     {
         /// <summary>
         /// The job store.
@@ -47,14 +47,6 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         {
             this.jobStore = jobStore;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<TriggerRepository> Log { get; set; }
 
         /// <summary>
         /// Gets the name of the instance.

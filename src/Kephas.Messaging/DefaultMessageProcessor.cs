@@ -31,7 +31,7 @@ namespace Kephas.Messaging
     /// Provides the default implementation of the <see cref="IMessageProcessor"/> application service contract.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultMessageProcessor : IMessageProcessor, ICompositionContextAware
+    public class DefaultMessageProcessor : Loggable, IMessageProcessor, ICompositionContextAware
     {
         /// <summary>
         /// The message match service.
@@ -96,14 +96,6 @@ namespace Kephas.Messaging
         /// The composition context.
         /// </value>
         public ICompositionContext CompositionContext { get; }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultMessageProcessor> Logger { get; set; }
 
         /// <summary>
         /// Processes the specified message asynchronously.

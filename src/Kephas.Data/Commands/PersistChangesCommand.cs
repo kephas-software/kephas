@@ -53,14 +53,6 @@ namespace Kephas.Data.Commands
         public IDataBehaviorProvider BehaviorProvider { get; }
 
         /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<PersistChangesCommand> Logger { get; set; }
-
-        /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>

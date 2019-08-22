@@ -26,7 +26,7 @@ namespace Kephas.Serialization.Json
     /// <summary>
     /// A default JSON serializer settings provider.
     /// </summary>
-    public class DefaultJsonSerializerSettingsProvider : IJsonSerializerSettingsProvider
+    public class DefaultJsonSerializerSettingsProvider : Loggable, IJsonSerializerSettingsProvider
     {
         /// <summary>
         /// The static instance.
@@ -72,14 +72,6 @@ namespace Kephas.Serialization.Json
         /// The type resolver.
         /// </value>
         public ITypeResolver TypeResolver { get; }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultJsonSerializerSettingsProvider> Logger { get; set; }
 
         /// <summary>
         /// Gets the JSON serializer settings.
@@ -174,10 +166,8 @@ namespace Kephas.Serialization.Json
         private static DefaultJsonSerializerSettingsProvider CreateDefaultInstance()
         {
             var ambientServices = AmbientServices.Instance;
-            var defaultInstance = new DefaultJsonSerializerSettingsProvider(ambientServices.GetService<ITypeResolver>())
-                               {
-                                   Logger = ambientServices.GetLogger<DefaultJsonSerializerSettingsProvider>()
-                               };
+            var defaultInstance =
+                new DefaultJsonSerializerSettingsProvider(ambientServices.GetService<ITypeResolver>());
 
             return defaultInstance;
         }

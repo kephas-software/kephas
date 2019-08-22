@@ -40,7 +40,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
     /// <summary>
     /// A scheduling job store.
     /// </summary>
-    public class SchedulingJobStore : ISchedulingJobStore
+    public class SchedulingJobStore : Loggable, ISchedulingJobStore
     {
         private const string KeySignalChangeForTxCompletion = "sigChangeForTxCompletion";
         private const string AllGroupsPaused = "_$_ALL_GROUPS_PAUSED_$_";
@@ -79,14 +79,6 @@ namespace Kephas.Scheduling.Quartz.JobStore
             this.triggerFactory = triggerFactory;
             this.LogManager = logManager;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<SchedulingJobStore> Logger { get; set; }
 
         /// <summary>
         /// Gets the data context factory.

@@ -31,7 +31,7 @@ namespace Kephas.Serialization.ServiceStack.Text
     /// A default JSON serializer configurator.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultJsonSerializerConfigurator : IJsonSerializerConfigurator
+    public class DefaultJsonSerializerConfigurator : Loggable, IJsonSerializerConfigurator
     {
         /// <summary>
         /// The configure type serialization method.
@@ -70,14 +70,6 @@ namespace Kephas.Serialization.ServiceStack.Text
         /// The type resolver.
         /// </value>
         public ITypeResolver TypeResolver { get; }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<IJsonSerializerConfigurator> Logger { get; set; }
 
         /// <summary>
         /// Gets or sets the type attribute.

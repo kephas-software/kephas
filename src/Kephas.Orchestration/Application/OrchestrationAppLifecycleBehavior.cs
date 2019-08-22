@@ -55,14 +55,6 @@ namespace Kephas.Orchestration.Application
         }
 
         /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<OrchestrationAppLifecycleBehavior> Logger { get; set; }
-
-        /// <summary>
         /// Interceptor called after the application completes its asynchronous initialization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>

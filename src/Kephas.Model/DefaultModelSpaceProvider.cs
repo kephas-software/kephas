@@ -31,7 +31,7 @@ namespace Kephas.Model
     /// The default implementation of a model space provider.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultModelSpaceProvider : IModelSpaceProvider, ICompositionContextAware
+    public class DefaultModelSpaceProvider : Loggable, IModelSpaceProvider, ICompositionContextAware
     {
         /// <summary>
         /// The runtime model element factory.
@@ -75,14 +75,6 @@ namespace Kephas.Model
         /// The ambient services.
         /// </value>
         public ICompositionContext CompositionContext { get; }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultModelSpaceProvider> Logger { get; set; }
 
         /// <summary>
         /// Gets the model information providers.

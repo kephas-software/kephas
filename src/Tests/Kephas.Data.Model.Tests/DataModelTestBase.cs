@@ -29,7 +29,7 @@
         public ICompositionContext CreateContainerForModel(params Type[] elements)
         {
             var container = this.CreateContainer(
-                new[] { typeof(IModelSpace).GetTypeInfo().Assembly, typeof(IEntityType).Assembly },
+                assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly, typeof(IEntityType).Assembly },
                 config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true));
 
             return container;

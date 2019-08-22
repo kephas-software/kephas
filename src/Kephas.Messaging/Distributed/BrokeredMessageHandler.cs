@@ -69,14 +69,6 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<BrokeredMessageHandler> Logger { get; set; }
-
-        /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.
         /// </summary>
         /// <param name="message">The message to be handled.</param>

@@ -29,7 +29,7 @@ namespace Kephas.Scripting
     /// The default scripting engine.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultScriptingEngine : IScriptingEngine
+    public class DefaultScriptingEngine : Loggable, IScriptingEngine
     {
         /// <summary>
         /// The language service factories.
@@ -91,14 +91,6 @@ namespace Kephas.Scripting
                         list.Add(f);
                     });
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultScriptingEngine> Logger { get; set; }
 
         /// <summary>
         /// Gets a context for the dependency injection/composition.

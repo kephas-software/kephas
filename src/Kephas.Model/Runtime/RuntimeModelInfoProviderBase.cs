@@ -26,7 +26,7 @@ namespace Kephas.Model.Runtime
     /// Base class for runtime model info providers.
     /// </summary>
     /// <typeparam name="TProvider">The concrete provider type.</typeparam>
-    public abstract class RuntimeModelInfoProviderBase<TProvider> : IModelInfoProvider
+    public abstract class RuntimeModelInfoProviderBase<TProvider> : Loggable, IModelInfoProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeModelInfoProviderBase{TProvider}"/> class.
@@ -38,14 +38,6 @@ namespace Kephas.Model.Runtime
 
             this.RuntimeModelElementFactory = runtimeModelElementFactory;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<TProvider> Logger { get; set; }
 
         /// <summary>
         /// Gets the runtime model information factory. 

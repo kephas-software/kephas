@@ -31,7 +31,7 @@ namespace Kephas.Workflow
     /// The default implementation of the <see cref="IWorkflowProcessor"/> service contract.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultWorkflowProcessor : IWorkflowProcessor
+    public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
     {
         /// <summary>
         /// The behavior factories.
@@ -46,14 +46,6 @@ namespace Kephas.Workflow
         {
             this.behaviorFactories = behaviorFactories;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultWorkflowProcessor> Logger { get; set; }
 
         /// <summary>
         /// Executes the activity asynchronously, enabling the activity execution behaviors.

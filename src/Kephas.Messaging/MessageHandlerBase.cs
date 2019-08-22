@@ -15,6 +15,7 @@ namespace Kephas.Messaging
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Messaging.Resources;
     using Kephas.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Kephas.Messaging
     /// </summary>
     /// <typeparam name="TMessage">The message type.</typeparam>
     /// <typeparam name="TResponse">The response type.</typeparam>
-    public abstract class MessageHandlerBase<TMessage, TResponse> : IMessageHandler<TMessage>
+    public abstract class MessageHandlerBase<TMessage, TResponse> : Loggable, IMessageHandler<TMessage>
         where TMessage : class, IMessage
         where TResponse : class, IMessage
     {

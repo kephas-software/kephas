@@ -47,11 +47,15 @@ namespace Kephas.Messaging.Tests
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class DefaultMessageProcessorTest : CompositionTestBase
     {
-        public override ICompositionContext CreateContainer(IEnumerable<Assembly> assemblies, IEnumerable<Type> parts = null, Action<MefCompositionContainerBuilder> config = null)
+        public override ICompositionContext CreateContainer(
+            IAmbientServices ambientServices = null,
+            IEnumerable<Assembly> assemblies = null,
+            IEnumerable<Type> parts = null,
+            Action<MefCompositionContainerBuilder> config = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */
-            return base.CreateContainer(assemblyList, parts, config);
+            return base.CreateContainer(ambientServices, assemblyList, parts, config);
         }
 
         [Test]

@@ -38,7 +38,7 @@ namespace Kephas.Data.IO.Import
     /// A default data import service.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultDataImportService : IDataImportService
+    public class DefaultDataImportService : Loggable, IDataImportService
     {
         /// <summary>
         /// The projected type resolver.
@@ -77,14 +77,6 @@ namespace Kephas.Data.IO.Import
                                         .ToList();
             this.ConversionService = conversionService;
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<DefaultDataImportService> Logger { get; set; }
 
         /// <summary>
         /// Gets the conversion service.

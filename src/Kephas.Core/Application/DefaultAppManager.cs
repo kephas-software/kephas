@@ -33,7 +33,7 @@ namespace Kephas.Application
     /// The default application manager.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultAppManager : IAppManager
+    public class DefaultAppManager : Loggable, IAppManager
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAppManager"/> class.
@@ -73,14 +73,6 @@ namespace Kephas.Application
                                                          ? new List<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>()
                                                          : this.ServiceBehaviorProvider.WhereEnabled(featureLifecycleBehaviorFactories).ToList();
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<IAppManager> Logger { get; set; }
 
         /// <summary>
         /// Gets the application manifest.

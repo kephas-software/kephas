@@ -25,7 +25,7 @@ namespace Kephas.Serialization.ServiceStack.Text
     /// A JSON serializer based on the ServiceStack infrastructure.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class JsonSerializer : ISerializer<JsonMediaType>, ISyncSerializer
+    public class JsonSerializer : Loggable, ISerializer<JsonMediaType>, ISyncSerializer
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonSerializer"/> class.
@@ -37,14 +37,6 @@ namespace Kephas.Serialization.ServiceStack.Text
 
             jsonSerializerConfigurator.ConfigureJsonSerialization();
         }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        public ILogger<JsonSerializer> Logger { get; set; }
 
         /// <summary>
         /// Serializes the provided object asynchronously.

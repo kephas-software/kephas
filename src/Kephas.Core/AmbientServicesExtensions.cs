@@ -11,7 +11,6 @@
 namespace Kephas
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
@@ -29,7 +28,6 @@ namespace Kephas
         /// <returns>
         /// A logger for the provided name.
         /// </returns>
-        [Pure]
         public static ILogger GetLogger(this IAmbientServices ambientServices, string loggerName)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
@@ -46,7 +44,6 @@ namespace Kephas
         /// <returns>
         /// A logger for the provided type.
         /// </returns>
-        [Pure]
         public static ILogger GetLogger(this IAmbientServices ambientServices, Type type)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
@@ -63,12 +60,11 @@ namespace Kephas
         /// <returns>
         /// A logger for the provided type.
         /// </returns>
-        [Pure]
-        public static ILogger<T> GetLogger<T>(this IAmbientServices ambientServices)
+        public static ILogger GetLogger<T>(this IAmbientServices ambientServices)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return new TypedLogger<T>(ambientServices.LogManager);
+            return ambientServices.LogManager.GetLogger(typeof(T));
         }
 
         /// <summary>

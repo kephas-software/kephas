@@ -14,13 +14,14 @@ namespace Kephas.Messaging.Behaviors
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base implementation of a message processing filter.
     /// </summary>
     /// <typeparam name="TMessage">The message type.</typeparam>
-    public abstract class MessageProcessingBehaviorBase<TMessage> : IMessageProcessingBehavior<TMessage>
+    public abstract class MessageProcessingBehaviorBase<TMessage> : Loggable, IMessageProcessingBehavior<TMessage>
         where TMessage : IMessage
     {
         /// <summary>

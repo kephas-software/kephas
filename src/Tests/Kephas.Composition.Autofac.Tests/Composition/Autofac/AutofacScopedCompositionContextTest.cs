@@ -16,7 +16,7 @@ namespace Kephas.Tests.Composition.Autofac
     using Kephas.Composition.Autofac.Hosting;
     using Kephas.Services;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition.Autofac;
 
     using NUnit.Framework;
 
