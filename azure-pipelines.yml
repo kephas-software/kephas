@@ -10,7 +10,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/Kephas.sln'
+  solution: 'src/Kephas.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -24,7 +24,7 @@ steps:
     packageType: 'sdk'
     version: '2.2.105'
 
-- script: dotnet restore src/Kephas.sln
+- script: dotnet restore $(solution)
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
