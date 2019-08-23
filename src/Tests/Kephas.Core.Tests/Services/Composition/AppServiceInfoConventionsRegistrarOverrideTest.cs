@@ -74,7 +74,7 @@
 
             var conventionBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var constructorInfo = conventionBuilder.ConstructorSelector(typeof(Generic2).GetTypeInfo().DeclaredConstructors);
-            Assert.IsNotNull(constructorInfo);
+            Assert.IsNull(constructorInfo);
         }
 
         [Test]
@@ -105,9 +105,9 @@
 
             var conventionBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var constructorInfo = conventionBuilder.ConstructorSelector(typeof(StringClassifierFactory).GetTypeInfo().DeclaredConstructors);
-            Assert.IsNotNull(constructorInfo);
+            Assert.IsNull(constructorInfo);
             constructorInfo = conventionBuilder.ConstructorSelector(typeof(IntClassifierFactory).GetTypeInfo().DeclaredConstructors);
-            Assert.IsNotNull(constructorInfo);
+            Assert.IsNull(constructorInfo);
         }
 
         [Test]

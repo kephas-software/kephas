@@ -28,6 +28,7 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
     using Kephas.Testing.Composition.Mef;
 
     using NSubstitute;
@@ -187,6 +188,23 @@ namespace Kephas.Tests.Composition.Mef
 
             var export = container.GetExport<ITestGenericExport<string>>();
             Assert.IsInstanceOf<TestGenericExport>(export);
+        }
+
+        [Test]
+        public void GetExport_AppService_with_composition_constructor()
+        {
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithRegistration(
+                    new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)),
+                    new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)))
+                .CreateContainer();
+            var exported = container.GetExport<ExportedClassWithFakeDependency>();
+
+            Assert.IsNotNull(exported);
+            Assert.IsInstanceOf<ExportedClassWithFakeDependency>(exported);
+            Assert.IsNull(exported.Dependency);
         }
 
         [Test]
@@ -645,6 +663,25 @@ namespace Kephas.Tests.Composition.Mef
             public MultipleCompositionConstructorAppService(ICompositionContext compositionContainer)
             {
             }
+        }
+
+        public class ExportedClass
+        {
+        }
+
+        public class ExportedClassWithFakeDependency : ExportedClass
+        {
+            [CompositionConstructor]
+            public ExportedClassWithFakeDependency()
+            {
+            }
+
+            public ExportedClassWithFakeDependency(ExportedClass dependency)
+            {
+                this.Dependency = dependency;
+            }
+
+            public ExportedClass Dependency { get; }
         }
     }
 }

@@ -262,11 +262,6 @@ namespace Kephas.Tests.Composition.Autofac
         {
         }
 
-        //[Export(typeof(ExportedClass))]
-        public class ExportedClass2 : ExportedClass
-        {
-        }
-
         //[Export]
         public class ExportedClassImplicitImporter
         {

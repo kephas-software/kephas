@@ -14,6 +14,8 @@ namespace Kephas.Tests.Composition.Autofac
     using System.Reflection;
     using System.Threading.Tasks;
 
+    using global::Autofac.Core;
+
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
@@ -24,6 +26,7 @@ namespace Kephas.Tests.Composition.Autofac
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
     using Kephas.Testing.Composition.Autofac;
 
     using NSubstitute;
@@ -186,6 +189,23 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
+        public void GetExport_AppService_with_composition_constructor()
+        {
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithRegistration(
+                    new AppServiceInfo(typeof(ExportedClass), typeof(ExportedClass)),
+                    new AppServiceInfo(typeof(ExportedClassWithFakeDependency), typeof(ExportedClassWithFakeDependency)))
+                .CreateContainer();
+            var exported = container.GetExport<ExportedClassWithFakeDependency>();
+
+            Assert.IsNotNull(exported);
+            Assert.IsInstanceOf<ExportedClassWithFakeDependency>(exported);
+            Assert.IsNull(exported.Dependency);
+        }
+
+        [Test]
         public void GetExport_ScopedAppService_no_scope()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
@@ -269,20 +289,22 @@ namespace Kephas.Tests.Composition.Autofac
         public void GetExport_AppService_no_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
-            Assert.Throws<CompositionException>(() => builder
+            var container = builder
                 .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(NoCompositionConstructorAppService) })
-                .CreateContainer());
+                .CreateContainer();
+            Assert.Throws<DependencyResolutionException>(() => container.GetExport<IConstructorAppService>());
         }
 
         [Test]
         public void GetExport_AppService_ambiguous_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
-            Assert.Throws<CompositionException>(() => builder
+            var container = builder
                 .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
                 .WithParts(new[] { typeof(IConstructorAppService), typeof(AmbiguousCompositionConstructorAppService) })
-                .CreateContainer());
+                .CreateContainer();
+            Assert.Throws<DependencyResolutionException>(() => container.GetExport<IConstructorAppService>());
         }
 
         [Test]
@@ -574,21 +596,10 @@ namespace Kephas.Tests.Composition.Autofac
 
         public class AmbiguousCompositionConstructorAppService : IConstructorAppService
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="AmbiguousCompositionConstructorAppService"/>
-            /// class.
-            /// </summary>
-            /// <param name="ambientServices">The ambient services.</param>
             public AmbiguousCompositionConstructorAppService(IAmbientServices ambientServices)
             {
             }
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="AmbiguousCompositionConstructorAppService"/> class.
-            /// </summary>
-            /// <param name="compositionContainer">
-            /// The composition container.
-            /// </param>
             public AmbiguousCompositionConstructorAppService(ICompositionContext compositionContainer)
             {
             }
@@ -644,6 +655,25 @@ namespace Kephas.Tests.Composition.Autofac
             public MultipleCompositionConstructorAppService(ICompositionContext compositionContainer)
             {
             }
+        }
+
+        public class ExportedClass
+        {
+        }
+
+        public class ExportedClassWithFakeDependency : ExportedClass
+        {
+            [CompositionConstructor]
+            public ExportedClassWithFakeDependency()
+            {
+            }
+
+            public ExportedClassWithFakeDependency(ExportedClass dependency)
+            {
+                this.Dependency = dependency;
+            }
+
+            public ExportedClass Dependency { get; }
         }
     }
 }
