@@ -117,7 +117,7 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
-        public async Task DispatchAsync_dispose_created_context()
+        public async Task SendAsync_dispose_created_context()
         {
             var container = this.CreateContainer(parts: new[] { typeof(SubstitutableMessageProcessor) });
             var messageBroker = container.GetExport<IMessageBroker>();
@@ -132,7 +132,8 @@ namespace Kephas.Messaging.Tests.Distributed
             var pingBack = await messageBroker.DispatchAsync(new BrokeredMessage
                                                                  {
                                                                      Content = new PingMessage(),
-                                                                     Timeout = TimeSpan.FromSeconds(100)
+                                                                     Timeout = TimeSpan.FromSeconds(100),
+                                                                     IsOneWay = true,
                                                                  });
 
             disposable.Received(1).Dispose();
