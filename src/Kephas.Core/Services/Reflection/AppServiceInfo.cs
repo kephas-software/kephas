@@ -97,21 +97,6 @@ namespace Kephas.Services.Reflection
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceInfo"/> class.
-        /// </summary>
-        /// <param name="contractType">The contract type of the export.</param>
-        /// <param name="serviceInstanceType">Type of the service instance.</param>
-        public AppServiceInfo(Type contractType, Type serviceInstanceType)
-        {
-            Requires.NotNull(contractType, nameof(contractType));
-            Requires.NotNull(serviceInstanceType, nameof(serviceInstanceType));
-
-            this.SetContractType(contractType);
-            this.InstanceType = serviceInstanceType;
-            this.SetLifetime(AppServiceLifetime.Scoped);
-        }
-
-        /// <summary>
         /// Gets the application service lifetime.
         /// </summary>
         /// <value>
