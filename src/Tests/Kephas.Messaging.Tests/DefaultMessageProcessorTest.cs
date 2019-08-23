@@ -110,6 +110,46 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
+        public async Task ProcessAsync_do_not_dispose_received_contexts()
+        {
+            var handler = Substitute.For<IMessageHandler>();
+            var message = Substitute.For<IMessage>();
+            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => Substitute.For<IMessage>());
+            var processor = this.CreateRequestProcessor(handler, message);
+
+            var context = Substitute.For<IMessageProcessingContext>();
+            context.MessageProcessor.Returns(processor);
+
+            var result = await processor.ProcessAsync(message, context);
+
+            context.Received(0).Dispose();
+        }
+
+        [Test]
+        public async Task ProcessAsync_dispose_created_contexts()
+        {
+            var handler = Substitute.For<IMessageHandler>();
+            var message = Substitute.For<IMessage>();
+            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => Substitute.For<IMessage>());
+            var processor = (SubstitutableDefaultMessageProcessor) this.CreateRequestProcessor(handler, message, asSubstitute: true);
+            IMessageProcessingContext context = null;
+            processor.PublicCreateProcessingContext(Arg.Any<IMessage>()).Returns(
+                ci =>
+                    {
+                        context = Substitute.For<IMessageProcessingContext>();
+                        context.MessageProcessor.Returns(processor);
+                        context.Message.Returns(ci.Arg<IMessage>());
+                        return context;
+                    });
+
+            var result = await processor.ProcessAsync(message);
+
+            context.Received(1).Dispose();
+        }
+
+        [Test]
         public async Task ProcessAsync_result()
         {
             var handler = Substitute.For<IMessageHandler>();
@@ -539,13 +579,18 @@ namespace Kephas.Messaging.Tests
                                 });
         }
 
-        private DefaultMessageProcessor CreateRequestProcessor(IMessageHandler messageHandler, IMessage message)
+        private DefaultMessageProcessor CreateRequestProcessor(IMessageHandler messageHandler, IMessage message, bool asSubstitute = false)
         {
             return this.CreateRequestProcessor(
-                null, null, new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
-                                                                                     {
-                                                                                         new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => messageHandler, new MessageHandlerMetadata(message.GetType()))
-                                                                                     });
+                null,
+                null,
+                new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+                    {
+                        new ExportFactory<IMessageHandler, MessageHandlerMetadata>(
+                            () => messageHandler,
+                            new MessageHandlerMetadata(message.GetType()))
+                    },
+                asSubstitute);
         }
 
         private DefaultMessageProcessor CreateRequestProcessor(IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
@@ -556,7 +601,8 @@ namespace Kephas.Messaging.Tests
         private DefaultMessageProcessor CreateRequestProcessor(
             IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories = null,
             IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories = null,
-            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
+            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null,
+            bool asSubstitute = false)
         {
             var mms = new DefaultMessageMatchService();
             behaviorFactories = behaviorFactories
@@ -568,7 +614,9 @@ namespace Kephas.Messaging.Tests
                                                   new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms, handlerFactories ?? new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>()), new AppServiceMetadata())
                                               };
 
-            return new DefaultMessageProcessor(Substitute.For<ICompositionContext>(), mms, handlerSelectorFactories, behaviorFactories);
+            return asSubstitute 
+                       ? Substitute.For<SubstitutableDefaultMessageProcessor>(Substitute.For<ICompositionContext>(), mms, handlerSelectorFactories, behaviorFactories)
+                       : new DefaultMessageProcessor(Substitute.For<ICompositionContext>(), mms, handlerSelectorFactories, behaviorFactories);
         }
     }
 
@@ -598,6 +646,24 @@ namespace Kephas.Messaging.Tests
         {
             context["After TestBehavior"] = true;
             return base.AfterProcessAsync(message, context, token);
+        }
+    }
+
+    public class SubstitutableDefaultMessageProcessor : DefaultMessageProcessor
+    {
+        public SubstitutableDefaultMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
+            : base(compositionContext, messageMatchService, handlerSelectorFactories, behaviorFactories)
+        {
+        }
+
+        public virtual IMessageProcessingContext PublicCreateProcessingContext(IMessage message)
+        {
+            return base.CreateProcessingContext(message);
+        }
+
+        protected override sealed IMessageProcessingContext CreateProcessingContext(IMessage message)
+        {
+            return this.PublicCreateProcessingContext(message);
         }
     }
 }
