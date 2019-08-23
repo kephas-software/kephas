@@ -84,17 +84,20 @@ namespace Kephas.Messaging.Distributed
             if (message.ReplyToMessageId != null)
             {
                 // do not wait for the processing.
-                Task.Factory.StartNew(() => this.ProcessReply(message, processContext, token), token);
+                Task.Factory.StartNew(() => this.ProcessReply(message, processContext, token), token)
+                    .ContinueWith(t => processContext.Dispose());
             }
             else if (message.IsOneWay)
             {
                 // do not wait for the processing.
-                Task.Factory.StartNew(() => this.ProcessOneWay(message, processContext, token), token);
+                Task.Factory.StartNew(() => this.ProcessOneWay(message, processContext, token), token)
+                    .ContinueWith(t => processContext.Dispose());
             }
             else
             {
                 // wait for the processing and return the result through the message broker.
-                Task.Factory.StartNew(() => this.ProcessAndRespond(message, processContext, token), token);
+                Task.Factory.StartNew(() => this.ProcessAndRespond(message, processContext, token), token)
+                    .ContinueWith(t => processContext.Dispose());
             }
 
             return null;
