@@ -235,15 +235,6 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
-        /// resources.
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-        }
-
-        /// <summary>
         /// Gets the equality expression for of: t =&gt; t.Id == entityEntry.Id.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
@@ -297,15 +288,6 @@ namespace Kephas.Data
             entityEntry.TryAttachToEntity(entity);
 
             return entityEntry;
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
-        /// resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c>false to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
         }
 
         /// <summary>

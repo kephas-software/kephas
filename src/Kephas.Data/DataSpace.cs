@@ -106,12 +106,6 @@ namespace Kephas.Data
         /// </returns>
         IDataContext IDataSpace.this[ITypeInfo entityType, IContext context = null] => this.GetDataContext(entityType, context);
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public virtual void Dispose()
-        {
-            this.ClearDataContextMap();
-        }
-
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<IDataContext> GetEnumerator()
@@ -157,6 +151,18 @@ namespace Kephas.Data
                                                           initializationContext);
                                                   });
             }
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the Kephas.Services.Context and optionally releases
+        /// the managed resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            this.ClearDataContextMap();
+            base.Dispose(disposing);
         }
 
         /// <summary>
