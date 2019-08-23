@@ -117,6 +117,28 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
+        public async Task DispatchAsync_dispose_created_context()
+        {
+            var container = this.CreateContainer(parts: new[] { typeof(SubstitutableMessageProcessor) });
+            var messageBroker = container.GetExport<IMessageBroker>();
+            var messageProcessor = (SubstitutableMessageProcessor)container.GetExport<IMessageProcessor>();
+            var disposable = Substitute.For<IDisposable>();
+            messageProcessor.ProcessAsyncDelegate = (msg, ctx, token) =>
+                {
+                    ctx.WithDisposableResource(disposable);
+                    return Task.FromResult<IMessage>(null);
+                };
+
+            var pingBack = await messageBroker.DispatchAsync(new BrokeredMessage
+                                                                 {
+                                                                     Content = new PingMessage(),
+                                                                     Timeout = TimeSpan.FromSeconds(100)
+                                                                 });
+
+            disposable.Received(1).Dispose();
+        }
+
+        [Test]
         public async Task ProcessAsync_Ping_over_serialization_success()
         {
             var container = this.CreateContainer(assemblies: new[] { typeof(IJsonSerializerSettingsProvider).Assembly }, parts: new[] { typeof(RemoteMessageBroker) });
@@ -296,6 +318,16 @@ namespace Kephas.Messaging.Tests.Distributed
             public void SetLogger(ILogger logger)
             {
                 this.Logger = logger;
+            }
+        }
+
+        public class SubstitutableMessageProcessor : IMessageProcessor
+        {
+            public Func<IMessage, IMessageProcessingContext, CancellationToken, Task<IMessage>> ProcessAsyncDelegate { get; set; }
+
+            public Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context = null, CancellationToken token = default)
+            {
+                return this.ProcessAsyncDelegate?.Invoke(message, context, token) ?? Task.FromResult<IMessage>(null);
             }
         }
     }

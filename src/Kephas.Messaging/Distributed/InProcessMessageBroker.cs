@@ -66,12 +66,14 @@ namespace Kephas.Messaging.Distributed
                 {
                     try
                     {
-                        var messagingContext = new MessageProcessingContext(this.messageProcessor, brokeredMessage)
-                                          {
-                                              Identity = context?.Identity,
-                                          };
-                        return await this.messageProcessor.ProcessAsync(brokeredMessage, messagingContext, cancellationToken)
+                        using (var messagingContext = new MessageProcessingContext(this.messageProcessor, brokeredMessage)
+                                                            {
+                                                                Identity = context?.Identity,
+                                                            })
+                        {
+                            return await this.messageProcessor.ProcessAsync(brokeredMessage, messagingContext, cancellationToken)
                                    .PreserveThreadContext();
+                        }
                     }
                     catch (Exception ex)
                     {
