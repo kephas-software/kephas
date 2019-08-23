@@ -152,6 +152,16 @@ namespace Kephas.Services
         }
 
         /// <summary>
+        /// Releases the unmanaged resources used by the Kephas.Services.Context and optionally releases
+        /// the managed resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
         /// Validates the identity before changing it.
         /// </summary>
         /// <param name="currentValue">The current value.</param>
@@ -196,6 +206,17 @@ namespace Kephas.Services
         {
             this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
             this.CompositionContext = this.AmbientServices.CompositionContainer;
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the Kephas.Services.Context and optionally releases
+        /// the managed resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            this.DisposeResources();
         }
     }
 }

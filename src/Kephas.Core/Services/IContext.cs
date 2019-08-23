@@ -11,6 +11,7 @@
 namespace Kephas.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Security.Principal;
 
     using Kephas.Composition;
@@ -21,7 +22,7 @@ namespace Kephas.Services
     /// <summary>
     /// Defines a base contract for context-dependent operations.
     /// </summary>
-    public interface IContext : IExpando, IAmbientServicesAware, ICompositionContextAware, ILoggable
+    public interface IContext : IExpando, IAmbientServicesAware, ICompositionContextAware, ILoggable, IDisposable
     {
         /// <summary>
         /// Gets or sets the authenticated identity.
@@ -46,6 +47,11 @@ namespace Kephas.Services
     /// </summary>
     public static class ContextExtensions
     {
+        /// <summary>
+        /// The disposable resources key.
+        /// </summary>
+        private const string DisposableResourcesKey = "__DisposableResources";
+
         /// <summary>
         /// Sets the context identity.
         /// </summary>
@@ -85,6 +91,58 @@ namespace Kephas.Services
             else
             {
                 context.SetPropertyValue(nameof(ILoggable.Logger), contextLogger);
+            }
+
+            return context;
+        }
+
+        /// <summary>
+        /// Registers with the context a disposable resource to be disposed when the context is disposed.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The context to act on.</param>
+        /// <param name="resource">The resource.</param>
+        /// <returns>
+        /// The provided context.
+        /// </returns>
+        public static TContext WithDisposableResource<TContext>(this TContext context, IDisposable resource)
+            where TContext : class, IContext
+        {
+            Requires.NotNull(context, nameof(context));
+            Requires.NotNull(resource, nameof(resource));
+
+            if (!(context[DisposableResourcesKey] is IList<IDisposable> resources))
+            {
+                resources = new List<IDisposable>();
+                context[DisposableResourcesKey] = resources;
+            }
+
+            resources.Add(resource);
+
+            return context;
+        }
+
+        /// <summary>
+        /// Disposes all resources registered with the context.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The context to act on.</param>
+        /// <returns>
+        /// The provided context.
+        /// </returns>
+        internal static TContext DisposeResources<TContext>(this TContext context)
+            where TContext : class, IContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            if (context[DisposableResourcesKey] is IList<IDisposable> resources)
+            {
+                foreach (var resource in resources)
+                {
+                    resource.Dispose();
+                }
+
+                resources.Clear();
             }
 
             return context;

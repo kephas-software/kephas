@@ -10,6 +10,7 @@
 
 namespace Kephas.Core.Tests.Services
 {
+    using System;
     using System.Security;
     using System.Security.Principal;
 
@@ -83,6 +84,31 @@ namespace Kephas.Core.Tests.Services
             context.Identity = newIdentity;
 
             Assert.AreSame(newIdentity, context.Identity);
+        }
+
+        [Test]
+        public void WithDisposableResource()
+        {
+            var disposable = Substitute.For<IDisposable>();
+            using (var context = new Context())
+            {
+                context.WithDisposableResource(disposable);
+            }
+
+            disposable.Received(1).Dispose();
+        }
+
+        [Test]
+        public void DisposeResources_called_once()
+        {
+            var disposable = Substitute.For<IDisposable>();
+            var context = new Context();
+            context.WithDisposableResource(disposable);
+
+            context.DisposeResources();
+            context.DisposeResources();
+
+            disposable.Received(1).Dispose();
         }
 
         public class OverrideIdentityContext : Context
