@@ -307,7 +307,12 @@ namespace Kephas.Composition.Hosting
         {
             Requires.NotNull(registrations, nameof(registrations));
 
-            registrations.ForEach(r => this.Registry.Add(r));
+            registrations.ForEach(r =>
+                {
+                    this.Registry.Add(r);
+                    if (r.ContractType != null) this.WithPart(r.ContractType);
+                    if (r.InstanceType != null) this.WithPart(r.InstanceType);
+                });
 
             return (TBuilder)this;
         }
