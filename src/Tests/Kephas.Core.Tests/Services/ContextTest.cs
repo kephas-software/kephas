@@ -87,12 +87,12 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
-        public void WithDisposableResource()
+        public void AddResource_dispose_with_context()
         {
             var disposable = Substitute.For<IDisposable>();
             using (var context = new Context())
             {
-                context.WithDisposableResource(disposable);
+                context.AddResource(disposable);
             }
 
             disposable.Received(1).Dispose();
@@ -103,7 +103,7 @@ namespace Kephas.Core.Tests.Services
         {
             var disposable = Substitute.For<IDisposable>();
             var context = new Context();
-            context.WithDisposableResource(disposable);
+            context.AddResource(disposable);
 
             context.DisposeResources();
             context.DisposeResources();

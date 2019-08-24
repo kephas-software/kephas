@@ -125,7 +125,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var disposable = Substitute.For<IDisposable>();
             messageProcessor.ProcessAsyncDelegate = (msg, ctx, token) =>
                 {
-                    ctx.WithDisposableResource(disposable);
+                    ctx.AddResource(disposable);
                     return Task.FromResult<IMessage>(null);
                 };
 

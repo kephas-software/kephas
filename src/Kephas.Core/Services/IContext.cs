@@ -14,6 +14,7 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Security.Principal;
 
+    using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -97,27 +98,27 @@ namespace Kephas.Services
         }
 
         /// <summary>
-        /// Registers with the context a disposable resource to be disposed when the context is disposed.
+        /// Registers with the context disposable resources to be disposed together with the context.
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context to act on.</param>
-        /// <param name="resource">The resource.</param>
+        /// <param name="resources">The resources to add.</param>
         /// <returns>
         /// The provided context.
         /// </returns>
-        public static TContext WithDisposableResource<TContext>(this TContext context, IDisposable resource)
+        public static TContext AddResource<TContext>(this TContext context, params IDisposable[] resources)
             where TContext : class, IContext
         {
             Requires.NotNull(context, nameof(context));
-            Requires.NotNull(resource, nameof(resource));
+            Requires.NotNull(resources, nameof(resources));
 
-            if (!(context[DisposableResourcesKey] is IList<IDisposable> resources))
+            if (!(context[DisposableResourcesKey] is IList<IDisposable> resourcesList))
             {
-                resources = new List<IDisposable>();
+                resourcesList = new List<IDisposable>();
                 context[DisposableResourcesKey] = resources;
             }
 
-            resources.Add(resource);
+            resourcesList.AddRange(resources);
 
             return context;
         }
