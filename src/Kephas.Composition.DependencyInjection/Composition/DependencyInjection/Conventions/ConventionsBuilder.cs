@@ -16,13 +16,14 @@ namespace Kephas.Composition.DependencyInjection.Conventions
     using Kephas.Collections;
     using Kephas.Composition.Conventions;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// A conventions builder for Microsoft.Extensions.DependencyInjection.
     /// </summary>
-    public class ConventionsBuilder : IConventionsBuilder, IServiceCollectionProvider, IServiceProviderBuilder
+    public class ConventionsBuilder : Loggable, IConventionsBuilder, IServiceCollectionProvider, IServiceProviderBuilder
     {
         private readonly IServiceCollection serviceCollection;
 

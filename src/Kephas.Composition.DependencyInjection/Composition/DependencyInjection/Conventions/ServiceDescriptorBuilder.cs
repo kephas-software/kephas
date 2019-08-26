@@ -15,13 +15,14 @@ namespace Kephas.Composition.DependencyInjection.Conventions
     using System.Linq;
 
     using Kephas.Composition.Conventions;
+    using Kephas.Logging;
 
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// A service descriptor builder.
     /// </summary>
-    internal class ServiceDescriptorBuilder : IExportConventionsBuilder
+    internal class ServiceDescriptorBuilder : Loggable, IExportConventionsBuilder
     {
         /// <summary>
         /// Gets or sets the type of the service.
@@ -147,14 +148,33 @@ namespace Kephas.Composition.DependencyInjection.Conventions
             return this;
         }
 
+        /// <summary>
+        /// Add export metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="value">The metadata value.</param>
+        /// <returns>
+        /// An export builder allowing further configuration.
+        /// </returns>
         public IExportConventionsBuilder AddMetadata(string name, object value)
         {
-            throw new NotImplementedException();
+            this.Logger.Warn($"Metadata not supported. Service type: {this.ServiceType}.");
+            return this;
         }
 
+        /// <summary>
+        /// Add export metadata to the export.
+        /// </summary>
+        /// <param name="name">The name of the metadata item.</param>
+        /// <param name="getValueFromPartType">A function that calculates the metadata value based on
+        ///                                    the type.</param>
+        /// <returns>
+        /// An export builder allowing further configuration.
+        /// </returns>
         public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
         {
-            throw new NotImplementedException();
+            this.Logger.Warn($"Metadata not supported. Service type: {this.ServiceType}.");
+            return this;
         }
     }
 }
