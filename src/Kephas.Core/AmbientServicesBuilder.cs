@@ -165,12 +165,62 @@ namespace Kephas
         /// <returns>
         /// This ambient services builder.
         /// </returns>
-        public AmbientServicesBuilder WithService<TService>(Func<TService> serviceFactory)
+        public AmbientServicesBuilder WithSingletonService<TService>(Func<TService> serviceFactory)
             where TService : class
         {
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
-            this.AmbientServices.RegisterService(serviceFactory);
+            this.AmbientServices.RegisterService(serviceFactory, isSingleton: true);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <returns>
+        /// This ambient services builder.
+        /// </returns>
+        public AmbientServicesBuilder WithTransientService<TService>(Func<TService> serviceFactory)
+            where TService : class
+        {
+            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+
+            this.AmbientServices.RegisterService(serviceFactory, isSingleton: false);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
+        /// <returns>
+        /// This ambient services builder.
+        /// </returns>
+        public AmbientServicesBuilder WithTransientService<TService, TServiceImplementation>()
+            where TService : class
+        {
+            this.AmbientServices.RegisterService(typeof(TService), typeof(TServiceImplementation), isSingleton: false);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
+        /// <returns>
+        /// This ambient services builder.
+        /// </returns>
+        public AmbientServicesBuilder WithSingletonService<TService, TServiceImplementation>()
+            where TService : class
+        {
+            this.AmbientServices.RegisterService(typeof(TService), typeof(TServiceImplementation), isSingleton: true);
 
             return this;
         }

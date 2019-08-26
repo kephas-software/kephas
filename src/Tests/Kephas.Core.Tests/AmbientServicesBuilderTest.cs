@@ -19,7 +19,6 @@ namespace Kephas.Core.Tests
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Logging;
-    using Kephas.Services;
 
     using NSubstitute;
 
@@ -56,9 +55,12 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var builder = new AmbientServicesBuilder(ambientServices);
-            builder.WithCompositionContainer<TestCompositionContainerBuilder>(b => b.WithAssembly(this.GetType().Assembly));
+            var compositionContext = Substitute.For<ICompositionContext>();
+            builder.WithCompositionContainer<TestCompositionContainerBuilder>(
+                b => b.WithAssembly(this.GetType().Assembly)
+                    .WithCompositionContext(compositionContext));
 
-            Assert.IsFalse(ambientServices.CompositionContainer is NullCompositionContainer);
+            Assert.AreSame(compositionContext, ambientServices.CompositionContainer);
         }
 
         [Test]
@@ -74,9 +76,12 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var builder = new AmbientServicesBuilder(ambientServices);
-            builder.WithCompositionContainer<TestCompositionContainerBuilder>(b => b.WithAssembly(this.GetType().Assembly));
+            var compositionContext = Substitute.For<ICompositionContext>();
+            builder.WithCompositionContainer<TestCompositionContainerBuilder>(
+                b => b.WithAssembly(this.GetType().Assembly)
+                    .WithCompositionContext(compositionContext));
 
-            Assert.IsFalse(ambientServices.CompositionContainer is NullCompositionContainer);
+            Assert.AreSame(compositionContext, ambientServices.CompositionContainer);
         }
 
         [Test]
@@ -89,6 +94,8 @@ namespace Kephas.Core.Tests
 
         public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>
         {
+            private ICompositionContext compositionContext;
+
             /// <summary>
             /// Initializes a new instance of the <see cref="CompositionContainerBuilderBase{TBuilder}"/> class.
             /// </summary>
@@ -98,6 +105,12 @@ namespace Kephas.Core.Tests
             {
             }
 
+            public TestCompositionContainerBuilder WithCompositionContext(ICompositionContext compositionContext)
+            {
+                this.compositionContext = compositionContext;
+                return this;
+            }
+
             protected override IConventionsBuilder CreateConventionsBuilder()
             {
                 return Substitute.For<IConventionsBuilder>();
@@ -105,7 +118,7 @@ namespace Kephas.Core.Tests
 
             protected override ICompositionContext CreateContainerCore(IConventionsBuilder conventions, IEnumerable<Type> parts)
             {
-                return Substitute.For<ICompositionContext>();
+                return this.compositionContext ?? Substitute.For<ICompositionContext>();
             }
         }
 

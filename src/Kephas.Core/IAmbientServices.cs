@@ -76,14 +76,28 @@ namespace Kephas
         IAmbientServices RegisterService(Type serviceType, object service);
 
         /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceImplementationType">The service implementation type.</param>
+        /// <param name="isSingleton">Optional. Indicates whether the function should be evaluated only
+        ///                           once, or each time it is called.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        IAmbientServices RegisterService(Type serviceType, Type serviceImplementationType, bool isSingleton = false);
+
+        /// <summary>
         /// Registers the provided service factory.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="isSingleton">Indicates whether the function should be evaluated only once, or each time it is called.</param>
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        IAmbientServices RegisterService(Type serviceType, Func<object> serviceFactory);
+        IAmbientServices RegisterService(Type serviceType, Func<ICompositionContext, object> serviceFactory, bool isSingleton = false);
 
         /// <summary>
         /// Gets a value indicating whether the service with the provided contract is registered.

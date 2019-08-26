@@ -79,11 +79,47 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; has at least two constructors with the same length which can be resolved through composition: ({1}) and ({2})..
+        /// </summary>
+        internal static string AmbientServices_AmbiguousConstructors_Exception {
+            get {
+                return ResourceManager.GetString("AmbientServices_AmbiguousConstructors_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The globally available instance of the ambient services may be set only once, before reading its value for the first time. Please consider setting its value before any other operation in your application..
         /// </summary>
         internal static string AmbientServices_Instance_MayBeSetOnlyOnce_Exception {
             get {
                 return ResourceManager.GetString("AmbientServices_Instance_MayBeSetOnlyOnce_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No composition constructor could be identified for &apos;{0}&apos;..
+        /// </summary>
+        internal static string AmbientServices_MissingCompositionConstructor_Exception {
+            get {
+                return ResourceManager.GetString("AmbientServices_MissingCompositionConstructor_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The required service &apos;{0}&apos; is not registered, or the factory returned a null value..
+        /// </summary>
+        internal static string AmbientServices_RequiredServiceNotRegistered_Exception {
+            get {
+                return ResourceManager.GetString("AmbientServices_RequiredServiceNotRegistered_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided service implementation &apos;{0}&apos; is not convertible to the service type &apos;{1}&apos;..
+        /// </summary>
+        internal static string AmbientServices_ServiceTypeAndImplementationMismatch_Exception {
+            get {
+                return ResourceManager.GetString("AmbientServices_ServiceTypeAndImplementationMismatch_Exception", resourceCulture);
             }
         }
         

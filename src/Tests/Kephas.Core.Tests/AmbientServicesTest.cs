@@ -12,6 +12,7 @@ namespace Kephas.Core.Tests
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
 
     using Kephas;
     using Kephas.Composition;
@@ -52,6 +53,69 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
+        public void RegisterService_service_type_singleton_dependency_resolved()
+        {
+            var ambientServices = new AmbientServices();
+            var dependency = Substitute.For<IDependency>();
+            ambientServices.RegisterService(typeof(IService), typeof(DependentService), isSingleton: true);
+            ambientServices.RegisterService(typeof(IDependency), dependency);
+
+            var service = (DependentService)ambientServices.GetService(typeof(IService));
+            Assert.AreSame(dependency, service.Dependency);
+        }
+
+        [Test]
+        public void RegisterService_service_type_singleton_dependency_ambiguous()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService(typeof(IService), typeof(AmbiguousDependentService), isSingleton: true);
+            ambientServices.RegisterService(typeof(IDependency), Substitute.For<IDependency>());
+            ambientServices.RegisterService(typeof(IAnotherDependency), Substitute.For<IAnotherDependency>());
+
+            Assert.Throws<AmbiguousMatchException>(() => ambientServices.GetService(typeof(IService)));
+        }
+
+        [Test]
+        public void RegisterService_service_type_singleton_dependency_non_ambiguous()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService(typeof(IService), typeof(AmbiguousDependentService), isSingleton: true);
+            ambientServices.RegisterService(typeof(IDependency), Substitute.For<IDependency>());
+
+            var service = (AmbiguousDependentService)ambientServices.GetService(typeof(IService));
+            Assert.IsNotNull(service.Dependency);
+            Assert.IsNull(service.AnotherDependency);
+        }
+
+        [Test]
+        public void RegisterService_service_type_singleton()
+        {
+            var ambientServices = new AmbientServices();
+            var logManager = Substitute.For<ILogManager>();
+            ambientServices.RegisterService(typeof(IService), typeof(SimpleService), isSingleton: true);
+
+            var service = ambientServices.GetService(typeof(IService));
+            Assert.IsInstanceOf<SimpleService>(service);
+
+            var sameService = ambientServices.GetService(typeof(IService));
+            Assert.AreSame(service, sameService);
+        }
+
+        [Test]
+        public void RegisterService_service_type_transient()
+        {
+            var ambientServices = new AmbientServices();
+            var logManager = Substitute.For<ILogManager>();
+            ambientServices.RegisterService(typeof(IService), typeof(SimpleService), isSingleton: false);
+
+            var service = ambientServices.GetService(typeof(IService));
+            Assert.IsInstanceOf<SimpleService>(service);
+
+            var sameService = ambientServices.GetService(typeof(IService));
+            Assert.AreNotSame(service, sameService);
+        }
+
+        [Test]
         public void RegisterService_service_factory()
         {
             var ambientServices = new AmbientServices();
@@ -79,6 +143,39 @@ namespace Kephas.Core.Tests
             ambientServices.RegisterService(compositionContextMock);
             var noService = ambientServices.CompositionContainer.TryGetExport<ICompositionContext>();
             Assert.IsNull(noService);
+        }
+
+        public interface IService { }
+        public interface IDependency { }
+        public interface IAnotherDependency { }
+
+        public class SimpleService : IService { }
+
+        public class DependentService : IService
+        {
+            public IDependency Dependency { get; }
+
+            public DependentService(IDependency dependency)
+            {
+                this.Dependency = dependency;
+            }
+        }
+
+        public class AmbiguousDependentService : IService
+        {
+            public IAnotherDependency AnotherDependency { get; }
+
+            public IDependency Dependency { get; }
+
+            public AmbiguousDependentService(IDependency dependency)
+            {
+                this.Dependency = dependency;
+            }
+
+            public AmbiguousDependentService(IAnotherDependency anotherDependency)
+            {
+                this.AnotherDependency = anotherDependency;
+            }
         }
     }
 }

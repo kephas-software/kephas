@@ -315,4 +315,16 @@
   <data name="CompositionHelper_ToDictionary_CannotResolveServicePriority_Exception" xml:space="preserve">
     <value>Cannot resolve priorities of service '{0}' for two instances: {1} and {2}.</value>
   </data>
+  <data name="AmbientServices_ServiceTypeAndImplementationMismatch_Exception" xml:space="preserve">
+    <value>The provided service implementation '{0}' is not convertible to the service type '{1}'.</value>
+  </data>
+  <data name="AmbientServices_RequiredServiceNotRegistered_Exception" xml:space="preserve">
+    <value>The required service '{0}' is not registered, or the factory returned a null value.</value>
+  </data>
+  <data name="AmbientServices_AmbiguousConstructors_Exception" xml:space="preserve">
+    <value>'{0}' has at least two constructors with the same length which can be resolved through composition: ({1}) and ({2}).</value>
+  </data>
+  <data name="AmbientServices_MissingCompositionConstructor_Exception" xml:space="preserve">
+    <value>No composition constructor could be identified for '{0}'.</value>
+  </data>
 </root>
