@@ -114,11 +114,13 @@ namespace Kephas.Services
 
             if (!(context[DisposableResourcesKey] is IList<IDisposable> resourcesList))
             {
-                resourcesList = new List<IDisposable>();
-                context[DisposableResourcesKey] = resources;
+                resourcesList = new List<IDisposable>(resources);
+                context[DisposableResourcesKey] = resourcesList;
             }
-
-            resourcesList.AddRange(resources);
+            else
+            {
+                resourcesList.AddRange(resources);
+            }
 
             return context;
         }
