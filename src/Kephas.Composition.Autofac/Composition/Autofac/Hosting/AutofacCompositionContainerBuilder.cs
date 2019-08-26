@@ -19,12 +19,17 @@ namespace Kephas.Composition.Autofac.Hosting
     using Kephas.Composition.Autofac.Metadata;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// An Autofac composition container builder.
     /// </summary>
     public class AutofacCompositionContainerBuilder : CompositionContainerBuilderBase<AutofacCompositionContainerBuilder>
     {
+        private IList<Action<ContainerBuilder>> builderConfigs = new List<Action<ContainerBuilder>>();
+
+        private ContainerBuilder containerBuilder;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacCompositionContainerBuilder"/> class.
         /// </summary>
@@ -35,12 +40,45 @@ namespace Kephas.Composition.Autofac.Hosting
         }
 
         /// <summary>
+        /// Adds a builder configuration action.
+        /// </summary>
+        /// <param name="config">The configuration.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public AutofacCompositionContainerBuilder WithConfig(Action<ContainerBuilder> config)
+        {
+            Requires.NotNull(config, nameof(config));
+
+            this.builderConfigs.Add(config);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the container builder to be used for the composition.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public AutofacCompositionContainerBuilder WithContainerBuilder(ContainerBuilder builder)
+        {
+            Requires.NotNull(builder, nameof(builder));
+
+            this.containerBuilder = builder;
+
+            return this;
+        }
+
+
+        /// <summary>
         /// Factory method for creating the conventions builder.
         /// </summary>
         /// <returns>A newly created conventions builder.</returns>
         protected override IConventionsBuilder CreateConventionsBuilder()
         {
-            return new AutofacConventionsBuilder();
+            return new AutofacConventionsBuilder(this.containerBuilder ?? new ContainerBuilder());
         }
 
         /// <summary>
@@ -57,6 +95,11 @@ namespace Kephas.Composition.Autofac.Hosting
 
             autofacBuilder.RegisterSource(new ExportFactoryRegistrationSource());
             autofacBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource());
+
+            foreach (var builderConfig in this.builderConfigs)
+            {
+                builderConfig(autofacBuilder);
+            }
 
             var containerBuilder = conventions is IAutofacContainerBuilder autofacContainerBuilder
                                       ? autofacContainerBuilder.GetContainerBuilder(parts)
