@@ -42,8 +42,8 @@ namespace Kephas.Internal
         public override object GetService(IAmbientServices parent, Type serviceType)
         {
             var descriptors = this.GetServiceDescriptors(parent, serviceType);
-            var innerType = serviceType.GetGenericArguments()[0];
-            var getService = GetServiceMethod.MakeGenericMethod(innerType);
+            var itemType = serviceType.GetGenericArguments()[0];
+            var getService = GetServiceMethod.MakeGenericMethod(itemType);
             return getService.Call(null, parent, descriptors);
         }
 

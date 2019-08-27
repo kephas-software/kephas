@@ -37,7 +37,7 @@ namespace Kephas.Internal
         protected virtual IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
             IAmbientServices parent,
             Type serviceType,
-            Func<Func<object>, Func<object>> selector)
+            Func<(IServiceInfo serviceInfo, Func<object> factory), Func<object>> selector)
         {
             if (this.registry.TryGetValue(serviceType, out var serviceInfo))
             {
@@ -49,7 +49,7 @@ namespace Kephas.Internal
                             (si,
                                 selector == null
                                     ? () => si.GetService(parent)
-                                    : selector(() => si.GetService(parent)));
+                                    : selector((si, () => si.GetService(parent))));
                     }
                 }
                 else
@@ -57,7 +57,7 @@ namespace Kephas.Internal
                     yield return (serviceInfo,
                                      selector == null
                                          ? () => serviceInfo.GetService(parent)
-                                         : selector(() => serviceInfo.GetService(parent)));
+                                         : selector((serviceInfo, () => serviceInfo.GetService(parent))));
                 }
             }
             else
@@ -68,7 +68,7 @@ namespace Kephas.Internal
                     foreach (var descriptor in source.GetServiceDescriptors(parent, serviceType))
                     {
                         yield return (descriptor.serviceInfo,
-                                         selector == null ? descriptor.factory : selector(descriptor.factory));
+                                         selector == null ? descriptor.factory : selector((descriptor.serviceInfo, descriptor.factory)));
                     }
                 }
             }

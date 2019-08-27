@@ -19,6 +19,8 @@ namespace Kephas.Core.Tests
     using Kephas;
     using Kephas.Composition;
     using Kephas.Logging;
+    using Kephas.Services;
+    using Kephas.Services.Composition;
 
     using NSubstitute;
 
@@ -194,6 +196,19 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
+        public void GetService_exportFactory_with_metadata()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService<IService, DependentService>();
+            ambientServices.RegisterService<IDependency>(Substitute.For<IDependency>());
+
+            var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>();
+            Assert.IsNotNull(service.Metadata);
+            Assert.AreEqual((int)Priority.High, service.Metadata.OverridePriority);
+            Assert.AreEqual(typeof(DependentService), service.Metadata.AppServiceImplementationType);
+        }
+
+        [Test]
         public void GetService_enumerable()
         {
             var ambientServices = new AmbientServices();
@@ -241,6 +256,7 @@ namespace Kephas.Core.Tests
 
         public class SimpleService : IService { }
 
+        [OverridePriority(Priority.High)]
         public class DependentService : IService
         {
             public IDependency Dependency { get; }

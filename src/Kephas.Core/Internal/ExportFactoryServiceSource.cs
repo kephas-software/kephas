@@ -22,7 +22,7 @@ namespace Kephas.Internal
     internal class ExportFactoryServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => ExportFactoryServiceSource.GetService<string>(null));
+            ReflectionHelper.GetGenericMethodOf(_ => ExportFactoryServiceSource.GetService<string>(null, null));
 
         public ExportFactoryServiceSource(IServiceRegistry registry)
             : base(registry)
@@ -46,10 +46,10 @@ namespace Kephas.Internal
         {
             var innerType = serviceType.GetGenericArguments()[0];
             var getService = GetServiceMethod.MakeGenericMethod(innerType);
-            return this.GetServiceDescriptors(parent, innerType, fn => () => getService.Call(null, fn));
+            return this.GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, tuple.serviceInfo, tuple.fn));
         }
 
-        private static IExportFactory<T> GetService<T>(Func<object> factory)
+        private static IExportFactory<T> GetService<T>(IServiceInfo serviceInfo, Func<object> factory)
             where T : class
         {
             return new ExportFactory<T>(() => (T)factory());

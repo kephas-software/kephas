@@ -21,6 +21,8 @@ namespace Kephas.Services.Composition
     /// </summary>
     public class AppServiceMetadata : ExportMetadataBase
     {
+        private static readonly IAppServiceMetadataResolver MetadataResolver = new AppServiceMetadataResolver();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadata"/> class.
         /// </summary>
@@ -108,7 +110,7 @@ namespace Kephas.Services.Composition
         protected TValue GetMetadataValue<TAttribute, TValue>(IDictionary<string, object> metadata, TValue defaultValue = default)
             where TAttribute : IMetadataValue<TValue>
         {
-            var metadataName = AppServiceInfoConventionsRegistrar.GetMetadataNameFromAttributeType(typeof(TAttribute));
+            var metadataName = MetadataResolver.GetMetadataNameFromAttributeType(typeof(TAttribute));
             var value = metadata.TryGetValue(metadataName, defaultValue);
             if (value == null && !typeof(TValue).IsByRef)
             {
