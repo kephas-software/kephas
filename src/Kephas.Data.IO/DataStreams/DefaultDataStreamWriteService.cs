@@ -30,7 +30,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <summary>
         /// The writer factories.
         /// </summary>
-        private readonly ICollection<IExportFactory<IDataStreamWriter, DataStreamWriterMetadata>> writerFactories;
+        private readonly IOrderedServiceCollection<IDataStreamWriter, DataStreamWriterMetadata> writerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataStreamWriteService"/> class.
@@ -40,10 +40,7 @@ namespace Kephas.Data.IO.DataStreams
         {
             Requires.NotNull(writerFactories, nameof(writerFactories));
 
-            this.writerFactories = writerFactories
-                .OrderBy(f => f.Metadata.OverridePriority)
-                .ThenBy(f => f.Metadata.ProcessingPriority)
-                .ToList();
+            this.writerFactories = writerFactories.Order();
         }
 
         /// <summary>

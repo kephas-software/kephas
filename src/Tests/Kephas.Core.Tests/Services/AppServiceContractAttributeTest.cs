@@ -28,7 +28,6 @@ namespace Kephas.Core.Tests.Services
         {
             Assert.IsTrue(AppServiceContractAttribute.DefaultMetadataAttributeTypes.Contains(typeof(OverridePriorityAttribute)));
             Assert.IsTrue(AppServiceContractAttribute.DefaultMetadataAttributeTypes.Contains(typeof(ProcessingPriorityAttribute)));
-            Assert.IsTrue(AppServiceContractAttribute.DefaultMetadataAttributeTypes.Contains(typeof(OptionalServiceAttribute)));
             Assert.IsTrue(AppServiceContractAttribute.DefaultMetadataAttributeTypes.Contains(typeof(ServiceNameAttribute)));
         }
 

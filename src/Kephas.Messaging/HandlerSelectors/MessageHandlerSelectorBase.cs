@@ -17,6 +17,7 @@ namespace Kephas.Messaging.HandlerSelectors
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Composition;
+    using Kephas.Services;
 
     /// <summary>
     /// Base class for message handler selectors.
@@ -92,8 +93,7 @@ namespace Kephas.Messaging.HandlerSelectors
         {
             var orderedFactories = this.HandlerFactories.Where(
                     f => this.MessageMatchService.IsMatch(f.Metadata.MessageMatch, messageType, messageId))
-                .OrderBy(f => f.Metadata.OverridePriority)
-                .ThenBy(f => f.Metadata.ProcessingPriority)
+                .Order()
                 .ToList();
             return orderedFactories;
         }

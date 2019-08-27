@@ -61,8 +61,7 @@ namespace Kephas.Scripting
             this.CompositionContext = compositionContext;
 
             languageServiceFactories
-                .OrderBy(f => f.Metadata.OverridePriority)
-                .ThenBy(f => f.Metadata.ProcessingPriority)
+                .Order()
                 .ForEach(f =>
                     {
                         f.Metadata.Language.ForEach(
@@ -77,8 +76,7 @@ namespace Kephas.Scripting
 
             scriptingBehaviorFactories
                 .OrderBy(f => f.Metadata.Language)
-                .ThenBy(f => f.Metadata.OverridePriority)
-                .ThenBy(f => f.Metadata.ProcessingPriority)
+                .Order()
                 .ForEach(f =>
                     {
                         var list = this.scriptingBehaviorFactories.TryGetValue(f.Metadata.Language);

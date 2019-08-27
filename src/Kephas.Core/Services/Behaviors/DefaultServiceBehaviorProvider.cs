@@ -47,16 +47,12 @@ namespace Kephas.Services.Behaviors
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultServiceBehaviorProvider(
             ICompositionContext compositionContext,
-            ICollection<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> behaviorFactories)
+            ICollection<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> behaviorFactories = null)
         {
             this.compositionContext = compositionContext;
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
-            this.behaviorFactories = behaviorFactories
-                                            ?.OrderBy(f => f.Metadata.OverridePriority)
-                                            .ThenBy(f => f.Metadata.ProcessingPriority)
-                                            .ToList()
-                                     ?? new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>();
+            this.behaviorFactories = behaviorFactories.Order().ToList();
         }
 
         /// <summary>

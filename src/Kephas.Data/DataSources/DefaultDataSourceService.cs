@@ -40,11 +40,7 @@ namespace Kephas.Data.DataSources
         {
             Requires.NotNull(providerFactories, nameof(providerFactories));
 
-            this.providers = providerFactories
-                                        .OrderBy(f => f.Metadata.OverridePriority)
-                                        .ThenBy(f => f.Metadata.ProcessingPriority)
-                                        .Select(f => f.CreateExportedValue())
-                                        .ToList();
+            this.providers = providerFactories.Order().GetServices().ToList();
         }
 
         /// <summary>

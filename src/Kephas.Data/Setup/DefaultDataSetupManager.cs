@@ -110,9 +110,8 @@ namespace Kephas.Data.Setup
         {
             var targets = this.GetTargets(dataSetupContext);
             var dataInstallers = this.dataInstallerFactories
-                .OrderBy(f => f.Metadata.OverridePriority)
-                .ThenBy(f => f.Metadata.ProcessingPriority)
-                .Where(f => targets == null || targets.Contains(f.Metadata.Target)).Select(f => f.CreateExportedValue())
+                .Order()
+                .GetServices(f => targets == null || targets.Contains(f.Metadata.Target))
                 .ToList();
             return dataInstallers;
         }

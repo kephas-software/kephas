@@ -37,11 +37,7 @@ namespace Kephas.Security.Authorization
         /// <param name="providerFactories">The provider factories.</param>
         public DefaultAuthorizationScopeService(ICollection<IExportFactory<IAuthorizationScopeProvider, AppServiceMetadata>> providerFactories)
         {
-            this.providers = providerFactories
-                                .OrderBy(f => f.Metadata.OverridePriority)
-                                .ThenBy(f => f.Metadata.ProcessingPriority)
-                                .Select(f => f.CreateExportedValue())
-                                .ToList();
+            this.providers = providerFactories.Order().GetServices().ToList();
         }
 
         /// <summary>

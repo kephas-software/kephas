@@ -19,6 +19,7 @@ namespace Kephas.Data.Commands.Factory
     using Kephas.Data.Commands.Composition;
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
 
     /// <summary>
     /// A data command factory.
@@ -30,7 +31,7 @@ namespace Kephas.Data.Commands.Factory
         /// <summary>
         /// The command factories.
         /// </summary>
-        private readonly ICollection<IExportFactory<TCommand, DataCommandMetadata>> commandFactories;
+        private readonly IOrderedServiceCollection<TCommand, DataCommandMetadata> commandFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataCommandFactory{TCommand}"/> class.
@@ -40,7 +41,7 @@ namespace Kephas.Data.Commands.Factory
         {
             Requires.NotNull(commandFactories, nameof(commandFactories));
 
-            this.commandFactories = commandFactories.OrderBy(f => f.Metadata.OverridePriority).ToList();
+            this.commandFactories = commandFactories.Order();
         }
 
         /// <summary>
