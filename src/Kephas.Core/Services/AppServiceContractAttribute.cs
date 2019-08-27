@@ -46,7 +46,6 @@ namespace Kephas.Services
                   {
                       typeof(ProcessingPriorityAttribute),
                       typeof(OverridePriorityAttribute),
-                      typeof(OptionalServiceAttribute),
                       typeof(ServiceNameAttribute),
                   };
 
