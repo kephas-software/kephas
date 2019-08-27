@@ -199,9 +199,8 @@ namespace Kephas.Workflow
             // TODO fix the check of the activity type
             var behaviors = this.behaviorFactories
                 .Where(f => f.Metadata.ActivityType == null || activityInfo == f.Metadata.ActivityType.AsRuntimeTypeInfo())
-                .OrderBy(f => f.Metadata.OverridePriority)
-                .ThenBy(f => f.Metadata.ProcessingPriority)
-                .Select(f => f.CreateExportedValue())
+                .Order()
+                .GetServices()
                 .ToList();
             return (behaviors, ((IEnumerable<IActivityBehavior>)behaviors).Reverse().ToList());
         }

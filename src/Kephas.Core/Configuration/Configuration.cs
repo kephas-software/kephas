@@ -19,6 +19,7 @@ namespace Kephas.Configuration
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Services;
 
     /// <summary>
     /// Provides the configuration for the settings type indicated as the generic parameter type.
@@ -33,7 +34,7 @@ namespace Kephas.Configuration
         /// <summary>
         /// The provider factories.
         /// </summary>
-        private readonly ICollection<IExportFactory<IConfigurationProvider, ConfigurationProviderMetadata>> providerFactories;
+        private readonly IOrderedServiceCollection<IConfigurationProvider, ConfigurationProviderMetadata> providerFactories;
 
         /// <summary>
         /// The settings.
@@ -53,7 +54,7 @@ namespace Kephas.Configuration
         {
             Requires.NotNull(providerFactories, nameof(providerFactories));
 
-            this.providerFactories = providerFactories;
+            this.providerFactories = providerFactories.Order();
         }
 
         /// <summary>
@@ -92,10 +93,7 @@ namespace Kephas.Configuration
         /// </returns>
         private IConfigurationProvider ComputeConfigurationProvider()
         {
-            var orderedFactories = this.providerFactories
-                .OrderBy(f => f.Metadata.OverridePriority)
-                .ThenBy(f => f.Metadata.ProcessingPriority)
-                .ToList();
+            var orderedFactories = this.providerFactories;
 
             var factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType == typeof(TSettings));
             if (factory == null)
