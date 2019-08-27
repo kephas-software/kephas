@@ -11,6 +11,7 @@ $packages = @(
     "Kephas.Logging.Serilog",
     "Kephas.Composition.Autofac",
     "Kephas.Composition.Mef",
+    "Kephas.Composition.DependencyInjection",
     "Kephas.Messaging",
     "Kephas.Messaging.Model",
     "Kephas.Model",
