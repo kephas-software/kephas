@@ -260,8 +260,18 @@ namespace Kephas
             // of each composition context implementation to register itself in the DI container.
             return this.services
                 .Where(kv => !ReferenceEquals(kv.Key, typeof(ICompositionContext)))
-                .Select(kv => (kv.Key, kv.Value))
+                .Select(kv => (kv.Key, this.GetAppServiceInfo(kv.Value)))
                 .ToList();
+        }
+
+        private IAppServiceInfo GetAppServiceInfo(IAppServiceInfo appServiceInfo)
+        {
+            if (appServiceInfo is ServiceInfo serviceInfo)
+            {
+                return new AppServiceInfo(serviceInfo.ContractType, ctx => serviceInfo.GetService(this), serviceInfo.Lifetime);
+            }
+
+            return appServiceInfo;
         }
 
         private class ServiceInfo : IAppServiceInfo

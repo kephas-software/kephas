@@ -21,6 +21,8 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Testing.Composition.Mef;
@@ -47,6 +49,43 @@ namespace Kephas.Tests.Composition.Mef
         {
             var config = this.WithEmptyConfiguration();
             return this.WithExportProviders(config).WithParts(types).CreateCompositionContainer();
+        }
+
+        [Test]
+        public void GetExport_from_ambient_services_self()
+        {
+            var ambientServices = new AmbientServices();
+            var container = this.CreateContainerWithBuilder(ambientServices);
+            var containerExport = container.GetExport(typeof(IAmbientServices));
+            var ambientExport = container.GetExport(typeof(IAmbientServices));
+
+            Assert.IsNotNull(containerExport);
+            Assert.AreSame(ambientExport, containerExport);
+            Assert.AreSame(ambientServices, containerExport);
+        }
+
+        [Test]
+        public void GetExport_from_ambient_services_instance()
+        {
+            var ambientServices = new AmbientServices();
+            var container = this.CreateContainerWithBuilder(ambientServices);
+            var containerExport = container.GetExport(typeof(ILogManager));
+            var ambientExport = container.GetExport(typeof(ILogManager));
+
+            Assert.IsNotNull(containerExport);
+            Assert.AreSame(ambientExport, containerExport);
+        }
+
+        [Test]
+        public void GetExport_from_ambient_services_instance_type()
+        {
+            var ambientServices = new AmbientServices();
+            var container = this.CreateContainerWithBuilder(ambientServices);
+            var containerExport = container.GetExport(typeof(ITypeLoader));
+            var ambientExport = container.GetExport(typeof(ITypeLoader));
+
+            Assert.IsNotNull(containerExport);
+            Assert.AreSame(ambientExport, containerExport);
         }
 
         [Test]
