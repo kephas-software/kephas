@@ -35,8 +35,8 @@ namespace Kephas.Core.Tests.Application
 
             Assert.IsNotNull(builder);
             Assert.IsNotNull(builder.AmbientServices);
-            Assert.AreSame(AmbientServices.Instance, builder.AmbientServices);
-            Assert.AreSame(AmbientServices.Instance, appContext.AmbientServices);
+            Assert.AreSame(app.AmbientServices, builder.AmbientServices);
+            Assert.AreSame(app.AmbientServices, appContext.AmbientServices);
         }
 
         [Test]
@@ -46,11 +46,10 @@ namespace Kephas.Core.Tests.Application
 
             AmbientServicesBuilder builder = null;
             var app = new TestApp(async b => builder = b.WithCompositionContainer(compositionContext));
-            var ambientServices = new AmbientServices();
-            var appContext = await app.BootstrapAsync(ambientServices: ambientServices);
+            var appContext = await app.BootstrapAsync();
 
-            Assert.AreSame(ambientServices, builder.AmbientServices);
-            Assert.AreSame(ambientServices, appContext.AmbientServices);
+            Assert.AreSame(app.AmbientServices, builder.AmbientServices);
+            Assert.AreSame(app.AmbientServices, appContext.AmbientServices);
         }
 
         [Test]
@@ -94,8 +93,8 @@ namespace Kephas.Core.Tests.Application
 
             var ambientServices = new AmbientServicesBuilder(new AmbientServices())
                 .WithCompositionContainer(compositionContext).AmbientServices;
-            var app = new TestApp();
-            await app.ShutdownAsync(ambientServices);
+            var app = new TestApp(ambientServices: ambientServices);
+            await app.ShutdownAsync();
 
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
         }
@@ -105,7 +104,8 @@ namespace Kephas.Core.Tests.Application
     {
         private readonly Func<AmbientServicesBuilder, Task> asyncConfig;
 
-        public TestApp(Func<AmbientServicesBuilder, Task> asyncConfig = null)
+        public TestApp(Func<AmbientServicesBuilder, Task> asyncConfig = null, IAmbientServices ambientServices = null)
+            : base(ambientServices ?? new AmbientServices())
         {
             this.asyncConfig = asyncConfig;
         }

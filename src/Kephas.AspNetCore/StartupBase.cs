@@ -11,7 +11,6 @@
 namespace Kephas.AspNetCore
 {
     using System;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -49,11 +48,6 @@ namespace Kephas.AspNetCore
         private readonly string[] appArgs;
 
         /// <summary>
-        /// The ambient services.
-        /// </summary>
-        private IAmbientServices ambientServices;
-
-        /// <summary>
         /// The bootstrap task.
         /// </summary>
         private Task bootstrapTask;
@@ -69,7 +63,7 @@ namespace Kephas.AspNetCore
         {
             this.HostingEnvironment = env;
             this.Configuration = config;
-            this.ambientServices = ambientServices ?? Kephas.AmbientServices.Instance;
+            this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
             this.appArgs = appArgs;
         }
 
@@ -79,7 +73,7 @@ namespace Kephas.AspNetCore
         /// <value>
         /// The ambient services.
         /// </value>
-        public IAmbientServices AmbientServices => this.ambientServices;
+        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets the hosting environment.
@@ -116,7 +110,7 @@ namespace Kephas.AspNetCore
         {
             try
             {
-                this.ambientServices
+                this.AmbientServices
                     .WithServiceCollection(serviceCollection)
                     .ConfigureLoggingExtensions()
                     .ConfigureOptionsExtensions()
@@ -126,9 +120,9 @@ namespace Kephas.AspNetCore
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
 
-                this.ConfigureAmbientServices(this.appArgs, new AmbientServicesBuilder(this.ambientServices));
+                this.ConfigureAmbientServices(this.appArgs, new AmbientServicesBuilder(this.AmbientServices));
 
-                this.Logger = this.ambientServices.GetLogger(this.GetType());
+                this.Logger = this.AmbientServices.GetLogger(this.GetType());
             }
             catch (Exception ex)
             {
@@ -136,7 +130,7 @@ namespace Kephas.AspNetCore
                 throw;
             }
 
-            return this.ambientServices.CompositionContainer.ToServiceProvider();
+            return this.AmbientServices.CompositionContainer.ToServiceProvider();
         }
 
         /// <summary>
@@ -148,7 +142,7 @@ namespace Kephas.AspNetCore
             IApplicationBuilder app,
             IApplicationLifetime appLifetime)
         {
-            var appContext = this.CreateAppContext(app, this.appArgs, this.ambientServices);
+            var appContext = this.CreateAppContext(app, this.appArgs);
 
             // ensure upon request processing that the bootstrapping procedure is done.
             app.Use(async (context, next) =>
@@ -226,7 +220,7 @@ namespace Kephas.AspNetCore
             {
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_ShuttingDown_Message);
 
-                var appContext = await this.FinalizeAppManagerAsync(this.ambientServices, cancellationToken);
+                var appContext = await this.FinalizeAppManagerAsync(cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_Complete_Message);
 
@@ -271,14 +265,13 @@ namespace Kephas.AspNetCore
         /// <summary>
         /// Finalizes the application manager asynchronously.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// A promise of the <see cref="IAppContext"/>.
         /// </returns>
-        protected virtual async Task<IAppContext> FinalizeAppManagerAsync(IAmbientServices ambientServices, CancellationToken cancellationToken)
+        protected virtual async Task<IAppContext> FinalizeAppManagerAsync(CancellationToken cancellationToken)
         {
-            var container = ambientServices.CompositionContainer;
+            var container = this.AmbientServices.CompositionContainer;
             var appContext = container.GetExport<IAppContext>();
             var appManager = container.GetExport<IAppManager>();
 
@@ -291,17 +284,16 @@ namespace Kephas.AspNetCore
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected virtual IAspNetAppContext CreateAppContext(IApplicationBuilder app, string[] appArgs, IAmbientServices ambientServices)
+        protected virtual IAspNetAppContext CreateAppContext(IApplicationBuilder app, string[] appArgs)
         {
             var appContext = new AspNetAppContext(
                 app,
                 this.HostingEnvironment,
                 this.Configuration,
-                ambientServices,
+                this.AmbientServices,
                 appArgs: appArgs,
                 signalShutdown: c => this.ShutdownAsync());
             return appContext;
