@@ -68,7 +68,7 @@ namespace Kephas.Workflow
             Requires.NotNull(activity, nameof(activity));
             Requires.NotNull(context, nameof(context));
 
-            var logger = context.ContextLogger.Merge(this.Logger);
+            var logger = context.Logger.Merge(this.Logger);
 
             cancellationToken.ThrowIfCancellationRequested();
 

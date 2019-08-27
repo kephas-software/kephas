@@ -34,7 +34,7 @@ namespace Kephas.Model.Construction
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
-            this.ContextLogger = compositionContext.GetLogger(this.GetType());
+            this.Logger = compositionContext.GetLogger(this.GetType());
         }
 
         /// <summary>
