@@ -11,40 +11,46 @@
 namespace Kephas.Internal
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Reflection;
 
-    internal class ExportFactoryServiceSource : IServiceSource
+    internal class ExportFactoryServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ExportFactoryServiceSource.GetService<string>(null));
 
-        private readonly IServiceProvider parent;
-
-        public ExportFactoryServiceSource(IServiceProvider parent)
+        public ExportFactoryServiceSource(IServiceRegistry registry)
+            : base(registry)
         {
-            this.parent = parent;
         }
 
-        public object GetService(Type serviceType)
-        {
-            var innerType = serviceType.GetGenericArguments()[0];
-            var getService = GetServiceMethod.MakeGenericMethod(innerType);
-            return getService.Call(null, this.parent);
-        }
-
-        public bool IsMatch(Type contractType)
+        public override bool IsMatch(Type contractType)
         {
             return contractType.IsConstructedGenericOf(typeof(IExportFactory<>));
         }
 
-        private static IExportFactory<T> GetService<T>(IServiceProvider parent)
+        public override object GetService(IServiceProvider parent, Type serviceType)
+        {
+            var descriptors = this.GetServiceDescriptors(parent, serviceType);
+            return descriptors.Single().factory();
+        }
+
+        public override IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(IServiceProvider parent, Type serviceType)
+        {
+            var innerType = serviceType.GetGenericArguments()[0];
+            var getService = GetServiceMethod.MakeGenericMethod(innerType);
+            return this.GetServiceDescriptors(parent, innerType, fn => () => getService.Call(null, fn));
+        }
+
+        private static IExportFactory<T> GetService<T>(Func<object> factory)
             where T : class
         {
-            return new ExportFactory<T>(() => parent.GetService<T>());
+            return new ExportFactory<T>(() => (T)factory());
         }
     }
 }

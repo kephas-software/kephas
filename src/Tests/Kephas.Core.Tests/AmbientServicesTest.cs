@@ -11,7 +11,9 @@
 namespace Kephas.Core.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Reflection;
 
     using Kephas;
@@ -157,7 +159,7 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
-        public void GetService_export_factory()
+        public void GetService_exportFactory()
         {
             var ambientServices = new AmbientServices();
             var logManager = Substitute.For<ILogManager>();
@@ -165,6 +167,29 @@ namespace Kephas.Core.Tests
 
             var logManagerFactory = ambientServices.GetService<IExportFactory<ILogManager>>();
             Assert.AreSame(logManager, logManagerFactory.CreateExportedValue());
+        }
+
+        [Test]
+        public void GetService_collection_of_exportFactory()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService<IService, SimpleService>();
+            ambientServices.RegisterService<DependentCollectionService, DependentCollectionService>();
+
+            var dependent = ambientServices.GetService<DependentCollectionService>();
+            Assert.IsNotNull(dependent.Factories);
+            Assert.IsInstanceOf<SimpleService>(dependent.Factories.Single().CreateExportedValue());
+        }
+
+        [Test]
+        public void GetService_enumerable()
+        {
+            var ambientServices = new AmbientServices();
+            var logManager = Substitute.For<ILogManager>();
+            ambientServices.RegisterService(typeof(ILogManager), logManager);
+
+            var logManagerCollection = ambientServices.GetService<IEnumerable<ILogManager>>();
+            Assert.AreSame(logManager, logManagerCollection.Single());
         }
 
         [Test]
@@ -181,6 +206,16 @@ namespace Kephas.Core.Tests
         public interface IService { }
         public interface IDependency { }
         public interface IAnotherDependency { }
+
+        public class DependentCollectionService
+        {
+            public DependentCollectionService(ICollection<IExportFactory<IService>> factories)
+            {
+                this.Factories = factories;
+            }
+
+            public ICollection<IExportFactory<IService>> Factories { get; }
+        }
 
         public class SimpleService : IService { }
 

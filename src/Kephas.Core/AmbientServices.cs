@@ -11,13 +11,11 @@
 namespace Kephas
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Hosting;
@@ -28,7 +26,6 @@ namespace Kephas
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
-    using Kephas.Services;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -50,32 +47,30 @@ namespace Kephas
         /// </summary>
         private static IAmbientServices instance;
 
-        private readonly ConcurrentDictionary<Type, IAppServiceInfo> services = new ConcurrentDictionary<Type, IAppServiceInfo>();
+        private readonly IServiceRegistry registry = new ServiceRegistry();
 
-        private readonly ICompositionContext asCompositionContext;
-
-        private readonly List<IServiceSource> serviceSources = new List<IServiceSource>();
+        private readonly IResolverEngine resolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
         /// </summary>
         public AmbientServices()
         {
-            this.asCompositionContext = this.ToCompositionContext();
             var logManager = new NullLogManager();
 
             this.RegisterService<IAmbientServices>(this)
-                .RegisterService<ICompositionContext>(this.asCompositionContext)
+                .RegisterService<ICompositionContext>(this.AsCompositionContext())
                 .RegisterService<IConfigurationStore, DefaultConfigurationStore>(isSingleton: true)
                 .RegisterService<ILogManager>(logManager)
                 .RegisterService<IAssemblyLoader, DefaultAssemblyLoader>(isSingleton: true)
                 .RegisterService<ITypeLoader, DefaultTypeLoader>(isSingleton: true)
                 .RegisterService<IAppRuntime, DefaultAppRuntime>(isSingleton: true);
 
-            this.serviceSources.AddRange(new[]
-                                             {
-                                                 new ExportFactoryServiceSource(this),
-                                             });
+            this.registry
+                .RegisterSource(new ExportFactoryServiceSource(this.registry))
+                .RegisterSource(new EnumerableServiceSource(this.registry));
+
+            this.resolver = new ResolverEngine(this, this.registry);
         }
 
         /// <summary>
@@ -169,7 +164,7 @@ namespace Kephas
                           serviceType));
             }
 
-            this.services[serviceType] = new ServiceInfo(serviceType, service);
+            this.registry.RegisterService(new ServiceInfo(serviceType, service));
             return this;
         }
 
@@ -200,7 +195,7 @@ namespace Kephas
                         serviceType));
             }
 
-            this.services[serviceType] = new ServiceInfo(this, serviceType, serviceImplementationType, isSingleton);
+            this.registry.RegisterService(new ServiceInfo(this, serviceType, serviceImplementationType, isSingleton));
             return this;
         }
 
@@ -221,7 +216,7 @@ namespace Kephas
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
-            this.services[serviceType] = new ServiceInfo(this, serviceType, serviceFactory, isSingleton);
+            this.registry.RegisterService(new ServiceInfo(this, serviceType, serviceFactory, isSingleton));
             return this;
         }
 
@@ -234,7 +229,7 @@ namespace Kephas
         /// </returns>
         public bool IsRegistered(Type serviceType)
         {
-            return serviceType != null && this.services.ContainsKey(serviceType);
+            return serviceType != null && this.registry.IsRegistered(serviceType);
         }
 
         /// <summary>
@@ -246,20 +241,7 @@ namespace Kephas
         /// <param name="serviceType">An object that specifies the type of service object to get. </param>
         public object GetService(Type serviceType)
         {
-            if (this.services.TryGetValue(serviceType, out var serviceRegistration))
-            {
-                return ((ServiceInfo)serviceRegistration).GetService(this);
-            }
-
-            foreach (var source in this.serviceSources)
-            {
-                if (source.IsMatch(serviceType))
-                {
-                    return source.GetService(serviceType);
-                }
-            }
-
-            return null;
+            return this.resolver.GetService(serviceType);
         }
 
         /// <summary>
@@ -275,9 +257,9 @@ namespace Kephas
         {
             // exclude the composition context from the list as it is the responsibility
             // of each composition context implementation to register itself in the DI container.
-            return this.services
-                .Where(kv => !ReferenceEquals(kv.Key, typeof(ICompositionContext)))
-                .Select(kv => (kv.Key, this.GetAppServiceInfo(kv.Value)))
+            return this.registry
+                .Where(s => !ReferenceEquals(s.ContractType, typeof(ICompositionContext)))
+                .Select(s => (s.ContractType, this.GetAppServiceInfo(s)))
                 .ToList();
         }
 
@@ -289,116 +271,6 @@ namespace Kephas
             }
 
             return appServiceInfo;
-        }
-
-        private class ServiceInfo : IAppServiceInfo
-        {
-            private Lazy<object> lazyInstance;
-
-            private Func<object> instanceResolver;
-
-            public ServiceInfo(Type contractType, object instance)
-            {
-                this.ContractType = contractType;
-                this.Instance = instance;
-                this.Lifetime = AppServiceLifetime.Singleton;
-                this.lazyInstance = new Lazy<object>(() => instance);
-            }
-
-            public ServiceInfo(AmbientServices ambientServices, Type contractType, Type instanceType, bool isSingleton)
-            {
-                this.ContractType = contractType;
-                this.InstanceType = instanceType;
-                this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-                this.lazyInstance = isSingleton ? new Lazy<object>(() => this.GetInstanceResolver(ambientServices, instanceType)()) : null;
-            }
-
-            public ServiceInfo(AmbientServices ambientServices, Type contractType, Func<ICompositionContext, object> serviceFactory, bool isSingleton)
-            {
-                this.ContractType = contractType;
-                this.InstanceFactory = serviceFactory;
-                this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-                this.lazyInstance = isSingleton ? new Lazy<object>(() => serviceFactory(ambientServices.asCompositionContext)) : null;
-            }
-
-            public AppServiceLifetime Lifetime { get; private set; }
-
-            bool IAppServiceInfo.AllowMultiple { get; } = false;
-
-            bool IAppServiceInfo.AsOpenGeneric { get; } = false;
-
-            Type[] IAppServiceInfo.MetadataAttributes { get; }
-
-            public Type ContractType { get; }
-
-            public object Instance { get; internal set; }
-
-            public Type InstanceType { get; private set; }
-
-            public Func<ICompositionContext, object> InstanceFactory { get; }
-
-            public object GetService(AmbientServices ambientServices)
-            {
-                return this.lazyInstance != null
-                           ? this.lazyInstance.Value
-                           : this.InstanceFactory != null
-                               ? this.InstanceFactory(ambientServices.asCompositionContext)
-                               : this.GetInstanceResolver(ambientServices, this.InstanceType)();
-            }
-
-            private Func<object> GetInstanceResolver(AmbientServices ambientServices, Type instanceType)
-            {
-                if (this.instanceResolver != null)
-                {
-                    return this.instanceResolver;
-                }
-
-                var ctors = instanceType.GetConstructors()
-                    .Where(c => c.IsStatic == false && c.IsPublic)
-                    .OrderByDescending(c => c.GetParameters().Length)
-                    .ToList();
-                var maxLength = -1;
-                ConstructorInfo maxCtor = null;
-                ParameterInfo[] maxCtorParams = null;
-                foreach (var ctor in ctors)
-                {
-                    var ctorParams = ctor.GetParameters();
-                    if (maxLength > ctorParams.Length)
-                    {
-                        break;
-                    }
-
-                    if (ctorParams.All(p => p.HasDefaultValue || ambientServices.IsRegistered(p.ParameterType)))
-                    {
-                        if (maxLength == ctorParams.Length && maxCtor != null)
-                        {
-                            throw new AmbiguousMatchException(string.Format(
-                                Strings.AmbientServices_AmbiguousConstructors_Exception,
-                                instanceType,
-                                string.Join(",", ctorParams.Select(p => p.ParameterType.Name)),
-                                string.Join(",", maxCtorParams.Select(p => p.ParameterType.Name))));
-                        }
-
-                        maxCtor = ctor;
-                        maxCtorParams = ctorParams;
-                        maxLength = ctorParams.Length;
-                    }
-                }
-
-                if (maxCtor == null)
-                {
-                    throw new CompositionException(string.Format(
-                        Strings.AmbientServices_MissingCompositionConstructor_Exception,
-                        instanceType));
-                }
-
-                return this.instanceResolver = () => maxCtor.Invoke(
-                           maxCtorParams.Select(
-                               p => p.HasDefaultValue
-                                        ? (ambientServices.GetService(p.ParameterType) ?? p.DefaultValue)
-                                        : ambientServices.GetRequiredService(p.ParameterType))
-                               .ToArray());
-            }
         }
     }
 }

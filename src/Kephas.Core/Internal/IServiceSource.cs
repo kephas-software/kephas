@@ -11,11 +11,12 @@
 namespace Kephas.Internal
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Interface for service source.
     /// </summary>
-    internal interface IServiceSource : IServiceProvider
+    internal interface IServiceSource
     {
         /// <summary>
         /// Query if the contract type matches the source.
@@ -25,5 +26,28 @@ namespace Kephas.Internal
         /// True if match, false if not.
         /// </returns>
         bool IsMatch(Type contractType);
+
+        /// <summary>
+        /// Gets a service.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        /// The service.
+        /// </returns>
+        object GetService(IServiceProvider parent, Type serviceType);
+
+        /// <summary>
+        /// Gets the service descriptors.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the service descriptors in this
+        /// collection.
+        /// </returns>
+        IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
+            IServiceProvider parent,
+            Type serviceType);
     }
 }
