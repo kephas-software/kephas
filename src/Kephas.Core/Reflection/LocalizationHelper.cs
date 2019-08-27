@@ -27,7 +27,7 @@ namespace Kephas.Reflection
         /// <value>
         /// The dynamic localization property name.
         /// </value>
-        private const string LocalizationPropertyName = "Kephas_Localization";
+        private const string LocalizationPropertyName = "__Localization";
 
         /// <summary>
         /// The function for creating the type info localization.

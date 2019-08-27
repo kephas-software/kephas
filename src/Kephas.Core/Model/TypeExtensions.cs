@@ -26,7 +26,7 @@ namespace Kephas.Model
         /// <summary>
         /// The name of the extended model type info property.
         /// </summary>
-        private static readonly string AbstractTypeInfoName = "Kephas_" + nameof(AbstractTypeInfoName);
+        private static readonly string AbstractTypeInfoName = "__" + nameof(AbstractTypeInfoName);
 
         /// <summary>
         /// Gets the abstract type for an implementation type.

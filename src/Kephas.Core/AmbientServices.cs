@@ -17,12 +17,14 @@ namespace Kephas
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Hosting;
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Internal;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -52,6 +54,8 @@ namespace Kephas
 
         private readonly ICompositionContext asCompositionContext;
 
+        private readonly List<IServiceSource> serviceSources = new List<IServiceSource>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
         /// </summary>
@@ -67,6 +71,11 @@ namespace Kephas
                 .RegisterService<IAssemblyLoader, DefaultAssemblyLoader>(isSingleton: true)
                 .RegisterService<ITypeLoader, DefaultTypeLoader>(isSingleton: true)
                 .RegisterService<IAppRuntime, DefaultAppRuntime>(isSingleton: true);
+
+            this.serviceSources.AddRange(new[]
+                                             {
+                                                 new ExportFactoryServiceSource(this),
+                                             });
         }
 
         /// <summary>
@@ -240,6 +249,14 @@ namespace Kephas
             if (this.services.TryGetValue(serviceType, out var serviceRegistration))
             {
                 return ((ServiceInfo)serviceRegistration).GetService(this);
+            }
+
+            foreach (var source in this.serviceSources)
+            {
+                if (source.IsMatch(serviceType))
+                {
+                    return source.GetService(serviceType);
+                }
             }
 
             return null;

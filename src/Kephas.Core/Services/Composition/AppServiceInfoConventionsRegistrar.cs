@@ -630,34 +630,35 @@ namespace Kephas.Services.Composition
         /// </returns>
         private IDictionary<string, IPropertyInfo> GetMetadataValueProperties(IRuntimeTypeInfo attributeTypeInfo)
         {
-            const string MetadataValuePropertiesName = "Kephas_MetadataValueProperties";
-            var metadataValueProperties = attributeTypeInfo[MetadataValuePropertiesName] as IDictionary<string, IPropertyInfo>;
-            if (metadataValueProperties == null)
+            const string MetadataValuePropertiesName = "__MetadataValueProperties";
+            if (attributeTypeInfo[MetadataValuePropertiesName] is IDictionary<string, IPropertyInfo> metadataValueProperties)
             {
-                metadataValueProperties = new Dictionary<string, IPropertyInfo>();
-                var baseMetadataName = GetMetadataNameFromAttributeType(attributeTypeInfo.Type);
-
-                foreach (var attrPropInfo in attributeTypeInfo.Properties.Values)
-                {
-                    var metadataValueAttribute = attrPropInfo.GetAttribute<MetadataValueAttribute>();
-                    var explicitName = metadataValueAttribute?.ValueName;
-                    var metadataValueName = !string.IsNullOrEmpty(explicitName)
-                                                ? explicitName
-                                                : attrPropInfo.Name == nameof(IMetadataValue.Value)
-                                                    ? baseMetadataName
-                                                    : baseMetadataName + attrPropInfo.Name;
-                    if (metadataValueAttribute != null)
-                    {
-                        metadataValueProperties.Add(metadataValueName, attrPropInfo);
-                    }
-                    else if (attrPropInfo.Name == nameof(IMetadataValue.Value) && this.IsMetadataValueAttribute(attributeTypeInfo))
-                    {
-                        metadataValueProperties.Add(metadataValueName, attrPropInfo);
-                    }
-                }
-
-                attributeTypeInfo[MetadataValuePropertiesName] = metadataValueProperties;
+                return metadataValueProperties;
             }
+
+            metadataValueProperties = new Dictionary<string, IPropertyInfo>();
+            var baseMetadataName = GetMetadataNameFromAttributeType(attributeTypeInfo.Type);
+
+            foreach (var attrPropInfo in attributeTypeInfo.Properties.Values)
+            {
+                var metadataValueAttribute = attrPropInfo.GetAttribute<MetadataValueAttribute>();
+                var explicitName = metadataValueAttribute?.ValueName;
+                var metadataValueName = !string.IsNullOrEmpty(explicitName)
+                                            ? explicitName
+                                            : attrPropInfo.Name == nameof(IMetadataValue.Value)
+                                                ? baseMetadataName
+                                                : baseMetadataName + attrPropInfo.Name;
+                if (metadataValueAttribute != null)
+                {
+                    metadataValueProperties.Add(metadataValueName, attrPropInfo);
+                }
+                else if (attrPropInfo.Name == nameof(IMetadataValue.Value) && this.IsMetadataValueAttribute(attributeTypeInfo))
+                {
+                    metadataValueProperties.Add(metadataValueName, attrPropInfo);
+                }
+            }
+
+            attributeTypeInfo[MetadataValuePropertiesName] = metadataValueProperties;
 
             return metadataValueProperties;
         }

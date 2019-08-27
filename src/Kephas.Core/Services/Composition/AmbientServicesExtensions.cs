@@ -21,7 +21,7 @@ namespace Kephas.Services.Composition
     /// </summary>
     internal static class AmbientServicesExtensions
     {
-        private const string AppServiceInfosKey = "Kephas_" + nameof(AppServiceInfosKey);
+        private const string AppServiceInfosKey = "__" + nameof(AppServiceInfosKey);
 
         /// <summary>
         /// Gets the registered application service contracts.

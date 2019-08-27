@@ -23,12 +23,12 @@ namespace Kephas.Threading.Tasks
         /// <summary>
         /// The server thread context store actions key.
         /// </summary>
-        private const string ThreadingContextStoreActionsKey = "Kephas_ThreadContextStoreActions";
+        private const string ThreadingContextStoreActionsKey = "__ThreadContextStoreActions";
 
         /// <summary>
         /// The server thread context restore actions key.
         /// </summary>
-        private const string ThreadingContextRestoreActionsKey = "Kephas_ThreadContextRestoreActions";
+        private const string ThreadingContextRestoreActionsKey = "__ThreadContextRestoreActions";
 
         /// <summary>
         /// The ambient services.
