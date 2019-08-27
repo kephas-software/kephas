@@ -43,10 +43,11 @@ steps:
     testAssemblyVer2: |
       **\net45*\*Tests.dll
       **\net46*\*Tests.dll
+      !**\*InteractiveTests.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
-    platform: 'net45'
+    platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     runInParallel: true
     codeCoverageEnabled: true
@@ -56,11 +57,12 @@ steps:
     testRunTitle: '.NET Core 2.2'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\netcoreapp2.2\*Tests.dll
+      **\netcoreapp*\*Tests.dll
+      !**\*InteractiveTests.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
-    platform: 'netcoreapp2.2'
+    platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     runInParallel: true
     codeCoverageEnabled: true
