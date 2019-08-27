@@ -1,4 +1,4 @@
-<a name="4.5.0 onward"></a>
+# 4.5.0 onward
 For version 4.5.0 onward please check the notes attached to the releases here: https://github.com/kephas-software/kephas/releases.
 
 <a name="4.5.0"></a>
