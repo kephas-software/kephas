@@ -25,7 +25,7 @@ namespace Kephas.Internal
 
         public IServiceInfo this[Type contractType] => this.services[contractType];
 
-        public IEnumerable<IServiceSource> Sources { get; }
+        public IEnumerable<IServiceSource> Sources => this.serviceSources;
 
         public bool TryGetValue(Type serviceType, out IServiceInfo serviceInfo) =>
             this.services.TryGetValue(serviceType, out serviceInfo);

@@ -68,6 +68,7 @@ namespace Kephas
 
             this.registry
                 .RegisterSource(new ExportFactoryServiceSource(this.registry))
+                .RegisterSource(new CollectionServiceSource(this.registry))
                 .RegisterSource(new EnumerableServiceSource(this.registry));
 
             this.resolver = new ResolverEngine(this, this.registry);

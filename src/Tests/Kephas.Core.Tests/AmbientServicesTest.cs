@@ -182,6 +182,18 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
+        public void GetService_enumeration_of_exportFactory()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService<IService, SimpleService>();
+            ambientServices.RegisterService<DependentEnumerationService, DependentEnumerationService>();
+
+            var dependent = ambientServices.GetService<DependentEnumerationService>();
+            Assert.IsNotNull(dependent.Factories);
+            Assert.IsInstanceOf<SimpleService>(dependent.Factories.Single().CreateExportedValue());
+        }
+
+        [Test]
         public void GetService_enumerable()
         {
             var ambientServices = new AmbientServices();
@@ -215,6 +227,16 @@ namespace Kephas.Core.Tests
             }
 
             public ICollection<IExportFactory<IService>> Factories { get; }
+        }
+
+        public class DependentEnumerationService
+        {
+            public DependentEnumerationService(IEnumerable<IExportFactory<IService>> factories)
+            {
+                this.Factories = factories;
+            }
+
+            public IEnumerable<IExportFactory<IService>> Factories { get; }
         }
 
         public class SimpleService : IService { }

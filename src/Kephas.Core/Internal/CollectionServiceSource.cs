@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExportFactoryServiceSource.cs" company="Kephas Software SRL">
+// <copyright file="CollectionServiceSource.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the export service source class.
+//   Implements the collection service source class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,29 +15,21 @@ namespace Kephas.Internal
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Reflection;
 
-    internal class ExportFactoryServiceSource : ServiceSourceBase
+    internal class CollectionServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => ExportFactoryServiceSource.GetService<string>(null));
+            ReflectionHelper.GetGenericMethodOf(_ => CollectionServiceSource.GetService<string>(null, (IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)>)null));
 
-        public ExportFactoryServiceSource(IServiceRegistry registry)
+        public CollectionServiceSource(IServiceRegistry registry)
             : base(registry)
         {
         }
 
         public override bool IsMatch(Type contractType)
         {
-            return contractType.IsConstructedGenericOf(typeof(IExportFactory<>));
-        }
-
-        public override object GetService(IAmbientServices parent, Type serviceType)
-        {
-            var descriptors = this.GetServiceDescriptors(parent, serviceType);
-            return descriptors.Single().factory();
+            return contractType.IsConstructedGenericOf(typeof(ICollection<>));
         }
 
         public override IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
@@ -45,14 +37,21 @@ namespace Kephas.Internal
             Type serviceType)
         {
             var innerType = serviceType.GetGenericArguments()[0];
-            var getService = GetServiceMethod.MakeGenericMethod(innerType);
-            return this.GetServiceDescriptors(parent, innerType, fn => () => getService.Call(null, fn));
+            return this.GetServiceDescriptors(parent, innerType, null);
         }
 
-        private static IExportFactory<T> GetService<T>(Func<object> factory)
+        public override object GetService(IAmbientServices parent, Type serviceType)
+        {
+            var descriptors = this.GetServiceDescriptors(parent, serviceType);
+            var innerType = serviceType.GetGenericArguments()[0];
+            var getService = GetServiceMethod.MakeGenericMethod(innerType);
+            return getService.Call(null, parent, descriptors);
+        }
+
+        private static ICollection<T> GetService<T>(IServiceProvider parent, IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> descriptors)
             where T : class
         {
-            return new ExportFactory<T>(() => (T)factory());
+            return descriptors.Select(d => (T)d.factory()).ToList();
         }
     }
 }

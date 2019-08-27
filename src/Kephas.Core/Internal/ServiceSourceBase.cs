@@ -25,14 +25,19 @@ namespace Kephas.Internal
 
         public abstract bool IsMatch(Type contractType);
 
-        public abstract object GetService(IServiceProvider parent, Type serviceType);
+        public abstract object GetService(IAmbientServices parent, Type serviceType);
 
-        public virtual IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(IServiceProvider parent, Type serviceType)
+        public virtual IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
+            IAmbientServices parent,
+            Type serviceType)
         {
             return this.GetServiceDescriptors(parent, serviceType, null);
         }
 
-        protected virtual IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(IServiceProvider parent, Type serviceType, Func<Func<object>, Func<object>> selector)
+        protected virtual IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
+            IAmbientServices parent,
+            Type serviceType,
+            Func<Func<object>, Func<object>> selector)
         {
             if (this.registry.TryGetValue(serviceType, out var serviceInfo))
             {
@@ -43,16 +48,16 @@ namespace Kephas.Internal
                         yield return
                             (si,
                                 selector == null
-                                    ? () => si.GetService((AmbientServices)parent)
-                                    : selector(() => si.GetService((AmbientServices)parent)));
+                                    ? () => si.GetService(parent)
+                                    : selector(() => si.GetService(parent)));
                     }
                 }
                 else
                 {
                     yield return (serviceInfo,
                                      selector == null
-                                         ? () => serviceInfo.GetService((AmbientServices)parent)
-                                         : selector(() => serviceInfo.GetService((AmbientServices)parent)));
+                                         ? () => serviceInfo.GetService(parent)
+                                         : selector(() => serviceInfo.GetService(parent)));
                 }
             }
             else

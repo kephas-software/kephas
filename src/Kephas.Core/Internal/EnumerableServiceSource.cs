@@ -12,7 +12,6 @@ namespace Kephas.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
 
     using Kephas.Reflection;
@@ -32,13 +31,15 @@ namespace Kephas.Internal
             return contractType.IsConstructedGenericOf(typeof(IEnumerable<>));
         }
 
-        public override IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(IServiceProvider parent, Type serviceType)
+        public override IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
+            IAmbientServices parent,
+            Type serviceType)
         {
             var innerType = serviceType.GetGenericArguments()[0];
             return this.GetServiceDescriptors(parent, innerType, null);
         }
 
-        public override object GetService(IServiceProvider parent, Type serviceType)
+        public override object GetService(IAmbientServices parent, Type serviceType)
         {
             var descriptors = this.GetServiceDescriptors(parent, serviceType);
             var innerType = serviceType.GetGenericArguments()[0];

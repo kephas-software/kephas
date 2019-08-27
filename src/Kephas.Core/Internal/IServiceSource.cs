@@ -35,7 +35,7 @@ namespace Kephas.Internal
         /// <returns>
         /// The service.
         /// </returns>
-        object GetService(IServiceProvider parent, Type serviceType);
+        object GetService(IAmbientServices parent, Type serviceType);
 
         /// <summary>
         /// Gets the service descriptors.
@@ -47,7 +47,7 @@ namespace Kephas.Internal
         /// collection.
         /// </returns>
         IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
-            IServiceProvider parent,
+            IAmbientServices parent,
             Type serviceType);
     }
 }

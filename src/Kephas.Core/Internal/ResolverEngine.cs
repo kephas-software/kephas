@@ -26,13 +26,13 @@ namespace Kephas.Internal
 
         public object GetService(Type serviceType)
         {
+            if (!this.ambientServicesRef.TryGetTarget(out var ambientServices))
+            {
+                throw new ObjectDisposedException(nameof(ResolverEngine));
+            }
+
             if (this.registry.TryGetValue(serviceType, out var serviceRegistration))
             {
-                if (!this.ambientServicesRef.TryGetTarget(out var ambientServices))
-                {
-                    throw new ObjectDisposedException(nameof(ResolverEngine));
-                }
-
                 return serviceRegistration.GetService(ambientServices);
             }
 
@@ -40,7 +40,7 @@ namespace Kephas.Internal
             {
                 if (source.IsMatch(serviceType))
                 {
-                    return source.GetService(this, serviceType);
+                    return source.GetService(ambientServices, serviceType);
                 }
             }
 
