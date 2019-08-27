@@ -38,10 +38,24 @@ steps:
 
 - task: VSTest@2
   inputs:
-    testRunTitle: '.NET Framework 4.5/4.6'
+    testRunTitle: '.NET Framework 4.5'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
       **\net45*\*Tests.dll
+      !**\*InteractiveTests.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    runInParallel: true
+    codeCoverageEnabled: true
+
+- task: VSTest@2
+  inputs:
+    testRunTitle: '.NET Framework 4.6'
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
       **\net46*\*Tests.dll
       !**\*InteractiveTests.dll
       !**\*TestAdapter.dll
