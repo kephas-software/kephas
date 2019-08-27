@@ -82,7 +82,7 @@ steps:
     configuration: '$(buildConfiguration)'
     runInParallel: true
     codeCoverageEnabled: true
-    otherConsoleOptions: '/Framework:.NETFramework,Version=v4.5'
+    otherConsoleOptions: '/Framework:.NETFramework,Version=v4.6'
 
 - task: VSTest@2
   inputs:
