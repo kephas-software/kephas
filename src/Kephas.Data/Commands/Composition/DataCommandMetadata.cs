@@ -41,11 +41,10 @@ namespace Kephas.Data.Commands.Composition
         /// Initializes a new instance of the <see cref="DataCommandMetadata" /> class.
         /// </summary>
         /// <param name="dataContextType">The type of the supported data context.</param>
-        /// <param name="processingPriority">The processing priority (optional).</param>
-        /// <param name="overridePriority">The override priority (optional).</param>
-        /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not.</param>
-        public DataCommandMetadata(Type dataContextType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
-            : base(processingPriority, overridePriority, optionalService)
+        /// <param name="processingPriority">Optional. The processing priority.</param>
+        /// <param name="overridePriority">Optional. The override priority.</param>
+        public DataCommandMetadata(Type dataContextType, int processingPriority = 0, int overridePriority = 0)
+            : base(processingPriority, overridePriority)
         {
             Requires.NotNull(dataContextType, nameof(dataContextType));
 

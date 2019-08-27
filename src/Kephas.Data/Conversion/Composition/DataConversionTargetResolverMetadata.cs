@@ -43,11 +43,10 @@ namespace Kephas.Data.Conversion.Composition
         /// </summary>
         /// <param name="sourceType">The type of the source.</param>
         /// <param name="targetType">The type of the target.</param>
-        /// <param name="processingPriority">The processing priority (optional).</param>
-        /// <param name="overridePriority">  The override priority.</param>
-        /// <param name="optionalService">   <c>true</c> if the service is optional, <c>false</c> if not.</param>
-        public DataConversionTargetResolverMetadata(Type sourceType, Type targetType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
-            : base(processingPriority, overridePriority, optionalService)
+        /// <param name="processingPriority">Optional. The processing priority.</param>
+        /// <param name="overridePriority">Optional. The override priority.</param>
+        public DataConversionTargetResolverMetadata(Type sourceType, Type targetType, int processingPriority = 0, int overridePriority = 0)
+            : base(processingPriority, overridePriority)
         {
             this.SourceType = sourceType;
             this.TargetType = targetType;

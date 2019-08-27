@@ -40,11 +40,10 @@ namespace Kephas.Data.Client.Queries.Conversion.Composition
         /// Initializes a new instance of the <see cref="ExpressionConverterMetadata"/> class.
         /// </summary>
         /// <param name="operator">The operator.</param>
-        /// <param name="processingPriority">The processing priority (optional).</param>
-        /// <param name="overridePriority">The override priority (optional).</param>
-        /// <param name="optionalService">True to optional service (optional).</param>
-        public ExpressionConverterMetadata(string @operator, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
-            : base(processingPriority, overridePriority, optionalService)
+        /// <param name="processingPriority">Optional. The processing priority.</param>
+        /// <param name="overridePriority">Optional. The override priority.</param>
+        public ExpressionConverterMetadata(string @operator, int processingPriority = 0, int overridePriority = 0)
+            : base(processingPriority, overridePriority)
         {
             Requires.NotNullOrEmpty(@operator, nameof(@operator));
 

@@ -42,16 +42,14 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadata" /> class.
         /// </summary>
-        /// <param name="processingPriority">The processing priority (optional).</param>
-        /// <param name="overridePriority">The override priority (optional).</param>
-        /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not (optional).</param>
-        /// <param name="serviceName">The name of the service (optional).</param>
-        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, bool optionalService = false, string serviceName = null)
+        /// <param name="processingPriority">Optional. The processing priority.</param>
+        /// <param name="overridePriority">Optional. The override priority.</param>
+        /// <param name="serviceName">Optional. The name of the service.</param>
+        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, string serviceName = null)
             : base(null)
         {
             this.ProcessingPriority = processingPriority;
             this.OverridePriority = overridePriority;
-            this.OptionalService = optionalService;
             this.ServiceName = serviceName;
         }
 
@@ -70,14 +68,6 @@ namespace Kephas.Services.Composition
         /// The override priority.
         /// </value>
         public int OverridePriority { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether the decorated service is optional.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the service is optional, <c>false</c> if not.
-        /// </value>
-        public bool OptionalService { get; }
 
         /// <summary>
         /// Gets or sets the name of the service.
@@ -104,8 +94,7 @@ namespace Kephas.Services.Composition
         public override string ToString()
         {
             var serviceName = string.IsNullOrEmpty(this.ServiceName) ? string.Empty : $"Name: {this.ServiceName}, ";
-            var optional = this.OptionalService ? "Optional, " : string.Empty;
-            return $"Override#: {this.OverridePriority}, Processing#: {this.ProcessingPriority}, {serviceName}{optional}Impl: {this.AppServiceImplementationType}";
+            return $"Override#: {this.OverridePriority}, Processing#: {this.ProcessingPriority}, {serviceName}Impl: {this.AppServiceImplementationType}";
         }
 
         /// <summary>

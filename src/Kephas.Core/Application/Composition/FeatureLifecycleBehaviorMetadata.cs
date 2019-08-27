@@ -41,9 +41,8 @@ namespace Kephas.Application.Composition
         /// <param name="version">Optional. The version.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        /// <param name="optionalService">Optional. True for an optional service.</param>
-        public FeatureLifecycleBehaviorMetadata(string feature = null, string version = null, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
-            : base(processingPriority, overridePriority, optionalService)
+        public FeatureLifecycleBehaviorMetadata(string feature = null, string version = null, int processingPriority = 0, int overridePriority = 0)
+            : base(processingPriority, overridePriority)
         {
             if (!string.IsNullOrEmpty(feature))
             {

@@ -39,11 +39,10 @@ namespace Kephas.Data.Composition
         /// Initializes a new instance of the <see cref="DataContextMetadata" /> class.
         /// </summary>
         /// <param name="supportedDataStoreKinds">The supported data store kinds.</param>
-        /// <param name="processingPriority">The processing priority.</param>
-        /// <param name="overridePriority">  The override priority.</param>
-        /// <param name="optionalService">   <c>true</c> if the service is optional, <c>false</c> if not.</param>
-        public DataContextMetadata(IEnumerable<string> supportedDataStoreKinds, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
-            : base(processingPriority, overridePriority, optionalService)
+        /// <param name="processingPriority">Optional. The processing priority.</param>
+        /// <param name="overridePriority">Optional. The override priority.</param>
+        public DataContextMetadata(IEnumerable<string> supportedDataStoreKinds, int processingPriority = 0, int overridePriority = 0)
+            : base(processingPriority, overridePriority)
         {
             this.SupportedDataStoreKinds = supportedDataStoreKinds ?? new string[0];
         }

@@ -37,12 +37,11 @@ namespace Kephas.Application.Composition
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureManagerMetadata" /> class.
         /// </summary>
-        /// <param name="featureInfo">Information describing the feature (optional).</param>
-        /// <param name="processingPriority">The processing priority (optional).</param>
-        /// <param name="overridePriority">The override priority (optional).</param>
-        /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not (optional).</param>
-        public FeatureManagerMetadata(FeatureInfo featureInfo = null, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
-            : base(processingPriority, overridePriority, optionalService)
+        /// <param name="featureInfo">Optional. Information describing the feature.</param>
+        /// <param name="processingPriority">Optional. The processing priority.</param>
+        /// <param name="overridePriority">Optional. The override priority.</param>
+        public FeatureManagerMetadata(FeatureInfo featureInfo = null, int processingPriority = 0, int overridePriority = 0)
+            : base(processingPriority, overridePriority)
         {
             this.FeatureInfo = featureInfo;
         }

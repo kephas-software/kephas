@@ -43,10 +43,9 @@ namespace Kephas.Serialization.ServiceStack.Text.Composition
         /// <param name="valueType">The type of the value.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        /// <param name="optionalService">Optional. True to optional service.</param>
         /// <param name="serviceName">Optional. Name of the service.</param>
-        public TypeJsonSerializerMetadata(Type valueType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false, string serviceName = null)
-            : base(processingPriority, overridePriority, optionalService, serviceName)
+        public TypeJsonSerializerMetadata(Type valueType, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+            : base(processingPriority, overridePriority, serviceName)
         {
             Requires.NotNull(valueType, nameof(valueType));
 

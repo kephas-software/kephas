@@ -41,11 +41,10 @@ namespace Kephas.Services.Behaviors.Composition
         /// Initializes a new instance of the <see cref="ServiceBehaviorRuleMetadata"/> class.
         /// </summary>
         /// <param name="serviceContractType">Type of the service contract.</param>
-        /// <param name="processingPriority">The processing priority (optional).</param>
-        /// <param name="overridePriority">The override priority (optional).</param>
-        /// <param name="optionalService"><c>true</c> if the service is optional, <c>false</c> if not (optional).</param>
-        public ServiceBehaviorRuleMetadata(Type serviceContractType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
-            : base(processingPriority, overridePriority, optionalService)
+        /// <param name="processingPriority">Optional. The processing priority.</param>
+        /// <param name="overridePriority">Optional. The override priority.</param>
+        public ServiceBehaviorRuleMetadata(Type serviceContractType, int processingPriority = 0, int overridePriority = 0)
+            : base(processingPriority, overridePriority)
         {
             Requires.NotNull(serviceContractType, nameof(serviceContractType));
 

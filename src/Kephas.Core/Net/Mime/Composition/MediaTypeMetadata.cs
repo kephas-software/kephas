@@ -40,11 +40,10 @@ namespace Kephas.Net.Mime.Composition
         /// Initializes a new instance of the <see cref="MediaTypeMetadata" /> class.
         /// </summary>
         /// <param name="supportedMediaTypes">The supported media types.</param>
-        /// <param name="processingPriority">The processing priority.</param>
-        /// <param name="overridePriority">  The override priority.</param>
-        /// <param name="optionalService">   <c>true</c> if the service is optional, <c>false</c> if not.</param>
-        public MediaTypeMetadata(string[] supportedMediaTypes, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)
-            : base(processingPriority, overridePriority, optionalService)
+        /// <param name="processingPriority">Optional. The processing priority.</param>
+        /// <param name="overridePriority">Optional. The override priority.</param>
+        public MediaTypeMetadata(string[] supportedMediaTypes, int processingPriority = 0, int overridePriority = 0)
+            : base(processingPriority, overridePriority)
         {
             Requires.NotNull(supportedMediaTypes, nameof(supportedMediaTypes));
 
