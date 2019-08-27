@@ -72,7 +72,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// The factories.
         /// </summary>
-        private static IList<IRuntimeTypeInfoFactory> factories = new List<IRuntimeTypeInfoFactory>();
+        private static readonly IList<IRuntimeTypeInfoFactory> factories = new List<IRuntimeTypeInfoFactory>();
 
         /// <summary>
         /// The function for creating the type info.
