@@ -191,17 +191,33 @@ namespace Kephas.Composition
         /// <summary>
         /// Converts a <see cref="ICompositionContext"/> to a <see cref="IServiceProvider"/>.
         /// </summary>
-        /// <param name="compositionContext">The compositionContext to act on.</param>
+        /// <param name="compositionContext">The composition context to act on.</param>
         /// <returns>
-        /// The composition context as an IServiceProvider.
+        /// The composition context as an <see cref="IServiceProvider"/>.
         /// </returns>
         public static IServiceProvider ToServiceProvider(this ICompositionContext compositionContext)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
             return compositionContext as IServiceProvider
-                   ?? new CompositionContextServiceProviderAdapter(compositionContext);
+                   ?? new ServiceProviderAdapter(compositionContext);
         }
+
+        /// <summary>
+        /// Converts a <see cref="IServiceProvider"/> to a <see cref="ICompositionContext"/>.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider to act on.</param>
+        /// <returns>
+        /// The service provider as an <see cref="ICompositionContext"/>.
+        /// </returns>
+        public static ICompositionContext ToCompositionContext(this IServiceProvider serviceProvider)
+        {
+            Requires.NotNull(serviceProvider, nameof(serviceProvider));
+
+            return serviceProvider as ICompositionContext
+                ?? new CompositionContextAdapter(serviceProvider);
+        }
+
 
         /// <summary>
         /// Resolves the specified contract type as an export factory.

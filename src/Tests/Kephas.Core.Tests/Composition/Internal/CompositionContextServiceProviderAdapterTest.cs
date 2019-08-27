@@ -30,7 +30,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExport(typeof(string), Arg.Any<string>()).Returns("hello");
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (string)adapter.GetService(typeof(string));
             Assert.AreEqual("hello", result);
@@ -41,7 +41,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExport(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (IExportFactory<string>)adapter.GetService(typeof(IExportFactory<string>));
             Assert.AreEqual("exported test", result.CreateExport().Value);
@@ -52,7 +52,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (IExportFactory<string, string>)adapter.GetService(typeof(IExportFactory<string, string>));
             Assert.AreEqual("exported test", result.CreateExport().Value);
@@ -64,7 +64,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (IEnumerable<IExportFactory<string>>)adapter.GetService(typeof(IEnumerable<IExportFactory<string>>));
             Assert.AreEqual(1, result.Count());
@@ -76,7 +76,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (IEnumerable<IExportFactory<string, string>>)adapter.GetService(typeof(IEnumerable<IExportFactory<string, string>>));
             Assert.AreEqual(1, result.Count());
@@ -89,7 +89,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (ICollection<IExportFactory<string>>)adapter.GetService(typeof(ICollection<IExportFactory<string>>));
             Assert.AreEqual(1, result.Count());
@@ -101,7 +101,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (ICollection<IExportFactory<string, string>>)adapter.GetService(typeof(ICollection<IExportFactory<string, string>>));
             Assert.AreEqual(1, result.Count());
@@ -114,7 +114,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (IList<IExportFactory<string>>)adapter.GetService(typeof(IList<IExportFactory<string>>));
             Assert.AreEqual(1, result.Count());
@@ -130,7 +130,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (IList<IExportFactory<string, string>>)adapter.GetService(typeof(IList<IExportFactory<string, string>>));
             Assert.AreEqual(1, result.Count());
@@ -148,7 +148,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (IEnumerable<string>)adapter.GetService(typeof(IEnumerable<string>));
             Assert.AreEqual(2, result.Count());
@@ -161,7 +161,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (ICollection<string>)adapter.GetService(typeof(ICollection<string>));
             Assert.AreEqual(2, result.Count);
@@ -174,7 +174,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (IList<string>)adapter.GetService(typeof(IList<string>));
             Assert.AreEqual(2, result.Count);
@@ -187,7 +187,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         {
             var context = Substitute.For<ICompositionContext>();
             context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
-            var adapter = new CompositionContextServiceProviderAdapter(context);
+            var adapter = new ServiceProviderAdapter(context);
 
             var result = (List<string>)adapter.GetService(typeof(List<string>));
             Assert.AreEqual(2, result.Count);

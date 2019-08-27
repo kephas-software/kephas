@@ -17,7 +17,6 @@ namespace Kephas
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Hosting;
@@ -58,18 +57,16 @@ namespace Kephas
         /// </summary>
         public AmbientServices()
         {
-            this.asCompositionContext = new AmbientServicesCompositionContext(this);
+            this.asCompositionContext = this.ToCompositionContext();
             var logManager = new NullLogManager();
-            var typeLoader = new DefaultTypeLoader(this);
-            var assemblyLoader = new DefaultAssemblyLoader();
 
             this.RegisterService<IAmbientServices>(this)
-                .RegisterService<IConfigurationStore>(new DefaultConfigurationStore())
-                .RegisterService<ILogManager>(logManager)
                 .RegisterService<ICompositionContext>(this.asCompositionContext)
-                .RegisterService<IAssemblyLoader>(assemblyLoader)
-                .RegisterService<ITypeLoader>(typeLoader)
-                .RegisterService<IAppRuntime>(new DefaultAppRuntime(assemblyLoader, logManager));
+                .RegisterService<IConfigurationStore, DefaultConfigurationStore>(isSingleton: true)
+                .RegisterService<ILogManager>(logManager)
+                .RegisterService<IAssemblyLoader, DefaultAssemblyLoader>(isSingleton: true)
+                .RegisterService<ITypeLoader, DefaultTypeLoader>(isSingleton: true)
+                .RegisterService<IAppRuntime, DefaultAppRuntime>(isSingleton: true);
         }
 
         /// <summary>
@@ -344,7 +341,7 @@ namespace Kephas
                         break;
                     }
 
-                    if (ctorParams.All(p => ambientServices.IsRegistered(p.ParameterType)))
+                    if (ctorParams.All(p => p.HasDefaultValue || ambientServices.IsRegistered(p.ParameterType)))
                     {
                         if (maxLength == ctorParams.Length && maxCtor != null)
                         {
@@ -368,118 +365,12 @@ namespace Kephas
                         instanceType));
                 }
 
-                return this.instanceResolver = () => maxCtor.Invoke(maxCtorParams.Select(p => ambientServices.GetRequiredService(p.ParameterType)).ToArray());
-            }
-        }
-
-        private class AmbientServicesCompositionContext : ICompositionContext
-        {
-            private readonly AmbientServices ambientServices;
-
-            public AmbientServicesCompositionContext(AmbientServices ambientServices)
-            {
-                this.ambientServices = ambientServices;
-            }
-
-            /// <summary>
-            /// Resolves the specified contract type.
-            /// </summary>
-            /// <param name="contractType">Type of the contract.</param>
-            /// <param name="contractName">Optional. The contract name.</param>
-            /// <returns>
-            /// An object implementing <paramref name="contractType"/>.
-            /// </returns>
-            public object GetExport(Type contractType, string contractName = null)
-            {
-                return this.ambientServices.GetService(contractType);
-            }
-
-            /// <summary>
-            /// Resolves the specified contract type returning multiple instances.
-            /// </summary>
-            /// <param name="contractType">Type of the contract.</param>
-            /// <param name="contractName">Optional. The contract name.</param>
-            /// <returns>
-            /// An enumeration of objects implementing <paramref name="contractType"/>.
-            /// </returns>
-            public IEnumerable<object> GetExports(Type contractType, string contractName = null)
-            {
-                var collectionType = typeof(IEnumerable<>).MakeGenericType(contractType);
-                return (IEnumerable<object>)this.ambientServices.GetService(collectionType);
-            }
-
-            /// <summary>
-            /// Resolves the specified contract type.
-            /// </summary>
-            /// <typeparam name="T">The service type.</typeparam>
-            /// <param name="contractName">Optional. The contract name.</param>
-            /// <returns>
-            /// An object implementing <typeparamref name="T" />.
-            /// </returns>
-            public T GetExport<T>(string contractName = null)
-            {
-                return (T)this.ambientServices.GetService(typeof(T));
-            }
-
-            /// <summary>
-            /// Resolves the specified contract type returning multiple instances.
-            /// </summary>
-            /// <typeparam name="T">The service type.</typeparam>
-            /// <param name="contractName">Optional. The contract name.</param>
-            /// <returns>
-            /// An enumeration of objects implementing <typeparamref name="T" />.
-            /// </returns>
-            public IEnumerable<T> GetExports<T>(string contractName = null)
-            {
-                var collectionType = typeof(IEnumerable<>).MakeGenericType(typeof(T));
-                return (IEnumerable<T>)this.ambientServices.GetService(collectionType);
-            }
-
-            /// <summary>
-            /// Tries to resolve the specified contract type.
-            /// </summary>
-            /// <param name="contractType">Type of the contract.</param>
-            /// <param name="contractName">Optional. The contract name.</param>
-            /// <returns>
-            /// An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the
-            /// provided contract was not found.
-            /// </returns>
-            public object TryGetExport(Type contractType, string contractName = null)
-            {
-                return this.ambientServices.GetService(contractType);
-            }
-
-            /// <summary>
-            /// Tries to resolve the specified contract type.
-            /// </summary>
-            /// <typeparam name="T">The service type.</typeparam>
-            /// <param name="contractName">Optional. The contract name.</param>
-            /// <returns>
-            /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the
-            /// provided contract was not found.
-            /// </returns>
-            public T TryGetExport<T>(string contractName = null)
-            {
-                return (T)this.ambientServices.GetService(typeof(T));
-            }
-
-            /// <summary>
-            /// Creates a new scoped composition context.
-            /// </summary>
-            /// <returns>
-            /// The new scoped context.
-            /// </returns>
-            ICompositionContext ICompositionContext.CreateScopedContext()
-            {
-                return this;
-            }
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
-            /// resources.
-            /// </summary>
-            void IDisposable.Dispose()
-            {
+                return this.instanceResolver = () => maxCtor.Invoke(
+                           maxCtorParams.Select(
+                               p => p.HasDefaultValue
+                                        ? (ambientServices.GetService(p.ParameterType) ?? p.DefaultValue)
+                                        : ambientServices.GetRequiredService(p.ParameterType))
+                               .ToArray());
             }
         }
     }

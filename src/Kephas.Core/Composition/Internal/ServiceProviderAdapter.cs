@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionContextServiceProviderAdapter.cs" company="Kephas Software SRL">
+// <copyright file="ServiceProviderAdapter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -21,13 +21,13 @@ namespace Kephas.Composition.Internal
     /// <summary>
     /// Adapter for <see cref="IServiceProvider"/> based on a composition context.
     /// </summary>
-    internal class CompositionContextServiceProviderAdapter : IServiceProvider
+    internal class ServiceProviderAdapter : IServiceProvider
     {
         private static MethodInfo ToEnumerableMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ((CompositionContextServiceProviderAdapter)null).ToEnumerable<int>(null));
+            _ => ((ServiceProviderAdapter)null).ToEnumerable<int>(null));
 
         private static MethodInfo ToListMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ((CompositionContextServiceProviderAdapter)null).ToList<int>(null));
+            _ => ((ServiceProviderAdapter)null).ToList<int>(null));
 
         /// <summary>
         /// Context for the composition.
@@ -35,11 +35,11 @@ namespace Kephas.Composition.Internal
         private readonly ICompositionContext compositionContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositionContextServiceProviderAdapter"/>
+        /// Initializes a new instance of the <see cref="ServiceProviderAdapter"/>
         /// class.
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
-        public CompositionContextServiceProviderAdapter(ICompositionContext compositionContext)
+        public ServiceProviderAdapter(ICompositionContext compositionContext)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
 

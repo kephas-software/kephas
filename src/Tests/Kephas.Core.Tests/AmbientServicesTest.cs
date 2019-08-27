@@ -65,6 +65,28 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
+        public void RegisterService_service_type_singleton_optional_dependency_resolved()
+        {
+            var ambientServices = new AmbientServices();
+            var dependency = Substitute.For<IDependency>();
+            ambientServices.RegisterService(typeof(IService), typeof(OptionalDependentService), isSingleton: true);
+            ambientServices.RegisterService(typeof(IDependency), dependency);
+
+            var service = (OptionalDependentService)ambientServices.GetService(typeof(IService));
+            Assert.AreSame(dependency, service.Dependency);
+        }
+
+        [Test]
+        public void RegisterService_service_type_singleton_optional_dependency_not_resolved()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService(typeof(IService), typeof(OptionalDependentService), isSingleton: true);
+
+            var service = (OptionalDependentService)ambientServices.GetService(typeof(IService));
+            Assert.IsNull(service.Dependency);
+        }
+
+        [Test]
         public void RegisterService_service_type_singleton_dependency_ambiguous()
         {
             var ambientServices = new AmbientServices();
@@ -156,6 +178,16 @@ namespace Kephas.Core.Tests
             public IDependency Dependency { get; }
 
             public DependentService(IDependency dependency)
+            {
+                this.Dependency = dependency;
+            }
+        }
+
+        public class OptionalDependentService : IService
+        {
+            public IDependency Dependency { get; }
+
+            public OptionalDependentService(IDependency dependency = null)
             {
                 this.Dependency = dependency;
             }
