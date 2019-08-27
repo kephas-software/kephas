@@ -21,13 +21,17 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
     using Kephas.Logging;
+    using Kephas.Messaging.Behaviors;
+    using Kephas.Messaging.Behaviors.Composition;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Composition;
     using Kephas.Messaging.Events;
+    using Kephas.Messaging.HandlerSelectors;
     using Kephas.Messaging.Messages;
     using Kephas.Serialization;
     using Kephas.Serialization.Json;
     using Kephas.Services;
+    using Kephas.Services.Composition;
     using Kephas.Testing.Composition.Mef;
     using Kephas.Threading.Tasks;
 
@@ -123,17 +127,21 @@ namespace Kephas.Messaging.Tests.Distributed
             var messageBroker = container.GetExport<IMessageBroker>();
             var messageProcessor = (SubstitutableMessageProcessor)container.GetExport<IMessageProcessor>();
             var disposable = Substitute.For<IDisposable>();
-            messageProcessor.ProcessAsyncDelegate = (msg, ctx, token) =>
+            var added = false;
+            messageProcessor.ProcessingContextConfigurator = (msg, ctx) =>
                 {
-                    ctx.AddResource(disposable);
-                    return Task.FromResult<IMessage>(null);
+                    if (!added)
+                    {
+                        ctx.AddResource(disposable);
+                    }
+
+                    added = true;
                 };
 
             var pingBack = await messageBroker.DispatchAsync(new BrokeredMessage
                                                                  {
                                                                      Content = new PingMessage(),
                                                                      Timeout = TimeSpan.FromSeconds(100),
-                                                                     IsOneWay = true,
                                                                  });
 
             disposable.Received(1).Dispose();
@@ -322,13 +330,23 @@ namespace Kephas.Messaging.Tests.Distributed
             }
         }
 
-        public class SubstitutableMessageProcessor : IMessageProcessor
+        [OverridePriority(Priority.High)]
+        public class SubstitutableMessageProcessor : DefaultMessageProcessor
         {
-            public Func<IMessage, IMessageProcessingContext, CancellationToken, Task<IMessage>> ProcessAsyncDelegate { get; set; }
-
-            public Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context = null, CancellationToken token = default)
+            public SubstitutableMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
+                : base(compositionContext, messageMatchService, handlerSelectorFactories, behaviorFactories)
             {
-                return this.ProcessAsyncDelegate?.Invoke(message, context, token) ?? Task.FromResult<IMessage>(null);
+            }
+
+            public Action<IMessage, IMessageProcessingContext> ProcessingContextConfigurator { get; set; }
+
+            protected override Task ApplyBeforeProcessBehaviorsAsync(
+                IEnumerable<IMessageProcessingBehavior> behaviors,
+                IMessageProcessingContext context,
+                CancellationToken token)
+            {
+                this.ProcessingContextConfigurator?.Invoke(context.Message, context);
+                return base.ApplyBeforeProcessBehaviorsAsync(behaviors, context, token);
             }
         }
     }
