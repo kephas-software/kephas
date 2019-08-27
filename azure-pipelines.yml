@@ -38,13 +38,28 @@ steps:
 
 - task: VSTest@2
   inputs:
+    testRunTitle: '.NET Framework 4.5'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
       **\*Tests.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
-    platform: '$(buildPlatform)'
+    platform: 'net45'
+    configuration: '$(buildConfiguration)'
+    runInParallel: true
+    codeCoverageEnabled: true
+
+- task: VSTest@2
+  inputs:
+    testRunTitle: '.NET Core 2.2'
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\*Tests.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    platform: 'netcoreapp2.2'
     configuration: '$(buildConfiguration)'
     runInParallel: true
     codeCoverageEnabled: true
