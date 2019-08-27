@@ -52,7 +52,7 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
         /// <param name="context">The sending context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields an IMessage.
         /// </returns>
