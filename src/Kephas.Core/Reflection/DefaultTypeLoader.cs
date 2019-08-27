@@ -21,22 +21,8 @@ namespace Kephas.Reflection
     /// <summary>
     /// The default implementation of <see cref="ITypeLoader"/>.
     /// </summary>
-    public class DefaultTypeLoader : Loggable, ITypeLoader, IAmbientServicesAware
+    public class DefaultTypeLoader : Loggable, ITypeLoader
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultTypeLoader"/> class.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services (optional).</param>
-        public DefaultTypeLoader(IAmbientServices ambientServices = null)
-        {
-            this.AmbientServices = ambientServices ?? global::Kephas.AmbientServices.Instance;
-        }
-
-        /// <summary>
-        /// Gets the ambient services.
-        /// </summary>
-        public IAmbientServices AmbientServices { get; }
-
         /// <summary>
         /// Gets the loadable exported types from the provided assembly.
         /// </summary>
