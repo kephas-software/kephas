@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.AspNetCore.Options
+namespace Kephas.AspNetCore.Configuration
 {
     using Microsoft.Extensions.Options;
 

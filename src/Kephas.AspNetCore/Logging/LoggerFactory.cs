@@ -48,7 +48,7 @@ namespace Kephas.AspNetCore.Logging
         public ILogger CreateLogger(string categoryName)
         {
             var logger = this.logManager.GetLogger(categoryName);
-            return new AspNetLogger(logger);
+            return new Logger(logger);
         }
 
         /// <summary>

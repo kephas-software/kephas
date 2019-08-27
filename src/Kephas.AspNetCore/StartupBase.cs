@@ -17,14 +17,12 @@ namespace Kephas.AspNetCore
 
     using Kephas.Application;
     using Kephas.AspNetCore.Application;
-    using Kephas.AspNetCore.Composition;
     using Kephas.AspNetCore.Configuration;
     using Kephas.AspNetCore.Hosting;
     using Kephas.AspNetCore.Logging;
-    using Kephas.AspNetCore.Options;
     using Kephas.Composition;
-    using Kephas.Configuration;
-    using Kephas.Logging;
+    using Kephas.Composition.DependencyInjection;
+    using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
@@ -32,8 +30,6 @@ namespace Kephas.AspNetCore
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.DependencyInjection.Extensions;
-    using Microsoft.Extensions.Logging;
 
     using ILogger = Kephas.Logging.ILogger;
     using LogLevel = Kephas.Logging.LogLevel;
@@ -45,7 +41,7 @@ namespace Kephas.AspNetCore
     /// <remarks>
     /// Check https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcore-2.1 for more options.
     /// </remarks>
-    public abstract class StartupBase
+    public abstract class StartupBase : IAmbientServicesAware
     {
         /// <summary>
         /// The application arguments.
@@ -73,9 +69,17 @@ namespace Kephas.AspNetCore
         {
             this.HostingEnvironment = env;
             this.Configuration = config;
-            this.ambientServices = ambientServices;
+            this.ambientServices = ambientServices ?? Kephas.AmbientServices.Instance;
             this.appArgs = appArgs;
         }
+
+        /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        public IAmbientServices AmbientServices => this.ambientServices;
 
         /// <summary>
         /// Gets the hosting environment.
@@ -112,24 +116,17 @@ namespace Kephas.AspNetCore
         {
             try
             {
-                serviceCollection.Replace(ServiceDescriptor.Transient<IServiceScopeFactory, CompositionServiceScopeFactory>());
-
-                serviceCollection.Replace(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
-                serviceCollection.Replace(ServiceDescriptor.Singleton(typeof(Microsoft.Extensions.Logging.ILogger<>), typeof(AspNetLogger<>)));
-
-                serviceCollection.Replace(ServiceDescriptor.Scoped(typeof(Microsoft.Extensions.Options.IOptionsSnapshot<>), typeof(OptionsSnapshot<>)));
+                this.ambientServices
+                    .WithServiceCollection(serviceCollection)
+                    .ConfigureLoggingExtensions()
+                    .ConfigureOptionsExtensions()
+                    .UseConfiguration(this.Configuration);
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
 
-                this.ambientServices = this.ambientServices ?? AmbientServices.Instance;
-                this.ambientServices.RegisterService(serviceCollection);
-                this.ambientServices.RegisterService<IConfigurationStore>(new AspNetConfigurationStore(this.Configuration));
-
-                serviceCollection.TryAddSingleton<IServiceProvider>(provider => provider);
-
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
-                var ambientServicesBuilder = new AmbientServicesBuilder(this.ambientServices);
-                this.ConfigureAmbientServices(this.appArgs, ambientServicesBuilder);
+
+                this.ConfigureAmbientServices(this.appArgs, new AmbientServicesBuilder(this.ambientServices));
 
                 this.Logger = this.ambientServices.GetLogger(this.GetType());
             }
@@ -162,11 +159,9 @@ namespace Kephas.AspNetCore
 
             // use host configurators to setup the application.
             var container = appContext.CompositionContext;
-            var hostConfigurators = container.GetExportFactories<IHostConfigurator, AppServiceMetadata>()
-                .OrderBy(f => f.Metadata.OverridePriority)
-                .ThenBy(f => f.Metadata.ProcessingPriority)
-                .Select(f => f.CreateExportedValue())
-                .ToList();
+            var hostConfigurators = container
+                .GetExport<IOrderedServiceCollection<IHostConfigurator, AppServiceMetadata>>()
+                .GetServices();
             foreach (var hostConfigurator in hostConfigurators)
             {
                 hostConfigurator.Configure(appContext);
@@ -207,7 +202,7 @@ namespace Kephas.AspNetCore
 
                 try
                 {
-                    await this.ShutdownAsync(this.ambientServices, cancellationToken).PreserveThreadContext();
+                    await this.ShutdownAsync(cancellationToken).PreserveThreadContext();
                 }
                 catch (Exception shutdownEx)
                 {
@@ -221,21 +216,17 @@ namespace Kephas.AspNetCore
         /// <summary>
         /// Shuts down the application asynchronously.
         /// </summary>
-        /// <param name="ambientServices">The ambient services (optional). If not provided then <see cref="AmbientServices.Instance"/> is considered.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of the <see cref="IAppContext"/>.
         /// </returns>
-        public virtual async Task<IAppContext> ShutdownAsync(
-            IAmbientServices ambientServices = null,
-            CancellationToken cancellationToken = default)
+        public virtual async Task<IAppContext> ShutdownAsync(CancellationToken cancellationToken = default)
         {
             try
             {
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_ShuttingDown_Message);
 
-                ambientServices = ambientServices ?? AmbientServices.Instance;
-                var appContext = await this.FinalizeAppManagerAsync(ambientServices, cancellationToken);
+                var appContext = await this.FinalizeAppManagerAsync(this.ambientServices, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_Complete_Message);
 
@@ -312,7 +303,7 @@ namespace Kephas.AspNetCore
                 this.Configuration,
                 ambientServices,
                 appArgs: appArgs,
-                signalShutdown: c => this.ShutdownAsync(ambientServices));
+                signalShutdown: c => this.ShutdownAsync());
             return appContext;
         }
 

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AspNetLogger.cs" company="Kephas Software SRL">
+// <copyright file="Logger.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -17,7 +17,7 @@ namespace Kephas.AspNetCore.Logging
     /// <summary>
     /// An ASP net logger.
     /// </summary>
-    public class AspNetLogger : ILogger
+    public class Logger : ILogger
     {
         /// <summary>
         /// The logger.
@@ -25,10 +25,10 @@ namespace Kephas.AspNetCore.Logging
         private readonly Kephas.Logging.ILogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AspNetLogger"/> class.
+        /// Initializes a new instance of the <see cref="Logger"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public AspNetLogger(Kephas.Logging.ILogger logger)
+        public Logger(Kephas.Logging.ILogger logger)
         {
             this.logger = logger;
         }
@@ -111,23 +111,6 @@ namespace Kephas.AspNetCore.Logging
             public void Dispose()
             {
             }
-        }
-    }
-
-    /// <summary>
-    /// An ASP net logger.
-    /// </summary>
-    /// <typeparam name="T">The type.</typeparam>
-    public class AspNetLogger<T> : Logger<T>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AspNetLogger{T}"/> class.
-        /// </summary>
-        public AspNetLogger()
-            : base(AmbientServices.Instance.CompositionContainer.GetExport<ILoggerFactory>())
-        {
-            // TODO until the https://github.com/dotnet/corefx/issues/40094 bug is fixed, make this constructor parameterless.
-            // TODO remove this class when the bug is corrected and its registration.
         }
     }
 }

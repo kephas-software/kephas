@@ -41,23 +41,6 @@ namespace Kephas.AspNetCore.InteractiveTests
             return serviceProvider;
         }
 
-        /// <summary>Configures the ambient services asynchronously.</summary>
-        /// <remarks>
-        /// Override this method to initialize the startup services, like log manager and configuration manager.
-        /// </remarks>
-        /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
-        protected override void ConfigureAmbientServices(string[] appArgs, AmbientServicesBuilder ambientServicesBuilder)
-        {
-            var serilogConfig = new LoggerConfiguration()
-                .ReadFrom.Configuration(this.Configuration);
-
-            ambientServicesBuilder
-                .WithSerilogManager(serilogConfig)
-                .WithDefaultAppRuntime()
-                .WithAutofacCompositionContainer();
-        }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public override void Configure(IApplicationBuilder app, IApplicationLifetime appLifetime)
         {
@@ -98,6 +81,23 @@ namespace Kephas.AspNetCore.InteractiveTests
             });
 
             base.Configure(app, appLifetime);
+        }
+
+        /// <summary>Configures the ambient services asynchronously.</summary>
+        /// <remarks>
+        /// Override this method to initialize the startup services, like log manager and configuration manager.
+        /// </remarks>
+        /// <param name="appArgs">The application arguments.</param>
+        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
+        protected override void ConfigureAmbientServices(string[] appArgs, AmbientServicesBuilder ambientServicesBuilder)
+        {
+            var serilogConfig = new LoggerConfiguration()
+                .ReadFrom.Configuration(this.Configuration);
+
+            ambientServicesBuilder
+                .WithSerilogManager(serilogConfig)
+                .WithDefaultAppRuntime()
+                .WithAutofacCompositionContainer();
         }
     }
 }
