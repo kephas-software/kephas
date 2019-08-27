@@ -31,7 +31,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
     /// <summary>
     /// Tests for <see cref="JsonSerializer"/>.
     /// </summary>
-    [TestFixture]
+    [TestFixture, Order(100)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class JsonSerializerTest
     {

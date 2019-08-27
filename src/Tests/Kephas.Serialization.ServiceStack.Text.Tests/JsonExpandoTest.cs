@@ -33,7 +33,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             configurator.ConfigureJsonSerialization();
         }
 
-        [Test]
+        [Test, Order(1)]
         public void Deserialize_simple()
         {
             dynamic expando = new JsonExpando(@"{ ""some"": ""kind"", ""of"": { ""dynamic"": ""nesting : or [ string ]""}, ""array"": [1, 2, { ""in"": ""array"" }, [ 4, true ]]}");
@@ -47,7 +47,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             Assert.AreEqual("array", nestedObj["in"]);
         }
 
-        [Test]
+        [Test, Order(2)]
         public void Deserialize_complex()
         {
             var expando = this.GetExpandoJson("ComplexJson");
