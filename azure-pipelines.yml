@@ -41,7 +41,8 @@ steps:
     testRunTitle: '.NET Framework 4.5'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\*Tests.dll
+      **\net45*\*Tests.dll
+      **\net46*\*Tests.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
@@ -55,7 +56,7 @@ steps:
     testRunTitle: '.NET Core 2.2'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\*Tests.dll
+      **\netcoreapp2.2\*Tests.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
