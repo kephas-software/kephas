@@ -15,12 +15,13 @@ namespace Kephas.Data.Behaviors
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Validation;
+    using Kephas.Logging;
 
     /// <summary>
     /// An entity behavior base.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    public abstract class DataBehaviorBase<TEntity> : IDataBehavior<TEntity>, IOnPersistBehavior, IOnInitializeBehavior, IOnValidateBehavior
+    public abstract class DataBehaviorBase<TEntity> : Loggable, IDataBehavior<TEntity>, IOnPersistBehavior, IOnInitializeBehavior, IOnValidateBehavior
     {
         /// <summary>
         /// Callback invoked upon entity initialization.
