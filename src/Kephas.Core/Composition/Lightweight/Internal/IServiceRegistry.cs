@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Internal
+namespace Kephas.Composition.Lightweight.Internal
 {
     using System;
     using System.Collections.Generic;

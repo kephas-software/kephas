@@ -327,4 +327,7 @@
   <data name="AmbientServices_MissingCompositionConstructor_Exception" xml:space="preserve">
     <value>No composition constructor could be identified for '{0}'.</value>
   </data>
+  <data name="ServiceRegistry_MismatchedMultipleServiceRegistration_Exception" xml:space="preserve">
+    <value>The service {0} is registered both as multiple and single service.</value>
+  </data>
 </root>

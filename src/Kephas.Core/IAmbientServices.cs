@@ -15,6 +15,7 @@ namespace Kephas
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
+    using Kephas.Composition.Lightweight;
     using Kephas.Configuration;
     using Kephas.Dynamic;
     using Kephas.Logging;
@@ -66,38 +67,14 @@ namespace Kephas
         ILogManager LogManager { get; }
 
         /// <summary>
-        /// Registers the provided service.
+        /// Registers the provided service using a registration builder.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
-        /// <param name="service">The service.</param>
+        /// <param name="builder">The builder.</param>
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        IAmbientServices RegisterService(Type serviceType, object service);
-
-        /// <summary>
-        /// Registers the provided service.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <param name="serviceImplementationType">The service implementation type.</param>
-        /// <param name="isSingleton">Optional. Indicates whether the function should be evaluated only
-        ///                           once, or each time it is called.</param>
-        /// <returns>
-        /// The IAmbientServices.
-        /// </returns>
-        IAmbientServices RegisterService(Type serviceType, Type serviceImplementationType, bool isSingleton = false);
-
-        /// <summary>
-        /// Registers the provided service factory.
-        /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <param name="serviceFactory">The service factory.</param>
-        /// <param name="isSingleton">Indicates whether the function should be evaluated only once, or each time it is called.</param>
-        /// <returns>
-        /// The IAmbientServices.
-        /// </returns>
-        IAmbientServices RegisterService(Type serviceType, Func<ICompositionContext, object> serviceFactory, bool isSingleton = false);
+        IAmbientServices RegisterService(Type serviceType, Action<IServiceRegistrationBuilder> builder);
 
         /// <summary>
         /// Gets a value indicating whether the service with the provided contract is registered.

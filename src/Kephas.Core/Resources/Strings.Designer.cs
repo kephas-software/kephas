@@ -629,6 +629,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The service {0} is registered both as multiple and single service..
+        /// </summary>
+        internal static string ServiceRegistry_MismatchedMultipleServiceRegistration_Exception {
+            get {
+                return ResourceManager.GetString("ServiceRegistry_MismatchedMultipleServiceRegistration_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The task is not completed..
         /// </summary>
         internal static string TaskNotCompletedException_Message {

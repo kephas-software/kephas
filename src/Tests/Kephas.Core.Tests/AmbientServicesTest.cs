@@ -18,6 +18,7 @@ namespace Kephas.Core.Tests
 
     using Kephas;
     using Kephas.Composition;
+    using Kephas.Composition.Lightweight;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -193,6 +194,22 @@ namespace Kephas.Core.Tests
             var dependent = ambientServices.GetService<DependentEnumerationService>();
             Assert.IsNotNull(dependent.Factories);
             Assert.IsInstanceOf<SimpleService>(dependent.Factories.Single().CreateExportedValue());
+        }
+
+        [Test]
+        public void GetService_enumeration_of_exportFactory_multiple()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService<IService>(b => b.WithType<SimpleService>().AllowMultiple());
+            ambientServices.RegisterService<IService>(b => b.WithType<OptionalDependentService>().AllowMultiple());
+            ambientServices.RegisterService<DependentEnumerationService, DependentEnumerationService>();
+
+            var dependent = ambientServices.GetService<DependentEnumerationService>();
+            Assert.IsNotNull(dependent.Factories);
+            var factories = dependent.Factories.ToList();
+            Assert.AreEqual(2, factories.Count);
+            Assert.IsTrue(factories.Any(f => f.CreateExportedValue() is SimpleService));
+            Assert.IsTrue(factories.Any(f => f.CreateExportedValue() is OptionalDependentService));
         }
 
         [Test]

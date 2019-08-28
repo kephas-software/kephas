@@ -13,6 +13,7 @@ namespace Kephas
     using System;
 
     using Kephas.Composition;
+    using Kephas.Composition.Lightweight;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Resources;
@@ -67,6 +68,24 @@ namespace Kephas
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             return ambientServices.LogManager.GetLogger(typeof(T));
+        }
+
+        /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="builder">The registration builder.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        public static IAmbientServices RegisterService<TService>(this IAmbientServices ambientServices, Action<IServiceRegistrationBuilder> builder)
+            where TService : class
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(builder, nameof(builder));
+
+            return ambientServices.RegisterService(typeof(TService), builder);
         }
 
         /// <summary>
@@ -130,29 +149,6 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service.
-        /// </summary>
-        /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
-        /// <param name="serviceFactory">The service factory.</param>
-        /// <param name="isSingleton">Optional. Indicates whether the function should be evaluated only
-        ///                           once, or each time it is called.</param>
-        /// <returns>
-        /// The IAmbientServices.
-        /// </returns>
-        public static IAmbientServices RegisterService<TService>(
-            this IAmbientServices ambientServices,
-            Func<ICompositionContext, TService> serviceFactory,
-            bool isSingleton = false)
-            where TService : class
-        {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
-
-            return ambientServices.RegisterService(typeof(TService), serviceFactory, isSingleton);
-        }
-
-        /// <summary>
         /// Registers the provided service factory.
         /// </summary>
         /// <param name="ambientServices">The ambient services to act on.</param>
@@ -174,6 +170,105 @@ namespace Kephas
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
             return ambientServices.RegisterService(serviceType, ctx => serviceFactory(), isSingleton);
+        }
+
+        /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="service">The service.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        public static IAmbientServices RegisterService(
+            this IAmbientServices ambientServices,
+            Type serviceType,
+            object service)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(service, nameof(service));
+
+            ambientServices.RegisterService(serviceType, b => b.WithInstance(service));
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Registers the provided service.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceImplementationType">The service implementation type.</param>
+        /// <param name="isSingleton">Optional. Indicates whether the function should be evaluated only
+        ///                           once, or each time it is called.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        public static IAmbientServices RegisterService(
+            this IAmbientServices ambientServices,
+            Type serviceType,
+            Type serviceImplementationType,
+            bool isSingleton = false)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
+
+            ambientServices.RegisterService(
+                serviceType,
+                b =>
+                {
+                    b.WithType(serviceImplementationType);
+                    if (isSingleton)
+                    {
+                        b.AsSingleton();
+                    }
+                    else
+                    {
+                        b.AsTransient();
+                    }
+                });
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Registers the provided service factory.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="isSingleton">Optional. Indicates whether the function should be evaluated only
+        ///                           once, or each time it is called.</param>
+        /// <returns>
+        /// The IAmbientServices.
+        /// </returns>
+        public static IAmbientServices RegisterService(
+            this IAmbientServices ambientServices,
+            Type serviceType,
+            Func<ICompositionContext, object> serviceFactory,
+            bool isSingleton = false)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+
+            ambientServices.RegisterService(
+                serviceType,
+                b =>
+                    {
+                        b.WithFactory(serviceFactory);
+                        if (isSingleton)
+                        {
+                            b.AsSingleton();
+                        }
+                        else
+                        {
+                            b.AsTransient();
+                        }
+                    });
+            return ambientServices;
         }
 
         /// <summary>

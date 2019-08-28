@@ -8,13 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Internal
+namespace Kephas.Composition.Lightweight.Internal
 {
     using System;
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Kephas.Resources;
 
     internal class ServiceRegistry : IServiceRegistry
     {
@@ -44,6 +46,22 @@ namespace Kephas.Internal
 
         public ServiceRegistry RegisterService(IServiceInfo serviceInfo)
         {
+            if (serviceInfo.AllowMultiple)
+            {
+                if (this.services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo))
+                {
+                    if (existingServiceInfo is MultiServiceInfo multiServiceInfo)
+                    {
+                        multiServiceInfo.Add((ServiceInfo)serviceInfo);
+                        return this;
+                    }
+
+                    throw new InvalidOperationException(string.Format(Strings.ServiceRegistry_MismatchedMultipleServiceRegistration_Exception, serviceInfo.ContractType));
+                }
+
+                serviceInfo = new MultiServiceInfo((ServiceInfo)serviceInfo);
+            }
+
             this.services[serviceInfo.ContractType] = serviceInfo;
             return this;
         }

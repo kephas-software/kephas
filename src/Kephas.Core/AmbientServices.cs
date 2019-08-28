@@ -19,10 +19,11 @@ namespace Kephas
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Hosting;
+    using Kephas.Composition.Lightweight;
+    using Kephas.Composition.Lightweight.Internal;
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
-    using Kephas.Internal;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -143,82 +144,22 @@ namespace Kephas
         public ILogManager LogManager => this.GetService<ILogManager>();
 
         /// <summary>
-        /// Registers the provided service.
+        /// Registers the provided service using a registration builder.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
-        /// <param name="service">The service.</param>
+        /// <param name="builder">The builder.</param>
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public virtual IAmbientServices RegisterService(Type serviceType, object service)
+        public virtual IAmbientServices RegisterService(Type serviceType, Action<IServiceRegistrationBuilder> builder)
         {
             Requires.NotNull(serviceType, nameof(serviceType));
-            Requires.NotNull(service, nameof(service));
+            Requires.NotNull(builder, nameof(builder));
 
-            var declaredServiceTypeInfo = serviceType.GetTypeInfo();
-            var serviceTypeInfo = service.GetType().GetTypeInfo();
-            if (!declaredServiceTypeInfo.IsAssignableFrom(serviceTypeInfo))
-            {
-                throw new InvalidOperationException(
-                      string.Format(
-                          Strings.AmbientServices_ServiceTypeAndServiceInstanceMismatch_Exception,
-                          service.GetType(),
-                          serviceType));
-            }
+            var serviceBuilder = new ServiceRegistrationBuilder(this, serviceType);
+            builder?.Invoke(serviceBuilder);
+            this.registry.RegisterService(serviceBuilder.Build());
 
-            this.registry.RegisterService(new ServiceInfo(serviceType, service));
-            return this;
-        }
-
-        /// <summary>
-        /// Registers the provided service.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <param name="serviceImplementationType">The service implementation type.</param>
-        /// <param name="isSingleton">Optional. Indicates whether the function should be evaluated only
-        ///                           once, or each time it is called.</param>
-        /// <returns>
-        /// The IAmbientServices.
-        /// </returns>
-        public virtual IAmbientServices RegisterService(Type serviceType, Type serviceImplementationType, bool isSingleton = false)
-        {
-            Requires.NotNull(serviceType, nameof(serviceType));
-            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
-
-            var declaredServiceTypeInfo = serviceType.GetTypeInfo();
-            var serviceTypeInfo = serviceImplementationType.GetTypeInfo();
-            if (!declaredServiceTypeInfo.IsAssignableFrom(serviceTypeInfo))
-            {
-                throw new InvalidOperationException(
-                    string.Format(
-                        Strings.AmbientServices_ServiceTypeAndImplementationMismatch_Exception,
-                        serviceImplementationType,
-                        serviceType));
-            }
-
-            this.registry.RegisterService(new ServiceInfo(this, serviceType, serviceImplementationType, isSingleton));
-            return this;
-        }
-
-        /// <summary>
-        /// Registers the provided service factory.
-        /// </summary>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <param name="serviceFactory">The service factory.</param>
-        /// <param name="isSingleton">Indicates whether the function should be evaluated only once, or each time it is called.</param>
-        /// <returns>
-        /// The IAmbientServices.
-        /// </returns>
-        public virtual IAmbientServices RegisterService(
-            Type serviceType,
-            Func<ICompositionContext, object> serviceFactory,
-            bool isSingleton = false)
-        {
-            Requires.NotNull(serviceType, nameof(serviceType));
-            Requires.NotNull(serviceFactory, nameof(serviceFactory));
-
-            this.registry.RegisterService(new ServiceInfo(this, serviceType, serviceFactory, isSingleton));
             return this;
         }
 

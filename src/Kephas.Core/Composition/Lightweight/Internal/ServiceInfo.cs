@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Internal
+namespace Kephas.Composition.Lightweight.Internal
 {
     using System;
     using System.Linq;
@@ -51,7 +51,7 @@ namespace Kephas.Internal
 
         public AppServiceLifetime Lifetime { get; private set; }
 
-        bool IAppServiceInfo.AllowMultiple { get; } = false;
+        public bool AllowMultiple { get; internal set; } = false;
 
         bool IAppServiceInfo.AsOpenGeneric { get; } = false;
 
