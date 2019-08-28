@@ -21,7 +21,6 @@ namespace Kephas.Composition.Lightweight.Internal
 
     internal class ServiceInfo : IServiceInfo
     {
-        private readonly Lazy<object> lazyInstance;
         private readonly LazyFactory lazyFactory;
 
         private Func<object> instanceResolver;
@@ -31,7 +30,7 @@ namespace Kephas.Composition.Lightweight.Internal
             this.ContractType = contractType;
             this.Instance = instance;
             this.Lifetime = AppServiceLifetime.Singleton;
-            this.lazyInstance = new Lazy<object>(() => instance);
+            this.lazyFactory = new LazyValue(instance);
         }
 
         public ServiceInfo(IAmbientServices ambientServices, Type contractType, Type instanceType, bool isSingleton)
@@ -39,14 +38,9 @@ namespace Kephas.Composition.Lightweight.Internal
             this.ContractType = contractType;
             this.InstanceType = instanceType;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-            if (isSingleton)
-            {
-                this.lazyInstance = new Lazy<object>(() => this.GetInstanceResolver(ambientServices, instanceType)(), isThreadSafe: true);
-            }
-            else
-            {
-                this.lazyFactory = new LazyFactory(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType);
-            }
+            this.lazyFactory = isSingleton
+                                   ? new LazyValue(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType)
+                                   : new LazyFactory(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType);
         }
 
         public ServiceInfo(IAmbientServices ambientServices, Type contractType, Func<ICompositionContext, object> serviceFactory, bool isSingleton)
@@ -55,17 +49,12 @@ namespace Kephas.Composition.Lightweight.Internal
             this.InstanceFactory = serviceFactory;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
             var compositionContext = ambientServices.AsCompositionContext();
-            if (isSingleton)
-            {
-                this.lazyInstance = new Lazy<object>(() => serviceFactory(compositionContext), isThreadSafe: true);
-            }
-            else
-            {
-                this.lazyFactory = new LazyFactory(() => serviceFactory(compositionContext), contractType);
-            }
+            this.lazyFactory = isSingleton
+                                   ? new LazyValue(() => serviceFactory(compositionContext), contractType)
+                                   : new LazyFactory(() => serviceFactory(compositionContext), contractType);
         }
 
-        public AppServiceLifetime Lifetime { get; private set; }
+        public AppServiceLifetime Lifetime { get; }
 
         public bool AllowMultiple { get; internal set; } = false;
 
@@ -77,7 +66,7 @@ namespace Kephas.Composition.Lightweight.Internal
 
         public object Instance { get; internal set; }
 
-        public Type InstanceType { get; private set; }
+        public Type InstanceType { get; }
 
         public Func<ICompositionContext, object> InstanceFactory { get; }
 
@@ -86,12 +75,7 @@ namespace Kephas.Composition.Lightweight.Internal
             return new AppServiceInfo(this.ContractType, ctx => this.GetService(ambientServices), this.Lifetime) { AllowMultiple = this.AllowMultiple };
         }
 
-        public object GetService(IAmbientServices ambientServices)
-        {
-            return this.lazyInstance != null
-                       ? this.lazyInstance.Value
-                       : this.lazyFactory.GetValue();
-        }
+        public object GetService(IAmbientServices ambientServices) => this.lazyFactory.GetValue();
 
         private Func<object> GetInstanceResolver(IAmbientServices ambientServices, Type instanceType)
         {
@@ -155,9 +139,43 @@ namespace Kephas.Composition.Lightweight.Internal
             return (maxCtor, maxCtorParams);
         }
 
+        private class LazyValue : LazyFactory
+        {
+            private object value;
+
+            public LazyValue(Func<object> factory, Type serviceType)
+                : base(factory, serviceType)
+            {
+            }
+
+            public LazyValue(object value)
+                : base(null, null)
+            {
+                this.value = value;
+            }
+
+            public override object GetValue()
+            {
+                if (this.value != null)
+                {
+                    return this.value;
+                }
+
+                lock (this.factory)
+                {
+                    if (this.value != null)
+                    {
+                        return this.value;
+                    }
+
+                    return this.value = base.GetValue();
+                }
+            }
+        }
+
         private class LazyFactory
         {
-            private readonly Func<object> factory;
+            protected readonly Func<object> factory;
 
             private readonly Type serviceType;
 
@@ -170,7 +188,7 @@ namespace Kephas.Composition.Lightweight.Internal
                 this.serviceType = serviceType;
             }
 
-            public object GetValue()
+            public virtual object GetValue()
             {
                 // at one time, a single value may be produced per thread
                 // otherwise it means that it occured a circular dependency
