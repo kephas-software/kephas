@@ -12,11 +12,13 @@ namespace Kephas.Data.Behaviors
 {
     using System;
 
+    using Kephas.Logging;
+
     /// <summary>
     /// A query behavior base.
     /// </summary>
     /// <typeparam name="T">The entity type.</typeparam>
-    public abstract class QueryBehaviorBase<T> : IDataBehavior<T>, IOnQueryBehavior
+    public abstract class QueryBehaviorBase<T> : Loggable, IDataBehavior<T>, IOnQueryBehavior
     {
         /// <summary>
         /// Callback invoked before the query is being created.

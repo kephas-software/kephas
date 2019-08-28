@@ -16,11 +16,12 @@ namespace Kephas.Data.IO.Import
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.IO.DataStreams;
+    using Kephas.Logging;
 
     /// <summary>
     /// Base implementation of a data import behavior.
     /// </summary>
-    public abstract class DataImportBehaviorBase : IDataImportBehavior
+    public abstract class DataImportBehaviorBase : Loggable, IDataImportBehavior
     {
         /// <summary>
         /// Callback invoked before reading the data source asynchronously.
