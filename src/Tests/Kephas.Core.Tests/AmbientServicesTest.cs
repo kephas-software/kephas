@@ -15,6 +15,8 @@ namespace Kephas.Core.Tests
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas;
     using Kephas.Composition;
@@ -178,6 +180,68 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
+        public void RegisterService_circular_dependency_singleton()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService<CircularDependency1>(b => b.WithType<CircularDependency1>());
+            ambientServices.RegisterService<CircularDependency2>(b => b.WithType<CircularDependency2>());
+
+            Assert.Throws<InvalidOperationException>(() => ambientServices.GetService<CircularDependency1>());
+        }
+
+        [Test]
+        public void RegisterService_circular_dependency_transient()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService<CircularDependency1>(b => b.WithType<CircularDependency1>().AsTransient());
+            ambientServices.RegisterService<CircularDependency2>(b => b.WithType<CircularDependency2>().AsTransient());
+
+            Assert.Throws<InvalidOperationException>(() => ambientServices.GetService<CircularDependency1>());
+        }
+
+        [Test]
+        public Task RegisterService_transient_is_multi_threaded()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService<IService>(
+                b => b.WithFactory(
+                    () =>
+                        {
+                            Thread.Sleep(100);
+                            return Substitute.For<IService>();
+                        }).AsTransient());
+
+            var tasks = new List<Task>();
+            for (var i = 0; i < 20; i++)
+            {
+                tasks.Add(Task.Run(() => ambientServices.GetService<IService>()));
+            }
+
+            return Task.WhenAll(tasks);
+        }
+
+        [Test]
+        public Task RegisterService_singleton_is_multi_threaded()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService<IService>(
+                b => b.WithFactory(
+                    () =>
+                        {
+                            Thread.Sleep(100);
+                            return Substitute.For<IService>();
+                        }).AsSingleton());
+
+            var tasks = new List<Task>();
+            for (var i = 0; i < 20; i++)
+            {
+                tasks.Add(Task.Run(() => ambientServices.GetService<IService>()));
+            }
+
+            return Task.WhenAll(tasks);
+        }
+
+        [Test]
         public void GetService_exportFactory()
         {
             var ambientServices = new AmbientServices();
@@ -325,6 +389,16 @@ namespace Kephas.Core.Tests
             {
                 this.AnotherDependency = anotherDependency;
             }
+        }
+
+        public class CircularDependency1
+        {
+            public CircularDependency1(CircularDependency2 dependency) { }
+        }
+
+        public class CircularDependency2
+        {
+            public CircularDependency2(CircularDependency1 dependency) { }
         }
     }
 }

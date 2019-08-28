@@ -512,6 +512,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Circular dependency involving &apos;{0}&apos; detected..
+        /// </summary>
+        internal static string LazyFactory_CircularDependency_Exception {
+            get {
+                return ResourceManager.GetString("LazyFactory_CircularDependency_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is intended to be replaced by a proper implementation..
         /// </summary>
         internal static string NullServiceExceptionMessage {

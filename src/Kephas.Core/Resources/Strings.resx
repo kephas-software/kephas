@@ -330,4 +330,7 @@
   <data name="ServiceRegistry_MismatchedMultipleServiceRegistration_Exception" xml:space="preserve">
     <value>The service {0} is registered both as multiple and single service.</value>
   </data>
+  <data name="LazyFactory_CircularDependency_Exception" xml:space="preserve">
+    <value>Circular dependency involving '{0}' detected.</value>
+  </data>
 </root>

@@ -21,7 +21,8 @@ namespace Kephas.Composition.Lightweight.Internal
 
     internal class ServiceInfo : IServiceInfo
     {
-        private Lazy<object> lazyInstance;
+        private readonly Lazy<object> lazyInstance;
+        private readonly LazyFactory lazyFactory;
 
         private Func<object> instanceResolver;
 
@@ -38,7 +39,14 @@ namespace Kephas.Composition.Lightweight.Internal
             this.ContractType = contractType;
             this.InstanceType = instanceType;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-            this.lazyInstance = isSingleton ? new Lazy<object>(() => this.GetInstanceResolver(ambientServices, instanceType)()) : null;
+            if (isSingleton)
+            {
+                this.lazyInstance = new Lazy<object>(() => this.GetInstanceResolver(ambientServices, instanceType)(), isThreadSafe: true);
+            }
+            else
+            {
+                this.lazyFactory = new LazyFactory(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType);
+            }
         }
 
         public ServiceInfo(IAmbientServices ambientServices, Type contractType, Func<ICompositionContext, object> serviceFactory, bool isSingleton)
@@ -46,7 +54,15 @@ namespace Kephas.Composition.Lightweight.Internal
             this.ContractType = contractType;
             this.InstanceFactory = serviceFactory;
             this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-            this.lazyInstance = isSingleton ? new Lazy<object>(() => serviceFactory(ambientServices.AsCompositionContext())) : null;
+            var compositionContext = ambientServices.AsCompositionContext();
+            if (isSingleton)
+            {
+                this.lazyInstance = new Lazy<object>(() => serviceFactory(compositionContext), isThreadSafe: true);
+            }
+            else
+            {
+                this.lazyFactory = new LazyFactory(() => serviceFactory(compositionContext), contractType);
+            }
         }
 
         public AppServiceLifetime Lifetime { get; private set; }
@@ -74,9 +90,7 @@ namespace Kephas.Composition.Lightweight.Internal
         {
             return this.lazyInstance != null
                        ? this.lazyInstance.Value
-                       : this.InstanceFactory != null
-                           ? this.InstanceFactory(ambientServices.AsCompositionContext())
-                           : this.GetInstanceResolver(ambientServices, this.InstanceType)();
+                       : this.lazyFactory.GetValue();
         }
 
         private Func<object> GetInstanceResolver(IAmbientServices ambientServices, Type instanceType)
@@ -86,8 +100,21 @@ namespace Kephas.Composition.Lightweight.Internal
                 return this.instanceResolver;
             }
 
-            var ctors = instanceType.GetConstructors()
-                .Where(c => c.IsStatic == false && c.IsPublic)
+            var (ctor, ctorParams) = GetConstructorInfo(ambientServices, instanceType);
+
+            return this.instanceResolver = () => ctor.Invoke(
+                       ctorParams.Select(
+                           p => p.HasDefaultValue
+                                    ? (ambientServices.GetService(p.ParameterType) ?? p.DefaultValue)
+                                    : ambientServices.GetRequiredService(p.ParameterType))
+                           .ToArray());
+        }
+
+        private static (ConstructorInfo maxCtor, ParameterInfo[] maxCtorParams) GetConstructorInfo(
+            IAmbientServices ambientServices,
+            Type instanceType)
+        {
+            var ctors = instanceType.GetConstructors().Where(c => c.IsStatic == false && c.IsPublic)
                 .OrderByDescending(c => c.GetParameters().Length)
                 .ToList();
             var maxLength = -1;
@@ -105,11 +132,12 @@ namespace Kephas.Composition.Lightweight.Internal
                 {
                     if (maxLength == ctorParams.Length && maxCtor != null)
                     {
-                        throw new AmbiguousMatchException(string.Format(
-                            Strings.AmbientServices_AmbiguousConstructors_Exception,
-                            instanceType,
-                            string.Join(",", ctorParams.Select(p => p.ParameterType.Name)),
-                            string.Join(",", maxCtorParams.Select(p => p.ParameterType.Name))));
+                        throw new AmbiguousMatchException(
+                            string.Format(
+                                Strings.AmbientServices_AmbiguousConstructors_Exception,
+                                instanceType,
+                                string.Join(",", ctorParams.Select(p => p.ParameterType.Name)),
+                                string.Join(",", maxCtorParams.Select(p => p.ParameterType.Name))));
                     }
 
                     maxCtor = ctor;
@@ -120,17 +148,48 @@ namespace Kephas.Composition.Lightweight.Internal
 
             if (maxCtor == null)
             {
-                throw new CompositionException(string.Format(
-                    Strings.AmbientServices_MissingCompositionConstructor_Exception,
-                    instanceType));
+                throw new CompositionException(
+                    string.Format(Strings.AmbientServices_MissingCompositionConstructor_Exception, instanceType));
             }
 
-            return this.instanceResolver = () => maxCtor.Invoke(
-                       maxCtorParams.Select(
-                           p => p.HasDefaultValue
-                                    ? (ambientServices.GetService(p.ParameterType) ?? p.DefaultValue)
-                                    : ambientServices.GetRequiredService(p.ParameterType))
-                           .ToArray());
+            return (maxCtor, maxCtorParams);
+        }
+
+        private class LazyFactory
+        {
+            private readonly Func<object> factory;
+
+            private readonly Type serviceType;
+
+            [ThreadStatic]
+            private static bool isProducing = false;
+
+            public LazyFactory(Func<object> factory, Type serviceType)
+            {
+                this.factory = factory;
+                this.serviceType = serviceType;
+            }
+
+            public object GetValue()
+            {
+                // at one time, a single value may be produced per thread
+                // otherwise it means that it occured a circular dependency
+                if (isProducing)
+                {
+                    throw new InvalidOperationException(string.Format(Strings.LazyFactory_CircularDependency_Exception, this.serviceType));
+                }
+
+                isProducing = true;
+                try
+                {
+                    var value = this.factory();
+                    return value;
+                }
+                finally
+                {
+                    isProducing = false;
+                }
+            }
         }
     }
 }
