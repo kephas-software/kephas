@@ -12,12 +12,13 @@ namespace Kephas.Behaviors
 {
     using System.Linq;
 
+    using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>
     /// Base class controlling the flow of a behavior rule.
     /// </summary>
-    public abstract class BehaviorRuleFlowControlBase : IBehaviorRuleFlowControl
+    public abstract class BehaviorRuleFlowControlBase : Loggable, IBehaviorRuleFlowControl
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BehaviorRuleFlowControlBase"/> class.
