@@ -4,7 +4,7 @@
         <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Description>Provides abstract multi-dimensional modeling artifacts like classifiers, value types, and other model elements.</Description>
-        <Version>6.5.0-beta.5</Version>
+        <Version>6.5.0-rc.1</Version>
         <AssemblyVersion>6.5.0.0</AssemblyVersion>
         <FileVersion>6.5.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
