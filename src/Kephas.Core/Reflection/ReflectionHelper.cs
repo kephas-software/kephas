@@ -30,6 +30,15 @@ namespace Kephas.Reflection
         /// </summary>
         internal static readonly IReadOnlyList<ITypeInfo> EmptyTypeInfos;
 
+        private static readonly Func<AssemblyName, bool> isSystemAssemblyFunc = assemblyName =>
+            {
+                var assemblyFullName = assemblyName.FullName;
+                return assemblyFullName.StartsWith("System") || assemblyFullName.StartsWith("mscorlib")
+                                                             || assemblyFullName.StartsWith("Microsoft")
+                                                             || assemblyFullName.StartsWith("vshost32")
+                                                             || assemblyFullName.StartsWith("Mono");
+            };
+
         /// <summary>
         /// Initializes static members of the <see cref="ReflectionHelper"/> class.
         /// </summary>
@@ -37,6 +46,14 @@ namespace Kephas.Reflection
         {
             EmptyTypeInfos = new ReadOnlyCollection<ITypeInfo>(new List<ITypeInfo>());
         }
+
+        /// <summary>
+        /// Gets or sets the function to check whether an assembly is a system assembly.
+        /// </summary>
+        /// <value>
+        /// A function delegate that yields a bool.
+        /// </value>
+        public static Func<AssemblyName, bool> IsSystemAssemblyFunc { get; set; } = isSystemAssemblyFunc;
 
         /// <summary>
         /// Retrieves the property name from a lambda expression.
@@ -231,7 +248,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsSystemAssembly(this Assembly assembly)
         {
-            return IsSystemAssembly(assembly.GetName());
+            return IsSystemAssemblyFunc?.Invoke(assembly.GetName()) ?? false;
         }
 
         /// <summary>
@@ -243,10 +260,7 @@ namespace Kephas.Reflection
         /// </returns>
         public static bool IsSystemAssembly(this AssemblyName assemblyName)
         {
-            var assemblyFullName = assemblyName.FullName;
-            return assemblyFullName.StartsWith("System") || assemblyFullName.StartsWith("mscorlib") ||
-                   assemblyFullName.StartsWith("Microsoft") || assemblyFullName.StartsWith("vshost32") ||
-                   assemblyFullName.StartsWith("Mono");
+            return IsSystemAssemblyFunc?.Invoke(assemblyName) ?? false;
         }
 
         /// <summary>
