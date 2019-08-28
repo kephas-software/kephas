@@ -143,6 +143,22 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
+        public void RegisterService_conflicting_allow_multiple_first_single_failure()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService<IService>(b => b.WithType<SimpleService>());
+            Assert.Throws<InvalidOperationException>(() => ambientServices.RegisterService<IService>(b => b.WithType<DependentService>().AllowMultiple()));
+        }
+
+        [Test]
+        public void RegisterService_conflicting_allow_multiple_first_multiple_failure()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService<IService>(b => b.WithType<SimpleService>().AllowMultiple());
+            Assert.Throws<InvalidOperationException>(() => ambientServices.RegisterService<IService>(b => b.WithType<DependentService>()));
+        }
+
+        [Test]
         public void RegisterService_service_factory()
         {
             var ambientServices = new AmbientServices();

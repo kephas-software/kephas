@@ -65,6 +65,11 @@ namespace Kephas.Composition.Lightweight.Internal
 
         public Func<ICompositionContext, object> InstanceFactory { get; }
 
+        public AppServiceInfo ToAppServiceInfo(IAmbientServices ambientServices)
+        {
+            return new AppServiceInfo(this.ContractType, ctx => this.GetService(ambientServices), this.Lifetime) { AllowMultiple = this.AllowMultiple };
+        }
+
         public object GetService(IAmbientServices ambientServices)
         {
             return this.lazyInstance != null

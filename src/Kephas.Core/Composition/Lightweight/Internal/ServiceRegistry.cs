@@ -41,7 +41,8 @@ namespace Kephas.Composition.Lightweight.Internal
         /// </returns>
         public bool IsRegistered(Type serviceType)
         {
-            return serviceType != null && (this.services.ContainsKey(serviceType) || this.serviceSources.Any(s => s.IsMatch(serviceType)));
+            return serviceType != null && (this.services.ContainsKey(serviceType)
+                                           || this.serviceSources.Any(s => s.IsMatch(serviceType)));
         }
 
         public ServiceRegistry RegisterService(IServiceInfo serviceInfo)
@@ -56,10 +57,21 @@ namespace Kephas.Composition.Lightweight.Internal
                         return this;
                     }
 
-                    throw new InvalidOperationException(string.Format(Strings.ServiceRegistry_MismatchedMultipleServiceRegistration_Exception, serviceInfo.ContractType));
+                    throw new InvalidOperationException(
+                        string.Format(
+                            Strings.ServiceRegistry_MismatchedMultipleServiceRegistration_Exception,
+                            serviceInfo.ContractType));
                 }
 
                 serviceInfo = new MultiServiceInfo((ServiceInfo)serviceInfo);
+            }
+            else if (this.services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo)
+                     && existingServiceInfo.AllowMultiple)
+            {
+                throw new InvalidOperationException(
+                    string.Format(
+                        Strings.ServiceRegistry_MismatchedMultipleServiceRegistration_Exception,
+                        serviceInfo.ContractType));
             }
 
             this.services[serviceInfo.ContractType] = serviceInfo;

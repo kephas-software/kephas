@@ -202,18 +202,28 @@ namespace Kephas
             // of each composition context implementation to register itself in the DI container.
             return this.registry
                 .Where(s => !ReferenceEquals(s.ContractType, typeof(ICompositionContext)))
-                .Select(s => (s.ContractType, this.GetAppServiceInfo(s)))
+                .SelectMany(s => this.ToAppServiceInfos(s).Select(si => (si.ContractType, si)))
                 .ToList();
         }
 
-        private IAppServiceInfo GetAppServiceInfo(IAppServiceInfo appServiceInfo)
+        private IEnumerable<IAppServiceInfo> ToAppServiceInfos(IServiceInfo appServiceInfo)
         {
-            if (appServiceInfo is ServiceInfo serviceInfo)
+            switch (appServiceInfo)
             {
-                return new AppServiceInfo(serviceInfo.ContractType, ctx => serviceInfo.GetService(this), serviceInfo.Lifetime);
-            }
+                case IEnumerable<IServiceInfo> multiServiceInfos:
+                    foreach (ServiceInfo si in multiServiceInfos)
+                    {
+                        yield return si.ToAppServiceInfo(this);
+                    }
 
-            return appServiceInfo;
+                    break;
+                case ServiceInfo serviceInfo:
+                    yield return serviceInfo.ToAppServiceInfo(this);
+                    break;
+                default:
+                    yield return appServiceInfo;
+                    break;
+            }
         }
     }
 }

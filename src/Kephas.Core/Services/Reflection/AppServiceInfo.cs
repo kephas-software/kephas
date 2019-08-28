@@ -26,20 +26,15 @@ namespace Kephas.Services.Reflection
         /// </summary>
         /// <param name="contractType">The contract type of the export.</param>
         /// <param name="lifetime">Optional. The application service lifetime.</param>
-        /// <param name="allowMultiple">Optional.
-        ///                             <c>true</c> if multiple services are allowed; otherwise,
-        ///                             <c>false</c>.
-        /// </param>
         /// <param name="asOpenGeneric">Optional.
         ///                             <c>true</c> if the contract should be exported as an open generic;
         ///                             otherwise, <c>false</c>.
         /// </param>
-        public AppServiceInfo(Type contractType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool allowMultiple = false, bool asOpenGeneric = false)
+        public AppServiceInfo(Type contractType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool asOpenGeneric = false)
         {
             Requires.NotNull(contractType, nameof(contractType));
 
             this.SetContractType(contractType);
-            this.AllowMultiple = allowMultiple;
             this.AsOpenGeneric = asOpenGeneric;
             this.SetLifetime(lifetime);
         }
@@ -105,12 +100,12 @@ namespace Kephas.Services.Reflection
         public AppServiceLifetime Lifetime { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether multiple services for this contract are allowed.
+        /// Gets or sets a value indicating whether multiple services for this contract are allowed.
         /// </summary>
         /// <value>
         ///   <c>true</c> if multiple services are allowed; otherwise, <c>false</c>.
         /// </value>
-        public bool AllowMultiple { get; }
+        public bool AllowMultiple { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the contract should be exported as an open generic.
