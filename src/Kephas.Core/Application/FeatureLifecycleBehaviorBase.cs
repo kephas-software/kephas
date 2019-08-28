@@ -14,11 +14,12 @@ namespace Kephas.Application
     using System.Threading.Tasks;
 
     using Kephas.Application.Composition;
+    using Kephas.Logging;
 
     /// <summary>
     /// Base class for feature lifecycle behaviors.
     /// </summary>
-    public abstract class FeatureLifecycleBehaviorBase : IFeatureLifecycleBehavior
+    public abstract class FeatureLifecycleBehaviorBase : Loggable, IFeatureLifecycleBehavior
     {
         /// <summary>
         /// Interceptor called before a feature starts its asynchronous initialization.
