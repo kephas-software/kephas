@@ -32,15 +32,6 @@ namespace Kephas.Services
         /// The authenticated identity.
         /// </value>
         IIdentity Identity { get; set; }
-
-        /// <summary>
-        /// Gets or sets the context logger.
-        /// </summary>
-        /// <value>
-        /// The context logger.
-        /// </value>
-        [Obsolete("Please use the Logger property instead.")]
-        ILogger ContextLogger { get; set; }
     }
 
     /// <summary>

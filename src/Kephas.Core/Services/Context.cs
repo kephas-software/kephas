@@ -139,19 +139,6 @@ namespace Kephas.Services
         public ILogger Logger { get; set; }
 
         /// <summary>
-        /// Gets or sets the context logger.
-        /// </summary>
-        /// <newValue>
-        /// The context logger.
-        /// </newValue>
-        [Obsolete("Please use the Logger property instead.")]
-        public ILogger ContextLogger
-        {
-            get => this.Logger;
-            set => this.Logger = value;
-        }
-
-        /// <summary>
         /// Releases the unmanaged resources used by the Kephas.Services.Context and optionally releases
         /// the managed resources.
         /// </summary>

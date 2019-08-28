@@ -38,9 +38,6 @@ namespace Kephas.Logging
         /// <returns>
         /// The logger.
         /// </returns>
-        protected virtual ILogger GetLogger()
-        {
-            return this.GetLogger(null);
-        }
+        protected virtual ILogger GetLogger() => this.GetLogger(null);
     }
 }
