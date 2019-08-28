@@ -28,7 +28,7 @@ namespace Kephas.Application
     /// <summary>
     /// Base class for the application runtime service.
     /// </summary>
-    public abstract class AppRuntimeBase : Expando, IAppRuntime
+    public abstract class AppRuntimeBase : Expando, IAppRuntime, ILoggable
     {
         /// <summary>
         /// A pattern specifying the assembly file search.
@@ -40,10 +40,9 @@ namespace Kephas.Application
         /// </summary>
         protected const string AssemblyFileExtension = ".dll";
 
-        /// <summary>
-        /// The logger.
-        /// </summary>
-        private readonly ILogger logger;
+        private readonly ILogManager logManager;
+
+        private ILogger logger;
 
         /// <summary>
         /// The assembly resolution cache.
@@ -54,15 +53,15 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
-        /// <param name="assemblyLoader">The assembly loader (optional).</param>
-        /// <param name="logManager">The log manager (optional).</param>
-        /// <param name="defaultAssemblyFilter">A default filter applied when loading assemblies (optional).</param>
+        /// <param name="assemblyLoader">Optional. The assembly loader.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading assemblies.</param>
         protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null)
             : base(isThreadSafe: true)
         {
+            this.logManager = logManager;
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
-            this.logger = logManager?.GetLogger<AppRuntimeBase>();
         }
 
         /// <summary>
@@ -72,6 +71,18 @@ namespace Kephas.Application
         /// The assembly loader.
         /// </value>
         public IAssemblyLoader AssemblyLoader { get; }
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger Logger
+        {
+            get => this.logger ?? (this.logger = this.GetLogger());
+            protected internal set => this.logger = value;
+        }
 
         /// <summary>
         /// Gets the assembly filter.
@@ -131,6 +142,14 @@ namespace Kephas.Application
         {
             return Dns.GetHostName();
         }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <returns>
+        /// The logger.
+        /// </returns>
+        protected virtual ILogger GetLogger() => this.logManager.GetLogger(this.GetType());
 
         /// <summary>
         /// Gets the loaded assemblies.
@@ -275,7 +294,7 @@ namespace Kephas.Application
             }
             catch (Exception ex)
             {
-                this.logger.Warn(ex, string.Format(Strings.AppRuntimeBase_CannotLoadAssembly_Exception, n));
+                this.Logger.Warn(ex, string.Format(Strings.AppRuntimeBase_CannotLoadAssembly_Exception, n));
                 return null;
             }
         }
