@@ -23,6 +23,7 @@ namespace Kephas.Testing.Composition.Autofac
     using Kephas.Composition.Autofac.Metadata;
     using Kephas.Composition.Hosting;
     using Kephas.Logging;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Base class for tests using composition.
@@ -46,7 +47,9 @@ namespace Kephas.Testing.Composition.Autofac
         public virtual AutofacCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
         {
             logManager = logManager ?? new NullLogManager();
-            appRuntime = appRuntime ?? new DefaultAppRuntime();
+            appRuntime = appRuntime ?? new DefaultAppRuntime(
+                             logManager: logManager,
+                             assemblyFilter: a => !a.IsSystemAssembly() && !a.FullName.StartsWith("NUnit") && !a.FullName.StartsWith("xunit") && !a.FullName.StartsWith("JetBrains"));
 
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices
