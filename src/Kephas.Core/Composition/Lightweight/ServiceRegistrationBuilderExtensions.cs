@@ -62,11 +62,11 @@ namespace Kephas.Composition.Lightweight
         /// <returns>
         /// This builder.
         /// </returns>
-        public static IServiceRegistrationBuilder RegisteredAs<TContract>(this IServiceRegistrationBuilder builder)
+        public static IServiceRegistrationBuilder RegisterAs<TContract>(this IServiceRegistrationBuilder builder)
         {
             Requires.NotNull(builder, nameof(builder));
 
-            return builder.RegisteredAs(typeof(TContract));
+            return builder.RegisterAs(typeof(TContract));
         }
     }
 }

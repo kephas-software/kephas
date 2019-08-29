@@ -328,6 +328,18 @@ namespace Kephas.Core.Tests
             Assert.AreEqual(typeof(DependentService), service.Metadata.AppServiceImplementationType);
         }
 
+        [Test]
+        public void GetService_exportFactory_with_metadata_from_generic()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService(typeof(IService<,>), b => b.WithType<GenericService>().RegisterAs<IService>());
+
+            var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>();
+            Assert.IsNotNull(service.Metadata);
+            Assert.AreSame(typeof(string), service.Metadata["ValueType"]);
+            Assert.AreSame(typeof(int), service.Metadata["Type"]);
+        }
+
 #if NET45
 #else
         [Test]
@@ -341,6 +353,18 @@ namespace Kephas.Core.Tests
             Assert.IsNotNull(service.Metadata);
             Assert.AreEqual((int)Priority.High, service.Metadata.OverridePriority);
             Assert.AreEqual(typeof(DependentService), service.Metadata.AppServiceImplementationType);
+        }
+
+        [Test]
+        public void GetService_lazy_with_metadata_from_generic()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices.RegisterService(typeof(IService<,>), b => b.WithType<GenericService>().RegisterAs<IService>());
+
+            var service = ambientServices.GetService<Lazy<IService, AppServiceMetadata>>();
+            Assert.IsNotNull(service.Metadata);
+            Assert.AreSame(typeof(string), service.Metadata["ValueType"]);
+            Assert.AreSame(typeof(int), service.Metadata["Type"]);
         }
 #endif
 
@@ -381,6 +405,7 @@ namespace Kephas.Core.Tests
         public interface IService { }
         public interface IDependency { }
         public interface IAnotherDependency { }
+        public interface IService<TValue, TType> : IService { }
 
         public class DependentCollectionService
         {
@@ -441,6 +466,8 @@ namespace Kephas.Core.Tests
                 this.AnotherDependency = anotherDependency;
             }
         }
+
+        public class GenericService : IService<string, int> { }
 
         public class DependencyWithDependency : IDependency
         {

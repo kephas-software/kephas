@@ -28,7 +28,7 @@ namespace Kephas.Composition.Lightweight
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder RegisteredAs(Type contractType);
+        IServiceRegistrationBuilder RegisterAs(Type contractType);
 
         /// <summary>
         /// Registers the service as a singleton.

@@ -13,6 +13,7 @@ namespace Kephas.Composition.Lightweight
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Design;
+    using System.Linq;
 
     using Kephas.Composition.Lightweight.Internal;
     using Kephas.Diagnostics.Contracts;
@@ -67,7 +68,7 @@ namespace Kephas.Composition.Lightweight
             }
         }
 
-        public IServiceRegistrationBuilder RegisteredAs(Type contractType)
+        public IServiceRegistrationBuilder RegisterAs(Type contractType)
         {
             Requires.NotNull(contractType, nameof(contractType));
 
@@ -105,6 +106,8 @@ namespace Kephas.Composition.Lightweight
 
         public IServiceRegistrationBuilder WithInstance(object instance)
         {
+            Requires.NotNull(instance, nameof(instance));
+
             if (!this.contractType.IsInstanceOfType(instance))
             {
                 throw new InvalidOperationException(
@@ -120,13 +123,20 @@ namespace Kephas.Composition.Lightweight
 
         public IServiceRegistrationBuilder WithFactory(Func<ICompositionContext, object> factory)
         {
+            Requires.NotNull(factory, nameof(factory));
+
             this.instancing = factory;
             return this;
         }
 
         public IServiceRegistrationBuilder WithType(Type implementationType)
         {
-            if (!this.contractType.IsAssignableFrom(implementationType))
+            Requires.NotNull(implementationType, nameof(implementationType));
+
+            if (!this.contractType.IsAssignableFrom(implementationType)
+                && !(this.contractType.IsGenericTypeDefinition 
+                     && !implementationType.IsGenericTypeDefinition 
+                     && implementationType.GetInterfaces().Any(i => ReferenceEquals(i.GetGenericTypeDefinition(), this.contractType))))
             {
                 throw new InvalidOperationException(
                     string.Format(
