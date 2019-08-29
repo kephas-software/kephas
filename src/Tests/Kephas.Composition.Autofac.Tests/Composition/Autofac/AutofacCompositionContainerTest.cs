@@ -257,7 +257,7 @@ namespace Kephas.Tests.Composition.Autofac
         public void GetExport_ambient_services_factory()
         {
             var ambientServices = new AmbientServices();
-            ambientServices.Register(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
+            ambientServices.RegisterTransient(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
             var container = this.CreateContainerWithBuilder(ambientServices);
 

@@ -65,7 +65,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var dependency = Substitute.For<IDependency>();
-            ambientServices.Register(typeof(IService), typeof(DependentService), isSingleton: true);
+            ambientServices.Register(typeof(IService), typeof(DependentService));
             ambientServices.Register(typeof(IDependency), dependency);
 
             var service = (DependentService)ambientServices.GetService(typeof(IService));
@@ -77,7 +77,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var dependency = Substitute.For<IDependency>();
-            ambientServices.Register(typeof(IService), typeof(OptionalDependentService), isSingleton: true);
+            ambientServices.Register(typeof(IService), typeof(OptionalDependentService));
             ambientServices.Register(typeof(IDependency), dependency);
 
             var service = (OptionalDependentService)ambientServices.GetService(typeof(IService));
@@ -88,7 +88,7 @@ namespace Kephas.Core.Tests
         public void Register_service_type_singleton_optional_dependency_not_resolved()
         {
             var ambientServices = new AmbientServices();
-            ambientServices.Register(typeof(IService), typeof(OptionalDependentService), isSingleton: true);
+            ambientServices.Register(typeof(IService), typeof(OptionalDependentService));
 
             var service = (OptionalDependentService)ambientServices.GetService(typeof(IService));
             Assert.IsNull(service.Dependency);
@@ -98,7 +98,7 @@ namespace Kephas.Core.Tests
         public void Register_service_type_singleton_dependency_ambiguous()
         {
             var ambientServices = new AmbientServices();
-            ambientServices.Register(typeof(IService), typeof(AmbiguousDependentService), isSingleton: true);
+            ambientServices.Register(typeof(IService), typeof(AmbiguousDependentService));
             ambientServices.Register(typeof(IDependency), Substitute.For<IDependency>());
             ambientServices.Register(typeof(IAnotherDependency), Substitute.For<IAnotherDependency>());
 
@@ -109,7 +109,7 @@ namespace Kephas.Core.Tests
         public void Register_service_type_singleton_dependency_non_ambiguous()
         {
             var ambientServices = new AmbientServices();
-            ambientServices.Register(typeof(IService), typeof(AmbiguousDependentService), isSingleton: true);
+            ambientServices.Register(typeof(IService), typeof(AmbiguousDependentService));
             ambientServices.Register(typeof(IDependency), Substitute.For<IDependency>());
 
             var service = (AmbiguousDependentService)ambientServices.GetService(typeof(IService));
@@ -122,7 +122,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(IService), typeof(SimpleService), isSingleton: true);
+            ambientServices.Register(typeof(IService), typeof(SimpleService));
 
             var service = ambientServices.GetService(typeof(IService));
             Assert.IsInstanceOf<SimpleService>(service);
@@ -136,7 +136,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices();
             var logManager = Substitute.For<ILogManager>();
-            ambientServices.Register(typeof(IService), typeof(SimpleService), isSingleton: false);
+            ambientServices.RegisterTransient(typeof(IService), typeof(SimpleService));
 
             var service = ambientServices.GetService(typeof(IService));
             Assert.IsInstanceOf<SimpleService>(service);
@@ -174,7 +174,7 @@ namespace Kephas.Core.Tests
         public void Register_service_factory_non_singleton()
         {
             var ambientServices = new AmbientServices();
-            ambientServices.Register(typeof(ILogManager), () => Substitute.For<ILogManager>());
+            ambientServices.RegisterTransient(typeof(ILogManager), () => Substitute.For<ILogManager>());
             var logManager1 = ambientServices.GetService(typeof(ILogManager));
             var logManager2 = ambientServices.GetService(typeof(ILogManager));
             Assert.AreNotSame(logManager1, logManager2);

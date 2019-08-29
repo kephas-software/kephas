@@ -61,11 +61,11 @@ namespace Kephas
 
             this.Register<IAmbientServices>(this)
                 .Register<ICompositionContext>(this.AsCompositionContext())
-                .Register<IConfigurationStore, DefaultConfigurationStore>(isSingleton: true)
+                .Register<IConfigurationStore, DefaultConfigurationStore>()
                 .Register<ILogManager>(logManager)
-                .Register<IAssemblyLoader, DefaultAssemblyLoader>(isSingleton: true)
-                .Register<ITypeLoader, DefaultTypeLoader>(isSingleton: true)
-                .Register<IAppRuntime, DefaultAppRuntime>(isSingleton: true);
+                .Register<IAssemblyLoader, DefaultAssemblyLoader>()
+                .Register<ITypeLoader, DefaultTypeLoader>()
+                .Register<IAppRuntime, DefaultAppRuntime>();
 
             this.registry
                 .RegisterSource(new LazyServiceSource(this.registry))
