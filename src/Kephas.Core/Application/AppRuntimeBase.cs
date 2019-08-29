@@ -59,7 +59,7 @@ namespace Kephas.Application
         protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null)
             : base(isThreadSafe: true)
         {
-            this.logManager = logManager;
+            this.logManager = logManager ?? new NullLogManager();
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
         }
