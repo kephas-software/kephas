@@ -29,6 +29,14 @@ namespace Kephas.Composition.Mef.Hosting
         private CompositionContext innerCompositionContext;
 
         /// <summary>
+        /// Gets a value indicating whether this object is root.
+        /// </summary>
+        /// <value>
+        /// True if this object is root, false if not.
+        /// </value>
+        protected virtual bool IsRoot => false;
+
+        /// <summary>
         /// Resolves the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
@@ -201,6 +209,12 @@ namespace Kephas.Composition.Mef.Hosting
 
             this.innerCompositionContext = context;
             map.TryAdd(context, this);
+
+            if (this.IsRoot)
+            {
+                var rootContext = context.GetExport<CompositionContext>();
+                map.TryAdd(rootContext, this);
+            }
         }
 
         /// <summary>

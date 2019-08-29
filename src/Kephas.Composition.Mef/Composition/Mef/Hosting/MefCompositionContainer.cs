@@ -29,8 +29,17 @@ namespace Kephas.Composition.Mef.Hosting
         {
             Requires.NotNull(configuration, nameof(configuration));
 
-            this.Initialize(this.CreateCompositionContext(configuration));
+            var compositionHost = this.CreateCompositionContext(configuration);
+            this.Initialize(compositionHost);
         }
+
+        /// <summary>
+        /// Gets a value indicating whether this object is root.
+        /// </summary>
+        /// <value>
+        /// True if this object is root, false if not.
+        /// </value>
+        protected override bool IsRoot => true;
 
         /// <summary>
         /// Creates the composition context.
