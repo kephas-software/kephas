@@ -25,6 +25,7 @@ namespace Kephas.Application
     using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
+    using Kephas.Services.Behaviors.Composition;
     using Kephas.Services.Composition;
     using Kephas.Sets;
     using Kephas.Threading.Tasks;
@@ -40,25 +41,24 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
         /// <param name="compositionContext">The ambient services.</param>
-        /// <param name="serviceBehaviorProvider">The service behavior provider.</param>
-        /// <param name="appLifecycleBehaviorFactories">The application lifecycle behavior factories.</param>
-        /// <param name="featureManagerFactories">The feature manager factories.</param>
-        /// <param name="featureLifecycleBehaviorFactories">The feature lifecycle behavior factories.</param>
+        /// <param name="serviceBehaviorProvider">Optional. The service behavior provider.</param>
+        /// <param name="appLifecycleBehaviorFactories">Optional. The application lifecycle behavior factories.</param>
+        /// <param name="featureManagerFactories">Optional. The feature manager factories.</param>
+        /// <param name="featureLifecycleBehaviorFactories">Optional. The feature lifecycle behavior factories.</param>
         public DefaultAppManager(
             IAppManifest appManifest,
             ICompositionContext compositionContext,
-            IServiceBehaviorProvider serviceBehaviorProvider,
-            ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories,
-            ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories,
-            ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> featureLifecycleBehaviorFactories)
+            IServiceBehaviorProvider serviceBehaviorProvider = null,
+            ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories = null,
+            ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories = null,
+            ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> featureLifecycleBehaviorFactories = null)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(compositionContext, nameof(compositionContext));
-            Requires.NotNull(serviceBehaviorProvider, nameof(serviceBehaviorProvider));
 
             this.AppManifest = appManifest;
             this.CompositionContext = compositionContext;
-            this.ServiceBehaviorProvider = serviceBehaviorProvider;
+            this.ServiceBehaviorProvider = serviceBehaviorProvider ?? new DefaultServiceBehaviorProvider(compositionContext);
             this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories == null
                                                      ? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>()
                                                      : this.ServiceBehaviorProvider.WhereEnabled(appLifecycleBehaviorFactories).ToList();
@@ -66,8 +66,7 @@ namespace Kephas.Application
             this.EnsureMetadataHasFeatureInfo(featureManagerFactories);
             this.FeatureManagerFactories = featureManagerFactories == null
                                                ? new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>()
-                                               : this.SortEnabledFeatureManagerFactories(
-                                                   this.ServiceBehaviorProvider.WhereEnabled(featureManagerFactories).ToList());
+                                               : this.SortEnabledFeatureManagerFactories(this.ServiceBehaviorProvider.WhereEnabled(featureManagerFactories).ToList());
 
             this.FeatureLifecycleBehaviorFactories = featureLifecycleBehaviorFactories == null
                                                          ? new List<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>()
