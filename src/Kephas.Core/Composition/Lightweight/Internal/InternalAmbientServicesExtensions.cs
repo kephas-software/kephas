@@ -96,7 +96,9 @@ namespace Kephas.Composition.Lightweight.Internal
             IAppServiceMetadataResolver metadataResolver,
             Type serviceImplementationType)
         {
-            var metaAttrs = serviceImplementationType.GetCustomAttributes(inherit: true);
+            // leave the conversion to RuntimeTypeInfo here
+            // as it may be possible to use runtime added attributes
+            var metaAttrs = serviceImplementationType.AsRuntimeTypeInfo().GetAttributes<Attribute>();
             foreach (var metaAttr in metaAttrs)
             {
                 var attrType = metaAttr.GetType();
@@ -105,10 +107,7 @@ namespace Kephas.Composition.Lightweight.Internal
                 {
                     metadata.Add(
                         valuePropertyEntry.Key,
-                        metadataResolver.GetMetadataValueFromAttribute(
-                            serviceImplementationType,
-                            attrType,
-                            valuePropertyEntry.Value));
+                        valuePropertyEntry.Value.GetValue(metaAttr));
                 }
             }
         }

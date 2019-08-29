@@ -14,7 +14,6 @@ namespace Kephas.Services.Composition
     using System.Collections.Generic;
 
     using Kephas.Reflection;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Interface for application service metadata resolver.

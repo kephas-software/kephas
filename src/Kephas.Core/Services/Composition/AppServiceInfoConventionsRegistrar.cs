@@ -24,6 +24,7 @@ namespace Kephas.Services.Composition
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Runtime;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -631,10 +632,15 @@ namespace Kephas.Services.Composition
 
             if (parts.Count > 1)
             {
-                var overrideChain = parts.ToDictionary(
-                    ti => ti,
-                    ti => ti.GetCustomAttribute<OverridePriorityAttribute>()
-                          ?? new OverridePriorityAttribute(Priority.Normal)).OrderBy(item => item.Value.Value).ToList();
+                // leave the implementation with the runtime type info
+                // so that it may be possible to use runtime added attributes
+                var overrideChain = parts
+                    .ToDictionary(
+                        ti => ti,
+                        ti => ti.AsRuntimeTypeInfo().GetAttribute<OverridePriorityAttribute>()
+                              ?? new OverridePriorityAttribute(Priority.Normal))
+                    .OrderBy(item => item.Value.Value)
+                    .ToList();
 
                 var selectedPart = overrideChain[0].Key;
                 if (overrideChain[0].Value.Value == overrideChain[1].Value.Value)
@@ -646,7 +652,7 @@ namespace Kephas.Services.Composition
                             selectedPart,
                             string.Join(
                                 ", ",
-                                overrideChain.Select(item => item.Key.ToString() + ":" + item.Value.Value))));
+                                overrideChain.Select(item => $"{item.Key}:{item.Value.Value}"))));
                 }
 
                 return (true, selectedPart);
@@ -709,7 +715,11 @@ namespace Kephas.Services.Composition
         /// </returns>
         private bool IsEligiblePart(Type typeInfo)
         {
-            return typeInfo.IsClass && !typeInfo.IsAbstract && typeInfo.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null;
+            // leave here the AsRuntimeTypeInfo conversion so that
+            // runtime added attributes may be used
+            return typeInfo.IsClass
+                   && !typeInfo.IsAbstract
+                   && typeInfo.AsRuntimeTypeInfo().GetAttribute<ExcludeFromCompositionAttribute>() == null;
         }
 
         /// <summary>

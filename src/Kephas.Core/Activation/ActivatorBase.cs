@@ -93,7 +93,7 @@ namespace Kephas.Activation
         /// </summary>
         /// <remarks>
         /// The <see cref="ActivatorBase"/> class provides always an empty list
-        /// of implementation types. The inheritors should provide a proper list of 
+        /// of implementation types. The inheritors should provide a proper list of
         /// supported implementation types annotated with <see cref="ImplementationForAttribute"/>,
         /// otherwise only non-abstract types will be resolved.
         /// </remarks>
