@@ -74,7 +74,7 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        IAmbientServices RegisterService(Type serviceType, Action<IServiceRegistrationBuilder> builder);
+        IAmbientServices Register(Type serviceType, Action<IServiceRegistrationBuilder> builder);
 
         /// <summary>
         /// Gets a value indicating whether the service with the provided contract is registered.

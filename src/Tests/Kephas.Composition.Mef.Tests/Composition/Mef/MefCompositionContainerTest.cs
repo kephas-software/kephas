@@ -281,7 +281,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var ambientServices = new AmbientServices();
             var service = Substitute.For<IAsyncInitializable>();
-            ambientServices.RegisterService(typeof(IAsyncInitializable), service);
+            ambientServices.Register(typeof(IAsyncInitializable), service);
 
             var container = this.CreateContainerWithBuilder(ambientServices);
 
@@ -293,7 +293,7 @@ namespace Kephas.Tests.Composition.Mef
         public void GetExport_ambient_services_factory()
         {
             var ambientServices = new AmbientServices();
-            ambientServices.RegisterService(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
+            ambientServices.Register(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
             var container = this.CreateContainerWithBuilder(ambientServices);
 
@@ -311,7 +311,7 @@ namespace Kephas.Tests.Composition.Mef
             var service = container.TryGetExport<IAsyncInitializable>();
             Assert.IsNull(service);
 
-            ambientServices.RegisterService(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
+            ambientServices.Register(typeof(IAsyncInitializable), () => Substitute.For<IAsyncInitializable>());
 
             // This is null because the composition container caches the export providers, and after a first request
             // when the export was not available, will cache the empty export providers.

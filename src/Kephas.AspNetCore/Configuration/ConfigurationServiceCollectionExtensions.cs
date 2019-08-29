@@ -52,7 +52,7 @@ namespace Kephas.AspNetCore.Configuration
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            ambientServices.RegisterService<IConfigurationStore>(new AspNetConfigurationStore(configuration));
+            ambientServices.Register<IConfigurationStore>(new AspNetConfigurationStore(configuration));
 
             return ambientServices;
         }

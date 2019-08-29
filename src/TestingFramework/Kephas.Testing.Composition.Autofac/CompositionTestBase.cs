@@ -50,8 +50,8 @@ namespace Kephas.Testing.Composition.Autofac
 
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices
-                .RegisterService(logManager)
-                .RegisterService(appRuntime);
+                .Register(logManager)
+                .Register(appRuntime);
             return new AutofacCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }
 
@@ -75,7 +75,7 @@ namespace Kephas.Testing.Composition.Autofac
             config?.Invoke(containerBuilder);
 
             var container = containerBuilder.CreateContainer();
-            ambientServices.RegisterService(container);
+            ambientServices.Register(container);
             return container;
         }
 

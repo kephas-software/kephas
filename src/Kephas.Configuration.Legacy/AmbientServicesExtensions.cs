@@ -40,7 +40,7 @@ namespace Kephas
         {
             Requires.NotNull(appConfiguration, nameof(appConfiguration));
 
-            builder.AmbientServices.RegisterService(appConfiguration);
+            builder.AmbientServices.Register(appConfiguration);
 
             return builder;
         }

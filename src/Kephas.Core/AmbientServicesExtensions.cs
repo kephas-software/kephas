@@ -79,13 +79,13 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public static IAmbientServices RegisterService<TService>(this IAmbientServices ambientServices, Action<IServiceRegistrationBuilder> builder)
+        public static IAmbientServices Register<TService>(this IAmbientServices ambientServices, Action<IServiceRegistrationBuilder> builder)
             where TService : class
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(builder, nameof(builder));
 
-            return ambientServices.RegisterService(typeof(TService), builder);
+            return ambientServices.Register(typeof(TService), builder);
         }
 
         /// <summary>
@@ -97,13 +97,13 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public static IAmbientServices RegisterService<TService>(this IAmbientServices ambientServices, TService service)
+        public static IAmbientServices Register<TService>(this IAmbientServices ambientServices, TService service)
             where TService : class
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(service, nameof(service));
 
-            return ambientServices.RegisterService(typeof(TService), service);
+            return ambientServices.Register(typeof(TService), service);
         }
 
         /// <summary>
@@ -117,12 +117,12 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public static IAmbientServices RegisterService<TService, TServiceImplementation>(this IAmbientServices ambientServices, bool isSingleton = false)
+        public static IAmbientServices Register<TService, TServiceImplementation>(this IAmbientServices ambientServices, bool isSingleton = false)
             where TService : class
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices.RegisterService(typeof(TService), typeof(TServiceImplementation), isSingleton);
+            return ambientServices.Register(typeof(TService), typeof(TServiceImplementation), isSingleton);
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public static IAmbientServices RegisterService<TService>(
+        public static IAmbientServices Register<TService>(
             this IAmbientServices ambientServices,
             Func<TService> serviceFactory,
             bool isSingleton = false)
@@ -145,7 +145,7 @@ namespace Kephas
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
-            return ambientServices.RegisterService(typeof(TService), ctx => serviceFactory(), isSingleton);
+            return ambientServices.Register(typeof(TService), ctx => serviceFactory(), isSingleton);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public static IAmbientServices RegisterService(
+        public static IAmbientServices Register(
             this IAmbientServices ambientServices,
             Type serviceType,
             Func<object> serviceFactory,
@@ -169,7 +169,7 @@ namespace Kephas
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
-            return ambientServices.RegisterService(serviceType, ctx => serviceFactory(), isSingleton);
+            return ambientServices.Register(serviceType, ctx => serviceFactory(), isSingleton);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public static IAmbientServices RegisterService(
+        public static IAmbientServices Register(
             this IAmbientServices ambientServices,
             Type serviceType,
             object service)
@@ -191,7 +191,7 @@ namespace Kephas
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(service, nameof(service));
 
-            ambientServices.RegisterService(serviceType, b => b.WithInstance(service));
+            ambientServices.Register(serviceType, b => b.WithInstance(service));
             return ambientServices;
         }
 
@@ -206,7 +206,7 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public static IAmbientServices RegisterService(
+        public static IAmbientServices Register(
             this IAmbientServices ambientServices,
             Type serviceType,
             Type serviceImplementationType,
@@ -216,7 +216,7 @@ namespace Kephas
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
 
-            ambientServices.RegisterService(
+            ambientServices.Register(
                 serviceType,
                 b =>
                 {
@@ -244,7 +244,7 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public static IAmbientServices RegisterService(
+        public static IAmbientServices Register(
             this IAmbientServices ambientServices,
             Type serviceType,
             Func<ICompositionContext, object> serviceFactory,
@@ -254,7 +254,7 @@ namespace Kephas
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
 
-            ambientServices.RegisterService(
+            ambientServices.Register(
                 serviceType,
                 b =>
                     {

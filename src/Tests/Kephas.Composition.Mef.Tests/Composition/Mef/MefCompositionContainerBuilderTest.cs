@@ -443,8 +443,8 @@ namespace Kephas.Tests.Composition.Mef
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
             var context = new CompositionRegistrationContext(new AmbientServices()
-                                        .RegisterService(mockLoggerManager)
-                                        .RegisterService(mockPlatformManager));
+                                        .Register(mockLoggerManager)
+                                        .Register(mockPlatformManager));
             config?.Invoke(context);
             var factory = new MefCompositionContainerBuilder(context);
             return factory;

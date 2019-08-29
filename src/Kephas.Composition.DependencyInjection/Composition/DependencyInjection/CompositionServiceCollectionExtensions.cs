@@ -35,7 +35,7 @@ namespace Kephas.Composition.DependencyInjection
             Requires.NotNull(serviceCollection, nameof(serviceCollection));
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            ambientServices.RegisterService(serviceCollection);
+            ambientServices.Register(serviceCollection);
             serviceCollection.Replace(ServiceDescriptor.Transient<IServiceScopeFactory, CompositionServiceScopeFactory>());
             serviceCollection.TryAddSingleton<IServiceProvider>(provider => provider);
 

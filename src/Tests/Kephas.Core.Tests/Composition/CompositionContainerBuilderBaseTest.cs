@@ -71,7 +71,7 @@ namespace Kephas.Core.Tests.Composition
             }
 
             public TestCompositionContainerBuilder(ILogManager logManager, IAppRuntime appRuntime)
-                : base(new CompositionRegistrationContext(new AmbientServices().RegisterService(logManager).RegisterService(appRuntime)))
+                : base(new CompositionRegistrationContext(new AmbientServices().Register(logManager).Register(appRuntime)))
             {
             }
 

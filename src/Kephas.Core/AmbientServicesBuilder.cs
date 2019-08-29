@@ -65,7 +65,7 @@ namespace Kephas
         {
             Requires.NotNull(configurationStore, nameof(configurationStore));
 
-            this.AmbientServices.RegisterService(configurationStore);
+            this.AmbientServices.Register(configurationStore);
 
             return this;
         }
@@ -81,7 +81,7 @@ namespace Kephas
         {
             Requires.NotNull(logManager, nameof(logManager));
 
-            this.AmbientServices.RegisterService(logManager);
+            this.AmbientServices.Register(logManager);
 
             return this;
         }
@@ -97,7 +97,7 @@ namespace Kephas
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
 
-            this.AmbientServices.RegisterService(appRuntime);
+            this.AmbientServices.Register(appRuntime);
 
             return this;
         }
@@ -113,7 +113,7 @@ namespace Kephas
         {
             Requires.NotNull(compositionContainer, nameof(compositionContainer));
 
-            this.AmbientServices.RegisterService(compositionContainer);
+            this.AmbientServices.Register(compositionContainer);
 
             return this;
         }
@@ -148,12 +148,12 @@ namespace Kephas
         /// <returns>
         /// This ambient services builder.
         /// </returns>
-        public AmbientServicesBuilder RegisterService<TService>(Action<IServiceRegistrationBuilder> builder)
+        public AmbientServicesBuilder Register<TService>(Action<IServiceRegistrationBuilder> builder)
             where TService : class
         {
             Requires.NotNull(builder, nameof(builder));
 
-            this.AmbientServices.RegisterService(typeof(TService), builder);
+            this.AmbientServices.Register(typeof(TService), builder);
 
             return this;
         }

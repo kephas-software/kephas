@@ -444,8 +444,8 @@ namespace Kephas.Tests.Composition.Autofac
             var mockPlatformManager = Substitute.For<IAppRuntime>();
 
             var context = new CompositionRegistrationContext(new AmbientServices()
-                                        .RegisterService(mockLoggerManager)
-                                        .RegisterService(mockPlatformManager));
+                                        .Register(mockLoggerManager)
+                                        .Register(mockPlatformManager));
             config?.Invoke(context);
             var factory = new AutofacCompositionContainerBuilder(context);
             return factory;

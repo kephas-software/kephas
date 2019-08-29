@@ -49,8 +49,8 @@ namespace Kephas.Testing.Composition.Mef
 
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices
-                .RegisterService(logManager)
-                .RegisterService(appRuntime);
+                .Register(logManager)
+                .Register(appRuntime);
             return new MefCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }
 
@@ -74,7 +74,7 @@ namespace Kephas.Testing.Composition.Mef
             config?.Invoke(containerBuilder);
 
             var container = containerBuilder.CreateContainer();
-            ambientServices.RegisterService(container);
+            ambientServices.Register(container);
             return container;
         }
 

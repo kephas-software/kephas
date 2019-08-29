@@ -93,7 +93,7 @@ namespace Kephas.Application
 
                 // registers the application context as a global service, so that other services can benefit from it.
                 // it is important to do it before initializing the application manager.
-                this.AmbientServices.RegisterService(appContext);
+                this.AmbientServices.Register(appContext);
                 await this.InitializeAppManagerAsync(appContext, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_StartComplete_Message);

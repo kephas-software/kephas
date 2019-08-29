@@ -59,13 +59,13 @@ namespace Kephas
         {
             var logManager = new NullLogManager();
 
-            this.RegisterService<IAmbientServices>(this)
-                .RegisterService<ICompositionContext>(this.AsCompositionContext())
-                .RegisterService<IConfigurationStore, DefaultConfigurationStore>(isSingleton: true)
-                .RegisterService<ILogManager>(logManager)
-                .RegisterService<IAssemblyLoader, DefaultAssemblyLoader>(isSingleton: true)
-                .RegisterService<ITypeLoader, DefaultTypeLoader>(isSingleton: true)
-                .RegisterService<IAppRuntime, DefaultAppRuntime>(isSingleton: true);
+            this.Register<IAmbientServices>(this)
+                .Register<ICompositionContext>(this.AsCompositionContext())
+                .Register<IConfigurationStore, DefaultConfigurationStore>(isSingleton: true)
+                .Register<ILogManager>(logManager)
+                .Register<IAssemblyLoader, DefaultAssemblyLoader>(isSingleton: true)
+                .Register<ITypeLoader, DefaultTypeLoader>(isSingleton: true)
+                .Register<IAppRuntime, DefaultAppRuntime>(isSingleton: true);
 
             this.registry
                 .RegisterSource(new LazyServiceSource(this.registry))
@@ -155,7 +155,7 @@ namespace Kephas
         /// <returns>
         /// The IAmbientServices.
         /// </returns>
-        public virtual IAmbientServices RegisterService(Type serviceType, Action<IServiceRegistrationBuilder> builder)
+        public virtual IAmbientServices Register(Type serviceType, Action<IServiceRegistrationBuilder> builder)
         {
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(builder, nameof(builder));
