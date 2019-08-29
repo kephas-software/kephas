@@ -11,10 +11,13 @@
 namespace Kephas.Composition.Lightweight.Internal
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
     using Kephas.Composition;
+    using Kephas.Dynamic;
+    using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Services.Reflection;
@@ -64,6 +67,8 @@ namespace Kephas.Composition.Lightweight.Internal
 
         public Type ContractType { get; }
 
+        public Type ServiceType { get; internal set; }
+
         public object Instance { get; internal set; }
 
         public Type InstanceType { get; }
@@ -76,6 +81,8 @@ namespace Kephas.Composition.Lightweight.Internal
         }
 
         public object GetService(IAmbientServices ambientServices) => this.lazyFactory.GetValue();
+
+        public IDictionary<string, object> Metadata { get; internal set; }
 
         private Func<object> GetInstanceResolver(IAmbientServices ambientServices, Type instanceType)
         {
@@ -175,12 +182,12 @@ namespace Kephas.Composition.Lightweight.Internal
 
         private class LazyFactory
         {
+            [ThreadStatic]
+            private static List<LazyFactory> isProducing;
+
             protected readonly Func<object> factory;
 
             private readonly Type serviceType;
-
-            [ThreadStatic]
-            private static bool isProducing = false;
 
             public LazyFactory(Func<object> factory, Type serviceType)
             {
@@ -192,12 +199,16 @@ namespace Kephas.Composition.Lightweight.Internal
             {
                 // at one time, a single value may be produced per thread
                 // otherwise it means that it occured a circular dependency
-                if (isProducing)
+                if (isProducing == null)
                 {
-                    throw new InvalidOperationException(string.Format(Strings.LazyFactory_CircularDependency_Exception, this.serviceType));
+                    isProducing = new List<LazyFactory>();
+                }
+                else if (isProducing.Contains(this))
+                {
+                    throw new CircularDependencyException(string.Format(Strings.LazyFactory_CircularDependency_Exception, this.serviceType));
                 }
 
-                isProducing = true;
+                isProducing.Add(this);
                 try
                 {
                     var value = this.factory();
@@ -205,7 +216,7 @@ namespace Kephas.Composition.Lightweight.Internal
                 }
                 finally
                 {
-                    isProducing = false;
+                    isProducing.Remove(this);
                 }
             }
         }

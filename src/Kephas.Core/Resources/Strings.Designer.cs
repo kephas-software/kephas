@@ -133,6 +133,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The service type &apos;{0}&apos; must be a super type of the contract type &apos;{1}&apos;..
+        /// </summary>
+        internal static string AmbientServices_ServiceTypeMustBeSuperOfContractType_Exception {
+            get {
+                return ResourceManager.GetString("AmbientServices_ServiceTypeMustBeSuperOfContractType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. The service {1} will be used. Identified eligible parts: {2}..
         /// </summary>
         internal static string AmbiguousOverrideForAppServiceContract {

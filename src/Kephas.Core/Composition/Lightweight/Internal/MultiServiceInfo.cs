@@ -15,6 +15,7 @@
         public MultiServiceInfo(ServiceInfo serviceInfo)
         {
             this.ContractType = serviceInfo.ContractType;
+            this.ServiceType = serviceInfo.ServiceType;
             this.serviceInfos.Add(serviceInfo);
         }
 
@@ -43,6 +44,10 @@
         {
             throw new NotSupportedException("Only single service infos may provide services.");
         }
+
+        public Type ServiceType { get; }
+
+        public IDictionary<string, object> Metadata { get; }
 
         public IEnumerator<IServiceInfo> GetEnumerator() => this.serviceInfos.GetEnumerator();
 

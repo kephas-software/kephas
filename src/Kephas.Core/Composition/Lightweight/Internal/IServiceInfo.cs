@@ -10,10 +10,17 @@
 
 namespace Kephas.Composition.Lightweight.Internal
 {
+    using System;
+    using System.Collections.Generic;
+
     using Kephas.Services.Reflection;
 
     internal interface IServiceInfo : IAppServiceInfo
     {
         object GetService(IAmbientServices ambientServices);
+
+        Type ServiceType { get; }
+
+        IDictionary<string, object> Metadata { get; }
     }
 }

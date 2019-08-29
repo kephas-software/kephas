@@ -16,27 +16,30 @@ namespace Kephas.Services.Composition
     using Kephas.Reflection;
     using Kephas.Runtime;
 
+    /// <summary>
+    /// Interface for application service metadata resolver.
+    /// </summary>
     internal interface IAppServiceMetadataResolver
     {
         /// <summary>
         /// Gets the metadata value properties which should be retrieved from the attribute.
         /// </summary>
-        /// <param name="attributeTypeInfo">Information describing the attribute type.</param>
+        /// <param name="attributeType">The type of the attribute providing metadata.</param>
         /// <returns>
         /// The metadata properties.
         /// </returns>
-        IDictionary<string, IPropertyInfo> GetMetadataValueProperties(IRuntimeTypeInfo attributeTypeInfo);
+        IDictionary<string, IPropertyInfo> GetMetadataValueProperties(Type attributeType);
 
         /// <summary>
         /// Gets the metadata value from attribute.
         /// </summary>
-        /// <param name="partType">Type of the part.</param>
+        /// <param name="implementationType">The service implementation type.</param>
         /// <param name="attributeType">Type of the attribute.</param>
         /// <param name="property">The metadata property.</param>
         /// <returns>
         /// The metadata value from attribute.
         /// </returns>
-        object GetMetadataValueFromAttribute(Type partType, Type attributeType, IPropertyInfo property);
+        object GetMetadataValueFromAttribute(Type implementationType, Type attributeType, IPropertyInfo property);
 
         /// <summary>
         /// Gets the metadata name from the attribute type.
@@ -44,5 +47,21 @@ namespace Kephas.Services.Composition
         /// <param name="attributeType">Type of the attribute.</param>
         /// <returns>The metadata name from the attribute type.</returns>
         string GetMetadataNameFromAttributeType(Type attributeType);
+
+        /// <summary>
+        /// Gets the metadata value from generic parameter.
+        /// </summary>
+        /// <param name="implementationType">The service implementation type.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="serviceType">Type of the service contract.</param>
+        /// <returns>The metadata value.</returns>
+        object GetMetadataValueFromGenericParameter(Type implementationType, int position, Type serviceType);
+
+        /// <summary>
+        /// Gets the metadata name from generic type parameter.
+        /// </summary>
+        /// <param name="genericTypeParameter">The generic type parameter.</param>
+        /// <returns>The metadata name.</returns>
+        string GetMetadataNameFromGenericTypeParameter(Type genericTypeParameter);
     }
 }

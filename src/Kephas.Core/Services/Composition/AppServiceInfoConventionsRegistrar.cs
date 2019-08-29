@@ -31,17 +31,7 @@ namespace Kephas.Services.Composition
     /// </summary>
     public class AppServiceInfoConventionsRegistrar : IConventionsRegistrar
     {
-        /// <summary>
-        /// The 'T' prefix in generic type arguments.
-        /// </summary>
-        private const string TypePrefix = "T";
-
-        /// <summary>
-        /// The 'Type' suffix in generic type arguments.
-        /// </summary>
-        private const string TypeSuffix = "Type";
-
-        private IAppServiceMetadataResolver metadataResolver = new AppServiceMetadataResolver();
+        private readonly IAppServiceMetadataResolver metadataResolver = new AppServiceMetadataResolver();
 
         /// <summary>
         /// Registers the conventions.
@@ -484,61 +474,9 @@ namespace Kephas.Services.Composition
                 var genericTypeParameter = genericTypeParameters[i];
                 var position = i;
                 builder.AddMetadata(
-                    this.GetMetadataNameFromGenericTypeParameter(genericTypeParameter),
-                    t => this.GetMetadataValueFromGenericParameter(t, position, serviceContractType));
+                    this.metadataResolver.GetMetadataNameFromGenericTypeParameter(genericTypeParameter),
+                    t => this.metadataResolver.GetMetadataValueFromGenericParameter(t, position, serviceContractType));
             }
-        }
-
-        /// <summary>
-        /// Gets the metadata value from generic parameter.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="position">The position.</param>
-        /// <param name="serviceContractType">Type of the service contract.</param>
-        /// <returns>The metadata value.</returns>
-        private object GetMetadataValueFromGenericParameter(Type type, int position, Type serviceContractType)
-        {
-            var typeInfo = type.GetTypeInfo();
-            var closedGeneric = typeInfo.ImplementedInterfaces
-                    .Select(i => i.GetTypeInfo())
-                    .FirstOrDefault(
-                        i =>
-                        i.IsGenericType && !i.IsGenericTypeDefinition
-                        && i.GetGenericTypeDefinition() == serviceContractType);
-
-            if (closedGeneric == null && type.IsConstructedGenericType && type.GetGenericTypeDefinition() == serviceContractType)
-            {
-                closedGeneric = typeInfo;
-            }
-
-            var genericArg = closedGeneric?.GenericTypeArguments[position];
-            if (genericArg?.IsGenericParameter ?? false)
-            {
-                genericArg = genericArg.GetTypeInfo().BaseType;
-            }
-
-            return genericArg;
-        }
-
-        /// <summary>
-        /// Gets the metadata name from generic type parameter.
-        /// </summary>
-        /// <param name="genericTypeParameter">The generic type parameter.</param>
-        /// <returns>The metadata name.</returns>
-        private string GetMetadataNameFromGenericTypeParameter(Type genericTypeParameter)
-        {
-            var name = genericTypeParameter.Name;
-            if (name.StartsWith(TypePrefix) && name.Length > 1 && name[1] == char.ToUpperInvariant(name[1]))
-            {
-                name = name.Substring(1);
-            }
-
-            if (!name.EndsWith(TypeSuffix))
-            {
-                name = name + TypeSuffix;
-            }
-
-            return name;
         }
 
         /// <summary>
@@ -560,8 +498,7 @@ namespace Kephas.Services.Composition
 
             foreach (var attributeType in attributeTypes)
             {
-                var attrTypeInfo = attributeType.AsRuntimeTypeInfo();
-                var valueProperties = this.metadataResolver.GetMetadataValueProperties(attrTypeInfo);
+                var valueProperties = this.metadataResolver.GetMetadataValueProperties(attributeType);
                 foreach (var valuePropertyEntry in valueProperties)
                 {
                     builder.AddMetadata(

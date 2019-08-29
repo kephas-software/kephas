@@ -333,4 +333,7 @@
   <data name="LazyFactory_CircularDependency_Exception" xml:space="preserve">
     <value>Circular dependency involving '{0}' detected.</value>
   </data>
+  <data name="AmbientServices_ServiceTypeMustBeSuperOfContractType_Exception" xml:space="preserve">
+    <value>The service type '{0}' must be a super type of the contract type '{1}'.</value>
+  </data>
 </root>

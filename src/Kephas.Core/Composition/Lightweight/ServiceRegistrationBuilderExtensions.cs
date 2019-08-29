@@ -49,5 +49,24 @@ namespace Kephas.Composition.Lightweight
 
             return builder.WithType(typeof(TImplementation));
         }
+
+        /// <summary>
+        /// Sets the registration type to a super type of the service type.
+        /// </summary>
+        /// <remarks>
+        /// The registration type is the key to find the service. The registered service type is a
+        /// subtype providing additional information, typically metadata.
+        /// </remarks>
+        /// <typeparam name="TContract">The type of registration.</typeparam>
+        /// <param name="builder">The builder to act on.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public static IServiceRegistrationBuilder RegisteredAs<TContract>(this IServiceRegistrationBuilder builder)
+        {
+            Requires.NotNull(builder, nameof(builder));
+
+            return builder.RegisteredAs(typeof(TContract));
+        }
     }
 }

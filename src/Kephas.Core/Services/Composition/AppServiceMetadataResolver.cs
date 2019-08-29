@@ -27,6 +27,16 @@ namespace Kephas.Services.Composition
         private const string AttributeSuffix = "Attribute";
 
         /// <summary>
+        /// The 'T' prefix in generic type arguments.
+        /// </summary>
+        private const string TypePrefix = "T";
+
+        /// <summary>
+        /// The 'Type' suffix in generic type arguments.
+        /// </summary>
+        private const string TypeSuffix = "Type";
+
+        /// <summary>
         /// Information describing the metadata value type.
         /// </summary>
         private static IRuntimeTypeInfo metadataValueTypeInfo;
@@ -43,12 +53,14 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Gets the metadata value properties which should be retrieved from the attribute.
         /// </summary>
-        /// <param name="attributeTypeInfo">Information describing the attribute type.</param>
+        /// <param name="attributeType">The type of the attribute providing metadata.</param>
         /// <returns>
         /// The metadata properties.
         /// </returns>
-        public IDictionary<string, IPropertyInfo> GetMetadataValueProperties(IRuntimeTypeInfo attributeTypeInfo)
+        public IDictionary<string, IPropertyInfo> GetMetadataValueProperties(Type attributeType)
         {
+            var attributeTypeInfo = attributeType.AsRuntimeTypeInfo();
+
             const string MetadataValuePropertiesName = "__MetadataValueProperties";
             if (attributeTypeInfo[MetadataValuePropertiesName] is IDictionary<string, IPropertyInfo> metadataValueProperties)
             {
@@ -56,7 +68,7 @@ namespace Kephas.Services.Composition
             }
 
             metadataValueProperties = new Dictionary<string, IPropertyInfo>();
-            var baseMetadataName = GetMetadataNameFromAttributeType(attributeTypeInfo.Type);
+            var baseMetadataName = this.GetMetadataNameFromAttributeType(attributeType);
 
             foreach (var attrPropInfo in attributeTypeInfo.Properties.Values)
             {
@@ -71,7 +83,7 @@ namespace Kephas.Services.Composition
                 {
                     metadataValueProperties.Add(metadataValueName, attrPropInfo);
                 }
-                else if (attrPropInfo.Name == nameof(IMetadataValue.Value) && this.IsMetadataValueAttribute(attributeTypeInfo))
+                else if (attrPropInfo.Name == nameof(IMetadataValue.Value) && this.IsMetadataValueAttribute(attributeType))
                 {
                     metadataValueProperties.Add(metadataValueName, attrPropInfo);
                 }
@@ -85,16 +97,16 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Gets the metadata value from attribute.
         /// </summary>
-        /// <param name="partType">Type of the part.</param>
+        /// <param name="implementationType">The service implementation type.</param>
         /// <param name="attributeType">Type of the attribute.</param>
         /// <param name="property">The metadata property.</param>
         /// <returns>
         /// The metadata value from attribute.
         /// </returns>
-        public object GetMetadataValueFromAttribute(Type partType, Type attributeType, IPropertyInfo property)
+        public object GetMetadataValueFromAttribute(Type implementationType, Type attributeType, IPropertyInfo property)
         {
             var attr =
-                partType.GetTypeInfo()
+                implementationType.GetTypeInfo()
                     .GetCustomAttributes(attributeType, inherit: true)
                     .FirstOrDefault();
 
@@ -114,15 +126,67 @@ namespace Kephas.Services.Composition
         }
 
         /// <summary>
+        /// Gets the metadata name from generic type parameter.
+        /// </summary>
+        /// <param name="genericTypeParameter">The generic type parameter.</param>
+        /// <returns>The metadata name.</returns>
+        public string GetMetadataNameFromGenericTypeParameter(Type genericTypeParameter)
+        {
+            var name = genericTypeParameter.Name;
+            if (name.StartsWith(TypePrefix) && name.Length > 1 && name[1] == char.ToUpperInvariant(name[1]))
+            {
+                name = name.Substring(1);
+            }
+
+            if (!name.EndsWith(TypeSuffix))
+            {
+                name = name + TypeSuffix;
+            }
+
+            return name;
+        }
+
+        /// <summary>
+        /// Gets the metadata value from generic parameter.
+        /// </summary>
+        /// <param name="implementationType">The service implementation type.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="serviceType">Type of the service contract.</param>
+        /// <returns>The metadata value.</returns>
+        public object GetMetadataValueFromGenericParameter(Type implementationType, int position, Type serviceType)
+        {
+            var typeInfo = implementationType.GetTypeInfo();
+            var closedGeneric = typeInfo.ImplementedInterfaces
+                .Select(i => i.GetTypeInfo())
+                .FirstOrDefault(
+                    i =>
+                        i.IsGenericType && !i.IsGenericTypeDefinition
+                                        && i.GetGenericTypeDefinition() == serviceType);
+
+            if (closedGeneric == null && implementationType.IsConstructedGenericType && implementationType.GetGenericTypeDefinition() == serviceType)
+            {
+                closedGeneric = typeInfo;
+            }
+
+            var genericArg = closedGeneric?.GenericTypeArguments[position];
+            if (genericArg?.IsGenericParameter ?? false)
+            {
+                genericArg = genericArg.GetTypeInfo().BaseType;
+            }
+
+            return genericArg;
+        }
+
+        /// <summary>
         /// Query if 'attributeType' is metadata value attribute.
         /// </summary>
         /// <param name="attributeType">Type of the attribute.</param>
         /// <returns>
         /// True if metadata value attribute, false if not.
         /// </returns>
-        private bool IsMetadataValueAttribute(IRuntimeTypeInfo attributeType)
+        private bool IsMetadataValueAttribute(Type attributeType)
         {
-            return MetadataValueTypeInfo.TypeInfo.IsAssignableFrom(attributeType.TypeInfo);
+            return MetadataValueTypeInfo.Type.IsAssignableFrom(attributeType);
         }
     }
 }
