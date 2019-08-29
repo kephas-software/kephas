@@ -336,4 +336,7 @@
   <data name="AmbientServices_ServiceTypeMustBeSuperOfContractType_Exception" xml:space="preserve">
     <value>The service type '{0}' must be a super type of the contract type '{1}'.</value>
   </data>
+  <data name="ServiceRegistrationBuilder_InstancingNotProvided_Exception" xml:space="preserve">
+    <value>Either the implementation type, the factory, or the service instance must be provided.</value>
+  </data>
 </root>

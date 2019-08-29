@@ -60,6 +60,11 @@ namespace Kephas.Composition.Lightweight
                         ServiceType = this.serviceType,
                     };
                 default:
+                    if (this.instancing == null)
+                    {
+                        throw new InvalidOperationException(Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception);
+                    }
+
                     return new ServiceInfo(this.contractType, this.instancing)
                     {
                         AllowMultiple = this.allowMultiple,

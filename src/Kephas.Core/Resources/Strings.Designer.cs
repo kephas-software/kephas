@@ -647,6 +647,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Either the implementation type, the factory, or the service instance must be provided..
+        /// </summary>
+        internal static string ServiceRegistrationBuilder_InstancingNotProvided_Exception {
+            get {
+                return ResourceManager.GetString("ServiceRegistrationBuilder_InstancingNotProvided_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The service {0} is registered both as multiple and single service..
         /// </summary>
         internal static string ServiceRegistry_MismatchedMultipleServiceRegistration_Exception {
