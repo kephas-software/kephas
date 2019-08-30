@@ -10,6 +10,7 @@
 
 namespace Kephas.Generation
 {
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
@@ -21,9 +22,14 @@ namespace Kephas.Generation
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeGenerationContext"/> class.
         /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="codeGenerator">The code generator.</param>
-        /// <param name="codeFormatter">The code formatter (optional).</param>
-        public CodeGenerationContext(ICodeGenerator codeGenerator, ICodeFormatter codeFormatter = null)
+        /// <param name="codeFormatter">Optional. The code formatter.</param>
+        public CodeGenerationContext(
+            ICompositionContext compositionContext,
+            ICodeGenerator codeGenerator,
+            ICodeFormatter codeFormatter = null)
+            : base(compositionContext)
         {
             Requires.NotNull(codeGenerator, nameof(codeGenerator));
 

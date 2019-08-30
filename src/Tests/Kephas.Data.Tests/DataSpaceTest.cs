@@ -134,7 +134,7 @@ namespace Kephas.Data.Tests
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
 
             var identity = Substitute.For<IIdentity>();
-            var context = new Context { Identity = identity };
+            var context = new Context(Substitute.For<ICompositionContext>()) { Identity = identity };
             var dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider) { Identity = Substitute.For<IIdentity>() };
             dataSpace.Initialize(context);
 
@@ -170,7 +170,7 @@ namespace Kephas.Data.Tests
                     });
 
             var identity = Substitute.For<IIdentity>();
-            var context = new Context { Identity = identity };
+            var context = new Context(Substitute.For<ICompositionContext>()) { Identity = identity };
             context.WithInitialData(
                 new[]
                     {

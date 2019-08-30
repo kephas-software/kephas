@@ -19,9 +19,9 @@ namespace Kephas.Collections
     public static class EnumerableExtensions
     {
         /// <summary>
-        ///   Performs an action for each item in the enumerable
+        ///   Performs an action for each item in the enumerable.
         /// </summary>
-        /// <typeparam name = "T">The enumerable data type</typeparam>
+        /// <typeparam name = "T">The enumerable data type.</typeparam>
         /// <param name = "values">The data values.</param>
         /// <param name = "action">The action to be performed.</param>
         /// <example>

@@ -12,6 +12,7 @@ namespace Kephas.Data.InMemory
 {
     using System.Collections.Generic;
 
+    using Kephas.Composition;
     using Kephas.Data.Capabilities;
 
     /// <summary>
@@ -22,9 +23,10 @@ namespace Kephas.Data.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryDataContextConfiguration"/> class.
         /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="connectionString">The connection string.</param>
-        public InMemoryDataContextConfiguration(string connectionString)
-            : base(connectionString)
+        public InMemoryDataContextConfiguration(ICompositionContext compositionContext, string connectionString)
+            : base(compositionContext, connectionString)
         {
         }
 

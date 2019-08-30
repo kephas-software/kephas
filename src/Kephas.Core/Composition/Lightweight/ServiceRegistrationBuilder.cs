@@ -139,8 +139,8 @@ namespace Kephas.Composition.Lightweight
             Requires.NotNull(implementationType, nameof(implementationType));
 
             if (!this.contractType.IsAssignableFrom(implementationType)
-                && !(this.contractType.IsGenericTypeDefinition 
-                     && !implementationType.IsGenericTypeDefinition 
+                && !(this.contractType.IsGenericTypeDefinition
+                     && !implementationType.IsGenericTypeDefinition
                      && implementationType.GetInterfaces().Any(i => ReferenceEquals(i.GetGenericTypeDefinition(), this.contractType))))
             {
                 throw new InvalidOperationException(

@@ -16,6 +16,7 @@ namespace Kephas.Services
 
     using Kephas;
     using Kephas.Composition;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Resources;
@@ -29,14 +30,6 @@ namespace Kephas.Services
         /// The identity.
         /// </summary>
         private IIdentity identity;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Context"/> class.
-        /// </summary>
-        public Context()
-            : this((ICompositionContext)null, isThreadSafe: false)
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
@@ -94,6 +87,15 @@ namespace Kephas.Services
         {
             // ReSharper disable once VirtualMemberCallInConstructor
             this.SetCompositionContext(compositionContext);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Context"/> class.
+        /// </summary>
+        [Obsolete("In the near future it will be allowed only to pass a composition context to the context constructor.")]
+        protected Context()
+            : this((ICompositionContext)null)
+        {
         }
 
         /// <summary>
@@ -175,8 +177,13 @@ namespace Kephas.Services
         /// </param>
         protected virtual void SetCompositionContext(ICompositionContext compositionContext)
         {
-            this.AmbientServices = compositionContext?.GetExport<IAmbientServices>() ?? Kephas.AmbientServices.Instance;
-            this.CompositionContext = compositionContext ?? this.AmbientServices.CompositionContainer;
+            // obsolete: remove the assignment
+            compositionContext = compositionContext ?? Kephas.AmbientServices.Instance.CompositionContainer;
+
+            Requires.NotNull(compositionContext, nameof(compositionContext));
+
+            this.AmbientServices = compositionContext.GetExport<IAmbientServices>();
+            this.CompositionContext = compositionContext;
         }
 
         /// <summary>
@@ -191,8 +198,10 @@ namespace Kephas.Services
         /// </param>
         protected virtual void SetAmbientServices(IAmbientServices ambientServices)
         {
-            this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
-            this.CompositionContext = this.AmbientServices.CompositionContainer;
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            this.AmbientServices = ambientServices;
+            this.CompositionContext = ambientServices.CompositionContainer;
         }
 
         /// <summary>

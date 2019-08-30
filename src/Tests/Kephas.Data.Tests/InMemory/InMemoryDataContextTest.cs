@@ -52,7 +52,7 @@ namespace Kephas.Data.Tests.InMemory
         public void Query_of_string()
         {
             var dataContext = this.CreateInMemoryDataContext();
-            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration(string.Empty)));
+            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration(Substitute.For<ICompositionContext>(), string.Empty)));
 
             dataContext.Attach("mama").ChangeState = ChangeState.Added;
             dataContext.Attach("papa").ChangeState = ChangeState.Added;
@@ -72,7 +72,7 @@ namespace Kephas.Data.Tests.InMemory
             var findCommand = Substitute.For<IFindCommand>();
             dataCommandProvider.CreateCommand(typeof(InMemoryDataContext), typeof(IFindCommand)).Returns(findCommand);
             var dataContext = this.CreateInMemoryDataContext(dataCommandProvider: dataCommandProvider);
-            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration("")));
+            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration(Substitute.For<ICompositionContext>(), "")));
 
             var actualCommand = dataContext.CreateCommand(typeof(IFindCommand));
             Assert.AreSame(findCommand, actualCommand);
@@ -91,7 +91,7 @@ namespace Kephas.Data.Tests.InMemory
 
             dataContext.SerializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
 
-            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration("InitialData=dummy-will-be-mocked")));
+            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration(Substitute.For<ICompositionContext>(), "InitialData=dummy-will-be-mocked")));
 
             var query = dataContext.Query<string>();
             var list = query.ToList();
@@ -108,7 +108,7 @@ namespace Kephas.Data.Tests.InMemory
             dataContext.Initialize(
                 this.GetDataInitializationContext(
                     dataContext,
-                    new InMemoryDataContextConfiguration(string.Empty)
+                    new InMemoryDataContextConfiguration(Substitute.For<ICompositionContext>(), string.Empty)
                     {
                         InitialData =
                                 new[]
@@ -163,7 +163,7 @@ namespace Kephas.Data.Tests.InMemory
             dataContext.Initialize(
                 this.GetDataInitializationContext(
                     dataContext,
-                    new InMemoryDataContextConfiguration(string.Empty)
+                    new InMemoryDataContextConfiguration(Substitute.For<ICompositionContext>(), string.Empty)
                     {
                         InitialData =
                                 new[]
@@ -184,10 +184,10 @@ namespace Kephas.Data.Tests.InMemory
         public void Initialize_shared_cache()
         {
             var dataContext = this.CreateInMemoryDataContext();
-            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration("UseSharedCache=true")));
+            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration(Substitute.For<ICompositionContext>(), "UseSharedCache=true")));
 
             var dataContext2 = this.CreateInMemoryDataContext();
-            dataContext2.Initialize(this.GetDataInitializationContext(dataContext2, new DataContextConfiguration("UseSharedCache=true")));
+            dataContext2.Initialize(this.GetDataInitializationContext(dataContext2, new DataContextConfiguration(Substitute.For<ICompositionContext>(), "UseSharedCache=true")));
 
             var sharedItem = Substitute.For<IIdentifiable>();
             dataContext.Attach(sharedItem).ChangeState = ChangeState.Added;
@@ -200,10 +200,10 @@ namespace Kephas.Data.Tests.InMemory
         public void Initialize_non_shared_cache()
         {
             var dataContext = this.CreateInMemoryDataContext();
-            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration("UseSharedCache=false")));
+            dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration(Substitute.For<ICompositionContext>(), "UseSharedCache=false")));
 
             var dataContext2 = this.CreateInMemoryDataContext();
-            dataContext2.Initialize(this.GetDataInitializationContext(dataContext2, new DataContextConfiguration("UseSharedCache=false")));
+            dataContext2.Initialize(this.GetDataInitializationContext(dataContext2, new DataContextConfiguration(Substitute.For<ICompositionContext>(), "UseSharedCache=false")));
 
             var sharedItem = Substitute.For<IIdentifiable>();
             dataContext.Attach(sharedItem).ChangeState = ChangeState.Added;

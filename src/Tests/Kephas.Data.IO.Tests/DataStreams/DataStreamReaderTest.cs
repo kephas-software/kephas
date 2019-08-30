@@ -16,6 +16,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
@@ -42,7 +43,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var serializationService = Substitute.For<ISerializationService>();
             serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
 
-            var reader = new DataStreamReader(serializationService, mediaTypeProvider);
+            var reader = new DataStreamReader(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
             using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
             {
                 var result = await reader.ReadAsync(dataStream);
@@ -67,7 +68,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var serializationService = Substitute.For<ISerializationService>();
             serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
 
-            var reader = new DataStreamReader(serializationService, mediaTypeProvider);
+            var reader = new DataStreamReader(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
             using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
             {
                 await reader.ReadAsync(dataStream, new DataIOContext().WithRootObjectType(typeof(bool)));
@@ -93,7 +94,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var serializationService = Substitute.For<ISerializationService>();
             serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
 
-            var reader = new DataStreamReader(serializationService, mediaTypeProvider);
+            var reader = new DataStreamReader(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
             using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
             {
                 await reader.ReadAsync(dataStream);

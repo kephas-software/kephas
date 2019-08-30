@@ -41,11 +41,23 @@ namespace Kephas.Workflow
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultWorkflowProcessor"/> class.
         /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
-        public DefaultWorkflowProcessor(ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories)
+        public DefaultWorkflowProcessor(
+            ICompositionContext compositionContext,
+            ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories)
         {
+            this.CompositionContext = compositionContext;
             this.behaviorFactories = behaviorFactories;
         }
+
+        /// <summary>
+        /// Gets a context for the composition.
+        /// </summary>
+        /// <value>
+        /// The composition context.
+        /// </value>
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Executes the activity asynchronously, enabling the activity execution behaviors.

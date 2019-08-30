@@ -30,7 +30,7 @@ namespace Kephas.Core.Tests.Services
         [Test]
         public void Dynamic_Context()
         {
-            dynamic context = new Context();
+            dynamic context = new Context(Substitute.For<ICompositionContext>());
             context.Value = 12;
             Assert.AreEqual(12, context.Value);
 
@@ -68,7 +68,7 @@ namespace Kephas.Core.Tests.Services
         [Test]
         public void Identity_can_be_set_once()
         {
-            var context = new Context();
+            var context = new Context(Substitute.For<ICompositionContext>());
             context.Identity = Substitute.For<IIdentity>();
 
             Assert.Throws<SecurityException>(() => context.Identity = Substitute.For<IIdentity>());
@@ -77,7 +77,7 @@ namespace Kephas.Core.Tests.Services
         [Test]
         public void Identity_can_be_set_multiple_when_overridable()
         {
-            var context = new OverrideIdentityContext();
+            var context = new OverrideIdentityContext(Substitute.For<ICompositionContext>());
             context.Identity = Substitute.For<IIdentity>();
 
             var newIdentity = Substitute.For<IIdentity>();
@@ -90,7 +90,7 @@ namespace Kephas.Core.Tests.Services
         public void AddResource_dispose_with_context()
         {
             var disposable = Substitute.For<IDisposable>();
-            using (var context = new Context())
+            using (var context = new Context(Substitute.For<ICompositionContext>()))
             {
                 context.AddResource(disposable);
             }
@@ -102,7 +102,7 @@ namespace Kephas.Core.Tests.Services
         public void DisposeResources_called_once()
         {
             var disposable = Substitute.For<IDisposable>();
-            var context = new Context();
+            var context = new Context(Substitute.For<ICompositionContext>());
             context.AddResource(disposable);
 
             context.DisposeResources();
@@ -124,6 +124,11 @@ namespace Kephas.Core.Tests.Services
             protected override bool ValidateIdentity(IIdentity currentValue, IIdentity newValue)
             {
                 return true;
+            }
+
+            public OverrideIdentityContext(ICompositionContext compositionContext, bool isThreadSafe = false)
+                : base(compositionContext, isThreadSafe)
+            {
             }
         }
     }

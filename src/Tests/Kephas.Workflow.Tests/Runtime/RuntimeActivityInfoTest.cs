@@ -16,6 +16,7 @@ namespace Kephas.Workflow.Tests.Runtime
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Runtime;
@@ -79,7 +80,7 @@ namespace Kephas.Workflow.Tests.Runtime
         {
             var activityInfo = new RuntimeActivityInfo(typeof(TestActivity));
             Assert.ThrowsAsync<NotImplementedException>(
-                () => activityInfo.ExecuteAsync(new TestActivity(), null, null, new ActivityContext()));
+                () => activityInfo.ExecuteAsync(new TestActivity(), null, null, new ActivityContext(Substitute.For<ICompositionContext>(), Substitute.For<IWorkflowProcessor>())));
         }
 
         [Test]
@@ -90,7 +91,7 @@ namespace Kephas.Workflow.Tests.Runtime
             (activity as IOperation).Execute(Arg.Any<IContext>()).Returns("success");
 
 
-            Assert.AreEqual("success", await activityInfo.ExecuteAsync(activity, null, null, new ActivityContext()));
+            Assert.AreEqual("success", await activityInfo.ExecuteAsync(activity, null, null, new ActivityContext(Substitute.For<ICompositionContext>(), Substitute.For<IWorkflowProcessor>())));
         }
 
         [Test]
@@ -101,7 +102,7 @@ namespace Kephas.Workflow.Tests.Runtime
             (activity as IAsyncOperation).ExecuteAsync(Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult<object>("success"));
 
 
-            Assert.AreEqual("success", await activityInfo.ExecuteAsync(activity, null, null, new ActivityContext()));
+            Assert.AreEqual("success", await activityInfo.ExecuteAsync(activity, null, null, new ActivityContext(Substitute.For<ICompositionContext>(), Substitute.For<IWorkflowProcessor>())));
         }
 
         public interface ITestActivity : IActivity

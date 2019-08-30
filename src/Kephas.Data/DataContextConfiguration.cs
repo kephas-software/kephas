@@ -10,6 +10,7 @@
 
 namespace Kephas.Data
 {
+    using Kephas.Composition;
     using Kephas.Services;
 
     /// <summary>
@@ -20,8 +21,12 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextConfiguration"/> class.
         /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="connectionString">The connection string.</param>
-        public DataContextConfiguration(string connectionString)
+        public DataContextConfiguration(
+            ICompositionContext compositionContext,
+            string connectionString)
+            : base(compositionContext)
         {
             this.ConnectionString = connectionString;
         }

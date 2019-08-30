@@ -18,6 +18,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
     using System.Text;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Net.Mime;
     using Kephas.Reflection;
@@ -75,7 +76,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
                               Name = "John Doe",
                               PersonalSite = new Uri("http://site.com/my-site")
                           };
-            var serializationContext = new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
             var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
 
             Assert.AreEqual(
@@ -94,7 +95,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
                               Name = "John Doe",
                               PersonalSite = new Uri("http://site.com/my-site")
                           };
-            var serializationContext = new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
             var serializedObj = serializer.Serialize(obj, serializationContext);
 
             Assert.AreEqual(
@@ -109,7 +110,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new CyclicItem();
-            var serializationContext = new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
             var serializedObj = serializer.Serialize(obj, serializationContext);
             // TODO due to the fact that it doesn't crash, the cyclic serialization is considered successful,
             // although it should crash.
@@ -151,7 +152,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             using (var sw = new StringWriter(sb))
             {
                 var serializationService = Substitute.For<ISerializationService>();
-                await serializer.SerializeAsync(objList, sw, new SerializationContext(serializationService, typeof(JsonMediaType)) { RootObjectType = typeof(object) });
+                await serializer.SerializeAsync(objList, sw, new SerializationContext(Substitute.For<ICompositionContext>(), serializationService, typeof(JsonMediaType)) { RootObjectType = typeof(object) });
                 var serializedObjList = sb.ToString();
                 Assert.AreEqual("[{\"dynContent\":{\"hi\":\"there\"}}]", serializedObjList);
             }
@@ -166,7 +167,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             using (var sr = new StringReader(@"[{ ""dynContent"": { ""hi"": ""there"" } }]"))
             {
                 var serializationService = Substitute.For<ISerializationService>();
-                var obj = await serializer.DeserializeAsync(sr, new SerializationContext(serializationService, typeof(JsonMediaType)) { RootObjectType = typeof(object) });
+                var obj = await serializer.DeserializeAsync(sr, new SerializationContext(Substitute.For<ICompositionContext>(), serializationService, typeof(JsonMediaType)) { RootObjectType = typeof(object) });
 
                 Assert.IsInstanceOf<List<object>>(obj);
                 var objList = obj as List<object>;
@@ -196,7 +197,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
-            var obj = await serializer.DeserializeAsync(serializedObj, new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
+            var obj = await serializer.DeserializeAsync(serializedObj, new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
 
             Assert.IsInstanceOf<IDictionary<string, object>>(obj);
 
@@ -211,7 +212,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
-            var obj = serializer.Deserialize(serializedObj, new SerializationContext(Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
+            var obj = serializer.Deserialize(serializedObj, new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
 
             Assert.IsInstanceOf<IDictionary<string, object>>(obj);
 
@@ -326,7 +327,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             using (var sr = new StringReader(@"{ ""dynContent"": { ""hi"": ""there"" } }"))
             {
                 var serializationService = Substitute.For<ISerializationService>();
-                var obj = (TestContext)await serializer.DeserializeAsync(sr, new SerializationContext(serializationService, typeof(JsonMediaType)) { RootObjectType = typeof(TestContext) });
+                var obj = (TestContext)await serializer.DeserializeAsync(sr, new SerializationContext(Substitute.For<ICompositionContext>(), serializationService, typeof(JsonMediaType)) { RootObjectType = typeof(TestContext) });
 
                 Assert.AreEqual("there", obj.DynContent["hi"]);
             }

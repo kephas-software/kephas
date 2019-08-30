@@ -23,7 +23,7 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="compositionContext">The composition context (optional).</param>
         /// <param name="isThreadSafe">True if this object is thread safe (optional).</param>
-        public EncryptionContext(ICompositionContext compositionContext = null, bool isThreadSafe = false)
+        public EncryptionContext(ICompositionContext compositionContext, bool isThreadSafe = false)
             : base(compositionContext, isThreadSafe)
         {
         }

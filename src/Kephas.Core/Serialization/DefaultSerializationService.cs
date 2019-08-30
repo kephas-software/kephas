@@ -23,23 +23,31 @@ namespace Kephas.Serialization
     /// <summary>
     /// A default serialization service.
     /// </summary>
-    public class DefaultSerializationService : ISerializationService
+    public class DefaultSerializationService : ISerializationService, ICompositionContextAware
     {
-        /// <summary>
-        /// The serializer factories.
-        /// </summary>
         private readonly IDictionary<Type, IExportFactory<ISerializer, SerializerMetadata>> serializerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultSerializationService"/> class.
         /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="serializerFactories">The serializer factories.</param>
-        public DefaultSerializationService(ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
+        public DefaultSerializationService(ICompositionContext compositionContext, ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
         {
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(serializerFactories, nameof(serializerFactories));
 
+            this.CompositionContext = compositionContext;
             this.serializerFactories = serializerFactories.ToPrioritizedDictionary(f => f.Metadata.MediaType);
         }
+
+        /// <summary>
+        /// Gets a context for the dependency injection/composition.
+        /// </summary>
+        /// <value>
+        /// The composition context.
+        /// </value>
+        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets a serializer for the provided context.
@@ -50,7 +58,7 @@ namespace Kephas.Serialization
         /// </returns>
         public ISerializer GetSerializer(ISerializationContext context = null)
         {
-            context = context ?? new SerializationContext(this, typeof(JsonMediaType));
+            context = context ?? new SerializationContext(this.CompositionContext, this, typeof(JsonMediaType));
             var mediaType = context.MediaType ?? typeof(JsonMediaType);
 
             var serializer = this.serializerFactories.TryGetValue(mediaType);

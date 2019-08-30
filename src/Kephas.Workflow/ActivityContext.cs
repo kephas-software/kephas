@@ -12,6 +12,8 @@ namespace Kephas.Workflow
 {
     using System;
 
+    using Kephas.Composition;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -23,17 +25,21 @@ namespace Kephas.Workflow
         /// Initializes a new instance of the <see cref="ActivityContext"/> class.
         /// </summary>
         /// <param name="parentContext">Optional. Context for the parent.</param>
-        public ActivityContext(IActivityContext parentContext = null)
+        public ActivityContext(IActivityContext parentContext)
             : base(parentContext)
         {
-            this.WorkflowProcessor = parentContext?.WorkflowProcessor;
+            Requires.NotNull(parentContext, nameof(parentContext));
+
+            this.WorkflowProcessor = parentContext.WorkflowProcessor;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivityContext"/> class.
         /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
-        public ActivityContext(IWorkflowProcessor workflowProcessor)
+        public ActivityContext(ICompositionContext compositionContext, IWorkflowProcessor workflowProcessor)
+            : base(compositionContext)
         {
             this.WorkflowProcessor = workflowProcessor;
         }

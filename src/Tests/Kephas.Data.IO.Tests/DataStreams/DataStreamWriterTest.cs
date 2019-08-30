@@ -17,6 +17,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
@@ -48,7 +49,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var serializationService = Substitute.For<ISerializationService>();
             serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
 
-            var writer = new DataStreamWriter(serializationService, mediaTypeProvider);
+            var writer = new DataStreamWriter(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
             var memStream = new MemoryStream();
             using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
             {
@@ -74,7 +75,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var serializationService = Substitute.For<ISerializationService>();
             serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
 
-            var writer = new DataStreamWriter(serializationService, mediaTypeProvider);
+            var writer = new DataStreamWriter(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
             var memStream = new MemoryStream();
             using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
             {
@@ -100,7 +101,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var serializationService = Substitute.For<ISerializationService>();
             serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
 
-            var writer = new DataStreamWriter(serializationService, mediaTypeProvider);
+            var writer = new DataStreamWriter(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
             var memStream = new MemoryStream();
             using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
             {

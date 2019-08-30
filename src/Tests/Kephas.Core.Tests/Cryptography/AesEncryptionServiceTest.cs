@@ -14,7 +14,10 @@ namespace Kephas.Core.Tests.Cryptography
     using System.Security.Cryptography;
     using System.Threading.Tasks;
 
+    using Kephas.Composition;
     using Kephas.Cryptography;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -26,7 +29,7 @@ namespace Kephas.Core.Tests.Cryptography
         public async Task EncryptAsync(string value, string key)
         {
             var service = new AesEncryptionService();
-            var context = new EncryptionContext { Key = this.GetKey(key) };
+            var context = new EncryptionContext(Substitute.For<ICompositionContext>()) { Key = this.GetKey(key) };
             var encrypted = await service.EncryptAsync(value, context);
             var decrypted = await service.DecryptAsync(encrypted, context);
 
@@ -38,7 +41,7 @@ namespace Kephas.Core.Tests.Cryptography
         public async Task EncryptAsync_twice_different_values(string value, string key)
         {
             var service = new AesEncryptionService();
-            var context = new EncryptionContext { Key = this.GetKey(key) };
+            var context = new EncryptionContext(Substitute.For<ICompositionContext>()) { Key = this.GetKey(key) };
             var encrypted1 = await service.EncryptAsync(value, context);
             var encrypted2 = await service.EncryptAsync(value, context);
 
@@ -50,7 +53,7 @@ namespace Kephas.Core.Tests.Cryptography
         public void Encrypt(string value, string key)
         {
             var service = new AesEncryptionService();
-            var context = new EncryptionContext { Key = this.GetKey(key) };
+            var context = new EncryptionContext(Substitute.For<ICompositionContext>()) { Key = this.GetKey(key) };
             var encrypted = service.Encrypt(value, context);
             var decrypted = service.Decrypt(encrypted, context);
 
@@ -62,7 +65,7 @@ namespace Kephas.Core.Tests.Cryptography
         public void Encrypt_twice_different_values(string value, string key)
         {
             var service = new AesEncryptionService();
-            var context = new EncryptionContext { Key = this.GetKey(key) };
+            var context = new EncryptionContext(Substitute.For<ICompositionContext>()) { Key = this.GetKey(key) };
             var encrypted1 = service.Encrypt(value, context);
             var encrypted2 = service.Encrypt(value, context);
 
@@ -75,7 +78,7 @@ namespace Kephas.Core.Tests.Cryptography
         public void GenerateKey(int keySize, int expectedLength)
         {
             var service = new AesEncryptionService();
-            var context = new EncryptionContext { KeySize = keySize };
+            var context = new EncryptionContext(Substitute.For<ICompositionContext>()) { KeySize = keySize };
             var key = service.GenerateKey(context);
 
             Assert.AreEqual(expectedLength, key.Length);

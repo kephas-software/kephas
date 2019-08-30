@@ -14,6 +14,7 @@ namespace Kephas.Scheduling.Quartz
 
     using global::Quartz;
 
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -26,16 +27,21 @@ namespace Kephas.Scheduling.Quartz
     [AppServiceContract]
     public class QuartzJob : IJob
     {
+        private readonly ICompositionContext compositionContext;
+
         private readonly IWorkflowProcessor workflowProcessor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuartzJob"/> class.
         /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
-        public QuartzJob(IWorkflowProcessor workflowProcessor)
+        public QuartzJob(ICompositionContext compositionContext, IWorkflowProcessor workflowProcessor)
         {
+            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(workflowProcessor, nameof(workflowProcessor));
 
+            this.compositionContext = compositionContext;
             this.workflowProcessor = workflowProcessor;
         }
 
@@ -69,7 +75,7 @@ namespace Kephas.Scheduling.Quartz
         private IActivityContext GetActivityContext(IJobExecutionContext context, IActivity activity)
         {
             // TODO
-            return new ActivityContext(this.workflowProcessor) { Activity = activity };
+            return new ActivityContext(this.compositionContext, this.workflowProcessor) { Activity = activity };
         }
     }
 }

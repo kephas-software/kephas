@@ -12,8 +12,11 @@ namespace Kephas.Data.Tests.InMemory
 {
     using System.Linq;
 
+    using Kephas.Composition;
     using Kephas.Data.Capabilities;
     using Kephas.Services;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -23,7 +26,7 @@ namespace Kephas.Data.Tests.InMemory
         [Test]
         public void GetInitialData_not_set()
         {
-            var context = new TestContext();
+            var context = new TestContext(Substitute.For<ICompositionContext>());
             var initialData = context.InitialData();
             Assert.IsNull(initialData);
         }
@@ -31,7 +34,7 @@ namespace Kephas.Data.Tests.InMemory
         [Test]
         public void SetInitialData_object_enumeration()
         {
-            var context = new TestContext();
+            var context = new TestContext(Substitute.For<ICompositionContext>());
             context.WithInitialData(new[] { "ana", "are", "mere" });
 
             var initialData = context.InitialData();
@@ -50,7 +53,7 @@ namespace Kephas.Data.Tests.InMemory
         [Test]
         public void SetInitialData_tuple_enumeration()
         {
-            var context = new TestContext();
+            var context = new TestContext(Substitute.For<ICompositionContext>());
             context.WithInitialData(new[]
                                        {
                                            ((object)"ana", ChangeState.Added),
@@ -74,7 +77,7 @@ namespace Kephas.Data.Tests.InMemory
         [Test]
         public void SetInitialData_entity_entry_enumeration()
         {
-            var context = new TestContext();
+            var context = new TestContext(Substitute.For<ICompositionContext>());
             context.WithInitialData(new[]
                                        {
                                            new EntityEntry("ana") { ChangeState = ChangeState.Added },
@@ -97,6 +100,10 @@ namespace Kephas.Data.Tests.InMemory
 
         public class TestContext : Context
         {
+            public TestContext(ICompositionContext compositionContext, bool isThreadSafe = false)
+                : base(compositionContext, isThreadSafe)
+            {
+            }
         }
     }
 }

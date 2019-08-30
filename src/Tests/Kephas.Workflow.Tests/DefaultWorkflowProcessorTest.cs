@@ -30,7 +30,7 @@ namespace Kephas.Workflow.Tests
         [Test]
         public async Task ExecuteAsync_basic_flow()
         {
-            var processor = new DefaultWorkflowProcessor(new List<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>>());
+            var processor = new DefaultWorkflowProcessor(Substitute.For<ICompositionContext>(), new List<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>>());
 
             var activityInfo = Substitute.For<IActivityInfo>();
             var activity = Substitute.For<IActivity>();

@@ -13,7 +13,10 @@ namespace Kephas.Core.Tests.Cryptography
     using System;
     using System.Text;
 
+    using Kephas.Composition;
     using Kephas.Cryptography;
+
+    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -38,7 +41,7 @@ namespace Kephas.Core.Tests.Cryptography
             var hashingService = new SHA256HashingService();
             var valueBytes = Encoding.UTF8.GetBytes(value);
             var saltBytes = Encoding.UTF8.GetBytes(salt);
-            var hashBytes = hashingService.Hash(valueBytes, new HashingContext { Salt = saltBytes });
+            var hashBytes = hashingService.Hash(valueBytes, new HashingContext(Substitute.For<ICompositionContext>()) { Salt = saltBytes });
             var hashString = Convert.ToBase64String(hashBytes);
             Assert.AreEqual(hash, hashString);
         }

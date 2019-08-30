@@ -10,6 +10,7 @@
 
 namespace Kephas.Conversion
 {
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
@@ -21,8 +22,12 @@ namespace Kephas.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeConversionContext"/> class.
         /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="codeConverter">The code converter.</param>
-        public CodeConversionContext(ICodeConverter codeConverter)
+        public CodeConversionContext(
+            ICompositionContext compositionContext,
+            ICodeConverter codeConverter)
+            : base(compositionContext)
         {
             Requires.NotNull(codeConverter, nameof(codeConverter));
 
