@@ -81,7 +81,7 @@ namespace Kephas.Data.IO.Export
         /// <summary>
         /// The result key.
         /// </summary>
-        private const string ResultKey = "SYSTEM_Result";
+        private const string ResultKey = "Result";
 
         /// <summary>
         /// Ensures that a result is set in the options.
