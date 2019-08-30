@@ -66,7 +66,9 @@ namespace Kephas.Messaging.Distributed
                 {
                     try
                     {
-                        using (var messagingContext = new MessageProcessingContext(context, this.messageProcessor, brokeredMessage))
+                        using (var messagingContext = context == null
+                                                          ? new MessageProcessingContext(this.messageProcessor, brokeredMessage)
+                                                          : new MessageProcessingContext(context, this.messageProcessor, brokeredMessage))
                         {
                             return await this.messageProcessor.ProcessAsync(brokeredMessage, messagingContext, cancellationToken)
                                    .PreserveThreadContext();

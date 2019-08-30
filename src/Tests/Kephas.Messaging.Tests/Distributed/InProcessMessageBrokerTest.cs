@@ -123,9 +123,9 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task SendAsync_dispose_created_context()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(SubstitutableMessageProcessor) });
+            var container = this.CreateContainer(parts: new[] { typeof(TestMessageProcessor) });
             var messageBroker = container.GetExport<IMessageBroker>();
-            var messageProcessor = (SubstitutableMessageProcessor)container.GetExport<IMessageProcessor>();
+            var messageProcessor = (TestMessageProcessor)container.GetExport<IMessageProcessor>();
             var disposable = Substitute.For<IDisposable>();
             var added = false;
             messageProcessor.ProcessingContextConfigurator = (msg, ctx) =>
@@ -331,9 +331,9 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [OverridePriority(Priority.High)]
-        public class SubstitutableMessageProcessor : DefaultMessageProcessor
+        public class TestMessageProcessor : DefaultMessageProcessor
         {
-            public SubstitutableMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
+            public TestMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
                 : base(compositionContext, messageMatchService, handlerSelectorFactories, behaviorFactories)
             {
             }
