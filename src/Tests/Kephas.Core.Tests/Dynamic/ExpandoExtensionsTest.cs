@@ -50,6 +50,16 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
+        public void Merge_expando_no_private()
+        {
+            var expando = new Expando { ["my"] = "name" };
+            var result = expando.Merge(new Expando { ["_is"] = "belogea" });
+
+            Assert.AreEqual("name", result["my"]);
+            Assert.IsNull(result["_is"]);
+        }
+
+        [Test]
         public void Merge_dictionary_of_string_in_expando()
         {
             var expando = new Expando();
@@ -57,6 +67,18 @@ namespace Kephas.Core.Tests.Dynamic
 
             Assert.AreSame(result, expando);
             Assert.AreEqual("there", expando["hi"]);
+            Assert.AreEqual("are", expando["how"]);
+            Assert.AreEqual("today", expando["you"]);
+        }
+
+        [Test]
+        public void Merge_dictionary_of_string_in_expando_no_private()
+        {
+            var expando = new Expando();
+            var result = expando.Merge(new Dictionary<string, string> { { "_hi", "there" }, { "how", "are" }, { "you", "today" } });
+
+            Assert.AreSame(result, expando);
+            Assert.IsNull(expando["_hi"]);
             Assert.AreEqual("are", expando["how"]);
             Assert.AreEqual("today", expando["you"]);
         }
