@@ -101,7 +101,10 @@ namespace Kephas.Messaging.Tests
                         });
             var processor = this.CreateRequestProcessor(handler, message);
 
-            var context = new MessageProcessingContext(processor, contextMessage, contextHandler);
+            var context = new MessageProcessingContext(processor, contextMessage)
+                              {
+                                  Handler = contextHandler,
+                              };
 
             var result = await processor.ProcessAsync(message, context);
 
@@ -133,16 +136,15 @@ namespace Kephas.Messaging.Tests
             var message = Substitute.For<IMessage>();
             handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => Substitute.For<IMessage>());
-            var processor = (SubstitutableDefaultMessageProcessor) this.CreateRequestProcessor(handler, message, asSubstitute: true);
+            var processor = (TestMessageProcessor) this.CreateRequestProcessor(handler, message);
             IMessageProcessingContext context = null;
-            processor.PublicCreateProcessingContext(Arg.Any<IMessage>()).Returns(
-                ci =>
+            processor.CreateProcessingContextFunc = (msg, ctx) =>
                     {
                         context = Substitute.For<IMessageProcessingContext>();
                         context.MessageProcessor.Returns(processor);
-                        context.Message.Returns(ci.Arg<IMessage>());
+                        context.Message.Returns(msg);
                         return context;
-                    });
+                    };
 
             var result = await processor.ProcessAsync(message);
 
@@ -307,9 +309,10 @@ namespace Kephas.Messaging.Tests
 
             var f = this.CreateTestBehaviorFactory(messageType: typeof(PingMessage));
 
-            var processor = this.CreateRequestProcessor(new[] { f }, handler, message);
-            var processingContext = new MessageProcessingContext(processor, message, Substitute.For<IMessageHandler>());
-            var result = await processor.ProcessAsync(message, processingContext, default);
+            var processor = (TestMessageProcessor)this.CreateRequestProcessor(new[] { f }, handler, message);
+            var processingContext = new MessageProcessingContext(processor, message);
+            processor.CreateProcessingContextFunc = (msg, ctx) => processingContext;
+            var result = await processor.ProcessAsync(message, null, default);
 
             Assert.AreEqual(true, processingContext["Before TestBehavior"]);
             Assert.AreEqual(true, processingContext["After TestBehavior"]);
@@ -568,9 +571,10 @@ namespace Kephas.Messaging.Tests
                                            });
         }
 
-        private DefaultMessageProcessor CreateRequestProcessor(
+        private TestMessageProcessor CreateRequestProcessor(
             IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories,
-            IMessageHandler messageHandler, IMessage message)
+            IMessageHandler messageHandler,
+            IMessage message)
         {
             return this.CreateRequestProcessor(
                 behaviorFactories, null, new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
@@ -579,7 +583,7 @@ namespace Kephas.Messaging.Tests
                                 });
         }
 
-        private DefaultMessageProcessor CreateRequestProcessor(IMessageHandler messageHandler, IMessage message, bool asSubstitute = false)
+        private TestMessageProcessor CreateRequestProcessor(IMessageHandler messageHandler, IMessage message)
         {
             return this.CreateRequestProcessor(
                 null,
@@ -589,20 +593,18 @@ namespace Kephas.Messaging.Tests
                         new ExportFactory<IMessageHandler, MessageHandlerMetadata>(
                             () => messageHandler,
                             new MessageHandlerMetadata(message.GetType()))
-                    },
-                asSubstitute);
+                    });
         }
 
-        private DefaultMessageProcessor CreateRequestProcessor(IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
+        private TestMessageProcessor CreateRequestProcessor(IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
         {
             return this.CreateRequestProcessor(null, null, handlerFactories);
         }
 
-        private DefaultMessageProcessor CreateRequestProcessor(
+        private TestMessageProcessor CreateRequestProcessor(
             IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories = null,
             IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories = null,
-            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null,
-            bool asSubstitute = false)
+            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
         {
             var mms = new DefaultMessageMatchService();
             behaviorFactories = behaviorFactories
@@ -614,9 +616,7 @@ namespace Kephas.Messaging.Tests
                                                   new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms, handlerFactories ?? new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>()), new AppServiceMetadata())
                                               };
 
-            return asSubstitute 
-                       ? Substitute.For<SubstitutableDefaultMessageProcessor>(Substitute.For<ICompositionContext>(), mms, handlerSelectorFactories, behaviorFactories)
-                       : new DefaultMessageProcessor(Substitute.For<ICompositionContext>(), mms, handlerSelectorFactories, behaviorFactories);
+            return new TestMessageProcessor(Substitute.For<ICompositionContext>(), mms, handlerSelectorFactories, behaviorFactories);
         }
     }
 
@@ -649,23 +649,22 @@ namespace Kephas.Messaging.Tests
         }
     }
 
-    public class SubstitutableDefaultMessageProcessor : DefaultMessageProcessor
+    public class TestMessageProcessor : DefaultMessageProcessor
     {
-        public SubstitutableDefaultMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
+        public Func<IMessage, IMessageProcessingContext, IMessageProcessingContext> CreateProcessingContextFunc { get; set; }
+
+        public TestMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
             : base(compositionContext, messageMatchService, handlerSelectorFactories, behaviorFactories)
         {
-        }
-
-        public virtual IMessageProcessingContext PublicCreateProcessingContext(IMessage message)
-        {
-            return base.CreateProcessingContext(message, null);
         }
 
         protected override sealed IMessageProcessingContext CreateProcessingContext(
             IMessage message,
             IMessageProcessingContext context)
         {
-            return this.PublicCreateProcessingContext(message);
+            return 
+                this.CreateProcessingContextFunc?.Invoke(message, context)
+                ?? base.CreateProcessingContext(message, context);
         }
     }
 }

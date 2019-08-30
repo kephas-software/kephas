@@ -115,8 +115,6 @@ namespace Kephas.Messaging
 
             try
             {
-                var contextHandler = localContext?.Handler;
-                var contextMessage = localContext?.Message;
                 foreach (var messageHandler in this.ResolveMessageHandlers(message))
                 {
                     using (messageHandler)
@@ -149,10 +147,6 @@ namespace Kephas.Messaging
                             .PreserveThreadContext();
                     }
                 }
-
-                // restore the previous context handler and message.
-                localContext.Handler = contextHandler;
-                localContext.Message = contextMessage;
 
                 return localContext.Exception != null
                            ? throw localContext.Exception
