@@ -102,8 +102,11 @@ namespace Kephas.Dynamic
                     foreach (var kv in ((IEnumerable)source).Cast<object>())
                     {
                         var key = (string)keyProperty.GetValue(kv);
-                        var value = valueProperty.GetValue(kv);
-                        expando[key] = value;
+                        if (!key.IsPrivate())
+                        {
+                            var value = valueProperty.GetValue(kv);
+                            expando[key] = value;
+                        }
                     }
 
                     return expando;
@@ -113,7 +116,10 @@ namespace Kephas.Dynamic
             // for common objects, merge the properties.
             foreach (var kv in source.ToExpando().ToDictionary())
             {
-                expando[kv.Key] = kv.Value;
+                if (!kv.Key.IsPrivate())
+                {
+                    expando[kv.Key] = kv.Value;
+                }
             }
 
             return expando;

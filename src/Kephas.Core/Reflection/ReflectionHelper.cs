@@ -56,6 +56,18 @@ namespace Kephas.Reflection
         public static Func<AssemblyName, bool> IsSystemAssemblyFunc { get; set; } = isSystemAssemblyFunc;
 
         /// <summary>
+        /// Indicates whether the identifier is private.
+        /// </summary>
+        /// <param name="identifier">The identifier to act on.</param>
+        /// <returns>
+        /// True if the identifier is private, false if not.
+        /// </returns>
+        public static bool IsPrivate(this string identifier)
+        {
+            return identifier?.StartsWith("_") ?? true;
+        }
+
+        /// <summary>
         /// Retrieves the property name from a lambda expression.
         /// </summary>
         /// <typeparam name="T">The type from which the property name is extracted.</typeparam>
