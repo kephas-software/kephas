@@ -14,13 +14,12 @@ namespace Kephas.Threading.Tasks
     using System.Collections.Generic;
     using System.Globalization;
 
-    using Kephas.Diagnostics.Contracts;
-    using Kephas.Services;
+    using Kephas.Dynamic;
 
     /// <summary>
     /// Stores the thread context.
     /// </summary>
-    public class ThreadContext : Context
+    public class ThreadContext : Expando
     {
         /// <summary>
         /// The store actions.
@@ -36,14 +35,10 @@ namespace Kephas.Threading.Tasks
         /// Initializes a new instance of the <see cref="ThreadContext"/>
         /// class.
         /// </summary>
-        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="storeActions">The actions called when information should be stored in the context.</param>
         /// <param name="restoreActions">The actions called when information should be restored from the context.</param>
-        public ThreadContext(IAmbientServices ambientServices, IEnumerable<Action<ThreadContext>> storeActions, IEnumerable<Action<ThreadContext>> restoreActions)
-            : base(ambientServices)
+        public ThreadContext(IEnumerable<Action<ThreadContext>> storeActions, IEnumerable<Action<ThreadContext>> restoreActions)
         {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
-
             this.storeActions = storeActions;
             this.restoreActions = restoreActions;
         }

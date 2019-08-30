@@ -14,46 +14,38 @@ namespace Kephas.Threading.Tasks
     using System.Collections.Generic;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
 
     /// <summary>
     /// Provides methods to configure and build <see cref="ThreadContext"/> instances.
     /// </summary>
     public class ThreadContextBuilder
     {
-        /// <summary>
-        /// The server thread context store actions key.
-        /// </summary>
         private const string ThreadingContextStoreActionsKey = "__ThreadContextStoreActions";
 
-        /// <summary>
-        /// The server thread context restore actions key.
-        /// </summary>
         private const string ThreadingContextRestoreActionsKey = "__ThreadContextRestoreActions";
 
-        /// <summary>
-        /// The ambient services.
-        /// </summary>
-        private readonly IAmbientServices ambientServices;
+        private static readonly IExpando globalThreadContextPool = new Expando(isThreadSafe: true);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ThreadContextBuilder"/> class.
-        /// </summary>
-        /// <param name="ambientServices">
-        /// The ambient services.
-        /// </param>
-        public ThreadContextBuilder(IAmbientServices ambientServices)
-        {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
-
-            this.ambientServices = ambientServices;
-        }
+        private readonly IExpando threadContextPool;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ThreadContextBuilder"/> class.
         /// </summary>
         public ThreadContextBuilder()
-            : this(AmbientServices.Instance)
+            : this(globalThreadContextPool)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ThreadContextBuilder"/> class.
+        /// </summary>
+        /// <param name="threadContextPool">The thread context pool.</param>
+        internal ThreadContextBuilder(IExpando threadContextPool)
+        {
+            Requires.NotNull(threadContextPool, nameof(threadContextPool));
+
+            this.threadContextPool = threadContextPool;
         }
 
         /// <summary>
@@ -91,17 +83,17 @@ namespace Kephas.Threading.Tasks
         }
 
         /// <summary>
-        /// Converts this object to a <see cref="ThreadContext"/>.
+        /// Creates a new <see cref="ThreadContext"/>.
         /// </summary>
         /// <returns>
         /// A <see cref="ThreadContext"/>.
         /// </returns>
-        public ThreadContext AsThreadContext()
+        public ThreadContext CreateThreadContext()
         {
             var storeActions = this.GetContextActions(ThreadingContextStoreActionsKey);
             var restoreActions = this.GetContextActions(ThreadingContextRestoreActionsKey);
 
-            return new ThreadContext(this.ambientServices, storeActions, restoreActions);
+            return new ThreadContext(storeActions, restoreActions);
         }
 
         /// <summary>
@@ -117,9 +109,9 @@ namespace Kephas.Threading.Tasks
             if (actionsList == null)
             {
                 actionsList = new List<Action<ThreadContext>>();
-                if (this.ambientServices != null)
+                if (this.threadContextPool != null)
                 {
-                    this.ambientServices[actionsKey] = actionsList;
+                    this.threadContextPool[actionsKey] = actionsList;
                 }
             }
 
@@ -135,13 +127,13 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         private IList<Action<ThreadContext>> GetContextActions(string actionsKey)
         {
-            var rawActions = this.ambientServices?[actionsKey];
+            var rawActions = this.threadContextPool?[actionsKey];
 
             var actions = rawActions as IList<Action<ThreadContext>>;
 
             if (rawActions != null && actions == null)
             {
-                throw new InvalidOperationException($"The ambient services are corrupt. The {nameof(ThreadContext)} actions ({actionsKey}) cannot be converted to a list anymore.");
+                throw new InvalidOperationException($"The thread context pool is corrupt. The {nameof(ThreadContext)} actions ({actionsKey}) cannot be converted to a list anymore.");
             }
 
             return actions;

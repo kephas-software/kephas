@@ -45,7 +45,7 @@ namespace Kephas.Threading.Tasks
 
             var configuredTaskAwaitable = task.ConfigureAwait(false);
             this.awaiter = configuredTaskAwaitable.GetAwaiter();
-            this.threadContext = new ThreadContextBuilder().AsThreadContext();
+            this.threadContext = new ThreadContextBuilder().CreateThreadContext();
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Kephas.Threading.Tasks
 
             var configuredTaskAwaitable = task.ConfigureAwait(false);
             this.awaiter = configuredTaskAwaitable.GetAwaiter();
-            this.threadContext = new ThreadContextBuilder().AsThreadContext();
+            this.threadContext = new ThreadContextBuilder().CreateThreadContext();
         }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace Kephas.Application
         /// </returns>
         public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            new ThreadContextBuilder(appContext.AmbientServices)
+            new ThreadContextBuilder()
                 .WithStoreAction(StoreThreadCulture)
                 .WithRestoreAction(RestoreThreadCulture);
 
