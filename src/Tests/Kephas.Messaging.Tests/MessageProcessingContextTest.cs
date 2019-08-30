@@ -22,9 +22,11 @@ namespace Kephas.Messaging.Tests
         [Test]
         public void MessageProcessingContext_parent_context()
         {
-            var parentContext = Substitute.For<IMessageProcessingContext>();
-            parentContext.MessageProcessor.Returns(Substitute.For<IMessageProcessor>());
-            parentContext.Identity.Returns(Substitute.For<IIdentity>());
+            var parentContext =
+                new MessageProcessingContext(Substitute.For<IMessageProcessor>(), Substitute.For<IMessage>())
+                    {
+                        Identity = Substitute.For<IIdentity>()
+                    };
 
             var context = new MessageProcessingContext(parentContext, parentContext.MessageProcessor);
 
@@ -35,14 +37,18 @@ namespace Kephas.Messaging.Tests
         [Test]
         public void MessageProcessingContext_parent_context_merge()
         {
-            var parentContext = Substitute.For<IMessageProcessingContext>();
-            parentContext.MessageProcessor.Returns(Substitute.For<IMessageProcessor>());
-            parentContext.Identity.Returns(Substitute.For<IIdentity>());
+            var parentContext =
+                new MessageProcessingContext(Substitute.For<IMessageProcessor>(), Substitute.For<IMessage>())
+                    {
+                        Identity = Substitute.For<IIdentity>(),
+                        ["hi"] = "there",
+                    };
 
             var context = new MessageProcessingContext(parentContext, parentContext.MessageProcessor);
 
             Assert.AreSame(parentContext.MessageProcessor, context.MessageProcessor);
             Assert.AreSame(parentContext.Identity, context.Identity);
+            Assert.AreSame("there", context["hi"]);
         }
     }
 }

@@ -27,12 +27,10 @@ namespace Kephas.Messaging
         /// <param name="parentContext">The parent context.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="message">Optional. The message.</param>
-        /// <param name="handler">Optional. The handler.</param>
         public MessageProcessingContext(
             IContext parentContext,
             IMessageProcessor messageProcessor,
-            IMessage message = null,
-            IMessageHandler handler = null)
+            IMessage message = null)
             : base(parentContext, merge: true)
         {
             Requires.NotNull(parentContext, nameof(parentContext));
@@ -40,7 +38,6 @@ namespace Kephas.Messaging
 
             this.MessageProcessor = messageProcessor;
             this.Message = message;
-            this.Handler = handler;
         }
 
         /// <summary>
@@ -48,18 +45,15 @@ namespace Kephas.Messaging
         /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="message">The Message.</param>
-        /// <param name="handler">The handler.</param>
         public MessageProcessingContext(
             IMessageProcessor messageProcessor,
-            IMessage message = null,
-            IMessageHandler handler = null)
+            IMessage message = null)
             : base((messageProcessor as ICompositionContextAware)?.CompositionContext)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
 
             this.MessageProcessor = messageProcessor;
             this.Message = message;
-            this.Handler = handler;
         }
 
         /// <summary>
