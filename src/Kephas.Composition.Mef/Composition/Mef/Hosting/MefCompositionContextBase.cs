@@ -40,15 +40,15 @@ namespace Kephas.Composition.Mef.Hosting
         /// Resolves the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="contractName">The contract name.</param>
+        /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>.</returns>
-        public virtual object GetExport(Type contractType, string contractName = null)
+        public virtual object GetExport(Type contractType, string serviceName = null)
         {
             this.AssertNotDisposed();
 
-            var component = string.IsNullOrEmpty(contractName)
+            var component = string.IsNullOrEmpty(serviceName)
                               ? this.innerCompositionContext.GetExport(contractType)
-                              : this.innerCompositionContext.GetExport(contractType, contractName);
+                              : this.innerCompositionContext.GetExport(contractType, serviceName);
             return component;
         }
 
@@ -56,15 +56,15 @@ namespace Kephas.Composition.Mef.Hosting
         /// Resolves the specified contract type returning multiple instances.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="contractName">The contract name.</param>
+        /// <param name="serviceName">The service name.</param>
         /// <returns>An enumeration of objects implementing <paramref name="contractType"/>.</returns>
-        public virtual IEnumerable<object> GetExports(Type contractType, string contractName = null)
+        public virtual IEnumerable<object> GetExports(Type contractType, string serviceName = null)
         {
             this.AssertNotDisposed();
 
-            var components = string.IsNullOrEmpty(contractName)
+            var components = string.IsNullOrEmpty(serviceName)
                               ? this.innerCompositionContext.GetExports(contractType)
-                              : this.innerCompositionContext.GetExports(contractType, contractName);
+                              : this.innerCompositionContext.GetExports(contractType, serviceName);
             return components;
         }
 
@@ -72,17 +72,17 @@ namespace Kephas.Composition.Mef.Hosting
         /// Resolves the specified contract type.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="contractName">The contract name.</param>
+        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public virtual T GetExport<T>(string contractName = null)
+        public virtual T GetExport<T>(string serviceName = null)
         {
             this.AssertNotDisposed();
 
-            var component = string.IsNullOrEmpty(contractName)
+            var component = string.IsNullOrEmpty(serviceName)
                               ? this.innerCompositionContext.GetExport<T>()
-                              : this.innerCompositionContext.GetExport<T>(contractName);
+                              : this.innerCompositionContext.GetExport<T>(serviceName);
             return component;
         }
 
@@ -90,17 +90,17 @@ namespace Kephas.Composition.Mef.Hosting
         /// Resolves the specified contract type returning multiple instances.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="contractName">The contract name.</param>
+        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
-        public virtual IEnumerable<T> GetExports<T>(string contractName = null)
+        public virtual IEnumerable<T> GetExports<T>(string serviceName = null)
         {
             this.AssertNotDisposed();
 
-            var components = string.IsNullOrEmpty(contractName)
+            var components = string.IsNullOrEmpty(serviceName)
                               ? this.innerCompositionContext.GetExports<T>()
-                              : this.innerCompositionContext.GetExports<T>(contractName);
+                              : this.innerCompositionContext.GetExports<T>(serviceName);
             return components;
         }
 
@@ -108,18 +108,18 @@ namespace Kephas.Composition.Mef.Hosting
         /// Tries to resolve the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="contractName">The contract name.</param>
+        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public virtual object TryGetExport(Type contractType, string contractName = null)
+        public virtual object TryGetExport(Type contractType, string serviceName = null)
         {
             this.AssertNotDisposed();
 
             object component;
-            var successful = string.IsNullOrEmpty(contractName)
+            var successful = string.IsNullOrEmpty(serviceName)
                               ? this.innerCompositionContext.TryGetExport(contractType, out component)
-                              : this.innerCompositionContext.TryGetExport(contractType, contractName, out component);
+                              : this.innerCompositionContext.TryGetExport(contractType, serviceName, out component);
             return successful ? component : null;
         }
 
@@ -127,17 +127,17 @@ namespace Kephas.Composition.Mef.Hosting
         /// Tries to resolve the specified contract type.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="contractName">The contract name.</param>
+        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public virtual T TryGetExport<T>(string contractName = null)
+        public virtual T TryGetExport<T>(string serviceName = null)
         {
             this.AssertNotDisposed();
 
-            var successful = string.IsNullOrEmpty(contractName)
+            var successful = string.IsNullOrEmpty(serviceName)
                               ? this.innerCompositionContext.TryGetExport(out T component)
-                              : this.innerCompositionContext.TryGetExport(contractName, out component);
+                              : this.innerCompositionContext.TryGetExport(serviceName, out component);
             return component;
         }
 
