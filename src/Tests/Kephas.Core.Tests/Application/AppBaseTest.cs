@@ -29,13 +29,12 @@ namespace Kephas.Core.Tests.Application
         {
             var compositionContext = Substitute.For<ICompositionContext>();
 
-            AmbientServicesBuilder builder = null;
-            var app = new TestApp(async b => builder = b.WithCompositionContainer(compositionContext));
+            IAmbientServices ambientServices = null;
+            var app = new TestApp(async b => ambientServices = b.WithCompositionContainer(compositionContext));
             var appContext = await app.BootstrapAsync();
 
-            Assert.IsNotNull(builder);
-            Assert.IsNotNull(builder.AmbientServices);
-            Assert.AreSame(app.AmbientServices, builder.AmbientServices);
+            Assert.IsNotNull(ambientServices);
+            Assert.AreSame(app.AmbientServices, ambientServices);
             Assert.AreSame(app.AmbientServices, appContext.AmbientServices);
         }
 
@@ -44,11 +43,11 @@ namespace Kephas.Core.Tests.Application
         {
             var compositionContext = Substitute.For<ICompositionContext>();
 
-            AmbientServicesBuilder builder = null;
-            var app = new TestApp(async b => builder = b.WithCompositionContainer(compositionContext));
+            IAmbientServices ambientServices = null;
+            var app = new TestApp(async b => ambientServices = b.WithCompositionContainer(compositionContext));
             var appContext = await app.BootstrapAsync();
 
-            Assert.AreSame(app.AmbientServices, builder.AmbientServices);
+            Assert.AreSame(app.AmbientServices, ambientServices);
             Assert.AreSame(app.AmbientServices, appContext.AmbientServices);
         }
 
@@ -60,8 +59,8 @@ namespace Kephas.Core.Tests.Application
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>()).Returns(appManager);
 
-            AmbientServicesBuilder builder = null;
-            var app = new TestApp(async b => builder = b.WithCompositionContainer(compositionContext));
+            IAmbientServices ambientServices = null;
+            var app = new TestApp(async b => ambientServices = b.WithCompositionContainer(compositionContext));
             await app.BootstrapAsync();
 
             appManager.Received(1).InitializeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
@@ -91,8 +90,8 @@ namespace Kephas.Core.Tests.Application
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>()).Returns(appManager);
 
-            var ambientServices = new AmbientServicesBuilder(new AmbientServices())
-                .WithCompositionContainer(compositionContext).AmbientServices;
+            var ambientServices = new AmbientServices()
+                .WithCompositionContainer(compositionContext);
             var app = new TestApp(ambientServices: ambientServices);
             await app.ShutdownAsync();
 
@@ -102,9 +101,9 @@ namespace Kephas.Core.Tests.Application
 
     public class TestApp : AppBase
     {
-        private readonly Func<AmbientServicesBuilder, Task> asyncConfig;
+        private readonly Func<IAmbientServices, Task> asyncConfig;
 
-        public TestApp(Func<AmbientServicesBuilder, Task> asyncConfig = null, IAmbientServices ambientServices = null)
+        public TestApp(Func<IAmbientServices, Task> asyncConfig = null, IAmbientServices ambientServices = null)
             : base(ambientServices ?? new AmbientServices())
         {
             this.asyncConfig = asyncConfig;
@@ -114,19 +113,15 @@ namespace Kephas.Core.Tests.Application
         /// Configures the ambient services asynchronously.
         /// </summary>
         /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        protected override async Task ConfigureAmbientServicesAsync(
-            string[] appArgs,
-            AmbientServicesBuilder ambientServicesBuilder,
-            CancellationToken cancellationToken)
+        protected override async void ConfigureAmbientServices(string[] appArgs, IAmbientServices ambientServices)
         {
             if (this.asyncConfig != null)
             {
-                await this.asyncConfig(ambientServicesBuilder);
+                await this.asyncConfig(ambientServices);
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefAmbientServicesBuilderExtensionsTest.cs" company="Kephas Software SRL">
+// <copyright file="AmbientServicesMefExtensionsTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -22,13 +22,13 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     [TestFixture]
-    public class MefAmbientServicesBuilderExtensionsTest
+    public class AmbientServicesMefExtensionsTest
     {
         [Test]
         public void WithMefCompositionContainer_defaults()
         {
             var ambientServices = new AmbientServices();
-            var builder = new AmbientServicesBuilder(ambientServices);
+            var builder = ambientServices;
             builder
                 .WithDefaultAppRuntime(a => !a.Name.Contains("Test"))
                 .WithMefCompositionContainer();
@@ -41,7 +41,7 @@ namespace Kephas.Tests.Composition.Mef
         public void WithMefCompositionContainer_with_open_generic_override()
         {
             var ambientServices = new AmbientServices();
-            var builder = new AmbientServicesBuilder(ambientServices);
+            var builder = ambientServices;
             builder
                 .WithDefaultAppRuntime(a => !a.Name.Contains("Test"))
                 .WithMefCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
@@ -56,7 +56,7 @@ namespace Kephas.Tests.Composition.Mef
         public void WithMefCompositionContainer_with_open_generic_override_and_dependency()
         {
             var ambientServices = new AmbientServices();
-            var builder = new AmbientServicesBuilder(ambientServices);
+            var builder = ambientServices;
             builder
                 .WithDefaultAppRuntime(a => !a.Name.Contains("Test"))
                 .WithMefCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));

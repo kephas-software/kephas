@@ -42,13 +42,10 @@ namespace Kephas.Application
 
         private readonly ILogManager logManager;
 
-        private ILogger logger;
-
-        /// <summary>
-        /// The assembly resolution cache.
-        /// </summary>
         private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache =
             new ConcurrentDictionary<object, IEnumerable<Assembly>>();
+
+        private ILogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.

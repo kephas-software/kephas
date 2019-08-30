@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefAmbientServicesBuilderExtensions.cs" company="Kephas Software SRL">
+// <copyright file="AmbientServicesAutofacExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the MEF ambient services builder extensions class.
+//   Implements the autofac ambient services builder extensions class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,31 +12,31 @@ namespace Kephas
 {
     using System;
 
+    using Kephas.Composition.Autofac.Hosting;
     using Kephas.Composition.Hosting;
-    using Kephas.Composition.Mef.Hosting;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// MEF extensions for the ambient services builder.
+    /// Autofac related ambient services builder extensions.
     /// </summary>
-    public static class MefAmbientServicesBuilderExtensions
+    public static class AmbientServicesAutofacExtensions
     {
         /// <summary>
         /// Sets the composition container to the ambient services.
         /// </summary>
-        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
         /// <returns>The provided ambient services builder.</returns>
-        public static AmbientServicesBuilder WithMefCompositionContainer(this AmbientServicesBuilder ambientServicesBuilder, Action<MefCompositionContainerBuilder> containerBuilderConfig = null)
+        public static IAmbientServices WithAutofacCompositionContainer(this IAmbientServices ambientServices, Action<AutofacCompositionContainerBuilder> containerBuilderConfig = null)
         {
-            Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var containerBuilder = new MefCompositionContainerBuilder(new CompositionRegistrationContext(ambientServicesBuilder.AmbientServices));
+            var containerBuilder = new AutofacCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
 
             containerBuilderConfig?.Invoke(containerBuilder);
 
             var container = containerBuilder.CreateContainer();
-            return ambientServicesBuilder.WithCompositionContainer(container);
+            return ambientServices.WithCompositionContainer(container);
         }
     }
 }

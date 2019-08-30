@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AmbientServicesBuilderTest.cs" company="Kephas Software SRL">
+// <copyright file="AmbientServicesExtensionsTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,17 +25,16 @@ namespace Kephas.Core.Tests
     using NUnit.Framework;
 
     /// <summary>
-    /// Test class for <see cref="AmbientServicesBuilder"/>.
+    /// Test class for <see cref="AmbientServicesExtensions"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class AmbientServicesBuilderTest
+    public class AmbientServicesExtensionsTest
     {
         [Test]
         public void Constructor_register_ambient_services()
         {
             var ambientServices = new AmbientServices();
-            var builder = new AmbientServicesBuilder(ambientServices);
 
             Assert.AreSame(ambientServices, ambientServices.GetService(typeof(IAmbientServices)));
         }
@@ -44,8 +43,7 @@ namespace Kephas.Core.Tests
         public void WithLogManager_success()
         {
             var ambientServices = new AmbientServices();
-            var builder = new AmbientServicesBuilder(ambientServices);
-            builder.WithLogManager(new DebugLogManager());
+            ambientServices.WithLogManager(new DebugLogManager());
 
             Assert.IsTrue(ambientServices.LogManager is DebugLogManager);
         }
@@ -54,9 +52,8 @@ namespace Kephas.Core.Tests
         public void WithCompositionContainer_builder()
         {
             var ambientServices = new AmbientServices();
-            var builder = new AmbientServicesBuilder(ambientServices);
             var compositionContext = Substitute.For<ICompositionContext>();
-            builder.WithCompositionContainer<TestCompositionContainerBuilder>(
+            ambientServices.WithCompositionContainer<TestCompositionContainerBuilder>(
                 b => b.WithAssembly(this.GetType().Assembly)
                     .WithCompositionContext(compositionContext));
 
@@ -67,17 +64,15 @@ namespace Kephas.Core.Tests
         public void WithCompositionContainer_builder_missing_required_constructor()
         {
             var ambientServices = new AmbientServices();
-            var builder = new AmbientServicesBuilder(ambientServices);
-            Assert.Throws<InvalidOperationException>(() => builder.WithCompositionContainer<BadTestCompositionContainerBuilder>());
+            Assert.Throws<InvalidOperationException>(() => ambientServices.WithCompositionContainer<BadTestCompositionContainerBuilder>());
         }
 
         [Test]
         public async Task WithCompositionContainerAsync_builder()
         {
             var ambientServices = new AmbientServices();
-            var builder = new AmbientServicesBuilder(ambientServices);
             var compositionContext = Substitute.For<ICompositionContext>();
-            builder.WithCompositionContainer<TestCompositionContainerBuilder>(
+            ambientServices.WithCompositionContainer<TestCompositionContainerBuilder>(
                 b => b.WithAssembly(this.GetType().Assembly)
                     .WithCompositionContext(compositionContext));
 
@@ -88,8 +83,7 @@ namespace Kephas.Core.Tests
         public void WithCompositionContainerAsync_builder_missing_required_constructor()
         {
             var ambientServices = new AmbientServices();
-            var builder = new AmbientServicesBuilder(ambientServices);
-            Assert.That(() => builder.WithCompositionContainer<BadTestCompositionContainerBuilder>(), Throws.TypeOf<InvalidOperationException>());
+            Assert.That(() => ambientServices.WithCompositionContainer<BadTestCompositionContainerBuilder>(), Throws.TypeOf<InvalidOperationException>());
         }
 
         public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>
@@ -125,7 +119,7 @@ namespace Kephas.Core.Tests
         /// <summary>
         /// Missing required constructor with parameter of type ICompositionContainerBuilderContext.
         /// </summary>
-        public class BadTestCompositionContainerBuilder : CompositionContainerBuilderBase<AmbientServicesBuilderTest.BadTestCompositionContainerBuilder>
+        public class BadTestCompositionContainerBuilder : CompositionContainerBuilderBase<AmbientServicesExtensionsTest.BadTestCompositionContainerBuilder>
         {
             public BadTestCompositionContainerBuilder()
                 : base(Substitute.For<ICompositionRegistrationContext>())

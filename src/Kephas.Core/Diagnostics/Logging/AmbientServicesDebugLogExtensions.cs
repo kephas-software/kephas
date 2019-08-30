@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DebugLogAmbientServicesBuilderExtensions.cs" company="Kephas Software SRL">
+// <copyright file="AmbientServicesDebugLogExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,23 +15,23 @@ namespace Kephas.Diagnostics.Logging
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
-    /// Extension methods for the <see cref="AmbientServicesBuilder"/>.
+    /// Extension methods for the <see cref="IAmbientServices"/>.
     /// </summary>
-    public static class DebugLogAmbientServicesBuilderExtensions
+    public static class AmbientServicesDebugLogExtensions
     {
         /// <summary>
         /// Sets the debug log manager to the ambient services.
         /// </summary>
-        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
-        /// <param name="logCallback">The log callback (optional).</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="logCallback">Optional. The log callback.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static AmbientServicesBuilder WithDebugLogManager(this AmbientServicesBuilder ambientServicesBuilder, Action<string, string, object, Exception> logCallback = null)
+        public static IAmbientServices WithDebugLogManager(this IAmbientServices ambientServices, Action<string, string, object, Exception> logCallback = null)
         {
-            Requires.NotNull(ambientServicesBuilder, nameof(ambientServicesBuilder));
+            Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServicesBuilder.WithLogManager(new DebugLogManager(logCallback));
+            return ambientServices.WithLogManager(new DebugLogManager(logCallback));
         }
     }
 }

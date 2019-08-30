@@ -88,13 +88,13 @@ namespace Kephas.AspNetCore.InteractiveTests
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
         /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
-        protected override void ConfigureAmbientServices(string[] appArgs, AmbientServicesBuilder ambientServicesBuilder)
+        /// <param name="ambientServices">The ambient services.</param>
+        protected override void ConfigureAmbientServices(string[] appArgs, IAmbientServices ambientServices)
         {
             var serilogConfig = new LoggerConfiguration()
                 .ReadFrom.Configuration(this.Configuration);
 
-            ambientServicesBuilder
+            ambientServices
                 .WithSerilogManager(serilogConfig)
                 .WithDefaultAppRuntime()
                 .WithAutofacCompositionContainer();

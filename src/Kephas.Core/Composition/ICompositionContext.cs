@@ -218,7 +218,6 @@ namespace Kephas.Composition
                 ?? new CompositionContextAdapter(serviceProvider);
         }
 
-
         /// <summary>
         /// Resolves the specified contract type as an export factory.
         /// </summary>

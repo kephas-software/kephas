@@ -31,18 +31,18 @@ namespace Kephas
         /// <summary>
         /// Sets the application configuration to the ambient services.
         /// </summary>
-        /// <param name="builder">The builder to act on.</param>
+        /// <param name="ambientServices">The ambient services to act on.</param>
         /// <param name="appConfiguration">The application configuration.</param>
         /// <returns>
-        /// The ambient services builder.
+        /// The ambient services.
         /// </returns>
-        public static AmbientServicesBuilder WithAppConfiguration(this AmbientServicesBuilder builder, IAppConfiguration appConfiguration)
+        public static IAmbientServices WithAppConfiguration(this IAmbientServices ambientServices, IAppConfiguration appConfiguration)
         {
             Requires.NotNull(appConfiguration, nameof(appConfiguration));
 
-            builder.AmbientServices.Register(appConfiguration);
+            ambientServices.Register(appConfiguration);
 
-            return builder;
+            return ambientServices;
         }
     }
 }

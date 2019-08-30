@@ -120,7 +120,7 @@ namespace Kephas.AspNetCore
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
 
-                this.ConfigureAmbientServices(this.appArgs, new AmbientServicesBuilder(this.AmbientServices));
+                this.ConfigureAmbientServices(this.appArgs, this.AmbientServices);
 
                 this.Logger = this.AmbientServices.GetLogger(this.GetType());
             }
@@ -240,10 +240,10 @@ namespace Kephas.AspNetCore
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
         /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         protected abstract void ConfigureAmbientServices(
             string[] appArgs,
-            AmbientServicesBuilder ambientServicesBuilder);
+            IAmbientServices ambientServices);
 
         /// <summary>
         /// Initializes the application manager asynchronously.

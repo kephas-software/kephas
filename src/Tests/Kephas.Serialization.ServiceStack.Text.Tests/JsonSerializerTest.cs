@@ -308,11 +308,9 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         [Test]
         public async Task JsonSerializer_Composition()
         {
-            var asBuilder = new AmbientServicesBuilder();
-            asBuilder.WithMefCompositionContainer(
+            var ambientServices = new AmbientServices().WithMefCompositionContainer(
                 b =>
                 b.WithAssemblies(new[] { typeof(ISerializationService).GetTypeInfo().Assembly, typeof(JsonSerializer).GetTypeInfo().Assembly }));
-            var ambientServices = asBuilder.AmbientServices;
             var serializationService = ambientServices.CompositionContainer.GetExport<ISerializationService>();
             var jsonSerializer = serializationService.GetSerializer(SerializationContext.Create<JsonMediaType>(serializationService));
 

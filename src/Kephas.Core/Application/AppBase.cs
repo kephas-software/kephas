@@ -22,7 +22,7 @@ namespace Kephas.Application
     /// Base class for the application's root.
     /// </summary>
     /// <remarks>
-    /// You should inherit this class and override at least the <see cref="ConfigureAmbientServicesAsync"/> method.
+    /// You should inherit this class and override at least the <see cref="ConfigureAmbientServices"/> method.
     /// </remarks>
     public abstract class AppBase : IAmbientServicesAware
     {
@@ -70,8 +70,7 @@ namespace Kephas.Application
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
-                var ambientServicesBuilder = new AmbientServicesBuilder(this.AmbientServices);
-                await this.ConfigureAmbientServicesAsync(appArgs, ambientServicesBuilder, cancellationToken).PreserveThreadContext();
+                this.ConfigureAmbientServices(appArgs, this.AmbientServices);
 
                 this.Logger = this.Logger ?? this.AmbientServices.GetLogger(this.GetType());
             }
@@ -184,18 +183,8 @@ namespace Kephas.Application
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
         /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        protected virtual Task ConfigureAmbientServicesAsync(
-            string[] appArgs,
-            AmbientServicesBuilder ambientServicesBuilder,
-            CancellationToken cancellationToken)
-        {
-            return Task.FromResult(0);
-        }
+        /// <param name="ambientServices">The ambient services.</param>
+        protected abstract void ConfigureAmbientServices(string[] appArgs, IAmbientServices ambientServices);
 
         /// <summary>
         /// Initializes the application manager asynchronously.

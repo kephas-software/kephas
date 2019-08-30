@@ -12,11 +12,16 @@ namespace Kephas
 {
     using System;
 
+    using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Composition.Hosting;
     using Kephas.Composition.Lightweight;
+    using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Services;
 
     /// <summary>
     /// Extension methods for <see cref="IAmbientServices"/>.
@@ -366,6 +371,103 @@ namespace Kephas
             where TService : class
         {
             return (TService)GetRequiredService(ambientServices, typeof(TService));
+        }
+
+        /// <summary>
+        /// Sets the configuration store to the ambient services.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="configurationStore">The configuration store.</param>
+        /// <returns>
+        /// The provided ambient services.
+        /// </returns>
+        public static IAmbientServices WithConfigurationStore(this IAmbientServices ambientServices, IConfigurationStore configurationStore)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(configurationStore, nameof(configurationStore));
+
+            ambientServices.Register(configurationStore);
+
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Sets the log manager to the ambient services.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="logManager">The log manager.</param>
+        /// <returns>
+        /// This ambient services builder.
+        /// </returns>
+        public static IAmbientServices WithLogManager(this IAmbientServices ambientServices, ILogManager logManager)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(logManager, nameof(logManager));
+
+            ambientServices.Register(logManager);
+
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Sets the application runtime to the ambient services.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <returns>
+        /// This ambient services builder.
+        /// </returns>
+        public static IAmbientServices WithAppRuntime(this IAmbientServices ambientServices, IAppRuntime appRuntime)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(appRuntime, nameof(appRuntime));
+
+            ambientServices.Register(appRuntime);
+
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Sets the composition container to the ambient services.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="compositionContainer">The composition container.</param>
+        /// <returns>
+        /// This ambient services builder.
+        /// </returns>
+        public static IAmbientServices WithCompositionContainer(this IAmbientServices ambientServices, ICompositionContext compositionContainer)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(compositionContainer, nameof(compositionContainer));
+
+            ambientServices.Register(compositionContainer);
+
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Sets the composition container to the ambient services.
+        /// </summary>
+        /// <typeparam name="TContainerBuilder">Type of the composition container builder.</typeparam>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="containerBuilderConfig">The container builder configuration.</param>
+        /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="IContext" />.</remarks>
+        /// <returns>
+        /// This ambient services builder.
+        /// </returns>
+        public static IAmbientServices WithCompositionContainer<TContainerBuilder>(this IAmbientServices ambientServices, Action<TContainerBuilder> containerBuilderConfig = null)
+            where TContainerBuilder : ICompositionContainerBuilder
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            var builderType = typeof(TContainerBuilder).AsRuntimeTypeInfo();
+            var context = new CompositionRegistrationContext(ambientServices);
+
+            var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });
+
+            containerBuilderConfig?.Invoke(containerBuilder);
+
+            return ambientServices.WithCompositionContainer(containerBuilder.CreateContainer());
         }
     }
 }
