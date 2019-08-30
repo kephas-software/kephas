@@ -79,7 +79,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public override async Task<IMessage> ProcessAsync(IBrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            var processContext = new MessageProcessingContext(this.messageProcessor) { Identity = context.Identity };
+            var processContext = new MessageProcessingContext(context, this.messageProcessor);
 
             if (message.ReplyToMessageId != null)
             {

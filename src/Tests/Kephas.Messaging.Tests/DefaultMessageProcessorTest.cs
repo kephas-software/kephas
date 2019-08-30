@@ -658,10 +658,12 @@ namespace Kephas.Messaging.Tests
 
         public virtual IMessageProcessingContext PublicCreateProcessingContext(IMessage message)
         {
-            return base.CreateProcessingContext(message);
+            return base.CreateProcessingContext(message, null);
         }
 
-        protected override sealed IMessageProcessingContext CreateProcessingContext(IMessage message)
+        protected override sealed IMessageProcessingContext CreateProcessingContext(
+            IMessage message,
+            IMessageProcessingContext context)
         {
             return this.PublicCreateProcessingContext(message);
         }

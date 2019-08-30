@@ -111,63 +111,56 @@ namespace Kephas.Messaging
             Requires.NotNull(message, nameof(message));
 
             var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(message);
-            var ownsContext = context == null;
-            if (context == null)
-            {
-                context = this.CreateProcessingContext(message);
-            }
+            var localContext = this.CreateProcessingContext(message, context);
 
             try
             {
-                var contextHandler = context?.Handler;
-                var contextMessage = context?.Message;
+                var contextHandler = localContext?.Handler;
+                var contextMessage = localContext?.Message;
                 foreach (var messageHandler in this.ResolveMessageHandlers(message))
                 {
                     using (messageHandler)
                     {
-                        context.Message = message;
-                        context.Handler = messageHandler;
+                        localContext.Message = message;
+                        localContext.Handler = messageHandler;
 
                         try
                         {
-                            await this.ApplyBeforeProcessBehaviorsAsync(behaviors, context, token)
+                            await this.ApplyBeforeProcessBehaviorsAsync(behaviors, localContext, token)
                                 .PreserveThreadContext();
 
-                            var response = await messageHandler.ProcessAsync(message, context, token)
+                            var response = await messageHandler.ProcessAsync(message, localContext, token)
                                                .PreserveThreadContext();
-                            context.Response = response;
+                            localContext.Response = response;
                         }
                         catch (Exception ex)
                         {
-                            context.Exception = ex;
+                            localContext.Exception = ex;
                         }
                         finally
                         {
                             // restore the message and handler that could be changed
                             // by a nested message processor ProcessAsync call.
-                            context.Handler = messageHandler;
-                            context.Message = message;
+                            localContext.Handler = messageHandler;
+                            localContext.Message = message;
                         }
 
-                        await this.ApplyAfterProcessBehaviorsAsync(reversedBehaviors, context, token)
+                        await this.ApplyAfterProcessBehaviorsAsync(reversedBehaviors, localContext, token)
                             .PreserveThreadContext();
                     }
                 }
 
                 // restore the previous context handler and message.
-                context.Handler = contextHandler;
-                context.Message = contextMessage;
+                localContext.Handler = contextHandler;
+                localContext.Message = contextMessage;
 
-                return context.Exception != null
-                           ? throw context.Exception
-                           : context.Response;
+                return localContext.Exception != null
+                           ? throw localContext.Exception
+                           : localContext.Response;
             }
             finally
             {
-                if (ownsContext)
-                {
-                    context?.Dispose();
-                }
+                localContext?.Dispose();
             }
         }
 
@@ -239,10 +232,17 @@ namespace Kephas.Messaging
         /// Creates the processing context.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <returns>The processing context.</returns>
-        protected virtual IMessageProcessingContext CreateProcessingContext(IMessage message)
+        /// <param name="parentContext">The parent context.</param>
+        /// <returns>
+        /// The processing context.
+        /// </returns>
+        protected virtual IMessageProcessingContext CreateProcessingContext(
+            IMessage message,
+            IMessageProcessingContext parentContext)
         {
-            return new MessageProcessingContext(this, message);
+            return parentContext == null
+                       ? new MessageProcessingContext(this, message)
+                       : new MessageProcessingContext(parentContext, this, message);
         }
 
         /// <summary>
