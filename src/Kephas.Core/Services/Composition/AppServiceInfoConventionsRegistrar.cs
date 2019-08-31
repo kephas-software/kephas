@@ -153,6 +153,12 @@ namespace Kephas.Services.Composition
 
             foreach (var candidateType in candidateTypes.Where(t => t.IsInstantiableAppServiceInfoProviderType()).ToList())
             {
+                // ignore also ambient services, we added this already.
+                if (typeof(IAmbientServices).IsAssignableFrom(candidateType))
+                {
+                    continue;
+                }
+
                 yield return (IAppServiceInfoProvider)candidateType.AsRuntimeTypeInfo().CreateInstance();
             }
         }
