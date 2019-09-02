@@ -17,7 +17,6 @@ $packages = @(
     "Kephas.Model",
     "Kephas.Data",
     "Kephas.Data.Client",
-    "Kephas.Data.Entity",
     "Kephas.Data.LLBLGen",
     "Kephas.Data.Model",
     "Kephas.Data.Model.Abstractions",
