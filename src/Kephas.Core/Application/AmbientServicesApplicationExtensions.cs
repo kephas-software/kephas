@@ -23,7 +23,7 @@ namespace Kephas.Application
     public static class AmbientServicesApplicationExtensions
     {
         /// <summary>
-        /// Sets the default application runtime to the ambient services.
+        /// Adds the dynamic application runtime to the ambient services.
         /// </summary>
         /// <remarks>
         /// It uses the <see cref="IAssemblyLoader"/> and <see cref="ILogManager"/> services from the
@@ -31,16 +31,37 @@ namespace Kephas.Application
         /// properly configured before using this method.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="assemblyFilter">A filter specifying the assembly (optional).</param>
-        /// <param name="appLocation">The application location (optional).</param>
+        /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
+        /// <param name="appLocation">Optional. The application location.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static IAmbientServices WithDefaultAppRuntime(this IAmbientServices ambientServices, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
+        public static IAmbientServices WithDynamicAppRuntime(this IAmbientServices ambientServices, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices.WithAppRuntime(new DefaultAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation));
+            return ambientServices.WithAppRuntime(new DynamicAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation));
+        }
+
+        /// <summary>
+        /// Adds the static application runtime to the ambient services.
+        /// </summary>
+        /// <remarks>
+        /// It uses the <see cref="IAssemblyLoader"/> and <see cref="ILogManager"/> services from the
+        /// ambient services to configure the application runtime. Make sure that these services are
+        /// properly configured before using this method.
+        /// </remarks>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
+        /// <param name="appLocation">Optional. The application location.</param>
+        /// <returns>
+        /// The provided ambient services builder.
+        /// </returns>
+        public static IAmbientServices WithStaticAppRuntime(this IAmbientServices ambientServices, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            return ambientServices.WithAppRuntime(new StaticAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation));
         }
     }
 }

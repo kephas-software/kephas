@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppRuntimeBase.cs" company="Kephas Software SRL">
+// <copyright file="DefaultAppRuntime.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -26,7 +26,7 @@ namespace Kephas.Application
     using Kephas.Resources;
 
     /// <summary>
-    /// Base class for the application runtime service.
+    /// An application application runtime providing only assemblies loaded by the runtime.
     /// </summary>
     public abstract class AppRuntimeBase : Expando, IAppRuntime, ILoggable
     {
@@ -40,6 +40,8 @@ namespace Kephas.Application
         /// </summary>
         protected const string AssemblyFileExtension = ".dll";
 
+        private readonly string appLocation;
+
         private readonly ILogManager logManager;
 
         private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache =
@@ -52,13 +54,17 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="assemblyLoader">Optional. The assembly loader.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading assemblies.</param>
-        protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null)
+        /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
+        ///                                     assemblies.</param>
+        /// <param name="appLocation">Optional. The application location. If not specified, the
+        ///                           current application location is considered.</param>
+        protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null, string appLocation = null)
             : base(isThreadSafe: true)
         {
             this.logManager = logManager ?? new NullLogManager();
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
+            this.appLocation = appLocation;
         }
 
         /// <summary>
@@ -95,12 +101,21 @@ namespace Kephas.Application
         /// <returns>
         /// A path indicating the application location.
         /// </returns>
-        public abstract string GetAppLocation();
+        public virtual string GetAppLocation()
+        {
+            if (!string.IsNullOrEmpty(this.appLocation))
+            {
+                return Path.GetFullPath(this.appLocation);
+            }
+
+            var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+            return assembly.GetLocation();
+        }
 
         /// <summary>
         /// Gets the application assemblies.
         /// </summary>
-        /// <param name="assemblyFilter">A filter for the assemblies (optional).</param>
+        /// <param name="assemblyFilter">Optional. A filter for the assemblies.</param>
         /// <returns>
         /// An enumeration of application assemblies.
         /// </returns>
@@ -154,7 +169,10 @@ namespace Kephas.Application
         /// <returns>
         /// The loaded assemblies.
         /// </returns>
-        protected abstract IList<Assembly> GetLoadedAssemblies();
+        protected virtual IList<Assembly> GetLoadedAssemblies()
+        {
+            return AppDomain.CurrentDomain.GetAssemblies().ToList();
+        }
 
         /// <summary>
         /// Gets the referenced assemblies.
@@ -163,10 +181,13 @@ namespace Kephas.Application
         /// <returns>
         /// An array of assembly name.
         /// </returns>
-        protected abstract AssemblyName[] GetReferencedAssemblies(Assembly assembly);
+        protected virtual AssemblyName[] GetReferencedAssemblies(Assembly assembly)
+        {
+            return assembly.GetReferencedAssemblies();
+        }
 
         /// <summary>
-        /// Gets the application assemblies.
+        /// Computes the application assemblies.
         /// </summary>
         /// <param name="assemblyFilter">A filter for the assemblies.</param>
         /// <returns>
@@ -201,80 +222,8 @@ namespace Kephas.Application
                 assemblies.AddRange(assembliesToCheck);
             }
 
-            this.AddAdditionalAssemblies(assemblies, assemblyFilter);
             return assemblies;
         }
-
-        /// <summary>
-        /// Adds additional assemblies to the ones already collected.
-        /// </summary>
-        /// <param name="assemblies">The collected assemblies.</param>
-        /// <param name="assemblyFilter">A filter for the assemblies.</param>
-        protected virtual void AddAdditionalAssemblies(IList<Assembly> assemblies, Func<AssemblyName, bool> assemblyFilter)
-        {
-            // load all the assemblies found in the application directories which are not already loaded.
-            var directories = this.GetAppAssemblyDirectories();
-            foreach (var directory in directories.Where(d => !string.IsNullOrEmpty(d)))
-            {
-                var loadedAssemblyFiles = assemblies.Where(a => !a.IsDynamic).Select(this.GetFileName).Select(f => f.ToLowerInvariant());
-                var assemblyFiles = this.EnumerateFiles(directory, AssemblyFileSearchPattern).Select(Path.GetFileName);
-                var assemblyFilesToLoad = assemblyFiles
-                                            .Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()))
-                                            .Where(f => assemblyFilter(this.GetAssemblyNameFromAssemblyFileName(f)));
-                assemblies.AddRange(assemblyFilesToLoad
-                                        .Select(f => this.AssemblyLoader.LoadAssemblyFromPath(Path.Combine(directory, f)))
-                                        .Where(a => assemblyFilter(a.GetName())));
-            }
-        }
-
-        /// <summary>
-        /// Gets the assembly name from the assembly file name.
-        /// </summary>
-        /// <param name="f">The format string.</param>
-        /// <returns>
-        /// The assembly name.
-        /// </returns>
-        protected AssemblyName GetAssemblyNameFromAssemblyFileName(string f)
-        {
-            return new AssemblyName(f.Substring(0, f.Length - AssemblyFileExtension.Length));
-        }
-
-        /// <summary>
-        /// Enumerates the files in the provided directory.
-        /// </summary>
-        /// <param name="directory">Pathname of the directory.</param>
-        /// <param name="filePattern">A pattern specifying the files to retrieve.</param>
-        /// <returns>
-        /// An enumeration of file names.
-        /// </returns>
-        protected virtual IEnumerable<string> EnumerateFiles(string directory, string filePattern)
-        {
-            return Directory.EnumerateFiles(directory, AssemblyFileSearchPattern, SearchOption.TopDirectoryOnly);
-        }
-
-        /// <summary>
-        /// Gets the directories where the application assemblies can be found.
-        /// </summary>
-        /// <remarks>
-        /// Note for inheritors: This method can be overridden to provide additional directories
-        /// where assemblies can be loaded from, like in the case of plugin architectures.
-        /// </remarks>
-        /// <returns>
-        /// A directory enumeration.
-        /// </returns>
-        protected virtual IEnumerable<string> GetAppAssemblyDirectories()
-        {
-            return new[] { this.GetAppLocation() };
-        }
-
-        /// <summary>
-        /// Gets the file name of the provided assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>
-        /// The assembly file name.
-        /// </returns>
-        protected abstract string GetFileName(Assembly assembly);
 
         /// <summary>
         /// Tries to load the assembly.

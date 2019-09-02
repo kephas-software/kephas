@@ -96,7 +96,7 @@ namespace Kephas.AspNetCore.InteractiveTests
 
             ambientServices
                 .WithSerilogManager(serilogConfig)
-                .WithDefaultAppRuntime()
+                .WithDynamicAppRuntime()
                 .WithAutofacCompositionContainer();
         }
     }

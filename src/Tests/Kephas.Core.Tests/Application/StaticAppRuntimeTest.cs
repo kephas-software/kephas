@@ -11,7 +11,6 @@
 namespace Kephas.Core.Tests.Application
 {
     using System.Linq;
-    using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Reflection;
@@ -19,12 +18,12 @@ namespace Kephas.Core.Tests.Application
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultAppRuntimeTest
+    public class StaticAppRuntimeTest
     {
         [Test]
         public void GetAppAssemblies_filter()
         {
-            var appEnv = new DefaultAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
+            var appEnv = new StaticAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
             var assemblies = appEnv.GetAppAssemblies(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
             var assemblyList = assemblies.ToList();
 
@@ -35,7 +34,7 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void GetAppAssemblies_no_filter()
         {
-            var appEnv = new DefaultAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
+            var appEnv = new StaticAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
             var assemblies = appEnv.GetAppAssemblies();
             var assemblyList = assemblies.ToList();
 
