@@ -523,10 +523,13 @@ namespace Kephas.Composition.Hosting
         /// <returns>The composition parts.</returns>
         private IList<Type> GetCompositionParts(IEnumerable<Assembly> assemblies)
         {
-            var parts = assemblies.SelectMany(a => this.TypeLoader.GetLoadableExportedTypes(a)).ToList();
+            var parts = assemblies
+                .SelectMany(a => this.TypeLoader.GetLoadableExportedTypes(a))
+                .Where(t => !(t.IsAbstract && t.IsSealed))
+                .ToList();
             if (this.CompositionParts != null)
             {
-                parts.AddRange(this.CompositionParts);
+                parts.AddRange(this.CompositionParts.Where(t => !(t.IsAbstract && t.IsSealed)));
             }
 
             return parts;

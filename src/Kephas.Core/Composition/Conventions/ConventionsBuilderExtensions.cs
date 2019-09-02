@@ -111,7 +111,7 @@ namespace Kephas.Composition.Conventions
 
             if (registrationContext.Parts != null)
             {
-                parts.AddRange(registrationContext.Parts);
+                parts.AddRange(registrationContext.Parts.Where(t => !(t.IsAbstract && t.IsSealed)));
             }
 
             var conventionRegistrars = registrationContext?.AmbientServices.GetService<IEnumerable<IConventionsRegistrar>>();
