@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.AspNetCore.Services.Composition
+namespace Kephas.Composition.DependencyInjection
 {
     using System;
     using System.Collections.Generic;
