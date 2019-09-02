@@ -46,6 +46,14 @@ namespace Kephas.Application
         public IAmbientServices AmbientServices { get; }
 
         /// <summary>
+        /// Gets a context for the application.
+        /// </summary>
+        /// <value>
+        /// The application context.
+        /// </value>
+        public IAppContext AppContext { get; private set; }
+
+        /// <summary>
         /// Gets or sets the logger.
         /// </summary>
         /// <value>
@@ -70,6 +78,11 @@ namespace Kephas.Application
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
+
+                // require the AppContext to be computed each time, so that if it is called
+                // to early, to be able to still get it at a later time.
+                // registers the application context as a global service, so that other services can benefit from it.
+                this.AmbientServices.Register<IAppContext>(b => b.WithFactory(ctx => this.AppContext).AsTransient());
                 this.ConfigureAmbientServices(appArgs, this.AmbientServices);
 
                 this.Logger = this.Logger ?? this.AmbientServices.GetLogger(this.GetType());
@@ -84,31 +97,28 @@ namespace Kephas.Application
                 throw;
             }
 
-            IAppContext appContext = null;
             try
             {
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
-                appContext = this.CreateAppContext(appArgs, this.AmbientServices);
 
-                // registers the application context as a global service, so that other services can benefit from it.
-                // it is important to do it before initializing the application manager.
-                this.AmbientServices.Register(appContext);
-                await this.InitializeAppManagerAsync(appContext, cancellationToken);
+                // it is important to create the app context before initializing the application manager.
+                this.AppContext = this.CreateAppContext(appArgs, this.AmbientServices);
+                await this.InitializeAppManagerAsync(this.AppContext, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_StartComplete_Message);
 
-                return appContext;
+                return this.AppContext;
             }
             catch (Exception ex)
             {
                 var bootstrapException = new BootstrapException(Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception, ex)
                 {
-                    AppContext = appContext,
+                    AppContext = this.AppContext,
                     AmbientServices = this.AmbientServices,
                 };
-                if (appContext != null)
+                if (this.AppContext != null)
                 {
-                    appContext.Exception = bootstrapException;
+                    this.AppContext.Exception = bootstrapException;
                 }
 
                 this.Log(LogLevel.Fatal, bootstrapException);
