@@ -525,11 +525,11 @@ namespace Kephas.Composition.Hosting
         {
             var parts = assemblies
                 .SelectMany(a => this.TypeLoader.GetLoadableExportedTypes(a))
-                .Where(t => !(t.IsAbstract && t.IsSealed))
+                .Where(ConventionsBuilderExtensions.IsPartCandidate)
                 .ToList();
             if (this.CompositionParts != null)
             {
-                parts.AddRange(this.CompositionParts.Where(t => !(t.IsAbstract && t.IsSealed)));
+                parts.AddRange(this.CompositionParts.Where(ConventionsBuilderExtensions.IsPartCandidate));
             }
 
             return parts;

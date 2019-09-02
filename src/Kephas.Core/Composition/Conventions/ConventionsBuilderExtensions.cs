@@ -97,6 +97,19 @@ namespace Kephas.Composition.Conventions
         }
 
         /// <summary>
+        /// Gets a value indicating whether the type is part candidate.
+        /// </summary>
+        /// <param name="potentialCandidate">The potential candidate type.</param>
+        /// <returns>
+        /// True if the type is a part candidate, false if not.
+        /// </returns>
+        internal static bool IsPartCandidate(this Type potentialCandidate)
+        {
+            return (potentialCandidate.IsInterface || potentialCandidate.IsClass)
+                && !(potentialCandidate.IsAbstract && potentialCandidate.IsSealed);
+        }
+
+        /// <summary>
         /// Gets the registration builder.
         /// </summary>
         /// <param name="builder">The builder.</param>
@@ -111,7 +124,7 @@ namespace Kephas.Composition.Conventions
 
             if (registrationContext.Parts != null)
             {
-                parts.AddRange(registrationContext.Parts.Where(t => !(t.IsAbstract && t.IsSealed)));
+                parts.AddRange(registrationContext.Parts.Where(IsPartCandidate));
             }
 
             var conventionRegistrars = registrationContext?.AmbientServices.GetService<IEnumerable<IConventionsRegistrar>>();
