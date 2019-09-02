@@ -105,8 +105,8 @@ namespace Kephas.Composition.Conventions
         /// </returns>
         internal static bool IsPartCandidate(this Type potentialCandidate)
         {
-            return (potentialCandidate.IsInterface || potentialCandidate.IsClass)
-                && !(potentialCandidate.IsAbstract && potentialCandidate.IsSealed);
+            return potentialCandidate.IsInterface
+                || (potentialCandidate.IsClass && !(potentialCandidate.IsAbstract && potentialCandidate.IsSealed));
         }
 
         /// <summary>
