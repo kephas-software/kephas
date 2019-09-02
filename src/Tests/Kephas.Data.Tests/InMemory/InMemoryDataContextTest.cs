@@ -223,7 +223,7 @@ namespace Kephas.Data.Tests.InMemory
                 compositionContext ?? Substitute.For<ICompositionContext>(),
                 dataCommandProvider ?? Substitute.For<IDataCommandProvider>(),
                 dataBehaviorProvider ?? Substitute.For<IDataBehaviorProvider>(),
-                serializationService ?? Substitute.For<ISerializationService>());
+                serializationService ?? Substitute.For<ISerializationService, ICompositionContextAware>());
         }
 
         private IDataInitializationContext GetDataInitializationContext(

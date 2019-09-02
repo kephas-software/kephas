@@ -57,22 +57,28 @@ namespace Kephas
         /// <summary>
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
         /// </summary>
-        public AmbientServices()
+        /// <param name="registerDefaultServices">Optional. True to register default services.</param>
+        public AmbientServices(bool registerDefaultServices = true)
         {
             var logManager = new NullLogManager();
 
             this.Register<IAmbientServices>(this)
-                .Register<ICompositionContext>(this.AsCompositionContext())
-                .Register<IConfigurationStore, DefaultConfigurationStore>()
-                .Register<ILogManager>(logManager)
-                .Register<IAssemblyLoader, DefaultAssemblyLoader>()
-                .Register<ITypeLoader, DefaultTypeLoader>()
-                .Register<IAppRuntime, StaticAppRuntime>()
+                .Register<ICompositionContext>(this.AsCompositionContext());
 
-                .Register<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>().AllowMultiple())
+            if(registerDefaultServices)
+            {
+                this
+                    .Register<IConfigurationStore, DefaultConfigurationStore>()
+                    .Register<ILogManager>(logManager)
+                    .Register<IAssemblyLoader, DefaultAssemblyLoader>()
+                    .Register<ITypeLoader, DefaultTypeLoader>()
+                    .Register<IAppRuntime, StaticAppRuntime>()
 
-                .Register<IAppServiceInfoProvider>(b => b.WithInstance(this).AllowMultiple())
-                .Register<IAppServiceInfoProvider>(b => b.WithType<AttributedAppServiceInfoProvider>().AllowMultiple());
+                    .Register<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>().AllowMultiple())
+
+                    .Register<IAppServiceInfoProvider>(b => b.WithInstance(this).AllowMultiple())
+                    .Register<IAppServiceInfoProvider>(b => b.WithType<AttributedAppServiceInfoProvider>().AllowMultiple());
+            }
 
             this.registry
                 .RegisterSource(new LazyServiceSource(this.registry))

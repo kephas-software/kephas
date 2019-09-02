@@ -14,12 +14,13 @@ namespace Kephas.Core.Tests
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
-
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Logging;
-
+    using Kephas.Logging;
+    using Kephas.Reflection;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -51,7 +52,10 @@ namespace Kephas.Core.Tests
         [Test]
         public void WithCompositionContainer_builder()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = new AmbientServices(registerDefaultServices: false)
+                .Register(Substitute.For<ILogManager>())
+                .Register(Substitute.For<ITypeLoader>())
+                .Register(Substitute.For<IAppRuntime>());
             var compositionContext = Substitute.For<ICompositionContext>();
             ambientServices.WithCompositionContainer<TestCompositionContainerBuilder>(
                 b => b.WithAssembly(this.GetType().Assembly)
