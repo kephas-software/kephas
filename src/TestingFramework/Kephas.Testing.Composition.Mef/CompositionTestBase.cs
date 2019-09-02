@@ -46,9 +46,9 @@ namespace Kephas.Testing.Composition.Mef
         public virtual MefCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
         {
             logManager = logManager ?? new NullLogManager();
-            appRuntime = appRuntime ?? new DefaultAppRuntime(
+            appRuntime = appRuntime ?? new StaticAppRuntime(
                              logManager: logManager,
-                             assemblyFilter: a => !a.IsSystemAssembly() && !a.FullName.StartsWith("NUnit") && !a.FullName.StartsWith("xunit") && !a.FullName.StartsWith("JetBrains"));
+                             defaultAssemblyFilter: a => !a.IsSystemAssembly() && !a.FullName.StartsWith("NUnit") && !a.FullName.StartsWith("xunit") && !a.FullName.StartsWith("JetBrains"));
 
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices

@@ -134,7 +134,7 @@ namespace Kephas.Core.Tests.Composition
             /// <param name="instance">The instance.</param>
             public void ForInstance(Type type, object instance)
             {
-                throw new NotImplementedException();
+                // throw new NotImplementedException();
             }
 
             /// <summary>
@@ -145,7 +145,8 @@ namespace Kephas.Core.Tests.Composition
             /// <returns>A <see cref="IPartBuilder"/> to further configure the rule.</returns>
             public IPartBuilder ForInstanceFactory(Type type, Func<ICompositionContext, object> factory)
             {
-                throw new NotImplementedException();
+                // throw new NotImplementedException();
+                return Substitute.For<IPartBuilder>();
             }
 
             private IPartConventionsBuilder CreateBuilder(Type type)

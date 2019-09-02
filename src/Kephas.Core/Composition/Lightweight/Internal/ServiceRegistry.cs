@@ -25,9 +25,9 @@ namespace Kephas.Composition.Lightweight.Internal
 
         private readonly List<IServiceSource> serviceSources = new List<IServiceSource>();
 
-        public IServiceInfo this[Type contractType] => this.services[contractType];
-
         public IEnumerable<IServiceSource> Sources => this.serviceSources;
+
+        public IServiceInfo this[Type contractType] => this.services[contractType];
 
         public bool TryGetValue(Type serviceType, out IServiceInfo serviceInfo) =>
             this.services.TryGetValue(serviceType, out serviceInfo);

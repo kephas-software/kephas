@@ -137,29 +137,22 @@ namespace Kephas.Services.Composition
             IList<Type> candidateTypes,
             ICompositionRegistrationContext registrationContext)
         {
-            if (registrationContext.AmbientServices != null)
+            var ambientServicesProviders = registrationContext.AmbientServices?.GetService<IEnumerable<IAppServiceInfoProvider>>();
+            if (ambientServicesProviders != null)
             {
-                yield return registrationContext.AmbientServices;
-            }
-
-            var appServiceInfoProviders = registrationContext.AppServiceInfoProviders;
-            if (appServiceInfoProviders != null)
-            {
-                foreach (var provider in appServiceInfoProviders)
+                foreach (var provider in ambientServicesProviders)
                 {
                     yield return provider;
                 }
             }
 
-            foreach (var candidateType in candidateTypes.Where(t => t.IsInstantiableAppServiceInfoProviderType()).ToList())
+            var contextProviders = registrationContext.AppServiceInfoProviders;
+            if (contextProviders != null)
             {
-                // ignore also ambient services, we added this already.
-                if (typeof(IAmbientServices).IsAssignableFrom(candidateType))
+                foreach (var provider in contextProviders)
                 {
-                    continue;
+                    yield return provider;
                 }
-
-                yield return (IAppServiceInfoProvider)candidateType.AsRuntimeTypeInfo().CreateInstance();
             }
         }
 

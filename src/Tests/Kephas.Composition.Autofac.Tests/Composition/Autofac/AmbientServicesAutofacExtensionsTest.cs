@@ -27,7 +27,7 @@ namespace Kephas.Tests.Composition.Autofac
             var ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
-                .WithDefaultAppRuntime(a => a.Name.Contains("Kephas") && !a.Name.Contains("Test"))
+                .WithDynamicAppRuntime(a => a.Name.Contains("Kephas") && !a.Name.Contains("Test"))
                 .WithAutofacCompositionContainer();
 
             var compositionContext = ambientServices.CompositionContainer;
@@ -40,7 +40,7 @@ namespace Kephas.Tests.Composition.Autofac
             var ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
-                .WithDefaultAppRuntime(a => !a.Name.Contains("Test"))
+                .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
                 .WithAutofacCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
 
             var compositionContext = ambientServices.CompositionContainer;
@@ -55,7 +55,7 @@ namespace Kephas.Tests.Composition.Autofac
             var ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
-                .WithDefaultAppRuntime(a => !a.Name.Contains("Test"))
+                .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
                 .WithAutofacCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
 
             var compositionContext = ambientServices.CompositionContainer;

@@ -18,6 +18,7 @@ namespace Kephas
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
+    using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Lightweight;
     using Kephas.Composition.Lightweight.Internal;
@@ -27,6 +28,7 @@ namespace Kephas
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -65,7 +67,12 @@ namespace Kephas
                 .Register<ILogManager>(logManager)
                 .Register<IAssemblyLoader, DefaultAssemblyLoader>()
                 .Register<ITypeLoader, DefaultTypeLoader>()
-                .Register<IAppRuntime, DefaultAppRuntime>();
+                .Register<IAppRuntime, StaticAppRuntime>()
+
+                .Register<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>().AllowMultiple())
+
+                .Register<IAppServiceInfoProvider>(b => b.WithInstance(this).AllowMultiple())
+                .Register<IAppServiceInfoProvider>(b => b.WithType<AttributedAppServiceInfoProvider>().AllowMultiple());
 
             this.registry
                 .RegisterSource(new LazyServiceSource(this.registry))

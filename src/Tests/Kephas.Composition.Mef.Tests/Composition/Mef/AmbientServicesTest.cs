@@ -22,7 +22,7 @@ namespace Kephas.Tests.Composition.Mef
         {
             var ambientServices = CustomAmbientServices.CreateAmbientServices();
             var container = ambientServices
-                .WithAppRuntime(new DefaultAppRuntime(assemblyFilter: n => !n.IsSystemAssembly() && !n.Name.Contains("JetBrains") && !n.Name.Contains("NUnit") && !n.Name.Contains("Test")))
+                .WithAppRuntime(new StaticAppRuntime(defaultAssemblyFilter: n => !n.IsSystemAssembly() && !n.Name.Contains("JetBrains") && !n.Name.Contains("NUnit") && !n.Name.Contains("Test")))
                 .WithMefCompositionContainer(b => b.WithPart(typeof(CustomAmbientServices))).CompositionContainer;
             var otherAmbientServices = container.GetExport<IAmbientServices>();
 

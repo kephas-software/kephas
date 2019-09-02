@@ -35,6 +35,8 @@
 
         Func<ICompositionContext, object> IAppServiceInfo.InstanceFactory => null;
 
+        public Type ServiceType { get; }
+
         public void Add(ServiceInfo serviceInfo)
         {
             this.serviceInfos.Add(serviceInfo);
@@ -44,8 +46,6 @@
         {
             throw new NotSupportedException("Only single service infos may provide services.");
         }
-
-        public Type ServiceType { get; }
 
         public IDictionary<string, object> Metadata { get; }
 

@@ -61,20 +61,18 @@ namespace Kephas.Composition.Conventions
         /// <see cref="IConventionsRegistrar" />.
         /// </summary>
         /// <param name="builder">The builder.</param>
-        /// <param name="registrarTypes">The convention registrar types.</param>
         /// <param name="parts">The parts.</param>
         /// <param name="registrationContext">Context for the registration.</param>
         /// <returns>
         /// The convention builder.
         /// </returns>
-        public static IConventionsBuilder RegisterConventions(this IConventionsBuilder builder, IEnumerable<Type> registrarTypes, IList<Type> parts, ICompositionRegistrationContext registrationContext)
+        public static IConventionsBuilder RegisterConventions(this IConventionsBuilder builder, IList<Type> parts, ICompositionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
-            Requires.NotNull(registrarTypes, nameof(registrarTypes));
             Requires.NotNull(parts, nameof(parts));
             Requires.NotNull(registrationContext, nameof(registrationContext));
 
-            return RegisterConventionsCore(builder, () => registrarTypes.Where(t => t.IsInstantiableConventionsRegistrarType()).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
+            return RegisterConventionsCore(builder, parts, registrationContext);
         }
 
         /// <summary>
@@ -95,20 +93,19 @@ namespace Kephas.Composition.Conventions
             Requires.NotNull(parts, nameof(parts));
             Requires.NotNull(registrationContext, nameof(registrationContext));
 
-            return RegisterConventionsCore(builder, () => parts.Where(t => t.IsInstantiableConventionsRegistrarType()).Select(t => t.AsRuntimeTypeInfo()), parts, registrationContext);
+            return RegisterConventionsCore(builder, parts, registrationContext);
         }
 
         /// <summary>
         /// Gets the registration builder.
         /// </summary>
         /// <param name="builder">The builder.</param>
-        /// <param name="registrarTypesProvider">The registrar types provider.</param>
         /// <param name="parts">The convention types.</param>
         /// <param name="registrationContext">The registration context.</param>
         /// <returns>
         /// The registration builder.
         /// </returns>
-        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, Func<IEnumerable<IRuntimeTypeInfo>> registrarTypesProvider, IList<Type> parts, ICompositionRegistrationContext registrationContext)
+        private static IConventionsBuilder RegisterConventionsCore(this IConventionsBuilder builder, IList<Type> parts, ICompositionRegistrationContext registrationContext)
         {
             Requires.NotNull(builder, nameof(builder));
 
@@ -117,8 +114,10 @@ namespace Kephas.Composition.Conventions
                 parts.AddRange(registrationContext.Parts);
             }
 
-            var registrarTypes = registrarTypesProvider();
-            var registrars = registrarTypes.Select(t => (IConventionsRegistrar)t.CreateInstance()).ToList();
+            var conventionRegistrars = registrationContext?.AmbientServices.GetService<IEnumerable<IConventionsRegistrar>>();
+            var registrars = conventionRegistrars == null
+                                ? new List<IConventionsRegistrar>()
+                                : new List<IConventionsRegistrar>(conventionRegistrars);
             if (registrationContext.Registrars != null)
             {
                 registrars.AddRange(registrationContext.Registrars);

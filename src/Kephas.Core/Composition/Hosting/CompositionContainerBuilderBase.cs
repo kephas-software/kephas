@@ -74,6 +74,10 @@ namespace Kephas.Composition.Hosting
             this.AssertRequiredService(this.TypeLoader);
 
             this.Logger = this.LogManager.GetLogger(this.GetType());
+
+            context.AppServiceInfoProviders = context.AppServiceInfoProviders == null
+                ? new List<IAppServiceInfoProvider> { this.Registry }
+                : new List<IAppServiceInfoProvider>(context.AppServiceInfoProviders) { this.Registry };
         }
 
         /// <summary>
@@ -310,8 +314,8 @@ namespace Kephas.Composition.Hosting
             registrations.ForEach(r =>
                 {
                     this.Registry.Add(r);
-                    if (r.ContractType != null) this.WithPart(r.ContractType);
-                    if (r.InstanceType != null) this.WithPart(r.InstanceType);
+                    if (r.ContractType != null) { this.WithPart(r.ContractType); }
+                    if (r.InstanceType != null) { this.WithPart(r.InstanceType); }
                 });
 
             return (TBuilder)this;
@@ -414,10 +418,6 @@ namespace Kephas.Composition.Hosting
 
                 this.Logger.Debug($"{nameof(this.GetConventions)}. Convention assemblies: {assemblyNames}.");
             }
-
-            this.context.AppServiceInfoProviders = this.context.AppServiceInfoProviders == null
-                                                       ? new List<IAppServiceInfoProvider> { this.Registry }
-                                                       : new List<IAppServiceInfoProvider>(this.context.AppServiceInfoProviders) { this.Registry };
 
             Profiler.WithInfoStopwatch(
                 () =>

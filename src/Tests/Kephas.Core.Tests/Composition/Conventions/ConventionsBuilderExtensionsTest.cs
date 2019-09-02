@@ -13,10 +13,10 @@ namespace Kephas.Core.Tests.Composition.Conventions
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
+    using Kephas.Composition.Lightweight;
 
     using NUnit.Framework;
 
@@ -31,9 +31,8 @@ namespace Kephas.Core.Tests.Composition.Conventions
         {
             var builder = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
             var newBuilder = builder.RegisterConventions(
-                new[] { typeof(CalculatorConventionsRegistrar) },
                 new[] { typeof(ScientificCalculator), typeof(StandardCalculator) },
-                new TestRegistrationContext());
+                new TestRegistrationContext(new AmbientServices().Register<IConventionsRegistrar>(b => b.WithType<CalculatorConventionsRegistrar>().AllowMultiple())));
 
             Assert.AreSame(builder, newBuilder);
             Assert.AreEqual(1, builder.DerivedConventionsBuilders.Count);
@@ -54,7 +53,6 @@ namespace Kephas.Core.Tests.Composition.Conventions
         {
             var builder = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
             var newBuilder = builder.RegisterConventions(
-                new Type[0],
                 new[] { typeof(ScientificCalculator), typeof(StandardCalculator) },
                 new TestRegistrationContext
                 {

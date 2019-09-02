@@ -67,25 +67,6 @@ namespace Kephas.Core.Tests
             Assert.Throws<InvalidOperationException>(() => ambientServices.WithCompositionContainer<BadTestCompositionContainerBuilder>());
         }
 
-        [Test]
-        public async Task WithCompositionContainerAsync_builder()
-        {
-            var ambientServices = new AmbientServices();
-            var compositionContext = Substitute.For<ICompositionContext>();
-            ambientServices.WithCompositionContainer<TestCompositionContainerBuilder>(
-                b => b.WithAssembly(this.GetType().Assembly)
-                    .WithCompositionContext(compositionContext));
-
-            Assert.AreSame(compositionContext, ambientServices.CompositionContainer);
-        }
-
-        [Test]
-        public void WithCompositionContainerAsync_builder_missing_required_constructor()
-        {
-            var ambientServices = new AmbientServices();
-            Assert.That(() => ambientServices.WithCompositionContainer<BadTestCompositionContainerBuilder>(), Throws.TypeOf<InvalidOperationException>());
-        }
-
         public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>
         {
             private ICompositionContext compositionContext;
