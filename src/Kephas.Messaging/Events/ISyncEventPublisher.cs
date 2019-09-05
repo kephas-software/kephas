@@ -13,15 +13,15 @@ namespace Kephas.Messaging.Events
     using Kephas.Services;
 
     /// <summary>
-    /// Contract for the service which synchronously emits events at application level.
+    /// Contract for the service which publishes events synchronously.
     /// </summary>
-    public interface ISyncAppEventEmitter
+    public interface ISyncEventPublisher
     {
         /// <summary>
         /// Emits the provided event.
         /// </summary>
-        /// <param name="appEvent">The application event.</param>
+        /// <param name="event">The event to be published.</param>
         /// <param name="context">Optional. the context.</param>
-        void Emit(IEvent appEvent, IContext context = null);
+        void Publish(object @event, IContext context = null);
     }
 }
