@@ -40,7 +40,6 @@ namespace Kephas.Messaging
     /// <typeparam name="TMessage">The type of the message.</typeparam>
     [AppServiceContract(ContractType = typeof(IMessageHandler), MetadataAttributes = new[] { typeof(MessageHandlerAttribute) })]
     public interface IMessageHandler<in TMessage> : IMessageHandler
-        where TMessage : IMessage
     {
         /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.

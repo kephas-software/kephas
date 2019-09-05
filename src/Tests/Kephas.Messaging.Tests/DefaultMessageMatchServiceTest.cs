@@ -14,7 +14,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
-
+    using Kephas.Messaging.Messages;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -22,6 +22,25 @@ namespace Kephas.Messaging.Tests
     [TestFixture]
     public class DefaultMessageMatchServiceTest
     {
+        [Test]
+        public void GetMessageType_adapter()
+        {
+            var matchService = new DefaultMessageMatchService();
+            var message = Substitute.For<IMessageAdapter>();
+            message.GetMessage().Returns("gigi");
+
+            Assert.AreSame(typeof(string), matchService.GetMessageType(message));
+        }
+
+        [Test]
+        public void GetMessageType_ping_message()
+        {
+            var matchService = new DefaultMessageMatchService();
+            var message = new PingMessage();
+
+            Assert.AreSame(typeof(PingMessage), matchService.GetMessageType(message));
+        }
+
         [Test]
         public void IsMatch_id_exact()
         {
@@ -79,6 +98,18 @@ namespace Kephas.Messaging.Tests
             ((IIdentifiable)message).Id.Returns("abcd");
             var matchService = new DefaultMessageMatchService();
             var messageId = matchService.GetMessageId(message);
+            Assert.AreEqual("abcd", (string)messageId);
+        }
+
+        [Test]
+        public void GetMessageId_message_adapter_is_not_null()
+        {
+            var message = Substitute.For<IMessage, IIdentifiable>();
+            ((IIdentifiable)message).Id.Returns("abcd");
+            var adapter = Substitute.For<IMessageAdapter>();
+            adapter.GetMessage().Returns(message);
+            var matchService = new DefaultMessageMatchService();
+            var messageId = matchService.GetMessageId(adapter);
             Assert.AreEqual("abcd", (string)messageId);
         }
     }

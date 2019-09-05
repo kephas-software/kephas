@@ -12,7 +12,9 @@ namespace Kephas.Messaging.Distributed
 {
     using System;
     using System.Collections.Generic;
-
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Events;
+    using Kephas.Messaging.Messages;
     using Kephas.Services;
 
     /// <summary>
@@ -144,5 +146,76 @@ namespace Kephas.Messaging.Distributed
         /// The brokered message.
         /// </value>
         new TMessage BrokeredMessage { get; }
+    }
+
+    /// <summary>
+    /// Extension methods for brokered message builders.
+    /// </summary>
+    public static class BrokeredMessageBuilderExtensions
+    {
+        /// <summary>
+        /// Sets the content message.
+        /// </summary>
+        /// <param name="this">The message builder to act on.</param>
+        /// <param name="message">The message.</param>
+        /// <returns>
+        /// This <see cref="IBrokeredMessageBuilder"/>.
+        /// </returns>
+        public static IBrokeredMessageBuilder WithMessageContent(this IBrokeredMessageBuilder @this, object message)
+        {
+            Requires.NotNull(@this, nameof(@this));
+
+            return @this.WithContent(message.ToMessageContent());
+        }
+
+        /// <summary>
+        /// Sets the content message to an event.
+        /// </summary>
+        /// <param name="this">The message builder to act on.</param>
+        /// <param name="event">The event.</param>
+        /// <returns>
+        /// This <see cref="IBrokeredMessageBuilder"/>.
+        /// </returns>
+        public static IBrokeredMessageBuilder WithEventContent(this IBrokeredMessageBuilder @this, object @event)
+        {
+            Requires.NotNull(@this, nameof(@this));
+
+            return @this.WithContent(@event.ToEventContent());
+        }
+
+        /// <summary>
+        /// Converts the data to a message content.
+        /// </summary>
+        /// <param name="data">The data to act on.</param>
+        /// <returns>
+        /// Data as an IMessage.
+        /// </returns>
+        internal static IMessage ToMessageContent(this object data)
+        {
+            return data is IBrokeredMessage brokeredMessage
+                ? brokeredMessage.Content
+                : data is IMessage message
+                    ? message
+                    : new MessageAdapter { Message = data };
+        }
+
+        /// <summary>
+        /// Converts the data to an event content.
+        /// </summary>
+        /// <param name="data">The data to act on.</param>
+        /// <returns>
+        /// Data as an IEvent.
+        /// </returns>
+        internal static IEvent ToEventContent(this object data)
+        {
+            if (data is IBrokeredMessage brokeredMessage)
+            {
+                data = brokeredMessage.Content;
+            }
+
+            return data is IEvent @event
+                    ? @event
+                    : new EventAdapter { Event = data };
+        }
     }
 }

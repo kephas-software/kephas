@@ -27,19 +27,19 @@ namespace Kephas.Messaging.Events
         /// <summary>
         /// Asynchronously publishes the provided event.
         /// </summary>
-        /// <param name="appEvent">The application event.</param>
-        /// <param name="context">Optional. the context.</param>
+        /// <param name="event">The event to be published.</param>
+        /// <param name="context">Optional. The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task PublishAsync(IEvent appEvent, IContext context = null, CancellationToken cancellationToken = default);
+        Task PublishAsync(object @event, IContext context = null, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
     /// Extension methods for <see cref="IEventPublisher"/>.
     /// </summary>
-    public static class AppEventEmitterExtensions
+    public static class EventPublisherExtensions
     {
         /// <summary>
         /// Publishes the provided event.
@@ -55,7 +55,7 @@ namespace Kephas.Messaging.Events
             this IEventPublisher eventPublisher,
             IContext context = null,
             CancellationToken cancellationToken = default)
-            where TEvent : IEvent, new()
+            where TEvent : class, new()
         {
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
 
@@ -67,19 +67,19 @@ namespace Kephas.Messaging.Events
         /// Publishes the provided event.
         /// </summary>
         /// <param name="eventPublisher">The event emitter to act on.</param>
-        /// <param name="appEvent">The application event.</param>
-        /// <param name="context">Optional. the context.</param>
-        public static void Publish(this IEventPublisher eventPublisher, IEvent appEvent, IContext context = null)
+        /// <param name="event">The event.</param>
+        /// <param name="context">Optional. The context.</param>
+        public static void Publish(this IEventPublisher eventPublisher, object @event, IContext context = null)
         {
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
 
-            if (eventPublisher is ISyncAppEventEmitter syncEventEmitter)
+            if (eventPublisher is ISyncEventPublisher syncEventEmitter)
             {
-                syncEventEmitter.Emit(appEvent, context);
+                syncEventEmitter.Publish(@event, context);
             }
             else
             {
-                eventPublisher.PublishAsync(appEvent, context).WaitNonLocking();
+                eventPublisher.PublishAsync(@event, context).WaitNonLocking();
             }
         }
 
@@ -90,18 +90,18 @@ namespace Kephas.Messaging.Events
         /// <param name="eventPublisher">The event emitter to act on.</param>
         /// <param name="context">Optional. the context.</param>
         public static void Publish<TEvent>(this IEventPublisher eventPublisher, IContext context = null)
-            where TEvent : IEvent, new()
+            where TEvent : class, new()
         {
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
 
-            var appEvent = new TEvent();
-            if (eventPublisher is ISyncAppEventEmitter syncEventEmitter)
+            var @event = new TEvent();
+            if (eventPublisher is ISyncEventPublisher syncEventEmitter)
             {
-                syncEventEmitter.Emit(appEvent, context);
+                syncEventEmitter.Publish(@event, context);
             }
             else
             {
-                eventPublisher.PublishAsync(appEvent, context).WaitNonLocking();
+                eventPublisher.PublishAsync(@event, context).WaitNonLocking();
             }
         }
 
@@ -109,8 +109,8 @@ namespace Kephas.Messaging.Events
         /// Asynchronously publishes the event with the provided ID and arguments.
         /// </summary>
         /// <param name="eventPublisher">The event emitter to act on.</param>
-        /// <param name="appEventId">Identifier for the application event.</param>
-        /// <param name="appEventArgs">The application event arguments.</param>
+        /// <param name="eventId">Identifier for the event.</param>
+        /// <param name="eventArgs">The application event arguments.</param>
         /// <param name="context">Optional. the context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
@@ -118,14 +118,14 @@ namespace Kephas.Messaging.Events
         /// </returns>
         public static Task PublishAsync(
             this IEventPublisher eventPublisher,
-            object appEventId,
-            IExpando appEventArgs,
+            object eventId,
+            IExpando eventArgs,
             IContext context = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
 
-            var appEvent = new IdentifiableEvent { Id = appEventId, EventArgs = appEventArgs };
+            var appEvent = new IdentifiableEvent { Id = eventId, EventArgs = eventArgs };
             return eventPublisher.PublishAsync(appEvent, context, cancellationToken);
         }
 
@@ -133,19 +133,26 @@ namespace Kephas.Messaging.Events
         /// Publishes the event with the provided ID and arguments.
         /// </summary>
         /// <param name="eventPublisher">The event emitter to act on.</param>
-        /// <param name="appEventId">Identifier for the application event.</param>
-        /// <param name="appEventArgs">The application event arguments.</param>
+        /// <param name="eventId">Identifier for the application event.</param>
+        /// <param name="eventArgs">The application event arguments.</param>
         /// <param name="context">Optional. the context.</param>
         public static void Publish(
             this IEventPublisher eventPublisher,
-            object appEventId,
-            IExpando appEventArgs,
+            object eventId,
+            IExpando eventArgs,
             IContext context = null)
         {
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
 
-            var appEvent = new IdentifiableEvent { Id = appEventId, EventArgs = appEventArgs };
-            eventPublisher.Publish(appEvent, context);
+            var @event = new IdentifiableEvent { Id = eventId, EventArgs = eventArgs };
+            if (eventPublisher is ISyncEventPublisher syncEventEmitter)
+            {
+                syncEventEmitter.Publish(@event, context);
+            }
+            else
+            {
+                eventPublisher.PublishAsync(@event, context).WaitNonLocking();
+            }
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Kephas.Messaging
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;
     using Kephas.Messaging.HandlerSelectors;
+    using Kephas.Messaging.Messages;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
@@ -205,17 +206,18 @@ namespace Kephas.Messaging
         /// <returns>The message handlers.</returns>
         protected virtual IEnumerable<IMessageHandler> ResolveMessageHandlers(IMessage message)
         {
+            var envelopeType = message.GetType();
             var messageType = this.messageMatchService.GetMessageType(message);
             var messageId = this.messageMatchService.GetMessageId(message);
-            var messageHandlersFactory = this.handlerFactories.GetOrAdd($"{messageType.FullName}/{messageId}", _ =>
+            var messageHandlersFactory = this.handlerFactories.GetOrAdd($"{envelopeType}/{messageType.FullName}/{messageId}", _ =>
                 {
-                    var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(messageType, messageId));
+                    var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(envelopeType, messageType, messageId));
                     if (handlerSelector == null)
                     {
                         return () => null;
                     }
 
-                    return handlerSelector.GetHandlersFactory(messageType, messageId);
+                    return handlerSelector.GetHandlersFactory(envelopeType, messageType, messageId);
                 });
 
             var handlers = messageHandlersFactory();

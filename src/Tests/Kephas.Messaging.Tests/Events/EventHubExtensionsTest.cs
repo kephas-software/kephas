@@ -39,7 +39,7 @@ namespace Kephas.Messaging.Tests.Events
         {
             var hub = Substitute.For<IEventHub>();
             var calls = 0;
-            hub.Subscribe(Arg.Any<IMessageMatch>(), Arg.Any<Func<IEvent, IContext, CancellationToken, Task>>()).Returns(
+            hub.Subscribe(Arg.Any<IMessageMatch>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>()).Returns(
                 ci =>
                     {
                         var match = ci.Arg<IMessageMatch>();
@@ -64,7 +64,7 @@ namespace Kephas.Messaging.Tests.Events
         {
             var hub = Substitute.For<IEventHub>();
             var calls = 0;
-            hub.Subscribe(Arg.Any<IMessageMatch>(), Arg.Any<Func<IEvent, IContext, CancellationToken, Task>>()).Returns(
+            hub.Subscribe(Arg.Any<IMessageMatch>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>()).Returns(
                 ci =>
                     {
                         var match = ci.Arg<IMessageMatch>();

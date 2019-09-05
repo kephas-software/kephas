@@ -28,7 +28,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The message type.
         /// </returns>
-        Type GetMessageType(IMessage message);
+        Type GetMessageType(object message);
 
         /// <summary>
         /// Gets the message ID.
@@ -37,7 +37,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The message ID.
         /// </returns>
-        object GetMessageId(IMessage message);
+        object GetMessageId(object message);
 
         /// <summary>
         /// Checks whether the message type and message ID matches the provided criteria.

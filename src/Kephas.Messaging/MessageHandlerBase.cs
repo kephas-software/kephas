@@ -16,6 +16,7 @@ namespace Kephas.Messaging
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Threading.Tasks;
 
@@ -25,8 +26,8 @@ namespace Kephas.Messaging
     /// <typeparam name="TMessage">The message type.</typeparam>
     /// <typeparam name="TResponse">The response type.</typeparam>
     public abstract class MessageHandlerBase<TMessage, TResponse> : Loggable, IMessageHandler<TMessage>
-        where TMessage : class, IMessage
-        where TResponse : class, IMessage
+        where TMessage : class
+        where TResponse : class
     {
         /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.
@@ -54,7 +55,7 @@ namespace Kephas.Messaging
             Requires.NotNull(context, nameof(context));
 
             var response = await this.ProcessAsync(message, context, token).PreserveThreadContext();
-            return response;
+            return response == null ? null : (response as IMessage ?? new MessageAdapter { Message = response });
         }
 
         /// <summary>
@@ -70,11 +71,15 @@ namespace Kephas.Messaging
         {
             if (!(message is TMessage typedRequest))
             {
-                throw new ArgumentException(string.Format(Strings.MessageHandler_BadMessageType_Exception, typeof(TMessage)), nameof(message));
+                typedRequest = message is IMessageAdapter messageAdapter ? messageAdapter.GetMessage() as TMessage : null;
+                if (typedRequest == null)
+                {
+                    throw new ArgumentException(string.Format(Strings.MessageHandler_BadMessageType_Exception, typeof(TMessage)), nameof(message));
+                }
             }
 
             var response = await this.ProcessAsync(typedRequest, context, token).PreserveThreadContext();
-            return response;
+            return response == null ? null : (response as IMessage ?? new MessageAdapter { Message = response });
         }
 
         /// <summary>
@@ -82,7 +87,8 @@ namespace Kephas.Messaging
         /// </summary>
         public void Dispose()
         {
-            this.Dispose(false);
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

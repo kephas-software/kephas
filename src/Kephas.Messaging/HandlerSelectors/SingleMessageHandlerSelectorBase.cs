@@ -39,14 +39,15 @@ namespace Kephas.Messaging.HandlerSelectors
         /// <summary>
         /// Gets a factory which retrieves the components handling messages of the given type.
         /// </summary>
+        /// <param name="envelopeType">The type of the envelope. This is typically the adapter type, if the message does not implement <see cref="IMessage"/>.</param>
         /// <param name="messageType">The type of the message.</param>
         /// <param name="messageId">The ID of the message.</param>
         /// <returns>
         /// A factory of an enumeration of message handlers.
         /// </returns>
-        public override Func<IEnumerable<IMessageHandler>> GetHandlersFactory(Type messageType, object messageId)
+        public override Func<IEnumerable<IMessageHandler>> GetHandlersFactory(Type envelopeType, Type messageType, object messageId)
         {
-            var orderedFactories = this.GetOrderedMessageHandlerFactories(messageType, messageId);
+            var orderedFactories = this.GetOrderedMessageHandlerFactories(envelopeType, messageType, messageId);
 
             if (orderedFactories.Count == 0)
             {

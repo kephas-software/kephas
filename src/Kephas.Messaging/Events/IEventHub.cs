@@ -33,7 +33,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task NotifySubscribersAsync(IEvent @event, IContext context, CancellationToken cancellationToken = default);
+        Task NotifySubscribersAsync(object @event, IContext context, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Subscribes to the event(s) matching the criteria.
@@ -43,7 +43,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        IEventSubscription Subscribe(IMessageMatch match, Func<IEvent, IContext, CancellationToken, Task> callback);
+        IEventSubscription Subscribe(IMessageMatch match, Func<object, IContext, CancellationToken, Task> callback);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ namespace Kephas.Messaging.Events
             this IEventHub eventHub,
             Func<TEvent, IContext, CancellationToken, Task> callback,
             MessageTypeMatching messageTypeMatching = MessageTypeMatching.Type)
-            where TEvent : IEvent
+            where TEvent : class
         {
             Requires.NotNull(eventHub, nameof(eventHub));
             Requires.NotNull(callback, nameof(callback));
@@ -74,7 +74,7 @@ namespace Kephas.Messaging.Events
                 new MessageMatch
                     {
                         MessageType = typeof(TEvent),
-                        MessageTypeMatching = messageTypeMatching
+                        MessageTypeMatching = messageTypeMatching,
                     },
                 (e, ctx, token) => callback((TEvent)e, ctx, token));
         }

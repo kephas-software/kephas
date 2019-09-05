@@ -12,7 +12,8 @@ namespace Kephas.Messaging
 {
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Messages;
     using Kephas.Services;
 
     /// <summary>
@@ -34,5 +35,29 @@ namespace Kephas.Messaging
         /// The response promise.
         /// </returns>
         Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context = null, CancellationToken token = default);
+    }
+
+    /// <summary>
+    /// Extension methods for message processor.
+    /// </summary>
+    public static class MessageProcessorExtensions
+    {
+        /// <summary>
+        /// Processes the specified message asynchronously.
+        /// </summary>
+        /// <param name="this">The message processor to act on.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="context">Optional. Context for the message processing.</param>
+        /// <param name="token">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The response promise.
+        /// </returns>
+        public static Task<IMessage> ProcessAsync(this IMessageProcessor @this, object message, IMessageProcessingContext context = null, CancellationToken token = default)
+        {
+            Requires.NotNull(@this, nameof(@this));
+            Requires.NotNull(message, nameof(message));
+
+            return @this.ProcessAsync(message as IMessage ?? new MessageAdapter { Message = message }, context, token);
+        }
     }
 }

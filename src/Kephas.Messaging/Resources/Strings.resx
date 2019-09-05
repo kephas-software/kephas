@@ -171,4 +171,7 @@
   <data name="MessageBrokerBase_LogOnEnqueue_Success" xml:space="preserve">
     <value>Enqueue brokered message (#{0}, {1}) timeout: {2}.</value>
   </data>
+  <data name="MessageAdapter_MessageNotSet_Exception" xml:space="preserve">
+    <value>The message is not set in the message adapter.</value>
+  </data>
 </root>

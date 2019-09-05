@@ -57,7 +57,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public async Task NotifySubscribersAsync(IEvent @event, IContext context, CancellationToken cancellationToken = default)
+        public async Task NotifySubscribersAsync(object @event, IContext context, CancellationToken cancellationToken = default)
         {
             IList<EventSubscription> subscriptionsCopy;
             lock (this.subscriptions)
@@ -93,7 +93,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        public IEventSubscription Subscribe(IMessageMatch match, Func<IEvent, IContext, CancellationToken, Task> callback)
+        public IEventSubscription Subscribe(IMessageMatch match, Func<object, IContext, CancellationToken, Task> callback)
         {
             Requires.NotNull(match, nameof(match));
             Requires.NotNull(callback, nameof(callback));
@@ -129,7 +129,7 @@ namespace Kephas.Messaging.Events
             /// <param name="match">Specifies the match.</param>
             /// <param name="callback">The callback.</param>
             /// <param name="onDispose">The on dispose.</param>
-            public EventSubscription(IMessageMatch match, Func<IEvent, IContext, CancellationToken, Task> callback, Action<EventSubscription> onDispose)
+            public EventSubscription(IMessageMatch match, Func<object, IContext, CancellationToken, Task> callback, Action<EventSubscription> onDispose)
             {
                 this.Match = match;
                 this.Callback = callback;
@@ -150,7 +150,7 @@ namespace Kephas.Messaging.Events
             /// <value>
             /// The callback.
             /// </value>
-            public Func<IEvent, IContext, CancellationToken, Task> Callback { get; private set; }
+            public Func<object, IContext, CancellationToken, Task> Callback { get; private set; }
 
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged

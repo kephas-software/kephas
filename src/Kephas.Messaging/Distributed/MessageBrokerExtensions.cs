@@ -16,7 +16,6 @@ namespace Kephas.Messaging.Distributed
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Messaging.Events;
     using Kephas.Reflection;
     using Kephas.Services;
 
@@ -44,7 +43,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public static Task PublishAsync(
             this IMessageBroker messageBroker,
-            IEvent @event,
+            object @event,
             IContext context = null,
             CancellationToken cancellationToken = default)
         {
@@ -56,7 +55,7 @@ namespace Kephas.Messaging.Distributed
                                              ? messageBroker.CreateBrokeredMessageBuilder(context)
                                              : messageBroker.CreateBrokeredMessageBuilder(brokeredEvent.GetType(), context, brokeredEvent);
             var brokeredMessage = brokeredMessageBuilder
-                .WithContent(brokeredEvent == null ? @event : brokeredEvent.Content)
+                .WithEventContent(@event)
                 .OneWay()
                 .BrokeredMessage;
 
@@ -75,7 +74,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public static Task<IMessage> ProcessAsync(
             this IMessageBroker messageBroker,
-            IMessage message,
+            object message,
             IContext context = null,
             CancellationToken cancellationToken = default)
         {
@@ -87,7 +86,7 @@ namespace Kephas.Messaging.Distributed
                                              ? messageBroker.CreateBrokeredMessageBuilder(context)
                                              : messageBroker.CreateBrokeredMessageBuilder(brokeredMessage.GetType(), context, brokeredMessage);
             brokeredMessage = brokeredMessageBuilder
-                .WithContent(brokeredMessage == null ? message : brokeredMessage.Content)
+                .WithMessageContent(message)
                 .BrokeredMessage;
 
             return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
@@ -106,7 +105,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public static Task<IMessage> ProcessAsync(
             this IMessageBroker messageBroker,
-            IMessage message,
+            object message,
             IEndpoint recipient,
             IContext context = null,
             CancellationToken cancellationToken = default)
@@ -120,7 +119,7 @@ namespace Kephas.Messaging.Distributed
                                              ? messageBroker.CreateBrokeredMessageBuilder(context)
                                              : messageBroker.CreateBrokeredMessageBuilder(brokeredMessage.GetType(), context, brokeredMessage);
             brokeredMessage = brokeredMessageBuilder
-                .WithContent(brokeredMessage == null ? message : brokeredMessage.Content)
+                .WithMessageContent(message)
                 .WithRecipients(recipient)
                 .BrokeredMessage;
 
@@ -139,7 +138,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public static Task<IMessage> ProcessOneWayAsync(
             this IMessageBroker messageBroker,
-            IMessage message,
+            object message,
             IContext context = null,
             CancellationToken cancellationToken = default)
         {
@@ -151,7 +150,7 @@ namespace Kephas.Messaging.Distributed
                                              ? messageBroker.CreateBrokeredMessageBuilder(context)
                                              : messageBroker.CreateBrokeredMessageBuilder(brokeredMessage.GetType(), context, brokeredMessage);
             brokeredMessage = brokeredMessageBuilder
-                .WithContent(brokeredMessage == null ? message : brokeredMessage.Content)
+                .WithMessageContent(message)
                 .OneWay()
                 .BrokeredMessage;
 
