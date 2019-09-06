@@ -100,7 +100,7 @@ namespace Kephas.Composition.Lite.Conventions
         /// </returns>
         public IExportConventionsBuilder AddMetadata(string name, object value)
         {
-            this.Logger.Debug($"Metadata is automatically added for {this}.");
+            this.Logger.Debug($"Metadata {name} is automatically added for {this}.");
             return this;
         }
 
@@ -115,7 +115,7 @@ namespace Kephas.Composition.Lite.Conventions
         /// </returns>
         public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
         {
-            this.Logger.Debug($"Metadata is automatically added for {this}.");
+            this.Logger.Debug($"Metadata {name} is automatically added for {this}.");
             return this;
         }
 

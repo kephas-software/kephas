@@ -340,7 +340,7 @@
     <value>Either the implementation type, the factory, or the service instance must be provided.</value>
   </data>
   <data name="LiteRegistrationBuilder_InvalidRegistration_Exception" xml:space="preserve">
-    <value></value>
+    <value>One of {0}, {1}, or {2} must be set in service registration.</value>
   </data>
   <data name="LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception" xml:space="preserve">
     <value>Cannot identify the constructed service type of {0} from {1}.</value>

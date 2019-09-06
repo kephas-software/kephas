@@ -539,7 +539,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to One of {0}, {1}, or {2} must be set in service registration..
         /// </summary>
         internal static string LiteRegistrationBuilder_InvalidRegistration_Exception {
             get {

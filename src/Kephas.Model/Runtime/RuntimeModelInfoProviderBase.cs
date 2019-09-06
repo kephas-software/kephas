@@ -58,7 +58,7 @@ namespace Kephas.Model.Runtime
             CancellationToken cancellationToken = default)
         {
             IEnumerable<IElementInfo> elementInfos = null;
-            await Profiler.WithInfoStopwatchAsync(
+            await Profiler.WithDebugStopwatchAsync(
                 async () => elementInfos = await this.GetElementInfosCoreAsync(constructionContext, cancellationToken).PreserveThreadContext(),
                 this.Logger).PreserveThreadContext();
 
