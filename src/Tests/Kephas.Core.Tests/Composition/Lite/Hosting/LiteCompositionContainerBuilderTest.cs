@@ -21,7 +21,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         public void WithLiteCompositionContainer_app_manager()
         {
             var ambientServices = new AmbientServices()
-                .WithStaticAppRuntime(an => !an.Name.Contains("Test") && !an.Name.Contains("NUnit") && !an.Name.Contains("Mono"));
+                .WithStaticAppRuntime(an => !an.Name.Contains("Test") && !an.Name.Contains("NUnit") && !an.Name.Contains("Mono") && !an.Name.Contains("Castle"));
 
             ambientServices.WithLiteCompositionContainer();
 
