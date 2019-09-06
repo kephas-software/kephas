@@ -160,6 +160,7 @@ namespace Kephas.Composition.Lite.Internal
             IAmbientServices ambientServices,
             Type instanceType)
         {
+            var unresolvedParams = new List<ParameterInfo>();
             var ctors = instanceType.GetConstructors().Where(c => c.IsStatic == false && c.IsPublic)
                 .OrderByDescending(c => c.GetParameters().Length)
                 .ToList();
@@ -174,7 +175,9 @@ namespace Kephas.Composition.Lite.Internal
                     break;
                 }
 
-                if (ctorParams.All(p => p.HasDefaultValue || ambientServices.IsRegistered(p.ParameterType)))
+                var unresolvedCtorParams = ctorParams.Where(p => !p.HasDefaultValue && !ambientServices.IsRegistered(p.ParameterType)).ToList();
+
+                if (unresolvedCtorParams.Count == 0)
                 {
                     if (maxLength == ctorParams.Length && maxCtor != null)
                     {
@@ -190,12 +193,16 @@ namespace Kephas.Composition.Lite.Internal
                     maxCtorParams = ctorParams;
                     maxLength = ctorParams.Length;
                 }
+                else
+                {
+                    unresolvedParams.AddRange(unresolvedCtorParams);
+                }
             }
 
             if (maxCtor == null)
             {
                 throw new CompositionException(
-                    string.Format(Strings.AmbientServices_MissingCompositionConstructor_Exception, instanceType));
+                    string.Format(Strings.AmbientServices_MissingCompositionConstructor_Exception, instanceType, string.Join(", ", unresolvedParams)));
             }
 
             return (maxCtor, maxCtorParams);

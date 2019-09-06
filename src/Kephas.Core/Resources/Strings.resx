@@ -325,7 +325,7 @@
     <value>'{0}' has at least two constructors with the same length which can be resolved through composition: ({1}) and ({2}).</value>
   </data>
   <data name="AmbientServices_MissingCompositionConstructor_Exception" xml:space="preserve">
-    <value>No composition constructor could be identified for '{0}'.</value>
+    <value>No composition constructor could be identified for '{0}'. The following parameters could not be resolved: {1}.</value>
   </data>
   <data name="ServiceRegistry_MismatchedMultipleServiceRegistration_Exception" xml:space="preserve">
     <value>The service {0} is registered both as multiple and single service.</value>

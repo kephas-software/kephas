@@ -97,7 +97,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No composition constructor could be identified for &apos;{0}&apos;..
+        ///   Looks up a localized string similar to No composition constructor could be identified for &apos;{0}&apos;. The following parameters could not be resolved: {1}..
         /// </summary>
         internal static string AmbientServices_MissingCompositionConstructor_Exception {
             get {
