@@ -8,14 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Lightweight
+namespace Kephas.Composition.Lite
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.Design;
     using System.Linq;
-
-    using Kephas.Composition.Lightweight.Internal;
+    using Kephas.Composition.Lite.Internal;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
     using Kephas.Services;
@@ -39,36 +37,36 @@ namespace Kephas.Composition.Lightweight
         public ServiceRegistrationBuilder(IAmbientServices ambientServices, Type contractType)
         {
             this.contractType = contractType;
-            this.serviceType = contractType;
+            serviceType = contractType;
             this.ambientServices = ambientServices;
         }
 
         public IServiceInfo Build()
         {
-            switch (this.instancing)
+            switch (instancing)
             {
                 case Type implementationType:
-                    return new ServiceInfo(this.ambientServices, this.contractType, implementationType, this.lifetime == AppServiceLifetime.Singleton)
+                    return new ServiceInfo(ambientServices, contractType, implementationType, lifetime == AppServiceLifetime.Singleton)
                     {
-                        AllowMultiple = this.allowMultiple,
-                        ServiceType = this.serviceType,
+                        AllowMultiple = allowMultiple,
+                        ServiceType = serviceType,
                     };
                 case Func<ICompositionContext, object> factory:
-                    return new ServiceInfo(this.ambientServices, this.contractType, factory, this.lifetime == AppServiceLifetime.Singleton)
+                    return new ServiceInfo(ambientServices, contractType, factory, lifetime == AppServiceLifetime.Singleton)
                     {
-                        AllowMultiple = this.allowMultiple,
-                        ServiceType = this.serviceType,
+                        AllowMultiple = allowMultiple,
+                        ServiceType = serviceType,
                     };
                 default:
-                    if (this.instancing == null)
+                    if (instancing == null)
                     {
                         throw new InvalidOperationException(Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception);
                     }
 
-                    return new ServiceInfo(this.contractType, this.instancing)
+                    return new ServiceInfo(contractType, instancing)
                     {
-                        AllowMultiple = this.allowMultiple,
-                        ServiceType = this.serviceType,
+                        AllowMultiple = allowMultiple,
+                        ServiceType = serviceType,
                     };
             }
         }
@@ -77,12 +75,12 @@ namespace Kephas.Composition.Lightweight
         {
             Requires.NotNull(contractType, nameof(contractType));
 
-            if (!this.contractType.IsAssignableFrom(this.serviceType))
+            if (!this.contractType.IsAssignableFrom(serviceType))
             {
                 throw new InvalidOperationException(
                     string.Format(
                         Strings.AmbientServices_ServiceTypeMustBeSuperOfContractType_Exception,
-                        this.serviceType,
+                        serviceType,
                         contractType));
             }
 
@@ -93,19 +91,19 @@ namespace Kephas.Composition.Lightweight
 
         public IServiceRegistrationBuilder AsSingleton()
         {
-            this.lifetime = AppServiceLifetime.Singleton;
+            lifetime = AppServiceLifetime.Singleton;
             return this;
         }
 
         public IServiceRegistrationBuilder AsTransient()
         {
-            this.lifetime = AppServiceLifetime.Transient;
+            lifetime = AppServiceLifetime.Transient;
             return this;
         }
 
         public IServiceRegistrationBuilder AllowMultiple()
         {
-            this.allowMultiple = true;
+            allowMultiple = true;
             return this;
         }
 
@@ -141,7 +139,10 @@ namespace Kephas.Composition.Lightweight
             if (!this.contractType.IsAssignableFrom(implementationType)
                 && !(this.contractType.IsGenericTypeDefinition
                      && !implementationType.IsGenericTypeDefinition
-                     && implementationType.GetInterfaces().Any(i => ReferenceEquals(i.GetGenericTypeDefinition(), this.contractType))))
+                     && implementationType.GetInterfaces().Any(i => ReferenceEquals(i.GetGenericTypeDefinition(), this.contractType)))
+                && !(this.contractType.IsGenericTypeDefinition
+                     && implementationType.IsGenericTypeDefinition
+                     && implementationType.GetInterfaces().Any(i => i.Name == this.contractType.Name)))
             {
                 throw new InvalidOperationException(
                     string.Format(

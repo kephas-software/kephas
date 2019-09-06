@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Lightweight
+namespace Kephas.Composition.Lite
 {
     using System;
-
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>

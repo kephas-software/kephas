@@ -1,46 +1,46 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LazyWithMetadataServiceSource.cs" company="Kephas Software SRL">
+// <copyright file="ExportFactoryWithMetadataServiceSource.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the lazy with metadata service source class.
+//   Implements the export factory with metadata service source class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if NETSTANDARD2_0
-
-namespace Kephas.Composition.Lightweight.Internal
+namespace Kephas.Composition.Lite.Internal
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using Kephas;
+    using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Reflection;
     using Kephas.Services.Composition;
 
-    internal class LazyWithMetadataServiceSource : ServiceSourceBase
+    internal class ExportFactoryWithMetadataServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => LazyWithMetadataServiceSource.GetService<string, string>(null, null, null));
+            ReflectionHelper.GetGenericMethodOf(_ => GetService<string, string>(null, null, null));
 
         private readonly IAppServiceMetadataResolver metadataResolver;
 
-        public LazyWithMetadataServiceSource(IServiceRegistry registry)
+        public ExportFactoryWithMetadataServiceSource(IServiceRegistry registry)
             : base(registry)
         {
-            this.metadataResolver = new AppServiceMetadataResolver();
+            metadataResolver = new AppServiceMetadataResolver();
         }
 
         public override bool IsMatch(Type contractType)
         {
-            return contractType.IsConstructedGenericOf(typeof(Lazy<,>));
+            return contractType.IsConstructedGenericOf(typeof(IExportFactory<,>));
         }
 
         public override object GetService(IAmbientServices parent, Type serviceType)
         {
-            var descriptors = this.GetServiceDescriptors(parent, serviceType);
+            var descriptors = GetServiceDescriptors(parent, serviceType);
             return descriptors.Single().factory();
         }
 
@@ -52,15 +52,13 @@ namespace Kephas.Composition.Lightweight.Internal
             var innerType = genericArgs[0];
             var metadataType = genericArgs[1];
             var getService = GetServiceMethod.MakeGenericMethod(innerType, metadataType);
-            return this.GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, this.metadataResolver, tuple.serviceInfo, tuple.fn));
+            return GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, metadataResolver, tuple.serviceInfo, tuple.fn));
         }
 
-        private static Lazy<T, TMetadata> GetService<T, TMetadata>(IAppServiceMetadataResolver metadataResolver, IServiceInfo serviceInfo, Func<object> factory)
+        private static IExportFactory<T, TMetadata> GetService<T, TMetadata>(IAppServiceMetadataResolver metadataResolver, IServiceInfo serviceInfo, Func<object> factory)
             where T : class
         {
-            return new Lazy<T, TMetadata>(() => (T)factory(), metadataResolver.GetMetadata<TMetadata>(serviceInfo));
+            return new ExportFactory<T, TMetadata>(() => (T)factory(), metadataResolver.GetMetadata<TMetadata>(serviceInfo));
         }
     }
 }
-
-#endif

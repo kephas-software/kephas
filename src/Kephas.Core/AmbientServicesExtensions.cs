@@ -15,7 +15,8 @@ namespace Kephas
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
-    using Kephas.Composition.Lightweight;
+    using Kephas.Composition.Lite;
+    using Kephas.Composition.Lite.Hosting;
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
@@ -468,6 +469,24 @@ namespace Kephas
             containerBuilderConfig?.Invoke(containerBuilder);
 
             return ambientServices.WithCompositionContainer(containerBuilder.CreateContainer());
+        }
+
+        /// <summary>
+        /// Sets the Lite composition container to the ambient services.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="containerBuilderConfig">The container builder configuration.</param>
+        /// <returns>The provided ambient services builder.</returns>
+        public static IAmbientServices WithLiteCompositionContainer(this IAmbientServices ambientServices, Action<LiteCompositionContainerBuilder> containerBuilderConfig = null)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            var containerBuilder = new LiteCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
+
+            containerBuilderConfig?.Invoke(containerBuilder);
+
+            var container = containerBuilder.CreateContainer();
+            return ambientServices.WithCompositionContainer(container);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Kephas.Composition.DependencyInjection
     using System;
 
     using Kephas.Composition.Conventions;
-    using Kephas.Composition.Lightweight;
+    using Kephas.Composition.Lite;
     using Kephas.Diagnostics.Contracts;
 
     using Microsoft.Extensions.DependencyInjection;

@@ -15,7 +15,7 @@ namespace Kephas
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Conventions;
-    using Kephas.Composition.Lightweight;
+    using Kephas.Composition.Lite;
     using Kephas.Configuration;
     using Kephas.Dynamic;
     using Kephas.Logging;

@@ -8,9 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Lightweight.Internal
+namespace Kephas.Composition.Lite.Internal
 {
     using System;
+    using Kephas;
 
     internal class ResolverEngine : IResolverEngine
     {
@@ -20,23 +21,23 @@ namespace Kephas.Composition.Lightweight.Internal
 
         public ResolverEngine(IAmbientServices ambientServices, IServiceRegistry registry)
         {
-            this.ambientServicesRef = new WeakReference<IAmbientServices>(ambientServices);
+            ambientServicesRef = new WeakReference<IAmbientServices>(ambientServices);
             this.registry = registry;
         }
 
         public object GetService(Type serviceType)
         {
-            if (!this.ambientServicesRef.TryGetTarget(out var ambientServices))
+            if (!ambientServicesRef.TryGetTarget(out var ambientServices))
             {
                 throw new ObjectDisposedException(nameof(ResolverEngine));
             }
 
-            if (this.registry.TryGetValue(serviceType, out var serviceRegistration))
+            if (registry.TryGetValue(serviceType, out var serviceRegistration))
             {
                 return serviceRegistration.GetService(ambientServices);
             }
 
-            foreach (var source in this.registry.Sources)
+            foreach (var source in registry.Sources)
             {
                 if (source.IsMatch(serviceType))
                 {

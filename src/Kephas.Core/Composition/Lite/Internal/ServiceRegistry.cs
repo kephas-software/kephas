@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Lightweight.Internal
+namespace Kephas.Composition.Lite.Internal
 {
     using System;
     using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
-
     using Kephas.Resources;
 
     internal class ServiceRegistry : IServiceRegistry
@@ -25,12 +24,12 @@ namespace Kephas.Composition.Lightweight.Internal
 
         private readonly List<IServiceSource> serviceSources = new List<IServiceSource>();
 
-        public IEnumerable<IServiceSource> Sources => this.serviceSources;
+        public IEnumerable<IServiceSource> Sources => serviceSources;
 
-        public IServiceInfo this[Type contractType] => this.services[contractType];
+        public IServiceInfo this[Type contractType] => services[contractType];
 
         public bool TryGetValue(Type serviceType, out IServiceInfo serviceInfo) =>
-            this.services.TryGetValue(serviceType, out serviceInfo);
+            services.TryGetValue(serviceType, out serviceInfo);
 
         /// <summary>
         /// Gets a value indicating whether the service with the provided contract is registered.
@@ -41,15 +40,15 @@ namespace Kephas.Composition.Lightweight.Internal
         /// </returns>
         public bool IsRegistered(Type serviceType)
         {
-            return serviceType != null && (this.services.ContainsKey(serviceType)
-                                           || this.serviceSources.Any(s => s.IsMatch(serviceType)));
+            return serviceType != null && (services.ContainsKey(serviceType)
+                                           || serviceSources.Any(s => s.IsMatch(serviceType)));
         }
 
         public ServiceRegistry RegisterService(IServiceInfo serviceInfo)
         {
             if (serviceInfo.AllowMultiple)
             {
-                if (this.services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo))
+                if (services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo))
                 {
                     if (existingServiceInfo is MultiServiceInfo multiServiceInfo)
                     {
@@ -65,7 +64,7 @@ namespace Kephas.Composition.Lightweight.Internal
 
                 serviceInfo = new MultiServiceInfo((ServiceInfo)serviceInfo);
             }
-            else if (this.services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo)
+            else if (services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo)
                      && existingServiceInfo.AllowMultiple)
             {
                 throw new InvalidOperationException(
@@ -74,18 +73,18 @@ namespace Kephas.Composition.Lightweight.Internal
                         serviceInfo.ContractType));
             }
 
-            this.services[serviceInfo.ContractType] = serviceInfo;
+            services[serviceInfo.ContractType] = serviceInfo;
             return this;
         }
 
         public ServiceRegistry RegisterSource(IServiceSource serviceSource)
         {
-            this.serviceSources.Add(serviceSource);
+            serviceSources.Add(serviceSource);
             return this;
         }
 
-        public IEnumerator<IServiceInfo> GetEnumerator() => this.services.Values.GetEnumerator();
+        public IEnumerator<IServiceInfo> GetEnumerator() => services.Values.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Lightweight.Internal
+namespace Kephas.Composition.Lite.Internal
 {
     using System;
     using System.Collections.Generic;
@@ -31,7 +31,7 @@ namespace Kephas.Composition.Lightweight.Internal
             IAmbientServices parent,
             Type serviceType)
         {
-            return this.GetServiceDescriptors(parent, serviceType, null);
+            return GetServiceDescriptors(parent, serviceType, null);
         }
 
         protected virtual IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
@@ -39,7 +39,7 @@ namespace Kephas.Composition.Lightweight.Internal
             Type serviceType,
             Func<(IServiceInfo serviceInfo, Func<object> factory), Func<object>> selector)
         {
-            if (this.registry.TryGetValue(serviceType, out var serviceInfo))
+            if (registry.TryGetValue(serviceType, out var serviceInfo))
             {
                 if (serviceInfo is IEnumerable<IServiceInfo> multiServiceInfo)
                 {
@@ -62,7 +62,7 @@ namespace Kephas.Composition.Lightweight.Internal
             }
             else
             {
-                var source = this.registry.Sources.FirstOrDefault(s => s.IsMatch(serviceType));
+                var source = registry.Sources.FirstOrDefault(s => s.IsMatch(serviceType));
                 if (source != null)
                 {
                     foreach (var descriptor in source.GetServiceDescriptors(parent, serviceType))

@@ -19,8 +19,12 @@ namespace Kephas.Core.Tests
     using System.Threading.Tasks;
 
     using Kephas;
+    using Kephas.Application;
     using Kephas.Composition;
-    using Kephas.Composition.Lightweight;
+    using Kephas.Composition.Hosting;
+    using Kephas.Composition.Internal;
+    using Kephas.Composition.Lite;
+    using Kephas.Composition.Lite.Conventions;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
@@ -400,6 +404,45 @@ namespace Kephas.Core.Tests
             ambientServices.Register(compositionContextMock);
             var noService = ambientServices.CompositionContainer.TryGetExport<ICompositionContext>();
             Assert.IsNull(noService);
+        }
+
+        [Test]
+        public void GetAppServiceInfos_default_services()
+        {
+            var ambientServices = new AmbientServices();
+            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new CompositionRegistrationContext(ambientServices));
+
+            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(ILogManager));
+            Assert.IsNotNull(info);
+            Assert.IsNotNull(info.InstanceFactory);
+
+            (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IAppRuntime));
+            Assert.IsNotNull(info);
+            Assert.IsNotNull(info.InstanceFactory);
+        }
+
+        [Test]
+        public void GetAppServiceInfos_no_default_services()
+        {
+            var ambientServices = new AmbientServices(registerDefaultServices: false);
+            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new CompositionRegistrationContext(ambientServices));
+
+            Assert.AreEqual(1, appServiceInfos.Count());
+
+            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IAmbientServices));
+            Assert.IsNotNull(info);
+            Assert.IsNotNull(info.InstanceFactory);
+            Assert.AreSame(ambientServices, info.InstanceFactory(null));
+        }
+
+        [Test]
+        public void GetAppServiceInfos_no_services_for_lite_composition()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices[LiteConventionsBuilder.LiteCompositionKey] = true;
+            var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new CompositionRegistrationContext(ambientServices));
+
+            Assert.IsFalse(appServiceInfos.Any());
         }
 
         public interface IService { }

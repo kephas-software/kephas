@@ -1,33 +1,32 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExportFactoryWithMetadataServiceSource.cs" company="Kephas Software SRL">
+// <copyright file="LazyWithMetadataServiceSource.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the export factory with metadata service source class.
+//   Implements the lazy with metadata service source class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Lightweight.Internal
+#if NETSTANDARD2_0
+
+namespace Kephas.Composition.Lite.Internal
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Reflection;
     using Kephas.Services.Composition;
 
-    internal class ExportFactoryWithMetadataServiceSource : ServiceSourceBase
+    internal class LazyWithMetadataServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => ExportFactoryWithMetadataServiceSource.GetService<string, string>(null, null, null));
+            ReflectionHelper.GetGenericMethodOf(_ => LazyWithMetadataServiceSource.GetService<string, string>(null, null, null));
 
         private readonly IAppServiceMetadataResolver metadataResolver;
 
-        public ExportFactoryWithMetadataServiceSource(IServiceRegistry registry)
+        public LazyWithMetadataServiceSource(IServiceRegistry registry)
             : base(registry)
         {
             this.metadataResolver = new AppServiceMetadataResolver();
@@ -35,7 +34,7 @@ namespace Kephas.Composition.Lightweight.Internal
 
         public override bool IsMatch(Type contractType)
         {
-            return contractType.IsConstructedGenericOf(typeof(IExportFactory<,>));
+            return contractType.IsConstructedGenericOf(typeof(Lazy<,>));
         }
 
         public override object GetService(IAmbientServices parent, Type serviceType)
@@ -55,10 +54,12 @@ namespace Kephas.Composition.Lightweight.Internal
             return this.GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, this.metadataResolver, tuple.serviceInfo, tuple.fn));
         }
 
-        private static IExportFactory<T, TMetadata> GetService<T, TMetadata>(IAppServiceMetadataResolver metadataResolver, IServiceInfo serviceInfo, Func<object> factory)
+        private static Lazy<T, TMetadata> GetService<T, TMetadata>(IAppServiceMetadataResolver metadataResolver, IServiceInfo serviceInfo, Func<object> factory)
             where T : class
         {
-            return new ExportFactory<T, TMetadata>(() => (T)factory(), metadataResolver.GetMetadata<TMetadata>(serviceInfo));
+            return new Lazy<T, TMetadata>(() => (T)factory(), metadataResolver.GetMetadata<TMetadata>(serviceInfo));
         }
     }
 }
+
+#endif

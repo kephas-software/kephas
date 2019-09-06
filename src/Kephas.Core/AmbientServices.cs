@@ -13,15 +13,15 @@ namespace Kephas
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.AttributedModel;
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
-    using Kephas.Composition.Lightweight;
-    using Kephas.Composition.Lightweight.Internal;
+    using Kephas.Composition.Lite;
+    using Kephas.Composition.Lite.Conventions;
+    using Kephas.Composition.Lite.Internal;
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -65,7 +65,7 @@ namespace Kephas
             this.Register<IAmbientServices>(this)
                 .Register<ICompositionContext>(this.AsCompositionContext());
 
-            if(registerDefaultServices)
+            if (registerDefaultServices)
             {
                 this
                     .Register<IConfigurationStore, DefaultConfigurationStore>()
@@ -215,6 +215,12 @@ namespace Kephas
         /// </returns>
         public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type> candidateTypes, ICompositionRegistrationContext registrationContext)
         {
+            // Lite composition container does not need to add to ambient services again its services
+            if ((bool?)this[LiteConventionsBuilder.LiteCompositionKey] ?? false)
+            {
+                return new (Type contractType, IAppServiceInfo appServiceInfo)[0];
+            }
+
             // exclude the composition context from the list as it is the responsibility
             // of each composition context implementation to register itself in the DI container.
             return this.registry

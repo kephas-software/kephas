@@ -1,9 +1,18 @@
-﻿namespace Kephas.Composition.Lightweight.Internal
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MultiServiceInfo.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the multi service information class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Composition.Lite.Internal
 {
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
     using Kephas.Composition;
     using Kephas.Services;
     using Kephas.Services.Reflection;
@@ -14,9 +23,9 @@
 
         public MultiServiceInfo(ServiceInfo serviceInfo)
         {
-            this.ContractType = serviceInfo.ContractType;
-            this.ServiceType = serviceInfo.ServiceType;
-            this.serviceInfos.Add(serviceInfo);
+            ContractType = serviceInfo.ContractType;
+            ServiceType = serviceInfo.ServiceType;
+            serviceInfos.Add(serviceInfo);
         }
 
         AppServiceLifetime IAppServiceInfo.Lifetime => AppServiceLifetime.Transient;
@@ -39,7 +48,7 @@
 
         public void Add(ServiceInfo serviceInfo)
         {
-            this.serviceInfos.Add(serviceInfo);
+            serviceInfos.Add(serviceInfo);
         }
 
         public object GetService(IAmbientServices ambientServices)
@@ -49,8 +58,8 @@
 
         public IDictionary<string, object> Metadata { get; }
 
-        public IEnumerator<IServiceInfo> GetEnumerator() => this.serviceInfos.GetEnumerator();
+        public IEnumerator<IServiceInfo> GetEnumerator() => serviceInfos.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

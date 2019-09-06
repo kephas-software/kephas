@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Lightweight.Internal
+namespace Kephas.Composition.Lite.Internal
 {
     using System;
     using System.Collections.Generic;
@@ -30,29 +30,29 @@ namespace Kephas.Composition.Lightweight.Internal
 
         public ServiceInfo(Type contractType, object instance)
         {
-            this.ContractType = contractType;
-            this.Instance = instance;
-            this.Lifetime = AppServiceLifetime.Singleton;
-            this.lazyFactory = new LazyValue(instance);
+            ContractType = contractType;
+            Instance = instance;
+            Lifetime = AppServiceLifetime.Singleton;
+            lazyFactory = new LazyValue(instance);
         }
 
         public ServiceInfo(IAmbientServices ambientServices, Type contractType, Type instanceType, bool isSingleton)
         {
-            this.ContractType = contractType;
-            this.InstanceType = instanceType;
-            this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-            this.lazyFactory = isSingleton
-                                   ? new LazyValue(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType)
-                                   : new LazyFactory(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType);
+            ContractType = contractType;
+            InstanceType = instanceType;
+            Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
+            lazyFactory = isSingleton
+                                   ? new LazyValue(() => GetInstanceResolver(ambientServices, instanceType)(), contractType)
+                                   : new LazyFactory(() => GetInstanceResolver(ambientServices, instanceType)(), contractType);
         }
 
         public ServiceInfo(IAmbientServices ambientServices, Type contractType, Func<ICompositionContext, object> serviceFactory, bool isSingleton)
         {
-            this.ContractType = contractType;
-            this.InstanceFactory = serviceFactory;
-            this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
+            ContractType = contractType;
+            InstanceFactory = serviceFactory;
+            Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
             var compositionContext = ambientServices.AsCompositionContext();
-            this.lazyFactory = isSingleton
+            lazyFactory = isSingleton
                                    ? new LazyValue(() => serviceFactory(compositionContext), contractType)
                                    : new LazyFactory(() => serviceFactory(compositionContext), contractType);
         }
@@ -77,26 +77,26 @@ namespace Kephas.Composition.Lightweight.Internal
 
         public AppServiceInfo ToAppServiceInfo(IAmbientServices ambientServices)
         {
-            return new AppServiceInfo(this.ContractType, ctx => this.GetService(ambientServices), this.Lifetime) { AllowMultiple = this.AllowMultiple };
+            return new AppServiceInfo(ContractType, ctx => GetService(ambientServices), Lifetime) { AllowMultiple = AllowMultiple };
         }
 
-        public object GetService(IAmbientServices ambientServices) => this.lazyFactory.GetValue();
+        public object GetService(IAmbientServices ambientServices) => lazyFactory.GetValue();
 
         public IDictionary<string, object> Metadata { get; internal set; }
 
         private Func<object> GetInstanceResolver(IAmbientServices ambientServices, Type instanceType)
         {
-            if (this.instanceResolver != null)
+            if (instanceResolver != null)
             {
-                return this.instanceResolver;
+                return instanceResolver;
             }
 
             var (ctor, ctorParams) = GetConstructorInfo(ambientServices, instanceType);
 
-            return this.instanceResolver = () => ctor.Invoke(
+            return instanceResolver = () => ctor.Invoke(
                        ctorParams.Select(
                            p => p.HasDefaultValue
-                                    ? (ambientServices.GetService(p.ParameterType) ?? p.DefaultValue)
+                                    ? ambientServices.GetService(p.ParameterType) ?? p.DefaultValue
                                     : ambientServices.GetRequiredService(p.ParameterType))
                            .ToArray());
         }
@@ -163,19 +163,19 @@ namespace Kephas.Composition.Lightweight.Internal
 
             public override object GetValue()
             {
-                if (this.value != null)
+                if (value != null)
                 {
-                    return this.value;
+                    return value;
                 }
 
-                lock (this.factory)
+                lock (factory)
                 {
-                    if (this.value != null)
+                    if (value != null)
                     {
-                        return this.value;
+                        return value;
                     }
 
-                    return this.value = base.GetValue();
+                    return value = base.GetValue();
                 }
             }
         }
@@ -205,13 +205,13 @@ namespace Kephas.Composition.Lightweight.Internal
                 }
                 else if (isProducing.Contains(this))
                 {
-                    throw new CircularDependencyException(string.Format(Strings.LazyFactory_CircularDependency_Exception, this.serviceType));
+                    throw new CircularDependencyException(string.Format(Strings.LazyFactory_CircularDependency_Exception, serviceType));
                 }
 
                 isProducing.Add(this);
                 try
                 {
-                    var value = this.factory();
+                    var value = factory();
                     return value;
                 }
                 finally

@@ -94,7 +94,7 @@ namespace Kephas.Data
         /// <returns>
         /// The data context.
         /// </returns>
-        IDataContext IDataSpace.this[Type entityType, IContext context = null] => this.GetDataContext(entityType, context);
+        IDataContext IDataSpace.this[Type entityType, IContext context] => this.GetDataContext(entityType, context);
 
         /// <summary>
         /// Gets the data context for the provided entity type.
@@ -104,7 +104,7 @@ namespace Kephas.Data
         /// <returns>
         /// The data context.
         /// </returns>
-        IDataContext IDataSpace.this[ITypeInfo entityType, IContext context = null] => this.GetDataContext(entityType, context);
+        IDataContext IDataSpace.this[ITypeInfo entityType, IContext context] => this.GetDataContext(entityType, context);
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>

@@ -140,7 +140,7 @@ namespace Kephas.Composition.DependencyInjection.Conventions
         public IServiceCollection GetServiceCollection() => this.serviceCollection;
 
         /// <summary>
-        /// Builds service provider.
+        /// Builds the service provider.
         /// </summary>
         /// <param name="parts">The parts being built.</param>
         /// <returns>

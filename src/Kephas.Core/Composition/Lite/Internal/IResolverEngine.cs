@@ -1,26 +1,18 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IServiceInfo.cs" company="Kephas Software SRL">
+// <copyright file="IResolverEngine.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IServiceInfo interface.
+//   Declares the IResolverEngine interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.Lightweight.Internal
+namespace Kephas.Composition.Lite.Internal
 {
     using System;
-    using System.Collections.Generic;
 
-    using Kephas.Services.Reflection;
-
-    internal interface IServiceInfo : IAppServiceInfo
+    internal interface IResolverEngine : IServiceProvider
     {
-        object GetService(IAmbientServices ambientServices);
-
-        Type ServiceType { get; }
-
-        IDictionary<string, object> Metadata { get; }
     }
 }
