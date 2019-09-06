@@ -530,6 +530,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot identify the constructed service type of {0} from {1}..
+        /// </summary>
+        internal static string LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception {
+            get {
+                return ResourceManager.GetString("LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string LiteRegistrationBuilder_InvalidRegistration_Exception {
+            get {
+                return ResourceManager.GetString("LiteRegistrationBuilder_InvalidRegistration_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is intended to be replaced by a proper implementation..
         /// </summary>
         internal static string NullServiceExceptionMessage {

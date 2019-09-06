@@ -339,4 +339,10 @@
   <data name="ServiceRegistrationBuilder_InstancingNotProvided_Exception" xml:space="preserve">
     <value>Either the implementation type, the factory, or the service instance must be provided.</value>
   </data>
+  <data name="LiteRegistrationBuilder_InvalidRegistration_Exception" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception" xml:space="preserve">
+    <value>Cannot identify the constructed service type of {0} from {1}.</value>
+  </data>
 </root>

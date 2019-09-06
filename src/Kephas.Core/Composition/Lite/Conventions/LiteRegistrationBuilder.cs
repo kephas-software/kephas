@@ -15,6 +15,7 @@ namespace Kephas.Composition.Lite.Conventions
     using System.Linq;
     using Kephas.Composition.Conventions;
     using Kephas.Logging;
+    using Kephas.Resources;
     using Kephas.Services;
 
     /// <summary>
@@ -188,20 +189,35 @@ namespace Kephas.Composition.Lite.Conventions
 
             if (this.ImplementationTypePredicate != null)
             {
-                this.AllowMultiple = true;
+                var isGenericTypeDefinition = this.ServiceType?.IsGenericTypeDefinition ?? false;
+                var genericServiceType = this.ServiceType;
+                this.AllowMultiple = !isGenericTypeDefinition;
 
                 foreach (var type in parts.Where(t => this.ImplementationTypePredicate(t)))
                 {
                     this.ImplementationType = type;
-                    this.ExportConfiguration?.Invoke(type, this);
+                    if (isGenericTypeDefinition && !type.IsGenericTypeDefinition)
+                    {
+                        var constructedServiceType = type.GetInterfaces().FirstOrDefault(i => i.GetGenericTypeDefinition() == genericServiceType);
+                        if (constructedServiceType == null)
+                        {
+                            throw new InvalidOperationException(string.Format(Strings.LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception, genericServiceType, type));
+                        }
+
+                        this.ExportConfiguration?.Invoke(constructedServiceType, this);
+                    }
+                    else
+                    {
+                        this.ExportConfiguration?.Invoke(type, this);
+                    }
+
                     this.ambientServices.Register(this.ServiceType, ConfigureSingleService);
                 }
 
                 return;
             }
 
-            throw new InvalidOperationException(
-                $"One of {nameof(this.ImplementationType)}, {nameof(this.ImplementationTypePredicate)}, or {nameof(this.Factory)} must be set.");
+            throw new InvalidOperationException(string.Format(Strings.LiteRegistrationBuilder_InvalidRegistration_Exception, nameof(this.ImplementationType), nameof(this.ImplementationTypePredicate), nameof(this.Factory)));
         }
     }
 }
