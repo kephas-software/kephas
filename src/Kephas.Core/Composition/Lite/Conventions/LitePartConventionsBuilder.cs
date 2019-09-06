@@ -102,7 +102,7 @@ namespace Kephas.Composition.Lite.Conventions
         public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
         {
             // TODO not supported.
-            if (this.Logger.IsDebugEnabled())
+            if (this.Logger.IsTraceEnabled())
             {
                 this.Logger.Warn($"Selecting a specific constructor is not supported ({this.descriptorBuilder}).");
             }
