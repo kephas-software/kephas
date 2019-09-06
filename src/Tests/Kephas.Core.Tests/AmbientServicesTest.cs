@@ -247,6 +247,30 @@ namespace Kephas.Core.Tests
         }
 
         [Test]
+        public void Register_service_open_generic()
+        {
+            var ambientServices = new AmbientServices();
+            var logManager = Substitute.For<ILogManager>();
+            ambientServices.Register(typeof(OpenGenericService<,>), b => b.WithType(typeof(OpenGenericService<,>)));
+
+            var service = ambientServices.GetService(typeof(OpenGenericService<string, int>));
+            Assert.IsInstanceOf<OpenGenericService<string, int>>(service);
+        }
+
+        [Test]
+        public void Register_service_open_generic_dependency()
+        {
+            var ambientServices = new AmbientServices();
+            var logManager = Substitute.For<ILogManager>();
+            ambientServices.Register(typeof(OpenGenericService<,>), b => b.WithType(typeof(OpenGenericService<,>)));
+            ambientServices.Register<OpenGenericDependency, OpenGenericDependency>();
+
+            var service = ambientServices.GetService<OpenGenericDependency>();
+            Assert.IsNotNull(service.ServiceIntString);
+            Assert.IsNotNull(service.ServiceStringDouble);
+        }
+
+        [Test]
         public void GetService_exportFactory()
         {
             var ambientServices = new AmbientServices();
@@ -530,6 +554,21 @@ namespace Kephas.Core.Tests
         public class CircularDependency2
         {
             public CircularDependency2(CircularDependency1 dependency) { }
+        }
+
+        public class OpenGenericService<T1, T2> { }
+
+        public class OpenGenericDependency
+        {
+            public OpenGenericDependency(OpenGenericService<int, string> svcIntString, OpenGenericService<string, double> svcStringDouble)
+            {
+                this.ServiceIntString = svcIntString;
+                this.ServiceStringDouble = svcStringDouble;
+            }
+
+            public OpenGenericService<int, string> ServiceIntString { get; }
+
+            public OpenGenericService<string, double> ServiceStringDouble { get; }
         }
     }
 }

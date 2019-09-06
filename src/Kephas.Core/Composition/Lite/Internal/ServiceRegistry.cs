@@ -17,6 +17,9 @@ namespace Kephas.Composition.Lite.Internal
     using System.Linq;
     using Kephas.Resources;
 
+    /// <summary>
+    /// A service registry.
+    /// </summary>
     internal class ServiceRegistry : IServiceRegistry
     {
         private readonly ConcurrentDictionary<Type, IServiceInfo> services =
@@ -24,12 +27,12 @@ namespace Kephas.Composition.Lite.Internal
 
         private readonly List<IServiceSource> serviceSources = new List<IServiceSource>();
 
-        public IEnumerable<IServiceSource> Sources => serviceSources;
+        public IEnumerable<IServiceSource> Sources => this.serviceSources;
 
-        public IServiceInfo this[Type contractType] => services[contractType];
+        public IServiceInfo this[Type contractType] => this.services[contractType];
 
-        public bool TryGetValue(Type serviceType, out IServiceInfo serviceInfo) =>
-            services.TryGetValue(serviceType, out serviceInfo);
+        public bool TryGet(Type serviceType, out IServiceInfo serviceInfo) =>
+            this.services.TryGetValue(serviceType, out serviceInfo);
 
         /// <summary>
         /// Gets a value indicating whether the service with the provided contract is registered.
@@ -40,8 +43,9 @@ namespace Kephas.Composition.Lite.Internal
         /// </returns>
         public bool IsRegistered(Type serviceType)
         {
-            return serviceType != null && (services.ContainsKey(serviceType)
-                                           || serviceSources.Any(s => s.IsMatch(serviceType)));
+            return serviceType != null && (this.services.ContainsKey(serviceType)
+                                           || (serviceType.IsConstructedGenericType && this.services.ContainsKey(serviceType.GetGenericTypeDefinition()))
+                                           || this.serviceSources.Any(s => s.IsMatch(serviceType)));
         }
 
         public ServiceRegistry RegisterService(IServiceInfo serviceInfo)
@@ -86,5 +90,18 @@ namespace Kephas.Composition.Lite.Internal
         public IEnumerator<IServiceInfo> GetEnumerator() => services.Values.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        /// <summary>
+        /// Gets or registers a service.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceInfoGetter">The service info getter.</param>
+        /// <returns>
+        /// The existing or the registered service info.
+        /// </returns>
+        public IServiceInfo GetOrRegister(Type serviceType, Func<Type, IServiceInfo> serviceInfoGetter)
+        {
+            return this.services.GetOrAdd(serviceType, serviceInfoGetter);
+        }
     }
 }

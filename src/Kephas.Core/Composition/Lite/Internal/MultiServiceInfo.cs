@@ -13,6 +13,9 @@ namespace Kephas.Composition.Lite.Internal
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
+
+    using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Services;
     using Kephas.Services.Reflection;
@@ -21,11 +24,28 @@ namespace Kephas.Composition.Lite.Internal
     {
         private IList<ServiceInfo> serviceInfos = new List<ServiceInfo>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MultiServiceInfo"/> class.
+        /// </summary>
+        /// <param name="serviceInfo">Information describing the service.</param>
         public MultiServiceInfo(ServiceInfo serviceInfo)
         {
-            ContractType = serviceInfo.ContractType;
-            ServiceType = serviceInfo.ServiceType;
-            serviceInfos.Add(serviceInfo);
+            this.ContractType = serviceInfo.ContractType;
+            this.ServiceType = serviceInfo.ServiceType;
+            this.serviceInfos.Add(serviceInfo);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MultiServiceInfo"/> class.
+        /// </summary>
+        /// <param name="contractType">Type of the contract.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceInfos">The service infos.</param>
+        private MultiServiceInfo(Type contractType, Type serviceType, IEnumerable<ServiceInfo> serviceInfos)
+        {
+            this.ContractType = contractType;
+            this.ServiceType = serviceType;
+            this.serviceInfos.AddRange(serviceInfos);
         }
 
         AppServiceLifetime IAppServiceInfo.Lifetime => AppServiceLifetime.Transient;
@@ -61,5 +81,20 @@ namespace Kephas.Composition.Lite.Internal
         public IEnumerator<IServiceInfo> GetEnumerator() => serviceInfos.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public IServiceInfo MakeGenericServiceInfo(IAmbientServices ambientServices, Type[] genericArgs)
+        {
+            if (!this.ContractType.IsGenericTypeDefinition)
+            {
+                throw new NotSupportedException($"Only open generic registrations may be constructed, {this} does not support this operation.");
+            }
+
+            var closedContractType = this.ContractType.MakeGenericType(genericArgs);
+            var closedServiceType = this.ServiceType?.MakeGenericType(genericArgs);
+
+            var closedServiceInfos = this.serviceInfos.Select(si => (ServiceInfo)si.MakeGenericServiceInfo(ambientServices, genericArgs));
+
+            return new MultiServiceInfo(closedContractType, closedServiceType, closedServiceInfos);
+        }
     }
 }

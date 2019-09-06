@@ -16,43 +16,64 @@ namespace Kephas.Composition.Lite.Internal
     using System.Reflection;
 
     using Kephas.Composition;
-    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Services.Reflection;
 
+    /// <summary>
+    /// Information about the service.
+    /// </summary>
     internal class ServiceInfo : IServiceInfo
     {
         private readonly LazyFactory lazyFactory;
 
         private Func<object> instanceResolver;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
+        /// </summary>
+        /// <param name="contractType">Type of the contract.</param>
+        /// <param name="instance">The instance.</param>
         public ServiceInfo(Type contractType, object instance)
         {
-            ContractType = contractType;
-            Instance = instance;
-            Lifetime = AppServiceLifetime.Singleton;
-            lazyFactory = new LazyValue(instance);
+            this.ContractType = contractType;
+            this.Instance = instance;
+            this.Lifetime = AppServiceLifetime.Singleton;
+            this.lazyFactory = new LazyValue(instance);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="contractType">Type of the contract.</param>
+        /// <param name="instanceType">Type of the instance.</param>
+        /// <param name="isSingleton">True if is singleton, false if not.</param>
         public ServiceInfo(IAmbientServices ambientServices, Type contractType, Type instanceType, bool isSingleton)
         {
-            ContractType = contractType;
-            InstanceType = instanceType;
-            Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
-            lazyFactory = isSingleton
-                                   ? new LazyValue(() => GetInstanceResolver(ambientServices, instanceType)(), contractType)
-                                   : new LazyFactory(() => GetInstanceResolver(ambientServices, instanceType)(), contractType);
+            this.ContractType = contractType;
+            this.InstanceType = instanceType;
+            this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
+            this.lazyFactory = isSingleton
+                                   ? new LazyValue(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType)
+                                   : new LazyFactory(() => this.GetInstanceResolver(ambientServices, instanceType)(), contractType);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceInfo"/> class.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="contractType">Type of the contract.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <param name="isSingleton">True if is singleton, false if not.</param>
         public ServiceInfo(IAmbientServices ambientServices, Type contractType, Func<ICompositionContext, object> serviceFactory, bool isSingleton)
         {
-            ContractType = contractType;
-            InstanceFactory = serviceFactory;
-            Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
+            this.ContractType = contractType;
+            this.InstanceFactory = serviceFactory;
+            this.Lifetime = isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient;
             var compositionContext = ambientServices.AsCompositionContext();
-            lazyFactory = isSingleton
+            this.lazyFactory = isSingleton
                                    ? new LazyValue(() => serviceFactory(compositionContext), contractType)
                                    : new LazyFactory(() => serviceFactory(compositionContext), contractType);
         }
@@ -74,6 +95,40 @@ namespace Kephas.Composition.Lite.Internal
         public Type InstanceType { get; }
 
         public Func<ICompositionContext, object> InstanceFactory { get; }
+
+        /// <summary>
+        /// Makes a generic service information with closed generic types.
+        /// </summary>
+        /// <exception cref="NotSupportedException">Thrown when the requested operation is not supported.</exception>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="genericArgs">The generic arguments.</param>
+        /// <returns>
+        /// An IServiceInfo.
+        /// </returns>
+        public IServiceInfo MakeGenericServiceInfo(IAmbientServices ambientServices, Type[] genericArgs)
+        {
+            if (!this.ContractType.IsGenericTypeDefinition)
+            {
+                throw new NotSupportedException($"Only open generic registrations may be constructed, {this} does not support this operation.");
+            }
+
+            if (this.InstanceType == null)
+            {
+                throw new NotSupportedException($"Only open generic registrations may be constructed, {this} does not support this operation.");
+            }
+
+            var closedContractType = this.ContractType.MakeGenericType(genericArgs);
+            var closedServiceType = this.ServiceType?.MakeGenericType(genericArgs);
+            var closedInstanceType = this.InstanceType.MakeGenericType(genericArgs);
+
+            var closedServiceInfo = new ServiceInfo(ambientServices, closedContractType, closedInstanceType, this.IsSingleton())
+            {
+                ServiceType = closedServiceType,
+                AllowMultiple = this.AllowMultiple,
+            };
+
+            return closedServiceInfo;
+        }
 
         public AppServiceInfo ToAppServiceInfo(IAmbientServices ambientServices)
         {
