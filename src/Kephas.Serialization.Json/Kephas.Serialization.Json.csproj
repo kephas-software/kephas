@@ -12,7 +12,7 @@
         <FileVersion>6.5.0.0</FileVersion>
         <Copyright>Copyright © Kephas Software SRL 2010-2019</Copyright>
         <Description>Provides JSON serialization infrastructure using the Newtonsoft.Json implementation.</Description>
-        <Version>6.5.0-rc.7</Version>
+        <Version>6.5.0-rc.8</Version>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
