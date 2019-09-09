@@ -97,69 +97,6 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Notification method for receiving a reply.
-        /// </summary>
-        /// <param name="replyMessage">Message describing the reply.</param>
-        /// <param name="context">Optional. The reply context.</param>
-        protected virtual void ReceiveReply(
-            IBrokeredMessage replyMessage,
-            IContext context = null)
-        {
-            var replyToMessageId = replyMessage.ReplyToMessageId;
-            if (string.IsNullOrEmpty(replyToMessageId))
-            {
-                this.Logger.Warn(Strings.MessageBrokerBase_MissingReplyToMessageId_Exception, nameof(IBrokeredMessage.ReplyToMessageId), replyMessage.Content);
-                return;
-            }
-
-            if (!this.messageSyncDictionary.TryRemove(replyToMessageId, out var syncEntry))
-            {
-                this.Logger.Warn(Strings.MessageBrokerBase_ReplyToMessageNotFound_Exception, replyToMessageId, replyMessage.Content);
-                return;
-            }
-
-            this.LogOnReceive(replyMessage);
-
-            syncEntry.cancellationTokenSource.Dispose();
-
-            if (replyMessage.Content is ExceptionResponseMessage exceptionMessage)
-            {
-                var exception = new MessagingException(exceptionMessage.Exception.Message);
-                syncEntry.taskCompletionSource.SetException(exception);
-            }
-            else
-            {
-                syncEntry.taskCompletionSource.SetResult(replyMessage.Content);
-            }
-        }
-
-        /// <summary>
-        /// Creates a brokered message builder.
-        /// </summary>
-        /// <param name="context">Optional. The sending context.</param>
-        /// <param name="brokeredMessage">Optional. The brokered message.</param>
-        /// <returns>
-        /// The new brokered message builder.
-        /// </returns>
-        public virtual IBrokeredMessageBuilder CreateBrokeredMessageBuilder(
-            IContext context,
-            IBrokeredMessage brokeredMessage = null)
-        {
-            var builder = this.builderFactory.CreateExportedValue();
-            if (brokeredMessage != null)
-            {
-                builder.Of(brokeredMessage);
-            }
-
-            if (builder is IInitializable initializableBuilder)
-            {
-                initializableBuilder.Initialize(context);
-            }
-
-            return builder;
-        }
-
-        /// <summary>
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="context">Optional. An optional context for initialization.</param>
@@ -289,11 +226,48 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Notification method for receiving a reply.
+        /// </summary>
+        /// <param name="replyMessage">Message describing the reply.</param>
+        /// <param name="context">Optional. The reply context.</param>
+        protected virtual void ReceiveReply(
+            IBrokeredMessage replyMessage,
+            IContext context = null)
+        {
+            var replyToMessageId = replyMessage.ReplyToMessageId;
+            if (string.IsNullOrEmpty(replyToMessageId))
+            {
+                this.Logger.Warn(Strings.MessageBrokerBase_MissingReplyToMessageId_Exception, nameof(IBrokeredMessage.ReplyToMessageId), replyMessage.Content);
+                return;
+            }
+
+            if (!this.messageSyncDictionary.TryRemove(replyToMessageId, out var syncEntry))
+            {
+                this.Logger.Warn(Strings.MessageBrokerBase_ReplyToMessageNotFound_Exception, replyToMessageId, replyMessage.Content);
+                return;
+            }
+
+            this.LogOnReceive(replyMessage);
+
+            syncEntry.cancellationTokenSource.Dispose();
+
+            if (replyMessage.Content is ExceptionResponseMessage exceptionMessage)
+            {
+                var exception = new MessagingException(exceptionMessage.Exception);
+                syncEntry.taskCompletionSource.SetException(exception);
+            }
+            else
+            {
+                syncEntry.taskCompletionSource.SetResult(replyMessage.Content);
+            }
+        }
+
+        /// <summary>
         /// Handles the reply received event.
         /// </summary>
         /// <param name="sender">Source of the event.</param>
         /// <param name="e">Event information.</param>
-        protected virtual void HandleReplyReceived(object sender, ReplyReceivedEventArgs e)
+        private void HandleReplyReceived(object sender, ReplyReceivedEventArgs e)
         {
             this.ReceiveReply(e.Message, e.Context);
         }
