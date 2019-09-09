@@ -28,12 +28,12 @@ namespace Kephas.Messaging.Events
         /// Asynchronously publishes the provided event.
         /// </summary>
         /// <param name="event">The event to be published.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task PublishAsync(object @event, IContext context = null, CancellationToken cancellationToken = default);
+        Task PublishAsync(object @event, IContext context, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -46,18 +46,19 @@ namespace Kephas.Messaging.Events
         /// </summary>
         /// <typeparam name="TEvent">Type of the event.</typeparam>
         /// <param name="eventPublisher">The event emitter to act on.</param>
-        /// <param name="context">Optional. the context.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
         public static Task PublishAsync<TEvent>(
             this IEventPublisher eventPublisher,
-            IContext context = null,
+            IContext context,
             CancellationToken cancellationToken = default)
             where TEvent : class, new()
         {
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
+            Requires.NotNull(context, nameof(context));
 
             return eventPublisher.PublishAsync(new TEvent(), context, cancellationToken);
         }
@@ -68,10 +69,11 @@ namespace Kephas.Messaging.Events
         /// </summary>
         /// <param name="eventPublisher">The event emitter to act on.</param>
         /// <param name="event">The event.</param>
-        /// <param name="context">Optional. The context.</param>
-        public static void Publish(this IEventPublisher eventPublisher, object @event, IContext context = null)
+        /// <param name="context">The context.</param>
+        public static void Publish(this IEventPublisher eventPublisher, object @event, IContext context)
         {
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
+            Requires.NotNull(context, nameof(context));
 
             if (eventPublisher is ISyncEventPublisher syncEventEmitter)
             {
@@ -88,11 +90,12 @@ namespace Kephas.Messaging.Events
         /// </summary>
         /// <typeparam name="TEvent">Type of the event.</typeparam>
         /// <param name="eventPublisher">The event emitter to act on.</param>
-        /// <param name="context">Optional. the context.</param>
-        public static void Publish<TEvent>(this IEventPublisher eventPublisher, IContext context = null)
+        /// <param name="context">The context.</param>
+        public static void Publish<TEvent>(this IEventPublisher eventPublisher, IContext context)
             where TEvent : class, new()
         {
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
+            Requires.NotNull(context, nameof(context));
 
             var @event = new TEvent();
             if (eventPublisher is ISyncEventPublisher syncEventEmitter)
@@ -111,7 +114,7 @@ namespace Kephas.Messaging.Events
         /// <param name="eventPublisher">The event emitter to act on.</param>
         /// <param name="eventId">Identifier for the event.</param>
         /// <param name="eventArgs">The application event arguments.</param>
-        /// <param name="context">Optional. the context.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
@@ -120,10 +123,11 @@ namespace Kephas.Messaging.Events
             this IEventPublisher eventPublisher,
             object eventId,
             IExpando eventArgs,
-            IContext context = null,
+            IContext context,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
+            Requires.NotNull(context, nameof(context));
 
             var appEvent = new IdentifiableEvent { Id = eventId, EventArgs = eventArgs };
             return eventPublisher.PublishAsync(appEvent, context, cancellationToken);
@@ -140,9 +144,10 @@ namespace Kephas.Messaging.Events
             this IEventPublisher eventPublisher,
             object eventId,
             IExpando eventArgs,
-            IContext context = null)
+            IContext context)
         {
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
+            Requires.NotNull(context, nameof(context));
 
             var @event = new IdentifiableEvent { Id = eventId, EventArgs = eventArgs };
             if (eventPublisher is ISyncEventPublisher syncEventEmitter)

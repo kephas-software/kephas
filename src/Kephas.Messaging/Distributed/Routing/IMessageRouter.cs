@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDistributedMessageBroker.cs" company="Kephas Software SRL">
+// <copyright file="IMessageRouter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IDistributedMessageBroker interface.
+//   Declares the IMessageRouter interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,27 +13,32 @@ namespace Kephas.Messaging.Distributed
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Messaging.Distributed.Routing;
     using Kephas.Services;
 
     /// <summary>
-    /// Singleton application service contract for distributed message broker.
+    /// Interface for message router.
     /// </summary>
-    [SingletonAppServiceContract]
-    public interface IMessageBroker : IDisposable
+    [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(MessageRouterAttribute) })]
+    public interface IMessageRouter
     {
         /// <summary>
-        /// Dispatches the brokered message asynchronously.
+        /// Occurs when a reply is received.
+        /// </summary>
+        event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
+
+        /// <summary>
+        /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">The dispatching context.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <param name="context">The send context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result that yields an IMessage.
+        /// The asynchronous result.
         /// </returns>
-        Task<IMessage> DispatchAsync(
+        Task SendAsync(
             IBrokeredMessage brokeredMessage,
             IContext context,
-            CancellationToken cancellationToken = default);
+            CancellationToken cancellationToken);
     }
 }

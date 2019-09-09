@@ -149,5 +149,30 @@ namespace Kephas.Messaging.Distributed
             var reply = string.IsNullOrEmpty(this.ReplyToMessageId) ? string.Empty : $" as reply to #{this.ReplyToMessageId}";
             return $"{this.GetType().Name} (#{this.Id}) {{{contentType}/{this.Sender} > {recipients}}}{channel}{reply}";
         }
+
+        /// <summary>
+        /// Makes a deep copy of this object, optionally replacing the existing recipients with the
+        /// provided ones.
+        /// </summary>
+        /// <param name="recipients">Optional. The recipients.</param>
+        /// <returns>
+        /// A copy of this object.
+        /// </returns>
+        public IBrokeredMessage Clone(IEnumerable<IEndpoint> recipients = null)
+        {
+            return new BrokeredMessage
+            {
+                Id = this.Id,
+                Sender = this.Sender,
+                Recipients = recipients ?? this.Recipients,
+                BearerToken = this.BearerToken,
+                Channel = this.Channel,
+                Content = this.Content,
+                IsOneWay = this.IsOneWay,
+                Properties = this.Properties,
+                ReplyToMessageId = this.ReplyToMessageId,
+                Timeout = this.Timeout,
+            };
+        }
     }
 }

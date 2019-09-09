@@ -141,7 +141,7 @@
   <data name="MessageBrokerBase_Timeout_Exception" xml:space="preserve">
     <value>The maximum alloted time of {0} expired for {1}.</value>
   </data>
-  <data name="InProcessMessageBroker_MessageProcessor_Async_Exception" xml:space="preserve">
+  <data name="InProcessMessageRouter_MessageProcessor_Async_Exception" xml:space="preserve">
     <value>An error occurred in the message processor. Please check the exception details for more information.</value>
   </data>
   <data name="BrokeredMessageHandler_ProcessAndRespond_Exception" xml:space="preserve">
@@ -165,13 +165,16 @@
   <data name="MessageBrokerBase_LogOnEnqueue_NotAddedError" xml:space="preserve">
     <value>Could not enqueue brokered message (#{0}, {1}) timeout: {2}.</value>
   </data>
-  <data name="MessageBrokerBase_CreateBrokeredMessageBuilder_MessageTypeNotSupported" xml:space="preserve">
-    <value>Cannot identify a brokered message builder for message type '0'.</value>
-  </data>
   <data name="MessageBrokerBase_LogOnEnqueue_Success" xml:space="preserve">
     <value>Enqueue brokered message (#{0}, {1}) timeout: {2}.</value>
   </data>
   <data name="MessageAdapter_MessageNotSet_Exception" xml:space="preserve">
     <value>The message is not set in the message adapter.</value>
+  </data>
+  <data name="DefaultMessageBroker_NoMessageRoutersCanHandleRecipients_Exception" xml:space="preserve">
+    <value>Cannot send message to the following recipients: {0}. There is no message router to handle them.</value>
+  </data>
+  <data name="DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception" xml:space="preserve">
+    <value>There is no message router to handle messages without recipients.</value>
   </data>
 </root>

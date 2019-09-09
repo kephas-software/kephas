@@ -133,6 +133,24 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no message router to handle messages without recipients..
+        /// </summary>
+        public static string DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception {
+            get {
+                return ResourceManager.GetString("DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot send message to the following recipients: {0}. There is no message router to handle them..
+        /// </summary>
+        public static string DefaultMessageBroker_NoMessageRoutersCanHandleRecipients_Exception {
+            get {
+                return ResourceManager.GetString("DefaultMessageBroker_NoMessageRoutersCanHandleRecipients_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple handlers found for the &apos;{0}&apos; message type: {1}. Please disambiguate by using the [OverridePriority] attribute on them..
         /// </summary>
         public static string DefaultMessageProcessor_AmbiguousHandler_Exception {
@@ -153,9 +171,9 @@ namespace Kephas.Messaging.Resources {
         /// <summary>
         ///   Looks up a localized string similar to An error occurred in the message processor. Please check the exception details for more information..
         /// </summary>
-        public static string InProcessMessageBroker_MessageProcessor_Async_Exception {
+        public static string InProcessMessageRouter_MessageProcessor_Async_Exception {
             get {
-                return ResourceManager.GetString("InProcessMessageBroker_MessageProcessor_Async_Exception", resourceCulture);
+                return ResourceManager.GetString("InProcessMessageRouter_MessageProcessor_Async_Exception", resourceCulture);
             }
         }
         
@@ -165,15 +183,6 @@ namespace Kephas.Messaging.Resources {
         public static string MessageAdapter_MessageNotSet_Exception {
             get {
                 return ResourceManager.GetString("MessageAdapter_MessageNotSet_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot identify a brokered message builder for message type &apos;0&apos;..
-        /// </summary>
-        public static string MessageBrokerBase_CreateBrokeredMessageBuilder_MessageTypeNotSupported {
-            get {
-                return ResourceManager.GetString("MessageBrokerBase_CreateBrokeredMessageBuilder_MessageTypeNotSupported", resourceCulture);
             }
         }
         

@@ -14,6 +14,8 @@ namespace Kephas.Messaging.Tests.Distributed
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
@@ -27,24 +29,15 @@ namespace Kephas.Messaging.Tests.Distributed
     public class MessageBrokerExtensionsTest
     {
         [Test]
-        public void CreateBrokeredMessageBuilder_with_message_type()
-        {
-            var broker = Substitute.For<IMessageBroker>();
-            var context = Substitute.For<IContext>();
-            var expectedBuilder = Substitute.For<IBrokeredMessageBuilder>();
-            broker.CreateBrokeredMessageBuilder<BrokeredMessage>(context).Returns(expectedBuilder);
-            var builder = broker.CreateBrokeredMessageBuilder(typeof(BrokeredMessage), context);
-            Assert.AreSame(expectedBuilder, builder);
-        }
-
-        [Test]
         public async Task PublishAsync_anonymous_event()
         {
             var broker = Substitute.For<IMessageBroker>();
-            var context = Substitute.For<IContext>();
+            var container = Substitute.For<ICompositionContext>();
+            var context = new Context(container);
             var expectedBuilder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
             expectedBuilder.Initialize(context);
-            broker.CreateBrokeredMessageBuilder<BrokeredMessage>(context).Returns(expectedBuilder);
+            container.GetExport<IExportFactory<IBrokeredMessageBuilder>>(Arg.Any<string>())
+                .Returns(new ExportFactory<IBrokeredMessageBuilder>(() => expectedBuilder));
 
             IMessage content = null;
             broker.DispatchAsync(Arg.Any<IBrokeredMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
@@ -60,10 +53,12 @@ namespace Kephas.Messaging.Tests.Distributed
         public async Task ProcessAsync_anonymous_message()
         {
             var broker = Substitute.For<IMessageBroker>();
-            var context = Substitute.For<IContext>();
+            var container = Substitute.For<ICompositionContext>();
+            var context = new Context(container);
             var expectedBuilder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
             expectedBuilder.Initialize(context);
-            broker.CreateBrokeredMessageBuilder<BrokeredMessage>(context).Returns(expectedBuilder);
+            container.GetExport<IExportFactory<IBrokeredMessageBuilder>>(Arg.Any<string>())
+                .Returns(new ExportFactory<IBrokeredMessageBuilder>(() => expectedBuilder));
 
             IMessage content = null;
             broker.DispatchAsync(Arg.Any<IBrokeredMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())

@@ -33,19 +33,21 @@ namespace Kephas.Messaging.Distributed.Behaviors
     [ProcessingPriority(Priority.Highest + 20)]
     public class EnsureReplyBrokeredMessageProcessingBehavior : MessageProcessingBehaviorBase<IBrokeredMessage>
     {
-        /// <summary>
-        /// The message broker factory.
-        /// </summary>
         private readonly IExportFactory<IMessageBroker> messageBrokerFactory;
+        private readonly IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory;
 
         /// <summary>
         /// Initializes a new instance of the
         /// <see cref="EnsureReplyBrokeredMessageProcessingBehavior"/> class.
         /// </summary>
         /// <param name="messageBrokerFactory">The message broker factory.</param>
-        public EnsureReplyBrokeredMessageProcessingBehavior(IExportFactory<IMessageBroker> messageBrokerFactory)
+        /// <param name="messageBuilderFactory">The message builder factory.</param>
+        public EnsureReplyBrokeredMessageProcessingBehavior(
+            IExportFactory<IMessageBroker> messageBrokerFactory,
+            IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory)
         {
             this.messageBrokerFactory = messageBrokerFactory;
+            this.messageBuilderFactory = messageBuilderFactory;
         }
 
         /// <summary>
@@ -88,7 +90,8 @@ namespace Kephas.Messaging.Distributed.Behaviors
                 var response = new ExceptionResponseMessage { Exception = new ExceptionData(exception) };
 
                 var broker = this.messageBrokerFactory.CreateExportedValue();
-                var responseMessage = broker.CreateBrokeredMessageBuilder(context)
+                var builder = this.messageBuilderFactory.CreateExportedValue(context);
+                var responseMessage = builder
                     .ReplyTo(message)
                     .WithContent(response)
                     .OneWay()

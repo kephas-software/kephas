@@ -43,13 +43,16 @@ namespace Kephas.Messaging.Distributed.Events
         /// Asynchronously publishes the provided event.
         /// </summary>
         /// <param name="event">The application event.</param>
-        /// <param name="context">Optional. the context.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public Task PublishAsync(object @event, IContext context = null, CancellationToken cancellationToken = default)
+        public Task PublishAsync(object @event, IContext context, CancellationToken cancellationToken = default)
         {
+            Requires.NotNull(@event, nameof(@event));
+            Requires.NotNull(context, nameof(context));
+
             return this.messageBroker.PublishAsync(@event, context, cancellationToken);
         }
     }

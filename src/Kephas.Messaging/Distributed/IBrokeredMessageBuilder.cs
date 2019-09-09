@@ -20,6 +20,7 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// Interface for brokered message builder.
     /// </summary>
+    [AppServiceContract]
     public interface IBrokeredMessageBuilder
     {
         /// <summary>
@@ -129,23 +130,6 @@ namespace Kephas.Messaging.Distributed
         /// A BrokeredMessageBuilder.
         /// </returns>
         IBrokeredMessageBuilder ReplyTo(IBrokeredMessage message);
-    }
-
-    /// <summary>
-    /// Interface for brokered message builder.
-    /// </summary>
-    /// <typeparam name="TMessage">Type of the message.</typeparam>
-    [AppServiceContract(ContractType = typeof(IBrokeredMessageBuilder), AllowMultiple = true)]
-    public interface IBrokeredMessageBuilder<out TMessage> : IBrokeredMessageBuilder
-        where TMessage : IBrokeredMessage
-    {
-        /// <summary>
-        /// Gets the brokered message.
-        /// </summary>
-        /// <value>
-        /// The brokered message.
-        /// </value>
-        new TMessage BrokeredMessage { get; }
     }
 
     /// <summary>

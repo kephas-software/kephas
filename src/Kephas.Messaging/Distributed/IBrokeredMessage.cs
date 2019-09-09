@@ -74,7 +74,7 @@ namespace Kephas.Messaging.Distributed
         /// <remarks>
         /// A value of <c>null</c> means indefinitely waiting, but
         /// it is strongly discouraged to wait indefinitely for a response.
-        /// The default value <see cref="BrokeredMessageBuilder{T}.DefaultTimeout"/> can be used.
+        /// The default value <see cref="BrokeredMessageBuilder.DefaultTimeout"/> can be used.
         /// </remarks>
         /// <value>
         /// The response timeout.
@@ -96,5 +96,14 @@ namespace Kephas.Messaging.Distributed
         /// The bearer token.
         /// </value>
         string BearerToken { get; }
+
+        /// <summary>
+        /// Makes a deep copy of this object, optionally replacing the existing recipients with the provided ones.
+        /// </summary>
+        /// <param name="recipients">Optional. The recipients.</param>
+        /// <returns>
+        /// A copy of this object.
+        /// </returns>
+        IBrokeredMessage Clone(IEnumerable<IEndpoint> recipients = null);
     }
 }

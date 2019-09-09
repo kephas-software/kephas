@@ -239,7 +239,7 @@ namespace Kephas.Orchestration
             return new AppHeartbeatEvent
             {
                 AppInfo = this.appManifest.GetAppInfo(this.appRuntime),
-                Timestamp = DateTimeOffset.Now
+                Timestamp = DateTimeOffset.Now,
             };
         }
 

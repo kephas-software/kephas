@@ -22,7 +22,7 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// A brokered message builder.
     /// </summary>
-    public class BrokeredMessageBuilder : IBrokeredMessageBuilder<BrokeredMessage>, IInitializable
+    public class BrokeredMessageBuilder : IBrokeredMessageBuilder, IInitializable
     {
         /// <summary>
         /// The brokered message.
@@ -96,13 +96,8 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 
-            if (this.brokeredMessage != null)
-            {
-                throw new InvalidOperationException($"Cannot set the brokered message multiple times or after the initialization.");
-            }
-
             this.brokeredMessage = (BrokeredMessage)brokeredMessage;
-
+            this.brokeredMessage.BearerToken = this.GetBearerToken(this.Context);
             return this;
         }
 
@@ -405,10 +400,7 @@ namespace Kephas.Messaging.Distributed
             this.Context = context;
 
             // ReSharper disable once VirtualMemberCallInConstructor
-            this.brokeredMessage = this.CreateBrokeredMessage();
-
-            // ReSharper disable once VirtualMemberCallInConstructor
-            this.brokeredMessage.BearerToken = this.GetBearerToken(context);
+            this.Of(this.CreateBrokeredMessage());
         }
 
         /// <summary>

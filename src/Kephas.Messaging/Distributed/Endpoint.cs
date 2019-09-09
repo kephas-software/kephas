@@ -45,21 +45,23 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(url, nameof(url));
 
             this.Url = url;
-            (this.AppId, this.AppInstanceId, this.EndpointId) = this.ComputeAppEndpoint(url);
+            (this.Scheme, this.AppId, this.AppInstanceId, this.EndpointId) = this.ComputeAppEndpoint(url);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Endpoint"/> class.
         /// </summary>
-        /// <param name="appId">The identifier of the application (optional).</param>
-        /// <param name="appInstanceId">The identifier of the application instance (optional).</param>
-        /// <param name="endpointId">The identifier of the endpoint (optional).</param>
-        public Endpoint(string appId = null, string appInstanceId = null, string endpointId = null)
+        /// <param name="appId">Optional. The identifier of the application.</param>
+        /// <param name="appInstanceId">Optional. The identifier of the application instance.</param>
+        /// <param name="endpointId">Optional. The identifier of the endpoint.</param>
+        /// <param name="scheme">Optional. The scheme.</param>
+        public Endpoint(string appId = null, string appInstanceId = null, string endpointId = null, string scheme = null)
         {
+            this.Scheme = scheme;
             this.AppId = appId;
             this.AppInstanceId = appInstanceId;
             this.EndpointId = endpointId;
-            this.Url = this.ComputeAppSchemeUrl(appId, appInstanceId, endpointId);
+            this.Url = this.ComputeAppSchemeUrl(scheme, appId, appInstanceId, endpointId);
         }
 
         /// <summary>
@@ -77,7 +79,7 @@ namespace Kephas.Messaging.Distributed
 
                 if (value != null)
                 {
-                    (this.AppId, this.AppInstanceId, this.EndpointId) = this.ComputeAppEndpoint(value);
+                    (this.Scheme, this.AppId, this.AppInstanceId, this.EndpointId) = this.ComputeAppEndpoint(value);
                 }
             }
         }
@@ -106,6 +108,14 @@ namespace Kephas.Messaging.Distributed
         /// </value>
         public string AppId { get; private set; }
 
+        /// <summary>
+        /// Gets the scheme.
+        /// </summary>
+        /// <value>
+        /// The scheme.
+        /// </value>
+        public string Scheme { get; private set; }
+
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
@@ -116,19 +126,20 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Calculates the application scheme URL.
         /// </summary>
+        /// <param name="scheme">The scheme.</param>
         /// <param name="appId">The identifier of the application (optional).</param>
         /// <param name="appInstanceId">The identifier of the application instance (optional).</param>
         /// <param name="endpointId">The identifier of the endpoint (optional).</param>
         /// <returns>
         /// The calculated application scheme URL.
         /// </returns>
-        private Uri ComputeAppSchemeUrl(string appId, string appInstanceId, string endpointId)
+        private Uri ComputeAppSchemeUrl(string scheme, string appId, string appInstanceId, string endpointId)
         {
             var uriBuilder = new UriBuilder
                                  {
-                                     Scheme = AppScheme,
+                                     Scheme = scheme ?? AppScheme,
                                      Host = ".",
-                                     Path = $"/{appId}/{appInstanceId}/{endpointId}"
+                                     Path = $"/{appId}/{appInstanceId}/{endpointId}",
                                  };
             return uriBuilder.Uri;
         }
@@ -140,18 +151,13 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The calculated application endpoint.
         /// </returns>
-        private (string appId, string appInstanceId, string endpointId) ComputeAppEndpoint(Uri url)
+        private (string scheme, string appId, string appInstanceId, string endpointId) ComputeAppEndpoint(Uri url)
         {
-            if (url?.Scheme != AppScheme)
-            {
-                return (null, null, null);
-            }
-
             var pathSegments = url.Segments;
             var appId = this.GetPathSegment(pathSegments, 1);
             var appInstanceId = this.GetPathSegment(pathSegments, 2);
             var endpointId = this.GetPathSegment(pathSegments, 3);
-            return (appId, appInstanceId, endpointId);
+            return (url.Scheme, appId, appInstanceId, endpointId);
         }
 
         /// <summary>

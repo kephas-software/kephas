@@ -34,15 +34,6 @@ namespace Kephas.Orchestration.Tests
         public async Task InitializeAsync_Heartbeat()
         {
             var messageBroker = Substitute.For<IMessageBroker>();
-            messageBroker.CreateBrokeredMessageBuilder<BrokeredMessage>(Arg.Any<IContext>(), null).Returns(
-                ci =>
-                    {
-                        var builder = new BrokeredMessageBuilder(
-                            Substitute.For<IAppManifest>(),
-                            Substitute.For<IAuthenticationService>());
-                        builder.Initialize(ci.Arg<IContext>());
-                        return builder;
-                    });
             var appManifest = Substitute.For<IAppManifest>();
             var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime.GetHostAddress().Returns(IPAddress.Loopback);
