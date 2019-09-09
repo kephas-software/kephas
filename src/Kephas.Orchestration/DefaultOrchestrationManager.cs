@@ -121,29 +121,33 @@ namespace Kephas.Orchestration
         /// <summary>
         /// Initializes the service asynchronously.
         /// </summary>
-        /// <param name="context">An optional context for initialization.</param>
+        /// <param name="context">A context for initialization.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public async Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public Task InitializeAsync(IContext context, CancellationToken cancellationToken = default)
         {
+            Requires.NotNull(context, nameof(context));
+
             this.timer = new Timer(this.OnHeartbeat, context, this.TimerDueTime, this.TimerPeriod);
 
             this.appStartedSubscription = this.eventHub.Subscribe<AppStartedEvent>(this.OnAppStartedAsync);
             this.appStoppedSubscription = this.eventHub.Subscribe<AppStoppedEvent>(this.OnAppStoppedAsync);
             this.appHeartbeatSubscription = this.eventHub.Subscribe<AppHeartbeatEvent>(this.OnAppHeartbeatAsync);
+
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
         /// Finalizes the service.
         /// </summary>
-        /// <param name="context">Optional. An optional context for finalization.</param>
+        /// <param name="context">The context for finalization.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public async Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public async Task FinalizeAsync(IContext context, CancellationToken cancellationToken = default)
         {
             if (this.timer == null)
             {

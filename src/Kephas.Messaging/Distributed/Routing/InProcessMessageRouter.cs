@@ -63,6 +63,9 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public Task SendAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
+            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
+            Requires.NotNull(context, nameof(context));
+
             return Task.Factory.StartNew(
                 async () =>
                 {

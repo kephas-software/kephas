@@ -20,6 +20,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Messages;
+    using Kephas.Services;
     using Kephas.Testing.Composition.Mef;
 
     using NUnit.Framework;
@@ -55,7 +56,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             IBrokeredMessage response = null;
             inProcessRouter.ReplyReceived += (s, e) => { response = e.Message; };
             var request = new BrokeredMessage { Content = new PingMessage() };
-            await inProcessRouter.SendAsync(request, null, default);
+            await inProcessRouter.SendAsync(request, new Context(container), default);
 
             Thread.Sleep(100);
             Assert.AreEqual(request.Id, response.ReplyToMessageId);
