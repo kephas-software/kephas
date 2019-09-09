@@ -23,14 +23,14 @@ namespace Kephas.Application
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
-        /// <remarks>
-        /// To interrupt the application initialization, simply throw an appropriate exception.
-        /// </remarks>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
+        /// <remarks>
+        /// To interrupt the application initialization, simply throw an appropriate exception.
+        /// </remarks>
         public virtual Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(0);
@@ -40,7 +40,7 @@ namespace Kephas.Application
         /// Interceptor called after the application completes its asynchronous initialization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -57,7 +57,7 @@ namespace Kephas.Application
         /// Caution! Interrupting the finalization may cause the application to remain in an undefined state.
         /// </remarks>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -70,7 +70,7 @@ namespace Kephas.Application
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
