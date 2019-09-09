@@ -198,14 +198,26 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public virtual Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public virtual async Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default)
         {
             foreach (var map in this.routerMap)
             {
                 map.router.ReplyReceived -= this.HandleReplyReceived;
+                if (map.router is IAsyncFinalizable asyncFinRouter)
+                {
+                    await asyncFinRouter.FinalizeAsync(context, cancellationToken).PreserveThreadContext();
+                }
+                else if (map.router is IFinalizable finRouter)
+                {
+                    finRouter.Finalize(context);
+                }
+                else if (map.router is IDisposable disposableRouter)
+                {
+                    disposableRouter.Dispose();
+                }
             }
 
-            return TaskHelper.CompletedTask;
+            this.initMonitor.Reset();
         }
 
         /// <summary>
