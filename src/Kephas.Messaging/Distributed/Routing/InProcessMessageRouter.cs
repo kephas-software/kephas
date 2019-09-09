@@ -28,7 +28,7 @@ namespace Kephas.Messaging.Distributed
     /// </summary>
     [ProcessingPriority(Priority.Lowest)]
     [MessageRouter(IsFallback = true)]
-    public class InProcessMessageRouter : Loggable, IMessageRouter
+    public class InProcessMessageRouter : MessageRouterBase
     {
         private readonly IMessageProcessor messageProcessor;
         private readonly IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory;
@@ -48,11 +48,6 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Occurs when a reply is received.
-        /// </summary>
-        public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
-
-        /// <summary>
         /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
@@ -61,7 +56,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task SendAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        public override Task SendAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
             Requires.NotNull(context, nameof(context));
@@ -84,15 +79,6 @@ namespace Kephas.Messaging.Distributed
                     }
                 },
                 cancellationToken);
-        }
-
-        /// <summary>
-        /// Raises the reply received event.
-        /// </summary>
-        /// <param name="eventArgs">Event information to send to registered event handlers.</param>
-        protected virtual void OnReplyReceived(ReplyReceivedEventArgs eventArgs)
-        {
-            this.ReplyReceived?.Invoke(this, eventArgs);
         }
 
         private async Task ProcessAndRespondAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
