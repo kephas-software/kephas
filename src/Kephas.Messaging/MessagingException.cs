@@ -10,12 +10,13 @@
 
 namespace Kephas.Messaging
 {
+    using Kephas.ExceptionHandling;
     using System;
 
     /// <summary>
     /// Exception for signalling messaging errors.
     /// </summary>
-    public class MessagingException : Exception
+    public class MessagingException : Exception, ISeverityQualifiedException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingException"/> class.
@@ -24,6 +25,18 @@ namespace Kephas.Messaging
         public MessagingException(string message)
             : base(message)
         {
+            this.Severity = SeverityLevel.Error;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessagingException"/> class.
+        /// </summary>
+        /// <param name="exceptionData">Information describing the exception.</param>
+        public MessagingException(ExceptionData exceptionData)
+            : base(exceptionData.Message)
+        {
+            this.Severity = exceptionData.Severity;
+            this.OriginalExceptionType = exceptionData.ExceptionType;
         }
 
         /// <summary>
@@ -36,5 +49,21 @@ namespace Kephas.Messaging
             : base(message, inner)
         {
         }
+
+        /// <summary>
+        /// Gets the severity.
+        /// </summary>
+        /// <value>
+        /// The severity.
+        /// </value>
+        public SeverityLevel Severity { get; }
+
+        /// <summary>
+        /// Gets the type of the original exception.
+        /// </summary>
+        /// <value>
+        /// The type of the original exception.
+        /// </value>
+        public string OriginalExceptionType { get; }
     }
 }
