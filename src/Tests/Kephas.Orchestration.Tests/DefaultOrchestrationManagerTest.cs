@@ -17,11 +17,9 @@ namespace Kephas.Orchestration.Tests
 
     using Kephas.Application;
     using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
     using Kephas.Orchestration.Endpoints;
-    using Kephas.Security;
     using Kephas.Security.Authentication;
     using Kephas.Services;
 
@@ -41,15 +39,14 @@ namespace Kephas.Orchestration.Tests
             appRuntime.GetHostAddress().Returns(IPAddress.Loopback);
             var eventHub = Substitute.For<IEventHub>();
             var compositionContext = Substitute.For<ICompositionContext>();
+            var context = new Context(compositionContext);
             var builder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
-            compositionContext.GetExport<IExportFactory<IBrokeredMessageBuilder>>(Arg.Any<string>())
-                .Returns(new ExportFactory<IBrokeredMessageBuilder>(() => builder));
+            messageBroker.CreateBrokeredMesssageBuilder(context).Returns(builder);
 
             var manager = new DefaultOrchestrationManager(appManifest, appRuntime, eventHub, messageBroker);
             manager.TimerDueTime = TimeSpan.FromMilliseconds(100);
             manager.TimerPeriod = TimeSpan.FromMilliseconds(100);
 
-            var context = new Context(compositionContext);
             await manager.InitializeAsync(context);
             await Task.Delay(TimeSpan.FromMilliseconds(400));
             await manager.FinalizeAsync(context);

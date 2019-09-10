@@ -97,6 +97,20 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Creates a brokered messsage builder.
+        /// </summary>
+        /// <param name="context">The publishing context.</param>
+        /// <returns>
+        /// The new brokered messsage builder.
+        /// </returns>
+        public IBrokeredMessageBuilder CreateBrokeredMesssageBuilder(IContext context)
+        {
+            Requires.NotNull(context, nameof(context));
+
+            return this.builderFactory.CreateExportedValue(context);
+        }
+
+        /// <summary>
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="context">Optional. An optional context for initialization.</param>

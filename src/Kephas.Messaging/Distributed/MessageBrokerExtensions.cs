@@ -10,11 +10,10 @@
 
 namespace Kephas.Messaging.Distributed
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Composition;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
@@ -23,22 +22,6 @@ namespace Kephas.Messaging.Distributed
     /// </summary>
     public static class MessageBrokerExtensions
     {
-        /// <summary>
-        /// Creates a brokered messsage builder.
-        /// </summary>
-        /// <param name="context">The publishing context.</param>
-        /// <returns>
-        /// The new brokered messsage builder.
-        /// </returns>
-        public static IBrokeredMessageBuilder CreateBrokeredMesssageBuilder(this IContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            return context.CompositionContext
-                .GetExport<IExportFactory<IBrokeredMessageBuilder>>()
-                .CreateExportedValue(context);
-        }
-
         /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
@@ -63,7 +46,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMesssageBuilder();
+            var builder = messageBroker.CreateBrokeredMesssageBuilder(context);
             var brokeredMessageBuilder = @event is IBrokeredMessage brokeredMessage
                 ? builder.Of(brokeredMessage)
                 : builder.WithEventContent(@event);
@@ -102,7 +85,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(recipient, nameof(recipient));
             Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMesssageBuilder();
+            var builder = messageBroker.CreateBrokeredMesssageBuilder(context);
             var brokeredMessageBuilder = @event is IBrokeredMessage brokeredMessage
                 ? builder.Of(brokeredMessage)
                 : builder.WithEventContent(@event);
@@ -142,7 +125,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(recipients, nameof(recipients));
             Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMesssageBuilder();
+            var builder = messageBroker.CreateBrokeredMesssageBuilder(context);
             var brokeredMessageBuilder = @event is IBrokeredMessage brokeredMessage
                 ? builder.Of(brokeredMessage)
                 : builder.WithEventContent(@event);
@@ -180,7 +163,7 @@ namespace Kephas.Messaging.Distributed
                 return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
             }
 
-            var builder = context.CreateBrokeredMesssageBuilder();
+            var builder = messageBroker.CreateBrokeredMesssageBuilder(context);
             brokeredMessage = builder
                 .WithMessageContent(message)
                 .BrokeredMessage;
@@ -211,7 +194,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(recipient, nameof(recipient));
             Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMesssageBuilder();
+            var builder = messageBroker.CreateBrokeredMesssageBuilder(context);
             var brokeredMessageBuilder = message is IBrokeredMessage brokeredMessage
                 ? builder.Of(brokeredMessage)
                 : builder.WithMessageContent(message);
@@ -246,7 +229,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(recipients, nameof(recipients));
             Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMesssageBuilder();
+            var builder = messageBroker.CreateBrokeredMesssageBuilder(context);
             var brokeredMessageBuilder = message is IBrokeredMessage brokeredMessage
                 ? builder.Of(brokeredMessage)
                 : builder.WithMessageContent(message);
@@ -278,7 +261,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMesssageBuilder();
+            var builder = messageBroker.CreateBrokeredMesssageBuilder(context);
             builder = message is IBrokeredMessage brokeredMessage
                 ? builder.Of(brokeredMessage)
                 : builder.WithMessageContent(message);
@@ -313,7 +296,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(recipient, nameof(recipient));
             Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMesssageBuilder();
+            var builder = messageBroker.CreateBrokeredMesssageBuilder(context);
             builder = message is IBrokeredMessage brokeredMessage
                 ? builder.Of(brokeredMessage)
                 : builder.WithMessageContent(message);
@@ -349,7 +332,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(recipients, nameof(recipients));
             Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMesssageBuilder();
+            var builder = messageBroker.CreateBrokeredMesssageBuilder(context);
             builder = message is IBrokeredMessage brokeredMessage
                 ? builder.Of(brokeredMessage)
                 : builder.WithMessageContent(message);
