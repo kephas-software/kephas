@@ -31,20 +31,20 @@ namespace Kephas.Messaging.Distributed
     public class InProcessMessageRouter : MessageRouterBase
     {
         private readonly IMessageProcessor messageProcessor;
-        private readonly IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory;
+        private readonly Lazy<IMessageBroker> lazyMessageBroker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InProcessMessageRouter"/> class.
         /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="messageBuilderFactory">The message builder factory.</param>
-        public InProcessMessageRouter(IMessageProcessor messageProcessor, IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory)
+        /// <param name="messageBrokerFactory">The message broker factory.</param>
+        public InProcessMessageRouter(IMessageProcessor messageProcessor, IExportFactory<IMessageBroker> messageBrokerFactory)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
-            Requires.NotNull(messageBuilderFactory, nameof(messageBuilderFactory));
+            Requires.NotNull(messageBrokerFactory, nameof(messageBrokerFactory));
 
             this.messageProcessor = messageProcessor;
-            this.messageBuilderFactory = messageBuilderFactory;
+            this.lazyMessageBroker = new Lazy<IMessageBroker>(() => messageBrokerFactory.CreateExportedValue());
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Kephas.Messaging.Distributed
                 response = new ExceptionResponseMessage { Exception = new ExceptionData(exception) };
             }
 
-            var builder = this.messageBuilderFactory.CreateExportedValue(context);
+            var builder = this.lazyMessageBroker.Value.CreateBrokeredMessageBuilder(context);
             var responseMessage = builder
                 .ReplyTo(brokeredMessage.Id, brokeredMessage.Sender)
                 .WithContent(response)

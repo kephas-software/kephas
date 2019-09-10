@@ -34,7 +34,6 @@ namespace Kephas.Messaging.Distributed.Behaviors
     public class EnsureReplyBrokeredMessageProcessingBehavior : MessageProcessingBehaviorBase<IBrokeredMessage>
     {
         private readonly IExportFactory<IMessageBroker> messageBrokerFactory;
-        private readonly IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory;
 
         /// <summary>
         /// Initializes a new instance of the
@@ -42,12 +41,9 @@ namespace Kephas.Messaging.Distributed.Behaviors
         /// </summary>
         /// <param name="messageBrokerFactory">The message broker factory.</param>
         /// <param name="messageBuilderFactory">The message builder factory.</param>
-        public EnsureReplyBrokeredMessageProcessingBehavior(
-            IExportFactory<IMessageBroker> messageBrokerFactory,
-            IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory)
+        public EnsureReplyBrokeredMessageProcessingBehavior(IExportFactory<IMessageBroker> messageBrokerFactory)
         {
             this.messageBrokerFactory = messageBrokerFactory;
-            this.messageBuilderFactory = messageBuilderFactory;
         }
 
         /// <summary>
@@ -90,7 +86,7 @@ namespace Kephas.Messaging.Distributed.Behaviors
                 var response = new ExceptionResponseMessage { Exception = new ExceptionData(exception) };
 
                 var broker = this.messageBrokerFactory.CreateExportedValue();
-                var builder = this.messageBuilderFactory.CreateExportedValue(context);
+                var builder = broker.CreateBrokeredMessageBuilder(context);
                 var responseMessage = builder
                     .ReplyTo(message)
                     .WithContent(response)
