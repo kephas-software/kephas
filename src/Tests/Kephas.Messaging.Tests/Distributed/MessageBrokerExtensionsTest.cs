@@ -37,7 +37,7 @@ namespace Kephas.Messaging.Tests.Distributed
 
             var expectedBuilder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
             expectedBuilder.Initialize(context);
-            broker.CreateBrokeredMesssageBuilder(context).Returns(expectedBuilder);
+            broker.CreateBrokeredMessageBuilder(context).Returns(expectedBuilder);
 
             IMessage content = null;
             broker.DispatchAsync(Arg.Any<IBrokeredMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Tests.Distributed
 
             var expectedBuilder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
             expectedBuilder.Initialize(context);
-            broker.CreateBrokeredMesssageBuilder(context).Returns(expectedBuilder);
+            broker.CreateBrokeredMessageBuilder(context).Returns(expectedBuilder);
 
             IMessage content = null;
             broker.DispatchAsync(Arg.Any<IBrokeredMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())

@@ -40,8 +40,10 @@ namespace Kephas.Orchestration.Tests
             var eventHub = Substitute.For<IEventHub>();
             var compositionContext = Substitute.For<ICompositionContext>();
             var context = new Context(compositionContext);
+
             var builder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
-            messageBroker.CreateBrokeredMesssageBuilder(context).Returns(builder);
+            builder.Initialize(context);
+            messageBroker.CreateBrokeredMessageBuilder(context).Returns(builder);
 
             var manager = new DefaultOrchestrationManager(appManifest, appRuntime, eventHub, messageBroker);
             manager.TimerDueTime = TimeSpan.FromMilliseconds(100);

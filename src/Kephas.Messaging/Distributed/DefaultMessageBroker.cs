@@ -103,7 +103,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The new brokered messsage builder.
         /// </returns>
-        public IBrokeredMessageBuilder CreateBrokeredMesssageBuilder(IContext context)
+        public IBrokeredMessageBuilder CreateBrokeredMessageBuilder(IContext context)
         {
             Requires.NotNull(context, nameof(context));
 

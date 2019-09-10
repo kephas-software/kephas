@@ -74,6 +74,17 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
+        public void CreateBrokeredMessageBuilder_initialized()
+        {
+            var container = this.CreateContainer();
+            var messageBroker = container.GetExport<IMessageBroker>();
+
+            var builder = messageBroker.CreateBrokeredMessageBuilder(new Context(container));
+            Assert.IsInstanceOf<BrokeredMessageBuilder>(builder);
+            Assert.IsNotNull(builder.BrokeredMessage);
+        }
+
+        [Test]
         public async Task DispatchAsync_timeout()
         {
             var container = this.CreateContainer(parts: new[] { typeof(TimeoutMessageHandler) });
