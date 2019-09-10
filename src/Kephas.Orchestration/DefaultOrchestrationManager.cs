@@ -266,11 +266,11 @@ namespace Kephas.Orchestration
             try
             {
                 var heartbeatEvent = this.CreateAppHeartbeatEvent();
-                this.messageBroker.PublishAsync(heartbeatEvent, state as IContext).WaitNonLocking();
+                this.messageBroker.PublishAsync(heartbeatEvent, (IContext)state).WaitNonLocking();
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Exception before finalizing application behavior.");
+                this.Logger.Error(ex, "Exception on application heartbeat.");
             }
         }
     }
