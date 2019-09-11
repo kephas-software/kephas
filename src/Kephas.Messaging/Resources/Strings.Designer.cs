@@ -142,6 +142,15 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors occurred while sending message &apos;{0}&apos;..
+        /// </summary>
+        public static string DefaultMessageBroker_ErrorsOccurredWhileSending_Exception {
+            get {
+                return ResourceManager.GetString("DefaultMessageBroker_ErrorsOccurredWhileSending_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot send message to the following recipients: {0}. There is no message router to handle them..
         /// </summary>
         public static string DefaultMessageBroker_NoMessageRoutersCanHandleRecipients_Exception {
@@ -165,15 +174,6 @@ namespace Kephas.Messaging.Resources {
         public static string DefaultMessageProcessor_MissingHandler_Exception {
             get {
                 return ResourceManager.GetString("DefaultMessageProcessor_MissingHandler_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to An error occurred in the message processor. Please check the exception details for more information..
-        /// </summary>
-        public static string InProcessMessageRouter_MessageProcessor_Async_Exception {
-            get {
-                return ResourceManager.GetString("InProcessMessageRouter_MessageProcessor_Async_Exception", resourceCulture);
             }
         }
         
@@ -237,6 +237,24 @@ namespace Kephas.Messaging.Resources {
         public static string MessageHandler_BadMessageType_Exception {
             get {
                 return ResourceManager.GetString("MessageHandler_BadMessageType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while processing the one-way request &apos;{0}&apos;. Please check the exception details for more information..
+        /// </summary>
+        public static string MessageRouterBase_ProcessOneWay_Exception {
+            get {
+                return ResourceManager.GetString("MessageRouterBase_ProcessOneWay_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while sending the reply to &apos;{0}&apos;. Please check the exception details for more information..
+        /// </summary>
+        public static string MessageRouterBase_Reply_Exception {
+            get {
+                return ResourceManager.GetString("MessageRouterBase_Reply_Exception", resourceCulture);
             }
         }
     }

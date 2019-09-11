@@ -19,6 +19,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
     using Kephas.Composition;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
     using Kephas.Testing.Composition.Mef;
@@ -48,18 +49,39 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         }
 
         [Test]
+        public async Task SendAsync_with_request()
+        {
+            var container = this.CreateContainer();
+            var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single();
+
+            ReplyReceivedEventArgs eventArgs = null;
+            inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
+            var request = new BrokeredMessage { Content = new PingMessage() };
+            var result = await inProcessRouter.SendAsync(request, new Context(container), default);
+
+            Thread.Sleep(100);
+            Assert.IsNull(eventArgs);
+            Assert.AreEqual(RoutingInstruction.Reply, result.action);
+            Assert.IsInstanceOf<PingBackMessage>(result.reply);
+        }
+
+        [Test]
         public async Task SendAsync_with_reply()
         {
             var container = this.CreateContainer();
             var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single();
 
-            IBrokeredMessage response = null;
-            inProcessRouter.ReplyReceived += (s, e) => { response = e.Message; };
-            var request = new BrokeredMessage { Content = new PingMessage() };
-            await inProcessRouter.SendAsync(request, new Context(container), default);
+            ReplyReceivedEventArgs eventArgs = null;
+            inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
+            var context = new Context(container);
+            var reply = new BrokeredMessage { Content = new PingBackMessage(), ReplyToMessageId = "hello" };
+            var result = await inProcessRouter.SendAsync(reply, context, default);
 
             Thread.Sleep(100);
-            Assert.AreEqual(request.Id, response.ReplyToMessageId);
+            Assert.AreSame(reply, eventArgs.Message);
+            Assert.AreSame(context, eventArgs.Context);
+            Assert.AreEqual(RoutingInstruction.None, result.action);
+            Assert.IsNull(result.reply);
         }
     }
 }

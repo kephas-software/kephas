@@ -141,8 +141,8 @@
   <data name="MessageBrokerBase_Timeout_Exception" xml:space="preserve">
     <value>The maximum alloted time of {0} expired for {1}.</value>
   </data>
-  <data name="InProcessMessageRouter_MessageProcessor_Async_Exception" xml:space="preserve">
-    <value>An error occurred in the message processor. Please check the exception details for more information.</value>
+  <data name="MessageRouterBase_Reply_Exception" xml:space="preserve">
+    <value>An error occurred while sending the reply to '{0}'. Please check the exception details for more information.</value>
   </data>
   <data name="BrokeredMessageHandler_ProcessAndRespond_Exception" xml:space="preserve">
     <value>The response processing is faulted.</value>
@@ -176,5 +176,11 @@
   </data>
   <data name="DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception" xml:space="preserve">
     <value>There is no message router to handle messages without recipients.</value>
+  </data>
+  <data name="MessageRouterBase_ProcessOneWay_Exception" xml:space="preserve">
+    <value>An error occurred while processing the one-way request '{0}'. Please check the exception details for more information.</value>
+  </data>
+  <data name="DefaultMessageBroker_ErrorsOccurredWhileSending_Exception" xml:space="preserve">
+    <value>Errors occurred while sending message '{0}'.</value>
   </data>
 </root>

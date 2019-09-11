@@ -8,18 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Distributed
+namespace Kephas.Messaging.Distributed.Routing
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.ExceptionHandling;
-    using Kephas.Logging;
-    using Kephas.Messaging.Distributed.Routing;
-    using Kephas.Messaging.Messages;
-    using Kephas.Messaging.Resources;
+    using Kephas.Messaging;
+    using Kephas.Messaging.Distributed;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -31,20 +27,16 @@ namespace Kephas.Messaging.Distributed
     public class InProcessMessageRouter : MessageRouterBase
     {
         private readonly IMessageProcessor messageProcessor;
-        private readonly Lazy<IMessageBroker> lazyMessageBroker;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InProcessMessageRouter"/> class.
         /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="messageBrokerFactory">The message broker factory.</param>
-        public InProcessMessageRouter(IMessageProcessor messageProcessor, IExportFactory<IMessageBroker> messageBrokerFactory)
+        public InProcessMessageRouter(IMessageProcessor messageProcessor)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
-            Requires.NotNull(messageBrokerFactory, nameof(messageBrokerFactory));
 
             this.messageProcessor = messageProcessor;
-            this.lazyMessageBroker = new Lazy<IMessageBroker>(() => messageBrokerFactory.CreateExportedValue());
         }
 
         /// <summary>
@@ -54,87 +46,62 @@ namespace Kephas.Messaging.Distributed
         /// <param name="context">The send context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        public override Task SendAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        public override Task<(RoutingInstruction action, IMessage reply)> SendAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
             Requires.NotNull(context, nameof(context));
 
-            return Task.Factory.StartNew(
+            if (brokeredMessage.ReplyToMessageId != null)
+            {
+                this.OnReplyReceived(new ReplyReceivedEventArgs { Message = brokeredMessage, Context = context });
+                return Task.FromResult((action: RoutingInstruction.None, reply: (IMessage)null));
+            }
+
+            var completionSource = new TaskCompletionSource<(RoutingInstruction action, IMessage reply)>();
+
+            // make processing really async
+            Task.Factory.StartNew(
                 async () =>
                 {
-
-                    if (brokeredMessage.ReplyToMessageId != null)
+                    try
                     {
-                        this.OnReplyReceived(new ReplyReceivedEventArgs { Message = brokeredMessage, Context = context });
+                        var result = await base.SendAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+                        completionSource.SetResult(result);
                     }
-                    else if (brokeredMessage.IsOneWay)
+                    catch (Exception ex)
                     {
-                        this.ProcessOneWay(brokeredMessage, context);
-                    }
-                    else
-                    {
-                        await this.ProcessAndRespondAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+                        completionSource.SetException(ex);
                     }
                 },
                 cancellationToken);
+
+            return completionSource.Task;
         }
 
-        private async Task ProcessAndRespondAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        /// <summary>
+        /// Processes the message asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// The one-way handling is performed in the <see cref="SendAsync(IBrokeredMessage, IContext, CancellationToken)"/>
+        /// method, here is handled purely the message over the transport medium.
+        /// </remarks>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="context">The send context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result yielding an action to take further and an optional reply.
+        /// </returns>
+        protected override async Task<IMessage> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
-            IMessage response = null;
-            Exception exception = null;
-            try
+            using (var messagingContext = context == null
+                                              ? new MessageProcessingContext(this.messageProcessor)
+                                              : new MessageProcessingContext(context, this.messageProcessor))
             {
-                using (var messagingContext = context == null
-                                                  ? new MessageProcessingContext(this.messageProcessor, brokeredMessage.Content)
-                                                  : new MessageProcessingContext(context, this.messageProcessor, brokeredMessage.Content))
-                {
-                    messagingContext.SetBrokeredMessage(brokeredMessage);
-                    response = await this.messageProcessor.ProcessAsync(brokeredMessage.Content, messagingContext, cancellationToken)
-                           .PreserveThreadContext();
-                }
-            }
-            catch (Exception ex)
-            {
-                exception = ex;
-            }
-
-            if (exception != null)
-            {
-                response = new ExceptionResponseMessage { Exception = new ExceptionData(exception) };
-            }
-
-            var builder = this.lazyMessageBroker.Value.CreateBrokeredMessageBuilder(context);
-            var responseMessage = builder
-                .ReplyTo(brokeredMessage.Id, brokeredMessage.Sender)
-                .WithContent(response)
-                .OneWay()
-                .BrokeredMessage;
-
-            this.OnReplyReceived(new ReplyReceivedEventArgs
-            {
-                Message = responseMessage,
-                Context = context,
-            });
-        }
-
-        private async void ProcessOneWay(IBrokeredMessage brokeredMessage, IContext context)
-        {
-            try
-            {
-                using (var messagingContext = context == null
-                                                  ? new MessageProcessingContext(this.messageProcessor, brokeredMessage.Content)
-                                                  : new MessageProcessingContext(context, this.messageProcessor, brokeredMessage.Content))
-                {
-                    messagingContext.SetBrokeredMessage(brokeredMessage);
-                    await this.messageProcessor.ProcessAsync(brokeredMessage.Content, messagingContext).PreserveThreadContext();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Logger.Warn(ex, Strings.InProcessMessageRouter_MessageProcessor_Async_Exception);
+                messagingContext.SetBrokeredMessage(brokeredMessage);
+                return await this.messageProcessor.ProcessAsync(brokeredMessage.Content, messagingContext, cancellationToken)
+                       .PreserveThreadContext();
             }
         }
     }

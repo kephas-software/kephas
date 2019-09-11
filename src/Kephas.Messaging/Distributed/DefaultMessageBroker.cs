@@ -21,6 +21,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Distributed.Routing.Composition;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
@@ -83,17 +84,23 @@ namespace Kephas.Messaging.Distributed
             if (brokeredMessage.IsOneWay)
             {
                 this.LogBeforeSend(brokeredMessage);
-                this.SendAsync(brokeredMessage, context, cancellationToken);
+                this.SendAsync(brokeredMessage, context, cancellationToken)
+                    .ContinueWith(
+                        t => this.Logger.Error(string.Format(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage)),
+                        TaskContinuationOptions.OnlyOnFaulted);
                 return Task.FromResult((IMessage)null);
             }
 
-            var taskCompletionSource = this.GetTaskCompletionSource(brokeredMessage);
+            var completionSource = this.GetTaskCompletionSource(brokeredMessage);
 
             this.LogBeforeSend(brokeredMessage);
-            this.SendAsync(brokeredMessage, context, cancellationToken);
+            this.SendAsync(brokeredMessage, context, cancellationToken)
+                .ContinueWith(
+                    t => this.Logger.Error(string.Format(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage)),
+                    TaskContinuationOptions.OnlyOnFaulted);
 
             // Returns an awaiter for the answer, must pair with the original message ID.
-            return taskCompletionSource.Task;
+            return completionSource.Task;
         }
 
         /// <summary>
@@ -198,45 +205,31 @@ namespace Kephas.Messaging.Distributed
         /// <param name="context">The send context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result that yields an IMessage.
+        /// The asynchronous result.
         /// </returns>
-        protected virtual Task SendAsync(
+        protected virtual async Task SendAsync(
             IBrokeredMessage brokeredMessage,
             IContext context,
             CancellationToken cancellationToken)
         {
-            if (brokeredMessage.Recipients == null || !brokeredMessage.Recipients.Any())
+            var results = await this.CollectSendResultsAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+            var replies = results
+                .Where(t => t.action == RoutingInstruction.Reply)
+                .Select(t => t.reply)
+                .Distinct() // make from multiple nulls one.
+                .ToList();
+
+            if (replies.Count == 0)
             {
-                var router = this.routerMap.FirstOrDefault(f => f.isFallback).router;
-                if (router != null)
-                {
-                    return router.SendAsync(brokeredMessage, context, cancellationToken);
-                }
-                else
-                {
-                    throw new MessagingException(Strings.DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception);
-                }
+                return;
             }
 
-            var recipientMappings = brokeredMessage.Recipients
-                .Select(r => (recipient: r, router: this.routerMap.FirstOrDefault(f => f.isFallback || (f.regex?.IsMatch(r.Url.ToString()) ?? false)).router))
-                .ToList();
-            var unhandledRecipients = recipientMappings
-                .Where(c => c.router == null)
-                .Select(m => m.recipient)
-                .ToList();
-            if (unhandledRecipients.Count > 0)
-            {
-                throw new MessagingException(string.Format(Strings.DefaultMessageBroker_NoMessageRoutersCanHandleRecipients_Exception, string.Join(", ", unhandledRecipients)));
-            }
+            var responseMessage = this.GetResponseMessage(
+                replies.Count == 1 ? replies[0] : new AggregateMessage { Messages = replies },
+                brokeredMessage,
+                context);
 
-            var routerMappings = recipientMappings
-                .GroupBy(c => c.router)
-                .Select(g => (router: g.Key, recipients: g.Select(i => i.recipient).ToList()))
-                .ToList();
-
-            var tasks = routerMappings.Select(m => m.router.SendAsync(brokeredMessage.Clone(m.recipients), context, cancellationToken)).ToList();
-            return Task.WhenAll(tasks);
+            await this.SendAsync(responseMessage, context, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -284,6 +277,61 @@ namespace Kephas.Messaging.Distributed
         private void HandleReplyReceived(object sender, ReplyReceivedEventArgs e)
         {
             this.ReceiveReply(e.Message, e.Context);
+        }
+
+        /// <summary>
+        /// Sends the brokered message asynchronously over the physical medium.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="context">The send context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result that yields an action and a reply.
+        /// </returns>
+        private async Task<ICollection<(RoutingInstruction action, IMessage reply)>> CollectSendResultsAsync(
+            IBrokeredMessage brokeredMessage,
+            IContext context,
+            CancellationToken cancellationToken)
+        {
+            if (brokeredMessage.Recipients == null || !brokeredMessage.Recipients.Any())
+            {
+                var router = this.routerMap.FirstOrDefault(f => f.isFallback).router;
+                if (router != null)
+                {
+                    return new[] { await router.SendAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext() };
+                }
+
+                throw new MessagingException(Strings.DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception);
+            }
+
+            var recipientMappings = brokeredMessage.Recipients
+                .Select(r => (recipient: r, router: this.routerMap.FirstOrDefault(f => f.isFallback || (f.regex?.IsMatch(r.Url.ToString()) ?? false)).router))
+                .ToList();
+            var unhandledRecipients = recipientMappings
+                .Where(c => c.router == null)
+                .Select(m => m.recipient)
+                .ToList();
+            if (unhandledRecipients.Count > 0)
+            {
+                throw new MessagingException(string.Format(Strings.DefaultMessageBroker_NoMessageRoutersCanHandleRecipients_Exception, string.Join(", ", unhandledRecipients)));
+            }
+
+            var routerMappings = recipientMappings
+                .GroupBy(c => c.router)
+                .Select(g => (router: g.Key, recipients: g.Select(i => i.recipient).ToList()))
+                .ToList();
+
+            var tasks = routerMappings.Select(m => m.router.SendAsync(brokeredMessage.Clone(m.recipients), context, cancellationToken)).ToList();
+            return await Task.WhenAll(tasks).PreserveThreadContext();
+        }
+
+        private IBrokeredMessage GetResponseMessage(IMessage reply, IBrokeredMessage message, IContext context)
+        {
+            var builder = this.CreateBrokeredMessageBuilder(context);
+            return builder
+                .ReplyTo(message)
+                .WithContent(reply)
+                .BrokeredMessage;
         }
 
         /// <summary>

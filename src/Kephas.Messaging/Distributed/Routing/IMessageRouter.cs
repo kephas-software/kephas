@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Distributed
+namespace Kephas.Messaging.Distributed.Routing
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Messaging.Distributed.Routing;
     using Kephas.Services;
 
     /// <summary>
@@ -34,9 +33,9 @@ namespace Kephas.Messaging.Distributed
         /// <param name="context">The send context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        Task SendAsync(
+        Task<(RoutingInstruction action, IMessage reply)> SendAsync(
             IBrokeredMessage brokeredMessage,
             IContext context,
             CancellationToken cancellationToken);

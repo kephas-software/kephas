@@ -1,38 +1,28 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ReplyReceivedEventArgs.cs" company="Kephas Software SRL">
+// <copyright file="RoutingInstruction.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the ReplyReceivedEventArgs interface.
+//   Implements the routing instruction class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Messaging.Distributed.Routing
 {
-    using System;
-
-    using Kephas.Services;
-
     /// <summary>
-    /// Additional information for reply received events.
+    /// Values that represent routing instructions.
     /// </summary>
-    public class ReplyReceivedEventArgs : EventArgs
+    public enum RoutingInstruction
     {
         /// <summary>
-        /// Gets or sets the message.
+        /// No action to take.
         /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public IBrokeredMessage Message { get; set; }
+        None,
 
         /// <summary>
-        /// Gets or sets the context.
+        /// The broker should dispatch the reply.
         /// </summary>
-        /// <value>
-        /// The context.
-        /// </value>
-        public IContext Context { get; set; }
+        Reply,
     }
 }

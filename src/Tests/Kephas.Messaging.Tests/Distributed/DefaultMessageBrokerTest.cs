@@ -25,6 +25,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Distributed.Routing.Composition;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.HandlerSelectors;
@@ -144,7 +145,7 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
-        public async Task SendAsync_dispose_created_context()
+        public async Task DispatchAsync_dispose_created_context()
         {
             var container = this.CreateContainer(parts: new[] { typeof(TestMessageProcessor) });
             var messageBroker = await this.GetMessageBrokerAsync(container);
