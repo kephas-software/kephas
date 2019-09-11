@@ -90,7 +90,6 @@ namespace Kephas.Messaging.Distributed.Behaviors
                 var responseMessage = builder
                     .ReplyTo(message)
                     .WithContent(response)
-                    .OneWay()
                     .BrokeredMessage;
 
                 await broker.DispatchAsync(responseMessage, context, token).PreserveThreadContext();
