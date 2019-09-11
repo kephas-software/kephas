@@ -27,7 +27,7 @@ namespace Kephas.Messaging.Distributed.Routing
     public abstract class MessageRouterBase : Loggable, IMessageRouter, IDisposable
     {
         /// <summary>
-        /// Occurs when a reply is received.
+        /// Occurs when a reply for is received to match a request sent from the container message broker.
         /// </summary>
         public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
 

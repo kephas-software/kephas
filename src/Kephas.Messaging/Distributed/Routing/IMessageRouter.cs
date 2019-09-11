@@ -22,7 +22,7 @@ namespace Kephas.Messaging.Distributed.Routing
     public interface IMessageRouter
     {
         /// <summary>
-        /// Occurs when a reply is received.
+        /// Occurs when a reply for is received to match a request sent from the container message broker.
         /// </summary>
         event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
 

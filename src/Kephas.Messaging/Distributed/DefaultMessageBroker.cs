@@ -316,6 +316,14 @@ namespace Kephas.Messaging.Distributed
                 throw new MessagingException(string.Format(Strings.DefaultMessageBroker_NoMessageRoutersCanHandleRecipients_Exception, string.Join(", ", unhandledRecipients)));
             }
 
+            // optimization for the typical case when there is only one router to handle the recipients.
+            if (recipientMappings.Count == 1)
+            {
+                var router = recipientMappings[0].router;
+                return new[] { await router.SendAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext() };
+            }
+
+            // general case when there are more routers for the recipients
             var routerMappings = recipientMappings
                 .GroupBy(c => c.router)
                 .Select(g => (router: g.Key, recipients: g.Select(i => i.recipient).ToList()))
