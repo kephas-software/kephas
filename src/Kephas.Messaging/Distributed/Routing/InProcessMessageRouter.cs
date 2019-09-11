@@ -93,15 +93,16 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected override async Task<IMessage> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        protected override async Task<(RoutingInstruction action, IMessage reply)> SendCoreAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
             using (var messagingContext = context == null
                                               ? new MessageProcessingContext(this.messageProcessor)
                                               : new MessageProcessingContext(context, this.messageProcessor))
             {
                 messagingContext.SetBrokeredMessage(brokeredMessage);
-                return await this.messageProcessor.ProcessAsync(brokeredMessage.Content, messagingContext, cancellationToken)
+                var reply = await this.messageProcessor.ProcessAsync(brokeredMessage.Content, messagingContext, cancellationToken)
                        .PreserveThreadContext();
+                return (RoutingInstruction.Reply, reply);
             }
         }
     }

@@ -47,18 +47,18 @@ namespace Kephas.Messaging.Distributed.Routing
 
             if (brokeredMessage.IsOneWay)
             {
-                this.ProcessAsync(brokeredMessage, context, default)
+                this.SendCoreAsync(brokeredMessage, context, default)
                     .ContinueWith(
                         t => this.Logger.Warn(t.Exception, string.Format(Strings.MessageRouterBase_ProcessOneWay_Exception, brokeredMessage)),
                         TaskContinuationOptions.OnlyOnFaulted);
                 return (RoutingInstruction.None, null);
             }
 
-            IMessage reply = null;
+            (RoutingInstruction action, IMessage reply) result = default;
             Exception exception = null;
             try
             {
-                reply = await this.ProcessAsync(brokeredMessage, context, cancellationToken)
+                result = await this.SendCoreAsync(brokeredMessage, context, cancellationToken)
                        .PreserveThreadContext();
             }
             catch (Exception ex)
@@ -66,12 +66,12 @@ namespace Kephas.Messaging.Distributed.Routing
                 exception = ex;
             }
 
-            if (exception != null)
+            if (exception == null)
             {
-                reply = new ExceptionResponseMessage { Exception = new ExceptionData(exception) };
+                return result;
             }
 
-            return (RoutingInstruction.Reply, reply);
+            return (RoutingInstruction.Reply, new ExceptionResponseMessage { Exception = new ExceptionData(exception) });
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Kephas.Messaging.Distributed.Routing
         }
 
         /// <summary>
-        /// Processes the message asynchronously.
+        /// Sends the brokered message asynchronously over the physical medium (core implementation).
         /// </summary>
         /// <remarks>
         /// The one-way handling is performed in the <see cref="SendAsync(IBrokeredMessage, IContext, CancellationToken)"/>
@@ -109,7 +109,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected abstract Task<IMessage> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken);
+        protected abstract Task<(RoutingInstruction action, IMessage reply)> SendCoreAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken);
 
         /// <summary>
         /// Raises the reply received event.
