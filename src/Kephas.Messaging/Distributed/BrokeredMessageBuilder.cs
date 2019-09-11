@@ -15,6 +15,7 @@ namespace Kephas.Messaging.Distributed
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Events;
     using Kephas.Messaging.Resources;
     using Kephas.Security.Authentication;
     using Kephas.Services;
@@ -114,7 +115,7 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Sets the content message.
+        /// Sets the content message. An event content makes the message one-way.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns>
@@ -125,6 +126,11 @@ namespace Kephas.Messaging.Distributed
             if (this.brokeredMessage.ReplyToMessageId == null && message == null)
             {
                 throw new ArgumentNullException(nameof(message), Strings.BrokeredMessageBuilder_ContentNullWhenNotReply_Exception);
+            }
+
+            if (message is IEvent)
+            {
+                this.brokeredMessage.IsOneWay = true;
             }
 
             this.brokeredMessage.Content = message;
@@ -355,7 +361,12 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(messageId, nameof(messageId));
 
             this.brokeredMessage.ReplyToMessageId = messageId;
-            this.brokeredMessage.Recipients = recipients;
+            this.brokeredMessage.IsOneWay = true;
+            if (recipients != null)
+            {
+                this.brokeredMessage.Recipients = recipients;
+
+            }
 
             return this;
         }
