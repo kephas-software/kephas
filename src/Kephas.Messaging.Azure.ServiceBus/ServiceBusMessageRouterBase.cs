@@ -15,18 +15,14 @@ namespace Kephas.Messaging.Azure.ServiceBus
     using System.Threading.Tasks;
 
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Distributed.Routing;
     using Kephas.Services;
 
     /// <summary>
-    /// A service bus message router.
+    /// A base class for service bus message routers.
     /// </summary>
-    public class ServiceBusMessageRouter : IMessageRouter, IAsyncInitializable
+    public abstract class ServiceBusMessageRouterBase : MessageRouterBase, IAsyncInitializable
     {
-        /// <summary>
-        /// Occurs when a reply is received.
-        /// </summary>
-        public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
-
         /// <summary>
         /// Initializes the service asynchronously.
         /// </summary>
@@ -42,15 +38,18 @@ namespace Kephas.Messaging.Azure.ServiceBus
         }
 
         /// <summary>
-        /// Sends the brokered message asynchronously over the physical medium.
+        /// Processes the message asynchronously.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
         /// <param name="context">The send context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// An asynchronous result that yields the resulted response.
         /// </returns>
-        public Task SendAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        /// <example>
+        /// .
+        /// </example>
+        protected override Task<IMessage> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
