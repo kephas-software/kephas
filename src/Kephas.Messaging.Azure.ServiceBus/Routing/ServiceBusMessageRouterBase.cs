@@ -8,12 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Azure.ServiceBus
+namespace Kephas.Messaging.Azure.ServiceBus.Routing
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Services;
@@ -38,18 +37,15 @@ namespace Kephas.Messaging.Azure.ServiceBus
         }
 
         /// <summary>
-        /// Processes the message asynchronously.
+        /// Sends the brokered message asynchronously over the physical medium (core implementation).
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
         /// <param name="context">The send context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// An asynchronous result that yields the resulted response.
+        /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        /// <example>
-        /// .
-        /// </example>
-        protected override Task<IMessage> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        protected override Task<(RoutingInstruction action, IMessage reply)> SendCoreAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
