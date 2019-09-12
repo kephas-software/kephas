@@ -77,6 +77,18 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
             Assert.AreSame(typeof(int), serviceFactory.Metadata.ServiceType);
         }
 
+        [Test]
+        public void WithLiteCompositionContainer_disposable_closed_generic_with_non_generic_contract_metadata()
+        {
+            var ambientServices = new AmbientServices()
+                .WithStaticAppRuntime(this.IsAppAssembly);
+
+            ambientServices.WithLiteCompositionContainer(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(DisposableIntGenericSvc) }));
+
+            var serviceFactory = ambientServices.GetService<IExportFactory<INonGenericSvc, GenericSvcMetadata>>();
+            Assert.AreSame(typeof(int), serviceFactory.Metadata.ServiceType);
+        }
+
         private bool IsTestAssembly(AssemblyName assemblyName)
         {
             return assemblyName.Name.Contains("Test") || assemblyName.Name.Contains("NUnit") || assemblyName.Name.Contains("Mono") || assemblyName.Name.Contains("Proxy");
@@ -104,6 +116,13 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         public interface IGenericSvc<TService> : INonGenericSvc { }
 
         public class IntGenericSvc : IGenericSvc<int> { }
+
+        // The order of the interfaces is important, as a test case
+        // includes finding the first generic interface
+        public class DisposableIntGenericSvc : IDisposable, IGenericSvc<int>
+        {
+            public void Dispose() { }
+        }
 
         public class GenericSvcMetadata : AppServiceMetadata
         {

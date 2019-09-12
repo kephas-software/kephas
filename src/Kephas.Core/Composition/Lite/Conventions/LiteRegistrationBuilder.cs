@@ -222,7 +222,7 @@ namespace Kephas.Composition.Lite.Conventions
                     this.ImplementationType = type;
                     if (isGenericTypeDefinition && !type.IsGenericTypeDefinition)
                     {
-                        var constructedServiceType = type.GetInterfaces().FirstOrDefault(i => i.GetGenericTypeDefinition() == genericServiceType);
+                        var constructedServiceType = type.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericServiceType);
                         if (constructedServiceType == null)
                         {
                             throw new InvalidOperationException(string.Format(Strings.LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception, genericServiceType, type));
