@@ -20,11 +20,11 @@ namespace Kephas.Composition.Lite
 
     internal class ServiceRegistrationBuilder : IServiceRegistrationBuilder
     {
+        private readonly IAmbientServices ambientServices;
+
         private Type contractType;
 
         private Type serviceType;
-
-        private readonly IAmbientServices ambientServices;
 
         private AppServiceLifetime lifetime = AppServiceLifetime.Singleton;
 
@@ -37,50 +37,50 @@ namespace Kephas.Composition.Lite
         public ServiceRegistrationBuilder(IAmbientServices ambientServices, Type contractType)
         {
             this.contractType = contractType;
-            serviceType = contractType;
+            this.serviceType = contractType;
             this.ambientServices = ambientServices;
         }
 
         public IServiceInfo Build()
         {
-            switch (instancing)
+            switch (this.instancing)
             {
                 case Type implementationType:
-                    return new ServiceInfo(ambientServices, contractType, implementationType, lifetime == AppServiceLifetime.Singleton)
+                    return new ServiceInfo(this.ambientServices, this.contractType, implementationType, this.lifetime == AppServiceLifetime.Singleton)
                     {
-                        AllowMultiple = allowMultiple,
-                        ServiceType = serviceType,
+                        AllowMultiple = this.allowMultiple,
+                        ServiceType = this.serviceType,
                     };
                 case Func<ICompositionContext, object> factory:
-                    return new ServiceInfo(ambientServices, contractType, factory, lifetime == AppServiceLifetime.Singleton)
+                    return new ServiceInfo(this.ambientServices, this.contractType, factory, this.lifetime == AppServiceLifetime.Singleton)
                     {
-                        AllowMultiple = allowMultiple,
-                        ServiceType = serviceType,
+                        AllowMultiple = this.allowMultiple,
+                        ServiceType = this.serviceType,
                     };
                 default:
-                    if (instancing == null)
+                    if (this.instancing == null)
                     {
                         throw new InvalidOperationException(Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception);
                     }
 
-                    return new ServiceInfo(contractType, instancing)
+                    return new ServiceInfo(this.contractType, this.instancing)
                     {
-                        AllowMultiple = allowMultiple,
-                        ServiceType = serviceType,
+                        AllowMultiple = this.allowMultiple,
+                        ServiceType = this.serviceType,
                     };
             }
         }
 
-        public IServiceRegistrationBuilder RegisterAs(Type contractType)
+        public IServiceRegistrationBuilder Keyed(Type contractType)
         {
             Requires.NotNull(contractType, nameof(contractType));
 
-            if (!this.contractType.IsAssignableFrom(serviceType))
+            if (!this.contractType.IsAssignableFrom(this.serviceType))
             {
                 throw new InvalidOperationException(
                     string.Format(
                         Strings.AmbientServices_ServiceTypeMustBeSuperOfContractType_Exception,
-                        serviceType,
+                        this.serviceType,
                         contractType));
             }
 

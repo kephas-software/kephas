@@ -20,6 +20,17 @@ namespace Kephas.Composition.Conventions
     public interface IPartConventionsBuilder
     {
         /// <summary>
+        /// Indicates the declared service type. Typically this is the same as the contract type, but
+        /// this may get overwritten, for example when declaring generic type services for collecting
+        /// metadata.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        IPartConventionsBuilder AsServiceType(Type serviceType);
+
+        /// <summary>
         /// Mark the part as being shared within the entire composition.
         /// </summary>
         /// <returns>A part builder allowing further configuration of the part.</returns>

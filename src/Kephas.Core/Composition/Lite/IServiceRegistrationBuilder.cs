@@ -19,7 +19,7 @@ namespace Kephas.Composition.Lite
     public interface IServiceRegistrationBuilder
     {
         /// <summary>
-        /// Sets the registration type to a super type of the service type.
+        /// Sets the registration key to a super type of the service type.
         /// </summary>
         /// <remarks>
         /// The registration type is the key to find the service.
@@ -29,7 +29,7 @@ namespace Kephas.Composition.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        IServiceRegistrationBuilder RegisterAs(Type contractType);
+        IServiceRegistrationBuilder Keyed(Type contractType);
 
         /// <summary>
         /// Registers the service as a singleton.

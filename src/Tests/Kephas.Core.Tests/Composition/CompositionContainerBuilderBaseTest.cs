@@ -182,10 +182,19 @@ namespace Kephas.Core.Tests.Composition
 
             public Type Type { get; set; }
 
+            public Type ServiceType { get; set; }
+
             public Predicate<Type> TypePredicate { get; set; }
 
             public bool IsSingleton { get; set; }
+
             public bool IsScoped { get; set; }
+
+            public IPartConventionsBuilder AsServiceType(Type serviceType)
+            {
+                this.ServiceType = serviceType;
+                return this;
+            }
 
             public IPartConventionsBuilder Singleton()
             {

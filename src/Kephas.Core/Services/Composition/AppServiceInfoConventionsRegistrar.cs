@@ -536,7 +536,7 @@ namespace Kephas.Services.Composition
                     logger.Debug($"Service {serviceContractType} matches {appServiceInfo.InstanceType}.");
                 }
 
-                return conventions.ForType(appServiceInfo.InstanceType);
+                return conventions.ForType(appServiceInfo.InstanceType).AsServiceType(serviceContract);
             }
 
             if (serviceContract.IsGenericTypeDefinition)
@@ -563,7 +563,7 @@ namespace Kephas.Services.Composition
                     // to be done through the lambda criteria
                     if (isOverride && selectedInstanceType != null)
                     {
-                        return conventions.ForType(selectedInstanceType);
+                        return conventions.ForType(selectedInstanceType).AsServiceType(serviceContract);
                     }
                 }
 
@@ -574,7 +574,7 @@ namespace Kephas.Services.Composition
 
                 // if there is non-generic service contract with the same full name
                 // then add just the conventions for the derived types.
-                return conventions.ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType));
+                return conventions.ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType)).AsServiceType(serviceContract);
             }
 
             if (appServiceInfo.AllowMultiple)
@@ -586,7 +586,7 @@ namespace Kephas.Services.Composition
 
                 // if the service contract metadata allows multiple service registrations
                 // then add just the conventions for the derived types.
-                return conventions.ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract));
+                return conventions.ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract)).AsServiceType(serviceContract);
             }
 
             var (_, selectedPart) = this.TrySelectSingleServiceImplementationType(
@@ -601,7 +601,7 @@ namespace Kephas.Services.Composition
                     logger.Debug($"Service {serviceContractType} matches {selectedPart}.");
                 }
 
-                return conventions.ForType(selectedPart);
+                return conventions.ForType(selectedPart).AsServiceType(serviceContract);
             }
 
             return null;

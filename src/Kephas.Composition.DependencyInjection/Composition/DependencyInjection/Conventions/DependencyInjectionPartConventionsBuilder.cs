@@ -15,6 +15,7 @@ namespace Kephas.Composition.DependencyInjection.Conventions
     using System.Reflection;
 
     using Kephas.Composition.Conventions;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,23 @@ namespace Kephas.Composition.DependencyInjection.Conventions
         internal DependencyInjectionPartConventionsBuilder(ServiceDescriptorBuilder descriptorBuilder)
         {
             this.descriptorBuilder = descriptorBuilder;
+        }
+
+        /// <summary>
+        /// Indicates the declared service type. Typically this is the same as the contract type, but
+        /// this may get overwritten, for example when declaring generic type services for collecting
+        /// metadata.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartConventionsBuilder AsServiceType(Type serviceType)
+        {
+            Requires.NotNull(serviceType, nameof(serviceType));
+
+            this.descriptorBuilder.ServiceType = serviceType;
+            return this;
         }
 
         /// <summary>

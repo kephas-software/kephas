@@ -10,12 +10,19 @@
 
 namespace Kephas.Core.Tests.Composition.Lite.Hosting
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     using Kephas.Application;
+    using Kephas.Collections;
+    using Kephas.Composition;
     using Kephas.Composition.Internal;
     using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Services.Composition;
+
     using NUnit.Framework;
-    using System.Reflection;
 
     [TestFixture]
     public class LiteCompositionContainerBuilderTest
@@ -58,6 +65,18 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
             Assert.IsNotNull(service);
         }
 
+        [Test]
+        public void WithLiteCompositionContainer_closed_generic_with_non_generic_contract_metadata()
+        {
+            var ambientServices = new AmbientServices()
+                .WithStaticAppRuntime(this.IsAppAssembly);
+
+            ambientServices.WithLiteCompositionContainer(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(IntGenericSvc) }));
+
+            var serviceFactory = ambientServices.GetService<IExportFactory<INonGenericSvc, GenericSvcMetadata>>();
+            Assert.AreSame(typeof(int), serviceFactory.Metadata.ServiceType);
+        }
+
         private bool IsTestAssembly(AssemblyName assemblyName)
         {
             return assemblyName.Name.Contains("Test") || assemblyName.Name.Contains("NUnit") || assemblyName.Name.Contains("Mono") || assemblyName.Name.Contains("Proxy");
@@ -77,6 +96,24 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         public class IntGenericDepedent
         {
             public IntGenericDepedent(IGeneric<int> intGeneric) { }
+        }
+
+        public interface INonGenericSvc { }
+
+        [AppServiceContract(ContractType = typeof(INonGenericSvc))]
+        public interface IGenericSvc<TService> : INonGenericSvc { }
+
+        public class IntGenericSvc : IGenericSvc<int> { }
+
+        public class GenericSvcMetadata : AppServiceMetadata
+        {
+            public GenericSvcMetadata(IDictionary<string, object> metadata) : base(metadata)
+            {
+                if (metadata == null) { return; }
+                this.ServiceType = (Type)metadata.TryGetValue(nameof(this.ServiceType));
+            }
+
+            public Type ServiceType { get; }
         }
     }
 }

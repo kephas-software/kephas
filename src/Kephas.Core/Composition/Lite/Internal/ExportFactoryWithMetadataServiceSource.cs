@@ -30,7 +30,7 @@ namespace Kephas.Composition.Lite.Internal
         public ExportFactoryWithMetadataServiceSource(IServiceRegistry registry)
             : base(registry)
         {
-            metadataResolver = new AppServiceMetadataResolver();
+            this.metadataResolver = new AppServiceMetadataResolver();
         }
 
         public override bool IsMatch(Type contractType)
@@ -40,7 +40,7 @@ namespace Kephas.Composition.Lite.Internal
 
         public override object GetService(IAmbientServices parent, Type serviceType)
         {
-            var descriptors = GetServiceDescriptors(parent, serviceType);
+            var descriptors = this.GetServiceDescriptors(parent, serviceType);
             return descriptors.Single().factory();
         }
 
@@ -52,7 +52,7 @@ namespace Kephas.Composition.Lite.Internal
             var innerType = genericArgs[0];
             var metadataType = genericArgs[1];
             var getService = GetServiceMethod.MakeGenericMethod(innerType, metadataType);
-            return GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, metadataResolver, tuple.serviceInfo, tuple.fn));
+            return this.GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, this.metadataResolver, tuple.serviceInfo, tuple.fn));
         }
 
         private static IExportFactory<T, TMetadata> GetService<T, TMetadata>(IAppServiceMetadataResolver metadataResolver, IServiceInfo serviceInfo, Func<object> factory)

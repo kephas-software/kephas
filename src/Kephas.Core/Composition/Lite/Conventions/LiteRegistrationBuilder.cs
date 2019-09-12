@@ -43,6 +43,14 @@ namespace Kephas.Composition.Lite.Conventions
         public Type ServiceType { get; set; }
 
         /// <summary>
+        /// Gets or sets the type of the contract.
+        /// </summary>
+        /// <value>
+        /// The type of the contract.
+        /// </value>
+        public Type ContractType { get; set; }
+
+        /// <summary>
         /// Gets or sets the factory.
         /// </summary>
         /// <value>
@@ -136,7 +144,7 @@ namespace Kephas.Composition.Lite.Conventions
         /// </returns>
         public IExportConventionsBuilder AsContractType(Type contractType)
         {
-            this.ServiceType = contractType;
+            this.ContractType = contractType;
             return this;
         }
 
@@ -151,7 +159,10 @@ namespace Kephas.Composition.Lite.Conventions
             var implementationString = this.ImplementationType?.ToString()
                                        ?? (this.ImplementationTypePredicate != null ? "type predicate" :
                                            this.Factory != null ? "factory" : "unknown");
-            return $"{this.ServiceType}/{this.Lifetime}/{implementationString}";
+            var serviceTypeString = this.ContractType == null || this.ContractType == this.ServiceType
+                                        ? this.ServiceType?.ToString()
+                                        : $"{this.ServiceType}({this.ContractType})";
+            return $"{serviceTypeString}/{this.Lifetime}/{implementationString}";
         }
 
 
@@ -184,6 +195,11 @@ namespace Kephas.Composition.Lite.Conventions
                 if (this.AllowMultiple)
                 {
                     b.AllowMultiple();
+                }
+
+                if (this.ContractType != null && this.ContractType != this.ServiceType)
+                {
+                    b.Keyed(this.ContractType);
                 }
             }
 

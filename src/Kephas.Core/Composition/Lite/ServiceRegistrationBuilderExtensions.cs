@@ -50,7 +50,7 @@ namespace Kephas.Composition.Lite
         }
 
         /// <summary>
-        /// Sets the registration type to a super type of the service type.
+        /// Sets the registration key to a super type of the service type.
         /// </summary>
         /// <remarks>
         /// The registration type is the key to find the service. The registered service type is a
@@ -61,11 +61,11 @@ namespace Kephas.Composition.Lite
         /// <returns>
         /// This builder.
         /// </returns>
-        public static IServiceRegistrationBuilder RegisterAs<TContract>(this IServiceRegistrationBuilder builder)
+        public static IServiceRegistrationBuilder Keyed<TContract>(this IServiceRegistrationBuilder builder)
         {
             Requires.NotNull(builder, nameof(builder));
 
-            return builder.RegisterAs(typeof(TContract));
+            return builder.Keyed(typeof(TContract));
         }
     }
 }

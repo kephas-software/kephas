@@ -360,7 +360,7 @@ namespace Kephas.Core.Tests
         public void GetService_exportFactory_with_metadata_from_generic()
         {
             var ambientServices = new AmbientServices();
-            ambientServices.Register(typeof(IService<,>), b => b.WithType<GenericService>().RegisterAs<IService>());
+            ambientServices.Register(typeof(IService<,>), b => b.WithType<GenericService>().Keyed<IService>());
 
             var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
@@ -387,7 +387,7 @@ namespace Kephas.Core.Tests
         public void GetService_lazy_with_metadata_from_generic()
         {
             var ambientServices = new AmbientServices();
-            ambientServices.Register(typeof(IService<,>), b => b.WithType<GenericService>().RegisterAs<IService>());
+            ambientServices.Register(typeof(IService<,>), b => b.WithType<GenericService>().Keyed<IService>());
 
             var service = ambientServices.GetService<Lazy<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);

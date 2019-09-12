@@ -38,12 +38,20 @@ namespace Kephas.Composition.Autofac.Conventions
         }
 
         /// <summary>
-        /// Gets or sets the type of the service.
+        /// Gets or sets the exported service type.
         /// </summary>
         /// <value>
-        /// The type of the service.
+        /// The exported service type.
         /// </value>
         public Type ServiceType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the contract type (service key).
+        /// </summary>
+        /// <value>
+        /// The contract type (service key).
+        /// </value>
+        public Type ContractType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the implementation.
@@ -151,9 +159,9 @@ namespace Kephas.Composition.Autofac.Conventions
                     implementationType,
                     registration);
             this.ExportConfiguration?.Invoke(implementationType, typeBuilder);
-            if (typeBuilder.ServiceType != null)
+            if (typeBuilder.ContractType != null)
             {
-                registration.As(typeBuilder.ServiceType);
+                registration.As(typeBuilder.ContractType);
             }
 
             this.SelectConstructor(registration, implementationType);
@@ -217,8 +225,12 @@ namespace Kephas.Composition.Autofac.Conventions
 
             public Type ServiceType { get; set; }
 
+            public Type ContractType { get; set; }
+
             public IExportConventionsBuilder AsContractType(Type contractType)
             {
+                this.ContractType = this.descriptorBuilder.ContractType = contractType;
+
                 if (this.ServiceType == null)
                 {
                     this.ServiceType = contractType;
@@ -230,7 +242,7 @@ namespace Kephas.Composition.Autofac.Conventions
                 else if (this.ServiceType.IsGenericTypeDefinition && !contractType.IsGenericTypeDefinition)
                 {
                     var closedContractType = contractType.GetInterfaces().First(t => t.IsClosedTypeOf(this.ServiceType));
-                    this.ServiceType = closedContractType;
+                    this.ContractType = closedContractType;
                 }
                 else
                 {

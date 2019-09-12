@@ -18,7 +18,6 @@ namespace Kephas.Composition.Autofac.Metadata
     using global::Autofac;
     using global::Autofac.Builder;
     using global::Autofac.Core;
-    using global::Autofac.Core.Resolving;
 
     using Kephas.Composition.ExportFactories;
     using Kephas.Diagnostics.Contracts;
