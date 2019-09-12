@@ -8,7 +8,7 @@
         <RootNamespace>Kephas.Messaging</RootNamespace>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-        <Version>6.5.0-rc.11</Version>
+        <Version>6.5.0-rc.12</Version>
         <AssemblyVersion>6.5.0.0</AssemblyVersion>
         <FileVersion>6.5.0.0</FileVersion>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
