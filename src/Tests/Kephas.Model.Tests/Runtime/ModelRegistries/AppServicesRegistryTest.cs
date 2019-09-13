@@ -14,19 +14,16 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application;
     using Kephas.Composition;
-    using Kephas.Composition.Mef.Hosting;
+    using Kephas.Composition.Lite.Hosting;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
     using Kephas.Reflection;
-    using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition;
 
     using NSubstitute;
 
@@ -39,7 +36,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<MefCompositionContainerBuilder> config = null)
+            Action<LiteCompositionContainerBuilder> config = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(AppServicesRegistry).GetTypeInfo().Assembly); /* Kephas.Model */

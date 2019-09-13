@@ -18,7 +18,7 @@ namespace Kephas.Model.Tests
 
     using Kephas.Composition;
     using Kephas.Model.Runtime;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition;
 
     using NSubstitute;
 
