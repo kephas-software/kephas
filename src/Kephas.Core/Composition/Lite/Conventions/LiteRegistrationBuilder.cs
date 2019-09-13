@@ -51,6 +51,14 @@ namespace Kephas.Composition.Lite.Conventions
         public Type ContractType { get; set; }
 
         /// <summary>
+        /// Gets or sets the service instance.
+        /// </summary>
+        /// <value>
+        /// The service instance.
+        /// </value>
+        public object Instance { get; set; }
+
+        /// <summary>
         /// Gets or sets the factory.
         /// </summary>
         /// <value>
@@ -96,7 +104,7 @@ namespace Kephas.Composition.Lite.Conventions
         /// <value>
         /// True if allow multiple, false if not.
         /// </value>
-        public bool AllowMultiple { get; private set; }
+        public bool AllowMultiple { get; internal set; }
 
         /// <summary>
         /// Add export metadata to the export.
@@ -158,7 +166,9 @@ namespace Kephas.Composition.Lite.Conventions
         {
             var implementationString = this.ImplementationType?.ToString()
                                        ?? (this.ImplementationTypePredicate != null ? "type predicate" :
-                                           this.Factory != null ? "factory" : "unknown");
+                                           this.Factory != null
+                                                ? "factory"
+                                                : this.Instance != null ? "instance" : "unknown");
             var serviceTypeString = this.ContractType == null || this.ContractType == this.ServiceType
                                         ? this.ServiceType?.ToString()
                                         : $"{this.ServiceType}({this.ContractType})";
@@ -168,7 +178,7 @@ namespace Kephas.Composition.Lite.Conventions
 
         internal void Build(IEnumerable<Type> parts)
         {
-            void ConfigureSingleService(IServiceRegistrationBuilder b)
+            void ConfigureService(IServiceRegistrationBuilder b)
             {
                 if (this.ImplementationType != null)
                 {
@@ -177,6 +187,10 @@ namespace Kephas.Composition.Lite.Conventions
                 else if (this.Factory != null)
                 {
                     b.WithFactory(this.Factory);
+                }
+                else if (this.Instance != null)
+                {
+                    b.WithInstance(this.Instance);
                 }
 
                 if (this.Lifetime == AppServiceLifetime.Singleton)
@@ -203,10 +217,17 @@ namespace Kephas.Composition.Lite.Conventions
                 }
             }
 
+            if (this.Instance != null)
+            {
+                this.ambientServices.Register(this.ServiceType, ConfigureService);
+
+                return;
+            }
+
             if (this.ImplementationType != null || this.Factory != null)
             {
                 this.ExportConfiguration?.Invoke(this.ImplementationType, this);
-                this.ambientServices.Register(this.ServiceType, ConfigureSingleService);
+                this.ambientServices.Register(this.ServiceType, ConfigureService);
 
                 return;
             }
@@ -215,7 +236,6 @@ namespace Kephas.Composition.Lite.Conventions
             {
                 var isGenericTypeDefinition = this.ServiceType?.IsGenericTypeDefinition ?? false;
                 var genericServiceType = this.ServiceType;
-                this.AllowMultiple = !isGenericTypeDefinition;
 
                 foreach (var type in parts.Where(t => this.ImplementationTypePredicate(t)))
                 {
@@ -235,7 +255,7 @@ namespace Kephas.Composition.Lite.Conventions
                         this.ExportConfiguration?.Invoke(type, this);
                     }
 
-                    this.ambientServices.Register(this.ServiceType, ConfigureSingleService);
+                    this.ambientServices.Register(this.ServiceType, ConfigureService);
                 }
 
                 return;

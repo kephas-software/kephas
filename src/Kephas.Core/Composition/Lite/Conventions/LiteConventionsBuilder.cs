@@ -40,9 +40,18 @@ namespace Kephas.Composition.Lite.Conventions
         /// </summary>
         /// <param name="type">The registered service type.</param>
         /// <param name="instance">The instance.</param>
-        public void ForInstance(Type type, object instance)
+        /// <returns>
+        /// A <see cref="IPartBuilder"/> to further configure the rule.
+        /// </returns>
+        public IPartBuilder ForInstance(Type type, object instance)
         {
-            this.ambientServices.Register(type, instance);
+            var descriptorBuilder = new LiteRegistrationBuilder(this.ambientServices)
+            {
+                ServiceType = type,
+                Instance = instance,
+            };
+            this.descriptorBuilders.Add(descriptorBuilder);
+            return new LitePartBuilder(descriptorBuilder);
         }
 
         /// <summary>
