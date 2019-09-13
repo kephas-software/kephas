@@ -39,7 +39,7 @@ namespace Kephas.Model.Tests
         {
             var container = this.CreateContainer(
                 assemblies: new [] { typeof(IModelSpace).GetTypeInfo().Assembly }, 
-                config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true));
+                config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true, allowMultiple: true));
 
             return container;
         }
@@ -49,7 +49,7 @@ namespace Kephas.Model.Tests
             var container = this.CreateContainer(
                 assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
                 parts: parts,
-                config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true));
+                config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true, allowMultiple: true));
 
             return container;
         }
