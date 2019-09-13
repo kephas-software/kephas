@@ -285,17 +285,24 @@ namespace Kephas.Composition.Hosting
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="factory">The factory.</param>
         /// <param name="isSingleton">If set to <c>true</c>, the factory returns a shared component, otherwise an instance component.</param>
+        /// <param name="allowMultiple">Indicates whether multiple registrations are allowed.</param>
         /// <returns>
         /// This builder.
         /// </returns>
         /// <remarks>
         /// Can be used multiple times, the factories are added to the existing ones.
         /// </remarks>
-        public virtual TBuilder WithFactory<TContract>(Func<TContract> factory, bool isSingleton = false)
+        public virtual TBuilder WithFactory<TContract>(Func<TContract> factory, bool isSingleton = false, bool allowMultiple = false)
         {
             Requires.NotNull(factory, nameof(factory));
 
-            this.Registry.Add(new AppServiceInfo(typeof(TContract), ctx => factory(), isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient));
+            this.Registry.Add(new AppServiceInfo(
+                                    typeof(TContract),
+                                    ctx => factory(),
+                                    isSingleton ? AppServiceLifetime.Singleton : AppServiceLifetime.Transient)
+                                {
+                                    AllowMultiple = allowMultiple,
+                                });
 
             return (TBuilder)this;
         }
