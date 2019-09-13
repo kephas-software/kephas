@@ -56,15 +56,12 @@ namespace Kephas.Composition.Mef.Hosting
         /// Resolves the specified contract type returning multiple instances.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>An enumeration of objects implementing <paramref name="contractType"/>.</returns>
-        public virtual IEnumerable<object> GetExports(Type contractType, string serviceName = null)
+        public virtual IEnumerable<object> GetExports(Type contractType)
         {
             this.AssertNotDisposed();
 
-            var components = string.IsNullOrEmpty(serviceName)
-                              ? this.innerCompositionContext.GetExports(contractType)
-                              : this.innerCompositionContext.GetExports(contractType, serviceName);
+            var components = this.innerCompositionContext.GetExports(contractType);
             return components;
         }
 
@@ -90,17 +87,14 @@ namespace Kephas.Composition.Mef.Hosting
         /// Resolves the specified contract type returning multiple instances.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
-        public virtual IEnumerable<T> GetExports<T>(string serviceName = null)
+        public virtual IEnumerable<T> GetExports<T>()
         {
             this.AssertNotDisposed();
 
-            var components = string.IsNullOrEmpty(serviceName)
-                              ? this.innerCompositionContext.GetExports<T>()
-                              : this.innerCompositionContext.GetExports<T>(serviceName);
+            var components = this.innerCompositionContext.GetExports<T>();
             return components;
         }
 

@@ -147,7 +147,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_Enumerable_string_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
+            context.GetExports(typeof(string)).Returns(new[] { "hello", "world" });
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IEnumerable<string>)adapter.GetService(typeof(IEnumerable<string>));
@@ -160,7 +160,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_Collection_string_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
+            context.GetExports(typeof(string)).Returns(new[] { "hello", "world" });
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (ICollection<string>)adapter.GetService(typeof(ICollection<string>));
@@ -173,7 +173,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_IList_string_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
+            context.GetExports(typeof(string)).Returns(new[] { "hello", "world" });
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IList<string>)adapter.GetService(typeof(IList<string>));
@@ -186,7 +186,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_List_string_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.GetExports(typeof(string), Arg.Any<string>()).Returns(new[] { "hello", "world" });
+            context.GetExports(typeof(string)).Returns(new[] { "hello", "world" });
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (List<string>)adapter.GetService(typeof(List<string>));

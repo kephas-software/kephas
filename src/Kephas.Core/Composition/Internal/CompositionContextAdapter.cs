@@ -46,11 +46,10 @@ namespace Kephas.Composition.Internal
         /// Resolves the specified contract type returning multiple instances.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An enumeration of objects implementing <paramref name="contractType"/>.
         /// </returns>
-        public IEnumerable<object> GetExports(Type contractType, string serviceName = null)
+        public IEnumerable<object> GetExports(Type contractType)
         {
             var collectionType = typeof(IEnumerable<>).MakeGenericType(contractType);
             return (IEnumerable<object>)this.serviceProvider.GetService(collectionType);
@@ -73,11 +72,10 @@ namespace Kephas.Composition.Internal
         /// Resolves the specified contract type returning multiple instances.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
-        /// <param name="serviceName">The service name.</param>
         /// <returns>
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
-        public IEnumerable<T> GetExports<T>(string serviceName = null)
+        public IEnumerable<T> GetExports<T>()
         {
             var collectionType = typeof(IEnumerable<>).MakeGenericType(typeof(T));
             return (IEnumerable<T>)this.serviceProvider.GetService(collectionType);
