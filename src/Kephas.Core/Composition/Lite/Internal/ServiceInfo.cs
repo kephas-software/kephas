@@ -82,7 +82,7 @@ namespace Kephas.Composition.Lite.Internal
 
         public bool AllowMultiple { get; internal set; } = false;
 
-        bool IAppServiceInfo.AsOpenGeneric { get; } = false;
+        bool IAppServiceInfo.AsOpenGeneric => this.ContractType.IsGenericType && this.ContractType.IsGenericTypeDefinition;
 
         Type[] IAppServiceInfo.MetadataAttributes { get; }
 
