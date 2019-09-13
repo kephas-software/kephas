@@ -26,6 +26,7 @@ namespace Kephas.Composition.Autofac.Conventions
         private readonly ContainerBuilder containerBuilder;
 
         private readonly IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> registrationBuilder;
+        private bool allowMultiple;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacPartBuilder"/> class.
@@ -59,6 +60,19 @@ namespace Kephas.Composition.Autofac.Conventions
         public IPartBuilder Scoped()
         {
             this.registrationBuilder.InstancePerLifetimeScope();
+            return this;
+        }
+
+        /// <summary>
+        /// Indicates that this service allows multiple registrations.
+        /// </summary>
+        /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        public IPartBuilder AllowMultiple(bool value)
+        {
+            this.allowMultiple = value;
             return this;
         }
 

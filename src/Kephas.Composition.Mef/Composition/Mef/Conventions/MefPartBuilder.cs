@@ -112,5 +112,18 @@ namespace Kephas.Composition.Mef.Conventions
             this.IsScoped = true;
             return this;
         }
+
+        /// <summary>
+        /// Indicates that this service allows multiple registrations.
+        /// </summary>
+        /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        IPartBuilder IPartBuilder.AllowMultiple(bool value)
+        {
+            // this is not used
+            return this;
+        }
     }
 }

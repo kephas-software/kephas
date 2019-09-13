@@ -536,7 +536,10 @@ namespace Kephas.Services.Composition
                     logger.Debug($"Service {serviceContractType} matches {appServiceInfo.InstanceType}.");
                 }
 
-                return conventions.ForType(appServiceInfo.InstanceType).AsServiceType(serviceContract);
+                return conventions
+                    .ForType(appServiceInfo.InstanceType)
+                    .AsServiceType(serviceContract)
+                    .AllowMultiple(appServiceInfo.AllowMultiple);
             }
 
             if (serviceContract.IsGenericTypeDefinition)
@@ -563,7 +566,10 @@ namespace Kephas.Services.Composition
                     // to be done through the lambda criteria
                     if (isOverride && selectedInstanceType != null)
                     {
-                        return conventions.ForType(selectedInstanceType).AsServiceType(serviceContract);
+                        return conventions
+                            .ForType(selectedInstanceType)
+                            .AsServiceType(serviceContract)
+                            .AllowMultiple(appServiceInfo.AllowMultiple);
                     }
                 }
 
@@ -574,7 +580,10 @@ namespace Kephas.Services.Composition
 
                 // if there is non-generic service contract with the same full name
                 // then add just the conventions for the derived types.
-                return conventions.ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType)).AsServiceType(serviceContract);
+                return conventions
+                    .ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType))
+                    .AsServiceType(serviceContract)
+                    .AllowMultiple(appServiceInfo.AllowMultiple);
             }
 
             if (appServiceInfo.AllowMultiple)
@@ -586,7 +595,10 @@ namespace Kephas.Services.Composition
 
                 // if the service contract metadata allows multiple service registrations
                 // then add just the conventions for the derived types.
-                return conventions.ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract)).AsServiceType(serviceContract);
+                return conventions
+                    .ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract))
+                    .AsServiceType(serviceContract)
+                    .AllowMultiple(appServiceInfo.AllowMultiple);
             }
 
             var (_, selectedPart) = this.TrySelectSingleServiceImplementationType(
@@ -601,7 +613,10 @@ namespace Kephas.Services.Composition
                     logger.Debug($"Service {serviceContractType} matches {selectedPart}.");
                 }
 
-                return conventions.ForType(selectedPart).AsServiceType(serviceContract);
+                return conventions
+                    .ForType(selectedPart)
+                    .AsServiceType(serviceContract)
+                    .AllowMultiple(appServiceInfo.AllowMultiple);
             }
 
             return null;
@@ -683,13 +698,17 @@ namespace Kephas.Services.Composition
 
             if (appServiceInfo.Instance != null)
             {
-                conventions.ForInstance(serviceContractType, appServiceInfo.Instance);
+                conventions
+                    .ForInstance(serviceContractType, appServiceInfo.Instance)
+                    .AllowMultiple(appServiceInfo.AllowMultiple);
                 return true;
             }
 
             if (appServiceInfo.InstanceFactory != null)
             {
-                var partBuilder = conventions.ForInstanceFactory(serviceContractType, appServiceInfo.InstanceFactory);
+                var partBuilder = conventions
+                    .ForInstanceFactory(serviceContractType, appServiceInfo.InstanceFactory)
+                    .AllowMultiple(appServiceInfo.AllowMultiple);
                 if (appServiceInfo.IsSingleton())
                 {
                     partBuilder.Singleton();

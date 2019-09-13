@@ -102,7 +102,10 @@ namespace Kephas.Composition.DependencyInjection.Conventions
         /// </summary>
         /// <param name="type">The registered service type.</param>
         /// <param name="instance">The instance.</param>
-        public void ForInstance(Type type, object instance)
+        /// <returns>
+        /// An IPartBuilder.
+        /// </returns>
+        public IPartBuilder ForInstance(Type type, object instance)
         {
             var descriptorBuilder = new ServiceDescriptorBuilder
                                      {
@@ -110,6 +113,7 @@ namespace Kephas.Composition.DependencyInjection.Conventions
                                          Instance = instance,
                                      };
             this.descriptorBuilders.Add(descriptorBuilder);
+            return NullPartBuilder.Instance;
         }
 
         /// <summary>
@@ -154,6 +158,17 @@ namespace Kephas.Composition.DependencyInjection.Conventions
             }
 
             return this.serviceCollection.BuildServiceProvider();
+        }
+
+        private class NullPartBuilder : IPartBuilder
+        {
+            public static readonly NullPartBuilder Instance = new NullPartBuilder();
+
+            public IPartBuilder AllowMultiple(bool value) => this;
+
+            public IPartBuilder Scoped() => this;
+
+            public IPartBuilder Singleton() => this;
         }
     }
 }

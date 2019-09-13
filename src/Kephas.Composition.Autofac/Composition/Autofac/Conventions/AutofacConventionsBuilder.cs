@@ -102,11 +102,16 @@ namespace Kephas.Composition.Autofac.Conventions
         /// </summary>
         /// <param name="type">The registered service type.</param>
         /// <param name="instance">The instance.</param>
-        public void ForInstance(Type type, object instance)
+        /// <returns>
+        /// An IPartBuilder.
+        /// </returns>
+        public IPartBuilder ForInstance(Type type, object instance)
         {
             this.containerBuilder
                 .RegisterInstance(instance)
                 .As(type);
+
+            return NullPartBuilder.Instance;
         }
 
         /// <summary>
@@ -160,6 +165,17 @@ namespace Kephas.Composition.Autofac.Conventions
             }
 
             return this.containerBuilder;
+        }
+
+        private class NullPartBuilder : IPartBuilder
+        {
+            public static readonly NullPartBuilder Instance = new NullPartBuilder();
+
+            public IPartBuilder AllowMultiple(bool value) => this;
+
+            public IPartBuilder Scoped() => this;
+
+            public IPartBuilder Singleton() => this;
         }
     }
 }

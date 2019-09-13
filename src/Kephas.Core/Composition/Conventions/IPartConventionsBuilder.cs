@@ -71,5 +71,14 @@ namespace Kephas.Composition.Conventions
         /// A part builder allowing further configuration of the part.
         /// </returns>
         IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null);
+
+        /// <summary>
+        /// Indicates that this service allows multiple registrations.
+        /// </summary>
+        /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        IPartConventionsBuilder AllowMultiple(bool value);
     }
 }

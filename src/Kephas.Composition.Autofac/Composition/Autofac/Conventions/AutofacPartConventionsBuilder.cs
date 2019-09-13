@@ -123,5 +123,21 @@ namespace Kephas.Composition.Autofac.Conventions
 
             return this;
         }
+
+        /// <summary>
+        /// Indicates that this service allows multiple registrations.
+        /// </summary>
+        /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        /// <example>
+        /// .
+        /// </example>
+        IPartConventionsBuilder IPartConventionsBuilder.AllowMultiple(bool value)
+        {
+            // By default autofac allows multiple registrations
+            return this;
+        }
     }
 }

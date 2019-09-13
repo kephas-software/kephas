@@ -136,9 +136,9 @@ namespace Kephas.Core.Tests.Composition
             /// </summary>
             /// <param name="type">The registered service type.</param>
             /// <param name="instance">The instance.</param>
-            public void ForInstance(Type type, object instance)
+            public IPartBuilder ForInstance(Type type, object instance)
             {
-                // throw new NotImplementedException();
+                return Substitute.For<IPartBuilder>();
             }
 
             /// <summary>
@@ -190,6 +190,8 @@ namespace Kephas.Core.Tests.Composition
 
             public bool IsScoped { get; set; }
 
+            public bool AllowMultiple { get; set; }
+
             public IPartConventionsBuilder AsServiceType(Type serviceType)
             {
                 this.ServiceType = serviceType;
@@ -231,6 +233,12 @@ namespace Kephas.Core.Tests.Composition
             public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
             {
                 this.ConstructorSelector = constructorSelector;
+                return this;
+            }
+
+            IPartConventionsBuilder IPartConventionsBuilder.AllowMultiple(bool value)
+            {
+                this.AllowMultiple = value;
                 return this;
             }
         }

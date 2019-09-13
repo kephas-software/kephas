@@ -125,5 +125,18 @@ namespace Kephas.Composition.DependencyInjection.Conventions
             this.Logger.Warn($"Selecting a specific constructor is not supported ({this.descriptorBuilder}).");
             return this;
         }
+
+        /// <summary>
+        /// Indicates that this service allows multiple registrations.
+        /// </summary>
+        /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        IPartConventionsBuilder IPartConventionsBuilder.AllowMultiple(bool value)
+        {
+            // not used, by default all services allow multiple instances.
+            return this;
+        }
     }
 }

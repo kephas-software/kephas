@@ -94,7 +94,10 @@ namespace Kephas.Composition.Mef.Conventions
         /// </summary>
         /// <param name="type">The registered service type.</param>
         /// <param name="instance">The instance.</param>
-        public void ForInstance(Type type, object instance)
+        /// <returns>
+        /// An IPartBuilder.
+        /// </returns>
+        public IPartBuilder ForInstance(Type type, object instance)
         {
             Requires.NotNull(type, nameof(type));
             Requires.NotNull(instance, nameof(instance));
@@ -102,6 +105,7 @@ namespace Kephas.Composition.Mef.Conventions
             var partBuilder = new MefPartBuilder(type, instance);
             partBuilder.Singleton();
             this.partBuilders[type] = partBuilder;
+            return partBuilder;
         }
 
         /// <summary>

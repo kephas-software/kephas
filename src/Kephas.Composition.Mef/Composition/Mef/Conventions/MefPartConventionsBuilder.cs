@@ -193,6 +193,19 @@ namespace Kephas.Composition.Mef.Conventions
         }
 
         /// <summary>
+        /// Indicates that this service allows multiple registrations.
+        /// </summary>
+        /// <param name="value">True if multiple service registrations are allowed, false otherwise.</param>
+        /// <returns>
+        /// A part builder allowing further configuration of the part.
+        /// </returns>
+        IPartConventionsBuilder IPartConventionsBuilder.AllowMultiple(bool value)
+        {
+            // not used, by default all services allow multiple instances.
+            return this;
+        }
+
+        /// <summary>
         /// Determines whether the provided interface is a closed generic of the specified open generic contract.
         /// </summary>
         /// <param name="openGenericContract">The open generic contract.</param>

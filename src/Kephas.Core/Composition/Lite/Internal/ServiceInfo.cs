@@ -132,23 +132,26 @@ namespace Kephas.Composition.Lite.Internal
 
         public AppServiceInfo ToAppServiceInfo(IAmbientServices ambientServices)
         {
-            return new AppServiceInfo(ContractType, ctx => GetService(ambientServices), Lifetime) { AllowMultiple = AllowMultiple };
+            return new AppServiceInfo(this.ContractType, ctx => this.GetService(ambientServices), this.Lifetime)
+            {
+                AllowMultiple = this.AllowMultiple,
+            };
         }
 
-        public object GetService(IAmbientServices ambientServices) => lazyFactory.GetValue();
+        public object GetService(IAmbientServices ambientServices) => this.lazyFactory.GetValue();
 
         public IDictionary<string, object> Metadata { get; internal set; }
 
         private Func<object> GetInstanceResolver(IAmbientServices ambientServices, Type instanceType)
         {
-            if (instanceResolver != null)
+            if (this.instanceResolver != null)
             {
-                return instanceResolver;
+                return this.instanceResolver;
             }
 
             var (ctor, ctorParams) = GetConstructorInfo(ambientServices, instanceType);
 
-            return instanceResolver = () => ctor.Invoke(
+            return this.instanceResolver = () => ctor.Invoke(
                        ctorParams.Select(
                            p => p.HasDefaultValue
                                     ? ambientServices.GetService(p.ParameterType) ?? p.DefaultValue
@@ -225,19 +228,19 @@ namespace Kephas.Composition.Lite.Internal
 
             public override object GetValue()
             {
-                if (value != null)
+                if (this.value != null)
                 {
-                    return value;
+                    return this.value;
                 }
 
-                lock (factory)
+                lock (this.factory)
                 {
-                    if (value != null)
+                    if (this.value != null)
                     {
-                        return value;
+                        return this.value;
                     }
 
-                    return value = base.GetValue();
+                    return this.value = base.GetValue();
                 }
             }
         }
@@ -273,7 +276,7 @@ namespace Kephas.Composition.Lite.Internal
                 isProducing.Add(this);
                 try
                 {
-                    var value = factory();
+                    var value = this.factory();
                     return value;
                 }
                 finally
