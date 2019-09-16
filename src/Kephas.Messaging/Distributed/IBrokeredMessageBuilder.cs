@@ -12,6 +12,7 @@ namespace Kephas.Messaging.Distributed
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
@@ -165,6 +166,66 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(@this, nameof(@this));
 
             return @this.WithContent(@event.ToEventContent());
+        }
+
+        /// <summary>
+        /// Sets the recipients to the brokered message.
+        /// </summary>
+        /// <param name="this">The brokered message builder to act on.</param>
+        /// <param name="recipients">The recipients.</param>
+        /// <returns>
+        /// This <see cref="IBrokeredMessageBuilder"/>.
+        /// </returns>
+        public static IBrokeredMessageBuilder WithRecipients(this IBrokeredMessageBuilder @this, params Uri[] recipients)
+        {
+            Requires.NotNull(@this, nameof(@this));
+
+            return @this.WithRecipients(recipients.Select(r => new Endpoint(r)));
+        }
+
+        /// <summary>
+        /// Sets the recipients to the brokered message.
+        /// </summary>
+        /// <param name="this">The brokered message builder to act on.</param>
+        /// <param name="recipients">The recipients.</param>
+        /// <returns>
+        /// This <see cref="IBrokeredMessageBuilder"/>.
+        /// </returns>
+        public static IBrokeredMessageBuilder WithRecipients(this IBrokeredMessageBuilder @this, IEnumerable<Uri> recipients)
+        {
+            Requires.NotNull(@this, nameof(@this));
+
+            return @this.WithRecipients(recipients.Select(r => new Endpoint(r)));
+        }
+
+        /// <summary>
+        /// Sets the recipients to the brokered message.
+        /// </summary>
+        /// <param name="this">The brokered message builder to act on.</param>
+        /// <param name="recipientUris">The recipients as URIs.</param>
+        /// <returns>
+        /// This <see cref="IBrokeredMessageBuilder"/>.
+        /// </returns>
+        public static IBrokeredMessageBuilder WithRecipients(this IBrokeredMessageBuilder @this, params string[] recipientUris)
+        {
+            Requires.NotNull(@this, nameof(@this));
+
+            return @this.WithRecipients(recipientUris.Select(r => new Endpoint(new Uri(r))));
+        }
+
+        /// <summary>
+        /// Sets the recipients to the brokered message.
+        /// </summary>
+        /// <param name="this">The brokered message builder to act on.</param>
+        /// <param name="recipientUris">The recipients as URIs.</param>
+        /// <returns>
+        /// This <see cref="IBrokeredMessageBuilder"/>.
+        /// </returns>
+        public static IBrokeredMessageBuilder WithRecipients(this IBrokeredMessageBuilder @this, IEnumerable<string> recipientUris)
+        {
+            Requires.NotNull(@this, nameof(@this));
+
+            return @this.WithRecipients(recipientUris.Select(r => new Endpoint(new Uri(r))));
         }
 
         /// <summary>
