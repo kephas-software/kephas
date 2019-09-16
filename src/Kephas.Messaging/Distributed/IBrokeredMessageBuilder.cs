@@ -96,6 +96,15 @@ namespace Kephas.Messaging.Distributed
         IBrokeredMessageBuilder WithRecipients(IEnumerable<IEndpoint> recipients);
 
         /// <summary>
+        /// Sets the channel to use.
+        /// </summary>
+        /// <param name="channel">The channel.</param>
+        /// <returns>
+        /// This <see cref="IBrokeredMessageBuilder"/>.
+        /// </returns>
+        IBrokeredMessageBuilder UseChannel(string channel);
+
+        /// <summary>
         /// Makes the communication one way.
         /// </summary>
         /// <returns>

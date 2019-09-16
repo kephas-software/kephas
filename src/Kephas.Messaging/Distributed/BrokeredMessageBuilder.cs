@@ -403,6 +403,34 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Sets the channel to use.
+        /// </summary>
+        /// <param name="channel">The channel.</param>
+        /// <returns>
+        /// This <see cref="IBrokeredMessageBuilder"/>.
+        /// </returns>
+        IBrokeredMessageBuilder IBrokeredMessageBuilder.UseChannel(string channel)
+        {
+            return this.UseChannel(channel);
+        }
+
+        /// <summary>
+        /// Sets the channel to use.
+        /// </summary>
+        /// <param name="channel">The channel.</param>
+        /// <returns>
+        /// This <see cref="IBrokeredMessageBuilder"/>.
+        /// </returns>
+        public virtual IBrokeredMessageBuilder UseChannel(string channel)
+        {
+            Requires.NotNull(channel, nameof(channel));
+
+            this.brokeredMessage.Channel = channel;
+
+            return this;
+        }
+
+        /// <summary>
         /// Initializes the service.
         /// </summary>
         /// <param name="context">Optional. An optional context for initialization.</param>
