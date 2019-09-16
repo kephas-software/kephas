@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Distributed
         private readonly ICollection<IExportFactory<IMessageRouter, MessageRouterMetadata>> routerFactories;
         private readonly IExportFactory<IBrokeredMessageBuilder> builderFactory;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
-        private ICollection<(Regex regex, bool isFallback, IMessageRouter router)> routerMap;
+        private ICollection<(Regex regex, string channel, bool isFallback, IMessageRouter router)> routerMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageBroker"/> class.
@@ -132,14 +132,15 @@ namespace Kephas.Messaging.Distributed
             var asyncRouterMap = this.routerFactories
                 .Order()
                 .Select(f => (
-                regex: string.IsNullOrEmpty(f.Metadata.ReceiverUrlRegex) ? null : new Regex(f.Metadata.ReceiverUrlRegex, RegexOptions.IgnoreCase | RegexOptions.Compiled),
-                isFallback: f.Metadata.IsFallback,
-                asyncRouter: f.CreateExportedValueAsync(context)))
+                    regex: string.IsNullOrEmpty(f.Metadata.ReceiverUrlRegex) ? null : new Regex(f.Metadata.ReceiverUrlRegex, RegexOptions.IgnoreCase | RegexOptions.Compiled),
+                    channel: f.Metadata.Channel,
+                    isFallback: f.Metadata.IsFallback,
+                    asyncRouter: f.CreateExportedValueAsync(context)))
                 .ToList();
 
             await Task.WhenAll(asyncRouterMap.Select(m => m.asyncRouter)).PreserveThreadContext();
 
-            this.routerMap = asyncRouterMap.Select(m => (m.regex, m.isFallback, m.asyncRouter.Result)).ToList();
+            this.routerMap = asyncRouterMap.Select(m => (m.regex, m.channel, m.isFallback, m.asyncRouter.Result)).ToList();
             foreach (var map in this.routerMap)
             {
                 map.router.ReplyReceived += this.HandleReplyReceived;
@@ -305,7 +306,7 @@ namespace Kephas.Messaging.Distributed
             }
 
             var recipientMappings = brokeredMessage.Recipients
-                .Select(r => (recipient: r, router: this.routerMap.FirstOrDefault(f => f.isFallback || (f.regex?.IsMatch(r.Url.ToString()) ?? false)).router))
+                .Select(r => (recipient: r, router: this.routerMap.FirstOrDefault(f => f.isFallback || (f.regex?.IsMatch(r.Url.ToString()) ?? false) || (f.channel != null && f.channel == brokeredMessage.Channel)).router))
                 .ToList();
             var unhandledRecipients = recipientMappings
                 .Where(c => c.router == null)

@@ -32,6 +32,7 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
             }
 
             this.ReceiverUrlRegex = (string)metadata.TryGetValue(nameof(this.ReceiverUrlRegex));
+            this.Channel = (string)metadata.TryGetValue(nameof(this.Channel));
             this.IsFallback = (bool)metadata.TryGetValue(nameof(this.IsFallback), false);
         }
 
@@ -39,14 +40,16 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
         /// Initializes a new instance of the <see cref="MessageRouterMetadata"/> class.
         /// </summary>
         /// <param name="receiverUrlRegex">The receiver URL regular expression.</param>
+        /// <param name="channel">Optional. The channel.</param>
         /// <param name="isFallback">Optional. True if this router is fallback, false if not.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. Name of the service.</param>
-        public MessageRouterMetadata(string receiverUrlRegex, bool isFallback = false, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        public MessageRouterMetadata(string receiverUrlRegex, string channel = null, bool isFallback = false, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
             this.ReceiverUrlRegex = receiverUrlRegex;
+            this.Channel = channel;
             this.IsFallback = isFallback;
         }
 
@@ -57,6 +60,14 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
         /// The receiver URL regular expression.
         /// </value>
         public string ReceiverUrlRegex { get; }
+
+        /// <summary>
+        /// Gets or sets the channel.
+        /// </summary>
+        /// <value>
+        /// The channel.
+        /// </value>
+        public string Channel { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether this router is the fallback router.

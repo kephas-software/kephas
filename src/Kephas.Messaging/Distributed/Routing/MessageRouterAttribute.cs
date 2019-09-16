@@ -29,6 +29,15 @@ namespace Kephas.Messaging.Distributed.Routing
         public string ReceiverUrlRegex { get; set; }
 
         /// <summary>
+        /// Gets or sets the channel.
+        /// </summary>
+        /// <value>
+        /// The channel.
+        /// </value>
+        [MetadataValue(nameof(MessageRouterMetadata.Channel))]
+        public string Channel { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this router is the fallback router.
         /// </summary>
         /// <value>
