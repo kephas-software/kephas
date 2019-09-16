@@ -466,7 +466,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual IEndpoint CreateEndpoint(string senderId)
         {
-            return new Endpoint(this.AppManifest.AppId, this.AppManifest.AppInstanceId, senderId);
+            return new Endpoint(this.AppManifest.AppId, this.AppManifest.AppInstanceId, senderId, scheme: this.BrokeredMessage?.Channel);
         }
 
         /// <summary>
