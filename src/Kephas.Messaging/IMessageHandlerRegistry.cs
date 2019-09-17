@@ -10,8 +10,11 @@
 
 namespace Kephas.Messaging
 {
+    using System;
     using System.Collections.Generic;
-
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Composition;
 
     /// <summary>
@@ -35,5 +38,31 @@ namespace Kephas.Messaging
         /// <param name="message">The message.</param>
         /// <returns>The matching message handlers.</returns>
         IEnumerable<IMessageHandler> ResolveMessageHandlers(IMessage message);
+    }
+
+    /// <summary>
+    /// A message handler registry extensions.
+    /// </summary>
+    public static class MessageHandlerRegistryExtensions
+    {
+        /// <summary>
+        /// Registers the handler.
+        /// </summary>
+        /// <typeparam name="TMessage">Type of the message.</typeparam>
+        /// <param name="this">The registry to act on.</param>
+        /// <param name="handlerFunction">The handler function.</param>
+        /// <returns>
+        /// This message handler registry.
+        /// </returns>
+        public static IMessageHandlerRegistry RegisterHandler<TMessage>(this IMessageHandlerRegistry @this, Func<TMessage, IMessageProcessingContext, CancellationToken, Task<IMessage>> handlerFunction)
+        {
+            Requires.NotNull(@this, nameof(@this));
+
+            @this.RegisterHandler(
+                new FuncMessageHandler<TMessage>(handlerFunction),
+                new MessageHandlerMetadata(typeof(TMessage)));
+
+            return @this;
+        }
     }
 }
