@@ -11,10 +11,7 @@
 namespace Kephas.Messaging.HandlerSelectors
 {
     using System;
-    using System.Collections.Generic;
 
-    using Kephas.Composition;
-    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Events;
     using Kephas.Services;
 
@@ -28,11 +25,9 @@ namespace Kephas.Messaging.HandlerSelectors
         /// Initializes a new instance of the <see cref="EventMessageHandlerSelector"/> class.
         /// </summary>
         /// <param name="messageMatchService">The message match service.</param>
-        /// <param name="handlerFactories">The message handler factories.</param>
         public EventMessageHandlerSelector(
-            IMessageMatchService messageMatchService,
-            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
-            : base(messageMatchService, handlerFactories)
+            IMessageMatchService messageMatchService)
+            : base(messageMatchService)
         {
         }
 

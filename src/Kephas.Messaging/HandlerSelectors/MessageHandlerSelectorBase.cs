@@ -28,16 +28,11 @@ namespace Kephas.Messaging.HandlerSelectors
         /// Initializes a new instance of the <see cref="MessageHandlerSelectorBase"/> class.
         /// </summary>
         /// <param name="messageMatchService">The message match service.</param>
-        /// <param name="handlerFactories">The message handler factories.</param>
-        protected MessageHandlerSelectorBase(
-            IMessageMatchService messageMatchService,
-            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
+        protected MessageHandlerSelectorBase(IMessageMatchService messageMatchService)
         {
             Requires.NotNull(messageMatchService, nameof(messageMatchService));
-            Requires.NotNull(handlerFactories, nameof(handlerFactories));
 
             this.MessageMatchService = messageMatchService;
-            this.HandlerFactories = handlerFactories;
         }
 
         /// <summary>
@@ -47,14 +42,6 @@ namespace Kephas.Messaging.HandlerSelectors
         /// The message match service.
         /// </value>
         protected IMessageMatchService MessageMatchService { get; }
-
-        /// <summary>
-        /// Gets the handler factories.
-        /// </summary>
-        /// <value>
-        /// The handler factories.
-        /// </value>
-        protected IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> HandlerFactories { get; }
 
         /// <summary>
         /// Indicates whether the selector can handle the indicated message type.
@@ -70,31 +57,43 @@ namespace Kephas.Messaging.HandlerSelectors
         /// <summary>
         /// Gets a factory which retrieves the components handling messages of the given type.
         /// </summary>
-        /// <param name="envelopeType">The type of the envelope. This is typically the adapter type, if the message does not implement <see cref="IMessage"/>.</param>
+        /// <param name="handlerFactories">The handler factories.</param>
+        /// <param name="envelopeType">The type of the envelope. This is typically the adapter type, if
+        ///                            the message does not implement <see cref="IMessage"/>.</param>
         /// <param name="messageType">The type of the message.</param>
         /// <param name="messageId">The ID of the message.</param>
         /// <returns>
         /// A factory of an enumeration of message handlers.
         /// </returns>
-        public virtual Func<IEnumerable<IMessageHandler>> GetHandlersFactory(Type envelopeType, Type messageType, object messageId)
+        public virtual Func<IEnumerable<IMessageHandler>> GetHandlersFactory(
+            IEnumerable<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories,
+            Type envelopeType,
+            Type messageType,
+            object messageId)
         {
-            var orderedHandlers = this.GetOrderedMessageHandlerFactories(envelopeType, messageType, messageId);
+            var orderedHandlers = this.GetOrderedMessageHandlerFactories(handlerFactories, envelopeType, messageType, messageId);
             return () => orderedHandlers.Select(f => f.CreateExportedValue()).ToList();
         }
 
         /// <summary>
         /// Gets the ordered message handler factories.
         /// </summary>
-        /// <param name="envelopeType">The type of the envelope. This is typically the adapter type, if the message does not implement <see cref="IMessage"/>.</param>
+        /// <param name="handlerFactories">The handler factories.</param>
+        /// <param name="envelopeType">The type of the envelope. This is typically the adapter type, if
+        ///                            the message does not implement <see cref="IMessage"/>.</param>
         /// <param name="messageType">The type of the message.</param>
         /// <param name="messageId">The ID of the message.</param>
         /// <returns>
         /// The ordered message handler factories.
         /// </returns>
         protected virtual IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
-            GetOrderedMessageHandlerFactories(Type envelopeType, Type messageType, object messageId)
+            GetOrderedMessageHandlerFactories(
+                IEnumerable<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories,
+                Type envelopeType,
+                Type messageType,
+                object messageId)
         {
-            var orderedFactories = this.HandlerFactories
+            var orderedFactories = handlerFactories
                 .Where(f => this.MessageMatchService.IsMatch(f.Metadata.MessageMatch, messageType, messageId))
                 .Order()
                 .ToList();

@@ -362,8 +362,8 @@ namespace Kephas.Messaging.Tests.Distributed
         [OverridePriority(Priority.High)]
         public class TestMessageProcessor : DefaultMessageProcessor
         {
-            public TestMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
-                : base(compositionContext, messageMatchService, handlerSelectorFactories, behaviorFactories)
+            public TestMessageProcessor(ICompositionContext compositionContext, IMessageHandlerRegistry handlerRegistry, IMessageMatchService messageMatchService, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
+                : base(compositionContext, handlerRegistry, messageMatchService, behaviorFactories)
             {
             }
 

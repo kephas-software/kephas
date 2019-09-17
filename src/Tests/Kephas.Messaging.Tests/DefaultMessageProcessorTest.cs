@@ -481,7 +481,7 @@ namespace Kephas.Messaging.Tests
             var processor = this.CreateRequestProcessor(
                 handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(mms, handlerFactories), new AppServiceMetadata())
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(mms), new AppServiceMetadata())
                                               });
             await processor.ProcessAsync(message, null, default);
 
@@ -507,8 +507,8 @@ namespace Kephas.Messaging.Tests
             var processor = this.CreateRequestProcessor(
                 handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms, handlerFactories), new AppServiceMetadata(processingPriority: (int)Priority.Low)),
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(mms, handlerFactories), new AppServiceMetadata(processingPriority: (int)Priority.High))
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms), new AppServiceMetadata(processingPriority: (int)Priority.Low)),
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(mms), new AppServiceMetadata(processingPriority: (int)Priority.High))
                                               });
 
             await processor.ProcessAsync(eventMessage, null, default);
@@ -613,10 +613,12 @@ namespace Kephas.Messaging.Tests
             handlerSelectorFactories = handlerSelectorFactories
                                        ?? new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms, handlerFactories ?? new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>()), new AppServiceMetadata())
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms), new AppServiceMetadata())
                                               };
 
-            return new TestMessageProcessor(Substitute.For<ICompositionContext>(), mms, handlerSelectorFactories, behaviorFactories);
+            return new TestMessageProcessor(Substitute.For<ICompositionContext>(), mms,
+                new DefaultMessageHandlerRegistry(mms, handlerSelectorFactories, handlerFactories),
+                behaviorFactories);
         }
     }
 
@@ -653,8 +655,8 @@ namespace Kephas.Messaging.Tests
     {
         public Func<IMessage, IMessageProcessingContext, IMessageProcessingContext> CreateProcessingContextFunc { get; set; }
 
-        public TestMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
-            : base(compositionContext, messageMatchService, handlerSelectorFactories, behaviorFactories)
+        public TestMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
+            : base(compositionContext, handlerRegistry, messageMatchService, behaviorFactories)
         {
         }
 

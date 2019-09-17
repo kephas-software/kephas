@@ -34,25 +34,17 @@ namespace Kephas.Messaging
     [OverridePriority(Priority.Low)]
     public class DefaultMessageProcessor : Loggable, IMessageProcessor, ICompositionContextAware
     {
+        private readonly IMessageHandlerRegistry handlerRegistry;
+
         /// <summary>
         /// The message match service.
         /// </summary>
         private readonly IMessageMatchService messageMatchService;
 
         /// <summary>
-        /// The handler selector factories.
-        /// </summary>
-        private readonly IList<IMessageHandlerSelector> handlerSelectors;
-
-        /// <summary>
         /// The behavior factories.
         /// </summary>
         private readonly IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories;
-
-        /// <summary>
-        /// The handler factories.
-        /// </summary>
-        private readonly ConcurrentDictionary<string, Func<IEnumerable<IMessageHandler>>> handlerFactories = new ConcurrentDictionary<string, Func<IEnumerable<IMessageHandler>>>();
 
         /// <summary>
         /// The behavior factories.
@@ -65,29 +57,24 @@ namespace Kephas.Messaging
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
         /// </summary>
         /// <param name="compositionContext">The composition context.</param>
+        /// <param name="handlerRegistry">The handler registry.</param>
         /// <param name="messageMatchService">The message match service.</param>
-        /// <param name="handlerSelectorFactories">The handler selector factories.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultMessageProcessor(
             ICompositionContext compositionContext,
+            IMessageHandlerRegistry handlerRegistry,
             IMessageMatchService messageMatchService,
-            IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories,
             IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(handlerRegistry, nameof(handlerRegistry));
             Requires.NotNull(messageMatchService, nameof(messageMatchService));
-            Requires.NotNull(handlerSelectorFactories, nameof(handlerSelectorFactories));
             Requires.NotNull(behaviorFactories, nameof(behaviorFactories));
 
             this.CompositionContext = compositionContext;
+            this.handlerRegistry = handlerRegistry;
             this.messageMatchService = messageMatchService;
-            this.handlerSelectors = handlerSelectorFactories
-                .OrderBy(f => f.Metadata.ProcessingPriority)
-                .Select(f => f.CreateExportedValue())
-                .ToList();
-            this.behaviorFactories = behaviorFactories
-                .OrderBy(f => f.Metadata.ProcessingPriority)
-                .ToList();
+            this.behaviorFactories = behaviorFactories.Order().ToList();
         }
 
         /// <summary>
@@ -116,7 +103,7 @@ namespace Kephas.Messaging
 
             try
             {
-                foreach (var messageHandler in this.ResolveMessageHandlers(message))
+                foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers(message))
                 {
                     using (messageHandler)
                     {
@@ -199,30 +186,7 @@ namespace Kephas.Messaging
             }
         }
 
-        /// <summary>
-        /// Resolves the message handlers for the provided message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <returns>The message handlers.</returns>
-        protected virtual IEnumerable<IMessageHandler> ResolveMessageHandlers(IMessage message)
-        {
-            var envelopeType = message.GetType();
-            var messageType = this.messageMatchService.GetMessageType(message);
-            var messageId = this.messageMatchService.GetMessageId(message);
-            var messageHandlersFactory = this.handlerFactories.GetOrAdd($"{envelopeType}/{messageType.FullName}/{messageId}", _ =>
-                {
-                    var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(envelopeType, messageType, messageId));
-                    if (handlerSelector == null)
-                    {
-                        return () => null;
-                    }
 
-                    return handlerSelector.GetHandlersFactory(envelopeType, messageType, messageId);
-                });
-
-            var handlers = messageHandlersFactory();
-            return handlers ?? new IMessageHandler[0];
-        }
 
         /// <summary>
         /// Creates the processing context.

@@ -24,21 +24,21 @@ namespace Kephas.Messaging.Tests.HandlerSelectors
         [Test]
         public void CanHandle_non_events()
         {
-            var selector = new EventMessageHandlerSelector(Substitute.For<IMessageMatchService>(), new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>());
+            var selector = new EventMessageHandlerSelector(Substitute.For<IMessageMatchService>());
             Assert.IsFalse(selector.CanHandle(typeof(string), typeof(string), null));
         }
 
         [Test]
         public void CanHandle_envelope_events()
         {
-            var selector = new EventMessageHandlerSelector(Substitute.For<IMessageMatchService>(), new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>());
+            var selector = new EventMessageHandlerSelector(Substitute.For<IMessageMatchService>());
             Assert.IsTrue(selector.CanHandle(typeof(IEvent), typeof(string), null));
         }
 
         [Test]
         public void CanHandle_message_events()
         {
-            var selector = new EventMessageHandlerSelector(Substitute.For<IMessageMatchService>(), new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>());
+            var selector = new EventMessageHandlerSelector(Substitute.For<IMessageMatchService>());
             Assert.IsTrue(selector.CanHandle(typeof(string), typeof(IEvent), null));
         }
     }

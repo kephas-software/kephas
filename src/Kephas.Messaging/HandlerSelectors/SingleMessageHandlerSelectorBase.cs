@@ -28,26 +28,29 @@ namespace Kephas.Messaging.HandlerSelectors
         /// Initializes a new instance of the <see cref="SingleMessageHandlerSelectorBase"/> class.
         /// </summary>
         /// <param name="messageMatchService">The message match service.</param>
-        /// <param name="handlerFactories">The message handler factories.</param>
-        protected SingleMessageHandlerSelectorBase(
-            IMessageMatchService messageMatchService,
-            IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
-            : base(messageMatchService, handlerFactories)
+        protected SingleMessageHandlerSelectorBase(IMessageMatchService messageMatchService)
+            : base(messageMatchService)
         {
         }
 
         /// <summary>
         /// Gets a factory which retrieves the components handling messages of the given type.
         /// </summary>
-        /// <param name="envelopeType">The type of the envelope. This is typically the adapter type, if the message does not implement <see cref="IMessage"/>.</param>
+        /// <param name="handlerFactories">The handler factories.</param>
+        /// <param name="envelopeType">The type of the envelope. This is typically the adapter type, if
+        ///                            the message does not implement <see cref="IMessage"/>.</param>
         /// <param name="messageType">The type of the message.</param>
         /// <param name="messageId">The ID of the message.</param>
         /// <returns>
         /// A factory of an enumeration of message handlers.
         /// </returns>
-        public override Func<IEnumerable<IMessageHandler>> GetHandlersFactory(Type envelopeType, Type messageType, object messageId)
+        public override Func<IEnumerable<IMessageHandler>> GetHandlersFactory(
+            IEnumerable<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories,
+            Type envelopeType,
+            Type messageType,
+            object messageId)
         {
-            var orderedFactories = this.GetOrderedMessageHandlerFactories(envelopeType, messageType, messageId);
+            var orderedFactories = this.GetOrderedMessageHandlerFactories(handlerFactories, envelopeType, messageType, messageId);
 
             if (orderedFactories.Count == 0)
             {
