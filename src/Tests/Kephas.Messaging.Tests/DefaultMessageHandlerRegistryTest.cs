@@ -19,6 +19,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.HandlerSelectors;
     using Kephas.Messaging.Messages;
+    using Kephas.Services;
     using Kephas.Services.Composition;
     using NSubstitute;
     using NUnit.Framework;
@@ -41,9 +42,29 @@ namespace Kephas.Messaging.Tests
             Assert.AreSame(handler, handlers.Single());
         }
 
+        [Test]
+        public void RegisterHandler_resets_cache()
+        {
+            var registry = new DefaultMessageHandlerRegistry(
+                new DefaultMessageMatchService(),
+                this.GetHandlerSelectorFactories().ToList(),
+                this.GetHandlerFactories().ToList());
+
+            var handler = Substitute.For<IMessageHandler>();
+            registry.RegisterHandler(handler, new MessageHandlerMetadata(typeof(string)));
+
+            var handlers = registry.ResolveMessageHandlers(new MessageAdapter { Message = "hello" });
+
+            var handler2 = Substitute.For<IMessageHandler>();
+            registry.RegisterHandler(handler2, new MessageHandlerMetadata(typeof(string), overridePriority: (int)Priority.High));
+
+            handlers = registry.ResolveMessageHandlers(new MessageAdapter { Message = "hello" });
+            Assert.AreSame(handler2, handlers.Single());
+        }
+
         private IEnumerable<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> GetHandlerSelectorFactories()
         {
-            yield return (IExportFactory<IMessageHandlerSelector, AppServiceMetadata>)new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(
+            yield return new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(
                 () => new DefaultMessageHandlerSelector(new DefaultMessageMatchService()),
                 new AppServiceMetadata());
         }
