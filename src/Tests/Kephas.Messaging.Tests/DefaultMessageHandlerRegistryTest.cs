@@ -12,9 +12,10 @@ namespace Kephas.Messaging.Tests
 {
     using System;
     using System.Collections.Generic;
-    using System.Composition;
     using System.Linq;
+
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.HandlerSelectors;
     using Kephas.Messaging.Messages;
@@ -43,7 +44,7 @@ namespace Kephas.Messaging.Tests
         private IEnumerable<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> GetHandlerSelectorFactories()
         {
             yield return (IExportFactory<IMessageHandlerSelector, AppServiceMetadata>)new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(
-                () => Tuple.Create<IMessageHandlerSelector, Action>(new DefaultMessageHandlerSelector(new DefaultMessageMatchService()), () => { }),
+                () => new DefaultMessageHandlerSelector(new DefaultMessageMatchService()),
                 new AppServiceMetadata());
         }
 
