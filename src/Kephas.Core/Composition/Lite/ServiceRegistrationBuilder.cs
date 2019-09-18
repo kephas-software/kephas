@@ -76,7 +76,12 @@ namespace Kephas.Composition.Lite
                 default:
                     if (this.instancing == null)
                     {
-                        throw new InvalidOperationException(Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception);
+                        if (!this.allowMultiple)
+                        {
+                            throw new InvalidOperationException(Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception);
+                        }
+
+                        return new MultiServiceInfo(this.contractType, this.serviceType);
                     }
 
                     return new ServiceInfo(this.contractType, this.instancing)

@@ -89,6 +89,18 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
             Assert.AreSame(typeof(int), serviceFactory.Metadata.ServiceType);
         }
 
+        [Test]
+        public void WithLiteCompositionContainer_multi_service_with_no_implementations()
+        {
+            var ambientServices = new AmbientServices()
+                .WithStaticAppRuntime(this.IsAppAssembly);
+
+            ambientServices.WithLiteCompositionContainer(b => b.WithParts(new[] { typeof(IMultiService) }));
+
+            var serviceFactoryList = ambientServices.GetService<IList<IExportFactory<IMultiService, AppServiceMetadata>>>();
+            Assert.IsEmpty(serviceFactoryList);
+        }
+
         private bool IsTestAssembly(AssemblyName assemblyName)
         {
             return assemblyName.Name.Contains("Test") || assemblyName.Name.Contains("NUnit") || assemblyName.Name.Contains("Mono") || assemblyName.Name.Contains("Proxy");
@@ -134,5 +146,8 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
 
             public Type ServiceType { get; }
         }
+
+        [AppServiceContract(AllowMultiple = true)]
+        public interface IMultiService { }
     }
 }

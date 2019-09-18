@@ -237,8 +237,10 @@ namespace Kephas.Composition.Lite.Conventions
                 var isGenericTypeDefinition = this.ServiceType?.IsGenericTypeDefinition ?? false;
                 var genericServiceType = this.ServiceType;
 
+                var anyImplementations = false;
                 foreach (var type in parts.Where(t => this.ImplementationTypePredicate(t)))
                 {
+                    anyImplementations = true;
                     this.ImplementationType = type;
                     if (isGenericTypeDefinition && !type.IsGenericTypeDefinition)
                     {
@@ -255,6 +257,11 @@ namespace Kephas.Composition.Lite.Conventions
                         this.ExportConfiguration?.Invoke(type, this);
                     }
 
+                    this.ambientServices.Register(this.ServiceType, ConfigureService);
+                }
+
+                if (!anyImplementations)
+                {
                     this.ambientServices.Register(this.ServiceType, ConfigureService);
                 }
 

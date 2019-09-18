@@ -37,6 +37,17 @@ namespace Kephas.Composition.Lite.Internal
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiServiceInfo"/> class.
+        /// This registration is for the case of multiple services without any implementation.
+        /// </summary>
+        /// <param name="contractType">Type of the contract.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        internal MultiServiceInfo(Type contractType, Type serviceType)
+            : this(contractType, serviceType, new ServiceInfo[0])
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MultiServiceInfo"/> class.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceType">Type of the service.</param>
