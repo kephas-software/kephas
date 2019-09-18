@@ -37,12 +37,12 @@ namespace Kephas.Composition.Lite.Internal
             Type serviceType)
         {
             var innerType = serviceType.GetGenericArguments()[0];
-            return GetServiceDescriptors(parent, innerType, null);
+            return this.GetServiceDescriptors(parent, innerType, null);
         }
 
         public override object GetService(IAmbientServices parent, Type serviceType)
         {
-            var descriptors = GetServiceDescriptors(parent, serviceType);
+            var descriptors = this.GetServiceDescriptors(parent, serviceType);
             var itemType = serviceType.GetGenericArguments()[0];
             var getService = GetServiceMethod.MakeGenericMethod(itemType);
             return getService.Call(null, parent, descriptors);

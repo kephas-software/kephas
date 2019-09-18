@@ -87,6 +87,7 @@ namespace Kephas
 #endif
                 .RegisterSource(new ExportFactoryServiceSource(this.registry))
                 .RegisterSource(new ExportFactoryWithMetadataServiceSource(this.registry))
+                .RegisterSource(new ListServiceSource(this.registry))
                 .RegisterSource(new CollectionServiceSource(this.registry))
                 .RegisterSource(new EnumerableServiceSource(this.registry));
 
