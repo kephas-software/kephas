@@ -15,13 +15,15 @@ namespace Kephas.Messaging
     using System.Threading.Tasks;
     using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Messages;
 
     /// <summary>
     /// A function message handler.
     /// </summary>
     /// <typeparam name="TMessage">Type of the message.</typeparam>
     [ExcludeFromComposition]
-    public class FuncMessageHandler<TMessage> : IMessageHandler
+    public class FuncMessageHandler<TMessage> : MessageHandlerBase<TMessage, IMessage>
+        where TMessage : class
     {
         private readonly Func<TMessage, IMessageProcessingContext, CancellationToken, Task<IMessage>> handlerFunction;
 
@@ -45,17 +47,9 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        public Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)
+        public override Task<IMessage> ProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            return this.handlerFunction((TMessage)message, context, token);
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
-        /// resources.
-        /// </summary>
-        public void Dispose()
-        {
+            return this.handlerFunction(message, context, token);
         }
     }
 }
