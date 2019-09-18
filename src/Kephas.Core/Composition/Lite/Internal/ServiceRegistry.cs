@@ -48,11 +48,19 @@ namespace Kephas.Composition.Lite.Internal
                                            || this.serviceSources.Any(s => s.IsMatch(serviceType)));
         }
 
+        /// <summary>
+        /// Registers the service described by serviceInfo.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <param name="serviceInfo">Information describing the service.</param>
+        /// <returns>
+        /// This service registry.
+        /// </returns>
         public ServiceRegistry RegisterService(IServiceInfo serviceInfo)
         {
             if (serviceInfo.AllowMultiple)
             {
-                if (services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo))
+                if (this.services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo))
                 {
                     if (existingServiceInfo is MultiServiceInfo multiServiceInfo)
                     {
@@ -66,9 +74,9 @@ namespace Kephas.Composition.Lite.Internal
                             serviceInfo.ContractType));
                 }
 
-                serviceInfo = new MultiServiceInfo((ServiceInfo)serviceInfo);
+                serviceInfo = serviceInfo as MultiServiceInfo ?? new MultiServiceInfo((ServiceInfo)serviceInfo);
             }
-            else if (services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo)
+            else if (this.services.TryGetValue(serviceInfo.ContractType, out var existingServiceInfo)
                      && existingServiceInfo.AllowMultiple)
             {
                 throw new InvalidOperationException(
@@ -77,18 +85,30 @@ namespace Kephas.Composition.Lite.Internal
                         serviceInfo.ContractType));
             }
 
-            services[serviceInfo.ContractType] = serviceInfo;
+            this.services[serviceInfo.ContractType] = serviceInfo;
             return this;
         }
 
         public ServiceRegistry RegisterSource(IServiceSource serviceSource)
         {
-            serviceSources.Add(serviceSource);
+            this.serviceSources.Add(serviceSource);
             return this;
         }
 
-        public IEnumerator<IServiceInfo> GetEnumerator() => services.Values.GetEnumerator();
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>
+        /// The enumerator.
+        /// </returns>
+        public IEnumerator<IServiceInfo> GetEnumerator() => this.services.Values.GetEnumerator();
 
+        /// <summary>
+        /// Gets the enumerator.
+        /// </summary>
+        /// <returns>
+        /// The enumerator.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <summary>
