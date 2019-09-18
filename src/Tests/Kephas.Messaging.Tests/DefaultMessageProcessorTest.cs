@@ -81,6 +81,20 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
+        public async Task ProcessAsync_Composition_non_message_success()
+        {
+            var container = this.CreateContainer();
+            var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
+            handlerRegistry.RegisterHandler<string>((s, c, token) => Task.FromResult<IMessage>(new ResponseMessage { Message = s + " handled" }));
+            var requestProcessor = container.GetExport<IMessageProcessor>();
+            Assert.IsInstanceOf<DefaultMessageProcessor>(requestProcessor);
+
+            var result = await requestProcessor.ProcessAsync("hello", null, CancellationToken.None);
+            Assert.IsInstanceOf<ResponseMessage>(result);
+            Assert.AreEqual("hello handled", ((ResponseMessage)result).Message);
+        }
+
+        [Test]
         public async Task ProcessAsync_context_handler_and_message_preserved()
         {
             var handler = Substitute.For<IMessageHandler>();

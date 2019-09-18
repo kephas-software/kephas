@@ -69,16 +69,13 @@ namespace Kephas.Messaging
         /// </returns>
         async Task<IMessage> IMessageHandler.ProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)
         {
-            if (!(message is TMessage typedRequest))
+            var typedMessage = message as TMessage ?? (message as IMessageAdapter)?.GetMessage() as TMessage;
+            if (typedMessage == null)
             {
-                typedRequest = message is IMessageAdapter messageAdapter ? messageAdapter.GetMessage() as TMessage : null;
-                if (typedRequest == null)
-                {
-                    throw new ArgumentException(string.Format(Strings.MessageHandler_BadMessageType_Exception, typeof(TMessage)), nameof(message));
-                }
+                throw new ArgumentException(string.Format(Strings.MessageHandler_BadMessageType_Exception, typeof(TMessage)), nameof(message));
             }
 
-            var response = await this.ProcessAsync(typedRequest, context, token).PreserveThreadContext();
+            var response = await this.ProcessAsync(typedMessage, context, token).PreserveThreadContext();
             return response == null ? null : (response as IMessage ?? new MessageAdapter { Message = response });
         }
 
