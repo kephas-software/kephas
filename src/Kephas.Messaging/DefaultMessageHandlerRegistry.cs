@@ -48,6 +48,7 @@ namespace Kephas.Messaging
             IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
         {
             Requires.NotNull(handlerSelectorFactories, nameof(handlerSelectorFactories));
+            Requires.NotNull(handlerFactories, nameof(handlerFactories));
 
             this.handlerSelectors = handlerSelectorFactories
                 .Order()

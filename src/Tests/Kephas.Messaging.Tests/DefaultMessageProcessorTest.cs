@@ -482,7 +482,8 @@ namespace Kephas.Messaging.Tests
                 handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
                                                   new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(mms), new AppServiceMetadata())
-                                              });
+                                              },
+                handlerFactories: handlerFactories);
             await processor.ProcessAsync(message, null, default);
 
             handler1.Received(1).ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
@@ -509,7 +510,8 @@ namespace Kephas.Messaging.Tests
                                               {
                                                   new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms), new AppServiceMetadata(processingPriority: (int)Priority.Low)),
                                                   new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(mms), new AppServiceMetadata(processingPriority: (int)Priority.High))
-                                              });
+                                              },
+                handlerFactories: handlerFactories);
 
             await processor.ProcessAsync(eventMessage, null, default);
             eventHandler.Received(1).ProcessAsync(eventMessage, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
@@ -613,10 +615,17 @@ namespace Kephas.Messaging.Tests
             handlerSelectorFactories = handlerSelectorFactories
                                        ?? new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
-                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms), new AppServiceMetadata())
+                                                  new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms), new AppServiceMetadata()),
+                                              };
+            handlerFactories = handlerFactories
+                                       ?? new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+                                              {
+                                                  // new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => new DefaultMessageHandlerSelector(mms), new AppServiceMetadata()),
                                               };
 
-            return new TestMessageProcessor(Substitute.For<ICompositionContext>(), mms,
+            return new TestMessageProcessor(
+                Substitute.For<ICompositionContext>(),
+                mms,
                 new DefaultMessageHandlerRegistry(mms, handlerSelectorFactories, handlerFactories),
                 behaviorFactories);
         }

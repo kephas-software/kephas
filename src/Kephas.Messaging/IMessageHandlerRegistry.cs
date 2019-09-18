@@ -14,12 +14,15 @@ namespace Kephas.Messaging
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Composition;
+    using Kephas.Services;
 
     /// <summary>
     /// Interface for message handler registry.
     /// </summary>
+    [SingletonAppServiceContract]
     public interface IMessageHandlerRegistry
     {
         /// <summary>
