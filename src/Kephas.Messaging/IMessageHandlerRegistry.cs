@@ -68,5 +68,26 @@ namespace Kephas.Messaging
 
             return @this;
         }
+
+        /// <summary>
+        /// Registers the handler.
+        /// </summary>
+        /// <typeparam name="TMessage">Type of the message.</typeparam>
+        /// <param name="this">The registry to act on.</param>
+        /// <param name="handlerFunction">The synchronous handler function.</param>
+        /// <returns>
+        /// This message handler registry.
+        /// </returns>
+        public static IMessageHandlerRegistry RegisterHandler<TMessage>(this IMessageHandlerRegistry @this, Func<TMessage, IMessageProcessingContext, IMessage> handlerFunction)
+            where TMessage : class
+        {
+            Requires.NotNull(@this, nameof(@this));
+
+            @this.RegisterHandler(
+                new FuncMessageHandler<TMessage>((msg, ctx, token) => Task.FromResult(handlerFunction(msg, ctx))),
+                new MessageHandlerMetadata(typeof(TMessage)));
+
+            return @this;
+        }
     }
 }
