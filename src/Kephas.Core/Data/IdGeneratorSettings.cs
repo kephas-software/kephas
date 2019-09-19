@@ -20,7 +20,7 @@ namespace Kephas.Data
         /// <summary>
         /// Gets or sets the start epoch for the timestamp part of an ID - 2015-06-01.
         /// </summary>
-        public DateTimeOffset StartEpoch { get; set; } = new DateTimeOffset(new DateTime(2018, 8, 1), TimeSpan.Zero);
+        public DateTimeOffset StartEpoch { get; set; } = new DateTimeOffset(new DateTime(2019, 9, 1), TimeSpan.Zero);
 
         /// <summary>
         /// Gets or sets the length of the namespace identifier bits.
