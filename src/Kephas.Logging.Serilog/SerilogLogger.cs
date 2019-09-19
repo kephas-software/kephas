@@ -18,7 +18,7 @@ namespace Kephas.Logging.Serilog
     /// <summary>
     /// The Serilog logger adapter.
     /// </summary>
-    public class SerilogLogger : global::Kephas.Logging.ILogger
+    public class SerilogLogger : ILogger
     {
         private readonly global::Serilog.ILogger logger;
 
@@ -29,7 +29,7 @@ namespace Kephas.Logging.Serilog
         /// <param name="rootLogger">The root logger.</param>
         internal SerilogLogger(string loggerName, Logger rootLogger)
         {
-            this.logger = rootLogger.ForContext(new LoggerEnricher(loggerName));
+            this.logger = rootLogger.ForContext(Constants.SourceContextPropertyName, loggerName, false);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Kephas.Logging.Serilog
         /// </summary>
         /// <remarks>
         /// Note for implementors: the <paramref name="exception"/> may be <c>null</c>, so be cautious and handle this case too.
-        /// For example, the <see cref="Logging.LoggerExtensions.Log"/> extension method passes a <c>null</c> exception.
+        /// For example, the <see cref="LoggerExtensions.Log(ILogger, LogLevel, string, object[])"/> extension method passes a <c>null</c> exception.
         /// </remarks>
         /// <param name="level">The logging level.</param>
         /// <param name="exception">The exception.</param>
@@ -85,35 +85,6 @@ namespace Kephas.Logging.Serilog
                     return LogEventLevel.Verbose;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(level), level, null);
-            }
-        }
-
-        private class LoggerEnricher : ILogEventEnricher
-        {
-            private const string LoggerPropertyName = "Logger";
-
-            private string loggerName;
-
-            private LogEventProperty loggerProperty;
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="LoggerEnricher"/> class.
-            /// </summary>
-            /// <param name="loggerName">Name of the logger.</param>
-            public LoggerEnricher(string loggerName)
-            {
-                this.loggerName = loggerName;
-            }
-
-            /// <summary>Enrich the log event.</summary>
-            /// <param name="logEvent">The log event to enrich.</param>
-            /// <param name="propertyFactory">Factory for creating new properties to add to the event.</param>
-            public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
-            {
-                if (this.loggerProperty == null)
-                {
-                    this.loggerProperty = propertyFactory.CreateProperty(LoggerPropertyName, this.loggerName);
-                }
             }
         }
     }
