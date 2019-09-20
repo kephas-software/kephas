@@ -12,7 +12,6 @@ namespace Kephas.Messaging.Tests.Distributed
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Threading;
@@ -28,12 +27,10 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Distributed.Routing.Composition;
     using Kephas.Messaging.Events;
-    using Kephas.Messaging.HandlerSelectors;
     using Kephas.Messaging.Messages;
     using Kephas.Serialization;
     using Kephas.Serialization.Json;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using Kephas.Testing.Composition.Mef;
     using Kephas.Threading.Tasks;
 
@@ -72,6 +69,22 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer();
             var messageBroker = container.GetExport<IMessageBroker>();
             Assert.IsInstanceOf<DefaultMessageBroker>(messageBroker);
+        }
+
+        [Test]
+        public async Task InitializeAsync_ignore_router_error()
+        {
+            var container = this.CreateContainer(parts: new[] { typeof(IgnoreErrorMessageRouter) });
+            var messageBroker = container.GetExport<IMessageBroker>();
+            await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
+        }
+
+        [Test]
+        public void InitializeAsync_throw_router_error()
+        {
+            var container = this.CreateContainer(parts: new[] { typeof(ErrorMessageRouter) });
+            var messageBroker = container.GetExport<IMessageBroker>();
+            Assert.ThrowsAsync<NotImplementedException>(() => (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container)));
         }
 
         [Test]
@@ -376,6 +389,38 @@ namespace Kephas.Messaging.Tests.Distributed
             {
                 this.ProcessingContextConfigurator?.Invoke(context.Message, context);
                 return base.ApplyBeforeProcessBehaviorsAsync(behaviors, context, token);
+            }
+        }
+
+        [MessageRouter(ThrowOnInitializationError = false)]
+        public class IgnoreErrorMessageRouter : IMessageRouter, IAsyncInitializable
+        {
+            public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
+
+            public Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<(RoutingInstruction action, IMessage reply)> SendAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        [MessageRouter(ThrowOnInitializationError = true)]
+        public class ErrorMessageRouter : IMessageRouter, IAsyncInitializable
+        {
+            public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
+
+            public Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<(RoutingInstruction action, IMessage reply)> SendAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
             }
         }
     }
