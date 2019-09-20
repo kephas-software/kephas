@@ -15,8 +15,8 @@ namespace Kephas.Configuration
     using System.Linq;
 
     using Kephas.Composition;
-    using Kephas.Configuration.Composition;
     using Kephas.Configuration.Providers;
+    using Kephas.Configuration.Providers.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Services;
@@ -29,32 +29,20 @@ namespace Kephas.Configuration
     /// </remarks>
     /// <typeparam name="TSettings">Type of the settings.</typeparam>
     public class Configuration<TSettings> : Expando, IConfiguration<TSettings>
-        where TSettings : class
+        where TSettings : class, new()
     {
-        /// <summary>
-        /// The provider factories.
-        /// </summary>
-        private readonly IOrderedServiceCollection<IConfigurationProvider, ConfigurationProviderMetadata> providerFactories;
-
-        /// <summary>
-        /// The settings.
-        /// </summary>
         private TSettings settings;
-
-        /// <summary>
-        /// The configuration provider.
-        /// </summary>
-        private IConfigurationProvider provider;
+        private ISettingsProviderSelector settingsProviderSelector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Configuration{TSettings}"/> class.
         /// </summary>
-        /// <param name="providerFactories">The provider factories.</param>
-        public Configuration(ICollection<IExportFactory<IConfigurationProvider, ConfigurationProviderMetadata>> providerFactories)
+        /// <param name="settingsProviderSelector">The settings provider selector.</param>
+        public Configuration(ISettingsProviderSelector settingsProviderSelector)
         {
-            Requires.NotNull(providerFactories, nameof(providerFactories));
+            Requires.NotNull(settingsProviderSelector, nameof(settingsProviderSelector));
 
-            this.providerFactories = providerFactories.Order();
+            this.settingsProviderSelector = settingsProviderSelector;
         }
 
         /// <summary>
@@ -66,14 +54,6 @@ namespace Kephas.Configuration
         public TSettings Settings => this.settings ?? (this.settings = this.ComputeSettings());
 
         /// <summary>
-        /// Gets the configuration provider.
-        /// </summary>
-        /// <value>
-        /// The configuration provider.
-        /// </value>
-        public IConfigurationProvider Provider => this.provider ?? (this.provider = this.ComputeConfigurationProvider());
-
-        /// <summary>
         /// Calculates the settings.
         /// </summary>
         /// <returns>
@@ -81,37 +61,8 @@ namespace Kephas.Configuration
         /// </returns>
         private TSettings ComputeSettings()
         {
-            return (TSettings)this.Provider.GetSettings(typeof(TSettings));
+            return (TSettings)this.settingsProviderSelector.GetProvider(typeof(TSettings)).GetSettings(typeof(TSettings));
         }
 
-        /// <summary>
-        /// Calculates the configuration provider.
-        /// </summary>
-        /// <exception cref="NotSupportedException">Thrown when the requested operation is not supported.</exception>
-        /// <returns>
-        /// The calculated configuration provider.
-        /// </returns>
-        private IConfigurationProvider ComputeConfigurationProvider()
-        {
-            var orderedFactories = this.providerFactories;
-
-            var factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType == typeof(TSettings));
-            if (factory == null)
-            {
-                factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType?.IsAssignableFrom(typeof(TSettings)) ?? false);
-                if (factory == null)
-                {
-                    factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType == null);
-                }
-            }
-
-            if (factory == null)
-            {
-                // TODO provide a more explicit exception information.
-                throw new NotSupportedException($"No provider found for settings type {typeof(TSettings)}.");
-            }
-
-            return factory.CreateExportedValue();
-        }
     }
 }

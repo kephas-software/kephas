@@ -13,14 +13,15 @@ namespace Kephas.AspNetCore
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas;
     using Kephas.Application;
     using Kephas.AspNetCore.Application;
     using Kephas.AspNetCore.Configuration;
     using Kephas.AspNetCore.Hosting;
     using Kephas.AspNetCore.Logging;
     using Kephas.Composition;
-    using Kephas.Composition.DependencyInjection;
+    using Kephas.Extensions.Configuration;
+    using Kephas.Extensions.DependencyInjection;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
@@ -142,7 +143,7 @@ namespace Kephas.AspNetCore
             IApplicationBuilder app,
             IApplicationLifetime appLifetime)
         {
-            var appContext = this.CreateAppContext(app, this.appArgs);
+            var appContext = this.CreateAppContext(app);
 
             // ensure upon request processing that the bootstrapping procedure is done.
             app.Use(async (context, next) =>
@@ -283,18 +284,17 @@ namespace Kephas.AspNetCore
         /// Creates the application context.
         /// </summary>
         /// <param name="app">The application builder.</param>
-        /// <param name="appArgs">The application arguments.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected virtual IAspNetAppContext CreateAppContext(IApplicationBuilder app, string[] appArgs)
+        protected virtual IAspNetAppContext CreateAppContext(IApplicationBuilder app)
         {
             var appContext = new AspNetAppContext(
                 app,
                 this.HostingEnvironment,
                 this.Configuration,
                 this.AmbientServices,
-                appArgs: appArgs,
+                appArgs: this.appArgs == null ? new AppArgs() : new AppArgs(this.appArgs),
                 signalShutdown: c => this.ShutdownAsync());
             return appContext;
         }

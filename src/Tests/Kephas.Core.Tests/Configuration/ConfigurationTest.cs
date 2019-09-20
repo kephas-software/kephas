@@ -15,9 +15,8 @@ namespace Kephas.Core.Tests.Configuration
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Configuration;
-    using Kephas.Configuration.Composition;
     using Kephas.Configuration.Providers;
-
+    using Kephas.Configuration.Providers.Composition;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -29,13 +28,14 @@ namespace Kephas.Core.Tests.Configuration
         public void GetSettings_default_provider()
         {
             var settings = new Config1();
-            var configProvider1 = Substitute.For<IConfigurationProvider>();
+            var configProvider1 = Substitute.For<ISettingsProvider>();
             configProvider1.GetSettings(typeof(Config1)).Returns(settings);
 
-            var configuration = new Configuration<Config1>(new List<IExportFactory<IConfigurationProvider, ConfigurationProviderMetadata>>
+            var selector = new DefaultSettingsProviderSelector(new List<IExportFactory<ISettingsProvider, SettingsProviderMetadata>>
                                                                {
-                                                                   new ExportFactory<IConfigurationProvider, ConfigurationProviderMetadata>(() => configProvider1, new ConfigurationProviderMetadata(null))
+                                                                   new ExportFactory<ISettingsProvider, SettingsProviderMetadata>(() => configProvider1, new SettingsProviderMetadata(null))
                                                                });
+            var configuration = new Configuration<Config1>(selector);
 
             var result = configuration.Settings;
             Assert.AreSame(settings, result);
@@ -45,18 +45,19 @@ namespace Kephas.Core.Tests.Configuration
         public void GetSettings_specific_provider()
         {
             var settings1 = new Config1();
-            var configProvider1 = Substitute.For<IConfigurationProvider>();
+            var configProvider1 = Substitute.For<ISettingsProvider>();
             configProvider1.GetSettings(typeof(Config1)).Returns(settings1);
 
             var settings2 = new Config2();
-            var configProvider2 = Substitute.For<IConfigurationProvider>();
+            var configProvider2 = Substitute.For<ISettingsProvider>();
             configProvider2.GetSettings(typeof(Config2)).Returns(settings2);
 
-            var configuration = new Configuration<Config2>(new List<IExportFactory<IConfigurationProvider, ConfigurationProviderMetadata>>
+            var selector = new DefaultSettingsProviderSelector(new List<IExportFactory<ISettingsProvider, SettingsProviderMetadata>>
                                                                {
-                                                                   new ExportFactory<IConfigurationProvider, ConfigurationProviderMetadata>(() => configProvider1, new ConfigurationProviderMetadata(typeof(Config1))),
-                                                                   new ExportFactory<IConfigurationProvider, ConfigurationProviderMetadata>(() => configProvider2, new ConfigurationProviderMetadata(typeof(Config2)))
+                                                                   new ExportFactory<ISettingsProvider, SettingsProviderMetadata>(() => configProvider1, new SettingsProviderMetadata(typeof(Config1))),
+                                                                   new ExportFactory<ISettingsProvider, SettingsProviderMetadata>(() => configProvider2, new SettingsProviderMetadata(typeof(Config2)))
                                                                });
+            var configuration = new Configuration<Config2>(selector);
 
             var result = configuration.Settings;
             Assert.AreSame(settings2, result);

@@ -10,7 +10,6 @@
 
 namespace Kephas.Configuration
 {
-    using Kephas.Configuration.Providers;
     using Kephas.Dynamic;
     using Kephas.Services;
 
@@ -20,6 +19,7 @@ namespace Kephas.Configuration
     /// <typeparam name="TSettings">Type of the settings.</typeparam>
     [SingletonAppServiceContract(AsOpenGeneric = true)]
     public interface IConfiguration<out TSettings> : IExpando
+        where TSettings : class, new()
     {
         /// <summary>
         /// Gets the settings associated to this configuration.
@@ -28,13 +28,5 @@ namespace Kephas.Configuration
         /// The settings.
         /// </value>
         TSettings Settings { get; }
-
-        /// <summary>
-        /// Gets the configuration provider.
-        /// </summary>
-        /// <value>
-        /// The configuration provider.
-        /// </value>
-        IConfigurationProvider Provider { get; }
     }
 }

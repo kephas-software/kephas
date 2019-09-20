@@ -345,4 +345,10 @@
   <data name="LiteRegistrationBuilder_CannotIdentifyConstructedServiceType_Exception" xml:space="preserve">
     <value>Cannot identify the constructed service type of {0} from {1}.</value>
   </data>
+  <data name="SettingsProviderSelector_NoProviderFoundForSettingsType" xml:space="preserve">
+    <value>No provider found for settings type '{0}'.</value>
+  </data>
+  <data name="ConfigurationStoreSettingsProvider_SettingsTypeMismatch_Exception" xml:space="preserve">
+    <value>The stored settings type '{0}' differs from the requested settings type '{1}'.</value>
+  </data>
 </root>

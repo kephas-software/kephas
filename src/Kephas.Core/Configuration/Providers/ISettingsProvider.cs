@@ -19,7 +19,7 @@ namespace Kephas.Configuration.Providers
     /// Interface for configuration provider.
     /// </summary>
     [SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(SettingsTypeAttribute) })]
-    public interface IConfigurationProvider
+    public interface ISettingsProvider
     {
         /// <summary>
         /// Gets the settings with the provided type.
@@ -32,7 +32,7 @@ namespace Kephas.Configuration.Providers
     }
 
     /// <summary>
-    /// Extension methods for <see cref="IConfigurationProvider"/>.
+    /// Extension methods for <see cref="ISettingsProvider"/>.
     /// </summary>
     public static class ConfigurationProviderExtensions
     {
@@ -44,7 +44,7 @@ namespace Kephas.Configuration.Providers
         /// <returns>
         /// The settings.
         /// </returns>
-        public static T GetSettings<T>(this IConfigurationProvider configurationProvider)
+        public static T GetSettings<T>(this ISettingsProvider configurationProvider)
         {
             Requires.NotNull(configurationProvider, nameof(configurationProvider));
 

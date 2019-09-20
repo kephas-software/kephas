@@ -10,10 +10,10 @@
 
 namespace Kephas.AspNetCore.Configuration
 {
-    using Kephas.Configuration;
+    using Kephas;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Extensions.Configuration;
 
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -33,26 +33,9 @@ namespace Kephas.AspNetCore.Configuration
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var serviceCollection = ambientServices.GetService<IServiceCollection>();
+            var serviceCollection = AmbientServicesExtensions.GetService<IServiceCollection>(ambientServices);
 
             serviceCollection.Replace(ServiceDescriptor.Scoped(typeof(Microsoft.Extensions.Options.IOptionsSnapshot<>), typeof(OptionsSnapshot<>)));
-
-            return ambientServices;
-        }
-
-        /// <summary>
-        /// Uses the extensions configuration.
-        /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <returns>
-        /// The provided ambient services.
-        /// </returns>
-        public static IAmbientServices UseConfiguration(this IAmbientServices ambientServices, IConfiguration configuration)
-        {
-            Requires.NotNull(ambientServices, nameof(ambientServices));
-
-            ambientServices.Register<IConfigurationStore>(new AspNetConfigurationStore(configuration));
 
             return ambientServices;
         }

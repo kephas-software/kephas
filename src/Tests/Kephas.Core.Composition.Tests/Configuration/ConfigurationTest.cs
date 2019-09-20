@@ -37,7 +37,7 @@ namespace Kephas.Core.Tests.Configuration
         }
 
         [SettingsType(typeof(TestSettings))]
-        public class TestConfigurationProvider : IConfigurationProvider
+        public class TestConfigurationProvider : ISettingsProvider
         {
             public static TestSettings Settings = new TestSettings();
 

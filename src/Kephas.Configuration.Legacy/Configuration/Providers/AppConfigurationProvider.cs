@@ -21,7 +21,7 @@ namespace Kephas.Configuration.Providers
     /// </summary>
     [OverridePriority(Priority.Lowest)]
     [ProcessingPriority(Priority.Lowest)]
-    public class AppConfigurationProvider : IConfigurationProvider
+    public class AppConfigurationProvider : ISettingsProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AppConfigurationProvider"/> class.

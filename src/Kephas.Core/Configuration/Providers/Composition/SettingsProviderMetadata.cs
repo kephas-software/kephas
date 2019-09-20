@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Configuration.Composition
+namespace Kephas.Configuration.Providers.Composition
 {
     using System;
     using System.Collections.Generic;
@@ -17,15 +17,15 @@ namespace Kephas.Configuration.Composition
     using Kephas.Services.Composition;
 
     /// <summary>
-    /// A configuration provider metadata.
+    /// A settings provider metadata.
     /// </summary>
-    public class ConfigurationProviderMetadata : AppServiceMetadata
+    public class SettingsProviderMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationProviderMetadata"/> class.
+        /// Initializes a new instance of the <see cref="SettingsProviderMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public ConfigurationProviderMetadata(IDictionary<string, object> metadata)
+        public SettingsProviderMetadata(IDictionary<string, object> metadata)
             : base(metadata)
         {
             if (metadata == null)
@@ -37,12 +37,12 @@ namespace Kephas.Configuration.Composition
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationProviderMetadata"/> class.
+        /// Initializes a new instance of the <see cref="SettingsProviderMetadata"/> class.
         /// </summary>
         /// <param name="settingsType">The type of the settings.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public ConfigurationProviderMetadata(Type settingsType, int processingPriority = 0, int overridePriority = 0)
+        public SettingsProviderMetadata(Type settingsType, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.SettingsType = settingsType;
