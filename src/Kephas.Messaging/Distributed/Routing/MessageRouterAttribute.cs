@@ -46,5 +46,14 @@ namespace Kephas.Messaging.Distributed.Routing
         /// </value>
         [MetadataValue(nameof(MessageRouterMetadata.IsFallback))]
         public bool IsFallback { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the router will throw on initialization error.
+        /// </summary>
+        /// <value>
+        /// True to throw on initialization error, false otherwise.
+        /// </value>
+        [MetadataValue(nameof(MessageRouterMetadata.ThrowOnInitializationError))]
+        public bool ThrowOnInitializationError { get; set; } = true;
     }
 }

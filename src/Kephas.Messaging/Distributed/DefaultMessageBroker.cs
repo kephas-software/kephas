@@ -135,18 +135,39 @@ namespace Kephas.Messaging.Distributed
                     regex: string.IsNullOrEmpty(f.Metadata.ReceiverUrlRegex) ? null : new Regex(f.Metadata.ReceiverUrlRegex, RegexOptions.IgnoreCase | RegexOptions.Compiled),
                     channel: f.Metadata.Channel,
                     isFallback: f.Metadata.IsFallback,
-                    asyncRouter: f.CreateExportedValueAsync(context)))
+                    asyncRouter: this.TryCreateRouterAsync(f, context)))
                 .ToList();
 
             await Task.WhenAll(asyncRouterMap.Select(m => m.asyncRouter)).PreserveThreadContext();
 
-            this.routerMap = asyncRouterMap.Select(m => (m.regex, m.channel, m.isFallback, m.asyncRouter.Result)).ToList();
+            this.routerMap = asyncRouterMap
+                                .Where(m => m.asyncRouter.Result != null)
+                                .Select(m => (m.regex, m.channel, m.isFallback, m.asyncRouter.Result))
+                                .ToList();
             foreach (var map in this.routerMap)
             {
                 map.router.ReplyReceived += this.HandleReplyReceived;
             }
 
             this.initMonitor.Complete();
+        }
+
+        private async Task<IMessageRouter> TryCreateRouterAsync(IExportFactory<IMessageRouter, MessageRouterMetadata> f, IContext context)
+        {
+            if (f.Metadata.ThrowOnInitializationError)
+            {
+                return await f.CreateExportedValueAsync(context).PreserveThreadContext();
+            }
+
+            try
+            {
+                return await f.CreateExportedValueAsync(context).PreserveThreadContext();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, $"Error while trying to create and initialize an instance of '{f.Metadata.AppServiceImplementationType}'.");
+                return null;
+            }
         }
 
         /// <summary>
