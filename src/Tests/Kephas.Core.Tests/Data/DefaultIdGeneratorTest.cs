@@ -26,7 +26,7 @@ namespace Kephas.Core.Tests.Data
         [TestCase(50, 1000)]
         public async Task GenerateId_unique(int threads, int idCount)
         {
-            var generator = new DefaultIdGenerator();
+            var generator = new DefaultIdGenerator(new IdGeneratorSettings());
 
             var tasks = new List<Task<long[]>>();
             for (var i = 0; i < threads; i++)

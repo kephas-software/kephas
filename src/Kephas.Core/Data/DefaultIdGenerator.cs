@@ -13,6 +13,7 @@ namespace Kephas.Data
     using System;
 
     using Kephas.Composition.AttributedModel;
+    using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
@@ -55,9 +56,10 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultIdGenerator"/> class.
         /// </summary>
+        /// <param name="configuration">The configuration.</param>
         [CompositionConstructor]
-        public DefaultIdGenerator()
-            : this(new IdGeneratorSettings())
+        public DefaultIdGenerator(IConfiguration<IdGeneratorSettings> configuration)
+            : this(configuration.Settings)
         {
         }
 
@@ -65,7 +67,7 @@ namespace Kephas.Data
         /// Initializes a new instance of the <see cref="DefaultIdGenerator"/> class.
         /// </summary>
         /// <param name="settings">Options for controlling the operation.</param>
-        public DefaultIdGenerator(IdGeneratorSettings settings)
+        internal DefaultIdGenerator(IdGeneratorSettings settings)
         {
             Requires.NotNull(settings, nameof(settings));
 
@@ -133,15 +135,7 @@ namespace Kephas.Data
                 relativeTimestamp = timestampPartFromLastId;
             }
 
-            // If the milliseconds for which the number is taken are different from the milliseconds from the last generated ID,
-            // reset counter, there is no need to discriminate anymore.
-            if (relativeTimestamp != timestampPartFromLastId)
-            {
-                this.discriminatorCounter = 0;
-            }
-
             var discriminatorPart = this.discriminatorCounter++;
-
             if (this.discriminatorCounter > this.maxRandom)
             {
                 relativeTimestamp++;
@@ -150,19 +144,6 @@ namespace Kephas.Data
             }
 
             return discriminatorPart;
-        }
-
-        /// <summary>
-        /// Gets the identifier part for the namespace.
-        /// </summary>
-        /// <returns>
-        /// The namespace identifier part.
-        /// </returns>
-        protected virtual int GenerateNamespace()
-        {
-            // TODO - when we need to generate unique IDs on different machine,
-            // then use a service to get the namespace ID on the current machine
-            return 0;
         }
 
         /// <summary>
@@ -179,7 +160,7 @@ namespace Kephas.Data
             var discriminatorPart = this.GenerateDiscriminator(ref timestampPart);
 
             // 3-bit namespace identifier
-            var namespacePart = this.GenerateNamespace();
+            var namespacePart = this.settings.Namespace;
 
             // shifting timestamp (milliseconds from start epoch) to the left to get 42-bit timestamp part of the Id
             var shiftedTimestampPart = timestampPart << this.timestampShift;

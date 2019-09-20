@@ -12,6 +12,7 @@ namespace Kephas.Composition.Lite.Hosting
 {
     using System;
     using System.Collections.Generic;
+
     using Kephas.Composition.Conventions;
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Lite.Conventions;

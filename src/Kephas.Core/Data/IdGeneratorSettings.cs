@@ -37,5 +37,13 @@ namespace Kephas.Data
         /// The length of the discriminator part bits.
         /// </value>
         public int DiscriminatorBitLength { get; set; } = 7;
+
+        /// <summary>
+        /// Gets or sets the namespace bits.
+        /// </summary>
+        /// <value>
+        /// The namespace bits.
+        /// </value>
+        public int Namespace { get; set; } = 0;
     }
 }
