@@ -31,12 +31,12 @@ namespace Kephas.Application
         public AppContext(
             IAmbientServices ambientServices = null,
             IAppManifest appManifest = null,
-            string[] appArgs = null,
+            IAppArgs appArgs = null,
             Func<IContext, Task<IAppContext>> signalShutdown = null)
             : base(ambientServices)
         {
             this.AppManifest = appManifest ?? this.CompositionContext?.GetExport<IAppManifest>();
-            this.AppArgs = appArgs;
+            this.AppArgs = appArgs ?? new AppArgs();
             this.SignalShutdown = signalShutdown;
         }
 
@@ -51,7 +51,7 @@ namespace Kephas.Application
         /// <value>
         /// The application arguments.
         /// </value>
-        public string[] AppArgs { get; }
+        public IAppArgs AppArgs { get; }
 
         /// <summary>
         /// Gets or sets the application root exception.

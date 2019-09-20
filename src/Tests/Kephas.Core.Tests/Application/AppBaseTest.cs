@@ -112,12 +112,8 @@ namespace Kephas.Core.Tests.Application
         /// <summary>
         /// Configures the ambient services asynchronously.
         /// </summary>
-        /// <param name="appArgs">The application arguments.</param>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        protected override async void ConfigureAmbientServices(string[] appArgs, IAmbientServices ambientServices)
+        protected override async void ConfigureAmbientServices(IAmbientServices ambientServices)
         {
             if (this.asyncConfig != null)
             {

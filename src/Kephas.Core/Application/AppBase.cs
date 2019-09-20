@@ -64,13 +64,13 @@ namespace Kephas.Application
         /// <summary>
         /// Bootstraps the application asynchronously.
         /// </summary>
-        /// <param name="appArgs">The application arguments (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="rawAppArgs">Optional. The application arguments.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
         public virtual async Task<IAppContext> BootstrapAsync(
-            string[] appArgs = null,
+            string[] rawAppArgs = null,
             CancellationToken cancellationToken = default)
         {
             try
@@ -83,7 +83,10 @@ namespace Kephas.Application
                 // to early, to be able to still get it at a later time.
                 // registers the application context as a global service, so that other services can benefit from it.
                 this.AmbientServices.Register<IAppContext>(b => b.WithFactory(ctx => this.AppContext).AsTransient());
-                this.ConfigureAmbientServices(appArgs, this.AmbientServices);
+
+                var appArgs = rawAppArgs == null ? new AppArgs() : new AppArgs(rawAppArgs);
+                this.AmbientServices.Register<IAppArgs>(b => b.WithInstance(appArgs));
+                this.ConfigureAmbientServices(this.AmbientServices);
 
                 this.Logger = this.Logger ?? this.AmbientServices.GetLogger(this.GetType());
             }
@@ -102,7 +105,7 @@ namespace Kephas.Application
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
 
                 // it is important to create the app context before initializing the application manager.
-                this.AppContext = this.CreateAppContext(appArgs, this.AmbientServices);
+                this.AppContext = this.CreateAppContext(this.AmbientServices);
                 await this.InitializeAppManagerAsync(this.AppContext, cancellationToken);
 
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_StartComplete_Message);
@@ -192,9 +195,8 @@ namespace Kephas.Application
         /// <remarks>
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
-        /// <param name="appArgs">The application arguments.</param>
         /// <param name="ambientServices">The ambient services.</param>
-        protected abstract void ConfigureAmbientServices(string[] appArgs, IAmbientServices ambientServices);
+        protected abstract void ConfigureAmbientServices(IAmbientServices ambientServices);
 
         /// <summary>
         /// Initializes the application manager asynchronously.
@@ -232,16 +234,15 @@ namespace Kephas.Application
         /// <summary>
         /// Creates the application context.
         /// </summary>
-        /// <param name="appArgs">The application arguments.</param>
         /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected virtual IAppContext CreateAppContext(string[] appArgs, IAmbientServices ambientServices)
+        protected virtual IAppContext CreateAppContext(IAmbientServices ambientServices)
         {
             var appContext = new AppContext(
                                      ambientServices,
-                                     appArgs: appArgs,
+                                     appArgs: ambientServices.GetService<IAppArgs>(),
                                      signalShutdown: c => this.ShutdownAsync())
             {
                 Logger = this.Logger,
