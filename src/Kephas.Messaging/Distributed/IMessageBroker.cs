@@ -10,7 +10,6 @@
 
 namespace Kephas.Messaging.Distributed
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -20,7 +19,7 @@ namespace Kephas.Messaging.Distributed
     /// Singleton application service contract for distributed message broker.
     /// </summary>
     [SingletonAppServiceContract]
-    public interface IMessageBroker : IDisposable
+    public interface IMessageBroker
     {
         /// <summary>
         /// Dispatches the brokered message asynchronously.

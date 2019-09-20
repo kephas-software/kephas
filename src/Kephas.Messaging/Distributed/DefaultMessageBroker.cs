@@ -180,26 +180,6 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
-        /// resources.
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Releases the unmanaged resources used by the Kephas.Messaging.Distributed.MessageBrokerBase
-        /// and optionally releases the managed resources.
-        /// </summary>
-        /// <param name="disposing">True to release both managed and unmanaged resources; false to
-        ///                         release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-        }
-
-        /// <summary>
         /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
