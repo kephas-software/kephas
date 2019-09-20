@@ -17,6 +17,7 @@ namespace Kephas.Messaging.Distributed.Routing
     /// <summary>
     /// Attribute for message router.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public class MessageRouterAttribute : Attribute
     {
         /// <summary>
