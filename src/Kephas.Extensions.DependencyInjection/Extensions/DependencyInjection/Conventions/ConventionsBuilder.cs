@@ -4,16 +4,17 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the medi conventions builder class.
+//   Implements the dependency injection conventions builder class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.DependencyInjection.Conventions
+namespace Kephas.Extensions.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
 
     using Kephas.Collections;
+    using Kephas.Composition;
     using Kephas.Composition.Conventions;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;

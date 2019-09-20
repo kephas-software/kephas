@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.DependencyInjection
+namespace Kephas.Extensions.DependencyInjection
 {
     using System;
 

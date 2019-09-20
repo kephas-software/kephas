@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.DependencyInjection.Hosting
+namespace Kephas.Extensions.DependencyInjection.Hosting
 {
     using Microsoft.Extensions.DependencyInjection;
 

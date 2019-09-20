@@ -8,13 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.DependencyInjection.Conventions
+namespace Kephas.Extensions.DependencyInjection.Conventions
 {
     using System;
     using System.Collections.Generic;
 
     using Kephas.Composition.Conventions;
-    using Kephas.Composition.DependencyInjection.Resources;
+    using Kephas.Extensions.DependencyInjection.Resources;
     using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
 

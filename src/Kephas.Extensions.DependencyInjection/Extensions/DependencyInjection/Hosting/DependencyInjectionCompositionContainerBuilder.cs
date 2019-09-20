@@ -8,16 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.DependencyInjection.Hosting
+namespace Kephas.Extensions.DependencyInjection.Hosting
 {
     using System;
     using System.Collections.Generic;
 
     using Kephas.Composition.Conventions;
-    using Kephas.Composition.DependencyInjection.Conventions;
+    using Kephas.Extensions.DependencyInjection.Conventions;
     using Kephas.Composition.Hosting;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Kephas.Composition;
 
     /// <summary>
     /// A dependency injection composition container builder.

@@ -12,9 +12,9 @@ namespace Kephas
 {
     using System;
 
-    using Kephas.Composition.DependencyInjection.Hosting;
     using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Extensions.DependencyInjection.Hosting;
 
     /// <summary>
     /// Microsoft.Extensions.DependencyInjection related ambient services extensions.

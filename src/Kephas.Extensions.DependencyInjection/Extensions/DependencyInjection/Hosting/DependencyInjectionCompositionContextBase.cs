@@ -8,10 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Composition.DependencyInjection.Hosting
+namespace Kephas.Extensions.DependencyInjection.Hosting
 {
     using System;
     using System.Collections.Generic;
+
+    using Kephas.Composition;
 
     using Microsoft.Extensions.DependencyInjection;
 
