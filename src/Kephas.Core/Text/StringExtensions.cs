@@ -13,7 +13,7 @@ namespace Kephas.Text
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Runtime.CompilerServices;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -105,5 +105,17 @@ namespace Kephas.Text
                     },
                 removeEmptyEntries);
         }
+
+        /// <summary>
+        /// Formats the provided string with the indicated arguments.
+        /// </summary>
+        /// <param name="format">The string format.</param>
+        /// <param name="args">A variable-length parameters list containing arguments.</param>
+        /// <returns>
+        /// The formatted string.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string FormatWith(this string format, params object[] args)
+            => string.Format(format, args);
     }
 }
