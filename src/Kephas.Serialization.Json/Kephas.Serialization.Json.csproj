@@ -8,11 +8,11 @@
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <AssemblyVersion>6.5.0.0</AssemblyVersion>
-        <FileVersion>6.5.0.0</FileVersion>
+        <AssemblyVersion>7.0.0.0</AssemblyVersion>
+        <FileVersion>7.0.0.0</FileVersion>
         <Copyright>Copyright © Kephas Software SRL 2010-2019</Copyright>
         <Description>Provides JSON serialization infrastructure using the Newtonsoft.Json implementation.</Description>
-        <Version>6.5.0-rc.17</Version>
+        <Version>7.0.0-rc.18</Version>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>

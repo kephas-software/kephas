@@ -245,7 +245,7 @@ namespace Kephas.Tests.Composition.Mef
             }
         }
 
-        [Test, Ignore("Custom scope factories not supported from version 6.5.0")]
+        [Test, Ignore("Custom scope factories not supported from version 7.0.0")]
         public void GetExport_ScopedAppService_custom_scope_export()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();

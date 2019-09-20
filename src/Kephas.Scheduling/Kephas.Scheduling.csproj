@@ -5,12 +5,12 @@
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>6.5.0-rc.17</Version>
+        <Version>7.0.0-rc.18</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <AssemblyVersion>6.5.0.0</AssemblyVersion>
-        <FileVersion>6.5.0.0</FileVersion>
+        <AssemblyVersion>7.0.0.0</AssemblyVersion>
+        <FileVersion>7.0.0.0</FileVersion>
         <Description>Provides the infrastructure for scheduling tasks.</Description>
         <Copyright>Copyright Kephas Software SRL 2010-2019</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
