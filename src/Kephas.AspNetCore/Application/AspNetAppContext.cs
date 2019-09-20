@@ -45,7 +45,7 @@ namespace Kephas.AspNetCore.Application
             IConfiguration configuration,
             IAmbientServices ambientServices = null,
             IAppManifest appManifest = null,
-            string[] appArgs = null,
+            IAppArgs appArgs = null,
             Func<IContext, Task<IAppContext>> signalShutdown = null)
             : base(ambientServices, appManifest, appArgs, signalShutdown)
         {
