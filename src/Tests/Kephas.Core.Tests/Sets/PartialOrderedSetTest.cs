@@ -112,5 +112,13 @@ namespace Kephas.Core.Tests.Sets
             Assert.IsNull(orderedSet.Compare(1, 3));
             Assert.IsNull(orderedSet.Compare(2, 3));
         }
+
+        [Test]
+        public void Compare_value_not_contained()
+        {
+            var orderedSet = new PartialOrderedSet<int>(new[] { 2, 3, 1 }, (i1, i2) => i1 - i2);
+
+            Assert.IsNull(orderedSet.Compare(1, 4));
+        }
     }
 }

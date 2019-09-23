@@ -88,7 +88,7 @@ namespace Kephas.Sets
             var nodes1 = this.orderGraph.FindNodesByValue(value1).Take(2).ToList();
             var nodes2 = this.orderGraph.FindNodesByValue(value2).Take(2).ToList();
 
-            if (nodes1.Count != 1 && nodes2.Count != 1)
+            if (nodes1.Count != 1 || nodes2.Count != 1)
             {
                 return null;
             }
