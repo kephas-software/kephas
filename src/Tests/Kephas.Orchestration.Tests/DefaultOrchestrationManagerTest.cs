@@ -52,7 +52,9 @@ namespace Kephas.Orchestration.Tests
             var container = this.CreateContainer(ambientServices);
 
             var appManager = container.GetExport<IAppManager>();
-            var orchManager = container.GetExport<IOrchestrationManager>();
+            var orchManager = (DefaultOrchestrationManager)container.GetExport<IOrchestrationManager>();
+            orchManager.TimerDueTime = TimeSpan.FromMilliseconds(100);
+            orchManager.TimerPeriod = TimeSpan.FromMilliseconds(100);
             var registry = container.GetExport<IMessageHandlerRegistry>();
 
             AppHeartbeatEvent heartbeat = null;
