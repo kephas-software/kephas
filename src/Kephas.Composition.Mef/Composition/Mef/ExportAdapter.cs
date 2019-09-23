@@ -38,6 +38,14 @@ namespace Kephas.Composition.Mef
         public T Value => this.innerExport.Value;
 
         /// <summary>
+        /// Gets the exported value.
+        /// </summary>
+        /// <value>
+        /// The exported value.
+        /// </value>
+        object IExport.Value => this.innerExport.Value;
+
+        /// <summary>
         /// Release the parts associated with the exported value.
         /// </summary>
         public void Dispose()
@@ -46,12 +54,15 @@ namespace Kephas.Composition.Mef
         }
 
         /// <summary>
-        /// Gets the exported value.
+        /// Returns a string that represents the current object.
         /// </summary>
-        /// <value>
-        /// The exported value.
-        /// </value>
-        object IExport.Value => Value;
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"Export of {typeof(T).Name}.";
+        }
     }
 
     /// <summary>
@@ -79,5 +90,16 @@ namespace Kephas.Composition.Mef
         /// The metadata.
         /// </value>
         public TMetadata Metadata { get; }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"Export of {typeof(T).Name} with {this.Metadata}.";
+        }
     }
 }
