@@ -34,7 +34,7 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
             this.ReceiverUrlRegex = (string)metadata.TryGetValue(nameof(this.ReceiverUrlRegex));
             this.Channel = (string)metadata.TryGetValue(nameof(this.Channel));
             this.IsFallback = (bool)metadata.TryGetValue(nameof(this.IsFallback), false);
-            this.ThrowOnInitializationError = (bool)metadata.TryGetValue(nameof(this.ThrowOnInitializationError), true);
+            this.IsOptional = (bool)metadata.TryGetValue(nameof(this.IsOptional), false);
         }
 
         /// <summary>
@@ -43,18 +43,17 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
         /// <param name="receiverUrlRegex">The receiver URL regular expression.</param>
         /// <param name="channel">Optional. The channel.</param>
         /// <param name="isFallback">Optional. True if this router is fallback, false if not.</param>
-        /// <param name="throwOnInitializationError">Optional. True to throw on initialization error,
-        ///                                          false otherwise.</param>
+        /// <param name="isOptional">Optional. True if the router is optional. Optional routers which cannot be initialized are simply ignored.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. Name of the service.</param>
-        public MessageRouterMetadata(string receiverUrlRegex, string channel = null, bool isFallback = false, bool throwOnInitializationError = true, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        public MessageRouterMetadata(string receiverUrlRegex, string channel = null, bool isFallback = false, bool isOptional = false, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
             this.ReceiverUrlRegex = receiverUrlRegex;
             this.Channel = channel;
             this.IsFallback = isFallback;
-            this.ThrowOnInitializationError = throwOnInitializationError;
+            this.IsOptional = isOptional;
         }
 
         /// <summary>
@@ -82,11 +81,12 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
         public bool IsFallback { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the router will throw on initialization error.
+        /// Gets a value indicating whether the router is optional.
+        /// Optional routers which cannot be initialized are simply ignored.
         /// </summary>
         /// <value>
-        /// True to throw on initialization error, false otherwise.
+        /// True if the router is optional, false otherwise.
         /// </value>
-        public bool ThrowOnInitializationError { get; }
+        public bool IsOptional { get; }
     }
 }

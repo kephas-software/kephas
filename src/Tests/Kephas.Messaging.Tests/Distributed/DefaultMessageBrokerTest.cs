@@ -74,7 +74,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task InitializeAsync_ignore_router_error()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(IgnoreErrorMessageRouter) });
+            var container = this.CreateContainer(parts: new[] { typeof(OptionalMessageRouter) });
             var messageBroker = container.GetExport<IMessageBroker>();
             await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
         }
@@ -82,7 +82,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void InitializeAsync_throw_router_error()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(ErrorMessageRouter) });
+            var container = this.CreateContainer(parts: new[] { typeof(RequiredMessageRouter) });
             var messageBroker = container.GetExport<IMessageBroker>();
             Assert.ThrowsAsync<NotImplementedException>(() => (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container)));
         }
@@ -392,8 +392,8 @@ namespace Kephas.Messaging.Tests.Distributed
             }
         }
 
-        [MessageRouter(ThrowOnInitializationError = false)]
-        public class IgnoreErrorMessageRouter : IMessageRouter, IAsyncInitializable
+        [MessageRouter(IsOptional = true)]
+        public class OptionalMessageRouter : IMessageRouter, IAsyncInitializable
         {
             public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
 
@@ -408,8 +408,8 @@ namespace Kephas.Messaging.Tests.Distributed
             }
         }
 
-        [MessageRouter(ThrowOnInitializationError = true)]
-        public class ErrorMessageRouter : IMessageRouter, IAsyncInitializable
+        [MessageRouter(IsOptional = false)]
+        public class RequiredMessageRouter : IMessageRouter, IAsyncInitializable
         {
             public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
 

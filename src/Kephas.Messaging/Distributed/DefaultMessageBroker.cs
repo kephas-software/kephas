@@ -154,7 +154,7 @@ namespace Kephas.Messaging.Distributed
 
         private async Task<IMessageRouter> TryCreateRouterAsync(IExportFactory<IMessageRouter, MessageRouterMetadata> f, IContext context)
         {
-            if (f.Metadata.ThrowOnInitializationError)
+            if (!f.Metadata.IsOptional)
             {
                 return await f.CreateExportedValueAsync(context).PreserveThreadContext();
             }

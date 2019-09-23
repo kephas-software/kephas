@@ -48,12 +48,13 @@ namespace Kephas.Messaging.Distributed.Routing
         public bool IsFallback { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the router will throw on initialization error.
+        /// Gets or sets a value indicating whether the router is optional.
+        /// Optional routers which cannot be initialized are simply ignored.
         /// </summary>
         /// <value>
-        /// True to throw on initialization error, false otherwise.
+        /// True if the router is optional, false otherwise.
         /// </value>
-        [MetadataValue(nameof(MessageRouterMetadata.ThrowOnInitializationError))]
-        public bool ThrowOnInitializationError { get; set; } = true;
+        [MetadataValue(nameof(MessageRouterMetadata.IsOptional))]
+        public bool IsOptional { get; set; } = false;
     }
 }
