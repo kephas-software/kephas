@@ -28,9 +28,9 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// The application information.
         /// </returns>
-        public static IAppInfo GetAppInfo(this IAppManifest appManifest, IAppRuntime appRuntime)
+        public static IRuntimeAppInfo GetAppInfo(this IAppManifest appManifest, IAppRuntime appRuntime)
         {
-            return new AppInfo
+            return new RuntimeAppInfo
                        {
                            AppId = appManifest.AppId,
                            AppInstanceId = appManifest.AppInstanceId,

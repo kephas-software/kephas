@@ -31,7 +31,7 @@ namespace Kephas.Orchestration
     /// The default orchestration manager.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultOrchestrationManager : Loggable, IOrchestrationManager
+    public class DefaultOrchestrationManager : Loggable, IOrchestrationManager, IAsyncInitializable, IAsyncFinalizable
     {
         /// <summary>
         /// The application manifest.
@@ -108,7 +108,7 @@ namespace Kephas.Orchestration
         /// <value>
         /// The timer due time.
         /// </value>
-        protected internal TimeSpan TimerDueTime { get; set; } = TimeSpan.FromSeconds(30);
+        protected internal TimeSpan TimerDueTime { get; set; } = TimeSpan.FromSeconds(10);
 
         /// <summary>
         /// Gets or sets the timer period.
@@ -116,7 +116,7 @@ namespace Kephas.Orchestration
         /// <value>
         /// The timer period.
         /// </value>
-        protected internal TimeSpan TimerPeriod { get; set; } = TimeSpan.FromSeconds(30);
+        protected internal TimeSpan TimerPeriod { get; set; } = TimeSpan.FromSeconds(10);
 
         /// <summary>
         /// Initializes the service asynchronously.
@@ -129,8 +129,6 @@ namespace Kephas.Orchestration
         public Task InitializeAsync(IContext context, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(context, nameof(context));
-
-            this.timer = new Timer(this.OnHeartbeat, context, this.TimerDueTime, this.TimerPeriod);
 
             this.appStartedSubscription = this.eventHub.Subscribe<AppStartedEvent>(this.OnAppStartedAsync);
             this.appStoppedSubscription = this.eventHub.Subscribe<AppStoppedEvent>(this.OnAppStoppedAsync);
@@ -147,12 +145,12 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public async Task FinalizeAsync(IContext context, CancellationToken cancellationToken = default)
+        public Task FinalizeAsync(IContext context, CancellationToken cancellationToken = default)
         {
             if (this.timer == null)
             {
                 // not properly initialized, possibly abnormal program termination.
-                return;
+                return TaskHelper.CompletedTask;
             }
 
             this.timer.Dispose();
@@ -160,16 +158,19 @@ namespace Kephas.Orchestration
             this.appStartedSubscription?.Dispose();
             this.appStoppedSubscription?.Dispose();
             this.appHeartbeatSubscription?.Dispose();
+
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
         /// Gets the live apps asynchronously.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the live apps.
         /// </returns>
-        public async Task<IEnumerable<IAppInfo>> GetLiveAppsAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<IEnumerable<IRuntimeAppInfo>> GetLiveAppsAsync(IContext context = null, CancellationToken cancellationToken = default)
         {
             var apps = this.liveApps.Values.Select(v => v.AppInfo).ToArray();
             return apps;
@@ -186,10 +187,17 @@ namespace Kephas.Orchestration
         /// </returns>
         protected virtual Task OnAppStartedAsync(AppStartedEvent appEvent, IContext context, CancellationToken cancellationToken)
         {
+            this.Logger.Info($"App started: {appEvent?.AppInfo}.");
+
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)
             {
                 return TaskHelper.CompletedTask;
+            }
+
+            if (appEvent.AppInfo.AppId == this.appManifest.AppId && appEvent.AppInfo.AppInstanceId == this.appManifest.AppInstanceId)
+            {
+                this.timer = new Timer(this.OnHeartbeat, context, this.TimerDueTime, this.TimerPeriod);
             }
 
             this.liveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
@@ -207,6 +215,8 @@ namespace Kephas.Orchestration
         /// </returns>
         protected virtual Task OnAppStoppedAsync(AppStoppedEvent appEvent, IContext context, CancellationToken cancellationToken)
         {
+            this.Logger.Info($"App stopped: {appEvent?.AppInfo}.");
+
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)
             {
@@ -247,7 +257,7 @@ namespace Kephas.Orchestration
             };
         }
 
-        private string GetAppKey(IAppInfo appInfo)
+        private string GetAppKey(IRuntimeAppInfo appInfo)
         {
             if (appInfo == null || (appInfo.AppId == null && appInfo.AppInstanceId == null))
             {

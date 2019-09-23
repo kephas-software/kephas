@@ -14,6 +14,8 @@ namespace Kephas.Orchestration.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Manager for orchestration features.
@@ -46,7 +48,12 @@ namespace Kephas.Orchestration.Application
         /// <returns>A Task.</returns>
         protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            return this.orchestrationManager.InitializeAsync(appContext, cancellationToken);
+            if (this.orchestrationManager is IAsyncInitializable asyncInitManager)
+            {
+                return asyncInitManager.InitializeAsync(appContext, cancellationToken);
+            }
+
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -59,7 +66,12 @@ namespace Kephas.Orchestration.Application
         /// </returns>
         protected override Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            return this.orchestrationManager.FinalizeAsync(appContext, cancellationToken);
+            if (this.orchestrationManager is IAsyncFinalizable asyncFinManager)
+            {
+                return asyncFinManager.FinalizeAsync(appContext, cancellationToken);
+            }
+
+            return TaskHelper.CompletedTask;
         }
     }
 }

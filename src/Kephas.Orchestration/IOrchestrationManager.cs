@@ -20,15 +20,16 @@ namespace Kephas.Orchestration
     /// Interface for orchestration manager.
     /// </summary>
     [SingletonAppServiceContract]
-    public interface IOrchestrationManager : IAsyncInitializable, IAsyncFinalizable
+    public interface IOrchestrationManager
     {
         /// <summary>
         /// Gets the live apps asynchronously.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the live apps.
         /// </returns>
-        Task<IEnumerable<IAppInfo>> GetLiveAppsAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<IRuntimeAppInfo>> GetLiveAppsAsync(IContext context = null, CancellationToken cancellationToken = default);
     }
 }

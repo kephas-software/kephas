@@ -18,12 +18,12 @@ namespace Kephas.Orchestration.Endpoints
     public class AppStoppedEvent : IAppEvent
     {
         /// <summary>
-        /// Gets or sets information describing the application.
+        /// Gets or sets runtime information describing the application.
         /// </summary>
         /// <value>
-        /// Information describing the application.
+        /// Runtime information describing the application.
         /// </value>
-        public IAppInfo AppInfo { get; set; }
+        public IRuntimeAppInfo AppInfo { get; set; }
 
         /// <summary>
         /// Gets or sets the timestamp.
@@ -31,6 +31,6 @@ namespace Kephas.Orchestration.Endpoints
         /// <value>
         /// The timestamp.
         /// </value>
-        public DateTimeOffset Timestamp { get; set; }
+        public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.Now;
     }
 }
