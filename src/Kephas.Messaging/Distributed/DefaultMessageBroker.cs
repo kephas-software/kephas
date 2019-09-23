@@ -154,19 +154,19 @@ namespace Kephas.Messaging.Distributed
 
         private async Task<IMessageRouter> TryCreateRouterAsync(IExportFactory<IMessageRouter, MessageRouterMetadata> f, IContext context)
         {
-            if (!f.Metadata.IsOptional)
-            {
-                return await f.CreateExportedValueAsync(context).PreserveThreadContext();
-            }
-
             try
             {
                 return await f.CreateExportedValueAsync(context).PreserveThreadContext();
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, $"Error while trying to create and initialize an instance of '{f.Metadata.AppServiceImplementationType}'.");
-                return null;
+                this.Logger.Warn(ex, $"Error while trying to create and initialize router '{f.Metadata.AppServiceImplementationType}'.");
+                if (f.Metadata.IsOptional)
+                {
+                    return null;
+                }
+
+                throw;
             }
         }
 
