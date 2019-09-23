@@ -29,9 +29,9 @@ namespace Kephas.Application
         /// </remarks>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// The asynchronous result.
         /// </returns>
         public virtual Task BeforeInitializeAsync(
             IAppContext appContext,
@@ -46,9 +46,9 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// The asynchronous result.
         /// </returns>
         public virtual Task AfterInitializeAsync(
             IAppContext appContext,
