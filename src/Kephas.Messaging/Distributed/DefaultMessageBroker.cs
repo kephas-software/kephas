@@ -165,7 +165,7 @@ namespace Kephas.Messaging.Distributed
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, $"Error while trying to create and initialize an instance of '{f.Metadata.AppServiceImplementationType}'.");
+                this.Logger.Warn(ex, $"Error while trying to create and initialize an instance of '{f.Metadata.AppServiceImplementationType}'.");
                 return null;
             }
         }
