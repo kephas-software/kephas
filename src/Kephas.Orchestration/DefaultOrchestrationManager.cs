@@ -271,12 +271,12 @@ namespace Kephas.Orchestration
         /// Executes the heartbeat timer action.
         /// </summary>
         /// <param name="state">The state.</param>
-        private void OnHeartbeat(object state)
+        private async void OnHeartbeat(object state)
         {
             try
             {
                 var heartbeatEvent = this.CreateAppHeartbeatEvent();
-                this.messageBroker.PublishAsync(heartbeatEvent, (IContext)state).WaitNonLocking();
+                await this.messageBroker.PublishAsync(heartbeatEvent, (IContext)state).PreserveThreadContext();
             }
             catch (Exception ex)
             {
