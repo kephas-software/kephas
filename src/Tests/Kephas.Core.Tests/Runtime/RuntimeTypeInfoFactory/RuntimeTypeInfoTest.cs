@@ -12,18 +12,38 @@ namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Reflection;
 
     using Kephas.Runtime;
 
     using NUnit.Framework;
 
     /// <summary>
-    /// Test class for <see cref="RuntimeTypeInfo"/>
+    /// Test class for <see cref="RuntimeTypeInfo"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeTypeInfoFactoryTest
     {
+        private static bool initialized;
+
+        private static object sync = new object();
+
+        [OneTimeSetUp]
+        public void RegisterFactory()
+        {
+            if (!initialized)
+            {
+                lock (sync)
+                {
+                    if (!initialized)
+                    {
+                        RuntimeTypeInfo.RegisterFactory(new AttributedRuntimeTypeInfoFactory());
+                    }
+                }
+            }
+        }
+
         [Test]
         public void CreateRuntimeTypeInfo_default()
         {
@@ -36,6 +56,33 @@ namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
         {
             var typeInfo = RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(HasSpecialRuntimeTypeInfo));
             Assert.IsInstanceOf<SpecialRuntimeTypeInfo>(typeInfo);
+        }
+
+        public class AttributedRuntimeTypeInfoFactory : IRuntimeTypeInfoFactory
+        {
+            public IRuntimeTypeInfo TryCreateRuntimeTypeInfo(Type rawType)
+            {
+                var attr = rawType.GetCustomAttribute<RuntimeTypeInfoTypeAttribute>();
+                var typeInfoType = attr?.Type;
+                if (typeInfoType == null)
+                {
+                    return null;
+                }
+
+                var typeInfo = (IRuntimeTypeInfo)Activator.CreateInstance(typeInfoType, rawType);
+                return typeInfo;
+            }
+        }
+
+        [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Interface | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
+        public sealed class RuntimeTypeInfoTypeAttribute : Attribute
+        {
+            public RuntimeTypeInfoTypeAttribute(Type type)
+            {
+                this.Type = type;
+            }
+
+            public Type Type { get; }
         }
 
         [RuntimeTypeInfoType(typeof(SpecialRuntimeTypeInfo))]
