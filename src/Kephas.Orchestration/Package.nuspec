@@ -33,5 +33,8 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Orchestration.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Orchestration.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Orchestration.xml" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\net45\Kephas.Orchestration.dll" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Orchestration.pdb" target="lib\net45" />
+        <file src="bin\$configuration$\net45\Kephas.Orchestration.xml" target="lib\net45" />
     </files>
 </package>

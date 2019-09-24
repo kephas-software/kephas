@@ -37,51 +37,14 @@ namespace Kephas.Orchestration
     [OverridePriority(Priority.Low)]
     public class DefaultOrchestrationManager : Loggable, IOrchestrationManager, IAsyncInitializable, IAsyncFinalizable
     {
-        /// <summary>
-        /// The application manifest.
-        /// </summary>
         private readonly IAppManifest appManifest;
-
-        /// <summary>
-        /// The application runtime.
-        /// </summary>
-        private readonly IAppRuntime appRuntime;
-
-        /// <summary>
-        /// The event hub.
-        /// </summary>
         private readonly IEventHub eventHub;
-
-        /// <summary>
-        /// The message broker.
-        /// </summary>
-        private readonly IMessageBroker messageBroker;
-
-        /// <summary>
-        /// The live apps.
-        /// </summary>
         private readonly ConcurrentDictionary<string, IAppEvent> liveApps = new ConcurrentDictionary<string, IAppEvent>();
 
-        /// <summary>
-        /// The timer.
-        /// </summary>
         private Timer timer;
-
-        /// <summary>
-        /// The application started subscription.
-        /// </summary>
         private IEventSubscription appStartedSubscription;
-
-        /// <summary>
-        /// The application stopped subscription.
-        /// </summary>
         private IEventSubscription appStoppedSubscription;
-
-        /// <summary>
-        /// The application heartbeat subscription.
-        /// </summary>
         private IEventSubscription appHeartbeatSubscription;
-        private IContext appContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOrchestrationManager"/> class.
@@ -102,10 +65,34 @@ namespace Kephas.Orchestration
             Requires.NotNull(messageBroker, nameof(messageBroker));
 
             this.appManifest = appManifest;
-            this.appRuntime = appRuntime;
+            this.AppRuntime = appRuntime;
             this.eventHub = eventHub;
-            this.messageBroker = messageBroker;
+            this.MessageBroker = messageBroker;
         }
+
+        /// <summary>
+        /// Gets a context for the application.
+        /// </summary>
+        /// <value>
+        /// The application context.
+        /// </value>
+        public IContext AppContext { get; private set; }
+
+        /// <summary>
+        /// Gets the application runtime.
+        /// </summary>
+        /// <value>
+        /// The application runtime.
+        /// </value>
+        public IAppRuntime AppRuntime { get; private set; }
+
+        /// <summary>
+        /// Gets the message broker.
+        /// </summary>
+        /// <value>
+        /// The message broker.
+        /// </value>
+        public IMessageBroker MessageBroker { get; private set; }
 
         /// <summary>
         /// Gets or sets the timer due time.
@@ -135,7 +122,7 @@ namespace Kephas.Orchestration
         {
             Requires.NotNull(context, nameof(context));
 
-            this.appContext = context;
+            this.AppContext = context;
 
             await this.InitializeLiveAppInfosAsync(this.liveApps, cancellationToken).PreserveThreadContext();
 
@@ -305,7 +292,7 @@ namespace Kephas.Orchestration
         {
             return new AppHeartbeatEvent
             {
-                AppInfo = this.appManifest.GetAppInfo(this.appRuntime),
+                AppInfo = this.appManifest.GetAppInfo(this.AppRuntime),
                 Timestamp = DateTimeOffset.Now,
             };
         }
@@ -329,7 +316,7 @@ namespace Kephas.Orchestration
             try
             {
                 var heartbeatEvent = this.CreateAppHeartbeatEvent();
-                await this.messageBroker.PublishAsync(heartbeatEvent, (IContext)state).PreserveThreadContext();
+                await this.MessageBroker.PublishAsync(heartbeatEvent, (IContext)state).PreserveThreadContext();
             }
             catch (Exception ex)
             {
