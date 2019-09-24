@@ -217,6 +217,19 @@ namespace Kephas.Orchestration
         }
 
         /// <summary>
+        /// Gets runtime application infos asynchronously.
+        /// </summary>
+        /// <param name="liveAppInfos">The live application infos.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the runtime application infos.
+        /// </returns>
+        protected virtual Task InitializeLiveAppInfosAsync(ConcurrentDictionary<string, IAppEvent> liveAppInfos, CancellationToken cancellationToken)
+        {
+            return TaskHelper.CompletedTask;
+        }
+
+        /// <summary>
         /// Callback invoked when an application was started.
         /// </summary>
         /// <param name="appEvent">The application event.</param>
@@ -241,19 +254,6 @@ namespace Kephas.Orchestration
             }
 
             this.liveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
-            return TaskHelper.CompletedTask;
-        }
-
-        /// <summary>
-        /// Gets runtime application infos asynchronously.
-        /// </summary>
-        /// <param name="liveAppInfos">The live application infos.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result that yields the runtime application infos.
-        /// </returns>
-        protected virtual Task InitializeLiveAppInfosAsync(ConcurrentDictionary<string, IAppEvent> liveAppInfos, CancellationToken cancellationToken)
-        {
             return TaskHelper.CompletedTask;
         }
 
