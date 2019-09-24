@@ -217,6 +217,23 @@ namespace Kephas.Orchestration
         }
 
         /// <summary>
+        /// Executes the heartbeat timer action.
+        /// </summary>
+        /// <param name="state">The state.</param>
+        protected virtual async void OnHeartbeat(object state)
+        {
+            try
+            {
+                var heartbeatEvent = this.CreateAppHeartbeatEvent();
+                await this.MessageBroker.PublishAsync(heartbeatEvent, (IContext)state).PreserveThreadContext();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Exception on application heartbeat.");
+            }
+        }
+
+        /// <summary>
         /// Callback invoked when an application was started.
         /// </summary>
         /// <param name="appEvent">The application event.</param>
@@ -305,23 +322,6 @@ namespace Kephas.Orchestration
             }
 
             return $"{appInfo.AppId}/{appInfo.AppInstanceId}";
-        }
-
-        /// <summary>
-        /// Executes the heartbeat timer action.
-        /// </summary>
-        /// <param name="state">The state.</param>
-        private async void OnHeartbeat(object state)
-        {
-            try
-            {
-                var heartbeatEvent = this.CreateAppHeartbeatEvent();
-                await this.MessageBroker.PublishAsync(heartbeatEvent, (IContext)state).PreserveThreadContext();
-            }
-            catch (Exception ex)
-            {
-                this.Logger.Error(ex, "Exception on application heartbeat.");
-            }
         }
     }
 }
