@@ -193,7 +193,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        public Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, IContext context = null, CancellationToken cancellationToken = default)
+        public virtual Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, IContext context = null, CancellationToken cancellationToken = default)
         {
             var result = new OperationResult { OperationState = OperationState.Failed };
             result.Exceptions.Add(new NotSupportedException(Strings.OrchestrationManager_StartAppAsync_NotSupported));
