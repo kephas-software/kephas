@@ -19,6 +19,7 @@ namespace Kephas.Core.Tests.Application
 
     using Kephas.Application;
     using Kephas.Application.Composition;
+    using Kephas.Application.Reflection;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Composition.ExportFactoryImporters;

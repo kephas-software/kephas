@@ -14,6 +14,7 @@ namespace Kephas.Application
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Application.Reflection;
     using Kephas.Dynamic;
     using Kephas.Services;
 

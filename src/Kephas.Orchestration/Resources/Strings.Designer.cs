@@ -59,5 +59,23 @@ namespace Kephas.Orchestration.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please provide a proper implementation for starting an application..
+        /// </summary>
+        internal static string OrchestrationManager_StartAppAsync_NotSupported {
+            get {
+                return ResourceManager.GetString("OrchestrationManager_StartAppAsync_NotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please provide a proper implementation for stopping an application..
+        /// </summary>
+        internal static string OrchestrationManager_StopAppAsync_NotSupported {
+            get {
+                return ResourceManager.GetString("OrchestrationManager_StopAppAsync_NotSupported", resourceCulture);
+            }
+        }
     }
 }

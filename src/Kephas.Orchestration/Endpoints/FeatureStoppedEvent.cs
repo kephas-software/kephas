@@ -11,8 +11,7 @@
 namespace Kephas.Orchestration.Endpoints
 {
     using System;
-
-    using Kephas.Application;
+    using Kephas.Application.Reflection;
 
     /// <summary>
     /// A feature stopped event.

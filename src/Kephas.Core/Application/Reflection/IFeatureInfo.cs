@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application
+namespace Kephas.Application.Reflection
 {
     using System;
 

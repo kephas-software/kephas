@@ -13,7 +13,7 @@ namespace Kephas.Application
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-
+    using Kephas.Application.Reflection;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Resources;

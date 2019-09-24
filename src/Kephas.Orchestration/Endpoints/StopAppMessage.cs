@@ -1,38 +1,36 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFeatureEvent.cs" company="Kephas Software SRL">
+// <copyright file="StopAppMessage.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IFeatureEvent interface.
+//   Implements the stop application message class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Orchestration.Endpoints
 {
-    using System;
-    using Kephas.Application.Reflection;
-    using Kephas.Messaging.Events;
+    using Kephas.Messaging;
 
     /// <summary>
-    /// Interface for feature event.
+    /// A stop application message.
     /// </summary>
-    public interface IFeatureEvent : IEvent
+    public class StopAppMessage : IMessage
     {
         /// <summary>
-        /// Gets or sets the feature.
+        /// Gets or sets the identifier of the application.
         /// </summary>
         /// <value>
-        /// The feature.
+        /// The identifier of the application.
         /// </value>
-        IFeatureInfo Feature { get; set; }
+        public string AppId { get; set; }
 
         /// <summary>
-        /// Gets or sets the time stamp.
+        /// Gets or sets the identifier of the application instance.
         /// </summary>
         /// <value>
-        /// The time stamp.
+        /// The identifier of the application instance.
         /// </value>
-        DateTimeOffset TimeStamp { get; set; }
+        public string AppInstanceId { get; set; }
     }
 }

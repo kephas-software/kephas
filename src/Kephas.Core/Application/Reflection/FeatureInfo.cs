@@ -8,16 +8,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application
+namespace Kephas.Application.Reflection
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
+    using Kephas.Application;
     using Kephas.Application.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Provides information about an application feature.
@@ -52,10 +54,10 @@ namespace Kephas.Application
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
-            this.Name = name;
-            this.IsRequired = isRequired;
-            this.Version = version ?? new Version(0, 0);
-            this.Dependencies = dependencies ?? new string[0];
+            Name = name;
+            IsRequired = isRequired;
+            Version = version ?? new Version(0, 0);
+            Dependencies = dependencies ?? new string[0];
         }
 
         /// <summary>
@@ -93,7 +95,7 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the full name of the <see cref="FeatureInfo"/>.
         /// </summary>
-        string IElementInfo.FullName => this.Name;
+        string IElementInfo.FullName => Name;
 
         /// <summary>
         /// Gets the annotations of the <see cref="FeatureInfo"/>.
@@ -154,8 +156,8 @@ namespace Kephas.Application
         /// </returns>
         public override string ToString()
         {
-            var deps = string.Join(", ", this.Dependencies ?? new string[0]);
-            return $"{this.Name}({deps})";
+            var deps = string.Join(", ", Dependencies ?? new string[0]);
+            return $"{Name}({deps})";
         }
 
         /// <summary>
@@ -165,10 +167,6 @@ namespace Kephas.Application
         /// <returns>
         /// The attribute of the provided type.
         /// </returns>
-        public IEnumerable<TAttribute> GetAttributes<TAttribute>()
-            where TAttribute : Attribute
-        {
-            return new TAttribute[0];
-        }
+        IEnumerable<TAttribute> IAttributeProvider.GetAttributes<TAttribute>() => new TAttribute[0];
     }
 }

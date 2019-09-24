@@ -163,6 +163,7 @@ namespace Kephas.Messaging.Distributed
                 this.Logger.Warn(ex, $"Error while trying to create and initialize router '{f.Metadata.AppServiceImplementationType}'.");
                 if (f.Metadata.IsOptional)
                 {
+                    this.Logger.Warn($"Router '{f.Metadata.AppServiceImplementationType}' will be ignored.");
                     return null;
                 }
 

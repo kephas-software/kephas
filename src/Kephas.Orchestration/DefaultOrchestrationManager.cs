@@ -18,12 +18,16 @@ namespace Kephas.Orchestration
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Reflection;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
+    using Kephas.Operations;
     using Kephas.Orchestration.Application;
     using Kephas.Orchestration.Endpoints;
+    using Kephas.Orchestration.Resources;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -77,6 +81,7 @@ namespace Kephas.Orchestration
         /// The application heartbeat subscription.
         /// </summary>
         private IEventSubscription appHeartbeatSubscription;
+        private IContext appContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOrchestrationManager"/> class.
@@ -126,15 +131,17 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public Task InitializeAsync(IContext context, CancellationToken cancellationToken = default)
+        public async Task InitializeAsync(IContext context, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(context, nameof(context));
+
+            this.appContext = context;
+
+            await this.InitializeLiveAppInfosAsync(this.liveApps, cancellationToken).PreserveThreadContext();
 
             this.appStartedSubscription = this.eventHub.Subscribe<AppStartedEvent>(this.OnAppStartedAsync);
             this.appStoppedSubscription = this.eventHub.Subscribe<AppStoppedEvent>(this.OnAppStoppedAsync);
             this.appHeartbeatSubscription = this.eventHub.Subscribe<AppHeartbeatEvent>(this.OnAppHeartbeatAsync);
-
-            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -177,6 +184,39 @@ namespace Kephas.Orchestration
         }
 
         /// <summary>
+        /// Starts the application asynchronously.
+        /// </summary>
+        /// <param name="appInfo">Information describing the application.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields an operation result.
+        /// </returns>
+        public Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, IContext context = null, CancellationToken cancellationToken = default)
+        {
+            var result = new OperationResult { OperationState = OperationState.Failed };
+            result.Exceptions.Add(new NotSupportedException(Strings.OrchestrationManager_StartAppAsync_NotSupported));
+            return Task.FromResult<IOperationResult>(result);
+        }
+
+        /// <summary>
+        /// Stops a running application asynchronously.
+        /// </summary>
+        /// <param name="runtimeAppInfo">Information describing the runtime application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields an operation result.
+        /// </returns>
+        public virtual Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, IContext context = null, CancellationToken cancellationToken = default)
+        {
+            var result = new OperationResult { OperationState = OperationState.Failed };
+            result.Exceptions.Add(new NotSupportedException(Strings.OrchestrationManager_StopAppAsync_NotSupported));
+            return Task.FromResult<IOperationResult>(result);
+        }
+
+        /// <summary>
         /// Callback invoked when an application was started.
         /// </summary>
         /// <param name="appEvent">The application event.</param>
@@ -201,6 +241,19 @@ namespace Kephas.Orchestration
             }
 
             this.liveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
+            return TaskHelper.CompletedTask;
+        }
+
+        /// <summary>
+        /// Gets runtime application infos asynchronously.
+        /// </summary>
+        /// <param name="liveAppInfos">The live application infos.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the runtime application infos.
+        /// </returns>
+        protected virtual Task InitializeLiveAppInfosAsync(ConcurrentDictionary<string, IAppEvent> liveAppInfos, CancellationToken cancellationToken)
+        {
             return TaskHelper.CompletedTask;
         }
 

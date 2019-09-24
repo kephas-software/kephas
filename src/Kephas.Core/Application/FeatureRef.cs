@@ -11,7 +11,7 @@
 namespace Kephas.Application
 {
     using System;
-
+    using Kephas.Application.Reflection;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
