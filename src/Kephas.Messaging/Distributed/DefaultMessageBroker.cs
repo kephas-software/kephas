@@ -301,6 +301,11 @@ namespace Kephas.Messaging.Distributed
                 var router = this.routerMap.FirstOrDefault(f => f.isFallback).router;
                 if (router != null)
                 {
+                    if (this.Logger.IsDebugEnabled())
+                    {
+                        this.Logger.Debug($"Message {brokeredMessage} does not have any recipients; using fallback router {router.GetType()}.");
+                    }
+
                     return new[] { await router.SendAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext() };
                 }
 
@@ -323,6 +328,11 @@ namespace Kephas.Messaging.Distributed
             if (recipientMappings.Count == 1)
             {
                 var router = recipientMappings[0].router;
+                if (this.Logger.IsDebugEnabled())
+                {
+                    this.Logger.Debug($"Message {brokeredMessage} has recipient {recipientMappings[0].recipient}; using router {router.GetType()}.");
+                }
+
                 return new[] { await router.SendAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext() };
             }
 
@@ -332,8 +342,21 @@ namespace Kephas.Messaging.Distributed
                 .Select(g => (router: g.Key, recipients: g.Select(i => i.recipient).ToList()))
                 .ToList();
 
+            if (this.Logger.IsDebugEnabled())
+            {
+                foreach (var routerMapping in routerMappings)
+                {
+                    this.Logger.Debug($"Message {brokeredMessage} has recipients: {string.Join(", ", routerMapping.recipients)}; using router {routerMapping.router.GetType()}.");
+                }
+            }
+
             var tasks = routerMappings.Select(m => m.router.SendAsync(brokeredMessage.Clone(m.recipients), context, cancellationToken)).ToList();
             return await Task.WhenAll(tasks).PreserveThreadContext();
+        }
+
+        private Task<(RoutingInstruction action, IMessage reply)> SendAsync(IMessageRouter router, IBrokeredMessage message, IContext context, CancellationToken cancellationToken)
+        {
+            return router.SendAsync(message, context, cancellationToken);
         }
 
         private IBrokeredMessage GetResponseMessage(IMessage reply, IBrokeredMessage message, IContext context)
