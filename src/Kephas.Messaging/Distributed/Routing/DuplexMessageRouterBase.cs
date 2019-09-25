@@ -67,7 +67,13 @@ namespace Kephas.Messaging.Distributed.Routing
             {
                 var messageBroker = this.lazyMessageBroker.Value;
 
-                if (brokeredMessage.IsOneWay || brokeredMessage.ReplyToMessageId != null)
+                if (brokeredMessage.ReplyToMessageId != null)
+                {
+                    this.OnReplyReceived(new ReplyReceivedEventArgs { Message = brokeredMessage, Context = context });
+                    return;
+                }
+
+                if (brokeredMessage.IsOneWay)
                 {
                     // for one way or replies do not wait for a response
                     messageBroker.DispatchAsync(brokeredMessage, context)
