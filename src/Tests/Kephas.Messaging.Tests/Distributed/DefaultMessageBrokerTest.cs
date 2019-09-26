@@ -79,8 +79,14 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public async Task DispatchAsync_timeout()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(TimeoutMessageHandler) });
+            var container = this.CreateContainer();
             var messageBroker = await this.GetMessageBrokerAsync(container);
+            var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
+            handlerRegistry.RegisterHandler<TimeoutMessage>((msg, ctx) =>
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(10));
+                return Substitute.For<IMessage>();
+            });
 
             var brokeredMessage = new BrokeredMessage
             {
@@ -96,9 +102,16 @@ namespace Kephas.Messaging.Tests.Distributed
             var sb = new StringBuilder();
             var logger = this.GetLogger<IMessageBroker>(sb);
 
-            var container = this.CreateContainer(parts: new[] { typeof(TimeoutMessageHandler), typeof(LoggableMessageBroker) });
+            var container = this.CreateContainer(parts: new[] { typeof(LoggableMessageBroker) });
             var messageBroker = await this.GetMessageBrokerAsync(container);
             ((LoggableMessageBroker)messageBroker).SetLogger(logger);
+
+            var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
+            handlerRegistry.RegisterHandler<TimeoutMessage>((msg, ctx) =>
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(10));
+                return Substitute.For<IMessage>();
+            });
 
             var brokeredMessage = new BrokeredMessage
             {
@@ -153,11 +166,13 @@ namespace Kephas.Messaging.Tests.Distributed
                     added = true;
                 };
 
-            var pingBack = await messageBroker.DispatchAsync(new BrokeredMessage
-            {
-                Content = new PingMessage(),
-                Timeout = TimeSpan.FromSeconds(100),
-            }, new Context(container));
+            var pingBack = await messageBroker.DispatchAsync(
+                new BrokeredMessage
+                {
+                    Content = new PingMessage(),
+                    Timeout = TimeSpan.FromSeconds(100),
+                },
+                new Context(container));
 
             disposable.Received(1).Dispose();
         }
@@ -249,15 +264,6 @@ namespace Kephas.Messaging.Tests.Distributed
 
         public class TestEventHandler : MessageHandlerBase<TestEvent, IMessage>
         {
-            /// <summary>
-            /// Processes the provided message asynchronously and returns a response promise.
-            /// </summary>
-            /// <param name="message">The message to be handled.</param>
-            /// <param name="context">The processing context.</param>
-            /// <param name="token">The cancellation token.</param>
-            /// <returns>
-            /// The response promise.
-            /// </returns>
             public override async Task<IMessage> ProcessAsync(TestEvent message, IMessagingContext context, CancellationToken token)
             {
                 message.TaskCompletionSource?.SetResult(("ok", context.GetBrokeredMessage()));
@@ -269,15 +275,6 @@ namespace Kephas.Messaging.Tests.Distributed
         [OverridePriority(Priority.High)]
         public class ExceptionEventHandler : MessageHandlerBase<PingMessage, PingBackMessage>
         {
-            /// <summary>
-            /// Processes the provided message asynchronously and returns a response promise.
-            /// </summary>
-            /// <param name="message">The message to be handled.</param>
-            /// <param name="context">The processing context.</param>
-            /// <param name="token">The cancellation token.</param>
-            /// <returns>
-            /// The response promise.
-            /// </returns>
             public override async Task<PingBackMessage> ProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
             {
                 throw new ArgumentException();
@@ -285,25 +282,6 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         public class TimeoutMessage : IMessage { }
-
-        public class TimeoutMessageHandler : MessageHandlerBase<TimeoutMessage, IMessage>
-        {
-            /// <summary>
-            /// Processes the provided message asynchronously and returns a response promise.
-            /// </summary>
-            /// <param name="message">The message to be handled.</param>
-            /// <param name="context">The processing context.</param>
-            /// <param name="token">The cancellation token.</param>
-            /// <returns>
-            /// The response promise.
-            /// </returns>
-            public override async Task<IMessage> ProcessAsync(TimeoutMessage message, IMessagingContext context, CancellationToken token)
-            {
-                Thread.Sleep(TimeSpan.FromSeconds(10));
-
-                return Substitute.For<IMessage>();
-            }
-        }
 
         [OverridePriority(Priority.Normal)]
         public class RemoteMessageBroker : DefaultMessageBroker
@@ -319,7 +297,7 @@ namespace Kephas.Messaging.Tests.Distributed
                 this.serializationService = serializationService;
             }
 
-            protected override async Task SendAsync(
+            protected override async Task RouterDispatchAsync(
                 IBrokeredMessage brokeredMessage,
                 IContext context,
                 CancellationToken cancellationToken)
@@ -330,7 +308,7 @@ namespace Kephas.Messaging.Tests.Distributed
                 var deserializedMessage = await this.serializationService.JsonDeserializeAsync(
                                               serializedMessage,
                                               cancellationToken: cancellationToken);
-                await base.SendAsync((IBrokeredMessage)deserializedMessage, context, cancellationToken);
+                await base.RouterDispatchAsync((IBrokeredMessage)deserializedMessage, context, cancellationToken);
             }
         }
 
