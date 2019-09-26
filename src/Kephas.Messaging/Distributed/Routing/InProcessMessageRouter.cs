@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Distributed.Routing
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
@@ -32,7 +33,6 @@ namespace Kephas.Messaging.Distributed.Routing
     [MessageRouter(IsFallback = true)]
     public class InProcessMessageRouter : MessageRouterBase
     {
-        private readonly IMessageProcessor messageProcessor;
         private readonly Lazy<IMessageBroker> lazyMessageBroker;
 
         /// <summary>
@@ -112,6 +112,17 @@ namespace Kephas.Messaging.Distributed.Routing
         /// </returns>
         protected override Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
+            // replies should be returned back to the message broker, without further routing
+            // because the processing takes place in-process, so the initiator of the dispatch
+            // is in-process.
+            if (brokeredMessage.ReplyToMessageId != null)
+            {
+                return Task.FromResult<(RoutingInstruction action, IMessage reply)>((RoutingInstruction.Reply, brokeredMessage.Content));
+            }
+
+            // typically, this should not get here at all
+            // because the only input expected is from DispatchAsync and, in this case,
+            // the RouteOutputAsync is called only when a response is expected.
             this.lazyMessageBroker.Value
                 .DispatchAsync(brokeredMessage, context, cancellationToken)
                 .ContinueWith(
