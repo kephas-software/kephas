@@ -254,6 +254,7 @@ namespace Kephas.Orchestration
 
             if (appEvent.AppInfo.AppId == this.appManifest.AppId && appEvent.AppInfo.AppInstanceId == this.appManifest.AppInstanceId)
             {
+                this.OnHeartbeat(context);
                 this.timer = new Timer(this.OnHeartbeat, context, this.TimerDueTime, this.TimerPeriod);
             }
 
@@ -305,16 +306,14 @@ namespace Kephas.Orchestration
             return TaskHelper.CompletedTask;
         }
 
-        private AppHeartbeatEvent CreateAppHeartbeatEvent()
-        {
-            return new AppHeartbeatEvent
-            {
-                AppInfo = this.appManifest.GetAppInfo(this.AppRuntime),
-                Timestamp = DateTimeOffset.Now,
-            };
-        }
-
-        private string GetAppKey(IRuntimeAppInfo appInfo)
+        /// <summary>
+        /// Gets the application key in the live apps collection.
+        /// </summary>
+        /// <param name="appInfo">Information describing the application.</param>
+        /// <returns>
+        /// The application key.
+        /// </returns>
+        protected virtual string GetAppKey(IRuntimeAppInfo appInfo)
         {
             if (appInfo == null || (appInfo.AppId == null && appInfo.AppInstanceId == null))
             {
@@ -322,6 +321,15 @@ namespace Kephas.Orchestration
             }
 
             return $"{appInfo.AppId}/{appInfo.AppInstanceId}";
+        }
+
+        private AppHeartbeatEvent CreateAppHeartbeatEvent()
+        {
+            return new AppHeartbeatEvent
+            {
+                AppInfo = this.appManifest.GetAppInfo(this.AppRuntime),
+                Timestamp = DateTimeOffset.Now,
+            };
         }
     }
 }
