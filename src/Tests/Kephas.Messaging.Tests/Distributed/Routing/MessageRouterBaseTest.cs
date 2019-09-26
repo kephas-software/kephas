@@ -29,7 +29,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
     public class MessageRouterBaseTest : MessagingTestBase
     {
         [Test]
-        public async Task SendAsync_calls_RouteOutputAsync()
+        public async Task DispatchAsync_calls_RouteOutputAsync()
         {
             var router = new TestMessageRouter(Substitute.For<IMessageProcessor>());
             var message = Substitute.For<IBrokeredMessage>();
@@ -67,14 +67,16 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             message.ReplyToMessageId.Returns((string)null);
             message.Id.Returns("gigi");
             message.IsOneWay.Returns(false);
+            var content = Substitute.For<IMessage>();
+            message.Content.Returns(content);
 
             var dispatchReply = Substitute.For<IMessage>();
-            messageProcessor.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
+            messageProcessor.ProcessAsync(content, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(dispatchReply);
 
             IBrokeredMessage receivedReply = null;
             router.ReplyReceived += (s, e) => receivedReply = e.Message;
-            router.Receive(message, Substitute.For<IContext>());
+            router.Receive(message, new Context(this.CreateSubstituteContainer()));
 
             Assert.AreEqual(1, router.Out.Count);
             var brokeredReply = router.Out.Dequeue();

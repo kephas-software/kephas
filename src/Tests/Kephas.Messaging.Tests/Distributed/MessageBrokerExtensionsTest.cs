@@ -13,27 +13,22 @@ namespace Kephas.Messaging.Tests.Distributed
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
-    using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
-    using Kephas.Security.Authentication;
     using Kephas.Services;
 
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageBrokerExtensionsTest
+    public class MessageBrokerExtensionsTest : MessagingTestBase
     {
         [Test]
         public async Task PublishAsync_anonymous_event()
         {
             var broker = Substitute.For<IMessageBroker>();
-            var container = this.CreateContainer();
+            var container = this.CreateSubstituteContainer();
             var context = new Context(container);
 
             IMessage content = null;
@@ -50,7 +45,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public async Task ProcessAsync_anonymous_message()
         {
             var broker = Substitute.For<IMessageBroker>();
-            var container = this.CreateContainer();
+            var container = this.CreateSubstituteContainer();
             var context = new Context(container);
 
             IMessage content = null;
@@ -61,22 +56,6 @@ namespace Kephas.Messaging.Tests.Distributed
 
             Assert.IsInstanceOf<MessageAdapter>(content);
             Assert.AreEqual("hello", ((MessageAdapter)content).Message);
-        }
-
-        private ICompositionContext CreateContainer()
-        {
-            var container = Substitute.For<ICompositionContext>();
-
-            container.GetExport(typeof(IExportFactoryImporter<IBrokeredMessageBuilder>), Arg.Any<string>())
-                .Returns(ci =>
-                    new ExportFactoryImporter<IBrokeredMessageBuilder>(
-                        new ExportFactory<IBrokeredMessageBuilder>(
-                            () =>
-                            {
-                                return new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
-                            })));
-
-            return container;
         }
     }
 }

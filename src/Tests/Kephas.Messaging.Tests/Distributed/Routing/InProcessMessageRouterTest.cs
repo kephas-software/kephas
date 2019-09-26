@@ -10,19 +10,14 @@
 
 namespace Kephas.Messaging.Tests.Distributed.Routing
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Composition;
-    using Kephas.Composition.Mef.Hosting;
+
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
-    using Kephas.Testing.Composition.Mef;
 
     using NUnit.Framework;
 
@@ -38,24 +33,26 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         }
 
         [Test]
-        public async Task SendAsync_with_request()
+        public async Task DispatchAsync_with_request()
         {
             var container = this.CreateContainer();
             var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single();
+            var messageBroker = container.GetExport<IMessageBroker>();
+            await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
 
             ReplyReceivedEventArgs eventArgs = null;
             inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
             var request = new BrokeredMessage { Content = new PingMessage() };
             var result = await inProcessRouter.DispatchAsync(request, new Context(container), default);
 
-            Thread.Sleep(100);
+            Thread.Sleep(1000);
             Assert.IsNull(eventArgs);
             Assert.AreEqual(RoutingInstruction.Reply, result.action);
             Assert.IsInstanceOf<PingBackMessage>(result.reply);
         }
 
         [Test]
-        public async Task SendAsync_with_reply()
+        public async Task DispatchAsync_with_reply()
         {
             var container = this.CreateContainer();
             var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single();

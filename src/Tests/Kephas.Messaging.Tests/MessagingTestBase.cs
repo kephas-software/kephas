@@ -14,9 +14,16 @@ namespace Kephas.Messaging.Tests
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
+    using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Composition.Mef.Hosting;
+    using Kephas.Messaging.Distributed;
+    using Kephas.Security.Authentication;
     using Kephas.Testing.Composition.Mef;
+
+    using NSubstitute;
 
     public class MessagingTestBase : CompositionTestBase
     {
@@ -29,6 +36,22 @@ namespace Kephas.Messaging.Tests
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */
             return base.CreateContainer(ambientServices, assemblyList, parts, config);
+        }
+
+        protected virtual ICompositionContext CreateSubstituteContainer()
+        {
+            var container = Substitute.For<ICompositionContext>();
+
+            container.GetExport(typeof(IExportFactoryImporter<IBrokeredMessageBuilder>), Arg.Any<string>())
+                .Returns(ci =>
+                    new ExportFactoryImporter<IBrokeredMessageBuilder>(
+                        new ExportFactory<IBrokeredMessageBuilder>(
+                            () =>
+                            {
+                                return new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
+                            })));
+
+            return container;
         }
     }
 }
