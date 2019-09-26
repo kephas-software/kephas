@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageProcessingContextTest.cs" company="Kephas Software SRL">
+// <copyright file="MessagingContextTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -17,34 +17,34 @@ namespace Kephas.Messaging.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageProcessingContextTest
+    public class MessagingContextTest
     {
         [Test]
-        public void MessageProcessingContext_parent_context()
+        public void MessagingContext_parent_context()
         {
             var parentContext =
-                new MessageProcessingContext(Substitute.For<IMessageProcessor>(), Substitute.For<IMessage>())
+                new MessagingContext(Substitute.For<IMessageProcessor>(), Substitute.For<IMessage>())
                     {
                         Identity = Substitute.For<IIdentity>()
                     };
 
-            var context = new MessageProcessingContext(parentContext, parentContext.MessageProcessor);
+            var context = new MessagingContext(parentContext, parentContext.MessageProcessor);
 
             Assert.AreSame(parentContext.MessageProcessor, context.MessageProcessor);
             Assert.AreSame(parentContext.Identity, context.Identity);
         }
 
         [Test]
-        public void MessageProcessingContext_parent_context_merge()
+        public void MessagingContext_parent_context_merge()
         {
             var parentContext =
-                new MessageProcessingContext(Substitute.For<IMessageProcessor>(), Substitute.For<IMessage>())
+                new MessagingContext(Substitute.For<IMessageProcessor>(), Substitute.For<IMessage>())
                     {
                         Identity = Substitute.For<IIdentity>(),
                         ["hi"] = "there",
                     };
 
-            var context = new MessageProcessingContext(parentContext, parentContext.MessageProcessor);
+            var context = new MessagingContext(parentContext, parentContext.MessageProcessor);
 
             Assert.AreSame(parentContext.MessageProcessor, context.MessageProcessor);
             Assert.AreSame(parentContext.Identity, context.Identity);

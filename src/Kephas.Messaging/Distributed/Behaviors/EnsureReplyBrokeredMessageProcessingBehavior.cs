@@ -33,17 +33,21 @@ namespace Kephas.Messaging.Distributed.Behaviors
     [ProcessingPriority(Priority.Highest + 20)]
     public class EnsureReplyBrokeredMessageProcessingBehavior : MessageProcessingBehaviorBase<IBrokeredMessage>
     {
-        private readonly IExportFactory<IMessageBroker> messageBrokerFactory;
+        private readonly Lazy<IMessageBroker> messageBrokerFactory;
+        private readonly IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory;
 
         /// <summary>
         /// Initializes a new instance of the
         /// <see cref="EnsureReplyBrokeredMessageProcessingBehavior"/> class.
         /// </summary>
-        /// <param name="messageBrokerFactory">The message broker factory.</param>
+        /// <param name="lazyMessageBroker">The message broker factory.</param>
         /// <param name="messageBuilderFactory">The message builder factory.</param>
-        public EnsureReplyBrokeredMessageProcessingBehavior(IExportFactory<IMessageBroker> messageBrokerFactory)
+        public EnsureReplyBrokeredMessageProcessingBehavior(
+            Lazy<IMessageBroker> lazyMessageBroker,
+            IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory)
         {
-            this.messageBrokerFactory = messageBrokerFactory;
+            this.messageBrokerFactory = lazyMessageBroker;
+            this.messageBuilderFactory = messageBuilderFactory;
         }
 
         /// <summary>
@@ -57,7 +61,7 @@ namespace Kephas.Messaging.Distributed.Behaviors
         /// The context will contain the response returned by the handler.
         /// The interceptor may change the response or even replace it with another one.
         /// </remarks>
-        public override async Task AfterProcessAsync(IBrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
+        public override async Task AfterProcessAsync(IBrokeredMessage message, IMessagingContext context, CancellationToken token)
         {
             // do not reply for one way messages, nor when there is no exception
             if (context.Exception == null || message.IsOneWay)
@@ -77,7 +81,7 @@ namespace Kephas.Messaging.Distributed.Behaviors
         /// <param name="token">The cancellation token.</param>
         private async void RespondException(
             IBrokeredMessage message,
-            IMessageProcessingContext context,
+            IMessagingContext context,
             Exception exception,
             CancellationToken token)
         {
@@ -85,8 +89,8 @@ namespace Kephas.Messaging.Distributed.Behaviors
             {
                 var response = new ExceptionResponseMessage { Exception = new ExceptionData(exception) };
 
-                var broker = this.messageBrokerFactory.CreateExportedValue();
-                var builder = broker.CreateBrokeredMessageBuilder(context);
+                var broker = this.messageBrokerFactory.Value;
+                var builder = this.messageBuilderFactory.CreateExportedValue(context);
                 var responseMessage = builder
                     .ReplyTo(message)
                     .WithContent(response)

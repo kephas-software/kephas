@@ -17,17 +17,17 @@ namespace Kephas.Messaging
     using Kephas.Services;
 
     /// <summary>
-    /// The default processing context.
+    /// The messaging context.
     /// </summary>
-    public class MessageProcessingContext : Context, IMessageProcessingContext
+    public class MessagingContext : Context, IMessagingContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingContext"/> class.
+        /// Initializes a new instance of the <see cref="MessagingContext"/> class.
         /// </summary>
         /// <param name="parentContext">The parent context.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="message">Optional. The message.</param>
-        public MessageProcessingContext(
+        public MessagingContext(
             IContext parentContext,
             IMessageProcessor messageProcessor,
             IMessage message = null)
@@ -41,11 +41,11 @@ namespace Kephas.Messaging
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingContext"/> class.
+        /// Initializes a new instance of the <see cref="MessagingContext"/> class.
         /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="message">The Message.</param>
-        public MessageProcessingContext(
+        public MessagingContext(
             IMessageProcessor messageProcessor,
             IMessage message = null)
             : base((messageProcessor as ICompositionContextAware)?.CompositionContext)

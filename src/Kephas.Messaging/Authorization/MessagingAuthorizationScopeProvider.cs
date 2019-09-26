@@ -32,7 +32,7 @@ namespace Kephas.Messaging.Authorization
         /// </returns>
         public Task<(object scope, bool canResolve)> GetAuthorizationScopeAsync(IContext context, CancellationToken cancellationToken = default)
         {
-            if (context is IMessageProcessingContext processingContext)
+            if (context is IMessagingContext processingContext)
             {
                 return Task.FromResult(((object)processingContext.Message, true));
             }

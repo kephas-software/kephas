@@ -74,7 +74,7 @@ namespace Kephas.Messaging.Tests
         [MessageHandler("Hi")]
         public class HiTestHandler : MessageHandlerBase<IMessage, IMessage>
         {
-            public override async Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)
+            public override async Task<IMessage> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
             {
                 throw new NotImplementedException();
             }
@@ -83,7 +83,7 @@ namespace Kephas.Messaging.Tests
         [MessageHandler("There")]
         public class ThereTestHandler : MessageHandlerBase<IMessage, IMessage>
         {
-            public override async Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)
+            public override async Task<IMessage> ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
             {
                 throw new NotImplementedException();
             }

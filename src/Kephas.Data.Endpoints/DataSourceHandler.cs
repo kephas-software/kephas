@@ -79,7 +79,7 @@ namespace Kephas.Data.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<DataSourceResponseMessage> ProcessAsync(DataSourceMessage message, IMessageProcessingContext context, CancellationToken token)
+        public override async Task<DataSourceResponseMessage> ProcessAsync(DataSourceMessage message, IMessagingContext context, CancellationToken token)
         {
             var entityType = this.ResolveEntityType(message.EntityType);
             var property = this.ResolveProperty(entityType, message.Property);
@@ -90,7 +90,7 @@ namespace Kephas.Data.Endpoints
                 var dataContext = dataSpace[projectedType];
                 var dataSourceContext = new DataSourceContext(dataContext, entityType, projectedType)
                                             {
-                                                Options = message.Options
+                                                Options = message.Options,
                                             };
                 dataSourceContext.Merge(message.Options);
                 var dataSource = await this.dataSourceService.GetDataSourceAsync(

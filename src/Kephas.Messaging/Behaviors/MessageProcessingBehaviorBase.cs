@@ -30,7 +30,7 @@ namespace Kephas.Messaging.Behaviors
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>A task.</returns>
-        Task IMessageProcessingBehavior.BeforeProcessAsync(IMessageProcessingContext context, CancellationToken token)
+        Task IMessageProcessingBehavior.BeforeProcessAsync(IMessagingContext context, CancellationToken token)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Behaviors
         /// The context will contain the response returned by the handler.
         /// The interceptor may change the response or even replace it with another one.
         /// </remarks>
-        Task IMessageProcessingBehavior.AfterProcessAsync(IMessageProcessingContext context, CancellationToken token)
+        Task IMessageProcessingBehavior.AfterProcessAsync(IMessagingContext context, CancellationToken token)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -65,7 +65,7 @@ namespace Kephas.Messaging.Behaviors
         /// <returns>
         /// A task.
         /// </returns>
-        public virtual Task BeforeProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token)
+        public virtual Task BeforeProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
             return TaskHelper.CompletedTask;
         }
@@ -83,7 +83,7 @@ namespace Kephas.Messaging.Behaviors
         /// The context will contain the response returned by the handler.
         /// The interceptor may change the response or even replace it with another one.
         /// </remarks>
-        public virtual Task AfterProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token)
+        public virtual Task AfterProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
             return TaskHelper.CompletedTask;
         }

@@ -104,20 +104,6 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Creates a brokered messsage builder.
-        /// </summary>
-        /// <param name="context">The publishing context.</param>
-        /// <returns>
-        /// The new brokered messsage builder.
-        /// </returns>
-        public IBrokeredMessageBuilder CreateBrokeredMessageBuilder(IContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            return this.builderFactory.CreateExportedValue(context);
-        }
-
-        /// <summary>
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="context">Optional. An optional context for initialization.</param>
@@ -199,6 +185,20 @@ namespace Kephas.Messaging.Distributed
             }
 
             this.initMonitor.Reset();
+        }
+
+        /// <summary>
+        /// Creates a brokered messsage builder.
+        /// </summary>
+        /// <param name="context">The publishing context.</param>
+        /// <returns>
+        /// The new brokered messsage builder.
+        /// </returns>
+        protected virtual IBrokeredMessageBuilder CreateBrokeredMessageBuilder(IContext context)
+        {
+            Requires.NotNull(context, nameof(context));
+
+            return this.builderFactory.CreateExportedValue(context);
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace Kephas.Messaging.Distributed
                         this.Logger.Debug($"Message {brokeredMessage} does not have any recipients; using fallback router {router.GetType()}.");
                     }
 
-                    return new[] { await router.SendAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext() };
+                    return new[] { await router.DispatchAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext() };
                 }
 
                 throw new MessagingException(Strings.DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception);
@@ -333,7 +333,7 @@ namespace Kephas.Messaging.Distributed
                     this.Logger.Debug($"Message {brokeredMessage} has recipient {recipientMappings[0].recipient}; using router {router.GetType()}.");
                 }
 
-                return new[] { await router.SendAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext() };
+                return new[] { await router.DispatchAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext() };
             }
 
             // general case when there are more routers for the recipients
@@ -350,13 +350,13 @@ namespace Kephas.Messaging.Distributed
                 }
             }
 
-            var tasks = routerMappings.Select(m => m.router.SendAsync(brokeredMessage.Clone(m.recipients), context, cancellationToken)).ToList();
+            var tasks = routerMappings.Select(m => m.router.DispatchAsync(brokeredMessage.Clone(m.recipients), context, cancellationToken)).ToList();
             return await Task.WhenAll(tasks).PreserveThreadContext();
         }
 
         private Task<(RoutingInstruction action, IMessage reply)> SendAsync(IMessageRouter router, IBrokeredMessage message, IContext context, CancellationToken cancellationToken)
         {
-            return router.SendAsync(message, context, cancellationToken);
+            return router.DispatchAsync(message, context, cancellationToken);
         }
 
         private IBrokeredMessage GetResponseMessage(IMessage reply, IBrokeredMessage message, IContext context)

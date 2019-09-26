@@ -30,7 +30,7 @@ namespace Kephas.Messaging.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override Task<PingBackMessage> ProcessAsync(PingMessage message, IMessageProcessingContext context, CancellationToken token)
+        public override Task<PingBackMessage> ProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
         {
             return Task.FromResult(new PingBackMessage
                                        {

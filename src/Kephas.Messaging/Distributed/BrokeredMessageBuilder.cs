@@ -14,6 +14,7 @@ namespace Kephas.Messaging.Distributed
     using System.Collections.Generic;
 
     using Kephas.Application;
+    using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Resources;
@@ -35,6 +36,7 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="appManifest">The application manifest.</param>
         /// <param name="authenticationService">The authentication service.</param>
+        [CompositionConstructor]
         public BrokeredMessageBuilder(IAppManifest appManifest, IAuthenticationService authenticationService)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
@@ -42,6 +44,20 @@ namespace Kephas.Messaging.Distributed
 
             this.AppManifest = appManifest;
             this.AuthenticationService = authenticationService;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BrokeredMessageBuilder"/> class.
+        /// </summary>
+        /// <param name="appManifest">The application manifest.</param>
+        /// <param name="authenticationService">The authentication service.</param>
+        /// <param name="context">The context for initialization.</param>
+        public BrokeredMessageBuilder(IAppManifest appManifest, IAuthenticationService authenticationService, IContext context)
+            : this(appManifest, authenticationService)
+        {
+            Requires.NotNull(context, nameof(context));
+
+            this.Initialize(context);
         }
 
         /// <summary>

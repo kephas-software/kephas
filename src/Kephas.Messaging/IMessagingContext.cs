@@ -17,7 +17,7 @@ namespace Kephas.Messaging
     /// <summary>
     /// Contract for contexts when processing messages.
     /// </summary>
-    public interface IMessageProcessingContext : IContext
+    public interface IMessagingContext : IContext
     {
         /// <summary>
         /// Gets the message processor.

@@ -74,7 +74,7 @@ namespace Kephas.Data.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<PersistChangesResponseMessage> ProcessAsync(PersistChangesMessage message, IMessageProcessingContext context, CancellationToken token)
+        public override async Task<PersistChangesResponseMessage> ProcessAsync(PersistChangesMessage message, IMessagingContext context, CancellationToken token)
         {
             var mappings = new List<(DtoEntityEntry dtoEntry, object entity)>();
             var response = new PersistChangesResponseMessage();

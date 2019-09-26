@@ -38,7 +38,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        public abstract Task<TResponse> ProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token);
+        public abstract Task<TResponse> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
 
         /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.
@@ -49,7 +49,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        async Task<IMessage> IMessageHandler<TMessage>.ProcessAsync(TMessage message, IMessageProcessingContext context, CancellationToken token)
+        async Task<IMessage> IMessageHandler<TMessage>.ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(context, nameof(context));
@@ -67,7 +67,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        async Task<IMessage> IMessageHandler.ProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)
+        async Task<IMessage> IMessageHandler.ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
         {
             var typedMessage = message as TMessage ?? (message as IMessageAdapter)?.GetMessage() as TMessage;
             if (typedMessage == null)

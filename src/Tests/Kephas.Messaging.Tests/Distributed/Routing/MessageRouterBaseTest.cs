@@ -15,6 +15,8 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Application;
+    using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Security.Authentication;
@@ -24,16 +26,16 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
     using NUnit.Framework;
 
     [TestFixture]
-    public class DuplexMessageRouterBaseTest : MessagingTestBase
+    public class MessageRouterBaseTest : MessagingTestBase
     {
         [Test]
         public async Task SendAsync_calls_RouteOutputAsync()
         {
-            var router = new TestDuplexMessageRouter(new Lazy<IMessageBroker>(() => Substitute.For<IMessageBroker>()));
+            var router = new TestMessageRouter(Substitute.For<IMessageProcessor>());
             var message = Substitute.For<IBrokeredMessage>();
             IBrokeredMessage receivedReply = null;
             router.ReplyReceived += (s, e) => receivedReply = e.Message;
-            var (action, reply) = await router.SendAsync(message, Substitute.For<IContext>(), default);
+            var (action, reply) = await router.DispatchAsync(message, Substitute.For<IContext>(), default);
 
             Assert.Contains(message, router.Out);
             Assert.AreEqual(RoutingInstruction.None, action);
@@ -44,7 +46,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         [Test]
         public async Task Receive_reply_raises_ReplyReceived_event()
         {
-            var router = new TestDuplexMessageRouter(new Lazy<IMessageBroker>(() => Substitute.For<IMessageBroker>()));
+            var router = new TestMessageRouter(Substitute.For<IMessageProcessor>());
             var message = Substitute.For<IBrokeredMessage>();
             message.ReplyToMessageId.Returns("some-id");
 
@@ -58,23 +60,17 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         [Test]
         public async Task Receive_request_sends_response()
         {
-            var messageBroker = Substitute.For<IMessageBroker>();
-            var router = new TestDuplexMessageRouter(new Lazy<IMessageBroker>(() => messageBroker));
+            var messageProcessor = Substitute.For<IMessageProcessor>();
+            var router = new TestMessageRouter(messageProcessor);
+
             var message = Substitute.For<IBrokeredMessage>();
             message.ReplyToMessageId.Returns((string)null);
             message.Id.Returns("gigi");
             message.IsOneWay.Returns(false);
 
             var dispatchReply = Substitute.For<IMessage>();
-            messageBroker.DispatchAsync(message, Arg.Any<IContext>(), Arg.Any<CancellationToken>())
+            messageProcessor.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(dispatchReply);
-            messageBroker.CreateBrokeredMessageBuilder(Arg.Any<IContext>())
-                .Returns(ci =>
-                {
-                    var builder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
-                    builder.Initialize(Substitute.For<IContext>());
-                    return builder;
-                });
 
             IBrokeredMessage receivedReply = null;
             router.ReplyReceived += (s, e) => receivedReply = e.Message;
@@ -88,11 +84,23 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             Assert.IsNull(receivedReply);
         }
 
-        public class TestDuplexMessageRouter : DuplexMessageRouterBase
+        public class TestMessageRouter : MessageRouterBase
         {
-            public TestDuplexMessageRouter(Lazy<IMessageBroker> lazyMessageBroker)
-                : base(lazyMessageBroker)
+            public TestMessageRouter(IMessageProcessor messageProcessor)
+                : base(messageProcessor, CreateMessageBuilderFactory())
             {
+            }
+
+            private static IExportFactory<IBrokeredMessageBuilder> CreateMessageBuilderFactory()
+            {
+                return new ExportFactory<IBrokeredMessageBuilder>(() =>
+                {
+                    var builder = new BrokeredMessageBuilder(
+                        Substitute.For<IAppManifest>(),
+                        Substitute.For<IAuthenticationService>(),
+                        Substitute.For<IContext>());
+                    return builder;
+                });
             }
 
             public Queue<IBrokeredMessage> In { get; } = new Queue<IBrokeredMessage>();
@@ -104,10 +112,10 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
                 this.RouteInputAsync(message, context, default).WaitNonLocking();
             }
 
-            protected override Task RouteOutputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+            protected override async Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
             {
                 this.Out.Enqueue(brokeredMessage);
-                return TaskHelper.CompletedTask;
+                return (RoutingInstruction.None, null);
             }
         }
     }

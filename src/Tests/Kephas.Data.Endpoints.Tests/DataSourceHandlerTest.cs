@@ -71,7 +71,7 @@ namespace Kephas.Data.Endpoints.Tests
                                   Options = options,
                               };
 
-            var result = await handler.ProcessAsync(message, Substitute.For<IMessageProcessingContext>(), default);
+            var result = await handler.ProcessAsync(message, Substitute.For<IMessagingContext>(), default);
             var list = result.DataSource;
             Assert.AreEqual(2, list.Count);
         }

@@ -55,7 +55,7 @@ namespace Kephas.Messaging.Distributed.Behaviors
         /// <returns>
         /// A task.
         /// </returns>
-        public override async Task BeforeProcessAsync(IBrokeredMessage message, IMessageProcessingContext context, CancellationToken token)
+        public override async Task BeforeProcessAsync(IBrokeredMessage message, IMessagingContext context, CancellationToken token)
         {
             if (string.IsNullOrEmpty(message.BearerToken) || context.Identity != null)
             {

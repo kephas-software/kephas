@@ -34,14 +34,5 @@ namespace Kephas.Messaging.Distributed
             IBrokeredMessage brokeredMessage,
             IContext context,
             CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Creates a brokered message builder.
-        /// </summary>
-        /// <param name="context">The publishing context.</param>
-        /// <returns>
-        /// The new brokered message builder.
-        /// </returns>
-        IBrokeredMessageBuilder CreateBrokeredMessageBuilder(IContext context);
     }
 }

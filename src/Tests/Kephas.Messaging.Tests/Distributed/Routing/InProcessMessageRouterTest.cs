@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             ReplyReceivedEventArgs eventArgs = null;
             inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
             var request = new BrokeredMessage { Content = new PingMessage() };
-            var result = await inProcessRouter.SendAsync(request, new Context(container), default);
+            var result = await inProcessRouter.DispatchAsync(request, new Context(container), default);
 
             Thread.Sleep(100);
             Assert.IsNull(eventArgs);
@@ -64,7 +64,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
             var context = new Context(container);
             var reply = new BrokeredMessage { Content = new PingBackMessage(), ReplyToMessageId = "hello" };
-            var result = await inProcessRouter.SendAsync(reply, context, default);
+            var result = await inProcessRouter.DispatchAsync(reply, context, default);
 
             Thread.Sleep(100);
             Assert.AreSame(reply, eventArgs.Message);

@@ -183,10 +183,10 @@
   <data name="DefaultMessageBroker_ErrorsOccurredWhileSending_Exception" xml:space="preserve">
     <value>Errors occurred while sending message '{0}'.</value>
   </data>
-  <data name="DuplexRouterBase_ErrorsOccurredDuringDispatching_Exception" xml:space="preserve">
+  <data name="MessageRouterBase_ErrorsOccurredDuringDispatching_Exception" xml:space="preserve">
     <value>Errors occurred during dispatching.</value>
   </data>
-  <data name="DuplexRouterBase_ErrorsOccurredWhileRoutingMessage_Exception" xml:space="preserve">
+  <data name="MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception" xml:space="preserve">
     <value>Errors occurred while routing message '{0}'.</value>
   </data>
 </root>

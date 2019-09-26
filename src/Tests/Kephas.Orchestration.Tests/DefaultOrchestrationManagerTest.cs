@@ -83,9 +83,6 @@ namespace Kephas.Orchestration.Tests
             var compositionContext = Substitute.For<ICompositionContext>();
             var context = new Context(compositionContext);
 
-            messageBroker.CreateBrokeredMessageBuilder(Arg.Any<IContext>())
-                .Returns(ci => this.CreateMessageBuilder(ci.Arg<IContext>()));
-
             var manager = new DefaultOrchestrationManager(appManifest, appRuntime, eventHub, messageBroker);
             manager.TimerDueTime = TimeSpan.FromMilliseconds(100);
             manager.TimerPeriod = TimeSpan.FromMilliseconds(100);

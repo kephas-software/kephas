@@ -178,24 +178,6 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors occurred during dispatching..
-        /// </summary>
-        public static string DuplexRouterBase_ErrorsOccurredDuringDispatching_Exception {
-            get {
-                return ResourceManager.GetString("DuplexRouterBase_ErrorsOccurredDuringDispatching_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Errors occurred while routing message &apos;{0}&apos;..
-        /// </summary>
-        public static string DuplexRouterBase_ErrorsOccurredWhileRoutingMessage_Exception {
-            get {
-                return ResourceManager.GetString("DuplexRouterBase_ErrorsOccurredWhileRoutingMessage_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The message is not set in the message adapter..
         /// </summary>
         public static string MessageAdapter_MessageNotSet_Exception {
@@ -255,6 +237,24 @@ namespace Kephas.Messaging.Resources {
         public static string MessageHandler_BadMessageType_Exception {
             get {
                 return ResourceManager.GetString("MessageHandler_BadMessageType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors occurred during dispatching..
+        /// </summary>
+        public static string MessageRouterBase_ErrorsOccurredDuringDispatching_Exception {
+            get {
+                return ResourceManager.GetString("MessageRouterBase_ErrorsOccurredDuringDispatching_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors occurred while routing message &apos;{0}&apos;..
+        /// </summary>
+        public static string MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception {
+            get {
+                return ResourceManager.GetString("MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception", resourceCulture);
             }
         }
         

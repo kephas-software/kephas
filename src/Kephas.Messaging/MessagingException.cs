@@ -10,8 +10,9 @@
 
 namespace Kephas.Messaging
 {
-    using Kephas.ExceptionHandling;
     using System;
+
+    using Kephas.ExceptionHandling;
 
     /// <summary>
     /// Exception for signalling messaging errors.

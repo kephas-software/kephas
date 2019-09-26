@@ -94,7 +94,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        public async Task<IMessage> ProcessAsync(IMessage message, IMessageProcessingContext context = null, CancellationToken token = default)
+        public async Task<IMessage> ProcessAsync(IMessage message, IMessagingContext context = null, CancellationToken token = default)
         {
             Requires.NotNull(message, nameof(message));
 
@@ -157,7 +157,7 @@ namespace Kephas.Messaging
         /// </returns>
         protected virtual async Task ApplyAfterProcessBehaviorsAsync(
             IEnumerable<IMessageProcessingBehavior> reversedBehaviors,
-            IMessageProcessingContext context,
+            IMessagingContext context,
             CancellationToken token)
         {
             foreach (var behavior in reversedBehaviors)
@@ -177,7 +177,7 @@ namespace Kephas.Messaging
         /// </returns>
         protected virtual async Task ApplyBeforeProcessBehaviorsAsync(
             IEnumerable<IMessageProcessingBehavior> behaviors,
-            IMessageProcessingContext context,
+            IMessagingContext context,
             CancellationToken token)
         {
             foreach (var behavior in behaviors)
@@ -196,13 +196,13 @@ namespace Kephas.Messaging
         /// <returns>
         /// The processing context.
         /// </returns>
-        protected virtual IMessageProcessingContext CreateProcessingContext(
+        protected virtual IMessagingContext CreateProcessingContext(
             IMessage message,
-            IMessageProcessingContext parentContext)
+            IMessagingContext parentContext)
         {
             return parentContext == null
-                       ? new MessageProcessingContext(this, message)
-                       : new MessageProcessingContext(parentContext, this, message);
+                       ? new MessagingContext(this, message)
+                       : new MessagingContext(parentContext, this, message);
         }
 
         /// <summary>

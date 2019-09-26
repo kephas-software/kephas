@@ -60,7 +60,7 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         public override async Task<QueryResponseMessage> ProcessAsync(
             QueryMessage message,
-            IMessageProcessingContext context,
+            IMessagingContext context,
             CancellationToken token)
         {
             var executionContext = this.CreateClientQueryExecutionContext(message, context);
@@ -81,7 +81,7 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         protected virtual IClientQueryExecutionContext CreateClientQueryExecutionContext(
             QueryMessage message,
-            IMessageProcessingContext context)
+            IMessagingContext context)
         {
             var executionContext = new ClientQueryExecutionContext(context)
                                         {

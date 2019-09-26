@@ -118,18 +118,18 @@ namespace Kephas.Messaging.Tests
             var expectedResponse = Substitute.For<IMessage>();
 
             var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(
                     ci =>
                         {
-                            var ctx = ci.Arg<IMessageProcessingContext>();
+                            var ctx = ci.Arg<IMessagingContext>();
                             ctx.Message = Substitute.For<IMessage>();
                             ctx.Handler = Substitute.For<IMessageHandler>();
                             return Task.FromResult(expectedResponse);
                         });
             var processor = this.CreateRequestProcessor(handler, message);
 
-            var context = new MessageProcessingContext(processor, contextMessage)
+            var context = new MessagingContext(processor, contextMessage)
                               {
                                   Handler = contextHandler,
                               };
@@ -145,11 +145,11 @@ namespace Kephas.Messaging.Tests
         {
             var handler = Substitute.For<IMessageHandler>();
             var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => Substitute.For<IMessage>());
             var processor = this.CreateRequestProcessor(handler, message);
 
-            var context = Substitute.For<IMessageProcessingContext>();
+            var context = Substitute.For<IMessagingContext>();
             context.MessageProcessor.Returns(processor);
 
             var result = await processor.ProcessAsync(message, context);
@@ -162,13 +162,13 @@ namespace Kephas.Messaging.Tests
         {
             var handler = Substitute.For<IMessageHandler>();
             var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => Substitute.For<IMessage>());
             var processor = (TestMessageProcessor) this.CreateRequestProcessor(handler, message);
-            IMessageProcessingContext context = null;
+            IMessagingContext context = null;
             processor.CreateProcessingContextFunc = (msg, ctx) =>
                     {
-                        context = Substitute.For<IMessageProcessingContext>();
+                        context = Substitute.For<IMessagingContext>();
                         context.MessageProcessor.Returns(processor);
                         context.Message.Returns(msg);
                         return context;
@@ -186,7 +186,7 @@ namespace Kephas.Messaging.Tests
             var expectedResponse = Substitute.For<IMessage>();
 
             var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
             var processor = this.CreateRequestProcessor(handler, message);
             var result = await processor.ProcessAsync(message);
@@ -203,9 +203,9 @@ namespace Kephas.Messaging.Tests
             var expectedResponse2 = Substitute.For<IMessage>();
 
             var message = Substitute.For<IMessage>();
-            handler1.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler1.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse1));
-            handler2.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler2.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
@@ -227,9 +227,9 @@ namespace Kephas.Messaging.Tests
 
             var message = new IdentifiedMessage();
             message.Id = "hi";
-            handler1.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler1.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse1));
-            handler2.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler2.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
@@ -251,9 +251,9 @@ namespace Kephas.Messaging.Tests
 
             var message = new ExpandoMessage();
             (message as dynamic).MessageId = "hi";
-            handler1.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler1.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse1));
-            handler2.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler2.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
@@ -274,9 +274,9 @@ namespace Kephas.Messaging.Tests
             var expectedResponse2 = Substitute.For<IMessage>();
 
             var message = Substitute.For<IMessage>();
-            handler1.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler1.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse1));
-            handler2.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler2.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse2));
             var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
@@ -303,7 +303,7 @@ namespace Kephas.Messaging.Tests
             var handler = Substitute.For<IMessageHandler>();
 
             var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Throws(new InvalidOperationException());
             var processor = this.CreateRequestProcessor(handler, message);
             Assert.That(() => processor.ProcessAsync(message, null, default), Throws.InstanceOf<InvalidOperationException>());
@@ -316,7 +316,7 @@ namespace Kephas.Messaging.Tests
             var expectedResponse = Substitute.For<IMessage>();
 
             var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
 
             var processor = this.CreateRequestProcessor(handler, message);
@@ -332,13 +332,13 @@ namespace Kephas.Messaging.Tests
             var expectedResponse = Substitute.For<IMessage>();
 
             var message = new PingMessage();
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
 
             var f = this.CreateTestBehaviorFactory(messageType: typeof(PingMessage));
 
             var processor = (TestMessageProcessor)this.CreateRequestProcessor(new[] { f }, handler, message);
-            var processingContext = new MessageProcessingContext(processor, message);
+            var processingContext = new MessagingContext(processor, message);
             processor.CreateProcessingContextFunc = (msg, ctx) => processingContext;
             var result = await processor.ProcessAsync(message, null, default);
 
@@ -353,7 +353,7 @@ namespace Kephas.Messaging.Tests
             var expectedResponse = Substitute.For<IMessage>();
 
             var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
 
             var beforelist = new List<int>();
@@ -386,7 +386,7 @@ namespace Kephas.Messaging.Tests
             var expectedResponse = Substitute.For<IMessage>();
 
             var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
 
             var beforelist = new List<int>();
@@ -416,7 +416,7 @@ namespace Kephas.Messaging.Tests
             var expectedResponse = Substitute.For<IMessage>();
 
             var message = new IdentifiedMessage2 { MessageId = "hello" };
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
 
             var beforelist = new List<int>();
@@ -464,7 +464,7 @@ namespace Kephas.Messaging.Tests
             var handler = Substitute.For<IMessageHandler>();
 
             var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
+            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Throws(new InvalidOperationException());
 
             var beforelist = new List<Exception>();
@@ -514,8 +514,8 @@ namespace Kephas.Messaging.Tests
                 handlerFactories: handlerFactories);
             await processor.ProcessAsync(message, null, default);
 
-            handler1.Received(1).ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
-            handler2.Received(1).ProcessAsync(message, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
+            handler1.Received(1).ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>());
+            handler2.Received(1).ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>());
         }
 
         [Test]
@@ -542,17 +542,17 @@ namespace Kephas.Messaging.Tests
                 handlerFactories: handlerFactories);
 
             await processor.ProcessAsync(eventMessage, null, default);
-            eventHandler.Received(1).ProcessAsync(eventMessage, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
-            plainHandler.Received(0).ProcessAsync(eventMessage, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
+            eventHandler.Received(1).ProcessAsync(eventMessage, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>());
+            plainHandler.Received(0).ProcessAsync(eventMessage, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>());
 
             await processor.ProcessAsync(plainMessage, null, default);
-            eventHandler.Received(0).ProcessAsync(plainMessage, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
-            plainHandler.Received(1).ProcessAsync(plainMessage, Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>());
+            eventHandler.Received(0).ProcessAsync(plainMessage, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>());
+            plainHandler.Received(1).ProcessAsync(plainMessage, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>());
         }
 
         private IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata> CreateBehaviorFactory(
-            Func<IMessageProcessingContext, CancellationToken, Task> beforeFunc = null,
-            Func<IMessageProcessingContext, CancellationToken, Task> afterFunc = null,
+            Func<IMessagingContext, CancellationToken, Task> beforeFunc = null,
+            Func<IMessagingContext, CancellationToken, Task> afterFunc = null,
             Type messageType = null,
             MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy,
             object messageId = null,
@@ -564,10 +564,10 @@ namespace Kephas.Messaging.Tests
             beforeFunc = beforeFunc ?? ((c, t) => TaskHelper.CompletedTask);
             afterFunc = afterFunc ?? ((c, t) => TaskHelper.CompletedTask);
             var behavior = Substitute.For<IMessageProcessingBehavior>();
-            behavior.BeforeProcessAsync(Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => beforeFunc(ci.Arg<IMessageProcessingContext>(), ci.Arg<CancellationToken>()));
-            behavior.AfterProcessAsync(Arg.Any<IMessageProcessingContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => afterFunc(ci.Arg<IMessageProcessingContext>(), ci.Arg<CancellationToken>()));
+            behavior.BeforeProcessAsync(Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => beforeFunc(ci.Arg<IMessagingContext>(), ci.Arg<CancellationToken>()));
+            behavior.AfterProcessAsync(Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => afterFunc(ci.Arg<IMessagingContext>(), ci.Arg<CancellationToken>()));
             var factory =
                 new ExportFactoryAdapter<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>(
                     () => Tuple.Create(behavior, (Action)(() => { })),
@@ -675,13 +675,13 @@ namespace Kephas.Messaging.Tests
 
     public class TestBehavior : MessageProcessingBehaviorBase<PingMessage>
     {
-        public override Task BeforeProcessAsync(PingMessage message, IMessageProcessingContext context, CancellationToken token)
+        public override Task BeforeProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
         {
             context["Before TestBehavior"] = true;
             return base.BeforeProcessAsync(message, context, token);
         }
 
-        public override Task AfterProcessAsync(PingMessage message, IMessageProcessingContext context, CancellationToken token)
+        public override Task AfterProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
         {
             context["After TestBehavior"] = true;
             return base.AfterProcessAsync(message, context, token);
@@ -690,16 +690,16 @@ namespace Kephas.Messaging.Tests
 
     public class TestMessageProcessor : DefaultMessageProcessor
     {
-        public Func<IMessage, IMessageProcessingContext, IMessageProcessingContext> CreateProcessingContextFunc { get; set; }
+        public Func<IMessage, IMessagingContext, IMessagingContext> CreateProcessingContextFunc { get; set; }
 
         public TestMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
             : base(compositionContext, handlerRegistry, messageMatchService, behaviorFactories)
         {
         }
 
-        protected override sealed IMessageProcessingContext CreateProcessingContext(
+        protected override sealed IMessagingContext CreateProcessingContext(
             IMessage message,
-            IMessageProcessingContext context)
+            IMessagingContext context)
         {
             return 
                 this.CreateProcessingContextFunc?.Invoke(message, context)

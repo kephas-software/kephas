@@ -88,17 +88,6 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
-        public void CreateBrokeredMessageBuilder_initialized()
-        {
-            var container = this.CreateContainer();
-            var messageBroker = container.GetExport<IMessageBroker>();
-
-            var builder = messageBroker.CreateBrokeredMessageBuilder(new Context(container));
-            Assert.IsInstanceOf<BrokeredMessageBuilder>(builder);
-            Assert.IsNotNull(builder.BrokeredMessage);
-        }
-
-        [Test]
         public async Task DispatchAsync_timeout()
         {
             var container = this.CreateContainer(parts: new[] { typeof(TimeoutMessageHandler) });
@@ -280,7 +269,7 @@ namespace Kephas.Messaging.Tests.Distributed
             /// <returns>
             /// The response promise.
             /// </returns>
-            public override async Task<IMessage> ProcessAsync(TestEvent message, IMessageProcessingContext context, CancellationToken token)
+            public override async Task<IMessage> ProcessAsync(TestEvent message, IMessagingContext context, CancellationToken token)
             {
                 message.TaskCompletionSource?.SetResult(("ok", context.GetBrokeredMessage()));
 
@@ -300,7 +289,7 @@ namespace Kephas.Messaging.Tests.Distributed
             /// <returns>
             /// The response promise.
             /// </returns>
-            public override async Task<PingBackMessage> ProcessAsync(PingMessage message, IMessageProcessingContext context, CancellationToken token)
+            public override async Task<PingBackMessage> ProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
             {
                 throw new ArgumentException();
             }
@@ -319,7 +308,7 @@ namespace Kephas.Messaging.Tests.Distributed
             /// <returns>
             /// The response promise.
             /// </returns>
-            public override async Task<IMessage> ProcessAsync(TimeoutMessage message, IMessageProcessingContext context, CancellationToken token)
+            public override async Task<IMessage> ProcessAsync(TimeoutMessage message, IMessagingContext context, CancellationToken token)
             {
                 Thread.Sleep(TimeSpan.FromSeconds(10));
 
@@ -380,11 +369,11 @@ namespace Kephas.Messaging.Tests.Distributed
             {
             }
 
-            public Action<IMessage, IMessageProcessingContext> ProcessingContextConfigurator { get; set; }
+            public Action<IMessage, IMessagingContext> ProcessingContextConfigurator { get; set; }
 
             protected override Task ApplyBeforeProcessBehaviorsAsync(
                 IEnumerable<IMessageProcessingBehavior> behaviors,
-                IMessageProcessingContext context,
+                IMessagingContext context,
                 CancellationToken token)
             {
                 this.ProcessingContextConfigurator?.Invoke(context.Message, context);
@@ -402,7 +391,7 @@ namespace Kephas.Messaging.Tests.Distributed
                 throw new NotImplementedException();
             }
 
-            public Task<(RoutingInstruction action, IMessage reply)> SendAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+            public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
@@ -418,7 +407,7 @@ namespace Kephas.Messaging.Tests.Distributed
                 throw new NotImplementedException();
             }
 
-            public Task<(RoutingInstruction action, IMessage reply)> SendAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+            public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

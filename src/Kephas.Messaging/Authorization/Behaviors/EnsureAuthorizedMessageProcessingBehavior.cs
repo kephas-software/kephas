@@ -75,7 +75,7 @@ namespace Kephas.Messaging.Authorization.Behaviors
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>A task.</returns>
-        public override async Task BeforeProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)
+        public override async Task BeforeProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
         {
             var messageType = message.GetType();
 

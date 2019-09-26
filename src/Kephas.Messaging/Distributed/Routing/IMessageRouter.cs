@@ -27,15 +27,15 @@ namespace Kephas.Messaging.Distributed.Routing
         event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
 
         /// <summary>
-        /// Sends the brokered message asynchronously over the physical medium.
+        /// Dispatches the brokered message asynchronously, typically over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">The send context.</param>
+        /// <param name="context">The routing context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        Task<(RoutingInstruction action, IMessage reply)> SendAsync(
+        Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(
             IBrokeredMessage brokeredMessage,
             IContext context,
             CancellationToken cancellationToken);
