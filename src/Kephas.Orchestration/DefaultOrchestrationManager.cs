@@ -37,10 +37,6 @@ namespace Kephas.Orchestration
     [OverridePriority(Priority.Low)]
     public class DefaultOrchestrationManager : Loggable, IOrchestrationManager, IAsyncInitializable, IAsyncFinalizable
     {
-        private readonly IAppManifest appManifest;
-        private readonly IEventHub eventHub;
-        private readonly ConcurrentDictionary<string, IAppEvent> liveApps = new ConcurrentDictionary<string, IAppEvent>();
-
         private Timer timer;
         private IEventSubscription appStartedSubscription;
         private IEventSubscription appStoppedSubscription;
@@ -52,22 +48,22 @@ namespace Kephas.Orchestration
         /// <param name="appManifest">The application manifest.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="messageBroker">The message broker.</param>
+        /// <param name="eventPublisher">The event publisher.</param>
         public DefaultOrchestrationManager(
             IAppManifest appManifest,
             IAppRuntime appRuntime,
             IEventHub eventHub,
-            IMessageBroker messageBroker)
+            IEventPublisher eventPublisher)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(eventHub, nameof(eventHub));
-            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(eventPublisher, nameof(eventPublisher));
 
-            this.appManifest = appManifest;
+            this.AppManifest = appManifest;
             this.AppRuntime = appRuntime;
-            this.eventHub = eventHub;
-            this.MessageBroker = messageBroker;
+            this.EventHub = eventHub;
+            this.EventPublisher = eventPublisher;
         }
 
         /// <summary>
@@ -87,12 +83,28 @@ namespace Kephas.Orchestration
         public IAppRuntime AppRuntime { get; private set; }
 
         /// <summary>
-        /// Gets the message broker.
+        /// Gets the application manifest.
         /// </summary>
         /// <value>
-        /// The message broker.
+        /// The application manifest.
         /// </value>
-        public IMessageBroker MessageBroker { get; private set; }
+        public IAppManifest AppManifest { get; }
+
+        /// <summary>
+        /// Gets the event hub.
+        /// </summary>
+        /// <value>
+        /// The event hub.
+        /// </value>
+        public IEventHub EventHub { get; }
+
+        /// <summary>
+        /// Gets the event publisher.
+        /// </summary>
+        /// <value>
+        /// The event publisher.
+        /// </value>
+        public IEventPublisher EventPublisher { get; }
 
         /// <summary>
         /// Gets or sets the timer due time.
@@ -111,6 +123,14 @@ namespace Kephas.Orchestration
         protected internal TimeSpan TimerPeriod { get; set; } = TimeSpan.FromSeconds(10);
 
         /// <summary>
+        /// Gets the live apps cache.
+        /// </summary>
+        /// <value>
+        /// The live apps cache.
+        /// </value>
+        protected ConcurrentDictionary<string, IAppEvent> LiveApps { get; } = new ConcurrentDictionary<string, IAppEvent>();
+
+        /// <summary>
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="context">A context for initialization.</param>
@@ -118,17 +138,17 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public async Task InitializeAsync(IContext context, CancellationToken cancellationToken = default)
+        public virtual async Task InitializeAsync(IContext context, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(context, nameof(context));
 
             this.AppContext = context;
 
-            await this.InitializeLiveAppInfosAsync(this.liveApps, cancellationToken).PreserveThreadContext();
+            await this.InitializeLiveAppsAsync(cancellationToken).PreserveThreadContext();
 
-            this.appStartedSubscription = this.eventHub.Subscribe<AppStartedEvent>(this.OnAppStartedAsync);
-            this.appStoppedSubscription = this.eventHub.Subscribe<AppStoppedEvent>(this.OnAppStoppedAsync);
-            this.appHeartbeatSubscription = this.eventHub.Subscribe<AppHeartbeatEvent>(this.OnAppHeartbeatAsync);
+            this.appStartedSubscription = this.EventHub.Subscribe<AppStartedEvent>(this.OnAppStartedAsync);
+            this.appStoppedSubscription = this.EventHub.Subscribe<AppStoppedEvent>(this.OnAppStoppedAsync);
+            this.appHeartbeatSubscription = this.EventHub.Subscribe<AppHeartbeatEvent>(this.OnAppHeartbeatAsync);
         }
 
         /// <summary>
@@ -139,7 +159,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public Task FinalizeAsync(IContext context, CancellationToken cancellationToken = default)
+        public virtual Task FinalizeAsync(IContext context, CancellationToken cancellationToken = default)
         {
             if (this.timer == null)
             {
@@ -164,10 +184,10 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields the live apps.
         /// </returns>
-        public virtual async Task<IEnumerable<IRuntimeAppInfo>> GetLiveAppsAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public virtual Task<IEnumerable<IRuntimeAppInfo>> GetLiveAppsAsync(IContext context = null, CancellationToken cancellationToken = default)
         {
-            var apps = this.liveApps.Values.Select(v => v.AppInfo).ToArray();
-            return apps;
+            var apps = this.LiveApps.Values.Select(v => v.AppInfo).ToArray();
+            return Task.FromResult<IEnumerable<IRuntimeAppInfo>>(apps);
         }
 
         /// <summary>
@@ -204,14 +224,13 @@ namespace Kephas.Orchestration
         }
 
         /// <summary>
-        /// Gets runtime application infos asynchronously.
+        /// Initializes the live apps cache asynchronously.
         /// </summary>
-        /// <param name="liveAppInfos">The live application infos.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// An asynchronous result that yields the runtime application infos.
+        /// An asynchronous result.
         /// </returns>
-        protected virtual Task InitializeLiveAppInfosAsync(ConcurrentDictionary<string, IAppEvent> liveAppInfos, CancellationToken cancellationToken)
+        protected virtual Task InitializeLiveAppsAsync(CancellationToken cancellationToken)
         {
             return TaskHelper.CompletedTask;
         }
@@ -225,7 +244,7 @@ namespace Kephas.Orchestration
             try
             {
                 var heartbeatEvent = this.CreateAppHeartbeatEvent();
-                await this.MessageBroker.PublishAsync(heartbeatEvent, (IContext)state).PreserveThreadContext();
+                await this.EventPublisher.PublishAsync(heartbeatEvent, (IContext)state).PreserveThreadContext();
             }
             catch (Exception ex)
             {
@@ -252,13 +271,12 @@ namespace Kephas.Orchestration
                 return TaskHelper.CompletedTask;
             }
 
-            if (appEvent.AppInfo.AppId == this.appManifest.AppId && appEvent.AppInfo.AppInstanceId == this.appManifest.AppInstanceId)
+            if (appEvent.AppInfo.AppId == this.AppManifest.AppId && appEvent.AppInfo.AppInstanceId == this.AppManifest.AppInstanceId)
             {
-                this.OnHeartbeat(context);
                 this.timer = new Timer(this.OnHeartbeat, context, this.TimerDueTime, this.TimerPeriod);
             }
 
-            this.liveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
+            this.LiveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
             return TaskHelper.CompletedTask;
         }
 
@@ -281,7 +299,7 @@ namespace Kephas.Orchestration
                 return TaskHelper.CompletedTask;
             }
 
-            this.liveApps.TryRemove(appKey, out _);
+            this.LiveApps.TryRemove(appKey, out _);
             return TaskHelper.CompletedTask;
         }
 
@@ -302,7 +320,7 @@ namespace Kephas.Orchestration
                 return TaskHelper.CompletedTask;
             }
 
-            this.liveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
+            this.LiveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
             return TaskHelper.CompletedTask;
         }
 
@@ -327,7 +345,7 @@ namespace Kephas.Orchestration
         {
             return new AppHeartbeatEvent
             {
-                AppInfo = this.appManifest.GetAppInfo(this.AppRuntime),
+                AppInfo = this.AppManifest.GetAppInfo(this.AppRuntime),
                 Timestamp = DateTimeOffset.Now,
             };
         }

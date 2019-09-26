@@ -70,7 +70,7 @@ namespace Kephas.Orchestration.Tests
         [Test]
         public async Task InitializeAsync_Heartbeat()
         {
-            var messageBroker = Substitute.For<IMessageBroker>();
+            var eventPublisher = Substitute.For<IEventPublisher>();
             var appManifest = Substitute.For<IAppManifest>();
             appManifest.AppId.Returns("hi");
             appManifest.AppInstanceId.Returns("there");
@@ -82,7 +82,7 @@ namespace Kephas.Orchestration.Tests
             var compositionContext = this.CreateSubstituteContainer();
             var appContext = new Context(compositionContext);
 
-            var manager = new DefaultOrchestrationManager(appManifest, appRuntime, eventHub, messageBroker);
+            var manager = new DefaultOrchestrationManager(appManifest, appRuntime, eventHub, eventPublisher);
             manager.TimerDueTime = TimeSpan.FromMilliseconds(100);
             manager.TimerPeriod = TimeSpan.FromMilliseconds(100);
 
@@ -92,9 +92,9 @@ namespace Kephas.Orchestration.Tests
             await manager.FinalizeAsync(appContext);
 
             // ensure that the heartbeat is sent
-            messageBroker
+            eventPublisher
                 .Received()
-                .DispatchAsync(Arg.Is<IBrokeredMessage>(bm => bm.Content is AppHeartbeatEvent), Arg.Any<IContext>(), Arg.Any<CancellationToken>());
+                .PublishAsync(Arg.Is<AppHeartbeatEvent>(e => e.AppInfo.AppId == "hi" && e.AppInfo.AppInstanceId == "there"), Arg.Any<IContext>(), Arg.Any<CancellationToken>());
         }
 
         private BrokeredMessageBuilder CreateMessageBuilder(IContext context)
