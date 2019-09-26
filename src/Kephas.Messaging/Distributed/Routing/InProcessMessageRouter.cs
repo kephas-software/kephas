@@ -21,6 +21,7 @@ namespace Kephas.Messaging.Distributed.Routing
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
+    using Kephas.Text;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -126,7 +127,7 @@ namespace Kephas.Messaging.Distributed.Routing
             this.lazyMessageBroker.Value
                 .DispatchAsync(brokeredMessage, context, cancellationToken)
                 .ContinueWith(
-                    t => this.Logger.Error(t.Exception, Strings.MessageRouterBase_ErrorsOccurredDuringDispatching_Exception),
+                    t => this.Logger.Error(t.Exception, Strings.MessageRouterBase_ErrorsOccurredWhileDispatching_Exception.FormatWith(brokeredMessage)),
                     TaskContinuationOptions.OnlyOnFaulted);
 
             return Task.FromResult<(RoutingInstruction action, IMessage reply)>((RoutingInstruction.None, null));

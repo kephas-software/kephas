@@ -170,12 +170,21 @@ namespace Kephas.Messaging.Distributed.Routing
                     // for one way or replies do not wait for a response
                     this.ProcessAsync(brokeredMessage, context, default)
                         .ContinueWith(
-                            t => this.Logger.Error(t.Exception, Strings.MessageRouterBase_ErrorsOccurredDuringDispatching_Exception),
+                            t => this.Logger.Error(t.Exception, Strings.MessageRouterBase_ErrorsOccurredWhileProcessingOneWay_Exception.FormatWith(brokeredMessage)),
                             TaskContinuationOptions.OnlyOnFaulted);
                     return (RoutingInstruction.None, null);
                 }
 
-                var reply = await this.ProcessAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+                IMessage reply = null;
+                try
+                {
+                    reply = await this.ProcessAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+                }
+                catch (Exception ex)
+                {
+                    reply = new ExceptionResponseMessage { Exception = new ExceptionData(ex) };
+                }
+
                 var replyMessage = this.CreateBrokeredMessageBuilder(context)
                     .ReplyTo(brokeredMessage)
                     .WithContent(reply)

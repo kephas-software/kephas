@@ -25,7 +25,6 @@ namespace Kephas.Orchestration.Tests
     using Kephas.Orchestration.Endpoints;
     using Kephas.Security.Authentication;
     using Kephas.Services;
-    using Kephas.Testing.Composition;
 
     using NSubstitute;
 
@@ -80,17 +79,17 @@ namespace Kephas.Orchestration.Tests
 
             var eventHub = this.CreateEventHub();
 
-            var compositionContext = Substitute.For<ICompositionContext>();
-            var context = new Context(compositionContext);
+            var compositionContext = this.CreateSubstituteContainer();
+            var appContext = new Context(compositionContext);
 
             var manager = new DefaultOrchestrationManager(appManifest, appRuntime, eventHub, messageBroker);
             manager.TimerDueTime = TimeSpan.FromMilliseconds(100);
             manager.TimerPeriod = TimeSpan.FromMilliseconds(100);
 
-            await manager.InitializeAsync(context);
+            await manager.InitializeAsync(appContext);
             await eventHub.NotifySubscribersAsync(new AppStartedEvent { AppInfo = new RuntimeAppInfo { AppId = "hi", AppInstanceId = "there" } }, new Context(compositionContext));
             await Task.Delay(TimeSpan.FromMilliseconds(400));
-            await manager.FinalizeAsync(context);
+            await manager.FinalizeAsync(appContext);
 
             // ensure that the heartbeat is sent
             messageBroker

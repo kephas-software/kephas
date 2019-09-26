@@ -183,10 +183,13 @@
   <data name="DefaultMessageBroker_ErrorsOccurredWhileSending_Exception" xml:space="preserve">
     <value>Errors occurred while sending message '{0}'.</value>
   </data>
-  <data name="MessageRouterBase_ErrorsOccurredDuringDispatching_Exception" xml:space="preserve">
-    <value>Errors occurred during dispatching.</value>
+  <data name="MessageRouterBase_ErrorsOccurredWhileDispatching_Exception" xml:space="preserve">
+    <value>Errors occurred while asynchronously dispatching '{0}'.</value>
   </data>
   <data name="MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception" xml:space="preserve">
     <value>Errors occurred while routing message '{0}'.</value>
+  </data>
+  <data name="MessageRouterBase_ErrorsOccurredWhileProcessingOneWay_Exception" xml:space="preserve">
+    <value>Errors occurred while asynchronously processing one way message '{0}'.</value>
   </data>
 </root>

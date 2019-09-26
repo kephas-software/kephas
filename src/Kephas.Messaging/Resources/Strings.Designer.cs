@@ -241,11 +241,20 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors occurred during dispatching..
+        ///   Looks up a localized string similar to Errors occurred while asynchronously dispatching &apos;{0}&apos;..
         /// </summary>
-        public static string MessageRouterBase_ErrorsOccurredDuringDispatching_Exception {
+        public static string MessageRouterBase_ErrorsOccurredWhileDispatching_Exception {
             get {
-                return ResourceManager.GetString("MessageRouterBase_ErrorsOccurredDuringDispatching_Exception", resourceCulture);
+                return ResourceManager.GetString("MessageRouterBase_ErrorsOccurredWhileDispatching_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors occurred while asynchronously processing one way message &apos;{0}&apos;..
+        /// </summary>
+        public static string MessageRouterBase_ErrorsOccurredWhileProcessingOneWay_Exception {
+            get {
+                return ResourceManager.GetString("MessageRouterBase_ErrorsOccurredWhileProcessingOneWay_Exception", resourceCulture);
             }
         }
         
