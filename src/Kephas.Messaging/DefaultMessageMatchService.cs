@@ -15,7 +15,6 @@ namespace Kephas.Messaging
     using Kephas.Data;
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.Distributed;
-    using Kephas.Messaging.Messages;
     using Kephas.Services;
 
     /// <summary>
@@ -33,7 +32,7 @@ namespace Kephas.Messaging
         /// </returns>
         public virtual Type GetMessageType(object message)
         {
-            return message is IMessageAdapter messageAdapter ? messageAdapter.GetMessage().GetType() : message.GetType();
+            return message.GetContent().GetType();
         }
 
         /// <summary>
@@ -52,9 +51,7 @@ namespace Kephas.Messaging
                 return null;
             }
 
-            var expandoMessage =
-                (message is IMessageAdapter messageAdapter ? messageAdapter.GetMessage() : message)
-                .ToExpando();
+            var expandoMessage = message.GetContent().ToExpando();
             var messageId = expandoMessage[nameof(IIdentifiable.Id)]
                             ?? expandoMessage[nameof(MessageHandlerMetadata.MessageId)];
             return messageId;
@@ -64,18 +61,23 @@ namespace Kephas.Messaging
         /// Checks whether the message type and message ID matches the provided criteria.
         /// </summary>
         /// <param name="messageMatch">Provides the matching criteria.</param>
+        /// <param name="envelopeType">Type of the envelope.</param>
         /// <param name="messageType">Type of the message.</param>
         /// <param name="messageId">Identifier for the message.</param>
         /// <returns>
         /// True if the message type and ID matches the criteria, false if not.
         /// </returns>
-        public virtual bool IsMatch(IMessageMatch messageMatch, Type messageType, object messageId)
+        public virtual bool IsMatch(IMessageMatch messageMatch, Type envelopeType, Type messageType, object messageId)
         {
             var m = messageMatch;
-            return ((m.MessageTypeMatching == MessageTypeMatching.Type && m.MessageType == messageType)
-                    || (m.MessageTypeMatching == MessageTypeMatching.TypeOrHierarchy && (m.MessageType?.IsAssignableFrom(messageType) ?? true)))
+            return (m.MessageType == null
+                    || (m.MessageTypeMatching == MessageTypeMatching.Type && m.MessageType == messageType)
+                    || (m.MessageTypeMatching == MessageTypeMatching.TypeOrHierarchy && m.MessageType.IsAssignableFrom(messageType)))
                    && ((m.MessageIdMatching == MessageIdMatching.Id && object.Equals(m.MessageId, messageId))
-                       || m.MessageIdMatching == MessageIdMatching.All);
+                    || m.MessageIdMatching == MessageIdMatching.All)
+                   && (m.EnvelopeType == null
+                    || (m.EnvelopeTypeMatching == MessageTypeMatching.Type && m.EnvelopeType == envelopeType)
+                    || (m.EnvelopeTypeMatching == MessageTypeMatching.TypeOrHierarchy && m.EnvelopeType.IsAssignableFrom(envelopeType)));
         }
     }
 }

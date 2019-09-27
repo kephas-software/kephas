@@ -37,6 +37,8 @@ namespace Kephas.Messaging.Composition
             this.MessageTypeMatching = metadata.TryGetValue(nameof(this.MessageTypeMatching)) as MessageTypeMatching? ?? default;
             this.MessageId = metadata.TryGetValue(nameof(this.MessageId));
             this.MessageIdMatching = metadata.TryGetValue(nameof(this.MessageIdMatching)) as MessageIdMatching? ?? default;
+            this.EnvelopeType = (Type)metadata.TryGetValue(nameof(this.EnvelopeType));
+            this.EnvelopeTypeMatching = metadata.TryGetValue(nameof(this.EnvelopeTypeMatching)) as MessageTypeMatching? ?? default;
 
             this.MessageMatch = new MessageMatch
                                     {
@@ -44,25 +46,31 @@ namespace Kephas.Messaging.Composition
                                         MessageTypeMatching = this.MessageTypeMatching,
                                         MessageId = this.MessageId,
                                         MessageIdMatching = this.MessageIdMatching,
+                                        EnvelopeType = this.EnvelopeType,
+                                        EnvelopeTypeMatching = this.EnvelopeTypeMatching,
                                     };
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageHandlerMetadata"/> class.
         /// </summary>
-        /// <param name="messageType">Type of the message.</param>
-        /// <param name="messageTypeMatching">The message type matching (optional).</param>
-        /// <param name="messageId">The ID of the message (optional).</param>
-        /// <param name="messageIdMatching">The message ID matching (optional).</param>
-        /// <param name="processingPriority">The processing priority (optional).</param>
-        /// <param name="overridePriority">The override priority (optional).</param>
-        public MessageHandlerMetadata(Type messageType, MessageTypeMatching messageTypeMatching = default, object messageId = null, MessageIdMatching messageIdMatching = default, int processingPriority = 0, int overridePriority = 0)
+        /// <param name="messageType">Optional. Type of the message.</param>
+        /// <param name="messageTypeMatching">Optional. The message type matching.</param>
+        /// <param name="messageId">Optional. The ID of the message.</param>
+        /// <param name="messageIdMatching">Optional. The message ID matching.</param>
+        /// <param name="envelopeType">Optional. Type of the envelope.</param>
+        /// <param name="envelopeTypeMatching">Optional. The envelope type matching.</param>
+        /// <param name="processingPriority">Optional. The processing priority.</param>
+        /// <param name="overridePriority">Optional. The override priority.</param>
+        public MessageHandlerMetadata(Type messageType = null, MessageTypeMatching messageTypeMatching = default, object messageId = null, MessageIdMatching messageIdMatching = default, Type envelopeType = null, MessageTypeMatching envelopeTypeMatching = default, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.MessageType = messageType;
             this.MessageTypeMatching = messageTypeMatching;
             this.MessageId = messageId;
             this.MessageIdMatching = messageIdMatching;
+            this.EnvelopeType = envelopeType;
+            this.EnvelopeTypeMatching = envelopeTypeMatching;
 
             this.MessageMatch = new MessageMatch
                                     {
@@ -70,6 +78,8 @@ namespace Kephas.Messaging.Composition
                                         MessageTypeMatching = this.MessageTypeMatching,
                                         MessageId = this.MessageId,
                                         MessageIdMatching = this.MessageIdMatching,
+                                        EnvelopeType = this.EnvelopeType,
+                                        EnvelopeTypeMatching = this.EnvelopeTypeMatching,
                                     };
         }
 
@@ -104,6 +114,22 @@ namespace Kephas.Messaging.Composition
         /// The message ID matching.
         /// </value>
         public MessageIdMatching MessageIdMatching { get; }
+
+        /// <summary>
+        /// Gets the type of the envelope.
+        /// </summary>
+        /// <value>
+        /// The type of the envelope.
+        /// </value>
+        public Type EnvelopeType { get; }
+
+        /// <summary>
+        /// Gets the envelope type matching.
+        /// </summary>
+        /// <value>
+        /// The envelope type matching.
+        /// </value>
+        public MessageTypeMatching EnvelopeTypeMatching { get; }
 
         /// <summary>
         /// Gets the message match.

@@ -26,8 +26,8 @@ namespace Kephas.Messaging.Tests
         public void GetMessageType_adapter()
         {
             var matchService = new DefaultMessageMatchService();
-            var message = Substitute.For<IMessageAdapter>();
-            message.GetMessage().Returns("gigi");
+            var message = Substitute.For<IMessageEnvelope>();
+            message.GetContent().Returns("gigi");
 
             Assert.AreSame(typeof(string), matchService.GetMessageType(message));
         }
@@ -46,9 +46,9 @@ namespace Kephas.Messaging.Tests
         {
             var matchService = new DefaultMessageMatchService();
             var match = new MessageMatch { MessageId = "123", MessageIdMatching = MessageIdMatching.Id };
-            Assert.IsTrue(matchService.IsMatch(match, null, "123"));
-            Assert.IsFalse(matchService.IsMatch(match, null, 123));
-            Assert.IsFalse(matchService.IsMatch(match, null, "1234"));
+            Assert.IsTrue(matchService.IsMatch(match, null, null, "123"));
+            Assert.IsFalse(matchService.IsMatch(match, null, null, 123));
+            Assert.IsFalse(matchService.IsMatch(match, null, null, "1234"));
         }
 
         [Test]
@@ -56,9 +56,9 @@ namespace Kephas.Messaging.Tests
         {
             var matchService = new DefaultMessageMatchService();
             var match = new MessageMatch { MessageId = "123", MessageIdMatching = MessageIdMatching.All };
-            Assert.IsTrue(matchService.IsMatch(match, null, "123"));
-            Assert.IsTrue(matchService.IsMatch(match, null, 123));
-            Assert.IsTrue(matchService.IsMatch(match, null, "1234"));
+            Assert.IsTrue(matchService.IsMatch(match, null, null, "123"));
+            Assert.IsTrue(matchService.IsMatch(match, null, null, 123));
+            Assert.IsTrue(matchService.IsMatch(match, null, null, "1234"));
         }
 
         [Test]
@@ -66,9 +66,9 @@ namespace Kephas.Messaging.Tests
         {
             var matchService = new DefaultMessageMatchService();
             var match = new MessageMatch { MessageType = typeof(IMessage), MessageTypeMatching = MessageTypeMatching.Type };
-            Assert.IsTrue(matchService.IsMatch(match, typeof(IMessage), null));
-            Assert.IsFalse(matchService.IsMatch(match, typeof(IEvent), null));  // inherited
-            Assert.IsFalse(matchService.IsMatch(match, typeof(string), null));
+            Assert.IsTrue(matchService.IsMatch(match, null, typeof(IMessage), null));
+            Assert.IsFalse(matchService.IsMatch(match, null, typeof(IEvent), null));  // inherited
+            Assert.IsFalse(matchService.IsMatch(match, null, typeof(string), null));
         }
 
         [Test]
@@ -76,9 +76,29 @@ namespace Kephas.Messaging.Tests
         {
             var matchService = new DefaultMessageMatchService();
             var match = new MessageMatch { MessageType = typeof(IMessage), MessageTypeMatching = MessageTypeMatching.TypeOrHierarchy };
-            Assert.IsTrue(matchService.IsMatch(match, typeof(IMessage), null));
-            Assert.IsTrue(matchService.IsMatch(match, typeof(IEvent), null));  // inherited
-            Assert.IsFalse(matchService.IsMatch(match, typeof(string), null));
+            Assert.IsTrue(matchService.IsMatch(match, null, typeof(IMessage), null));
+            Assert.IsTrue(matchService.IsMatch(match, null, typeof(IEvent), null));  // inherited
+            Assert.IsFalse(matchService.IsMatch(match, null, typeof(string), null));
+        }
+
+        [Test]
+        public void IsMatch_envelope_type_exact()
+        {
+            var matchService = new DefaultMessageMatchService();
+            var match = new MessageMatch { EnvelopeType = typeof(int), EnvelopeTypeMatching = MessageTypeMatching.Type };
+            Assert.IsFalse(matchService.IsMatch(match, typeof(IMessage), null, null));
+            Assert.IsFalse(matchService.IsMatch(match, typeof(IEvent), null, null));  // inherited
+            Assert.IsTrue(matchService.IsMatch(match, typeof(int), null, null));
+        }
+
+        [Test]
+        public void IsMatch_envelope_type_hierarchy()
+        {
+            var matchService = new DefaultMessageMatchService();
+            var match = new MessageMatch { EnvelopeType = typeof(IMessage), EnvelopeTypeMatching = MessageTypeMatching.TypeOrHierarchy };
+            Assert.IsTrue(matchService.IsMatch(match, typeof(IMessage), null, null));
+            Assert.IsTrue(matchService.IsMatch(match, typeof(PingMessage), null, null));  // inherited
+            Assert.IsFalse(matchService.IsMatch(match, typeof(string), null, null));
         }
 
         [Test]
@@ -106,8 +126,8 @@ namespace Kephas.Messaging.Tests
         {
             var message = Substitute.For<IMessage, IIdentifiable>();
             ((IIdentifiable)message).Id.Returns("abcd");
-            var adapter = Substitute.For<IMessageAdapter>();
-            adapter.GetMessage().Returns(message);
+            var adapter = Substitute.For<IMessageEnvelope>();
+            adapter.GetContent().Returns(message);
             var matchService = new DefaultMessageMatchService();
             var messageId = matchService.GetMessageId(adapter);
             Assert.AreEqual("abcd", (string)messageId);

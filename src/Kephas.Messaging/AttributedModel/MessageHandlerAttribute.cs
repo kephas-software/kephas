@@ -72,7 +72,7 @@ namespace Kephas.Messaging.AttributedModel
         /// <value>
         /// The message ID.
         /// </value>
-        [MetadataValue(nameof(MessageId))]
+        [MetadataValue(nameof(MessageHandlerMetadata.MessageId))]
         public object MessageId { get; set; }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Kephas.Messaging.AttributedModel
         /// <value>
         /// The message type matching.
         /// </value>
-        [MetadataValue(nameof(MessageTypeMatching))]
+        [MetadataValue(nameof(MessageHandlerMetadata.MessageTypeMatching))]
         public MessageTypeMatching MessageTypeMatching { get; set; }
 
         /// <summary>
@@ -90,7 +90,25 @@ namespace Kephas.Messaging.AttributedModel
         /// <value>
         /// The message ID matching.
         /// </value>
-        [MetadataValue(nameof(MessageIdMatching))]
+        [MetadataValue(nameof(MessageHandlerMetadata.MessageIdMatching))]
         public MessageIdMatching MessageIdMatching { get; set; }
+
+        /// <summary>
+        /// Gets or sets the envelope type.
+        /// </summary>
+        /// <value>
+        /// The envelope type.
+        /// </value>
+        [MetadataValue(nameof(MessageHandlerMetadata.EnvelopeType))]
+        public Type EnvelopeType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the envelope type matching.
+        /// </summary>
+        /// <value>
+        /// The envelope type matching.
+        /// </value>
+        [MetadataValue(nameof(MessageHandlerMetadata.EnvelopeTypeMatching))]
+        public MessageTypeMatching EnvelopeTypeMatching { get; set; }
     }
 }

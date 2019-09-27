@@ -37,6 +37,14 @@ namespace Kephas.Messaging
         object MessageId { get; }
 
         /// <summary>
+        /// Gets the type of the envelope.
+        /// </summary>
+        /// <value>
+        /// The type of the envelope.
+        /// </value>
+        Type EnvelopeType { get; }
+
+        /// <summary>
         /// Gets the message type matching.
         /// </summary>
         /// <value>
@@ -51,5 +59,13 @@ namespace Kephas.Messaging
         /// The message identifier matching.
         /// </value>
         MessageIdMatching MessageIdMatching { get; }
+
+        /// <summary>
+        /// Gets the envelope type matching.
+        /// </summary>
+        /// <value>
+        /// The envelope type matching.
+        /// </value>
+        MessageTypeMatching EnvelopeTypeMatching { get; }
     }
 }
