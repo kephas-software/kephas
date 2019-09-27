@@ -8,7 +8,7 @@
         <RootNamespace>Kephas.Data.MongoDB</RootNamespace>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-        <Version>7.0.0-rc.23</Version>
+        <Version>7.0.0-rc.24</Version>
         <AssemblyVersion>7.0.0.0</AssemblyVersion>
         <FileVersion>7.0.0.0</FileVersion>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
