@@ -18,6 +18,7 @@ namespace Kephas.Messaging
     using Kephas.Logging;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
+    using Kephas.Text;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -55,7 +56,7 @@ namespace Kephas.Messaging
             Requires.NotNull(context, nameof(context));
 
             var response = await this.ProcessAsync(message, context, token).PreserveThreadContext();
-            return response == null ? null : (response as IMessage ?? new MessageAdapter { Message = response });
+            return response == null ? null : (response as IMessage ?? new MessageEnvelope { Message = response });
         }
 
         /// <summary>
@@ -69,14 +70,17 @@ namespace Kephas.Messaging
         /// </returns>
         async Task<IMessage> IMessageHandler.ProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)
         {
-            var typedMessage = message as TMessage ?? (message as IMessageAdapter)?.GetMessage() as TMessage;
+            // typed message handlers register themselves for a message type which may not implement IMessage
+            // therefore the actual processed message is the message content.
+            var content = message.GetContent();
+            var typedMessage = content as TMessage;
             if (typedMessage == null)
             {
-                throw new ArgumentException(string.Format(Strings.MessageHandler_BadMessageType_Exception, typeof(TMessage)), nameof(message));
+                throw new ArgumentException(Strings.MessageHandler_BadMessageType_Exception.FormatWith(typeof(TMessage), content?.GetType()), nameof(message));
             }
 
             var response = await this.ProcessAsync(typedMessage, context, token).PreserveThreadContext();
-            return response == null ? null : (response as IMessage ?? new MessageAdapter { Message = response });
+            return response == null ? null : (response as IMessage ?? new MessageEnvelope { Message = response });
         }
 
         /// <summary>
