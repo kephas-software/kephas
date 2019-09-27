@@ -40,14 +40,13 @@ namespace Kephas.Messaging.Tests.Events
         {
             var container = this.CreateContainer();
             var hub = container.GetExport<IEventHub>();
-            var publisher = container.GetExport<IEventPublisher>();
             var broker = container.GetExport<IMessageBroker>();
             await (broker as IAsyncInitializable).InitializeAsync(new Context(container));
 
             var calls = 0;
             using (var s = hub.Subscribe<PingMessage>(async (e, c, t) => calls++))
             {
-                await publisher.PublishAsync<PingMessage>(new Context(container));
+                await broker.PublishAsync<PingMessage>(new Context(container));
                 await Task.Delay(100);
                 Assert.AreEqual(1, calls);
             }
@@ -62,7 +61,7 @@ namespace Kephas.Messaging.Tests.Events
             var calls = 0;
             using (var s = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => calls++))
             {
-                await hub.NotifySubscribersAsync(
+                await hub.PublishAsync(
                     Substitute.For<IEvent>(),
                     Substitute.For<IContext>(),
                     default);
@@ -80,7 +79,7 @@ namespace Kephas.Messaging.Tests.Events
             var calls = 0;
             using (var s = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => calls++))
             {
-                await hub.NotifySubscribersAsync(
+                await hub.PublishAsync(
                     Substitute.For<IEvent>(),
                     Substitute.For<IContext>(),
                     default);
@@ -100,7 +99,7 @@ namespace Kephas.Messaging.Tests.Events
             using (var s1 = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => s1calls++))
             using (var s2 = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => s2calls++))
             {
-                await hub.NotifySubscribersAsync(
+                await hub.PublishAsync(
                     Substitute.For<IEvent>(),
                     Substitute.For<IContext>(),
                     default);

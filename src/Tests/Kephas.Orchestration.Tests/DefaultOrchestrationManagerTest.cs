@@ -70,7 +70,7 @@ namespace Kephas.Orchestration.Tests
         [Test]
         public async Task InitializeAsync_Heartbeat()
         {
-            var eventPublisher = Substitute.For<IEventPublisher>();
+            var messageBroker = Substitute.For<IMessageBroker>();
             var appManifest = Substitute.For<IAppManifest>();
             appManifest.AppId.Returns("hi");
             appManifest.AppInstanceId.Returns("there");
@@ -82,19 +82,22 @@ namespace Kephas.Orchestration.Tests
             var compositionContext = this.CreateSubstituteContainer();
             var appContext = new Context(compositionContext);
 
-            var manager = new DefaultOrchestrationManager(appManifest, appRuntime, eventHub, eventPublisher);
+            var manager = new DefaultOrchestrationManager(appManifest, appRuntime, eventHub, messageBroker);
             manager.TimerDueTime = TimeSpan.FromMilliseconds(100);
             manager.TimerPeriod = TimeSpan.FromMilliseconds(100);
 
             await manager.InitializeAsync(appContext);
-            await eventHub.NotifySubscribersAsync(new AppStartedEvent { AppInfo = new RuntimeAppInfo { AppId = "hi", AppInstanceId = "there" } }, new Context(compositionContext));
+            await eventHub.PublishAsync(new AppStartedEvent { AppInfo = new RuntimeAppInfo { AppId = "hi", AppInstanceId = "there" } }, new Context(compositionContext));
             await Task.Delay(TimeSpan.FromMilliseconds(400));
             await manager.FinalizeAsync(appContext);
 
             // ensure that the heartbeat is sent
-            eventPublisher
+            messageBroker
                 .Received()
-                .PublishAsync(Arg.Is<AppHeartbeatEvent>(e => e.AppInfo.AppId == "hi" && e.AppInfo.AppInstanceId == "there"), Arg.Any<IContext>(), Arg.Any<CancellationToken>());
+                .DispatchAsync(
+                    Arg.Is<IBrokeredMessage>(e => e.GetContent() is AppHeartbeatEvent),
+                    Arg.Any<IContext>(),
+                    Arg.Any<CancellationToken>());
         }
 
         private BrokeredMessageBuilder CreateMessageBuilder(IContext context)
@@ -120,7 +123,7 @@ namespace Kephas.Orchestration.Tests
                         .Do(_ => subscriptions.Remove(id));
                     return subscription;
                 });
-            eventHub.NotifySubscribersAsync(Arg.Any<object>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
+            eventHub.PublishAsync(Arg.Any<object>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
                 .Returns(async ci =>
                 {
                     var tasks = subscriptions.Values

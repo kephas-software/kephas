@@ -48,22 +48,22 @@ namespace Kephas.Orchestration
         /// <param name="appManifest">The application manifest.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="eventPublisher">The event publisher.</param>
+        /// <param name="messageBroker">The message broker.</param>
         public DefaultOrchestrationManager(
             IAppManifest appManifest,
             IAppRuntime appRuntime,
             IEventHub eventHub,
-            IEventPublisher eventPublisher)
+            IMessageBroker messageBroker)
         {
             Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(eventHub, nameof(eventHub));
-            Requires.NotNull(eventPublisher, nameof(eventPublisher));
+            Requires.NotNull(messageBroker, nameof(messageBroker));
 
             this.AppManifest = appManifest;
             this.AppRuntime = appRuntime;
             this.EventHub = eventHub;
-            this.EventPublisher = eventPublisher;
+            this.MessageBroker = messageBroker;
         }
 
         /// <summary>
@@ -99,12 +99,12 @@ namespace Kephas.Orchestration
         public IEventHub EventHub { get; }
 
         /// <summary>
-        /// Gets the event publisher.
+        /// Gets the message broker.
         /// </summary>
         /// <value>
-        /// The event publisher.
+        /// The message broker.
         /// </value>
-        public IEventPublisher EventPublisher { get; }
+        public IMessageBroker MessageBroker { get; }
 
         /// <summary>
         /// Gets or sets the timer due time.
@@ -244,7 +244,7 @@ namespace Kephas.Orchestration
             try
             {
                 var heartbeatEvent = this.CreateAppHeartbeatEvent();
-                await this.EventPublisher.PublishAsync(heartbeatEvent, (IContext)state).PreserveThreadContext();
+                await this.MessageBroker.PublishAsync(heartbeatEvent, (IContext)state).PreserveThreadContext();
             }
             catch (Exception ex)
             {

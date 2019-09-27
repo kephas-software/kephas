@@ -48,7 +48,7 @@ namespace Kephas.Orchestration.Application
         /// </returns>
         public override async Task AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
-            await this.eventHub.NotifySubscribersAsync(new FeatureStartedEvent { Feature = serviceMetadata.FeatureInfo }, appContext, cancellationToken)
+            await this.eventHub.PublishAsync(new FeatureStartedEvent { Feature = serviceMetadata.FeatureInfo }, appContext, cancellationToken)
                 .PreserveThreadContext();
         }
 
@@ -63,7 +63,7 @@ namespace Kephas.Orchestration.Application
         /// </returns>
         public override async Task AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
-            await this.eventHub.NotifySubscribersAsync(new FeatureStoppedEvent { Feature = serviceMetadata.FeatureInfo }, appContext, cancellationToken)
+            await this.eventHub.PublishAsync(new FeatureStoppedEvent { Feature = serviceMetadata.FeatureInfo }, appContext, cancellationToken)
                 .PreserveThreadContext();
         }
     }

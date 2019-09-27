@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Events
     public interface IEventHub
     {
         /// <summary>
-        /// Asynchronously notifies the event to its subscribers.
+        /// Publishes the event asynchronously to its subscribers.
         /// </summary>
         /// <param name="event">The event.</param>
         /// <param name="context">The context.</param>
@@ -33,7 +33,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task NotifySubscribersAsync(object @event, IContext context, CancellationToken cancellationToken = default);
+        Task PublishAsync(object @event, IContext context, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Subscribes to the event(s) matching the criteria.

@@ -13,9 +13,13 @@ namespace Kephas.Messaging.Distributed
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
+    using Kephas.Messaging.Events;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Extension methods for <see cref="IMessageBroker"/>.
@@ -136,6 +140,103 @@ namespace Kephas.Messaging.Distributed
                 .BrokeredMessage;
 
             return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Publishes the provided event.
+        /// </summary>
+        /// <typeparam name="TEvent">Type of the event.</typeparam>
+        /// <param name="messageBroker">The message broker.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static Task PublishAsync<TEvent>(
+            this IMessageBroker messageBroker,
+            IContext context,
+            CancellationToken cancellationToken = default)
+            where TEvent : class, new()
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(context, nameof(context));
+
+            return messageBroker.PublishAsync(new TEvent(), context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Publishes the provided event.
+        /// </summary>
+        /// <param name="messageBroker">The message broker.</param>
+        /// <param name="event">The event.</param>
+        /// <param name="context">The context.</param>
+        public static void Publish(this IMessageBroker messageBroker, object @event, IContext context)
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(context, nameof(context));
+
+            messageBroker.PublishAsync(@event, context).WaitNonLocking();
+        }
+
+        /// <summary>
+        /// Publishes the provided event.
+        /// </summary>
+        /// <typeparam name="TEvent">Type of the event.</typeparam>
+        /// <param name="messageBroker">The message broker.</param>
+        /// <param name="context">The context.</param>
+        public static void Publish<TEvent>(this IMessageBroker messageBroker, IContext context)
+            where TEvent : class, new()
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(context, nameof(context));
+
+            var @event = new TEvent();
+            messageBroker.PublishAsync(@event, context).WaitNonLocking();
+        }
+
+        /// <summary>
+        /// Asynchronously publishes the event with the provided ID and arguments.
+        /// </summary>
+        /// <param name="messageBroker">The message broker.</param>
+        /// <param name="eventId">Identifier for the event.</param>
+        /// <param name="eventArgs">The application event arguments.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public static Task PublishAsync(
+            this IMessageBroker messageBroker,
+            object eventId,
+            IExpando eventArgs,
+            IContext context,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(context, nameof(context));
+
+            var appEvent = new IdentifiableEvent { Id = eventId, EventArgs = eventArgs };
+            return messageBroker.PublishAsync(appEvent, context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Publishes the event with the provided ID and arguments.
+        /// </summary>
+        /// <param name="messageBroker">The message broker.</param>
+        /// <param name="eventId">Identifier for the application event.</param>
+        /// <param name="eventArgs">The application event arguments.</param>
+        /// <param name="context">Optional. the context.</param>
+        public static void Publish(
+            this IMessageBroker messageBroker,
+            object eventId,
+            IExpando eventArgs,
+            IContext context)
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(context, nameof(context));
+
+            var @event = new IdentifiableEvent { Id = eventId, EventArgs = eventArgs };
+            messageBroker.PublishAsync(@event, context).WaitNonLocking();
         }
 
         /// <summary>

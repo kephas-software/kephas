@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Events
             handlerRegistry.RegisterHandler(
                 new FuncMessageHandler<object>(async (e, ctx, token) =>
                 {
-                    await this.NotifySubscribersAsync(e, ctx, token).PreserveThreadContext();
+                    await this.PublishAsync(e, ctx, token).PreserveThreadContext();
                     return null;
                 }),
                 new MessageHandlerMetadata(envelopeType: typeof(IEvent), envelopeTypeMatching: MessageTypeMatching.TypeOrHierarchy, messageIdMatching: MessageIdMatching.All));
@@ -92,7 +92,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public virtual async Task NotifySubscribersAsync(object @event, IContext context, CancellationToken cancellationToken = default)
+        public virtual async Task PublishAsync(object @event, IContext context, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
 
