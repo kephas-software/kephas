@@ -14,11 +14,12 @@ namespace Kephas.Messaging.Distributed
     using System.Collections.Generic;
 
     using Kephas.Data;
+    using Kephas.Messaging.Messages;
 
     /// <summary>
     /// Contract interface for brokered messages.
     /// </summary>
-    public interface IBrokeredMessage : IIdentifiable, IMessage
+    public interface IBrokeredMessage : IIdentifiable, IMessageEnvelope
     {
         /// <summary>
         /// Gets the identifier.

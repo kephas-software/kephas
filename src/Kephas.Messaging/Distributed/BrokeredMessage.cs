@@ -15,6 +15,7 @@ namespace Kephas.Messaging.Distributed
 
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Messages;
 
     /// <summary>
     /// A message envelope.
@@ -174,5 +175,13 @@ namespace Kephas.Messaging.Distributed
                 Timeout = this.Timeout,
             };
         }
+
+        /// <summary>
+        /// Gets the content message.
+        /// </summary>
+        /// <returns>
+        /// The content message.
+        /// </returns>
+        object IMessageEnvelope.GetContent() => this.Content;
     }
 }
