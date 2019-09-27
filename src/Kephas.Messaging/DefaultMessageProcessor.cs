@@ -218,11 +218,11 @@ namespace Kephas.Messaging
             var messageId = this.messageMatchService.GetMessageId(message);
 
             var orderedBehaviorsEntry = this.behaviorFactoriesDictionary.GetOrAdd(
-                $"{messageType.FullName}/{messageId}",
+                $"{message.GetType()}/{messageType}/{messageId}",
                 _ =>
                     {
                         var behaviors = this.behaviorFactories.Where(
-                                f => this.messageMatchService.IsMatch(f.Metadata.MessageMatch, messageType, messageId))
+                                f => this.messageMatchService.IsMatch(f.Metadata.MessageMatch, message.GetType(), messageType, messageId))
                             .Select(f => f.CreateExportedValue())
                             .ToList();
 
