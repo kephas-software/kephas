@@ -16,6 +16,7 @@ namespace Kephas.Messaging.Application
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Distributed;
+    using Kephas.Messaging.Events;
     using Kephas.Messaging.Runtime;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -28,17 +29,21 @@ namespace Kephas.Messaging.Application
     public class MessagingApplicationLifecycleBehavior : AppLifecycleBehaviorBase
     {
         private readonly IMessageBroker messageBroker;
+        private readonly IEventHub eventHub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingApplicationLifecycleBehavior"/>
         /// class.
         /// </summary>
         /// <param name="messageBroker">The message broker.</param>
-        public MessagingApplicationLifecycleBehavior(IMessageBroker messageBroker)
+        /// <param name="eventHub">The event hub.</param>
+        public MessagingApplicationLifecycleBehavior(IMessageBroker messageBroker, IEventHub eventHub)
         {
             Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(eventHub, nameof(eventHub));
 
             this.messageBroker = messageBroker;
+            this.eventHub = eventHub;
         }
 
         /// <summary>
@@ -60,6 +65,11 @@ namespace Kephas.Messaging.Application
             {
                 await initMessageBroker.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
             }
+
+            if (this.eventHub is IAsyncInitializable initEventHub)
+            {
+                await initEventHub.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
+            }
         }
 
         /// <summary>
@@ -75,6 +85,11 @@ namespace Kephas.Messaging.Application
             if (this.messageBroker is IAsyncFinalizable finMessageBroker)
             {
                 await finMessageBroker.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+            }
+
+            if (this.eventHub is IAsyncFinalizable finEventHub)
+            {
+                await finEventHub.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
             }
         }
     }
