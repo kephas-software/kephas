@@ -29,8 +29,8 @@ namespace Kephas.Messaging
     public class DefaultMessageHandlerRegistry : IMessageHandlerRegistry
     {
         private readonly IList<IMessageHandlerSelector> handlerSelectors;
-        private readonly ConcurrentDictionary<string, (Type messageType, object messageId, Func<IEnumerable<IMessageHandler>> factory)> handlerFactories
-            = new ConcurrentDictionary<string, (Type messageType, object messageId, Func<IEnumerable<IMessageHandler>> factory)>();
+        private readonly ConcurrentDictionary<string, (Type envelopeType, Type messageType, object messageId, Func<IEnumerable<IMessageHandler>> factory)> handlerFactories
+            = new ConcurrentDictionary<string, (Type envelopeType, Type messageType, object messageId, Func<IEnumerable<IMessageHandler>> factory)>();
 
         private readonly ConcurrentBag<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerRegistry;
 
@@ -47,6 +47,7 @@ namespace Kephas.Messaging
             IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories,
             IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
         {
+            Requires.NotNull(messageMatchService, nameof(messageMatchService));
             Requires.NotNull(handlerSelectorFactories, nameof(handlerSelectorFactories));
             Requires.NotNull(handlerFactories, nameof(handlerFactories));
 
@@ -72,7 +73,7 @@ namespace Kephas.Messaging
             Requires.NotNull(metadata, nameof(metadata));
 
             this.handlerRegistry.Add(new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler, metadata));
-            this.ResetFactoryCache(metadata);
+            this.ResetFactoryCache(metadata.MessageMatch);
 
             return this;
         }
@@ -87,43 +88,29 @@ namespace Kephas.Messaging
             var envelopeType = message.GetType();
             var messageType = this.messageMatchService.GetMessageType(message);
             var messageId = this.messageMatchService.GetMessageId(message);
-            var (_, _, messageHandlersFactory) = this.handlerFactories.GetOrAdd($"{envelopeType}/{messageType.FullName}/{messageId}", _ =>
+            var (_, _, _, messageHandlersFactory) = this.handlerFactories.GetOrAdd($"{envelopeType}/{messageType}/{messageId}", _ =>
             {
                 var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(envelopeType, messageType, messageId));
                 if (handlerSelector == null)
                 {
-                    return (messageType, messageId, () => null);
+                    return (envelopeType, messageType, messageId, () => null);
                 }
 
-                return (messageType, messageId, handlerSelector.GetHandlersFactory(this.handlerRegistry, envelopeType, messageType, messageId));
+                return (envelopeType, messageType, messageId, handlerSelector.GetHandlersFactory(this.handlerRegistry, envelopeType, messageType, messageId));
             });
 
             var handlers = messageHandlersFactory();
             return handlers ?? new IMessageHandler[0];
         }
 
-        private void ResetFactoryCache(MessageHandlerMetadata metadata)
+        private void ResetFactoryCache(IMessageMatch messageMatch)
         {
-            IEnumerable<KeyValuePair<string, (Type messageType, object messageId, Func<IEnumerable<IMessageHandler>> factory)>> factoriesToDelete = this.handlerFactories;
-            if (metadata.MessageIdMatching == MessageIdMatching.Id)
-            {
-                factoriesToDelete = factoriesToDelete.Where(t => t.Value.messageId == metadata.MessageId);
-            }
+            // remove all factories which match the metadata match.
+            var factoriesToDelete = this.handlerFactories
+                .Where(f => this.messageMatchService.IsMatch(messageMatch, f.Value.envelopeType, f.Value.messageType, f.Value.messageId))
+                .ToList();
 
-            if (metadata.MessageType == null)
-            {
-
-            }
-            else if (metadata.MessageTypeMatching == MessageTypeMatching.Type)
-            {
-                factoriesToDelete = factoriesToDelete.Where(t => t.Value.messageType == metadata.MessageType);
-            }
-            else if (metadata.MessageTypeMatching == MessageTypeMatching.TypeOrHierarchy)
-            {
-                factoriesToDelete = factoriesToDelete.Where(t => metadata.MessageType.IsAssignableFrom(t.Value.messageType));
-            }
-
-            foreach (var factoryToDelete in factoriesToDelete.ToList())
+            foreach (var factoryToDelete in factoriesToDelete)
             {
                 this.handlerFactories.TryRemove(factoryToDelete.Key, out _);
             }
