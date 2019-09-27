@@ -94,7 +94,7 @@ namespace Kephas.Messaging.HandlerSelectors
                 object messageId)
         {
             var orderedFactories = handlerFactories
-                .Where(f => this.MessageMatchService.IsMatch(f.Metadata.MessageMatch, messageType, messageId))
+                .Where(f => this.MessageMatchService.IsMatch(f.Metadata.MessageMatch, envelopeType, messageType, messageId))
                 .Order()
                 .ToList();
             return orderedFactories;

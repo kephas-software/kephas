@@ -232,7 +232,7 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The message to process must be of type &apos;{0}&apos;..
+        ///   Looks up a localized string similar to The message to process must be of type &apos;{0}&apos;, received &apos;{1}&apos;..
         /// </summary>
         public static string MessageHandler_BadMessageType_Exception {
             get {

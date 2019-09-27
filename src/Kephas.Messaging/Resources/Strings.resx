@@ -124,7 +124,7 @@
     <value>Could not find a handler for the '{0}' message type.</value>
   </data>
   <data name="MessageHandler_BadMessageType_Exception" xml:space="preserve">
-    <value>The message to process must be of type '{0}'.</value>
+    <value>The message to process must be of type '{0}', received '{1}'.</value>
   </data>
   <data name="MessageBrokerBase_MissingReplyToMessageId_Exception" xml:space="preserve">
     <value>Received a reply message without the {0} being set. Content: {1}.</value>

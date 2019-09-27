@@ -53,7 +53,7 @@ namespace Kephas.Messaging.Distributed.Events
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(context, nameof(context));
 
-            return this.messageBroker.PublishAsync(@event, context, cancellationToken);
+            return this.messageBroker.PublishAsync(@event as IEvent ?? new EventEnvelope { Event = @event }, context, cancellationToken);
         }
     }
 }
