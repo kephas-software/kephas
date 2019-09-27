@@ -18,6 +18,8 @@ namespace Kephas.Messaging.Events
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Messaging.Composition;
+    using Kephas.Messaging.Messages;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -25,64 +27,29 @@ namespace Kephas.Messaging.Events
     /// A default event hub.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultEventHub : Loggable, IEventHub
+    public class DefaultEventHub : Loggable, IEventHub, IAsyncFinalizable
     {
-        /// <summary>
-        /// The message match service.
-        /// </summary>
         private readonly IMessageMatchService messageMatchService;
-
-        /// <summary>
-        /// The subscriptions.
-        /// </summary>
         private readonly IList<EventSubscription> subscriptions = new List<EventSubscription>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultEventHub"/> class.
         /// </summary>
         /// <param name="messageMatchService">The message match service.</param>
-        public DefaultEventHub(IMessageMatchService messageMatchService)
+        /// <param name="handlerRegistry">The handler registry.</param>
+        public DefaultEventHub(IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry)
         {
             Requires.NotNull(messageMatchService, nameof(messageMatchService));
+            Requires.NotNull(handlerRegistry, nameof(handlerRegistry));
 
             this.messageMatchService = messageMatchService;
-        }
-
-        /// <summary>
-        /// Publishes the event asynchronously to its subscribers.
-        /// </summary>
-        /// <param name="event">The event.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        public async Task NotifySubscribersAsync(object @event, IContext context, CancellationToken cancellationToken = default)
-        {
-            IList<EventSubscription> subscriptionsCopy;
-            lock (this.subscriptions)
-            {
-                var eventType = this.messageMatchService.GetMessageType(@event);
-                var eventId = this.messageMatchService.GetMessageId(@event);
-                subscriptionsCopy = this.subscriptions.Where(s => this.messageMatchService.IsMatch(s.Match, eventType, eventId)).ToList();
-            }
-
-            foreach (var subscription in subscriptionsCopy)
-            {
-                try
+            handlerRegistry.RegisterHandler(
+                new FuncMessageHandler<object>(async (e, ctx, token) =>
                 {
-                    var task = subscription.Callback?.Invoke(@event, context, cancellationToken);
-                    if (task != null)
-                    {
-                        await task.PreserveThreadContext();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // TODO localization
-                    this.Logger.Error(ex, $"An error occurred when invoking subscription for {@event.GetType()}.");
-                }
-            }
+                    await this.NotifySubscribersAsync(e, ctx, token).PreserveThreadContext();
+                    return null;
+                }),
+                new MessageHandlerMetadata(envelopeType: typeof(IEvent), envelopeTypeMatching: MessageTypeMatching.TypeOrHierarchy, messageIdMatching: MessageIdMatching.All));
         }
 
         /// <summary>
@@ -93,7 +60,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        public IEventSubscription Subscribe(IMessageMatch match, Func<object, IContext, CancellationToken, Task> callback)
+        public virtual IEventSubscription Subscribe(IMessageMatch match, Func<object, IContext, CancellationToken, Task> callback)
         {
             Requires.NotNull(match, nameof(match));
             Requires.NotNull(callback, nameof(callback));
@@ -114,6 +81,63 @@ namespace Kephas.Messaging.Events
             }
 
             return subscription;
+        }
+
+        /// <summary>
+        /// Publishes the event asynchronously to its subscribers.
+        /// </summary>
+        /// <param name="event">The event.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public virtual async Task NotifySubscribersAsync(object @event, IContext context, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(@event, nameof(@event));
+
+            IList<EventSubscription> subscriptionsCopy;
+            lock (this.subscriptions)
+            {
+                var eventType = this.messageMatchService.GetMessageType(@event);
+                var eventId = this.messageMatchService.GetMessageId(@event);
+                subscriptionsCopy = this.subscriptions.Where(s => this.messageMatchService.IsMatch(s.Match, @event.GetType(), eventType, eventId)).ToList();
+            }
+
+            foreach (var subscription in subscriptionsCopy)
+            {
+                try
+                {
+                    var task = subscription.Callback?.Invoke(@event.GetContent(), context, cancellationToken);
+                    if (task != null)
+                    {
+                        await task.PreserveThreadContext();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // TODO localization
+                    this.Logger.Error(ex, $"An error occurred when invoking subscription for {@event.GetType()}.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finalizes the service.
+        /// </summary>
+        /// <param name="context">Optional. An optional context for finalization.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        {
+            lock (this.subscriptions)
+            {
+                this.subscriptions.Clear();
+            }
+
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
