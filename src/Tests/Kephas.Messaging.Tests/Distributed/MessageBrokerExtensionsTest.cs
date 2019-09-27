@@ -37,8 +37,8 @@ namespace Kephas.Messaging.Tests.Distributed
 
             await broker.PublishAsync("hello", context);
 
-            Assert.IsInstanceOf<EventAdapter>(content);
-            Assert.AreEqual("hello", ((EventAdapter)content).Event);
+            Assert.IsInstanceOf<EventEnvelope>(content);
+            Assert.AreEqual("hello", ((EventEnvelope)content).Event);
         }
 
         [Test]
@@ -54,8 +54,8 @@ namespace Kephas.Messaging.Tests.Distributed
 
             await broker.ProcessAsync("hello", context);
 
-            Assert.IsInstanceOf<MessageAdapter>(content);
-            Assert.AreEqual("hello", ((MessageAdapter)content).Message);
+            Assert.IsInstanceOf<MessageEnvelope>(content);
+            Assert.AreEqual("hello", ((MessageEnvelope)content).Message);
         }
     }
 }

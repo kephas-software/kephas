@@ -251,7 +251,7 @@ namespace Kephas.Messaging.Distributed
                 ? brokeredMessage.Content
                 : data is IMessage message
                     ? message
-                    : new MessageAdapter { Message = data };
+                    : new MessageEnvelope { Message = data };
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace Kephas.Messaging.Distributed
 
             return data is IEvent @event
                     ? @event
-                    : new EventAdapter { Event = data };
+                    : new EventEnvelope { Event = data };
         }
     }
 }

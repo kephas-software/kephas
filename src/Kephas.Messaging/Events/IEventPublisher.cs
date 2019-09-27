@@ -75,9 +75,9 @@ namespace Kephas.Messaging.Events
             Requires.NotNull(eventPublisher, nameof(eventPublisher));
             Requires.NotNull(context, nameof(context));
 
-            if (eventPublisher is ISyncEventPublisher syncEventEmitter)
+            if (eventPublisher is ISyncEventPublisher syncEventPublisher)
             {
-                syncEventEmitter.Publish(@event, context);
+                syncEventPublisher.Publish(@event, context);
             }
             else
             {
@@ -98,9 +98,9 @@ namespace Kephas.Messaging.Events
             Requires.NotNull(context, nameof(context));
 
             var @event = new TEvent();
-            if (eventPublisher is ISyncEventPublisher syncEventEmitter)
+            if (eventPublisher is ISyncEventPublisher syncEventPublisher)
             {
-                syncEventEmitter.Publish(@event, context);
+                syncEventPublisher.Publish(@event, context);
             }
             else
             {
@@ -150,9 +150,9 @@ namespace Kephas.Messaging.Events
             Requires.NotNull(context, nameof(context));
 
             var @event = new IdentifiableEvent { Id = eventId, EventArgs = eventArgs };
-            if (eventPublisher is ISyncEventPublisher syncEventEmitter)
+            if (eventPublisher is ISyncEventPublisher syncEventPublisher)
             {
-                syncEventEmitter.Publish(@event, context);
+                syncEventPublisher.Publish(@event, context);
             }
             else
             {

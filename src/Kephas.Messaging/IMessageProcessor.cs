@@ -57,7 +57,7 @@ namespace Kephas.Messaging
             Requires.NotNull(@this, nameof(@this));
             Requires.NotNull(message, nameof(message));
 
-            return @this.ProcessAsync(message as IMessage ?? new MessageAdapter { Message = message }, context, token);
+            return @this.ProcessAsync(message as IMessage ?? new MessageEnvelope { Message = message }, context, token);
         }
     }
 }
