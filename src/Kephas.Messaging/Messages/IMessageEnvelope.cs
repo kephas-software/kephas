@@ -1,26 +1,26 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMessageAdapter.cs" company="Kephas Software SRL">
+// <copyright file="IMessageEnvelope.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the message adapter interface.
+//   Implements the message envelope interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Messaging.Messages
 {
     /// <summary>
-    /// Interface for message adapter.
+    /// Interface for message envelopes.
     /// </summary>
-    public interface IMessageAdapter : IMessage
+    public interface IMessageEnvelope : IMessage
     {
         /// <summary>
-        /// Gets the message.
+        /// Gets the contained message.
         /// </summary>
         /// <returns>
-        /// The message.
+        /// The contained message.
         /// </returns>
-        object GetMessage();
+        object GetContent();
     }
 }

@@ -11,13 +11,14 @@
 namespace Kephas.Messaging.Events
 {
     using System;
+
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
 
     /// <summary>
-    /// An event adapter.
+    /// An event envelope.
     /// </summary>
-    public class EventAdapter : IEvent, IMessageAdapter
+    public class EventEnvelope : IEvent, IMessageEnvelope
     {
         /// <summary>
         /// Gets or sets the event.
@@ -34,7 +35,7 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// The message.
         /// </returns>
-        object IMessageAdapter.GetMessage()
+        object IMessageEnvelope.GetContent()
         {
             if (this.Event == null)
             {

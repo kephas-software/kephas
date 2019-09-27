@@ -16,13 +16,13 @@ namespace Kephas.Messaging.Tests.Events
     using NUnit.Framework;
 
     [TestFixture]
-    public class EventAdapterTest
+    public class EventEnvelopeTest
     {
         [Test]
         public void GetMessage_not_set()
         {
-            var adapter = new EventAdapter();
-            Assert.Throws<InvalidOperationException>(() => (adapter as IMessageAdapter).GetMessage());
+            var adapter = new EventEnvelope();
+            Assert.Throws<InvalidOperationException>(() => (adapter as IMessageEnvelope).GetContent());
         }
     }
 }

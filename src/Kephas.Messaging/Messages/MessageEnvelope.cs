@@ -10,13 +10,14 @@
 
 namespace Kephas.Messaging.Messages
 {
-    using Kephas.Messaging.Resources;
     using System;
 
+    using Kephas.Messaging.Resources;
+
     /// <summary>
-    /// A message adapter.
+    /// A message envelope.
     /// </summary>
-    public class MessageAdapter : IMessageAdapter
+    public class MessageEnvelope : IMessageEnvelope
     {
         /// <summary>
         /// Gets or sets the message.
@@ -33,7 +34,7 @@ namespace Kephas.Messaging.Messages
         /// <returns>
         /// The message.
         /// </returns>
-        object IMessageAdapter.GetMessage()
+        object IMessageEnvelope.GetContent()
         {
             if (this.Message == null)
             {
