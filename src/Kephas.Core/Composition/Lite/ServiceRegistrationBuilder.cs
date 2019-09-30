@@ -18,6 +18,7 @@ namespace Kephas.Composition.Lite
     using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
     using Kephas.Services;
+    using Kephas.Text;
 
     /// <summary>
     /// A service registration builder.
@@ -78,7 +79,7 @@ namespace Kephas.Composition.Lite
                     {
                         if (!this.allowMultiple)
                         {
-                            throw new InvalidOperationException(Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception);
+                            throw new InvalidOperationException(Strings.ServiceRegistrationBuilder_InstancingNotProvided_Exception.FormatWith(this.serviceType, nameof(AppServiceContractAttribute.AllowMultiple), true));
                         }
 
                         return new MultiServiceInfo(this.contractType, this.serviceType);

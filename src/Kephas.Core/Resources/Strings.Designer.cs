@@ -674,7 +674,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Either the implementation type, the factory, or the service instance must be provided..
+        ///   Looks up a localized string similar to Either the implementation type, the factory, or the service instance must be provided for &apos;{0}&apos;. Check also whether the {1} value should be set to {2}..
         /// </summary>
         public static string ServiceRegistrationBuilder_InstancingNotProvided_Exception {
             get {

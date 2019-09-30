@@ -337,7 +337,7 @@
     <value>The service type '{0}' must be a super type of the contract type '{1}'.</value>
   </data>
   <data name="ServiceRegistrationBuilder_InstancingNotProvided_Exception" xml:space="preserve">
-    <value>Either the implementation type, the factory, or the service instance must be provided.</value>
+    <value>Either the implementation type, the factory, or the service instance must be provided for '{0}'. Check also whether the {1} value should be set to {2}.</value>
   </data>
   <data name="LiteRegistrationBuilder_InvalidRegistration_Exception" xml:space="preserve">
     <value>One of {0}, {1}, or {2} must be set in service registration.</value>
