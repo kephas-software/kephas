@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Reflection;
-
 namespace Kephas.Data.Tests
 {
     using System.Linq;
@@ -19,6 +17,7 @@ namespace Kephas.Data.Tests
     using Kephas.Composition;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Store;
+    using Kephas.Reflection;
     using Kephas.Services;
 
     using NSubstitute;
@@ -26,8 +25,17 @@ namespace Kephas.Data.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class DataSpaceTest
+    public class DataSpaceTest : DataTestBase
     {
+        [Test]
+        public void Composition()
+        {
+            var container = this.CreateContainer();
+            var dataSpace = container.GetExport<IDataSpace>();
+
+            Assert.IsNotNull(dataSpace);
+        }
+
         [Test]
         public void GetEnumerator()
         {
