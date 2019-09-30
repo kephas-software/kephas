@@ -382,8 +382,8 @@ namespace Kephas.Data.Conversion
         {
             var matchingConverters = this.converterExportFactories
                 .Where(lc => IsConverterTypeMatch(lc.Metadata.SourceType.GetTypeInfo(), sourceType) && IsConverterTypeMatch(lc.Metadata.TargetType.GetTypeInfo(), targetType))
-                .OrderBy(lc => lc.Metadata.ProcessingPriority)
-                .Select(lc => lc.CreateExport().Value)
+                .Order()
+                .Select(lc => lc.CreateExportedValue())
                 .ToList();
 
             if (matchingConverters.Count == 0)
@@ -400,14 +400,14 @@ namespace Kephas.Data.Conversion
         /// <param name="sourceType">Type of the source.</param>
         /// <param name="targetType">Type of the target.</param>
         /// <returns>
-        /// The matching converters.
+        /// The matching target resolvers.
         /// </returns>
         private IList<IDataConversionTargetResolver> ComputeMatchingTargetResolvers(TypeInfo sourceType, TypeInfo targetType)
         {
             var matchingConverters = this.targetResolverFactories
                 .Where(lc => IsConverterTypeMatch(lc.Metadata.SourceType.GetTypeInfo(), sourceType) && IsConverterTypeMatch(lc.Metadata.TargetType.GetTypeInfo(), targetType))
-                .OrderBy(lc => lc.Metadata.ProcessingPriority)
-                .Select(lc => lc.CreateExport().Value)
+                .Order()
+                .Select(lc => lc.CreateExportedValue())
                 .ToList();
 
             if (matchingConverters.Count == 0)
