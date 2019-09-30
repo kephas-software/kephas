@@ -21,9 +21,9 @@
         <RepositoryType>github</RepositoryType>
         <PackageTags>kephas serialization json servicestack</PackageTags>
         <PackageReleaseNotes>
-          Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-          Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-      </PackageReleaseNotes>
+            Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+        </PackageReleaseNotes>
         <NeutralLanguage>en</NeutralLanguage>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
@@ -36,23 +36,23 @@
         <SignAssembly>false</SignAssembly>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
         <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.0\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
         <DefineConstants>NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-        <DocumentationFile>bin\Debug\net45\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
         <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-        <DocumentationFile>bin\Release\net45\Kephas.Serialization.ServiceStack.Text.xml</DocumentationFile>
         <DefineConstants>NET45</DefineConstants>
     </PropertyGroup>
 
@@ -69,13 +69,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\Kephas.snk" Link="Kephas.snk" />
+        <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="ServiceStack.Text" Version="5.0.0" />
     </ItemGroup>

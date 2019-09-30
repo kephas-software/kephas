@@ -48,11 +48,11 @@ Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="stylecop.json" />
+      <None Remove="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="stylecop.json" />
+      <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>

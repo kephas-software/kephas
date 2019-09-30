@@ -26,23 +26,23 @@
 Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.</PackageReleaseNotes>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Kephas.Scheduling.Quartz.MongoDB.xml</DocumentationFile>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-        <DocumentationFile>bin\Debug\netstandard2.0\Kephas.Scheduling.Quartz.MongoDB.xml</DocumentationFile>
         <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-        <DocumentationFile>bin\Release\netstandard2.0\Kephas.Scheduling.Quartz.MongoDB.xml</DocumentationFile>
         <DefineConstants>NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
-        <DocumentationFile>bin\Debug\net452\Kephas.Scheduling.Quartz.MongoDB.xml</DocumentationFile>
         <DefineConstants>TRACE;DEBUG;NET452</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
-        <DocumentationFile>bin\Release\net452\Kephas.Scheduling.Quartz.MongoDB.xml</DocumentationFile>
         <DefineConstants>NET452</DefineConstants>
     </PropertyGroup>
 

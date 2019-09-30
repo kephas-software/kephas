@@ -44,6 +44,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
         <ProjectReference Include="..\Kephas.Data\Kephas.Data.csproj" />
@@ -59,14 +67,6 @@
 
     <ItemGroup>
         <Folder Include="Properties\" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <AdditionalFiles Include="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Remove="stylecop.json" />
     </ItemGroup>
 
 </Project>
