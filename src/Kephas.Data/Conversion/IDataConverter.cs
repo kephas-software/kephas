@@ -37,7 +37,7 @@ namespace Kephas.Data.Conversion
     /// </summary>
     /// <typeparam name="TSource">The source object type.</typeparam>
     /// <typeparam name="TTarget">The target object type.</typeparam>
-    [AppServiceContract(ContractType = typeof(IDataConverter))]
+    [AppServiceContract(ContractType = typeof(IDataConverter), AllowMultiple = true)]
     public interface IDataConverter<in TSource, in TTarget> : IDataConverter
     {
         /// <summary>

@@ -46,7 +46,7 @@ namespace Kephas.Data.Conversion
     /// </summary>
     /// <typeparam name="TSource">Type of the source.</typeparam>
     /// <typeparam name="TTarget">Type of the target.</typeparam>
-    [SingletonAppServiceContract(ContractType = typeof(IDataConversionTargetResolver))]
+    [SingletonAppServiceContract(ContractType = typeof(IDataConversionTargetResolver), AllowMultiple = true)]
     public interface IDataConversionTargetResolver<TSource, TTarget> : IDataConversionTargetResolver
     {
     }

@@ -28,7 +28,7 @@ namespace Kephas.Data.Behaviors
     /// Generic application service contract for data behaviors.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    [SingletonAppServiceContract(ContractType = typeof(IDataBehavior))]
+    [SingletonAppServiceContract(ContractType = typeof(IDataBehavior), AllowMultiple = true)]
     public interface IDataBehavior<TEntity> : IDataBehavior
     {
     }
