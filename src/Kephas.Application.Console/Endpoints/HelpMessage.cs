@@ -10,6 +10,8 @@
 
 namespace Kephas.Application.Console.Endpoints
 {
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
 
@@ -25,6 +27,7 @@ namespace Kephas.Application.Console.Endpoints
         /// <value>
         /// The command.
         /// </value>
+        [Display(Name = "The command for which the help content should be provided.")]
         public string Command { get; set; }
     }
 

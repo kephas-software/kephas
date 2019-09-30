@@ -57,6 +57,14 @@ Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for
         <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
     </ItemGroup>
 
+    <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+        <Reference Include="System.ComponentModel.DataAnnotations" />
+    </ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
           <PrivateAssets>all</PrivateAssets>

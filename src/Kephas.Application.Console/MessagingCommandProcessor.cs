@@ -80,22 +80,23 @@ namespace Kephas.Application.Console
             var commandType = this.registry.ResolveCommandType(command);
 
             var message = (IMessage)commandType.CreateInstance();
+            var i = 0;
             foreach (var kv in this.GetMessageArguments(args))
             {
                 var propInfo = commandType.Properties.FirstOrDefault(p => string.Compare(p.Name, kv.Key, StringComparison.OrdinalIgnoreCase) == 0);
                 if (propInfo == null)
                 {
-                    if (!this.HandleUnknownProperty(message, commandType, kv.Key, kv.Value))
+                    if (!this.HandleUnknownArgument(message, commandType, i, kv.Key, kv.Value))
                     {
-                        throw new InvalidOperationException($"Parameter '{kv.Key}' not found.");
+                        throw new InvalidOperationException($"Parameter '{kv.Key} (index: {i})' not found.");
                     }
                 }
                 else
                 {
-                    var propValueType = (propInfo.ValueType as IRuntimeTypeInfo).Type;
-                    var convertedValue = Convert.ChangeType(kv.Value, propValueType);
-                    propInfo.SetValue(message, convertedValue);
+                    this.SetPropertyValue(message, propInfo, kv.Value);
                 }
+
+                i++;
             }
 
             return message;
@@ -106,12 +107,36 @@ namespace Kephas.Application.Console
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="messageType">Type of the message.</param>
+        /// <param name="index">Zero-based index of the argument.</param>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
         /// <returns>
         /// True if it succeeds, false if it fails.
         /// </returns>
-        protected virtual bool HandleUnknownProperty(IMessage message, ITypeInfo messageType, string name, object value) => true;
+        protected virtual bool HandleUnknownArgument(IMessage message, ITypeInfo messageType, int index, string name, object value)
+        {
+            var props = messageType.Properties.ToList();
+            if (index < props.Count && (value == null || (value is string stringValue && string.IsNullOrEmpty(stringValue))))
+            {
+                this.SetPropertyValue(message, props[index], name);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Sets the message property value.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="propInfo">Information describing the property.</param>
+        /// <param name="value">The value.</param>
+        protected virtual void SetPropertyValue(IMessage message, IPropertyInfo propInfo, object value)
+        {
+            var propValueType = (propInfo.ValueType as IRuntimeTypeInfo).Type;
+            var convertedValue = Convert.ChangeType(value, propValueType);
+            propInfo.SetValue(message, convertedValue);
+        }
 
         /// <summary>
         /// Gets message arguments.

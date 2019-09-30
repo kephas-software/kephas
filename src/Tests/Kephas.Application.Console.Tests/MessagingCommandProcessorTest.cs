@@ -10,10 +10,12 @@
 
 namespace Kephas.Application.Console.Tests
 {
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Kephas.Application.Console.Endpoints;
-
+    using Kephas.Dynamic;
     using NUnit.Framework;
 
     [TestFixture]
@@ -37,6 +39,27 @@ namespace Kephas.Application.Console.Tests
             var response = await processor.ProcessAsync("help");
 
             Assert.IsInstanceOf<HelpResponseMessage>(response);
+
+            var helpResponse = (HelpResponseMessage)response;
+            Assert.Contains("Help", helpResponse.Command as ICollection);
+            Assert.Contains("Ping", helpResponse.Command as ICollection);
+            Assert.Contains("PingBack", helpResponse.Command as ICollection);
+            Assert.AreEqual("Please provide one command name to see the information about that command. Example: help command=help.", helpResponse.Description);
+        }
+
+        [Test]
+        public async Task ProcessAsync_help_indexed_params()
+        {
+            var container = this.CreateContainer();
+            var processor = container.GetExport<ICommandProcessor>();
+
+            var response = await processor.ProcessAsync("help", new Expando { ["help"] = string.Empty });
+
+            Assert.IsInstanceOf<HelpResponseMessage>(response);
+
+            var helpResponse = (HelpResponseMessage)response;
+            Assert.AreEqual("Help", helpResponse.Command);
+            Assert.AreEqual("Displays the available commands.", helpResponse.Description);
         }
     }
 }
