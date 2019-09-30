@@ -550,7 +550,7 @@ namespace Kephas.Messaging.Tests
             plainHandler.Received(1).ProcessAsync(plainMessage, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>());
         }
 
-        private IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata> CreateBehaviorFactory(
+        private IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata> CreateBehaviorFactory(
             Func<IMessagingContext, CancellationToken, Task> beforeFunc = null,
             Func<IMessagingContext, CancellationToken, Task> afterFunc = null,
             Type messageType = null,
@@ -563,19 +563,19 @@ namespace Kephas.Messaging.Tests
             messageType = messageType ?? typeof(IMessage);
             beforeFunc = beforeFunc ?? ((c, t) => TaskHelper.CompletedTask);
             afterFunc = afterFunc ?? ((c, t) => TaskHelper.CompletedTask);
-            var behavior = Substitute.For<IMessageProcessingBehavior>();
+            var behavior = Substitute.For<IMessagingBehavior>();
             behavior.BeforeProcessAsync(Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => beforeFunc(ci.Arg<IMessagingContext>(), ci.Arg<CancellationToken>()));
             behavior.AfterProcessAsync(Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => afterFunc(ci.Arg<IMessagingContext>(), ci.Arg<CancellationToken>()));
             var factory =
-                new ExportFactoryAdapter<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>(
+                new ExportFactoryAdapter<IMessagingBehavior, MessagingBehaviorMetadata>(
                     () => Tuple.Create(behavior, (Action)(() => { })),
-                    new MessageProcessingBehaviorMetadata(messageType, messageTypeMatching: messageTypeMatching, messageId: messageId, messageIdMatching: messageIdMatching, processingPriority: processingPriority, overridePriority: (int)overridePriority));
+                    new MessagingBehaviorMetadata(messageType, messageTypeMatching: messageTypeMatching, messageId: messageId, messageIdMatching: messageIdMatching, processingPriority: processingPriority, overridePriority: (int)overridePriority));
             return factory;
         }
 
-        private IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata> CreateTestBehaviorFactory(
+        private IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata> CreateTestBehaviorFactory(
             Type messageType = null,
             object messageId = null,
             int processingPriority = 0,
@@ -584,14 +584,14 @@ namespace Kephas.Messaging.Tests
             messageType = messageType ?? typeof(IMessage);
             var behavior = new TestBehavior();
             var factory =
-                new ExportFactoryAdapter<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>(
-                    () => Tuple.Create((IMessageProcessingBehavior)behavior, (Action)(() => { })),
-                    new MessageProcessingBehaviorMetadata(messageType, messageId: messageId, processingPriority: processingPriority, overridePriority: (int)overridePriority));
+                new ExportFactoryAdapter<IMessagingBehavior, MessagingBehaviorMetadata>(
+                    () => Tuple.Create((IMessagingBehavior)behavior, (Action)(() => { })),
+                    new MessagingBehaviorMetadata(messageType, messageId: messageId, processingPriority: processingPriority, overridePriority: (int)overridePriority));
             return factory;
         }
 
         private DefaultMessageProcessor CreateRequestProcessor(
-            IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories,
+            IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories,
             ExportFactory<IMessageHandler, MessageHandlerMetadata> handlerFactory)
         {
             return this.CreateRequestProcessor(
@@ -602,7 +602,7 @@ namespace Kephas.Messaging.Tests
         }
 
         private TestMessageProcessor CreateRequestProcessor(
-            IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories,
+            IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories,
             IMessageHandler messageHandler,
             IMessage message)
         {
@@ -632,13 +632,13 @@ namespace Kephas.Messaging.Tests
         }
 
         private TestMessageProcessor CreateRequestProcessor(
-            IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories = null,
+            IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories = null,
             IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories = null,
             IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
         {
             var mms = new DefaultMessageMatchService();
             behaviorFactories = behaviorFactories
-                              ?? new List<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>>();
+                              ?? new List<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>>();
 
             handlerSelectorFactories = handlerSelectorFactories
                                        ?? new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
@@ -673,7 +673,7 @@ namespace Kephas.Messaging.Tests
         public string MessageId { get; set; }
     }
 
-    public class TestBehavior : MessageProcessingBehaviorBase<PingMessage>
+    public class TestBehavior : MessagingBehaviorBase<PingMessage>
     {
         public override Task BeforeProcessAsync(PingMessage message, IMessagingContext context, CancellationToken token)
         {
@@ -692,7 +692,7 @@ namespace Kephas.Messaging.Tests
     {
         public Func<IMessage, IMessagingContext, IMessagingContext> CreateProcessingContextFunc { get; set; }
 
-        public TestMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
+        public TestMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
             : base(compositionContext, handlerRegistry, messageMatchService, behaviorFactories)
         {
         }

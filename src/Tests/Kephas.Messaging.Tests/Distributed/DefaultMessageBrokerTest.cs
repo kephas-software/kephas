@@ -331,7 +331,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [OverridePriority(Priority.High)]
         public class TestMessageProcessor : DefaultMessageProcessor
         {
-            public TestMessageProcessor(ICompositionContext compositionContext, IMessageHandlerRegistry handlerRegistry, IMessageMatchService messageMatchService, IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
+            public TestMessageProcessor(ICompositionContext compositionContext, IMessageHandlerRegistry handlerRegistry, IMessageMatchService messageMatchService, IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
                 : base(compositionContext, handlerRegistry, messageMatchService, behaviorFactories)
             {
             }
@@ -339,7 +339,7 @@ namespace Kephas.Messaging.Tests.Distributed
             public Action<IMessage, IMessagingContext> ProcessingContextConfigurator { get; set; }
 
             protected override Task ApplyBeforeProcessBehaviorsAsync(
-                IEnumerable<IMessageProcessingBehavior> behaviors,
+                IEnumerable<IMessagingBehavior> behaviors,
                 IMessagingContext context,
                 CancellationToken token)
             {
