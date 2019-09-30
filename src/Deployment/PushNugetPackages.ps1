@@ -34,6 +34,7 @@ $packages = @(
     "Kephas.Scripting.CSharp",
     "Kephas.Orchestration",
     "Kephas.AspNetCore",
+    "Kephas.Application.Console",
     "Kephas.Testing",
     "Kephas.Testing.Composition.Autofac",
     "Kephas.Testing.Composition.Mef",

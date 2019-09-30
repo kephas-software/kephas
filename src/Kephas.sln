@@ -167,9 +167,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Composition.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing", "TestingFramework\Kephas.Testing\Kephas.Testing.csproj", "{59769055-29BC-4AEB-927A-8F13F8FE2868}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Configuration", "Kephas.Extensions.Configuration\Kephas.Extensions.Configuration.csproj", "{1F714CAD-5905-4E1A-BD84-B303F0AA00F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Extensions.Configuration", "Kephas.Extensions.Configuration\Kephas.Extensions.Configuration.csproj", "{1F714CAD-5905-4E1A-BD84-B303F0AA00F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.DependencyInjection", "Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj", "{06159261-A8B6-415F-96E7-34655EEE7AEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Extensions.DependencyInjection", "Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj", "{06159261-A8B6-415F-96E7-34655EEE7AEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Application.Console", "Kephas.Application.Console\Kephas.Application.Console.csproj", "{364FB4CE-89F4-493A-AE34-F023BFDA630E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Application.Console.Tests", "Tests\Kephas.Application.Console.Tests\Kephas.Application.Console.Tests.csproj", "{57BEC9B6-84F8-45D3-865D-9B6AB193BC70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -449,6 +453,14 @@ Global
 		{06159261-A8B6-415F-96E7-34655EEE7AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06159261-A8B6-415F-96E7-34655EEE7AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06159261-A8B6-415F-96E7-34655EEE7AEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{364FB4CE-89F4-493A-AE34-F023BFDA630E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{364FB4CE-89F4-493A-AE34-F023BFDA630E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{364FB4CE-89F4-493A-AE34-F023BFDA630E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{364FB4CE-89F4-493A-AE34-F023BFDA630E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57BEC9B6-84F8-45D3-865D-9B6AB193BC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57BEC9B6-84F8-45D3-865D-9B6AB193BC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57BEC9B6-84F8-45D3-865D-9B6AB193BC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57BEC9B6-84F8-45D3-865D-9B6AB193BC70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -485,6 +497,7 @@ Global
 		{A561331E-F0E7-4338-9DB6-5A23AFBDC116} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{41DB5A76-1B8C-486B-8F02-3CFE086D4CA3} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
 		{59769055-29BC-4AEB-927A-8F13F8FE2868} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
+		{57BEC9B6-84F8-45D3-865D-9B6AB193BC70} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
