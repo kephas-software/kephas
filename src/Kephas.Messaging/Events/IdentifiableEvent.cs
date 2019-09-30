@@ -11,10 +11,12 @@
 namespace Kephas.Messaging.Events
 {
     using Kephas.Dynamic;
+    using Kephas.Model.AttributedModel;
 
     /// <summary>
     /// Default implementation of an identifiable event.
     /// </summary>
+    [ExcludeFromModel]
     public class IdentifiableEvent : IIdentifiableEvent
     {
         /// <summary>

@@ -12,9 +12,12 @@ namespace Kephas.Messaging.Messages
 {
     using System.Collections.Generic;
 
+    using Kephas.Model.AttributedModel;
+
     /// <summary>
     /// An aggregate message.
     /// </summary>
+    [ExcludeFromModel]
     public class AggregateMessage : IMessage
     {
         /// <summary>
