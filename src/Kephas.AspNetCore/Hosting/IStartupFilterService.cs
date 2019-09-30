@@ -15,10 +15,10 @@ namespace Kephas.AspNetCore.Hosting
     using Microsoft.AspNetCore.Hosting;
 
     /// <summary>
-    /// Interface for composable startup filter.
+    /// Singleton application service contract for startup filters.
     /// </summary>
     [SingletonAppServiceContract(AllowMultiple = true, ContractType = typeof(IStartupFilter))]
-    public interface IComposableStartupFilter : IStartupFilter
+    public interface IStartupFilterService : IStartupFilter
     {
     }
 }
