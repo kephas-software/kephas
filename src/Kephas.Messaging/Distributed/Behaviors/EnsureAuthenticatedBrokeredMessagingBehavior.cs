@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnsureAuthenticatedBrokeredMessageProcessingBehavior.cs" company="Kephas Software SRL">
+// <copyright file="EnsureAuthenticatedBrokeredMessagingBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -24,9 +24,9 @@ namespace Kephas.Messaging.Distributed.Behaviors
     /// <summary>
     /// A distributed message processing behavior ensuring that the bearer token is transformed to an .
     /// </summary>
-    [MessageProcessingBehavior(MessageTypeMatching.TypeOrHierarchy)]
+    [MessagingBehavior(MessageTypeMatching.TypeOrHierarchy)]
     [ProcessingPriority(Priority.Highest)]
-    public class EnsureAuthenticatedBrokeredMessageProcessingBehavior : MessageProcessingBehaviorBase<IBrokeredMessage>
+    public class EnsureAuthenticatedBrokeredMessagingBehavior : MessagingBehaviorBase<IBrokeredMessage>
     {
         /// <summary>
         /// The authentication service.
@@ -35,11 +35,11 @@ namespace Kephas.Messaging.Distributed.Behaviors
 
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="EnsureAuthenticatedBrokeredMessageProcessingBehavior"/>
+        /// <see cref="EnsureAuthenticatedBrokeredMessagingBehavior"/>
         /// class.
         /// </summary>
         /// <param name="authenticationService">The authentication service.</param>
-        public EnsureAuthenticatedBrokeredMessageProcessingBehavior(IAuthenticationService authenticationService)
+        public EnsureAuthenticatedBrokeredMessagingBehavior(IAuthenticationService authenticationService)
         {
             Requires.NotNull(authenticationService, nameof(authenticationService));
 

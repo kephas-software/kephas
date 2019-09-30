@@ -18,16 +18,16 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
     using Kephas.Services;
 
     /// <summary>
-    /// Adds message matching criteria for <see cref="IMessageProcessingBehavior"/> services.
+    /// Adds message matching criteria for <see cref="IMessagingBehavior"/> services.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class MessageProcessingBehaviorAttribute : Attribute
+    public class MessagingBehaviorAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingBehaviorAttribute"/> class.
+        /// Initializes a new instance of the <see cref="MessagingBehaviorAttribute"/> class.
         /// </summary>
         /// <param name="messageId">The ID of the handled messages.</param>
-        public MessageProcessingBehaviorAttribute(object messageId)
+        public MessagingBehaviorAttribute(object messageId)
         {
             Requires.NotNull(messageId, nameof(messageId));
 
@@ -36,20 +36,20 @@ namespace Kephas.Messaging.Behaviors.AttributedModel
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingBehaviorAttribute"/> class.
+        /// Initializes a new instance of the <see cref="MessagingBehaviorAttribute"/> class.
         /// </summary>
         /// <param name="messageTypeMatching">The message type matching.</param>
-        public MessageProcessingBehaviorAttribute(MessageTypeMatching messageTypeMatching)
+        public MessagingBehaviorAttribute(MessageTypeMatching messageTypeMatching)
         {
             this.MessageTypeMatching = messageTypeMatching;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingBehaviorAttribute"/> class.
+        /// Initializes a new instance of the <see cref="MessagingBehaviorAttribute"/> class.
         /// </summary>
         /// <param name="messageTypeMatching">The message type matching.</param>
         /// <param name="messageId">The ID of the handled messages.</param>
-        public MessageProcessingBehaviorAttribute(MessageTypeMatching messageTypeMatching, object messageId)
+        public MessagingBehaviorAttribute(MessageTypeMatching messageTypeMatching, object messageId)
             : this(messageId)
         {
             this.MessageTypeMatching = messageTypeMatching;

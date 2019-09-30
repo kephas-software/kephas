@@ -19,7 +19,7 @@ namespace Kephas.Messaging.Behaviors
     /// <summary>
     /// Application service for message processing interception.
     /// </summary>
-    public interface IMessageProcessingBehavior
+    public interface IMessagingBehavior
     {
         /// <summary>
         /// Interception called before invoking the handler to process the message.
@@ -48,9 +48,9 @@ namespace Kephas.Messaging.Behaviors
     /// <typeparam name="TMessage">The type of the message.</typeparam>
     [SingletonAppServiceContract(
         AllowMultiple = true,
-        ContractType = typeof(IMessageProcessingBehavior),
-        MetadataAttributes = new[] { typeof(MessageProcessingBehaviorAttribute) })]
-    public interface IMessageProcessingBehavior<TMessage> : IMessageProcessingBehavior
+        ContractType = typeof(IMessagingBehavior),
+        MetadataAttributes = new[] { typeof(MessagingBehaviorAttribute) })]
+    public interface IMessagingBehavior<TMessage> : IMessagingBehavior
         where TMessage : IMessage
     {
     }

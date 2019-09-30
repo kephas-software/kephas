@@ -31,9 +31,9 @@ namespace Kephas.Messaging.Authorization.Behaviors
     /// <summary>
     /// A message processing behavior ensuring that only authorized calls execute the request.
     /// </summary>
-    [MessageProcessingBehavior(MessageTypeMatching.TypeOrHierarchy)]
+    [MessagingBehavior(MessageTypeMatching.TypeOrHierarchy)]
     [ProcessingPriority(Priority.Highest + 10)]
-    public class EnsureAuthorizedMessageProcessingBehavior : MessageProcessingBehaviorBase<IMessage>
+    public class EnsureAuthorizedMessageProcessingBehavior : MessagingBehaviorBase<IMessage>
     {
         /// <summary>
         /// The authorization service.

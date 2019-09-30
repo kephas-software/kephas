@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageProcessingBehaviorBase.cs" company="Kephas Software SRL">
+// <copyright file="MessagingBehaviorBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,10 +18,10 @@ namespace Kephas.Messaging.Behaviors
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Base implementation of a message processing filter.
+    /// Base implementation of a messaging behavior.
     /// </summary>
     /// <typeparam name="TMessage">The message type.</typeparam>
-    public abstract class MessageProcessingBehaviorBase<TMessage> : Loggable, IMessageProcessingBehavior<TMessage>
+    public abstract class MessagingBehaviorBase<TMessage> : Loggable, IMessagingBehavior<TMessage>
         where TMessage : IMessage
     {
         /// <summary>
@@ -30,7 +30,7 @@ namespace Kephas.Messaging.Behaviors
         /// <param name="context">The processing context.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>A task.</returns>
-        Task IMessageProcessingBehavior.BeforeProcessAsync(IMessagingContext context, CancellationToken token)
+        Task IMessagingBehavior.BeforeProcessAsync(IMessagingContext context, CancellationToken token)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Behaviors
         /// The context will contain the response returned by the handler.
         /// The interceptor may change the response or even replace it with another one.
         /// </remarks>
-        Task IMessageProcessingBehavior.AfterProcessAsync(IMessagingContext context, CancellationToken token)
+        Task IMessagingBehavior.AfterProcessAsync(IMessagingContext context, CancellationToken token)
         {
             Requires.NotNull(context, nameof(context));
 

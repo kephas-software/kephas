@@ -19,15 +19,15 @@ namespace Kephas.Messaging.Behaviors.Composition
     using Kephas.Services.Composition;
 
     /// <summary>
-    /// Composition metadata for <see cref="IMessageProcessingBehavior"/>.
+    /// Composition metadata for <see cref="IMessagingBehavior"/>.
     /// </summary>
-    public class MessageProcessingBehaviorMetadata : AppServiceMetadata
+    public class MessagingBehaviorMetadata : AppServiceMetadata
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingBehaviorMetadata"/> class.
+        /// Initializes a new instance of the <see cref="MessagingBehaviorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public MessageProcessingBehaviorMetadata(IDictionary<string, object> metadata)
+        public MessagingBehaviorMetadata(IDictionary<string, object> metadata)
             : base(metadata)
         {
             if (metadata == null)
@@ -50,7 +50,7 @@ namespace Kephas.Messaging.Behaviors.Composition
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageProcessingBehaviorMetadata"/> class.
+        /// Initializes a new instance of the <see cref="MessagingBehaviorMetadata"/> class.
         /// </summary>
         /// <param name="messageType">Type of the message.</param>
         /// <param name="messageTypeMatching">The message type matching (optional).</param>
@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Behaviors.Composition
         /// <param name="messageIdMatching">The message ID matching (optional).</param>
         /// <param name="processingPriority">The processing priority (optional).</param>
         /// <param name="overridePriority">The override priority (optional).</param>
-        public MessageProcessingBehaviorMetadata(Type messageType, MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy, object messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.All, int processingPriority = 0, int overridePriority = 0)
+        public MessagingBehaviorMetadata(Type messageType, MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy, object messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.All, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.MessageType = messageType;

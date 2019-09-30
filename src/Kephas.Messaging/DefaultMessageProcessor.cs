@@ -44,14 +44,14 @@ namespace Kephas.Messaging
         /// <summary>
         /// The behavior factories.
         /// </summary>
-        private readonly IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories;
+        private readonly IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories;
 
         /// <summary>
         /// The behavior factories.
         /// </summary>
         private readonly
-            ConcurrentDictionary<string, (IEnumerable<IMessageProcessingBehavior> behaviors, IEnumerable<IMessageProcessingBehavior> reversedBehaviors)> behaviorFactoriesDictionary =
-                new ConcurrentDictionary<string, (IEnumerable<IMessageProcessingBehavior>, IEnumerable<IMessageProcessingBehavior>)>();
+            ConcurrentDictionary<string, (IEnumerable<IMessagingBehavior> behaviors, IEnumerable<IMessagingBehavior> reversedBehaviors)> behaviorFactoriesDictionary =
+                new ConcurrentDictionary<string, (IEnumerable<IMessagingBehavior>, IEnumerable<IMessagingBehavior>)>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
@@ -64,7 +64,7 @@ namespace Kephas.Messaging
             ICompositionContext compositionContext,
             IMessageHandlerRegistry handlerRegistry,
             IMessageMatchService messageMatchService,
-            IList<IExportFactory<IMessageProcessingBehavior, MessageProcessingBehaviorMetadata>> behaviorFactories)
+            IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(handlerRegistry, nameof(handlerRegistry));
@@ -147,7 +147,7 @@ namespace Kephas.Messaging
         }
 
         /// <summary>
-        /// Applies the behaviors invoking the <see cref="IMessageProcessingBehavior.AfterProcessAsync"/> asynchronously.
+        /// Applies the behaviors invoking the <see cref="IMessagingBehavior.AfterProcessAsync"/> asynchronously.
         /// </summary>
         /// <param name="reversedBehaviors">The reversed behaviors.</param>
         /// <param name="context">Context for the message processing.</param>
@@ -156,7 +156,7 @@ namespace Kephas.Messaging
         /// An asynchronous result.
         /// </returns>
         protected virtual async Task ApplyAfterProcessBehaviorsAsync(
-            IEnumerable<IMessageProcessingBehavior> reversedBehaviors,
+            IEnumerable<IMessagingBehavior> reversedBehaviors,
             IMessagingContext context,
             CancellationToken token)
         {
@@ -167,7 +167,7 @@ namespace Kephas.Messaging
         }
 
         /// <summary>
-        /// Applies the behaviors invoking the <see cref="IMessageProcessingBehavior.BeforeProcessAsync"/> asynchronously.
+        /// Applies the behaviors invoking the <see cref="IMessagingBehavior.BeforeProcessAsync"/> asynchronously.
         /// </summary>
         /// <param name="behaviors">The reversed behaviors.</param>
         /// <param name="context">Context for the message processing.</param>
@@ -176,7 +176,7 @@ namespace Kephas.Messaging
         /// An asynchronous result.
         /// </returns>
         protected virtual async Task ApplyBeforeProcessBehaviorsAsync(
-            IEnumerable<IMessageProcessingBehavior> behaviors,
+            IEnumerable<IMessagingBehavior> behaviors,
             IMessagingContext context,
             CancellationToken token)
         {
@@ -212,7 +212,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// An ordered list of behaviors which can be applied to the provided message, with their reversed counterpart.
         /// </returns>
-        protected virtual (IEnumerable<IMessageProcessingBehavior> behaviors, IEnumerable<IMessageProcessingBehavior> reversedBehaviors) GetOrderedBehaviors(IMessage message)
+        protected virtual (IEnumerable<IMessagingBehavior> behaviors, IEnumerable<IMessagingBehavior> reversedBehaviors) GetOrderedBehaviors(IMessage message)
         {
             var messageType = this.messageMatchService.GetMessageType(message);
             var messageId = this.messageMatchService.GetMessageId(message);
@@ -226,7 +226,7 @@ namespace Kephas.Messaging
                             .Select(f => f.CreateExportedValue())
                             .ToList();
 
-                        return (behaviors, ((IEnumerable<IMessageProcessingBehavior>)behaviors).Reverse().ToList());
+                        return (behaviors, ((IEnumerable<IMessagingBehavior>)behaviors).Reverse().ToList());
                     });
 
             return orderedBehaviorsEntry;
