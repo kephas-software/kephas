@@ -32,15 +32,9 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
     /// </summary>
     public class MessagingModelRegistry : IRuntimeModelRegistry
     {
-        /// <summary>
-        /// The application runtime.
-        /// </summary>
         private readonly IAppRuntime appRuntime;
-
-        /// <summary>
-        /// The type loader.
-        /// </summary>
         private readonly ITypeLoader typeLoader;
+        private readonly TypeInfo markerInterface = typeof(IMessage).GetTypeInfo();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingModelRegistry"/> class.
@@ -67,14 +61,13 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
             var assemblies = this.appRuntime.GetAppAssemblies();
 
             var types = new HashSet<Type>();
-            var markerInterface = typeof(IMessage).GetTypeInfo();
             foreach (var assembly in assemblies)
             {
                 types.AddRange(this.typeLoader.GetLoadableExportedTypes(assembly).Where(
                     t =>
                         {
                             var ti = t.GetTypeInfo();
-                            return (this.IsMessage(ti, markerInterface) || this.IsMessagePart(ti)) && !ti.IsExcludedFromModel();
+                            return (this.IsMessage(ti) || this.IsMessagePart(ti)) && !ti.IsExcludedFromModel();
                         }));
             }
 
@@ -85,13 +78,12 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
         /// Query if 'type' is message.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="markerInterface">The marker interface.</param>
         /// <returns>
         /// True if the type is a message, false if not.
         /// </returns>
-        private bool IsMessage(TypeInfo type, TypeInfo markerInterface)
+        private bool IsMessage(TypeInfo type)
         {
-            return type.IsClass && !type.IsAbstract && markerInterface.IsAssignableFrom(type);
+            return type.IsClass && !type.IsAbstract && this.markerInterface.IsAssignableFrom(type);
         }
 
         /// <summary>
