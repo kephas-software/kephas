@@ -33,8 +33,25 @@ namespace Kephas.Serialization.Json.Tests
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class JsonSerializerTest
+    public class JsonSerializerTest : SerializationTestBase
     {
+        [Test]
+        public async Task SerializeAsync_Composition()
+        {
+            var container = this.CreateContainer();
+            var serializationService = container.GetExport<ISerializationService>();
+
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site"),
+            };
+
+            var serializedObj = await serializationService.JsonSerializeAsync(obj);
+
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
+        }
+
         [Test]
         public async Task SerializeAsync()
         {
@@ -43,7 +60,7 @@ namespace Kephas.Serialization.Json.Tests
             var obj = new TestEntity
             {
                 Name = "John Doe",
-                PersonalSite = new Uri("http://site.com/my-site")
+                PersonalSite = new Uri("http://site.com/my-site"),
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
