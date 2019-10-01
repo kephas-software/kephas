@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Tests
 
     using NSubstitute;
 
-    public class MessagingTestBase : CompositionTestBase
+    public class MessagingTestBase : ApplicationTestBase
     {
         public override ICompositionContext CreateContainer(
             IAmbientServices ambientServices = null,

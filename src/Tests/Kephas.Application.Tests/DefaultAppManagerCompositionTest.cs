@@ -22,7 +22,7 @@ namespace Kephas.Core.Tests.Application
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultAppManagerCompositionTest : CompositionTestBase
+    public class DefaultAppManagerCompositionTest : ApplicationTestBase
     {
         [Test]
         public void Composition_compute_auto_feature_info()

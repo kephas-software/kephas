@@ -23,6 +23,7 @@ namespace Kephas.Application.Console.Tests
             var assemblies = base.GetDefaultConventionAssemblies().ToList();
             assemblies.AddRange(new[]
                         {
+                            typeof(IAppManager).Assembly,           // Kephas.Application
                             typeof(IMessageProcessor).Assembly,     // Kephas.Messaging
                             typeof(ICommandProcessor).Assembly,     // Kephas.Application.Console
                         });
