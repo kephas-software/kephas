@@ -67,19 +67,45 @@ namespace Kephas.Core.Tests.Application
         }
 
         [Test]
-        public async Task BootstrapAsync_signalShutdown_stops_application()
+        public async Task BootstrapAsync_shutdown_instruction_stops_application()
         {
             var appManager = Substitute.For<IAppManager>();
+            var termAwaiter = Substitute.For<IAppShutdownAwaiter>();
+            termAwaiter.WaitForShutdownSignalAsync(Arg.Any<CancellationToken>())
+                .Returns((12, AppShutdownInstruction.Shutdown));
 
             var compositionContext = Substitute.For<ICompositionContext>();
-            compositionContext.GetExport<IAppManager>(Arg.Any<string>()).Returns(appManager);
+            compositionContext.GetExport<IAppManager>(Arg.Any<string>())
+                .Returns(appManager);
+            compositionContext.GetExport<IAppShutdownAwaiter>(Arg.Any<string>())
+                .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithCompositionContainer(compositionContext));
             var appContext = await app.BootstrapAsync();
 
-            await appContext.SignalShutdown(null);
-
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            Assert.AreEqual(12, appContext.AppResult);
+        }
+
+        [Test]
+        public async Task BootstrapAsync_none_instruction_does_not_stop_application()
+        {
+            var appManager = Substitute.For<IAppManager>();
+            var termAwaiter = Substitute.For<IAppShutdownAwaiter>();
+            termAwaiter.WaitForShutdownSignalAsync(Arg.Any<CancellationToken>())
+                .Returns((23, AppShutdownInstruction.Ignore));
+
+            var compositionContext = Substitute.For<ICompositionContext>();
+            compositionContext.GetExport<IAppManager>(Arg.Any<string>())
+                .Returns(appManager);
+            compositionContext.GetExport<IAppShutdownAwaiter>(Arg.Any<string>())
+                .Returns(termAwaiter);
+
+            var app = new TestApp(async b => b.WithCompositionContainer(compositionContext));
+            var appContext = await app.BootstrapAsync();
+
+            appManager.Received(0).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            Assert.AreEqual(23, appContext.AppResult);
         }
 
         [Test]
