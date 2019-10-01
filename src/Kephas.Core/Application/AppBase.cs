@@ -26,6 +26,8 @@ namespace Kephas.Application
     /// </remarks>
     public abstract class AppBase : IAmbientServicesAware
     {
+        private bool prerequisitesInitialized;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppBase"/> class.
         /// </summary>
@@ -73,6 +75,57 @@ namespace Kephas.Application
             string[] rawAppArgs = null,
             CancellationToken cancellationToken = default)
         {
+            this.InitializePrerequisites(rawAppArgs);
+
+            await this.InitializeAppManagerAsync(this.AppContext, cancellationToken).PreserveThreadContext();
+
+            try
+            {
+                var container = this.AmbientServices.CompositionContainer;
+                var terminationAwaiter = container.GetExport<IAppShutdownAwaiter>();
+                var (result, instruction) = await terminationAwaiter.WaitForShutdownSignalAsync(cancellationToken).PreserveThreadContext();
+                this.AppContext.AppResult = result;
+
+                if (instruction == AppShutdownInstruction.Shutdown)
+                {
+                    await this.ShutdownAsync(cancellationToken).PreserveThreadContext();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Fatal(ex, "Abnormal application termination.");
+                this.AppContext.Exception = ex;
+                return null;
+            }
+
+            return this.AppContext;
+        }
+
+        /// <summary>
+        /// Shuts down the application asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// A promise of the <see cref="IAppContext"/>.
+        /// </returns>
+        public virtual async Task<IAppContext> ShutdownAsync(CancellationToken cancellationToken = default)
+        {
+            var appContext = await this.FinalizeAppManagerAsync(cancellationToken).PreserveThreadContext();
+            appContext?.Dispose();
+            return appContext;
+        }
+
+        /// <summary>
+        /// Initializes the application prerequisites: the ambient services, the application context registration, the logger, other.
+        /// </summary>
+        /// <param name="rawAppArgs">The application arguments.</param>
+        protected virtual void InitializePrerequisites(string[] rawAppArgs)
+        {
+            if (this.prerequisitesInitialized)
+            {
+                return;
+            }
+
             try
             {
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
@@ -89,6 +142,9 @@ namespace Kephas.Application
                 this.ConfigureAmbientServices(this.AmbientServices);
 
                 this.Logger = this.Logger ?? this.AmbientServices.GetLogger(this.GetType());
+
+                // it is important to create the app context before initializing the application manager.
+                this.AppContext = this.CreateAppContext(this.AmbientServices);
             }
             catch (Exception ex)
             {
@@ -100,77 +156,7 @@ namespace Kephas.Application
                 throw;
             }
 
-            try
-            {
-                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
-
-                // it is important to create the app context before initializing the application manager.
-                this.AppContext = this.CreateAppContext(this.AmbientServices);
-                await this.InitializeAppManagerAsync(this.AppContext, cancellationToken);
-
-                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_StartComplete_Message);
-
-                return this.AppContext;
-            }
-            catch (Exception ex)
-            {
-                var bootstrapException = new BootstrapException(Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception, ex)
-                {
-                    AppContext = this.AppContext,
-                    AmbientServices = this.AmbientServices,
-                };
-                if (this.AppContext != null)
-                {
-                    this.AppContext.Exception = bootstrapException;
-                }
-
-                this.Log(LogLevel.Fatal, bootstrapException);
-
-                try
-                {
-                    await this.ShutdownAsync(cancellationToken).PreserveThreadContext();
-                }
-                catch (Exception shutdownEx)
-                {
-                    this.Log(LogLevel.Fatal, shutdownEx, Strings.App_BootstrapAsync_ErrorDuringForcedShutdown_Exception);
-                }
-
-                throw bootstrapException;
-            }
-        }
-
-        /// <summary>
-        /// Shuts down the application asynchronously.
-        /// </summary>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// A promise of the <see cref="IAppContext"/>.
-        /// </returns>
-        public virtual async Task<IAppContext> ShutdownAsync(CancellationToken cancellationToken = default)
-        {
-            IAppContext appContext = null;
-
-            try
-            {
-                this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_ShuttingDown_Message);
-
-                appContext = this.AmbientServices.GetService<IAppContext>();
-                appContext = await this.FinalizeAppManagerAsync(cancellationToken);
-
-                this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_Complete_Message);
-
-                return appContext;
-            }
-            catch (Exception ex)
-            {
-                var shutdownException = new ShutdownException(Strings.App_ShutdownAsync_ErrorDuringFinalization_Exception, ex)
-                {
-                    AmbientServices = this.AmbientServices,
-                    AppContext = appContext,
-                };
-                this.Log(LogLevel.Fatal, shutdownException);
-                throw shutdownException;
-            }
+            this.prerequisitesInitialized = true;
         }
 
         /// <summary>
@@ -208,11 +194,44 @@ namespace Kephas.Application
         /// </returns>
         protected virtual async Task<IAppContext> InitializeAppManagerAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            var container = appContext.CompositionContext;
-            var appManager = container.GetExport<IAppManager>();
+            try
+            {
+                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
 
-            await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();
-            return appContext;
+                var container = appContext.CompositionContext;
+                var appManager = container.GetExport<IAppManager>();
+
+                await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();
+
+                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_StartComplete_Message);
+
+                return appContext;
+            }
+            catch (Exception ex)
+            {
+                var bootstrapException = new BootstrapException(Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception, ex)
+                {
+                    AppContext = appContext,
+                    AmbientServices = this.AmbientServices,
+                };
+                if (appContext != null)
+                {
+                    appContext.Exception = bootstrapException;
+                }
+
+                this.Log(LogLevel.Fatal, bootstrapException);
+
+                try
+                {
+                    await this.ShutdownAsync(cancellationToken).PreserveThreadContext();
+                }
+                catch (Exception shutdownEx)
+                {
+                    this.Log(LogLevel.Fatal, shutdownEx, Strings.App_BootstrapAsync_ErrorDuringForcedShutdown_Exception);
+                }
+
+                throw bootstrapException;
+            }
         }
 
         /// <summary>
@@ -224,11 +243,32 @@ namespace Kephas.Application
         /// </returns>
         protected virtual async Task<IAppContext> FinalizeAppManagerAsync(CancellationToken cancellationToken)
         {
-            var appContext = this.AmbientServices.CompositionContainer.GetExport<IAppContext>();
-            var appManager = this.AmbientServices.CompositionContainer.GetExport<IAppManager>();
+            IAppContext appContext = null;
 
-            await appManager.FinalizeAppAsync(appContext, cancellationToken).PreserveThreadContext();
-            return appContext;
+            try
+            {
+                this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_ShuttingDown_Message);
+
+                var container = this.AmbientServices.CompositionContainer;
+                appContext = container.GetExport<IAppContext>();
+                var appManager = container.GetExport<IAppManager>();
+
+                await appManager.FinalizeAppAsync(appContext, cancellationToken).PreserveThreadContext();
+
+                this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_Complete_Message);
+
+                return appContext;
+            }
+            catch (Exception ex)
+            {
+                var shutdownException = new ShutdownException(Strings.App_ShutdownAsync_ErrorDuringFinalization_Exception, ex)
+                {
+                    AmbientServices = this.AmbientServices,
+                    AppContext = appContext ?? this.AppContext,
+                };
+                this.Log(LogLevel.Fatal, shutdownException);
+                throw shutdownException;
+            }
         }
 
         /// <summary>
@@ -242,8 +282,7 @@ namespace Kephas.Application
         {
             var appContext = new AppContext(
                                      ambientServices,
-                                     appArgs: ambientServices.GetService<IAppArgs>(),
-                                     signalShutdown: c => this.ShutdownAsync())
+                                     appArgs: ambientServices.GetService<IAppArgs>())
             {
                 Logger = this.Logger,
             };
