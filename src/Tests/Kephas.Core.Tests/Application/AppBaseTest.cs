@@ -16,7 +16,7 @@ namespace Kephas.Core.Tests.Application
 
     using Kephas.Application;
     using Kephas.Composition;
-
+    using Kephas.Operations;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -72,7 +72,7 @@ namespace Kephas.Core.Tests.Application
             var appManager = Substitute.For<IAppManager>();
             var termAwaiter = Substitute.For<IAppShutdownAwaiter>();
             termAwaiter.WaitForShutdownSignalAsync(Arg.Any<CancellationToken>())
-                .Returns((12, AppShutdownInstruction.Shutdown));
+                .Returns((new OperationResult { ReturnValue = 12 }, AppShutdownInstruction.Shutdown));
 
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
@@ -84,7 +84,8 @@ namespace Kephas.Core.Tests.Application
             var appContext = await app.BootstrapAsync();
 
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
-            Assert.AreEqual(12, appContext.AppResult);
+            var appResult = (IOperationResult)appContext.AppResult;
+            Assert.AreEqual(12, appResult.ReturnValue);
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace Kephas.Core.Tests.Application
             var appManager = Substitute.For<IAppManager>();
             var termAwaiter = Substitute.For<IAppShutdownAwaiter>();
             termAwaiter.WaitForShutdownSignalAsync(Arg.Any<CancellationToken>())
-                .Returns((23, AppShutdownInstruction.Ignore));
+                .Returns((new OperationResult { ReturnValue = 23 }, AppShutdownInstruction.Ignore));
 
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
@@ -105,7 +106,8 @@ namespace Kephas.Core.Tests.Application
             var appContext = await app.BootstrapAsync();
 
             appManager.Received(0).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
-            Assert.AreEqual(23, appContext.AppResult);
+            var appResult = (IOperationResult)appContext.AppResult;
+            Assert.AreEqual(23, appResult.ReturnValue);
         }
 
         [Test]

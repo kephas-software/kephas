@@ -15,16 +15,20 @@ namespace Kephas.Application.Console.Application
     using System.Threading.Tasks;
 
     using Kephas.Messaging.Events;
+    using Kephas.Operations;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A console application shutdown awaiter.
     /// </summary>
+    [OverridePriority(Priority.Low)]
     public class ConsoleAppShutdownAwaiter : IAppShutdownAwaiter
     {
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly ICommandShell shell;
         private readonly IEventSubscription shutdownSubscription;
+        private bool unattendedCompletion = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleAppShutdownAwaiter"/> class.
@@ -44,7 +48,7 @@ namespace Kephas.Application.Console.Application
         /// <value>
         /// True if this object is interactive, false if not.
         /// </value>
-        public bool IsInteractive { get; set; } = true;
+        public bool IsInteractive { get; internal protected set; } = true;
 
         /// <summary>
         /// Waits for the shutdown signal asynchronously.
@@ -53,9 +57,9 @@ namespace Kephas.Application.Console.Application
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        public async Task<(object result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
         {
-            var completionSource = new TaskCompletionSource<object>();
+            var completionSource = new TaskCompletionSource<IOperationResult>();
 
             using (this.cancellationTokenSource)
             using (this.cancellationTokenSource.Token.Register(() => completionSource.TrySetResult(this.GetUnattendedResult())))
@@ -67,15 +71,13 @@ namespace Kephas.Application.Console.Application
                     {
                         await this.shell.StartAsync(this.cancellationTokenSource.Token).PreserveThreadContext();
 
+                        this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
+
                         return (this.GetAttendedResult(), AppShutdownInstruction.Shutdown);
                     }
                     catch (OperationCanceledException)
                     {
-                        return (this.GetUnattendedResult(), AppShutdownInstruction.Shutdown);
-                    }
-                    catch (Exception ex)
-                    {
-                        return (this.GetExceptionResult(ex), AppShutdownInstruction.Shutdown);
+                        return (this.unattendedCompletion ? this.GetUnattendedResult() : this.GetAttendedResult(), AppShutdownInstruction.Shutdown);
                     }
                 }
 
@@ -88,6 +90,7 @@ namespace Kephas.Application.Console.Application
         /// </summary>
         protected virtual void StopShell()
         {
+            this.unattendedCompletion = true;
             this.cancellationTokenSource.Cancel();
         }
 
@@ -97,7 +100,7 @@ namespace Kephas.Application.Console.Application
         /// <returns>
         /// The unattended result.
         /// </returns>
-        protected virtual object GetUnattendedResult() => null;
+        protected virtual IOperationResult GetUnattendedResult() => new OperationResult() { OperationState = OperationState.Canceled };
 
         /// <summary>
         /// Gets the attended result.
@@ -105,15 +108,6 @@ namespace Kephas.Application.Console.Application
         /// <returns>
         /// The attended result.
         /// </returns>
-        protected virtual object GetAttendedResult() => null;
-
-        /// <summary>
-        /// Gets the exception result.
-        /// </summary>
-        /// <param name="ex">The ex.</param>
-        /// <returns>
-        /// The exception result.
-        /// </returns>
-        protected virtual object GetExceptionResult(Exception ex) => ex;
+        protected virtual IOperationResult GetAttendedResult() => new OperationResult() { OperationState = OperationState.Completed };
     }
 }

@@ -14,6 +14,7 @@ namespace Kephas.AspNetCore.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Operations;
 
     /// <summary>
     /// An ASP net application shutdown awaiter.
@@ -27,9 +28,9 @@ namespace Kephas.AspNetCore.Application
         /// <returns>
         /// An asynchronous result that yields the termination result.
         /// </returns>
-        public Task<(object result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+        public Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<(object result, AppShutdownInstruction instruction)>((null, AppShutdownInstruction.Ignore));
+            return Task.FromResult<(IOperationResult result, AppShutdownInstruction instruction)>((new OperationResult { OperationState = OperationState.InProgress }, AppShutdownInstruction.Ignore));
         }
     }
 }

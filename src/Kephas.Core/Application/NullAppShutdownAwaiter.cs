@@ -13,6 +13,7 @@ namespace Kephas.Application
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -28,9 +29,9 @@ namespace Kephas.Application
         /// <returns>
         /// An asynchronous result that yields the termination result.
         /// </returns>
-        public Task<(object result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+        public Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<(object result, AppShutdownInstruction instruction)>((null, AppShutdownInstruction.Shutdown));
+            return Task.FromResult<(IOperationResult result, AppShutdownInstruction instruction)>((new OperationResult { OperationState = OperationState.Completed }, AppShutdownInstruction.Shutdown));
         }
     }
 }

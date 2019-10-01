@@ -82,11 +82,7 @@ namespace Kephas.Application.Console
 
             while (true)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    this.Stop();
-                    break;
-                }
+                cancellationToken.ThrowIfCancellationRequested();
 
                 this.WritePrompt();
 
@@ -95,16 +91,17 @@ namespace Kephas.Application.Console
                 {
                     commandLine = await this.ReadCommandLineAsync(cancellationToken).PreserveThreadContext();
                 }
-                catch (OperationCanceledException cex)
+                catch (OperationCanceledException)
                 {
-                    this.Stop();
-                    break;
+                    throw;
                 }
                 catch (Exception ex)
                 {
                     this.Logger.Error(ex, "Error while reading from the console.");
                     continue;
                 }
+
+                cancellationToken.ThrowIfCancellationRequested();
 
                 if (string.IsNullOrWhiteSpace(commandLine))
                 {
@@ -113,9 +110,17 @@ namespace Kephas.Application.Console
 
                 try
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
+
                     var (command, args) = this.ParseCommandLine(commandLine);
                     var result = await this.commandProcessor.ProcessAsync(command, args, cancellationToken).PreserveThreadContext();
                     await this.WriteCommandOutputAsync(result, cancellationToken).PreserveThreadContext();
+
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
                 }
                 catch (Exception ex)
                 {
