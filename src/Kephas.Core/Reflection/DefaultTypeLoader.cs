@@ -36,7 +36,7 @@ namespace Kephas.Reflection
             // http://stackoverflow.com/questions/7889228/how-to-prevent-reflectiontypeloadexception-when-calling-assembly-gettypes
             try
             {
-                return assembly.ExportedTypes;
+                return assembly.IsDynamic ? new Type[0] : assembly.ExportedTypes;
             }
             catch (ReflectionTypeLoadException e)
             {
