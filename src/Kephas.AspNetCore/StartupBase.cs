@@ -13,6 +13,7 @@ namespace Kephas.AspNetCore
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas;
     using Kephas.Application;
     using Kephas.AspNetCore.Application;
@@ -22,6 +23,7 @@ namespace Kephas.AspNetCore
     using Kephas.Composition;
     using Kephas.Extensions.Configuration;
     using Kephas.Extensions.DependencyInjection;
+    using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
@@ -29,9 +31,7 @@ namespace Kephas.AspNetCore
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
 
-    using ILogger = Kephas.Logging.ILogger;
     using LogLevel = Kephas.Logging.LogLevel;
     using Strings = Kephas.Resources.Strings;
 
@@ -41,16 +41,9 @@ namespace Kephas.AspNetCore
     /// <remarks>
     /// Check https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcore-2.1 for more options.
     /// </remarks>
-    public abstract class StartupBase : IAmbientServicesAware
+    public abstract class StartupBase : AppBase
     {
-        /// <summary>
-        /// The application arguments.
-        /// </summary>
         private readonly string[] appArgs;
-
-        /// <summary>
-        /// The bootstrap task.
-        /// </summary>
         private Task bootstrapTask;
 
         /// <summary>
@@ -58,23 +51,15 @@ namespace Kephas.AspNetCore
         /// </summary>
         /// <param name="env">The environment.</param>
         /// <param name="config">The configuration.</param>
-        /// <param name="ambientServices">The ambient services (optional).</param>
-        /// <param name="appArgs">The application arguments (optional).</param>
+        /// <param name="ambientServices">Optional. The ambient services.</param>
+        /// <param name="appArgs">Optional. The application arguments.</param>
         protected StartupBase(IHostingEnvironment env, IConfiguration config, IAmbientServices ambientServices = null, string[] appArgs = null)
+            : base(ambientServices)
         {
             this.HostingEnvironment = env;
             this.Configuration = config;
-            this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
             this.appArgs = appArgs;
         }
-
-        /// <summary>
-        /// Gets the ambient services.
-        /// </summary>
-        /// <value>
-        /// The ambient services.
-        /// </value>
-        public IAmbientServices AmbientServices { get; }
 
         /// <summary>
         /// Gets the hosting environment.
@@ -93,21 +78,13 @@ namespace Kephas.AspNetCore
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        protected ILogger Logger { get; set; }
-
-        /// <summary>
         /// Configures the DI services.
         /// </summary>
         /// <param name="serviceCollection">Collection of services.</param>
         /// <returns>
         /// An IServiceProvider.
         /// </returns>
-        public virtual IServiceProvider ConfigureServices(IServiceCollection serviceCollection)
+        public virtual IServiceProvider ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection)
         {
             try
             {
@@ -117,13 +94,7 @@ namespace Kephas.AspNetCore
                     .ConfigureOptionsExtensions()
                     .UseConfiguration(this.Configuration);
 
-                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
-
-                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
-
-                this.ConfigureAmbientServices(this.appArgs, this.AmbientServices);
-
-                this.Logger = this.AmbientServices.GetLogger(this.GetType());
+                this.InitializePrerequisites(this.appArgs);
             }
             catch (Exception ex)
             {
@@ -143,7 +114,11 @@ namespace Kephas.AspNetCore
             IApplicationBuilder app,
             IApplicationLifetime appLifetime)
         {
-            var appContext = this.CreateAppContext(app);
+            this.AmbientServices
+                .Register(app)
+                .Register(appLifetime);
+
+            var appContext = (IAspNetAppContext)this.AppContext;
 
             // ensure upon request processing that the bootstrapping procedure is done.
             app.Use(async (context, next) =>
@@ -163,152 +138,48 @@ namespace Kephas.AspNetCore
             }
 
             // when the configurators are completed, start the bootstrapping procedure.
-            this.bootstrapTask = this.BootstrapAsync(appContext);
+            this.bootstrapTask = this.BootstrapAsync(this.appArgs);
 
             // If you want to dispose of resources that have been resolved in the
-            // application container, register for the "ApplicationStopped" event.
-            appLifetime.ApplicationStopped.Register(() => this.ShutdownAsync().WaitNonLocking());
+            // application container, register for the "ApplicationStopping" event.
+            appLifetime.ApplicationStopping.Register(() => this.ShutdownAsync().WaitNonLocking());
         }
 
         /// <summary>
-        /// Bootstraps the application asynchronously.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
-        /// <returns>
-        /// The asynchronous result that yields the <see cref="IAppContext"/>.
-        /// </returns>
-        public virtual async Task<IAspNetAppContext> BootstrapAsync(
-            IAspNetAppContext appContext,
-            CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_InitializingAppManager_Message);
-                await this.InitializeAppManagerAsync(appContext, cancellationToken);
-
-                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_StartComplete_Message);
-
-                return appContext;
-            }
-            catch (Exception ex)
-            {
-                this.Log(LogLevel.Fatal, ex, Strings.App_BootstrapAsync_ErrorDuringInitialization_Exception);
-
-                try
-                {
-                    await this.ShutdownAsync(cancellationToken).PreserveThreadContext();
-                }
-                catch (Exception shutdownEx)
-                {
-                    this.Log(LogLevel.Fatal, shutdownEx, Strings.App_BootstrapAsync_ErrorDuringForcedShutdown_Exception);
-                }
-
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Shuts down the application asynchronously.
+        /// Shuts down the application asynchronously and gracefully.
         /// </summary>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of the <see cref="IAppContext"/>.
+        /// A promise of the <see cref="T:Kephas.Application.IAppContext" />.
         /// </returns>
-        public virtual async Task<IAppContext> ShutdownAsync(CancellationToken cancellationToken = default)
+        public override async Task<IAppContext> ShutdownAsync(CancellationToken cancellationToken = default)
         {
             try
             {
-                this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_ShuttingDown_Message);
-
-                var appContext = await this.FinalizeAppManagerAsync(cancellationToken);
-
-                this.Log(LogLevel.Info, null, Strings.App_ShutdownAsync_Complete_Message);
-
-                return appContext;
+                return await base.ShutdownAsync(cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {
-                this.Log(LogLevel.Fatal, ex, Strings.App_ShutdownAsync_ErrorDuringFinalization_Exception);
-                throw;
+                this.Logger.Fatal(ex, "Errors occurred during shutdown procedure, gracefully terminating the application.");
+                return null;
             }
-        }
-
-        /// <summary>
-        /// Configures the ambient services asynchronously.
-        /// </summary>
-        /// <remarks>
-        /// Override this method to initialize the startup services, like log manager and configuration manager.
-        /// </remarks>
-        /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServices">The ambient services.</param>
-        protected abstract void ConfigureAmbientServices(
-            string[] appArgs,
-            IAmbientServices ambientServices);
-
-        /// <summary>
-        /// Initializes the application manager asynchronously.
-        /// </summary>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A promise of the <see cref="IAppContext"/>.
-        /// </returns>
-        protected virtual async Task<IAspNetAppContext> InitializeAppManagerAsync(IAspNetAppContext appContext, CancellationToken cancellationToken)
-        {
-            var container = appContext.CompositionContext;
-            var appManager = container.GetExport<IAppManager>();
-
-            await appManager.InitializeAppAsync(appContext, cancellationToken).PreserveThreadContext();
-            return appContext;
-        }
-
-        /// <summary>
-        /// Finalizes the application manager asynchronously.
-        /// </summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A promise of the <see cref="IAppContext"/>.
-        /// </returns>
-        protected virtual async Task<IAppContext> FinalizeAppManagerAsync(CancellationToken cancellationToken)
-        {
-            var container = this.AmbientServices.CompositionContainer;
-            var appContext = container.GetExport<IAppContext>();
-            var appManager = container.GetExport<IAppManager>();
-
-            await appManager.FinalizeAppAsync(appContext, cancellationToken).PreserveThreadContext();
-            return appContext;
         }
 
         /// <summary>
         /// Creates the application context.
         /// </summary>
-        /// <param name="app">The application builder.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// The new application context.
         /// </returns>
-        protected virtual IAspNetAppContext CreateAppContext(IApplicationBuilder app)
+        protected override IAppContext CreateAppContext(IAmbientServices ambientServices)
         {
             var appContext = new AspNetAppContext(
-                app,
                 this.HostingEnvironment,
                 this.Configuration,
                 this.AmbientServices,
-                appArgs: this.appArgs == null ? new AppArgs() : new AppArgs(this.appArgs),
-                signalShutdown: c => this.ShutdownAsync());
+                appArgs: ambientServices.GetService<IAppArgs>());
             return appContext;
-        }
-
-        /// <summary>
-        /// Logs the provided information.
-        /// </summary>
-        /// <param name="level">The level.</param>
-        /// <param name="exception">The exception.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        protected virtual void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
-        {
-            this.Logger?.Log(level, exception, messageFormat, args);
         }
     }
 }

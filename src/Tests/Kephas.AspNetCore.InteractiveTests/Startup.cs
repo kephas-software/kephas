@@ -27,6 +27,13 @@ namespace Kephas.AspNetCore.InteractiveTests
         {
         }
 
+        /// <summary>
+        /// Configures the DI services.
+        /// </summary>
+        /// <param name="services">Collection of services.</param>
+        /// <returns>
+        /// An IServiceProvider.
+        /// </returns>
         public override IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -41,7 +48,12 @@ namespace Kephas.AspNetCore.InteractiveTests
             return serviceProvider;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request
+        /// pipeline.
+        /// </summary>
+        /// <param name="app">The application builder.</param>
+        /// <param name="appLifetime">The application lifetime.</param>
         public override void Configure(IApplicationBuilder app, IApplicationLifetime appLifetime)
         {
             var env = this.HostingEnvironment;
@@ -87,9 +99,8 @@ namespace Kephas.AspNetCore.InteractiveTests
         /// <remarks>
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
-        /// <param name="appArgs">The application arguments.</param>
         /// <param name="ambientServices">The ambient services.</param>
-        protected override void ConfigureAmbientServices(string[] appArgs, IAmbientServices ambientServices)
+        protected override void ConfigureAmbientServices(IAmbientServices ambientServices)
         {
             var serilogConfig = new LoggerConfiguration()
                 .ReadFrom.Configuration(this.Configuration);
