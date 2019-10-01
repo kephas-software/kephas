@@ -12,9 +12,8 @@ namespace Kephas.Core.Tests.ExceptionHandling
 {
     using System;
 
-    using Kephas.Application;
+    using Kephas.Data;
     using Kephas.ExceptionHandling;
-    using Kephas.Services;
 
     using NUnit.Framework;
 
@@ -34,10 +33,10 @@ namespace Kephas.Core.Tests.ExceptionHandling
         [Test]
         public void ExceptionData_copy_from_exception_default_with_severity()
         {
-            var exceptionData = new ExceptionData(new BootstrapException("hello") { Severity = SeverityLevel.Fatal });
+            var exceptionData = new ExceptionData(new DataException("hello") { Severity = SeverityLevel.Fatal });
 
             Assert.AreEqual("hello", exceptionData.Message);
-            Assert.AreEqual(typeof(BootstrapException).FullName, exceptionData.ExceptionType);
+            Assert.AreEqual(typeof(DataException).FullName, exceptionData.ExceptionType);
             Assert.AreEqual(SeverityLevel.Fatal, exceptionData.Severity);
         }
 
@@ -54,10 +53,10 @@ namespace Kephas.Core.Tests.ExceptionHandling
         [Test]
         public void ExceptionData_copy_from_exception_with_severity_overwrite_severity()
         {
-            var exceptionData = new ExceptionData(new BootstrapException("hello") { Severity = SeverityLevel.Fatal }, SeverityLevel.Info);
+            var exceptionData = new ExceptionData(new DataException("hello") { Severity = SeverityLevel.Fatal }, SeverityLevel.Info);
 
             Assert.AreEqual("hello", exceptionData.Message);
-            Assert.AreEqual(typeof(BootstrapException).FullName, exceptionData.ExceptionType);
+            Assert.AreEqual(typeof(DataException).FullName, exceptionData.ExceptionType);
             Assert.AreEqual(SeverityLevel.Info, exceptionData.Severity);
         }
     }

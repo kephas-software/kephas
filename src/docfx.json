@@ -6,7 +6,7 @@
                     "files": [
                         "*.csproj"
                     ],
-                    "cwd": "./Kephas.AspNetCore",
+                    "cwd": "./Kephas.Application.AspNetCore",
                     "exclude": [
                         "**/obj/**",
                         "**/bin/**",

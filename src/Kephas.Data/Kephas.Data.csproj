@@ -77,6 +77,7 @@ Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
     </ItemGroup>
 

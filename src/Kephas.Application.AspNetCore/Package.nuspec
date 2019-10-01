@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.Application.AspNetCore</id>
+        <version>$version$</version>
+        <title>Kephas.Application.AspNetCore</title>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
+        <description>Provides the infrastructure for the Kephas Framework integration with ASP.NET Core.</description>
+        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
+        <summary>Provides the infrastructure for the Kephas Framework integration with ASP.NET Core.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/kephas-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/favicon.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="expression">MIT</license>
+        <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <dependencies>
+            <group>
+                <dependency id="Kephas.Application" version="$refversion$" />
+                <dependency id="Kephas.Core" version="$refversion$" />
+                <dependency id="Kephas.Extensions.DependencyInjection" version="$refversion$" />
+            </group>
+            <group targetFramework="netstandard2.0">
+                <dependency id="Microsoft.CSharp" version="4.3.0" />
+                <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.0.0" />
+                <dependency id="Microsoft.AspNetCore.Hosting.Abstractions" version="2.0.0" />
+            </group>
+        </dependencies>
+        <references>
+            <reference file="Kephas.Application.AspNetCore.dll" />
+        </references>
+        <tags>kephas asp.net</tags>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Application.AspNetCore.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Application.AspNetCore.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Application.AspNetCore.xml" target="lib\netstandard2.0" />
+    </files>
+</package>

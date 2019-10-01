@@ -49,6 +49,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\..\Kephas.Composition.Autofac\Kephas.Composition.Autofac.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
     </ItemGroup>

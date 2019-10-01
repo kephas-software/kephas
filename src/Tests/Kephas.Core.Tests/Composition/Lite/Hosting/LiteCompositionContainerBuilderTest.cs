@@ -18,6 +18,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
     using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Composition.Internal;
+    using Kephas.Cryptography;
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;
@@ -37,8 +38,8 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
 
             Assert.IsInstanceOf<CompositionContextAdapter>(ambientServices.CompositionContainer);
 
-            var appManager = ambientServices.CompositionContainer.GetExport<IAppManager>();
-            Assert.IsInstanceOf<DefaultAppManager>(appManager);
+            var appManager = ambientServices.CompositionContainer.GetExport<IEncryptionService>();
+            Assert.IsInstanceOf<AesEncryptionService>(appManager);
         }
 
         [Test]

@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Mail.MailKit", "Keph
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Endpoints", "Kephas.Data.Endpoints\Kephas.Data.Endpoints.csproj", "{61FE8D05-CCA6-40D2-BF8B-CFF792054DE0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore", "Kephas.AspNetCore\Kephas.AspNetCore.csproj", "{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Application.AspNetCore", "Kephas.Application.AspNetCore\Kephas.Application.AspNetCore.csproj", "{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.ServiceStack.Text", "Kephas.Serialization.ServiceStack.Text\Kephas.Serialization.ServiceStack.Text.csproj", "{BD80DBE0-627B-44D7-9506-29E73877B40D}"
 EndProject
@@ -86,8 +86,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.ServiceStack.Text.Tests", "Tests\Kephas.Serialization.ServiceStack.Text.Tests\Kephas.Serialization.ServiceStack.Text.Tests.csproj", "{3B04074E-6F2F-4640-9085-1A420E44D5AF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core.Tests", "Tests\Kephas.Core.Tests\Kephas.Core.Tests.csproj", "{20B57C5A-7B64-4D30-A799-B06561007640}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core.Composition.Tests", "Tests\Kephas.Core.Composition.Tests\Kephas.Core.Composition.Tests.csproj", "{05DF79D3-8746-4CB9-AC46-453C92FFFE5D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Composition.Mef.Tests", "Tests\Kephas.Composition.Mef.Tests\Kephas.Composition.Mef.Tests.csproj", "{06C1648B-996A-484E-906A-3CF31EC19B6E}"
 EndProject
@@ -147,7 +145,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Quartz", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scheduling.Quartz.MongoDB", "Kephas.Scheduling.Quartz.MongoDB\Kephas.Scheduling.Quartz.MongoDB.csproj", "{D2AE2964-94D9-4806-B9D1-81365E866930}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.InteractiveTests", "Tests\Kephas.AspNetCore.InteractiveTests\Kephas.AspNetCore.InteractiveTests.csproj", "{92DF9C0F-F886-4066-BAA1-959E6BA804D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Application.AspNetCore.InteractiveTests", "Tests\Kephas.Application.AspNetCore.InteractiveTests\Kephas.Application.AspNetCore.InteractiveTests.csproj", "{92DF9C0F-F886-4066-BAA1-959E6BA804D8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Logging.Serilog", "Kephas.Logging.Serilog\Kephas.Logging.Serilog.csproj", "{8D30B571-8190-49C4-9A90-55026E82822F}"
 EndProject
@@ -155,7 +153,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Configuration.Legacy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Configuration.Legacy.Tests", "Tests\Kephas.Configuration.Legacy.Tests\Kephas.Configuration.Legacy.Tests.csproj", "{4795D5B0-995C-4F03-B7B2-E58E6748E7C3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.AspNetCore.Tests", "Tests\Kephas.AspNetCore.Tests\Kephas.AspNetCore.Tests.csproj", "{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Application.AspNetCore.Tests", "Tests\Kephas.Application.AspNetCore.Tests\Kephas.Application.AspNetCore.Tests.csproj", "{FA25FECF-D92D-4C4D-8A00-52AD9C86DDDF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.LLBLGen", "Kephas.Data.LLBLGen\Kephas.Data.LLBLGen.csproj", "{922BFA02-87C9-45B0-B212-6C94069D0C97}"
 EndProject
@@ -171,9 +169,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Extensions.Configura
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Extensions.DependencyInjection", "Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj", "{06159261-A8B6-415F-96E7-34655EEE7AEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Application.Console", "Kephas.Application.Console\Kephas.Application.Console.csproj", "{364FB4CE-89F4-493A-AE34-F023BFDA630E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Application.Console", "Kephas.Application.Console\Kephas.Application.Console.csproj", "{364FB4CE-89F4-493A-AE34-F023BFDA630E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Application.Console.Tests", "Tests\Kephas.Application.Console.Tests\Kephas.Application.Console.Tests.csproj", "{57BEC9B6-84F8-45D3-865D-9B6AB193BC70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Application.Console.Tests", "Tests\Kephas.Application.Console.Tests\Kephas.Application.Console.Tests.csproj", "{57BEC9B6-84F8-45D3-865D-9B6AB193BC70}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Application", "Kephas.Application\Kephas.Application.csproj", "{4C876854-AF60-4411-998A-A4096DD5B341}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Application.Tests", "Tests\Kephas.Application.Tests\Kephas.Application.Tests.csproj", "{68289125-FC36-4164-8BC2-4C8B2289B352}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -285,10 +287,6 @@ Global
 		{20B57C5A-7B64-4D30-A799-B06561007640}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20B57C5A-7B64-4D30-A799-B06561007640}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20B57C5A-7B64-4D30-A799-B06561007640}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05DF79D3-8746-4CB9-AC46-453C92FFFE5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05DF79D3-8746-4CB9-AC46-453C92FFFE5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05DF79D3-8746-4CB9-AC46-453C92FFFE5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05DF79D3-8746-4CB9-AC46-453C92FFFE5D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{06C1648B-996A-484E-906A-3CF31EC19B6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{06C1648B-996A-484E-906A-3CF31EC19B6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06C1648B-996A-484E-906A-3CF31EC19B6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -461,6 +459,14 @@ Global
 		{57BEC9B6-84F8-45D3-865D-9B6AB193BC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57BEC9B6-84F8-45D3-865D-9B6AB193BC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57BEC9B6-84F8-45D3-865D-9B6AB193BC70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C876854-AF60-4411-998A-A4096DD5B341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C876854-AF60-4411-998A-A4096DD5B341}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C876854-AF60-4411-998A-A4096DD5B341}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C876854-AF60-4411-998A-A4096DD5B341}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68289125-FC36-4164-8BC2-4C8B2289B352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68289125-FC36-4164-8BC2-4C8B2289B352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68289125-FC36-4164-8BC2-4C8B2289B352}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68289125-FC36-4164-8BC2-4C8B2289B352}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -471,7 +477,6 @@ Global
 		{7AFE065F-FEB1-414E-B04B-2878DFCDB65B} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{3B04074E-6F2F-4640-9085-1A420E44D5AF} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{20B57C5A-7B64-4D30-A799-B06561007640} = {816692E7-24DC-46B5-97FB-D314B52D815D}
-		{05DF79D3-8746-4CB9-AC46-453C92FFFE5D} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{06C1648B-996A-484E-906A-3CF31EC19B6E} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{47D24365-AA91-4E10-8C63-6C3263F5E3D7} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{66CD7D77-3B9A-4CB0-AED7-3798F50BFC3A} = {816692E7-24DC-46B5-97FB-D314B52D815D}
@@ -498,6 +503,7 @@ Global
 		{41DB5A76-1B8C-486B-8F02-3CFE086D4CA3} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
 		{59769055-29BC-4AEB-927A-8F13F8FE2868} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
 		{57BEC9B6-84F8-45D3-865D-9B6AB193BC70} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{68289125-FC36-4164-8BC2-4C8B2289B352} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

@@ -17,6 +17,7 @@
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
         <dependencies>
             <group>
+                <dependency id="Kephas.Application" version="$refversion$" />
                 <dependency id="Kephas.Core" version="$refversion$" />
                 <dependency id="Kephas.Composition.Autofac" version="$refversion$" />
                 <dependency id="Autofac" version="4.9.4" />

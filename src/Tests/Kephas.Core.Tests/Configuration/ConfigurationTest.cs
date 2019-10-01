@@ -10,6 +10,7 @@
 
 namespace Kephas.Core.Tests.Configuration
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Composition;
@@ -17,12 +18,13 @@ namespace Kephas.Core.Tests.Configuration
     using Kephas.Configuration;
     using Kephas.Configuration.Providers;
     using Kephas.Configuration.Providers.Composition;
+    using Kephas.Core.Tests;
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class ConfigurationTest
+    public class ConfigurationTest : CompositionTestBase
     {
         [Test]
         public void GetSettings_default_provider()
@@ -61,6 +63,39 @@ namespace Kephas.Core.Tests.Configuration
 
             var result = configuration.Settings;
             Assert.AreSame(settings2, result);
+        }
+
+        [Test]
+        public void Composition_Configuration_specific_provider()
+        {
+            // specific provider
+            var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
+
+            var config = container.GetExport<IConfiguration<TestSettings>>();
+            Assert.AreSame(TestConfigurationProvider.Settings, config.Settings);
+        }
+
+        public class TestSettings
+        {
+            public string Say { get; set; }
+        }
+
+        [SettingsType(typeof(TestSettings))]
+        public class TestConfigurationProvider : ISettingsProvider
+        {
+            public static TestSettings Settings = new TestSettings();
+
+            /// <summary>
+            /// Gets the settings with the provided type.
+            /// </summary>
+            /// <param name="settingsType">Type of the settings.</param>
+            /// <returns>
+            /// The settings.
+            /// </returns>
+            public object GetSettings(Type settingsType)
+            {
+                return Settings;
+            }
         }
 
         public class Config1

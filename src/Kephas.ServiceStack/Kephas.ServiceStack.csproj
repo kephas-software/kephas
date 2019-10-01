@@ -81,6 +81,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Serialization.ServiceStack.Text\Kephas.Serialization.ServiceStack.Text.csproj" />
     </ItemGroup>

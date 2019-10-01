@@ -38,6 +38,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Workflow\Kephas.Workflow.csproj" />
     </ItemGroup>

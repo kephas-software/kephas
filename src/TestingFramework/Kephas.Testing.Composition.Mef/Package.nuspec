@@ -17,6 +17,7 @@
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
         <dependencies>
             <group>
+                <dependency id="Kephas.Application" version="$refversion$" />
                 <dependency id="Kephas.Core" version="$refversion$" />
                 <dependency id="Kephas.Composition.Mef" version="$refversion$" />
                 <dependency id="System.Composition" version="1.2.0" />
