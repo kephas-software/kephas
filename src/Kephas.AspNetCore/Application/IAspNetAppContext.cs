@@ -22,7 +22,7 @@ namespace Kephas.AspNetCore.Application
     public interface IAspNetAppContext : IAppContext
     {
         /// <summary>
-        /// Gets the OWIN application builder.
+        /// Gets the application builder.
         /// </summary>
         /// <value>
         /// The application builder.
