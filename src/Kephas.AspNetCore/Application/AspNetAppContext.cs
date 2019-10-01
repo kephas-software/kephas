@@ -31,27 +31,20 @@ namespace Kephas.AspNetCore.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="AspNetAppContext"/> class.
         /// </summary>
-        /// <param name="appBuilder">The application builder.</param>
         /// <param name="hostingEnvironment">The hosting environment.</param>
         /// <param name="configuration">The ASP.NET configuration.</param>
-        /// <param name="ambientServices">The ambient services (optional). If not provided,
+        /// <param name="ambientServices">Optional. The ambient services. If not provided,
         ///                               <see cref="AmbientServices.Instance"/> will be considered.</param>
-        /// <param name="appManifest">The application manifest (optional).</param>
-        /// <param name="appArgs">The application arguments (optional).</param>
-        /// <param name="signalShutdown">Function for signalling the application shutdown (optional).</param>
+        /// <param name="appManifest">Optional. The application manifest.</param>
+        /// <param name="appArgs">Optional. The application arguments.</param>
         public AspNetAppContext(
-            IApplicationBuilder appBuilder,
             IHostingEnvironment hostingEnvironment,
             IConfiguration configuration,
             IAmbientServices ambientServices = null,
             IAppManifest appManifest = null,
-            IAppArgs appArgs = null,
-            Func<IContext, Task<IAppContext>> signalShutdown = null)
-            : base(ambientServices, appManifest, appArgs, signalShutdown)
+            IAppArgs appArgs = null)
+            : base(ambientServices, appManifest, appArgs)
         {
-            Requires.NotNull(appBuilder, nameof(appBuilder));
-
-            this.AppBuilder = appBuilder;
             this.HostingEnvironment = hostingEnvironment;
             this.Configuration = configuration;
         }
@@ -62,7 +55,7 @@ namespace Kephas.AspNetCore.Application
         /// <value>
         /// The application builder.
         /// </value>
-        public IApplicationBuilder AppBuilder { get; }
+        public IApplicationBuilder AppBuilder => this.AmbientServices.GetService<IApplicationBuilder>();
 
         /// <summary>
         /// Gets the hosting environment.
