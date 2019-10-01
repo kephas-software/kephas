@@ -39,10 +39,10 @@ namespace Kephas.Data
         public int DiscriminatorBitLength { get; set; } = 7;
 
         /// <summary>
-        /// Gets or sets the namespace bits.
+        /// Gets or sets the namespace integer value.
         /// </summary>
         /// <value>
-        /// The namespace bits.
+        /// The namespace integer value.
         /// </value>
         public int Namespace { get; set; } = 0;
     }

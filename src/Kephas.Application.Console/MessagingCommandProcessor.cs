@@ -103,7 +103,7 @@ namespace Kephas.Application.Console
         }
 
         /// <summary>
-        /// Handles the unknown property.
+        /// Handles an argument that cannot be matched by name.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="messageType">Type of the message.</param>
