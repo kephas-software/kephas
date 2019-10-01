@@ -27,17 +27,14 @@ namespace Kephas.Application
         ///                               <see cref="AmbientServices.Instance"/> will be considered.</param>
         /// <param name="appManifest">Optional. The application manifest.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        /// <param name="signalShutdown">Function for signaling the application shutdown.</param>
         public AppContext(
             IAmbientServices ambientServices = null,
             IAppManifest appManifest = null,
-            IAppArgs appArgs = null,
-            Func<IContext, Task<IAppContext>> signalShutdown = null)
+            IAppArgs appArgs = null)
             : base(ambientServices)
         {
             this.AppManifest = appManifest ?? this.CompositionContext?.GetExport<IAppManifest>();
             this.AppArgs = appArgs ?? new AppArgs();
-            this.SignalShutdown = signalShutdown;
         }
 
         /// <summary>
@@ -62,11 +59,11 @@ namespace Kephas.Application
         public Exception Exception { get; set; }
 
         /// <summary>
-        /// Gets a function for signalling the application to shutdown.
+        /// Gets or sets the application result.
         /// </summary>
         /// <value>
-        /// The signal shutdown.
+        /// The application result.
         /// </value>
-        public Func<IContext, Task<IAppContext>> SignalShutdown { get; }
+        public object AppResult { get; set; }
     }
 }

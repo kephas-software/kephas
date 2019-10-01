@@ -11,7 +11,6 @@
 namespace Kephas.Application
 {
     using System;
-    using System.Threading.Tasks;
 
     using Kephas.Services;
 
@@ -42,11 +41,14 @@ namespace Kephas.Application
         Exception Exception { get; set; }
 
         /// <summary>
-        /// Gets a function for signalling the application to shutdown.
+        /// Gets or sets the application result.
         /// </summary>
+        /// <remarks>
+        /// For console applications this is typically the integer return code.
+        /// </remarks>
         /// <value>
-        /// The signal shutdown.
+        /// The application result.
         /// </value>
-        Func<IContext, Task<IAppContext>> SignalShutdown { get; }
+        object AppResult { get; set; }
     }
 }
