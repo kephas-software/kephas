@@ -17,6 +17,7 @@ namespace Kephas.Messaging.Events
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Composition;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Contract for the shared application service handling in-process publish/subscribe .
@@ -57,7 +58,7 @@ namespace Kephas.Messaging.Events
         /// <typeparam name="TEvent">Type of the event.</typeparam>
         /// <param name="eventHub">The eventHub to act on.</param>
         /// <param name="callback">The callback.</param>
-        /// <param name="messageTypeMatching">The message type matching (optional).</param>
+        /// <param name="messageTypeMatching">Optional. The message type matching.</param>
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
@@ -72,11 +73,43 @@ namespace Kephas.Messaging.Events
 
             return eventHub.Subscribe(
                 new MessageMatch
-                    {
-                        MessageType = typeof(TEvent),
-                        MessageTypeMatching = messageTypeMatching,
-                    },
+                {
+                    MessageType = typeof(TEvent),
+                    MessageTypeMatching = messageTypeMatching,
+                },
                 (e, ctx, token) => callback((TEvent)e, ctx, token));
+        }
+
+        /// <summary>
+        /// Subscribes to the event with the provided type.
+        /// </summary>
+        /// <typeparam name="TEvent">Type of the event.</typeparam>
+        /// <param name="eventHub">The eventHub to act on.</param>
+        /// <param name="callback">The callback.</param>
+        /// <param name="messageTypeMatching">Optional. The message type matching.</param>
+        /// <returns>
+        /// An IEventSubscription.
+        /// </returns>
+        public static IEventSubscription Subscribe<TEvent>(
+            this IEventHub eventHub,
+            Action<TEvent, IContext> callback,
+            MessageTypeMatching messageTypeMatching = MessageTypeMatching.Type)
+            where TEvent : class
+        {
+            Requires.NotNull(eventHub, nameof(eventHub));
+            Requires.NotNull(callback, nameof(callback));
+
+            return eventHub.Subscribe(
+                new MessageMatch
+                {
+                    MessageType = typeof(TEvent),
+                    MessageTypeMatching = messageTypeMatching,
+                },
+                (e, ctx, token) =>
+                {
+                    callback((TEvent)e, ctx);
+                    return TaskHelper.CompletedTask;
+                });
         }
     }
 }
