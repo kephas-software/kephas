@@ -75,6 +75,8 @@ namespace Kephas.Application
             string[] rawAppArgs = null,
             CancellationToken cancellationToken = default)
         {
+            this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
+
             this.InitializePrerequisites(rawAppArgs);
 
             await this.InitializeAppManagerAsync(this.AppContext, cancellationToken).PreserveThreadContext();
@@ -116,20 +118,22 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Initializes the application prerequisites: the ambient services, the application context registration, the logger, other.
+        /// Initializes the application prerequisites: the ambient services, the application context
+        /// registration, the logger, other.
         /// </summary>
         /// <param name="rawAppArgs">The application arguments.</param>
-        protected virtual void InitializePrerequisites(string[] rawAppArgs)
+        /// <returns>
+        /// True if the initialization was performed, false if it was ignored because of subsequent calls.
+        /// </returns>
+        protected virtual bool InitializePrerequisites(string[] rawAppArgs)
         {
             if (this.prerequisitesInitialized)
             {
-                return;
+                return false;
             }
 
             try
             {
-                this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
-
                 this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_ConfiguringAmbientServices_Message);
 
                 // require the AppContext to be computed each time, so that if it is called
@@ -143,7 +147,9 @@ namespace Kephas.Application
 
                 this.Logger = this.Logger ?? this.AmbientServices.GetLogger(this.GetType());
 
-                // it is important to create the app context before initializing the application manager.
+                // it is important to create the app context before initializing the application manager
+                // and after configuring the ambient services and the logger, as it may
+                // use registered services.
                 this.AppContext = this.CreateAppContext(this.AmbientServices);
             }
             catch (Exception ex)
@@ -156,7 +162,7 @@ namespace Kephas.Application
                 throw;
             }
 
-            this.prerequisitesInitialized = true;
+            return this.prerequisitesInitialized = true;
         }
 
         /// <summary>
