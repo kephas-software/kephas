@@ -49,7 +49,7 @@ namespace Kephas.Serialization.Json.Tests
 
             var serializedObj = await serializationService.JsonSerializeAsync(obj);
 
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace Kephas.Serialization.Json.Tests
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
         }
 
         [Test]
@@ -75,11 +75,11 @@ namespace Kephas.Serialization.Json.Tests
             var obj = new TestEntity
                           {
                               Name = "John Doe",
-                              PersonalSite = new Uri("http://site.com/my-site")
+                              PersonalSite = new Uri("http://site.com/my-site"),
                           };
             var serializedObj = serializer.Serialize(obj);
 
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}", serializedObj);
         }
 
         [Test]
@@ -90,13 +90,13 @@ namespace Kephas.Serialization.Json.Tests
             var obj = new TestEntity
             {
                 Name = "John Doe",
-                PersonalSite = new Uri("http://site.com/my-site")
+                PersonalSite = new Uri("http://site.com/my-site"),
             };
             var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
             var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
 
             Assert.AreEqual(
-                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
+                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
                     .Replace("\r\n", Environment.NewLine),
                 serializedObj);
         }
@@ -109,13 +109,13 @@ namespace Kephas.Serialization.Json.Tests
             var obj = new TestEntity
                           {
                               Name = "John Doe",
-                              PersonalSite = new Uri("http://site.com/my-site")
+                              PersonalSite = new Uri("http://site.com/my-site"),
                           };
             var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
             var serializedObj = serializer.Serialize(obj, serializationContext);
 
             Assert.AreEqual(
-                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
+                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
                     .Replace("\r\n", Environment.NewLine),
                 serializedObj);
         }
@@ -131,7 +131,7 @@ namespace Kephas.Serialization.Json.Tests
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.Json.Tests"",""description"":""John Doe""}", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity"",""description"":""John Doe""}", serializedObj);
         }
 
         [Test, Ignore("The solution of deserializing objects by default in dictionaries still pending... Try wrapping the resulted IDictionary<string, JToken> into a IDictionary<string, object>.")]
@@ -224,6 +224,25 @@ namespace Kephas.Serialization.Json.Tests
             var testEntity = (ExpandoEntity)obj;
 
             Assert.AreEqual("John Doe", testEntity.Description);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_with_in_string_provided_type_no_assembly_name()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe""}";
+            var context = Substitute.For<ISerializationContext>();
+            context.MediaType.Returns(typeof(JsonMediaType));
+            context.RootObjectType.Returns(typeof(TestEntity));
+            context.RootObjectFactory.Returns((Func<object>)null);
+            var obj = await serializer.DeserializeAsync(serializedObj, context);
+
+            Assert.IsInstanceOf<TestEntity>(obj);
+
+            var testEntity = (TestEntity)obj;
+
+            Assert.AreEqual("John Doe", testEntity.Name);
         }
 
         [Test]

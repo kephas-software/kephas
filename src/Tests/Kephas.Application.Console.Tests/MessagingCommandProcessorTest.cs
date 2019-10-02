@@ -43,7 +43,7 @@ namespace Kephas.Application.Console.Tests
             var helpResponse = (HelpResponseMessage)response;
             Assert.Contains("Help", helpResponse.Command as ICollection);
             Assert.Contains("Ping", helpResponse.Command as ICollection);
-            Assert.Contains("PingBack", helpResponse.Command as ICollection);
+            Assert.Contains("Quit", helpResponse.Command as ICollection);
             Assert.AreEqual("Please provide one command name to see the information about that command. Example: help command=help.", helpResponse.Description);
         }
 
