@@ -48,8 +48,25 @@ namespace Kephas.Serialization.Json
         /// </returns>
         public override Type BindToType(string assemblyName, string typeName)
         {
-            return this.typeResolver.ResolveType($"{typeName}, {assemblyName}", throwOnNotFound: false)
+            var qualifiedTypeName = string.IsNullOrEmpty(assemblyName)
+                                        ? typeName
+                                        : $"{typeName}, {assemblyName}";
+            return this.typeResolver.ResolveType(qualifiedTypeName, throwOnNotFound: false)
                    ?? base.BindToType(assemblyName, typeName);
+        }
+
+        /// <summary>
+        /// When overridden in a derived class, controls the binding of a serialized object to a type.
+        /// </summary>
+        /// <param name="serializedType">The type of the object the formatter creates a new instance of.</param>
+        /// <param name="assemblyName">[out] Specifies the <see cref="T:System.Reflection.Assembly" />
+        ///                            name of the serialized object.</param>
+        /// <param name="typeName">[out] Specifies the <see cref="T:System.Type" /> name of the
+        ///                        serialized object.</param>
+        public override void BindToName(Type serializedType, out string assemblyName, out string typeName)
+        {
+            base.BindToName(serializedType, out _, out typeName);
+            assemblyName = null;
         }
     }
 }
