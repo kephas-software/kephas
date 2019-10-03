@@ -190,9 +190,9 @@ namespace Kephas.Application
         /// <param name="appVersion">The application version.</param>
         protected virtual void InitializeAppProperties(Assembly entryAssembly, string appId, string appVersion)
         {
-            this[AppIdKey] = appId = string.IsNullOrEmpty(appId) ? entryAssembly.GetName().Name : appId;
+            this[AppIdKey] = appId = string.IsNullOrEmpty(appId) ? (entryAssembly?.GetName().Name ?? "App") : appId;
             this[AppInstanceIdKey] = $"{appId}-{Guid.NewGuid():N}";
-            this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? entryAssembly.GetName().Version.ToString() : appVersion;
+            this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? (entryAssembly?.GetName().Version.ToString() ?? "0.0.0.0") : appVersion;
         }
 
         /// <summary>
