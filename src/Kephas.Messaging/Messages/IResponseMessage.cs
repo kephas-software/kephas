@@ -15,7 +15,7 @@ namespace Kephas.Messaging.Messages
     /// <summary>
     /// Interface for a simple response message.
     /// </summary>
-    public interface IResponseMessage : IMessage
+    public interface IResponseMessage : IResponse
     {
         /// <summary>
         /// Gets or sets the severity.

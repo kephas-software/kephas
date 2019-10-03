@@ -34,7 +34,7 @@ namespace Kephas.Application.Console.Endpoints
     /// <summary>
     /// A help response message.
     /// </summary>
-    public class HelpResponseMessage : IMessage
+    public class HelpResponseMessage : IResponse
     {
         /// <summary>
         /// Gets or sets the command.

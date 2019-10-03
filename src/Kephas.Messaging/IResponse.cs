@@ -1,19 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EmptyResponseMessage.cs" company="Kephas Software SRL">
+// <copyright file="IResponse.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the null message class.
+//   Declares the IMessageResponse interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Messages
+namespace Kephas.Messaging
 {
     /// <summary>
-    /// An empty message.
+    /// Marker interface for message responses.
     /// </summary>
-    public class EmptyResponseMessage : IResponse
+    public interface IResponse : IMessage
     {
     }
 }

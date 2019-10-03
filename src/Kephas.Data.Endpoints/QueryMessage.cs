@@ -38,7 +38,7 @@ namespace Kephas.Data.Endpoints
     /// <summary>
     /// A query response message.
     /// </summary>
-    public class QueryResponseMessage : IMessage
+    public class QueryResponseMessage : IResponse
     {
         /// <summary>
         /// Gets or sets the entities.
