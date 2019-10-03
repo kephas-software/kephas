@@ -41,5 +41,14 @@ namespace Kephas.Core.Tests.Application
 
             Assert.AreEqual(2, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
         }
+
+        [Test]
+        public void GetAppId_and_version()
+        {
+            var appEnv = new DynamicAppRuntime(appId: "hello-app", appVersion: "1.0.0-beta");
+
+            Assert.AreEqual("hello-app", appEnv.GetAppId());
+            Assert.AreEqual("1.0.0-beta", appEnv.GetAppVersion());
+        }
     }
 }
