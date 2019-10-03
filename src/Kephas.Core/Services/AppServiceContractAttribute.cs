@@ -17,7 +17,6 @@ namespace Kephas.Services
     using System.Collections.ObjectModel;
 
     using Kephas.Composition;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services.Reflection;
 
     /// <summary>
@@ -47,6 +46,7 @@ namespace Kephas.Services
                       typeof(ProcessingPriorityAttribute),
                       typeof(OverridePriorityAttribute),
                       typeof(ServiceNameAttribute),
+                      typeof(InitializationStyleAttribute),
                   };
 
         /// <summary>

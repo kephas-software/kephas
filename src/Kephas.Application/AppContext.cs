@@ -11,7 +11,6 @@
 namespace Kephas.Application
 {
     using System;
-    using System.Threading.Tasks;
 
     using Kephas.Services;
 
@@ -23,24 +22,23 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="AppContext"/> class.
         /// </summary>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided,
-        ///                               <see cref="AmbientServices.Instance"/> will be considered.</param>
-        /// <param name="appManifest">Optional. The application manifest.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="appRuntime">Optional. The application runtime.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public AppContext(
-            IAmbientServices ambientServices = null,
-            IAppManifest appManifest = null,
+            IAmbientServices ambientServices,
+            IAppRuntime appRuntime = null,
             IAppArgs appArgs = null)
             : base(ambientServices)
         {
-            this.AppManifest = appManifest ?? this.CompositionContext?.GetExport<IAppManifest>();
+            this.AppRuntime = appRuntime ?? this.AmbientServices?.AppRuntime;
             this.AppArgs = appArgs ?? new AppArgs();
         }
 
         /// <summary>
-        /// Gets the application manifest.
+        /// Gets the application runtime.
         /// </summary>
-        public IAppManifest AppManifest { get; }
+        public IAppRuntime AppRuntime { get; }
 
         /// <summary>
         /// Gets the application arguments passed typically as command line arguments.

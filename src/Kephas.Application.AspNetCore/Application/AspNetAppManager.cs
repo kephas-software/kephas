@@ -16,8 +16,8 @@ namespace Kephas.Application.AspNetCore.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Application.Composition;
     using Kephas.Application.AspNetCore.Resources;
+    using Kephas.Application.Composition;
     using Kephas.Composition;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
@@ -32,21 +32,21 @@ namespace Kephas.Application.AspNetCore.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="AspNetAppManager"/> class.
         /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="compositionContext">The composition context.</param>
         /// <param name="serviceBehaviorProvider">The service behavior provider.</param>
         /// <param name="appLifecycleBehaviorFactories">The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">The feature manager factories.</param>
         /// <param name="featureLifecycleBehaviorFactories">The feature lifecycle behavior factories.</param>
         public AspNetAppManager(
-            IAppManifest appManifest,
+            IAppRuntime appRuntime,
             ICompositionContext compositionContext,
             IServiceBehaviorProvider serviceBehaviorProvider,
             ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories,
             ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> featureLifecycleBehaviorFactories)
             : base(
-                appManifest,
+                appRuntime,
                 compositionContext,
                 serviceBehaviorProvider,
                 appLifecycleBehaviorFactories,

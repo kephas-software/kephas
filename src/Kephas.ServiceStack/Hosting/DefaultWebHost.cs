@@ -37,9 +37,9 @@ namespace Kephas.ServiceStack.Hosting
 #endif
     {
         /// <summary>
-        /// The application manifest.
+        /// The application runtime.
         /// </summary>
-        private readonly IAppManifest appManifest;
+        private readonly IAppRuntime appRuntime;
 
         /// <summary>
         /// Context for the composition.
@@ -66,18 +66,18 @@ namespace Kephas.ServiceStack.Hosting
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultWebHost"/> class.
         /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="endpointServiceProvider">The endpoint service provider.</param>
         /// <param name="hostConfiguratorFactories">The host configurator factories.</param>
         public DefaultWebHost(
-            IAppManifest appManifest,
+            IAppRuntime appRuntime,
             ICompositionContext compositionContext,
             IEndpointServiceProvider endpointServiceProvider,
             ICollection<IExportFactory<IHostConfigurator, EndpointMetadata>> hostConfiguratorFactories)
             : base(endpointServiceProvider.ServiceName, endpointServiceProvider.ServiceAssemblies)
         {
-            this.appManifest = appManifest;
+            this.appRuntime = appRuntime;
             this.compositionContext = compositionContext;
             this.endpointServiceProvider = endpointServiceProvider;
             this.hostConfiguratorFactories = hostConfiguratorFactories;
@@ -102,7 +102,7 @@ namespace Kephas.ServiceStack.Hosting
         public override void Configure(Container container)
         {
             var hostConfigurators = (from s in this.hostConfiguratorFactories
-                                     where s.Metadata.RequiredFeature == null || this.appManifest.ContainsFeature(s.Metadata.RequiredFeature)
+                                     where s.Metadata.RequiredFeature == null || this.appRuntime.ContainsFeature(s.Metadata.RequiredFeature)
                                      orderby s.Metadata.ProcessingPriority
                                      select s.CreateExportedValue()).ToList();
             this.Logger.Info("Endpoint configurators: " + string.Join(", ", hostConfigurators.Select(c => c.GetType().Name)));
@@ -137,7 +137,7 @@ namespace Kephas.ServiceStack.Hosting
             this.Start(configuredBaseUrls);
 
             // show welcome messages
-            this.Logger.Info($"Welcome to {this.appManifest.AppId}.");
+            this.Logger.Info($"Welcome to {this.appRuntime.GetAppId()}.");
         }
 
         /// <summary>

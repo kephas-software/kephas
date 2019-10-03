@@ -22,7 +22,6 @@
         <dependencies>
             <dependency id="System.ValueTuple" version="4.3.0" />
             <dependency id="Microsoft.CSharp" version="4.3.0" />
-            <dependency id="Kephas.Application" version="$refversion$" />
             <dependency id="Kephas.Core" version="$refversion$" />
         </dependencies>
         <references>

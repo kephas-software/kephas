@@ -23,19 +23,18 @@ namespace Kephas.Orchestration.Application
         /// <summary>
         /// An IAppManifest extension method that gets application information.
         /// </summary>
-        /// <param name="appManifest">The appManifest to act on.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <returns>
         /// The application information.
         /// </returns>
-        public static IRuntimeAppInfo GetAppInfo(this IAppManifest appManifest, IAppRuntime appRuntime)
+        public static IRuntimeAppInfo GetAppInfo(this IAppRuntime appRuntime)
         {
             return new RuntimeAppInfo
                        {
-                           AppId = appManifest.AppId,
-                           AppInstanceId = appManifest.AppInstanceId,
+                           AppId = appRuntime.GetAppId(),
+                           AppInstanceId = appRuntime.GetAppInstanceId(),
                            ProcessId = Process.GetCurrentProcess().Id,
-                           Features = appManifest.Features.Select(f => f.Name).ToArray(),
+                           Features = appRuntime.GetFeatures().Select(f => f.Name).ToArray(),
                            HostName = appRuntime.GetHostName(),
                            HostAddress = appRuntime.GetHostAddress().ToString(),
                        };

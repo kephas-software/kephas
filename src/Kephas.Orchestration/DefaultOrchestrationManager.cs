@@ -50,17 +50,14 @@ namespace Kephas.Orchestration
         /// <param name="eventHub">The event hub.</param>
         /// <param name="messageBroker">The message broker.</param>
         public DefaultOrchestrationManager(
-            IAppManifest appManifest,
             IAppRuntime appRuntime,
             IEventHub eventHub,
             IMessageBroker messageBroker)
         {
-            Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(eventHub, nameof(eventHub));
             Requires.NotNull(messageBroker, nameof(messageBroker));
 
-            this.AppManifest = appManifest;
             this.AppRuntime = appRuntime;
             this.EventHub = eventHub;
             this.MessageBroker = messageBroker;
@@ -81,14 +78,6 @@ namespace Kephas.Orchestration
         /// The application runtime.
         /// </value>
         public IAppRuntime AppRuntime { get; private set; }
-
-        /// <summary>
-        /// Gets the application manifest.
-        /// </summary>
-        /// <value>
-        /// The application manifest.
-        /// </value>
-        public IAppManifest AppManifest { get; }
 
         /// <summary>
         /// Gets the event hub.
@@ -271,7 +260,7 @@ namespace Kephas.Orchestration
                 return TaskHelper.CompletedTask;
             }
 
-            if (appEvent.AppInfo.AppId == this.AppManifest.AppId && appEvent.AppInfo.AppInstanceId == this.AppManifest.AppInstanceId)
+            if (appEvent.AppInfo.AppId == this.AppRuntime.GetAppId() && appEvent.AppInfo.AppInstanceId == this.AppRuntime.GetAppInstanceId())
             {
                 this.timer = new Timer(this.OnHeartbeat, context, this.TimerDueTime, this.TimerPeriod);
             }
@@ -345,7 +334,7 @@ namespace Kephas.Orchestration
         {
             return new AppHeartbeatEvent
             {
-                AppInfo = this.AppManifest.GetAppInfo(this.AppRuntime),
+                AppInfo = this.AppRuntime.GetAppInfo(),
                 Timestamp = DateTimeOffset.Now,
             };
         }

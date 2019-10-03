@@ -26,13 +26,11 @@ namespace Kephas.Core.Tests.Application
         public void Constructor_default_AppManifest_is_from_di_container()
         {
             var ambientServices = Substitute.For<IAmbientServices>();
-            var container = Substitute.For<ICompositionContext>();
-            var appManifest = Substitute.For<IAppManifest>();
+            var appRuntime = Substitute.For<IAppRuntime>();
 
-            ambientServices.CompositionContainer.Returns(container);
-            container.GetExport<IAppManifest>().Returns(appManifest);
+            ambientServices.AppRuntime.Returns(appRuntime);
             var appContext = new AppContext(ambientServices);
-            Assert.AreSame(appManifest, appContext.AppManifest);
+            Assert.AreSame(appRuntime, appContext.AppRuntime);
         }
     }
 }

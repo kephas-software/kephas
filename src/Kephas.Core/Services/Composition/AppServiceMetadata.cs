@@ -15,6 +15,7 @@ namespace Kephas.Services.Composition
 
     using Kephas.Collections;
     using Kephas.Composition.Metadata;
+    using Kephas.Services;
 
     /// <summary>
     /// Metadata for application services.
@@ -38,6 +39,7 @@ namespace Kephas.Services.Composition
             this.ProcessingPriority = this.GetMetadataValue<ProcessingPriorityAttribute, int>(metadata);
             this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, int>(metadata);
             this.ServiceName = this.GetMetadataValue<ServiceNameAttribute, string>(metadata);
+            this.InitializationStyle = (InitializationStyle?)metadata.TryGetValue(nameof(this.InitializationStyle));
             this.AppServiceImplementationType = (Type)metadata.TryGetValue(nameof(this.AppServiceImplementationType));
         }
 
@@ -47,12 +49,14 @@ namespace Kephas.Services.Composition
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. The name of the service.</param>
-        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        /// <param name="initializationStyle">Optional. The initialization style.</param>
+        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, string serviceName = null, InitializationStyle initializationStyle = default)
             : base(null)
         {
             this.ProcessingPriority = processingPriority;
             this.OverridePriority = overridePriority;
             this.ServiceName = serviceName;
+            this.InitializationStyle = initializationStyle;
         }
 
         /// <summary>
@@ -80,12 +84,28 @@ namespace Kephas.Services.Composition
         public string ServiceName { get; set; }
 
         /// <summary>
+        /// Gets the initialization style.
+        /// </summary>
+        /// <value>
+        /// The initialization style.
+        /// </value>
+        public InitializationStyle? InitializationStyle { get; }
+
+        /// <summary>
         /// Gets or sets the concrete service type implementing the service contract.
         /// </summary>
         /// <value>
         /// The type of the service.
         /// </value>
         public Type AppServiceImplementationType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the service dependencies.
+        /// </summary>
+        /// <value>
+        /// The service dependencies.
+        /// </value>
+        public IEnumerable<Type> Dependencies { get; set; }
 
         /// <summary>
         /// Returns a string that represents the current object.

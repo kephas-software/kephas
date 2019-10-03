@@ -21,7 +21,6 @@
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
         <dependencies>
             <group>
-                <dependency id="Kephas.Application" version="$refversion$" />
                 <dependency id="Kephas.Core" version="$refversion$" />
                 <dependency id="Npgsql" version="3.2.2" />
             </group>

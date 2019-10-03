@@ -14,7 +14,7 @@ namespace Kephas.Application
     using System.Collections.Generic;
     using System.Net;
     using System.Reflection;
-
+    using System.Runtime.CompilerServices;
     using Kephas.Dynamic;
 
     /// <summary>
@@ -54,5 +54,41 @@ namespace Kephas.Application
         /// The host name.
         /// </returns>
         string GetHostName();
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IAppRuntime"/>.
+    /// </summary>
+    public static class AppRuntimeExtensions
+    {
+        /// <summary>
+        /// Gets the identifier of the application.
+        /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
+        /// <returns>
+        /// The identifier of the application.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetAppId(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppIdKey] as string;
+
+        /// <summary>
+        /// Gets the version of the application.
+        /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
+        /// <returns>
+        /// The version of the application.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetAppVersion(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppVersionKey] as string;
+
+        /// <summary>
+        /// Gets the identifier of the application instance.
+        /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
+        /// <returns>
+        /// The identifier of the application instance.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetAppInstanceId(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppInstanceIdKey] as string;
     }
 }

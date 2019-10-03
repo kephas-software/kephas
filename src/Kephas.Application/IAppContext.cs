@@ -20,9 +20,9 @@ namespace Kephas.Application
     public interface IAppContext : IContext
     {
         /// <summary>
-        /// Gets the application manifest.
+        /// Gets the application runtime.
         /// </summary>
-        IAppManifest AppManifest { get; }
+        IAppRuntime AppRuntime { get; }
 
         /// <summary>
         /// Gets the application arguments passed typically as command line arguments.

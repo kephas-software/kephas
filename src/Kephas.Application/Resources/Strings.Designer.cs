@@ -59,5 +59,14 @@ namespace Kephas.Application.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided context cannot be converted to a {0}..
+        /// </summary>
+        internal static string AppLifecycleBehaviorBase_MismatchedAppContext_Exception {
+            get {
+                return ResourceManager.GetString("AppLifecycleBehaviorBase_MismatchedAppContext_Exception", resourceCulture);
+            }
+        }
     }
 }

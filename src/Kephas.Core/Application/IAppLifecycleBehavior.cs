@@ -36,7 +36,7 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
+        Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous initialization.
@@ -46,7 +46,7 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
+        Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous finalization.
@@ -56,20 +56,20 @@ namespace Kephas.Application
         /// Caution! Interrupting the finalization may cause the application to remain in an undefined state.
         /// </remarks>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
+        Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
-        Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default);
+        Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default);
     }
 }

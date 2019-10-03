@@ -46,7 +46,7 @@ namespace Kephas.Core.Tests.Application
 
             Assert.Throws<InvalidOperationException>(() =>
                 new DefaultAppManager(
-                    Substitute.For<IAppManifest>(),
+                    Substitute.For<IAppRuntime>(),
                     this.GetCompositionContext(),
                     this.GetServiceBehaviorProvider(),
                     new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -92,7 +92,7 @@ namespace Kephas.Core.Tests.Application
                 .AndDoes(_ => order.Add(22));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new[]
@@ -134,7 +134,7 @@ namespace Kephas.Core.Tests.Application
                 .AndDoes(_ => order.Add(2));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -173,7 +173,7 @@ namespace Kephas.Core.Tests.Application
                 .AndDoes(_ => order.Add(3));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -203,7 +203,7 @@ namespace Kephas.Core.Tests.Application
             var featureManager3 = this.CreateFeatureManager(initialization: _ => order.Add(3));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -234,9 +234,9 @@ namespace Kephas.Core.Tests.Application
             var factory2 = this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "3" }, isRequired: false);
             var factory3 = this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", isRequired: true);
 
-            var appManifest = Substitute.For<AppManifestBase>("app-id", new Version(1, 2, 3, 4), (IEnumerable<IFeatureInfo>)null);
+            var appRuntime = Substitute.For<AppRuntimeBase>();
             var appManager = new DefaultAppManager(
-                appManifest,
+                appRuntime,
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -245,9 +245,9 @@ namespace Kephas.Core.Tests.Application
 
             await appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None);
 
-            Assert.AreEqual(3, appManifest.Features.Count());
+            Assert.AreEqual(3, appRuntime.GetFeatures().Count());
 
-            var featureList = appManifest.Features.ToList();
+            var featureList = appRuntime.GetFeatures().ToList();
             Assert.AreEqual("3", featureList[0].Name);
             Assert.AreEqual("1", featureList[1].Name);
             Assert.AreEqual("2", featureList[2].Name);
@@ -273,7 +273,7 @@ namespace Kephas.Core.Tests.Application
                 .Do(ci => sb.AppendLine($"{ci.Arg<LogLevel>()}: {ci.Arg<string>()} ({ci.Arg<Exception>()?.GetType().Name})"));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -308,7 +308,7 @@ namespace Kephas.Core.Tests.Application
                 .Do(ci => sb.AppendLine($"{ci.Arg<LogLevel>()}: {ci.Arg<string>()} ({ci.Arg<Exception>()?.GetType().Name})"));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -346,7 +346,7 @@ namespace Kephas.Core.Tests.Application
                 _ => order.Add("After2"));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -396,7 +396,7 @@ namespace Kephas.Core.Tests.Application
                     ci => behaviors.Add("AfterInit 3"));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -465,7 +465,7 @@ namespace Kephas.Core.Tests.Application
                 .AndDoes(_ => order.Add(22));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new[]
@@ -507,7 +507,7 @@ namespace Kephas.Core.Tests.Application
                 .AndDoes(_ => order.Add(2));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -546,7 +546,7 @@ namespace Kephas.Core.Tests.Application
                 .AndDoes(_ => order.Add(3));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -576,7 +576,7 @@ namespace Kephas.Core.Tests.Application
             var finalizer3 = this.CreateFeatureManager(finalization: _ => order.Add(3));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -618,7 +618,7 @@ namespace Kephas.Core.Tests.Application
                     afterFinalize: ci => behaviors.Add("AfterFin 3"));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
@@ -672,7 +672,7 @@ namespace Kephas.Core.Tests.Application
                 afterFinalize:_ => order.Add("After2"));
 
             var appManager = new DefaultAppManager(
-                Substitute.For<IAppManifest>(),
+                Substitute.For<IAppRuntime>(),
                 this.GetCompositionContext(),
                 this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),

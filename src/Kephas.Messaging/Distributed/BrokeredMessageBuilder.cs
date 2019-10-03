@@ -34,26 +34,26 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessageBuilder"/> class.
         /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="authenticationService">The authentication service.</param>
         [CompositionConstructor]
-        public BrokeredMessageBuilder(IAppManifest appManifest, IAuthenticationService authenticationService)
+        public BrokeredMessageBuilder(IAppRuntime appRuntime, IAuthenticationService authenticationService)
         {
-            Requires.NotNull(appManifest, nameof(appManifest));
+            Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(authenticationService, nameof(authenticationService));
 
-            this.AppManifest = appManifest;
+            this.AppRuntime = appRuntime;
             this.AuthenticationService = authenticationService;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessageBuilder"/> class.
         /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="authenticationService">The authentication service.</param>
         /// <param name="context">The context for initialization.</param>
-        public BrokeredMessageBuilder(IAppManifest appManifest, IAuthenticationService authenticationService, IContext context)
-            : this(appManifest, authenticationService)
+        public BrokeredMessageBuilder(IAppRuntime appRuntime, IAuthenticationService authenticationService, IContext context)
+            : this(appRuntime, authenticationService)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -82,9 +82,9 @@ namespace Kephas.Messaging.Distributed
         public BrokeredMessage BrokeredMessage => this.brokeredMessage;
 
         /// <summary>
-        /// Gets the application manifest.
+        /// Gets the application runtime.
         /// </summary>
-        public IAppManifest AppManifest { get; }
+        public IAppRuntime AppRuntime { get; }
 
         /// <summary>
         /// Gets the authentication service.
@@ -482,7 +482,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual IEndpoint CreateEndpoint(string senderId)
         {
-            return new Endpoint(this.AppManifest.AppId, this.AppManifest.AppInstanceId, senderId, scheme: this.BrokeredMessage?.Channel);
+            return new Endpoint(this.AppRuntime.GetAppId(), this.AppRuntime.GetAppInstanceId(), senderId, scheme: this.BrokeredMessage?.Channel);
         }
 
         /// <summary>

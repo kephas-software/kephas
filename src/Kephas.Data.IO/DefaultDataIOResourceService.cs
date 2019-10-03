@@ -13,8 +13,6 @@ namespace Kephas.Data.IO
     using System.IO;
     using System.Security.Principal;
 
-    using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -24,35 +22,16 @@ namespace Kephas.Data.IO
     public class DefaultDataIOResourceService : IDataIOResourceService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultDataIOResourceService"/> class.
-        /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
-        public DefaultDataIOResourceService(IAppManifest appManifest)
-        {
-            Requires.NotNull(appManifest, nameof(appManifest));
-
-            this.AppManifest = appManifest;
-        }
-
-        /// <summary>
-        /// Gets the application manifest.
-        /// </summary>
-        /// <value>
-        /// The application manifest.
-        /// </value>
-        public IAppManifest AppManifest { get; }
-
-        /// <summary>
         /// Gets the data export path for the provided identity.
         /// </summary>
         /// <param name="identity">The identity.</param>
         /// <returns>
         /// The data export path.
         /// </returns>
-        public string GetResourcePath(IIdentity identity)
+        public virtual string GetResourcePath(IIdentity identity)
         {
             // TODO use a config file setting instead of the temp folder.
-            var path = Path.Combine(Path.GetTempPath(), this.AppManifest.AppId);
+            var path = Path.GetTempPath();
             var userName = identity?.Name;
             if (string.IsNullOrEmpty(userName))
             {

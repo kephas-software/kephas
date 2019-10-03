@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void OneWay()
         {
-            var builder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
+            var builder = new BrokeredMessageBuilder(Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
             builder.Initialize(null);
             var message = builder.OneWay().BrokeredMessage;
 
@@ -35,7 +35,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void WithContent()
         {
-            var builder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
+            var builder = new BrokeredMessageBuilder(Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
             builder.Initialize(null);
             var content = Substitute.For<IMessage>();
             var message = builder.WithContent(content).BrokeredMessage;
@@ -46,11 +46,11 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void WithSender_sender_id()
         {
-            var appManifest = Substitute.For<IAppManifest>();
-            appManifest.AppId.Returns("app-id");
-            appManifest.AppInstanceId.Returns("app-instance-id");
+            var appRuntime = Substitute.For<IAppRuntime>();
+            appRuntime[AppRuntimeBase.AppIdKey].Returns("app-id");
+            appRuntime[AppRuntimeBase.AppInstanceIdKey].Returns("app-instance-id");
 
-            var builder = new BrokeredMessageBuilder(appManifest, Substitute.For<IAuthenticationService>());
+            var builder = new BrokeredMessageBuilder(appRuntime, Substitute.For<IAuthenticationService>());
             builder.Initialize(null);
             var message = builder.WithSender("123").BrokeredMessage;
 

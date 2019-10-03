@@ -31,6 +31,21 @@ namespace Kephas.Application
     public abstract class AppRuntimeBase : Expando, IAppRuntime, ILoggable
     {
         /// <summary>
+        /// The application identifier key.
+        /// </summary>
+        public const string AppIdKey = "AppId";
+
+        /// <summary>
+        /// The application instance identifier key.
+        /// </summary>
+        public const string AppInstanceIdKey = "AppInstanceId";
+
+        /// <summary>
+        /// The application version key.
+        /// </summary>
+        public const string AppVersionKey = "AppVersion";
+
+        /// <summary>
         /// A pattern specifying the assembly file search.
         /// </summary>
         protected const string AssemblyFileSearchPattern = "*.dll";
@@ -65,6 +80,10 @@ namespace Kephas.Application
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appLocation = appLocation;
+
+            var appName = Assembly.GetEntryAssembly()?.GetName().Name ?? "App";
+            this[AppIdKey] = appName;
+            this[AppInstanceIdKey] = $"{appName}-{Guid.NewGuid():N}";
         }
 
         /// <summary>

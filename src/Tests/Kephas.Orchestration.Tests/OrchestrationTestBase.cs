@@ -49,7 +49,7 @@ namespace Kephas.Orchestration.Tests
                         new ExportFactory<IBrokeredMessageBuilder>(
                             () =>
                             {
-                                return new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
+                                return new BrokeredMessageBuilder(Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
                             })));
 
             return container;

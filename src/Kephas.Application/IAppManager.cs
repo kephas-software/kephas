@@ -34,11 +34,6 @@ namespace Kephas.Application
     public interface IAppManager
     {
         /// <summary>
-        /// Gets the application manifest.
-        /// </summary>
-        IAppManifest AppManifest { get; }
-
-        /// <summary>
         /// Initializes the application asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>

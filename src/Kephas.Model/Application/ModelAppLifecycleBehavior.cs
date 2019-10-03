@@ -16,12 +16,13 @@ namespace Kephas.Model.Application
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Feature manager for the model.
     /// </summary>
     [ProcessingPriority(Priority.High)]
-    public class ModelAppLifecycleBehavior : AppLifecycleBehaviorBase
+    public class ModelAppLifecycleBehavior : IAppLifecycleBehavior
     {
         /// <summary>
         /// The model space provider.
@@ -47,9 +48,48 @@ namespace Kephas.Model.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
             return this.modelSpaceProvider.InitializeAsync(appContext, cancellationToken);
+        }
+
+        /// <summary>
+        /// Interceptor called after the application completes its asynchronous initialization.
+        /// </summary>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        {
+            return TaskHelper.CompletedTask;
+        }
+
+        /// <summary>
+        /// Interceptor called before the application starts its asynchronous finalization.
+        /// </summary>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        {
+            return TaskHelper.CompletedTask;
+        }
+
+        /// <summary>
+        /// Interceptor called after the application completes its asynchronous finalization.
+        /// </summary>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        {
+            return TaskHelper.CompletedTask;
         }
     }
 }

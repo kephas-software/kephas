@@ -26,7 +26,6 @@ namespace Kephas.Application
     using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
-    using Kephas.Services.Behaviors.Composition;
     using Kephas.Services.Composition;
     using Kephas.Sets;
     using Kephas.Threading.Tasks;
@@ -40,24 +39,24 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAppManager"/> class.
         /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="compositionContext">The ambient services.</param>
         /// <param name="serviceBehaviorProvider">Optional. The service behavior provider.</param>
         /// <param name="appLifecycleBehaviorFactories">Optional. The application lifecycle behavior factories.</param>
         /// <param name="featureManagerFactories">Optional. The feature manager factories.</param>
         /// <param name="featureLifecycleBehaviorFactories">Optional. The feature lifecycle behavior factories.</param>
         public DefaultAppManager(
-            IAppManifest appManifest,
+            IAppRuntime appRuntime,
             ICompositionContext compositionContext,
             IServiceBehaviorProvider serviceBehaviorProvider = null,
             ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories = null,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories = null,
             ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> featureLifecycleBehaviorFactories = null)
         {
-            Requires.NotNull(appManifest, nameof(appManifest));
+            Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
-            this.AppManifest = appManifest;
+            this.AppRuntime = appRuntime;
             this.CompositionContext = compositionContext;
             this.ServiceBehaviorProvider = serviceBehaviorProvider ?? new DefaultServiceBehaviorProvider(compositionContext);
             this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories == null
@@ -75,9 +74,9 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the application manifest.
+        /// Gets the application runtime.
         /// </summary>
-        public IAppManifest AppManifest { get; }
+        public IAppRuntime AppRuntime { get; }
 
         /// <summary>
         /// Gets the composition context.
@@ -132,7 +131,7 @@ namespace Kephas.Application
                 var features = this.FeatureManagerFactories
                     .Select(f => f.Metadata.FeatureInfo)
                     .ToList();
-                this.SetAppManifestFeatures(features);
+                this.SetAppRuntimeFeatures(features);
 
                 await Profiler.WithInfoStopwatchAsync(
                     async () =>
@@ -569,15 +568,12 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Sets the features in the application manifest.
+        /// Sets the features in the application runtime.
         /// </summary>
         /// <param name="features">The features.</param>
-        protected virtual void SetAppManifestFeatures(IList<FeatureInfo> features)
+        protected virtual void SetAppRuntimeFeatures(IList<FeatureInfo> features)
         {
-            if (this.AppManifest is AppManifestBase appManifest)
-            {
-                appManifest.Features = features;
-            }
+            this.AppRuntime[ApplicationExtensions.FeaturesKey] = features;
         }
 
         /// <summary>
@@ -586,7 +582,7 @@ namespace Kephas.Application
         /// <param name="featureInfo">Information describing the feature.</param>
         protected virtual void RemoveFailedAppManifestFeature(FeatureInfo featureInfo)
         {
-            var featureInfoList = this.AppManifest.Features as IList<FeatureInfo>;
+            var featureInfoList = this.AppRuntime.GetFeatures() as IList<FeatureInfo>;
             featureInfoList?.Remove(featureInfo);
         }
 

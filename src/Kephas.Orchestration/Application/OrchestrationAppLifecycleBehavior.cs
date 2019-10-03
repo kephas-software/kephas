@@ -28,8 +28,6 @@ namespace Kephas.Orchestration.Application
     [ProcessingPriority(Priority.Low)]
     public class OrchestrationAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
-        private readonly IAppManifest appManifest;
-
         private readonly IAppRuntime appRuntime;
 
         private readonly IMessageBroker messageBroker;
@@ -41,15 +39,12 @@ namespace Kephas.Orchestration.Application
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageBroker">The application event publisher.</param>
         public OrchestrationAppLifecycleBehavior(
-            IAppManifest appManifest,
             IAppRuntime appRuntime,
             IMessageBroker messageBroker)
         {
-            Requires.NotNull(appManifest, nameof(appManifest));
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(messageBroker, nameof(messageBroker));
 
-            this.appManifest = appManifest;
             this.appRuntime = appRuntime;
             this.messageBroker = messageBroker;
         }
@@ -106,7 +101,7 @@ namespace Kephas.Orchestration.Application
         {
             return new AppStartedEvent
                        {
-                           AppInfo = this.appManifest.GetAppInfo(this.appRuntime),
+                           AppInfo = this.appRuntime.GetAppInfo(),
                            Timestamp = DateTimeOffset.Now,
                        };
         }
@@ -115,7 +110,7 @@ namespace Kephas.Orchestration.Application
         {
             return new AppStoppedEvent
                        {
-                           AppInfo = this.appManifest.GetAppInfo(this.appRuntime),
+                           AppInfo = this.appRuntime.GetAppInfo(),
                            Timestamp = DateTimeOffset.Now,
                        };
         }

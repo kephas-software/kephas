@@ -71,10 +71,9 @@ namespace Kephas.Orchestration.Tests
         public async Task InitializeAsync_Heartbeat()
         {
             var messageBroker = Substitute.For<IMessageBroker>();
-            var appManifest = Substitute.For<IAppManifest>();
-            appManifest.AppId.Returns("hi");
-            appManifest.AppInstanceId.Returns("there");
             var appRuntime = Substitute.For<IAppRuntime>();
+            appRuntime[AppRuntimeBase.AppIdKey].Returns("hi");
+            appRuntime[AppRuntimeBase.AppInstanceIdKey].Returns("there");
             appRuntime.GetHostAddress().Returns(IPAddress.Loopback);
 
             var eventHub = this.CreateEventHub();
@@ -82,7 +81,7 @@ namespace Kephas.Orchestration.Tests
             var compositionContext = this.CreateSubstituteContainer();
             var appContext = new Context(compositionContext);
 
-            var manager = new DefaultOrchestrationManager(appManifest, appRuntime, eventHub, messageBroker);
+            var manager = new DefaultOrchestrationManager(appRuntime, eventHub, messageBroker);
             manager.TimerDueTime = TimeSpan.FromMilliseconds(100);
             manager.TimerPeriod = TimeSpan.FromMilliseconds(100);
 
@@ -102,7 +101,7 @@ namespace Kephas.Orchestration.Tests
 
         private BrokeredMessageBuilder CreateMessageBuilder(IContext context)
         {
-            var builder = new BrokeredMessageBuilder(Substitute.For<IAppManifest>(), Substitute.For<IAuthenticationService>());
+            var builder = new BrokeredMessageBuilder(Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
             builder.Initialize(context);
             return builder;
         }

@@ -98,7 +98,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
                 return new ExportFactory<IBrokeredMessageBuilder>(() =>
                 {
                     var builder = new BrokeredMessageBuilder(
-                        Substitute.For<IAppManifest>(),
+                        Substitute.For<IAppRuntime>(),
                         Substitute.For<IAuthenticationService>(),
                         Substitute.For<IContext>());
                     return builder;
