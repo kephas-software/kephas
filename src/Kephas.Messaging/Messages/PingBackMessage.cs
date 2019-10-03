@@ -12,12 +12,9 @@ namespace Kephas.Messaging.Messages
 {
     using System;
 
-    using Kephas.Model.AttributedModel;
-
     /// <summary>
     /// The "ping back" response.
     /// </summary>
-    [ExcludeFromModel]
     public class PingBackMessage : ResponseMessage
     {
         /// <summary>

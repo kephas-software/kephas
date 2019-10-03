@@ -91,6 +91,7 @@ namespace Kephas.Application.Console
 
         private bool IsMessageType(Type type) => !type.IsAbstract
                                                     && typeof(IMessage).IsAssignableFrom(type)
+                                                    && !typeof(IResponse).IsAssignableFrom(type)
                                                     && !type.Name.EndsWith("ResponseMessage")
                                                     && !typeof(IMessageEnvelope).IsAssignableFrom(type)
                                                     && type.GetCustomAttribute<ExcludeFromModelAttribute>() == null;
