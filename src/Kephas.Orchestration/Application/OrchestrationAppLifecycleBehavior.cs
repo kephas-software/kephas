@@ -35,7 +35,6 @@ namespace Kephas.Orchestration.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="OrchestrationAppLifecycleBehavior"/> class.
         /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageBroker">The application event publisher.</param>
         public OrchestrationAppLifecycleBehavior(

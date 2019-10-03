@@ -16,9 +16,9 @@ namespace Kephas.Orchestration.Application
     using Kephas.Application;
 
     /// <summary>
-    /// Extension methods for <see cref="IAppManifest"/>.
+    /// Extension methods for <see cref="IAppRuntime"/>.
     /// </summary>
-    public static class AppManifestExtensions
+    public static class AppRuntimeExtensions
     {
         /// <summary>
         /// An IAppManifest extension method that gets application information.

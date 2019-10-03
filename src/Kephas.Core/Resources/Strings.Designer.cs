@@ -241,15 +241,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The provided &apos;{0}&apos; assembly is missing the AppManifestAttribute..
-        /// </summary>
-        public static string AppManifestBase_MissingAppManifestAttribute_Exception {
-            get {
-                return ResourceManager.GetString("AppManifestBase_MissingAppManifestAttribute_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot load assembly &apos;{0}&apos;. See the exception for more information..
         /// </summary>
         public static string AppRuntimeBase_CannotLoadAssembly_Exception {

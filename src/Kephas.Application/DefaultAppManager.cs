@@ -315,7 +315,7 @@ namespace Kephas.Application
                     }
 
                     // remove the failed feature from the app manifest.
-                    this.RemoveFailedAppManifestFeature(featureManagerMetadata.FeatureInfo);
+                    this.RemoveFailedAppRuntimeFeature(featureManagerMetadata.FeatureInfo);
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
@@ -577,10 +577,10 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Removes the failed feature from the application manifest.
+        /// Removes the failed feature from the application runtime.
         /// </summary>
         /// <param name="featureInfo">Information describing the feature.</param>
-        protected virtual void RemoveFailedAppManifestFeature(FeatureInfo featureInfo)
+        protected virtual void RemoveFailedAppRuntimeFeature(FeatureInfo featureInfo)
         {
             var featureInfoList = this.AppRuntime.GetFeatures() as IList<FeatureInfo>;
             featureInfoList?.Remove(featureInfo);

@@ -71,9 +71,11 @@ namespace Kephas.Application
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
         ///                                     assemblies.</param>
-        /// <param name="appLocation">Optional. The application location. If not specified, the
-        ///                           current application location is considered.</param>
-        protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null, string appLocation = null)
+        /// <param name="appLocation">Optional. The application location. If not specified, the current
+        ///                           application location is considered.</param>
+        /// <param name="appId">Optional. Identifier for the application.</param>
+        /// <param name="appVersion">Optional. The application version.</param>
+        protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null, string appLocation = null, string appId = null, string appVersion = null)
             : base(isThreadSafe: true)
         {
             this.logManager = logManager ?? new NullLogManager();
@@ -81,9 +83,7 @@ namespace Kephas.Application
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appLocation = appLocation;
 
-            var appName = Assembly.GetEntryAssembly()?.GetName().Name ?? "App";
-            this[AppIdKey] = appName;
-            this[AppInstanceIdKey] = $"{appName}-{Guid.NewGuid():N}";
+            this.InitializeAppProperties(Assembly.GetEntryAssembly(), appId, appVersion);
         }
 
         /// <summary>
@@ -181,6 +181,19 @@ namespace Kephas.Application
         /// The logger.
         /// </returns>
         protected virtual ILogger GetLogger() => this.logManager.GetLogger(this.GetType());
+
+        /// <summary>
+        /// Initializes the application properties: AppId, AppInstanceId, and AppVersion.
+        /// </summary>
+        /// <param name="entryAssembly">The entry assembly.</param>
+        /// <param name="appId">Identifier for the application.</param>
+        /// <param name="appVersion">The application version.</param>
+        protected virtual void InitializeAppProperties(Assembly entryAssembly, string appId, string appVersion)
+        {
+            this[AppIdKey] = appId = string.IsNullOrEmpty(appId) ? entryAssembly.GetName().Name : appId;
+            this[AppInstanceIdKey] = $"{appId}-{Guid.NewGuid():N}";
+            this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? entryAssembly.GetName().Version.ToString() : appVersion;
+        }
 
         /// <summary>
         /// Gets the loaded assemblies.

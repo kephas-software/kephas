@@ -147,9 +147,6 @@
   <data name="TransitionMonitor_AssertIsNotStarted_Exception" xml:space="preserve">
     <value>The {0} of '{1}' is already started.</value>
   </data>
-  <data name="AppManifestBase_MissingAppManifestAttribute_Exception" xml:space="preserve">
-    <value>The provided '{0}' assembly is missing the AppManifestAttribute.</value>
-  </data>
   <data name="GraphBaseOfTNodeValue_AmbiguousMatchForValue_Exception" xml:space="preserve">
     <value>Multiple nodes found for value '{0}'.</value>
   </data>

@@ -27,10 +27,12 @@ namespace Kephas.Application
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
         ///                                     assemblies.</param>
-        /// <param name="appLocation">Optional. The application location. If not specified, the
-        ///                           current application location is considered.</param>
-        public StaticAppRuntime(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null, string appLocation = null)
-            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation)
+        /// <param name="appLocation">Optional. The application location. If not specified, the current
+        ///                           application location is considered.</param>
+        /// <param name="appId">Optional. Identifier for the application.</param>
+        /// <param name="appVersion">Optional. The application version.</param>
+        public StaticAppRuntime(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null, string appLocation = null, string appId = null, string appVersion = null)
+            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation, appId, appVersion)
         {
         }
     }

@@ -31,8 +31,10 @@ namespace Kephas.Application
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="defaultAssemblyFilter">Optional. The default assembly filter.</param>
         /// <param name="appLocation">Optional. The application location.</param>
-        public DynamicAppRuntime(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null, string appLocation = null)
-            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation)
+        /// <param name="appId">Optional. Identifier for the application.</param>
+        /// <param name="appVersion">Optional. The application version.</param>
+        public DynamicAppRuntime(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null, string appLocation = null, string appId = null, string appVersion = null)
+            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation, appId, appVersion)
         {
         }
 

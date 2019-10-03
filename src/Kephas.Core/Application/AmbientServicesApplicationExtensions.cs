@@ -33,14 +33,25 @@ namespace Kephas.Application
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
         /// <param name="appLocation">Optional. The application location.</param>
+        /// <param name="appId">Optional. Identifier for the application.</param>
+        /// <param name="appVersion">Optional. The application version.</param>
+        /// <param name="config">Optional. The application runtime configuration callback.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static IAmbientServices WithDynamicAppRuntime(this IAmbientServices ambientServices, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
+        public static IAmbientServices WithDynamicAppRuntime(
+            this IAmbientServices ambientServices,
+            Func<AssemblyName, bool> assemblyFilter = null,
+            string appLocation = null,
+            string appId = null,
+            string appVersion = null,
+            Action<DynamicAppRuntime> config = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices.WithAppRuntime(new DynamicAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation));
+            var appRuntime = new DynamicAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation, appId, appVersion);
+            config?.Invoke(appRuntime);
+            return ambientServices.WithAppRuntime(appRuntime);
         }
 
         /// <summary>
@@ -54,14 +65,25 @@ namespace Kephas.Application
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
         /// <param name="appLocation">Optional. The application location.</param>
+        /// <param name="appId">Optional. Identifier for the application.</param>
+        /// <param name="appVersion">Optional. The application version.</param>
+        /// <param name="config">Optional. The application runtime configuration callback.</param>
         /// <returns>
         /// The provided ambient services builder.
         /// </returns>
-        public static IAmbientServices WithStaticAppRuntime(this IAmbientServices ambientServices, Func<AssemblyName, bool> assemblyFilter = null, string appLocation = null)
+        public static IAmbientServices WithStaticAppRuntime(
+            this IAmbientServices ambientServices,
+            Func<AssemblyName, bool> assemblyFilter = null,
+            string appLocation = null,
+            string appId = null,
+            string appVersion = null,
+            Action<StaticAppRuntime> config = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices.WithAppRuntime(new StaticAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation));
+            var appRuntime = new StaticAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation, appId, appVersion);
+            config?.Invoke(appRuntime);
+            return ambientServices.WithAppRuntime(appRuntime);
         }
     }
 }

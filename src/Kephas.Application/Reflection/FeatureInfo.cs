@@ -26,6 +26,8 @@ namespace Kephas.Application.Reflection
     /// </summary>
     public class FeatureInfo : Expando, IFeatureInfo
     {
+        private static readonly System.Version VersionZero = System.Version.Parse("0.0.0.0");
+
         /// <summary>
         /// The empty annotations collection.
         /// </summary>
@@ -54,10 +56,10 @@ namespace Kephas.Application.Reflection
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
-            Name = name;
-            IsRequired = isRequired;
-            Version = version ?? new Version(0, 0);
-            Dependencies = dependencies ?? new string[0];
+            this.Name = name;
+            this.IsRequired = isRequired;
+            this.Version = version ?? new Version(0, 0);
+            this.Dependencies = dependencies ?? new string[0];
         }
 
         /// <summary>
@@ -123,7 +125,7 @@ namespace Kephas.Application.Reflection
                 return metadata.FeatureInfo;
             }
 
-            var autoVersion = AppManifestBase.VersionZero;
+            var autoVersion = VersionZero;
 
             var name = metadata.AppServiceImplementationType?.Name;
             if (string.IsNullOrEmpty(name))

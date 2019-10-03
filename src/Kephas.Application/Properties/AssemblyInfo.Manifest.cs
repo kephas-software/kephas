@@ -7,10 +7,6 @@
 
 using System.Runtime.CompilerServices;
 
-using Kephas.Application;
-
-[assembly: AppManifest(appId: "kephas", appVersion: "7.0.0")]
-
 [assembly: InternalsVisibleTo("Kephas.Application.Tests, PublicKey=" +
                               "0024000004800000940000000602000000240000525341310004000001000100fdab739edd4ea5" +
                               "c0766b216b63d793c3edb2698256569a25d95a3a777e9916fd1e24ed3c3eb979d795ea13bb410a" +
