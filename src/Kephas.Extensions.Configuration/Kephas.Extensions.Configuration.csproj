@@ -70,7 +70,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
     </ItemGroup>
 

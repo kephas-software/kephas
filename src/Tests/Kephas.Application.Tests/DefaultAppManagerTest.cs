@@ -234,7 +234,11 @@ namespace Kephas.Core.Tests.Application
             var factory2 = this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "3" }, isRequired: false);
             var factory3 = this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", isRequired: true);
 
-            var appRuntime = Substitute.For<AppRuntimeBase>();
+            IEnumerable<IFeatureInfo> features = new List<IFeatureInfo>();
+            var appRuntime = Substitute.For<IAppRuntime>();
+            appRuntime.When(a => a[ApplicationExtensions.FeaturesKey] = Arg.Any<object>())
+                .Do(ci => features = (IEnumerable<IFeatureInfo>)ci.Arg<object>());
+            appRuntime[ApplicationExtensions.FeaturesKey].Returns(features);
             var appManager = new DefaultAppManager(
                 appRuntime,
                 this.GetCompositionContext(),

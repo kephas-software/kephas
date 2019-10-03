@@ -39,7 +39,6 @@ namespace Kephas.Services.Composition
             this.ProcessingPriority = this.GetMetadataValue<ProcessingPriorityAttribute, int>(metadata);
             this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, int>(metadata);
             this.ServiceName = this.GetMetadataValue<ServiceNameAttribute, string>(metadata);
-            this.InitializationStyle = (InitializationStyle?)metadata.TryGetValue(nameof(this.InitializationStyle));
             this.AppServiceImplementationType = (Type)metadata.TryGetValue(nameof(this.AppServiceImplementationType));
         }
 
@@ -49,14 +48,12 @@ namespace Kephas.Services.Composition
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. The name of the service.</param>
-        /// <param name="initializationStyle">Optional. The initialization style.</param>
-        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, string serviceName = null, InitializationStyle initializationStyle = default)
+        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, string serviceName = null)
             : base(null)
         {
             this.ProcessingPriority = processingPriority;
             this.OverridePriority = overridePriority;
             this.ServiceName = serviceName;
-            this.InitializationStyle = initializationStyle;
         }
 
         /// <summary>
@@ -82,14 +79,6 @@ namespace Kephas.Services.Composition
         /// The name of the service.
         /// </value>
         public string ServiceName { get; set; }
-
-        /// <summary>
-        /// Gets the initialization style.
-        /// </summary>
-        /// <value>
-        /// The initialization style.
-        /// </value>
-        public InitializationStyle? InitializationStyle { get; }
 
         /// <summary>
         /// Gets or sets the concrete service type implementing the service contract.

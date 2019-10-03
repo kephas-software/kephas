@@ -22,7 +22,6 @@
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
         <dependencies>
-            <dependency id="Kephas.Application" version="$refversion$" />
             <dependency id="Kephas.Core" version="$refversion$" />
             <dependency id="Microsoft.Extensions.Configuration" version="2.2.0" />
         </dependencies>
