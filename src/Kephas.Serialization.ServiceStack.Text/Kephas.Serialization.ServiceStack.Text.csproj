@@ -6,7 +6,7 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <RootNamespace>Kephas.Serialization.ServiceStack.Text</RootNamespace>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>7.0.0-rc.30</Version>
+        <Version>7.0.0-rc.31</Version>
         <AssemblyVersion>7.0.0.0</AssemblyVersion>
         <FileVersion>7.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>

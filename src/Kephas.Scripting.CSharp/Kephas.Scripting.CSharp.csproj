@@ -4,7 +4,7 @@
         <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>7.0.0-rc.30</Version>
+        <Version>7.0.0-rc.31</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
