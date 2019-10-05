@@ -28,6 +28,7 @@ $packages = @(
     "Kephas.Mail",
     "Kephas.Mail.MailKit",
     "Kephas.Npgsql",
+    "Kephas.Plugins",
     "Kephas.ServiceStack",
     "Kephas.Serialization.ServiceStack.Text",
     "Kephas.Scripting",

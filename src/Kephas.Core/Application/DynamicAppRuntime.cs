@@ -15,7 +15,9 @@ namespace Kephas.Application
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Collections;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
 
@@ -33,8 +35,16 @@ namespace Kephas.Application
         /// <param name="appLocation">Optional. The application location.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appVersion">Optional. The application version.</param>
-        public DynamicAppRuntime(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null, string appLocation = null, string appId = null, string appVersion = null)
-            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation, appId, appVersion)
+        /// <param name="appArgs">Optional. The application arguments.</param>
+        public DynamicAppRuntime(
+            IAssemblyLoader assemblyLoader = null,
+            ILogManager logManager = null,
+            Func<AssemblyName, bool> defaultAssemblyFilter = null,
+            string appLocation = null,
+            string appId = null,
+            string appVersion = null,
+            IExpando appArgs = null)
+            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation, appId, appVersion, appArgs)
         {
         }
 
@@ -60,7 +70,7 @@ namespace Kephas.Application
         protected virtual void AddAdditionalAssemblies(IList<Assembly> assemblies, Func<AssemblyName, bool> assemblyFilter)
         {
             // load all the assemblies found in the application directories which are not already loaded.
-            var directories = this.GetAppAssemblyDirectories();
+            var directories = this.GetAppBinDirectories();
             foreach (var directory in directories.Where(d => !string.IsNullOrEmpty(d)))
             {
                 var loadedAssemblyFiles = assemblies.Where(a => !a.IsDynamic).Select(this.GetFileName).Select(f => f.ToLowerInvariant());
@@ -85,21 +95,6 @@ namespace Kephas.Application
         protected virtual IEnumerable<string> EnumerateFiles(string directory, string filePattern)
         {
             return Directory.EnumerateFiles(directory, filePattern, SearchOption.TopDirectoryOnly);
-        }
-
-        /// <summary>
-        /// Gets the directories where the application assemblies can be found.
-        /// </summary>
-        /// <remarks>
-        /// Note for inheritors: This method can be overridden to provide additional directories
-        /// where assemblies can be loaded from, like in the case of plugin architectures.
-        /// </remarks>
-        /// <returns>
-        /// A directory enumeration.
-        /// </returns>
-        protected virtual IEnumerable<string> GetAppAssemblyDirectories()
-        {
-            return new[] { this.GetAppLocation() };
         }
 
         /// <summary>

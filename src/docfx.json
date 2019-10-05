@@ -6,6 +6,17 @@
                     "files": [
                         "*.csproj"
                     ],
+                    "cwd": "./Kephas.Application",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
                     "cwd": "./Kephas.Application.AspNetCore",
                     "exclude": [
                         "**/obj/**",
@@ -17,7 +28,29 @@
                     "files": [
                         "*.csproj"
                     ],
+                    "cwd": "./Kephas.Application.Console",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
                     "cwd": "./Kephas.CodeAnalysis",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Composition.Autofac",
                     "exclude": [
                         "**/obj/**",
                         "**/bin/**",
@@ -238,6 +271,17 @@
                         "*.csproj"
                     ],
                     "cwd": "./Kephas.Orchestration",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
+                    "cwd": "./Kephas.Plugins",
                     "exclude": [
                         "**/obj/**",
                         "**/bin/**",

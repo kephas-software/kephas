@@ -75,7 +75,15 @@ namespace Kephas.Application
         ///                           application location is considered.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appVersion">Optional. The application version.</param>
-        protected AppRuntimeBase(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null, string appLocation = null, string appId = null, string appVersion = null)
+        /// <param name="appArgs">Optional. The application arguments.</param>
+        protected AppRuntimeBase(
+            IAssemblyLoader assemblyLoader = null,
+            ILogManager logManager = null,
+            Func<AssemblyName, bool> defaultAssemblyFilter = null,
+            string appLocation = null,
+            string appId = null,
+            string appVersion = null,
+            IExpando appArgs = null)
             : base(isThreadSafe: true)
         {
             this.logManager = logManager ?? new NullLogManager();
@@ -129,6 +137,18 @@ namespace Kephas.Application
 
             var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
             return assembly.GetLocation();
+        }
+
+        /// <summary>
+        /// Gets the application bin folders from where application is loaded.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the application bin folders in this
+        /// collection.
+        /// </returns>
+        public virtual IEnumerable<string> GetAppBinDirectories()
+        {
+            yield return this.GetAppLocation();
         }
 
         /// <summary>

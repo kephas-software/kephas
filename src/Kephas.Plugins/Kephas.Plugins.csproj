@@ -1,43 +1,33 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
         <LangVersion>latest</LangVersion>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <RootNamespace>Kephas.ServiceStack</RootNamespace>
-        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <Description>Adds support for an extensible application architecture at runtime.</Description>
         <Version>7.0.0-rc.32</Version>
         <AssemblyVersion>7.0.0.0</AssemblyVersion>
         <FileVersion>7.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <Description>Provides integration with the ServiceStack framework.</Description>
         <Copyright>Copyright Kephas Software SRL 2010-2019</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageTags>kephas servicestack</PackageTags>
+        <PackageTags>kephas plugins</PackageTags>
         <PackageReleaseNotes>
-          Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-          Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-      </PackageReleaseNotes>
+            Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+        </PackageReleaseNotes>
         <NeutralLanguage>en</NeutralLanguage>
+        <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
-        <SignAssembly>true</SignAssembly>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-        <SignAssembly>false</SignAssembly>
-    </PropertyGroup>
-
     <PropertyGroup>
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Kephas.ServiceStack.xml</DocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Kephas.Plugins.xml</DocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
@@ -57,33 +47,37 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="stylecop.json" />
+        <None Remove="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="stylecop.json" />
+        <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Properties\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="..\Kephas.snk" Link="Kephas.snk" />
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="ServiceStack" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Kephas.Application\Kephas.Application.csproj" />
-        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\Kephas.Serialization.ServiceStack.Text\Kephas.Serialization.ServiceStack.Text.csproj" />
+        <Compile Update="Resources\Strings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Strings.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Strings.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

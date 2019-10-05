@@ -12,6 +12,8 @@ namespace Kephas.Application
 {
     using System;
     using System.Reflection;
+
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
 
@@ -31,8 +33,16 @@ namespace Kephas.Application
         ///                           application location is considered.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appVersion">Optional. The application version.</param>
-        public StaticAppRuntime(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func<AssemblyName, bool> defaultAssemblyFilter = null, string appLocation = null, string appId = null, string appVersion = null)
-            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation, appId, appVersion)
+        /// <param name="appArgs">Optional. The application arguments.</param>
+        public StaticAppRuntime(
+            IAssemblyLoader assemblyLoader = null, 
+            ILogManager logManager = null, 
+            Func<AssemblyName, bool> defaultAssemblyFilter = null,
+            string appLocation = null,
+            string appId = null,
+            string appVersion = null,
+            IExpando appArgs = null)
+            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation, appId, appVersion, appArgs)
         {
         }
     }

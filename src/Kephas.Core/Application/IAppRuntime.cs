@@ -32,6 +32,15 @@ namespace Kephas.Application
         string GetAppLocation();
 
         /// <summary>
+        /// Gets the application bin folders from where application is loaded.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the application bin folders in this
+        /// collection.
+        /// </returns>
+        IEnumerable<string> GetAppBinDirectories();
+
+        /// <summary>
         /// Gets the application assemblies.
         /// </summary>
         /// <param name="assemblyFilter">A filter for the assemblies (optional).</param>
