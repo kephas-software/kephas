@@ -5,11 +5,6 @@ VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core", "Kephas.Core\Kephas.Core.csproj", "{42523208-F30B-46C1-99FB-A1A1E079614C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{ECCB2F9D-7095-4708-9725-87CACE62C7F7}"
-	ProjectSection(SolutionItems) = preProject
-		Shared\AssemblyInfo.Kephas.cs = Shared\AssemblyInfo.Kephas.cs
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{816692E7-24DC-46B5-97FB-D314B52D815D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Composition.Mef", "Kephas.Composition.Mef\Kephas.Composition.Mef.csproj", "{32FA6130-DDF0-4D2F-8057-A38EF9ED3D49}"
@@ -177,7 +172,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Application", "Kepha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Application.Tests", "Tests\Kephas.Application.Tests\Kephas.Application.Tests.csproj", "{68289125-FC36-4164-8BC2-4C8B2289B352}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Plugins", "Kephas.Plugins\Kephas.Plugins.csproj", "{173FE678-00AA-4E8B-85DB-97E499E443A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Plugins", "Kephas.Plugins\Kephas.Plugins.csproj", "{173FE678-00AA-4E8B-85DB-97E499E443A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
