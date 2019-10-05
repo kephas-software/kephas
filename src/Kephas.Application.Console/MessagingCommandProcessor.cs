@@ -62,8 +62,8 @@ namespace Kephas.Application.Console
         /// </returns>
         public Task<object> ProcessAsync(string command, IExpando args = null, CancellationToken cancellationToken = default)
         {
-            var message = this.CreateMessage(command, args ?? new Expando());
-            return this.ProcessMessageAsync(message, cancellationToken);
+            var message = this.CreateMessage(command, args = args ?? new Expando());
+            return this.ProcessMessageAsync(message, args, cancellationToken);
         }
 
         /// <summary>
@@ -151,11 +151,12 @@ namespace Kephas.Application.Console
         /// Process the message asynchronously.
         /// </summary>
         /// <param name="message">The message.</param>
+        /// <param name="args">The arguments.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the process message.
         /// </returns>
-        protected virtual async Task<object> ProcessMessageAsync(IMessage message, CancellationToken cancellationToken)
+        protected virtual async Task<object> ProcessMessageAsync(IMessage message, IExpando args, CancellationToken cancellationToken)
         {
             using (var context = new MessagingContext(this.messageProcessor, message))
             {

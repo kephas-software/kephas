@@ -16,6 +16,7 @@ namespace Kephas.Extensions.Configuration.Providers
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Configuration.Providers;
+    using Kephas.Graphs;
     using Kephas.Services;
 
     using Microsoft.Extensions.Options;
@@ -50,7 +51,7 @@ namespace Kephas.Extensions.Configuration.Providers
         public object GetSettings(Type settingsType)
         {
             var options = this.compositionContext.GetExport(typeof(IOptions<>).MakeGenericType(settingsType));
-            return options.GetPropertyValue(nameof(IOptions<AppArgs>.Value));
+            return options.GetPropertyValue(nameof(IOptions<Graph>.Value));
         }
     }
 }

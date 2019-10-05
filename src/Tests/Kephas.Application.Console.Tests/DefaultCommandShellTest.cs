@@ -44,7 +44,7 @@ namespace Kephas.Application.Console.Tests
             using (var source = new CancellationTokenSource())
             {
                 var startTask = shell.StartAsync(source.Token);
-                Assert.ThrowsAsync<OperationCanceledException>(() => Task.WhenAll(startTask, Task.Run(() => source.Cancel()), Task.Delay(100)));
+                Assert.ThrowsAsync(Is.AssignableTo(typeof(OperationCanceledException)), () => Task.WhenAll(startTask, Task.Run(() => source.Cancel()), Task.Delay(100)));
                 Assert.AreEqual(TaskStatus.Canceled, startTask.Status);
             }
         }

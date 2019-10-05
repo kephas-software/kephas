@@ -76,7 +76,7 @@ namespace Kephas.Application.Console
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public virtual async Task StartAsync(CancellationToken cancellationToken)
         {
             this.WriteWelcomeScreen();
 
