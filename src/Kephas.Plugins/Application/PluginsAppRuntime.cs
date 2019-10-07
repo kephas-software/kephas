@@ -114,6 +114,35 @@ namespace Kephas.Plugins.Application
         }
 
         /// <summary>
+        /// Enumerates the locations for plugins.
+        /// </summary>
+        /// <returns>
+        /// The locations for plugins.
+        /// </returns>
+        public virtual IEnumerable<string> EnumeratePluginLocations()
+        {
+            var targetFramework = this.TargetFramework;
+
+            if (Directory.Exists(this.PluginsFolder))
+            {
+                var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsFolder);
+
+                foreach (var pluginDirectory in pluginsDirectories)
+                {
+                    if (string.IsNullOrEmpty(targetFramework))
+                    {
+                        yield return pluginDirectory;
+                    }
+                    else
+                    {
+                        var frameworkSpecificDirectory = Path.Combine(pluginDirectory, targetFramework);
+                        yield return Directory.Exists(frameworkSpecificDirectory) ? frameworkSpecificDirectory : pluginDirectory;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Calculates a value indicating whether to enable plugins.
         /// </summary>
         /// <param name="enablePlugins">True to enable, false to disable the plugins.</param>
@@ -164,35 +193,6 @@ namespace Kephas.Plugins.Application
         protected virtual PluginState GetPluginState(string pluginName, string pluginLocation)
         {
             return PluginHelper.GetPluginState(pluginLocation);
-        }
-
-        /// <summary>
-        /// Gets the bin folders for the plugins.
-        /// </summary>
-        /// <returns>
-        /// The bin folders for the plugins.
-        /// </returns>
-        private IEnumerable<string> EnumeratePluginLocations()
-        {
-            var targetFramework = this.TargetFramework;
-
-            if (Directory.Exists(this.PluginsFolder))
-            {
-                var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsFolder);
-
-                foreach (var pluginDirectory in pluginsDirectories)
-                {
-                    if (string.IsNullOrEmpty(targetFramework))
-                    {
-                        yield return pluginDirectory;
-                    }
-                    else
-                    {
-                        var frameworkSpecificDirectory = Path.Combine(pluginDirectory, targetFramework);
-                        yield return Directory.Exists(frameworkSpecificDirectory) ? frameworkSpecificDirectory : pluginDirectory;
-                    }
-                }
-            }
         }
     }
 }
