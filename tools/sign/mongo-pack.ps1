@@ -1,6 +1,6 @@
 param (
     [string]$version = $( Read-Host "Please provide package version to sign" ),
-    [string]$CertificateSubjectName = "CRIŞAN IOAN SOFT PERSOANĂ FIZICĂ AUTORIZATĂ",
+    [string]$CertificateSubjectName = "KEPHAS SOFTWARE SRL",
     [string]$Timestamper = "http://timestamp.digicert.com"
 )
 

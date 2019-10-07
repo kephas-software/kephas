@@ -18,9 +18,9 @@ $assemblies = @(
 
 foreach ($assembly in $assemblies) {
 	Write-Host "Decompiling $assembly.dll..."
-	iex "ildasm /all /out=$assembly.signed.il $assembly.dll > $assembly.decompile.log"
+	iex "ildasm.exe /all /out=$assembly.signed.il $assembly.dll > $assembly.decompile.log"
 	iex "& ""$editorPath"" ""$assembly.signed.il"""
 	Read-Host -Prompt "Decompiling complete, press ENTER key to start with compiling..."
-	iex "ilasm /dll /key=$keyPath $assembly.signed.il > $assembly.compile.log"
+	iex "ilasm.exe /dll /key=$keyPath $assembly.signed.il > $assembly.compile.log"
 	Write-Host "Compiling done to $assembly.signed.dll."
 }
