@@ -13,12 +13,62 @@ namespace Kephas.Plugins.Tests.Application
     using System;
     using System.IO;
     using System.Linq;
+    using Kephas.Dynamic;
     using Kephas.Plugins.Application;
     using NUnit.Framework;
 
     [TestFixture]
     public class PluginsAppRuntimeTest
     {
+        [Test]
+        public void EnablePlugins_default()
+        {
+            var appRuntime = new PluginsAppRuntime();
+            Assert.IsTrue(appRuntime.EnablePlugins);
+        }
+
+        [Test]
+        public void EnablePlugins_arg()
+        {
+            var appRuntime = new PluginsAppRuntime(enablePlugins: false, appArgs: new Expando { [nameof(PluginsAppRuntime.EnablePlugins)] = true });
+            Assert.IsFalse(appRuntime.EnablePlugins);
+        }
+
+        [Test]
+        public void EnablePlugins_appArgs()
+        {
+            var appRuntime = new PluginsAppRuntime(appArgs: new Expando { [nameof(PluginsAppRuntime.EnablePlugins)] = false });
+            Assert.IsFalse(appRuntime.EnablePlugins);
+        }
+
+        [Test]
+        public void PluginsFolder_default()
+        {
+            var tempFolder = Path.GetFullPath(Path.GetTempPath());
+            var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
+            Directory.CreateDirectory(appLocation);
+            var pluginsFolder = Path.Combine(appLocation, "myPlugins");
+
+            var appRuntime = new PluginsAppRuntime(appLocation: appLocation, pluginsFolder: "myPlugins");
+            Assert.AreEqual(pluginsFolder, appRuntime.PluginsFolder);
+
+            Directory.Delete(appLocation, recursive: true);
+        }
+
+        [Test]
+        public void PluginsFolder_appArgs()
+        {
+            var tempFolder = Path.GetFullPath(Path.GetTempPath());
+            var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
+            Directory.CreateDirectory(appLocation);
+            var pluginsFolder = Path.Combine(appLocation, "myPlugins");
+
+            var appRuntime = new PluginsAppRuntime(appLocation: appLocation, appArgs: new Expando { [nameof(PluginsAppRuntime.PluginsFolder)] = "myPlugins" } );
+            Assert.AreEqual(pluginsFolder, appRuntime.PluginsFolder);
+
+            Directory.Delete(appLocation, recursive: true);
+        }
+
         [Test]
         public void GetAppBinDirectories()
         {
