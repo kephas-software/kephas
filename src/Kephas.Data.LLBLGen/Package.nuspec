@@ -15,15 +15,20 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
-        <dependencies>
-            <dependency id="Kephas.Core" version="$refversion$" />
-            <dependency id="Kephas.Data" version="$refversion$" />
-            <dependency id="SD.LLBLGen.Pro.ORMSupportClasses" version="5.4.0" />
-        </dependencies>
-        <references>
-            <reference file="Kephas.Data.LLBLGen.dll" />
-        </references>
         <tags>kephas data llblgen</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
+        <dependencies>
+            <group targetFramework=".NETFramework4.5.2">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Data" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="SD.LLBLGen.Pro.ORMSupportClasses" version="5.4.0" exclude="Build,Analyzers" />
+            </group>
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Data" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="SD.LLBLGen.Pro.ORMSupportClasses" version="5.4.0" exclude="Build,Analyzers" />
+            </group>
+        </dependencies>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

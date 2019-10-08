@@ -15,20 +15,26 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <tags>kephas data model abstractions</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group>
-                <dependency id="Kephas.Data" version="$refversion$" />
-                <dependency id="Kephas.Model" version="$refversion$" />
-                <dependency id="Kephas.Data.Model" version="$refversion$" />
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Data.Model" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Data" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Model" version="$refversion$" exclude="Build,Analyzers" />
             </group>
-            <group targetFramework="netstandard2.0">
-                <dependency id="System.ComponentModel.Annotations" version="4.3.0" />
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Data.Model" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Data" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Model" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="System.ComponentModel.Annotations" version="4.3.0" exclude="Build,Analyzers" />
             </group>
         </dependencies>
-        <references>
-            <reference file="Kephas.Data.Model.Abstractions.dll" />
-        </references>
-        <tags>kephas data model abstractions</tags>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.5" />
+        </frameworkAssemblies>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

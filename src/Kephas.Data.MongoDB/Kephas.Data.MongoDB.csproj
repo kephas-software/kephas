@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <AssemblyName>Kephas.Data.MongoDB</AssemblyName>
@@ -39,12 +39,12 @@
         <DefineConstants>NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NET452</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-        <DefineConstants>NET45</DefineConstants>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
+        <DefineConstants>NET452</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
@@ -68,9 +68,9 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="MongoDB.Bson.signed" Version="2.4.0" />
-        <PackageReference Include="MongoDB.Driver.Core.signed" Version="2.4.0" />
-        <PackageReference Include="MongoDB.Driver.signed" Version="2.4.0" />
+        <PackageReference Include="MongoDB.Bson.signed" Version="2.9.2" />
+        <PackageReference Include="MongoDB.Driver.Core.signed" Version="2.9.2" />
+        <PackageReference Include="MongoDB.Driver.signed" Version="2.9.2" />
     </ItemGroup>
 
     <ItemGroup>
