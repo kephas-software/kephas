@@ -1,27 +1,38 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPluginDependency.cs" company="Kephas Software SRL">
+// <copyright file="PluginDependency.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IPluginDependency interface.
+//   Implements the plugin dependency class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Plugins.Reflection
 {
     /// <summary>
-    /// Interface for plugin dependency.
+    /// A plugin dependency.
     /// </summary>
-    public interface IPluginDependency
+    public class PluginDependency : IPluginDependency
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PluginDependency"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="version">The version pattern.</param>
+        public PluginDependency(string name, string version = null)
+        {
+            this.Name = name;
+            this.Version = version;
+        }
+
         /// <summary>
         /// Gets the name of the referenced plugin.
         /// </summary>
         /// <value>
         /// The name of the referenced plugin.
         /// </value>
-        string Name { get; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the version pattern.
@@ -29,6 +40,6 @@ namespace Kephas.Plugins.Reflection
         /// <value>
         /// The version pattern.
         /// </value>
-        string Version { get; }
+        public string Version { get; }
     }
 }
