@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
         <LangVersion>latest</LangVersion>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Description>Provides infrastructure for applications based on Kephas Framework.</Description>
         <Version>7.0.0-rc.34</Version>
         <AssemblyVersion>7.0.0.0</AssemblyVersion>

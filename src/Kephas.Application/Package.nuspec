@@ -19,20 +19,13 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
+        <tags>kephas application</tags>
         <dependencies>
             <group>
                 <dependency id="Kephas.Core" version="$refversion$" />
             </group>
-            <group targetFramework="net45">
-            </group>
-            <group targetFramework="netstandard2.0">
-                <dependency id="System.ComponentModel.Annotations" version="4.3.0" />
-            </group>
         </dependencies>
-        <references>
-            <reference file="Kephas.Application.dll" />
-        </references>
-        <tags>kephas application</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

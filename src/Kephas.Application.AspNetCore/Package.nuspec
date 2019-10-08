@@ -15,22 +15,19 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <tags>kephas asp.net</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group>
-                <dependency id="Kephas.Application" version="$refversion$" />
-                <dependency id="Kephas.Core" version="$refversion$" />
-                <dependency id="Kephas.Extensions.DependencyInjection" version="$refversion$" />
-            </group>
-            <group targetFramework="netstandard2.0">
-                <dependency id="Microsoft.CSharp" version="4.3.0" />
-                <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.0.0" />
-                <dependency id="Microsoft.AspNetCore.Hosting.Abstractions" version="2.0.0" />
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Application" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Extensions.Configuration" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Extensions.DependencyInjection" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.AspNetCore.Hosting.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.Extensions.Options" version="2.2.0" exclude="Build,Analyzers" />
             </group>
         </dependencies>
-        <references>
-            <reference file="Kephas.Application.AspNetCore.dll" />
-        </references>
-        <tags>kephas asp.net</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

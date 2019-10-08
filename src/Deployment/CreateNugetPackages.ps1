@@ -61,6 +61,7 @@ $paths = @(
 
 foreach ($path in $paths) {
     .\NuGet.exe pack $path\Package.nuspec -BasePath $path -Symbols <# -SymbolPackageFormat snupkg #> -properties "Configuration=$build;Version=$version;RefVersion=$refversion"
+    .\NuGet.exe pack $path\Package.nuspec -BasePath $path -Symbols -SymbolPackageFormat snupkg -properties "Configuration=$build;Version=$version;RefVersion=$refversion"
     $packagename = get-packagename $path
     .\NuGet.exe sign "$packagename.$version.nupkg" -CertificateSubjectName "$CertificateSubjectName" -Timestamper "$Timestamper"
 }

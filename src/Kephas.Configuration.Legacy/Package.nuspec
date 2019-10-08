@@ -21,21 +21,20 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <tags>kephas configuration legacy</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group>
-                <dependency id="Kephas.Core" version="$refversion$" />
-                <dependency id="System.ValueTuple" version="4.3.0" />
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="System.ValueTuple" version="4.3.0" exclude="Build,Analyzers" />
             </group>
-            <group targetFramework="net45">
-            </group>
-            <group targetFramework="netstandard2.0">
-                <dependency id="System.Dynamic.Runtime" version="4.3.0" />
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="System.Configuration.ConfigurationManager" version="4.4.0" exclude="Build,Analyzers" />
+                <dependency id="System.Dynamic.Runtime" version="4.3.0" exclude="Build,Analyzers" />
+                <dependency id="System.ValueTuple" version="4.3.0" exclude="Build,Analyzers" />
             </group>
         </dependencies>
-        <references>
-            <reference file="Kephas.Configuration.Legacy.dll" />
-        </references>
-        <tags>kephas configuration legacy</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

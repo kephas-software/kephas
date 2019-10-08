@@ -15,18 +15,16 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <tags>kephas code analysis</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group>
-                <dependency id="Kephas.Core" version="$refversion$" />
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
             </group>
-            <group targetFramework="netstandard2.0">
-                <dependency id="Microsoft.CSharp" version="4.3.0" />
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
             </group>
         </dependencies>
-        <references>
-            <reference file="Kephas.CodeAnalysis.dll" />
-        </references>
-        <tags>kephas code analysis</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

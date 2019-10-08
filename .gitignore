@@ -237,3 +237,4 @@ _Pvt_Extensions
 !/externals/nugets/MongoDB*/lib/**/*.XML
 !/TestAdapter/NUnit3TestAdapter.3.10.0/**/*.*
 *.snk
+*.snupkg
