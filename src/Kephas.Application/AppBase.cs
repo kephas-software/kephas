@@ -24,7 +24,7 @@ namespace Kephas.Application
     /// <remarks>
     /// You should inherit this class and override at least the <see cref="ConfigureAmbientServices"/> method.
     /// </remarks>
-    public abstract class AppBase : IAmbientServicesAware
+    public abstract class AppBase
     {
         private bool prerequisitesInitialized;
 

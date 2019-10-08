@@ -52,24 +52,29 @@ namespace Kephas.Logging
         {
             Requires.NotNull(obj, nameof(obj));
 
-            if (obj is IAmbientServicesAware ambientServicesAware)
-            {
-                return ambientServicesAware.AmbientServices.LogManager.GetLogger(obj.GetType());
-            }
-
             if (obj is IAmbientServices ambientServices)
             {
                 return ambientServices.LogManager.GetLogger(obj.GetType());
             }
 
-            if (obj is ICompositionContextAware compositionContextAware)
-            {
-                return compositionContextAware.CompositionContext.GetLogger(obj.GetType());
-            }
-
             if (obj is ICompositionContext compositionContext)
             {
                 return compositionContext.GetLogger(obj.GetType());
+            }
+
+            if (obj is IContext contextObj)
+            {
+                ambientServices = contextObj.AmbientServices;
+                if (ambientServices != null)
+                {
+                    return ambientServices.LogManager.GetLogger(obj.GetType());
+                }
+
+                compositionContext = contextObj.CompositionContext;
+                if (compositionContext != null)
+                {
+                    return compositionContext.GetLogger(obj.GetType());
+                }
             }
 
             var logManager = context?.AmbientServices?.LogManager ?? AmbientServices.Instance.LogManager;

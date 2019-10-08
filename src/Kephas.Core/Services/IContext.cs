@@ -23,8 +23,24 @@ namespace Kephas.Services
     /// <summary>
     /// Defines a base contract for context-dependent operations.
     /// </summary>
-    public interface IContext : IExpando, IAmbientServicesAware, ICompositionContextAware, ILoggable, IDisposable
+    public interface IContext : IExpando, ILoggable, IDisposable
     {
+        /// <summary>
+        /// Gets a context for the dependency injection/composition.
+        /// </summary>
+        /// <value>
+        /// The composition context.
+        /// </value>
+        ICompositionContext CompositionContext { get; }
+
+        /// <summary>
+        /// Gets the ambient services.
+        /// </summary>
+        /// <value>
+        /// The ambient services.
+        /// </value>
+        IAmbientServices AmbientServices { get; }
+
         /// <summary>
         /// Gets or sets the authenticated identity.
         /// </summary>

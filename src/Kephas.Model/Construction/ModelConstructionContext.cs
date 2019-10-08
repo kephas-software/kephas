@@ -28,7 +28,19 @@ namespace Kephas.Model.Construction
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelConstructionContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">The ambient services.</param>
+        /// <param name="parentContext">Context for the parent.</param>
+        public ModelConstructionContext(IContext parentContext)
+            : base(parentContext)
+        {
+            Requires.NotNull(parentContext, nameof(parentContext));
+
+            this.Logger = parentContext.AmbientServices.GetLogger(this.GetType());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModelConstructionContext"/> class.
+        /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
         public ModelConstructionContext(ICompositionContext compositionContext)
             : base(compositionContext)
         {

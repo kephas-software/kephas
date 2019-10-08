@@ -29,7 +29,7 @@ namespace Kephas.Core.Tests.Serialization
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class DefaultSerializationServiceTest
+    public class DefaultSerializationServiceTest : TestBase
     {
         [Test]
         [TestCase(typeof(XmlMediaType))]

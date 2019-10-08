@@ -78,9 +78,7 @@ namespace Kephas.Application.Console.Tests
             processor.ProcessAsync(Arg.Any<string>(), Arg.Any<IExpando>(), Arg.Any<CancellationToken>())
                 .Returns(ci => Task.FromResult<object>(ci.Arg<string>() + " processed"));
 
-            var contextFactory = Substitute.For<IContextFactory>();
-            contextFactory.CreateContext<SerializationContext>(Arg.Any<object[]>())
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serialization));
+            var contextFactory = this.CreateContextFactory(() => new SerializationContext(Substitute.For<ICompositionContext>(), serialization));
 
             var shell = new DefaultCommandShell(console, processor, serialization, contextFactory);
             Assert.ThrowsAsync<OperationCanceledException>(() => shell.StartAsync(default));

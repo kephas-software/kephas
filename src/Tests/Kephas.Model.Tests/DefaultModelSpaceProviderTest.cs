@@ -22,7 +22,7 @@ namespace Kephas.Model.Tests
     using Kephas.Model.Runtime.Configuration.Composition;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Composition;
-
+    using Kephas.Services;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -33,8 +33,9 @@ namespace Kephas.Model.Tests
         [Test]
         public async Task InitializeAsync_Dimensions()
         {
+            var contextFactory = this.CreateContextFactory(() => new ModelConstructionContext(Substitute.For<ICompositionContext>()));
             var provider = new DefaultModelSpaceProvider(
-                Substitute.For<ICompositionContext>(),
+                contextFactory,
                 new IModelInfoProvider[0],
                 this.GetRuntimeModelElementFactory());
 

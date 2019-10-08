@@ -10,6 +10,7 @@
 
 namespace Kephas.Testing.Composition
 {
+    using System;
     using Kephas.Composition;
     using Kephas.Serialization;
     using Kephas.Services;
@@ -17,13 +18,28 @@ namespace Kephas.Testing.Composition
 
     public class TestBase
     {
+        /// <summary>
+        /// Creates a context factory.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="ctor">The constructor for the created context.</param>
+        /// <returns>
+        /// The new context factory.
+        /// </returns>
+        protected IContextFactory CreateContextFactory<TContext>(Func<TContext> ctor)
+            where TContext : IContext
+        {
+            var contextFactory = Substitute.For<IContextFactory>();
+            contextFactory.CreateContext<TContext>(Arg.Any<object[]>())
+                .Returns(ci => ctor());
+            return contextFactory;
+        }
+
         protected ISerializationService CreateSerializationServiceMock()
         {
             var serializationService = Substitute.For<ISerializationService, IContextFactoryAware>(/*Behavior.Strict*/);
-            var contextFactoryMock = Substitute.For<IContextFactory>();
+            var contextFactoryMock = this.CreateContextFactory(() => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
             ((IContextFactoryAware)serializationService).ContextFactory.Returns(contextFactoryMock);
-            contextFactoryMock.CreateContext<SerializationContext>(Arg.Any<object[]>())
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
             return serializationService;
         }
 

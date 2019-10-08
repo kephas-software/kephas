@@ -31,7 +31,7 @@ namespace Kephas.Model
     /// The default implementation of a model space provider.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultModelSpaceProvider : Loggable, IModelSpaceProvider, ICompositionContextAware
+    public class DefaultModelSpaceProvider : Loggable, IModelSpaceProvider
     {
         /// <summary>
         /// The runtime model element factory.
@@ -51,30 +51,30 @@ namespace Kephas.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultModelSpaceProvider"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="modelInfoProviders">The model information providers.</param>
         /// <param name="runtimeModelElementFactory">The runtime model element factory.</param>
         public DefaultModelSpaceProvider(
-            ICompositionContext compositionContext,
+            IContextFactory contextFactory,
             ICollection<IModelInfoProvider> modelInfoProviders,
             IRuntimeModelElementFactory runtimeModelElementFactory)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
             Requires.NotNull(modelInfoProviders, nameof(modelInfoProviders));
 
-            this.CompositionContext = compositionContext;
+            this.ContextFactory = contextFactory;
             this.ModelInfoProviders = modelInfoProviders;
             this.runtimeModelElementFactory = runtimeModelElementFactory;
         }
 
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets the context factory.
         /// </summary>
         /// <value>
-        /// The ambient services.
+        /// The context factory.
         /// </value>
-        public ICompositionContext CompositionContext { get; }
+        public IContextFactory ContextFactory { get; }
 
         /// <summary>
         /// Gets the model information providers.
@@ -109,7 +109,7 @@ namespace Kephas.Model
         {
             this.initialization.Start();
 
-            var constructionContext = this.CreateModelConstructionContext();
+            var constructionContext = this.CreateModelConstructionContext(context);
             var constructedModelSpace = this.CreateModelSpace(constructionContext);
             constructionContext.ModelSpace = constructedModelSpace;
 
@@ -140,17 +140,16 @@ namespace Kephas.Model
         /// <summary>
         /// Creates the model construction context.
         /// </summary>
+        /// <param name="parentContext">Context for the parent.</param>
         /// <returns>
         /// The new model construction context.
         /// </returns>
-        protected virtual ModelConstructionContext CreateModelConstructionContext()
+        protected virtual ModelConstructionContext CreateModelConstructionContext(IContext parentContext)
         {
-            var constructionContext = new ModelConstructionContext(this.CompositionContext)
-                {
-                    RuntimeModelElementFactory = this.runtimeModelElementFactory,
-                };
+            var constructionContext = this.ContextFactory.CreateContext<ModelConstructionContext>(parentContext);
+            constructionContext.RuntimeModelElementFactory = this.runtimeModelElementFactory;
 
-            constructionContext.TryGetModelElementInfo = 
+            constructionContext.TryGetModelElementInfo =
                 nativeElementInfo => this.ModelInfoProviders
                     .Select(p => p.TryGetModelElementInfo(nativeElementInfo, constructionContext))
                     .FirstOrDefault(p => p != null);
