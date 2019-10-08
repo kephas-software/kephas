@@ -6,7 +6,7 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Description>Provides abstractions for managing data: retrieving, persisting, querying, so on.</Description>
-        <Version>7.0.0-rc.33</Version>
+        <Version>7.0.0-rc.34</Version>
         <AssemblyVersion>7.0.0.0</AssemblyVersion>
         <FileVersion>7.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
