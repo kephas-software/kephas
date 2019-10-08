@@ -19,19 +19,19 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <tags>kephas workflow activity</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group>
-                <dependency id="Kephas.Core" version="$refversion$" />
-                <dependency id="System.ValueTuple" version="4.3.0" />
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
             </group>
-            <group targetFramework="netstandard2.0">
-                <dependency id="System.ComponentModel.Annotations" version="4.3.0" />
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
             </group>
         </dependencies>
-        <references>
-            <reference file="Kephas.Workflow.dll" />
-        </references>
-        <tags>kephas workflow activity</tags>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.5" />
+        </frameworkAssemblies>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
