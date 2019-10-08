@@ -19,15 +19,20 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
-        <dependencies>
-            <dependency id="Kephas.Core" version="$refversion$" />
-            <dependency id="Kephas.Scripting" version="$refversion$" />
-            <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="2.9.0" />
-        </dependencies>
-        <references>
-            <reference file="Kephas.Scripting.CSharp.dll" />
-        </references>
         <tags>kephas scripting csharp</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
+        <dependencies>
+            <group targetFramework=".NETFramework4.6">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="2.9.0" exclude="Build,Analyzers" />
+            </group>
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="2.9.0" exclude="Build,Analyzers" />
+            </group>
+        </dependencies>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

@@ -19,17 +19,28 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
-        <dependencies>
-            <dependency id="Kephas.Core" version="$refversion$" />
-            <dependency id="Kephas.Scheduling.Quartz" version="$refversion$" />
-            <dependency id="Quartz" version="3.0.7" />
-            <dependency id="MongoDB.Driver.signed" version="2.4.0" />
-            <dependency id="System.ValueTuple" version="4.3.0" />
-        </dependencies>
-        <references>
-            <reference file="Kephas.Scheduling.Quartz.MongoDB.dll" />
-        </references>
         <tags>kephas scheduling job quartz mongo mongodb</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
+        <dependencies>
+            <group targetFramework=".NETFramework4.5.2">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Data.Model" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Data" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scheduling.Quartz" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scheduling" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="MongoDB.Driver.signed" version="2.4.0" exclude="Build,Analyzers" />
+                <dependency id="Quartz" version="3.0.7" exclude="Build,Analyzers" />
+            </group>
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Data.Model" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Data" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scheduling.Quartz" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scheduling" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="MongoDB.Driver.signed" version="2.4.0" exclude="Build,Analyzers" />
+                <dependency id="Quartz" version="3.0.7" exclude="Build,Analyzers" />
+            </group>
+        </dependencies>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

@@ -18,7 +18,7 @@
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageTags>kephas scheduling</PackageTags>
+        <PackageTags>kephas scheduling job</PackageTags>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
         <NeutralLanguage>en</NeutralLanguage>
