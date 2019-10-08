@@ -26,7 +26,7 @@ namespace Kephas.Testing.Composition
     /// Base class for tests using composition.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class CompositionTestBase
+    public class CompositionTestBase : TestBase
     {
         public virtual LiteCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
         {
