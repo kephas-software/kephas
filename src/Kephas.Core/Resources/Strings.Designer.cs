@@ -359,6 +359,24 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The context type &apos;{0}&apos; must be an instatiable class..
+        /// </summary>
+        public static string ContextFactory_CreateContext_ContextTypeMustBeAnInstatiable {
+            get {
+                return ResourceManager.GetString("ContextFactory_CreateContext_ContextTypeMustBeAnInstatiable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find a matching constructor for signature {0} in type &apos;{1}&apos;..
+        /// </summary>
+        public static string ContextFactory_GetCreatorFunc_CannotFindMatchingConstructor {
+            get {
+                return ResourceManager.GetString("ContextFactory_GetCreatorFunc_CannotFindMatchingConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The application&apos;s finalize procedure was canceled, at {0:s}..
         /// </summary>
         public static string DefaultAppManager_FinalizeCanceled_Exception {

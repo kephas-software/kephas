@@ -54,10 +54,6 @@ namespace Kephas.Serialization
                 Requires.NotNull(value, nameof(value));
 
                 this.serializationService = value;
-                if (value is ICompositionContextAware compositionContextAware)
-                {
-                    this.SetCompositionContext(compositionContextAware.CompositionContext);
-                }
             }
         }
 
