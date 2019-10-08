@@ -18,6 +18,7 @@ namespace Kephas.Serialization.Json
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Serialization.Json.Converters;
+    using Kephas.Serialization.Json.Logging;
     using Kephas.Serialization.Json.Resources;
 
     using Newtonsoft.Json;
@@ -28,22 +29,17 @@ namespace Kephas.Serialization.Json
     /// </summary>
     public class DefaultJsonSerializerSettingsProvider : Loggable, IJsonSerializerSettingsProvider
     {
-        /// <summary>
-        /// The static instance.
-        /// </summary>
         private static DefaultJsonSerializerSettingsProvider instance;
-
-        /// <summary>
-        /// The JSON converters.
-        /// </summary>
         private readonly ICollection<JsonConverter> jsonConverters;
+        private readonly ILogManager logManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultJsonSerializerSettingsProvider"/> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
-        /// <param name="jsonConverters">The JSON converters (optional).</param>
-        public DefaultJsonSerializerSettingsProvider(ITypeResolver typeResolver, ICollection<IJsonConverter> jsonConverters = null)
+        /// <param name="logManager">Manager for log.</param>
+        /// <param name="jsonConverters">Optional. The JSON converters (optional).</param>
+        public DefaultJsonSerializerSettingsProvider(ITypeResolver typeResolver, ILogManager logManager, ICollection<IJsonConverter> jsonConverters = null)
         {
             Requires.NotNull(typeResolver, nameof(typeResolver));
 
@@ -55,6 +51,7 @@ namespace Kephas.Serialization.Json
                                                      new StringEnumJsonConverter(),
                                                  };
             this.TypeResolver = typeResolver;
+            this.logManager = logManager;
         }
 
         /// <summary>
@@ -114,6 +111,7 @@ namespace Kephas.Serialization.Json
                 Error = this.HandleJsonSerializationError,
                 ContractResolver = this.GetContractResolver(camelCase),
                 SerializationBinder = this.GetSerializationBinder(),
+                TraceWriter = new JsonTraceWriter(this.logManager),
             };
 
             serializerSettings.Converters.AddRange(converters ?? this.jsonConverters);
@@ -167,7 +165,7 @@ namespace Kephas.Serialization.Json
         {
             var ambientServices = AmbientServices.Instance;
             var defaultInstance =
-                new DefaultJsonSerializerSettingsProvider(ambientServices.GetService<ITypeResolver>());
+                new DefaultJsonSerializerSettingsProvider(ambientServices.GetService<ITypeResolver>(), ambientServices.LogManager);
 
             return defaultInstance;
         }

@@ -22,7 +22,6 @@ namespace Kephas.Serialization.Json.Tests
     using Kephas.Reflection;
     using Kephas.Serialization.Json;
     using Kephas.Services;
-    using Newtonsoft.Json.Linq;
 
     using NSubstitute;
 
