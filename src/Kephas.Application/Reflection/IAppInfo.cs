@@ -20,6 +20,14 @@ namespace Kephas.Application.Reflection
     public interface IAppInfo : IElementInfo
     {
         /// <summary>
+        /// Gets the application description.
+        /// </summary>
+        /// <value>
+        /// The application description.
+        /// </value>
+        string Description { get; }
+
+        /// <summary>
         /// Gets the application parameters.
         /// </summary>
         /// <value>

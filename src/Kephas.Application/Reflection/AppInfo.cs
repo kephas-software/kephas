@@ -13,6 +13,7 @@ namespace Kephas.Application.Reflection
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+
     using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -30,10 +31,12 @@ namespace Kephas.Application.Reflection
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="version">Optional. The version.</param>
-        public AppInfo(string name, Version version = null)
+        /// <param name="description">Optional. The description.</param>
+        public AppInfo(string name, Version version = null, string description = null)
         {
             this.Name = name;
             this.Version = version;
+            this.Description = description;
         }
 
         /// <summary>
@@ -51,6 +54,14 @@ namespace Kephas.Application.Reflection
         /// The application version.
         /// </value>
         public Version Version { get; }
+
+        /// <summary>
+        /// Gets the application description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
+        public string Description { get; }
 
         /// <summary>
         /// Gets the application parameters.
