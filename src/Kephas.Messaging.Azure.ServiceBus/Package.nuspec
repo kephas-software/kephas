@@ -19,14 +19,20 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
-        <dependencies>
-            <dependency id="Kephas.Core" version="$refversion$" />
-            <dependency id="Kephas.Messaging" version="$refversion$" />
-        </dependencies>
-        <references>
-            <reference file="Kephas.Messaging.Azure.ServiceBus.dll" />
-        </references>
         <tags>kephas messaging request response servicelayer events azure servicebus</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
+        <dependencies>
+            <group targetFramework=".NETFramework4.6.1">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Messaging" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.Azure.ServiceBus" version="3.0.0" exclude="Build,Analyzers" />
+            </group>
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Messaging" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.Azure.ServiceBus" version="3.0.0" exclude="Build,Analyzers" />
+            </group>
+        </dependencies>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
