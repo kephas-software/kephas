@@ -19,35 +19,36 @@ namespace Kephas.Serialization
     using Kephas.Net.Mime;
     using Kephas.Resources;
     using Kephas.Serialization.Composition;
+    using Kephas.Services;
 
     /// <summary>
     /// A default serialization service.
     /// </summary>
-    public class DefaultSerializationService : ISerializationService, ICompositionContextAware
+    public class DefaultSerializationService : ISerializationService
     {
         private readonly IDictionary<Type, IExportFactory<ISerializer, SerializerMetadata>> serializerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultSerializationService"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="serializerFactories">The serializer factories.</param>
-        public DefaultSerializationService(ICompositionContext compositionContext, ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
+        public DefaultSerializationService(IContextFactory contextFactory, ICollection<IExportFactory<ISerializer, SerializerMetadata>> serializerFactories)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(serializerFactories, nameof(serializerFactories));
 
-            this.CompositionContext = compositionContext;
             this.serializerFactories = serializerFactories.ToPrioritizedDictionary(f => f.Metadata.MediaType);
+            this.ContextFactory = contextFactory;
         }
 
         /// <summary>
-        /// Gets a context for the dependency injection/composition.
+        /// Gets the context factory.
         /// </summary>
         /// <value>
-        /// The composition context.
+        /// The context factory.
         /// </value>
-        public ICompositionContext CompositionContext { get; }
+        public IContextFactory ContextFactory { get; }
 
         /// <summary>
         /// Gets a serializer for the provided context.
@@ -58,7 +59,7 @@ namespace Kephas.Serialization
         /// </returns>
         public ISerializer GetSerializer(ISerializationContext context = null)
         {
-            context = context ?? new SerializationContext(this.CompositionContext, this, typeof(JsonMediaType));
+            context = context ?? this.ContextFactory.CreateContext<SerializationContext>(this, typeof(JsonMediaType));
             var mediaType = context.MediaType ?? typeof(JsonMediaType);
 
             var serializer = this.serializerFactories.TryGetValue(mediaType);

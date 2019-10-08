@@ -21,7 +21,7 @@ namespace Kephas.Serialization.Json.Tests
     using Kephas.Net.Mime;
     using Kephas.Reflection;
     using Kephas.Serialization.Json;
-
+    using Kephas.Services;
     using Newtonsoft.Json.Linq;
 
     using NSubstitute;
@@ -290,7 +290,8 @@ namespace Kephas.Serialization.Json.Tests
                 b =>
                 b.WithAssemblies(new[] { typeof(ISerializationService).GetTypeInfo().Assembly, typeof(JsonSerializer).GetTypeInfo().Assembly }));
             var serializationService = ambientServices.CompositionContainer.GetExport<ISerializationService>();
-            var jsonSerializer = serializationService.GetSerializer(SerializationContext.Create<JsonMediaType>(serializationService));
+            var contextFactory = ambientServices.CompositionContainer.GetExport<IContextFactory>();
+            var jsonSerializer = serializationService.GetSerializer(contextFactory.CreateSerializationContext<JsonMediaType>());
 
             Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
         }

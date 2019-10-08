@@ -31,9 +31,9 @@ namespace Kephas.Serialization
         /// Initializes a new instance of the <see cref="SerializationContext"/> class.
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
-        /// <param name="serializationService">Optional. The serialization service.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="mediaType">Optional. The media type (type implementing <see cref="IMediaType"/>).</param>
-        public SerializationContext(ICompositionContext compositionContext, ISerializationService serializationService = null, Type mediaType = null)
+        public SerializationContext(ICompositionContext compositionContext, ISerializationService serializationService, Type mediaType = null)
             : base(compositionContext)
         {
             this.SerializationService = serializationService;
@@ -88,50 +88,5 @@ namespace Kephas.Serialization
         /// True if the output should be indented, false if not.
         /// </value>
         public bool Indent { get; set; }
-
-        /// <summary>
-        /// Creates a new configured <see cref="SerializationContext"/>.
-        /// </summary>
-        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
-        /// <param name="serializationService">The serialization service.</param>
-        /// <param name="rootObjectFactory">The root object factory (optional).</param>
-        /// <returns>
-        /// A configured <see cref="SerializationContext"/>.
-        /// </returns>
-        public static SerializationContext Create<TMediaType>(ISerializationService serializationService, Func<object> rootObjectFactory = null)
-            where TMediaType : IMediaType
-        {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            if (!(serializationService is ICompositionContextAware contextAware))
-            {
-                throw new ArgumentException(nameof(serializationService), "The provided serialization service must be composition context aware to use this function.");
-            }
-
-            return new SerializationContext(contextAware.CompositionContext, serializationService, typeof(TMediaType)) { RootObjectFactory = rootObjectFactory };
-        }
-
-        /// <summary>
-        /// Creates a new configured <see cref="SerializationContext"/>.
-        /// </summary>
-        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
-        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
-        /// <param name="serializationService">The serialization service.</param>
-        /// <param name="rootObjectFactory">The root object factory (optional).</param>
-        /// <returns>
-        /// A configured <see cref="SerializationContext"/>.
-        /// </returns>
-        public static SerializationContext Create<TMediaType, TRootObject>(ISerializationService serializationService, Func<object> rootObjectFactory = null)
-            where TMediaType : IMediaType
-        {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            if (!(serializationService is ICompositionContextAware contextAware))
-            {
-                throw new ArgumentException(nameof(serializationService), "The provided serialization service must be composition context aware to use this function.");
-            }
-
-            return new SerializationContext(contextAware.CompositionContext, serializationService, typeof(TMediaType)) { RootObjectType = typeof(TRootObject), RootObjectFactory = rootObjectFactory };
-        }
     }
 }

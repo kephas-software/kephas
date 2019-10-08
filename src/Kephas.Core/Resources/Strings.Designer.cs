@@ -683,6 +683,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The type {0} should export a public property {1}: {2} to be able to create a serialization context..
+        /// </summary>
+        public static string SerializationExtensions_GetContextFactory_CannotGetContextFactory {
+            get {
+                return ResourceManager.GetString("SerializationExtensions_GetContextFactory_CannotGetContextFactory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Either the implementation type, the factory, or the service instance must be provided for &apos;{0}&apos;. Check also whether the {1} value should be set to {2}..
         /// </summary>
         public static string ServiceRegistrationBuilder_InstancingNotProvided_Exception {

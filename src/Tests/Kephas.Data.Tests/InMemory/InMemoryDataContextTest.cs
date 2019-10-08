@@ -34,7 +34,7 @@ namespace Kephas.Data.Tests.InMemory
     using NUnit.Framework;
 
     [TestFixture]
-    public class InMemoryDataContextTest
+    public class InMemoryDataContextTest : DataTestBase
     {
         [Test]
         public void Query_not_initialized_exception()
@@ -223,7 +223,7 @@ namespace Kephas.Data.Tests.InMemory
                 compositionContext ?? Substitute.For<ICompositionContext>(),
                 dataCommandProvider ?? Substitute.For<IDataCommandProvider>(),
                 dataBehaviorProvider ?? Substitute.For<IDataBehaviorProvider>(),
-                serializationService ?? Substitute.For<ISerializationService, ICompositionContextAware>());
+                serializationService ?? this.CreateSerializationServiceMock());
         }
 
         private IDataInitializationContext GetDataInitializationContext(

@@ -18,6 +18,8 @@ namespace Kephas.Serialization
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Resources;
+    using Kephas.Services;
+    using Kephas.Text;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -51,7 +53,8 @@ namespace Kephas.Serialization
                 return default;
             }
 
-            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
+            var contextFactory = serializationService.GetContextFactory();
+            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
             context.RootObjectType = typeof(TRootObject);
 
             var serializer = serializationService.GetSerializer(context);
@@ -83,7 +86,8 @@ namespace Kephas.Serialization
                 return default;
             }
 
-            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
+            var contextFactory = serializationService.GetContextFactory();
+            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
             context.RootObjectType = typeof(TRootObject);
 
             var serializer = serializationService.GetSerializer(context);
@@ -116,7 +120,8 @@ namespace Kephas.Serialization
                 return Task.FromResult((object)null);
             }
 
-            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
+            var contextFactory = serializationService.GetContextFactory();
+            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
 
             var serializer = serializationService.GetSerializer(context);
             return serializer.DeserializeAsync(serializedObj, context, cancellationToken);
@@ -145,7 +150,8 @@ namespace Kephas.Serialization
                 return null;
             }
 
-            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
+            var contextFactory = serializationService.GetContextFactory();
+            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
 
             var serializer = serializationService.GetSerializer(context);
             return serializer.Deserialize(serializedObj, context);
@@ -343,7 +349,8 @@ namespace Kephas.Serialization
                 return Task.FromResult((string)null);
             }
 
-            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
+            var contextFactory = serializationService.GetContextFactory();
+            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
 
             var serializer = serializationService.GetSerializer(context);
             return serializer.SerializeAsync(obj, context, cancellationToken);
@@ -375,7 +382,8 @@ namespace Kephas.Serialization
                 return null;
             }
 
-            context = serializationService.CreateOrUpdateSerializationContext<TMediaType>(context);
+            var contextFactory = serializationService.GetContextFactory();
+            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
 
             var serializer = serializationService.GetSerializer(context);
             return serializer.Serialize(obj, context);
@@ -586,27 +594,23 @@ namespace Kephas.Serialization
         /// <summary>
         /// Creates the serialization context or updates it with the serialization service and media type.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
-        /// <param name="context">The serialization context (optional).</param>
-        /// <param name="contextConfig">The context configuration (optional).</param>
+        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="context">Optional. The serialization context.</param>
+        /// <param name="contextConfig">Optional. The context configuration.</param>
         /// <returns>
         /// The new serialization context.
         /// </returns>
-        public static ISerializationContext CreateOrUpdateSerializationContext<TMediaType>(this ISerializationService serializationService, ISerializationContext context = null, Action<ISerializationContext> contextConfig = null)
+        public static ISerializationContext CreateOrUpdateSerializationContext<TMediaType>(this IContextFactory contextFactory, ISerializationContext context = null, Action<ISerializationContext> contextConfig = null)
             where TMediaType : IMediaType
         {
             if (context == null)
             {
-                context = SerializationContext.Create<TMediaType>(serializationService);
+                context = contextFactory.CreateSerializationContext<TMediaType>();
             }
             else
             {
-                if (context.SerializationService == null)
-                {
-                    context.SerializationService = serializationService;
-                }
-
                 if (context.MediaType == null)
                 {
                     context.MediaType = typeof(TMediaType);
@@ -622,6 +626,53 @@ namespace Kephas.Serialization
             }
 
             contextConfig?.Invoke(context);
+            return context;
+        }
+
+        /// <summary>
+        /// Creates a new configured <see cref="SerializationContext"/>.
+        /// </summary>
+        /// <exception cref="ArgumentException">Thrown when one or more arguments have unsupported or
+        ///                                     illegal values.</exception>
+        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
+        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="rootObjectFactory">Optional. The root object factory.</param>
+        /// <returns>
+        /// A configured <see cref="SerializationContext"/>.
+        /// </returns>
+        public static SerializationContext CreateSerializationContext<TMediaType>(this IContextFactory contextFactory, Func<object> rootObjectFactory = null)
+            where TMediaType : IMediaType
+        {
+            Requires.NotNull(contextFactory, nameof(contextFactory));
+
+            var context = contextFactory.CreateContext<SerializationContext>();
+            context.MediaType = typeof(TMediaType);
+            context.RootObjectFactory = rootObjectFactory;
+            return context;
+        }
+
+        /// <summary>
+        /// Creates a new configured <see cref="SerializationContext"/>.
+        /// </summary>
+        /// <exception cref="ArgumentException">Thrown when one or more arguments have unsupported or
+        ///                                     illegal values.</exception>
+        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
+        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
+        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="rootObjectFactory">Optional. The root object factory.</param>
+        /// <returns>
+        /// A configured <see cref="SerializationContext"/>.
+        /// </returns>
+        public static SerializationContext CreateSerializationContext<TMediaType, TRootObject>(IContextFactory contextFactory, Func<object> rootObjectFactory = null)
+            where TMediaType : IMediaType
+        {
+            Requires.NotNull(contextFactory, nameof(contextFactory));
+
+            var context = contextFactory.CreateContext<SerializationContext>();
+            context.MediaType = typeof(TMediaType);
+            context.RootObjectType = typeof(TRootObject);
+            context.RootObjectFactory = rootObjectFactory;
+
             return context;
         }
 
@@ -672,6 +723,26 @@ namespace Kephas.Serialization
             }
 
             return serializer.DeserializeAsync(textReader, context).GetResultNonLocking();
+        }
+
+        private static IContextFactory GetContextFactory(this ISerializationService serializationService)
+        {
+            if (serializationService is DefaultSerializationService defaultService)
+            {
+                return defaultService.ContextFactory;
+            }
+
+            if (!serializationService.TryGetPropertyValue(nameof(DefaultSerializationService.ContextFactory), out var rawContextFactory))
+            {
+                throw new SerializationException(Strings.SerializationExtensions_GetContextFactory_CannotGetContextFactory.FormatWith(serializationService.GetType(), nameof(DefaultSerializationService.ContextFactory), typeof(IContextFactory)));
+            }
+
+            if (rawContextFactory is IContextFactory contextFactory)
+            {
+                return contextFactory;
+            }
+
+            throw new SerializationException(Strings.SerializationExtensions_GetContextFactory_CannotGetContextFactory.FormatWith(serializationService.GetType(), nameof(DefaultSerializationService.ContextFactory), typeof(IContextFactory)));
         }
     }
 }

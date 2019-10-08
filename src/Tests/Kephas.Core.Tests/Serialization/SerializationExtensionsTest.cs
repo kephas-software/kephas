@@ -4,10 +4,8 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
-
     using NSubstitute;
 
     using NUnit.Framework;
@@ -15,7 +13,7 @@
     using TaskHelper = Kephas.Threading.Tasks.TaskHelper;
 
     [TestFixture]
-    public class SerializationExtensionsTest
+    public class SerializationExtensionsTest : TestBase
     {
         [Test]
         public async Task SerializeAsync_SerializationService()
@@ -185,16 +183,6 @@
                 .Returns(TaskHelper.CompletedTask)
                 .AndDoes(ci => { ci.Arg<TextWriter>().Write(result); });
             return serializer;
-        }
-
-        private ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
-        {
-            var serializationService = Substitute.For<ISerializationService, ICompositionContextAware>(/*Behavior.Strict*/);
-            var compositionContextMock = Substitute.For<ICompositionContext>();
-            ((ICompositionContextAware)serializationService).CompositionContext.Returns(compositionContextMock);
-            serializationService.GetSerializer(Arg.Is<ISerializationContext>(ctx => ctx != null && ctx.MediaType == typeof(TMediaType)))
-                .Returns(serializer);
-            return serializationService;
         }
 
         public class TestEntity
