@@ -18,6 +18,7 @@ namespace Kephas.Application.Console.Tests
     using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Serialization;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
     using NSubstitute;
     using NUnit.Framework;
@@ -40,7 +41,7 @@ namespace Kephas.Application.Console.Tests
             var processor = Substitute.For<ICommandProcessor>();
             var console = Substitute.For<IConsole>();
 
-            var shell = new DefaultCommandShell(console, processor, Substitute.For<ISerializationService>(), Substitute.For<ICompositionContext>());
+            var shell = new DefaultCommandShell(console, processor, Substitute.For<ISerializationService>(), Substitute.For<IContextFactory>());
             using (var source = new CancellationTokenSource())
             {
                 var startTask = shell.StartAsync(source.Token);
@@ -65,7 +66,7 @@ namespace Kephas.Application.Console.Tests
                 .Returns(ci => inputEnumerator.MoveNext() ? inputEnumerator.Current : throw new OperationCanceledException());
 
             var serializer = Substitute.For<ISerializer>();
-            var serialization = Substitute.For<ISerializationService>();
+            var serialization = this.CreateSerializationServiceMock();
             serialization.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
             serializer.SerializeAsync(Arg.Any<object>(), Arg.Any<TextWriter>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
                 .ReturnsForAnyArgs(ci =>
@@ -77,7 +78,11 @@ namespace Kephas.Application.Console.Tests
             processor.ProcessAsync(Arg.Any<string>(), Arg.Any<IExpando>(), Arg.Any<CancellationToken>())
                 .Returns(ci => Task.FromResult<object>(ci.Arg<string>() + " processed"));
 
-            var shell = new DefaultCommandShell(console, processor, serialization, Substitute.For<ICompositionContext>());
+            var contextFactory = Substitute.For<IContextFactory>();
+            contextFactory.CreateContext<SerializationContext>(Arg.Any<object[]>())
+                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serialization));
+
+            var shell = new DefaultCommandShell(console, processor, serialization, contextFactory);
             Assert.ThrowsAsync<OperationCanceledException>(() => shell.StartAsync(default));
 
             Assert.AreEqual(7, output.Count);

@@ -30,16 +30,16 @@ namespace Kephas.Application.Console
     {
         private readonly ICommandProcessor commandProcessor;
         private readonly ISerializationService serializationService;
-        private readonly ICompositionContext compositionContext;
+        private readonly IContextFactory contextFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultCommandShell"/> class.
         /// </summary>
         /// <param name="commandProcessor">The command processor.</param>
         /// <param name="serializationService">The serialization service.</param>
-        /// <param name="compositionContext">Context for the composition.</param>
-        public DefaultCommandShell(ICommandProcessor commandProcessor, ISerializationService serializationService, ICompositionContext compositionContext)
-            : this(new DefaultConsole(), commandProcessor, serializationService, compositionContext)
+        /// <param name="contextFactory">The context factory.</param>
+        public DefaultCommandShell(ICommandProcessor commandProcessor, ISerializationService serializationService, IContextFactory contextFactory)
+            : this(new DefaultConsole(), commandProcessor, serializationService, contextFactory)
         {
         }
 
@@ -49,16 +49,17 @@ namespace Kephas.Application.Console
         /// <param name="console">The console.</param>
         /// <param name="commandProcessor">The command processor.</param>
         /// <param name="serializationService">The serialization service.</param>
-        /// <param name="compositionContext">Context for the composition.</param>
-        internal protected DefaultCommandShell(IConsole console, ICommandProcessor commandProcessor, ISerializationService serializationService, ICompositionContext compositionContext)
+        /// <param name="contextFactory">The context factory.</param>
+        internal protected DefaultCommandShell(IConsole console, ICommandProcessor commandProcessor, ISerializationService serializationService, IContextFactory contextFactory)
         {
             Requires.NotNull(console, nameof(console));
             Requires.NotNull(commandProcessor, nameof(commandProcessor));
+            Requires.NotNull(contextFactory, nameof(contextFactory));
 
             this.Console = console;
             this.commandProcessor = commandProcessor;
             this.serializationService = serializationService;
-            this.compositionContext = compositionContext;
+            this.contextFactory = contextFactory;
         }
 
         /// <summary>
@@ -186,9 +187,11 @@ namespace Kephas.Application.Console
         /// </returns>
         protected virtual async Task WriteCommandOutputAsync(object result, CancellationToken cancellationToken)
         {
+            var serializationContext = this.contextFactory.CreateContext<SerializationContext>(this.serializationService);
+            serializationContext.Indent = true;
             var serializedResult = await this.serializationService.JsonSerializeAsync(
                                        result,
-                                       context: new SerializationContext(this.compositionContext, this.serializationService) { Indent = true },
+                                       context: serializationContext,
                                        cancellationToken: cancellationToken).PreserveThreadContext();
             this.Console.WriteLine(serializedResult);
         }
