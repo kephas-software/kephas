@@ -15,20 +15,22 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <tags>kephas framework testing composition model</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group>
-                <dependency id="Kephas.Core" version="$refversion$" />
-                <dependency id="Kephas.Composition.Mef" version="$refversion$" />
-                <dependency id="Kephas.Model" version="$refversion$" />
-                <dependency id="Kephas.Testing.Composition.Mef" version="$refversion$" />
-                <dependency id="System.Composition" version="1.2.0" />
-                <dependency id="NSubstitute" version="3.1.0" />
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Kephas.Core" version="7.0.0-rc.34" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Model" version="7.0.0-rc.34" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Testing" version="7.0.0-rc.34" exclude="Build,Analyzers" />
+                <dependency id="NSubstitute" version="4.2.0" exclude="Build,Analyzers" />
+            </group>
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Core" version="7.0.0-rc.34" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Model" version="7.0.0-rc.34" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Testing" version="7.0.0-rc.34" exclude="Build,Analyzers" />
+                <dependency id="NSubstitute" version="4.2.0" exclude="Build,Analyzers" />
             </group>
         </dependencies>
-        <references>
-            <reference file="Kephas.Testing.Model.dll" />
-        </references>
-        <tags>kephas framework testing test model</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

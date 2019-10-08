@@ -15,18 +15,22 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <tags>kephas framework testing composition autofac</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group>
-                <dependency id="Kephas.Application" version="$refversion$" />
-                <dependency id="Kephas.Core" version="$refversion$" />
-                <dependency id="Kephas.Composition.Autofac" version="$refversion$" />
-                <dependency id="Autofac" version="4.9.4" />
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Kephas.Application" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Composition.Autofac" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Autofac" version="4.9.4" exclude="Build,Analyzers" />
+            </group>
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Application" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Composition.Autofac" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Autofac" version="4.9.4" exclude="Build,Analyzers" />
             </group>
         </dependencies>
-        <references>
-            <reference file="Kephas.Testing.Composition.Autofac.dll" />
-        </references>
-        <tags>kephas framework testing test composition autofac</tags>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>

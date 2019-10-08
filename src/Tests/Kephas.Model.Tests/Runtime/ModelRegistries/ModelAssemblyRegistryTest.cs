@@ -14,13 +14,11 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Lite.Hosting;
-    using Kephas.Composition.Mef.Hosting;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
