@@ -22,17 +22,14 @@ namespace Kephas.Messaging
     using Kephas.Logging;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.Composition;
-    using Kephas.Messaging.HandlerSelectors;
-    using Kephas.Messaging.Messages;
     using Kephas.Services;
-    using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Provides the default implementation of the <see cref="IMessageProcessor"/> application service contract.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultMessageProcessor : Loggable, IMessageProcessor, ICompositionContextAware
+    public class DefaultMessageProcessor : Loggable, IMessageProcessor
     {
         private readonly IMessageHandlerRegistry handlerRegistry;
 
@@ -56,34 +53,34 @@ namespace Kephas.Messaging
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageProcessor" /> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="handlerRegistry">The handler registry.</param>
         /// <param name="messageMatchService">The message match service.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultMessageProcessor(
-            ICompositionContext compositionContext,
+            IContextFactory contextFactory,
             IMessageHandlerRegistry handlerRegistry,
             IMessageMatchService messageMatchService,
             IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(handlerRegistry, nameof(handlerRegistry));
             Requires.NotNull(messageMatchService, nameof(messageMatchService));
             Requires.NotNull(behaviorFactories, nameof(behaviorFactories));
 
-            this.CompositionContext = compositionContext;
+            this.ContextFactory = contextFactory;
             this.handlerRegistry = handlerRegistry;
             this.messageMatchService = messageMatchService;
             this.behaviorFactories = behaviorFactories.Order().ToList();
         }
 
         /// <summary>
-        /// Gets a context for the dependency injection/composition.
+        /// Gets the context factory.
         /// </summary>
         /// <value>
-        /// The composition context.
+        /// The context factory.
         /// </value>
-        public ICompositionContext CompositionContext { get; }
+        public IContextFactory ContextFactory { get; }
 
         /// <summary>
         /// Processes the specified message asynchronously.
@@ -201,8 +198,8 @@ namespace Kephas.Messaging
             IMessagingContext parentContext)
         {
             return parentContext == null
-                       ? new MessagingContext(this, message)
-                       : new MessagingContext(parentContext, this, message);
+                       ? this.ContextFactory.CreateContext<MessagingContext>(this, message)
+                       : this.ContextFactory.CreateContext<MessagingContext>(parentContext, this, message);
         }
 
         /// <summary>

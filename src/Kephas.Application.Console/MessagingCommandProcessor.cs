@@ -33,6 +33,7 @@ namespace Kephas.Application.Console
         private readonly ICommandRegistry registry;
         private readonly ICommandIdentityResolver identityResolver;
         private readonly IMessageProcessor messageProcessor;
+        private readonly IContextFactory contextFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingCommandProcessor"/> class.
@@ -40,15 +41,18 @@ namespace Kephas.Application.Console
         /// <param name="registry">The registry.</param>
         /// <param name="identityResolver">The identity resolver.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        public MessagingCommandProcessor(ICommandRegistry registry, ICommandIdentityResolver identityResolver, IMessageProcessor messageProcessor)
+        /// <param name="contextFactory">The context factory.</param>
+        public MessagingCommandProcessor(ICommandRegistry registry, ICommandIdentityResolver identityResolver, IMessageProcessor messageProcessor, IContextFactory contextFactory)
         {
             Requires.NotNull(registry, nameof(registry));
             Requires.NotNull(identityResolver, nameof(identityResolver));
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
+            Requires.NotNull(contextFactory, nameof(contextFactory));
 
             this.registry = registry;
             this.identityResolver = identityResolver;
             this.messageProcessor = messageProcessor;
+            this.contextFactory = contextFactory;
         }
 
         /// <summary>
@@ -158,7 +162,7 @@ namespace Kephas.Application.Console
         /// </returns>
         protected virtual async Task<object> ProcessMessageAsync(IMessage message, IExpando args, CancellationToken cancellationToken)
         {
-            using (var context = new MessagingContext(this.messageProcessor, message))
+            using (var context = this.contextFactory.CreateContext<MessagingContext>(this.messageProcessor, message))
             {
                 context.Identity = this.identityResolver.ResolveIdentity(context);
                 var result = await this.messageProcessor.ProcessAsync(message, context, cancellationToken).PreserveThreadContext();

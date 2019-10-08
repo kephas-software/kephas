@@ -41,7 +41,7 @@ namespace Kephas.Messaging.Tests.Behaviors
             // this should not crash, no required permissions
             await behavior.BeforeProcessAsync(
                 message,
-                new MessagingContext(Substitute.For<IMessageProcessor>()),
+                new MessagingContext(Substitute.For<ICompositionContext>(), Substitute.For<IMessageProcessor>()),
                 default);
         }
 
@@ -59,7 +59,7 @@ namespace Kephas.Messaging.Tests.Behaviors
             var message = new NonFreeMessage();
             Assert.ThrowsAsync<AuthorizationException>(() => behavior.BeforeProcessAsync(
                 message,
-                new MessagingContext(Substitute.For<IMessageProcessor, ICompositionContextAware>()),
+                new MessagingContext(Substitute.For<ICompositionContext>(), Substitute.For<IMessageProcessor>()),
                 default), "Should be called with gigi!");
         }
 
@@ -79,7 +79,7 @@ namespace Kephas.Messaging.Tests.Behaviors
             var message = new NonFreeMessage();
             await behavior.BeforeProcessAsync(
                 message,
-                new MessagingContext(Substitute.For<IMessageProcessor, ICompositionContextAware>()),
+                new MessagingContext(Substitute.For<ICompositionContext>(), Substitute.For<IMessageProcessor>()),
                 default);
         }
 

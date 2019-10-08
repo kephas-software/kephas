@@ -127,9 +127,9 @@ namespace Kephas.Messaging.Tests
                             ctx.Handler = Substitute.For<IMessageHandler>();
                             return Task.FromResult(expectedResponse);
                         });
-            var processor = this.CreateRequestProcessor(handler, message);
+            var processor = this.CreateMessageProcessor(handler, message);
 
-            var context = new MessagingContext(processor, contextMessage)
+            var context = new MessagingContext(Substitute.For<ICompositionContext>(), processor, contextMessage)
                               {
                                   Handler = contextHandler,
                               };
@@ -147,7 +147,7 @@ namespace Kephas.Messaging.Tests
             var message = Substitute.For<IMessage>();
             handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => Substitute.For<IMessage>());
-            var processor = this.CreateRequestProcessor(handler, message);
+            var processor = this.CreateMessageProcessor(handler, message);
 
             var context = Substitute.For<IMessagingContext>();
             context.MessageProcessor.Returns(processor);
@@ -164,7 +164,7 @@ namespace Kephas.Messaging.Tests
             var message = Substitute.For<IMessage>();
             handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => Substitute.For<IMessage>());
-            var processor = (TestMessageProcessor) this.CreateRequestProcessor(handler, message);
+            var processor = (TestMessageProcessor) this.CreateMessageProcessor(handler, message);
             IMessagingContext context = null;
             processor.CreateProcessingContextFunc = (msg, ctx) =>
                     {
@@ -188,7 +188,7 @@ namespace Kephas.Messaging.Tests
             var message = Substitute.For<IMessage>();
             handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
-            var processor = this.CreateRequestProcessor(handler, message);
+            var processor = this.CreateMessageProcessor(handler, message);
             var result = await processor.ProcessAsync(message);
 
             Assert.AreSame(expectedResponse, result);
@@ -207,7 +207,7 @@ namespace Kephas.Messaging.Tests
                 .Returns(Task.FromResult(expectedResponse1));
             handler2.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse2));
-            var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+            var processor = this.CreateMessageProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
                                                                 new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low)),
                                                                 new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.High))
@@ -231,7 +231,7 @@ namespace Kephas.Messaging.Tests
                 .Returns(Task.FromResult(expectedResponse1));
             handler2.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse2));
-            var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+            var processor = this.CreateMessageProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
                                                                 new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), messageId: message.Id, overridePriority: (int)Priority.Low)),
                                                                 new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), messageId: message.Id, overridePriority: (int)Priority.High))
@@ -255,7 +255,7 @@ namespace Kephas.Messaging.Tests
                 .Returns(Task.FromResult(expectedResponse1));
             handler2.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse2));
-            var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+            var processor = this.CreateMessageProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
                                                                 new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), messageId: "hi", messageIdMatching: MessageIdMatching.Id, overridePriority: (int)Priority.Low)),
                                                                 new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), messageId: "not-hi", messageIdMatching: MessageIdMatching.Id, overridePriority: (int)Priority.High))
@@ -278,7 +278,7 @@ namespace Kephas.Messaging.Tests
                 .Returns(Task.FromResult(expectedResponse1));
             handler2.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse2));
-            var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+            var processor = this.CreateMessageProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
                                                                 new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low)),
                                                                 new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low))
@@ -291,7 +291,7 @@ namespace Kephas.Messaging.Tests
         public void ProcessAsync_missing_handler_exception()
         {
             var message = Substitute.For<IMessage>();
-            var processor = this.CreateRequestProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
+            var processor = this.CreateMessageProcessor(new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                                             {
                                                             });
             Assert.That(() => processor.ProcessAsync(message, null, default), Throws.InstanceOf<MissingHandlerException>());
@@ -305,7 +305,7 @@ namespace Kephas.Messaging.Tests
             var message = Substitute.For<IMessage>();
             handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Throws(new InvalidOperationException());
-            var processor = this.CreateRequestProcessor(handler, message);
+            var processor = this.CreateMessageProcessor(handler, message);
             Assert.That(() => processor.ProcessAsync(message, null, default), Throws.InstanceOf<InvalidOperationException>());
         }
 
@@ -319,7 +319,7 @@ namespace Kephas.Messaging.Tests
             handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expectedResponse));
 
-            var processor = this.CreateRequestProcessor(handler, message);
+            var processor = this.CreateMessageProcessor(handler, message);
             var result = await processor.ProcessAsync(message, null, default);
 
             Assert.LessOrEqual(1, handler.ReceivedCalls().Count());
@@ -337,8 +337,8 @@ namespace Kephas.Messaging.Tests
 
             var f = this.CreateTestBehaviorFactory(messageType: typeof(PingMessage));
 
-            var processor = (TestMessageProcessor)this.CreateRequestProcessor(new[] { f }, handler, message);
-            var processingContext = new MessagingContext(processor, message);
+            var processor = (TestMessageProcessor)this.CreateMessageProcessor(new[] { f }, handler, message);
+            var processingContext = new MessagingContext(Substitute.For<ICompositionContext>(), processor, message);
             processor.CreateProcessingContextFunc = (msg, ctx) => processingContext;
             var result = await processor.ProcessAsync(message, null, default);
 
@@ -367,7 +367,7 @@ namespace Kephas.Messaging.Tests
                 (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; },
                 processingPriority: 1);
 
-            var processor = this.CreateRequestProcessor(new[] { f1, f2 }, handler, message);
+            var processor = this.CreateMessageProcessor(new[] { f1, f2 }, handler, message);
             var result = await processor.ProcessAsync(message, null, default);
 
             Assert.AreEqual(2, beforelist.Count);
@@ -399,7 +399,7 @@ namespace Kephas.Messaging.Tests
                 (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; });
 
-            var processor = this.CreateRequestProcessor(new[] { f1, f2 }, handler, message);
+            var processor = this.CreateMessageProcessor(new[] { f1, f2 }, handler, message);
             var result = await processor.ProcessAsync(message, null, default);
 
             Assert.AreEqual(1, beforelist.Count);
@@ -443,7 +443,7 @@ namespace Kephas.Messaging.Tests
                 messageTypeMatching: MessageTypeMatching.TypeOrHierarchy,
                 messageIdMatching: MessageIdMatching.All);
 
-            var processor = this.CreateRequestProcessor(new[] { f1, f2, f3, f4 }, 
+            var processor = this.CreateMessageProcessor(new[] { f1, f2, f3, f4 }, 
                 new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler, new MessageHandlerMetadata(message.GetType(), messageId: "hello")));
             var result = await processor.ProcessAsync(message, null, default);
 
@@ -473,7 +473,7 @@ namespace Kephas.Messaging.Tests
                 (c, t) => { beforelist.Add(c.Exception); return TaskHelper.CompletedTask; },
                 (c, t) => { afterlist.Add(c.Exception); return TaskHelper.CompletedTask; });
 
-            var processor = this.CreateRequestProcessor(new[] { f1 }, handler, message);
+            var processor = this.CreateMessageProcessor(new[] { f1 }, handler, message);
             InvalidOperationException thrownException = null;
             try
             {
@@ -506,7 +506,7 @@ namespace Kephas.Messaging.Tests
                                            new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler1, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low)),
                                            new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => handler2, new MessageHandlerMetadata(message.GetType(), overridePriority: (int)Priority.Low))
                                        };
-            var processor = this.CreateRequestProcessor(
+            var processor = this.CreateMessageProcessor(
                 handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
                                                   new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new EventMessageHandlerSelector(mms), new AppServiceMetadata())
@@ -533,7 +533,7 @@ namespace Kephas.Messaging.Tests
                                            new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => plainHandler, new MessageHandlerMetadata(plainMessage.GetType()))
                                        };
 
-            var processor = this.CreateRequestProcessor(
+            var processor = this.CreateMessageProcessor(
                 handlerSelectorFactories: new List<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>>
                                               {
                                                   new ExportFactory<IMessageHandlerSelector, AppServiceMetadata>(() => new DefaultMessageHandlerSelector(mms), new AppServiceMetadata(processingPriority: (int)Priority.Low)),
@@ -590,32 +590,32 @@ namespace Kephas.Messaging.Tests
             return factory;
         }
 
-        private DefaultMessageProcessor CreateRequestProcessor(
+        private DefaultMessageProcessor CreateMessageProcessor(
             IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories,
             ExportFactory<IMessageHandler, MessageHandlerMetadata> handlerFactory)
         {
-            return this.CreateRequestProcessor(
+            return this.CreateMessageProcessor(
                 behaviorFactories, null, new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                            {
                                                handlerFactory
                                            });
         }
 
-        private TestMessageProcessor CreateRequestProcessor(
+        private TestMessageProcessor CreateMessageProcessor(
             IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories,
             IMessageHandler messageHandler,
             IMessage message)
         {
-            return this.CreateRequestProcessor(
+            return this.CreateMessageProcessor(
                 behaviorFactories, null, new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
                                 {
                                     new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => messageHandler, new MessageHandlerMetadata(message.GetType()))
                                 });
         }
 
-        private TestMessageProcessor CreateRequestProcessor(IMessageHandler messageHandler, IMessage message)
+        private TestMessageProcessor CreateMessageProcessor(IMessageHandler messageHandler, IMessage message)
         {
-            return this.CreateRequestProcessor(
+            return this.CreateMessageProcessor(
                 null,
                 null,
                 new List<IExportFactory<IMessageHandler, MessageHandlerMetadata>>
@@ -626,12 +626,12 @@ namespace Kephas.Messaging.Tests
                     });
         }
 
-        private TestMessageProcessor CreateRequestProcessor(IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
+        private TestMessageProcessor CreateMessageProcessor(IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
         {
-            return this.CreateRequestProcessor(null, null, handlerFactories);
+            return this.CreateMessageProcessor(null, null, handlerFactories);
         }
 
-        private TestMessageProcessor CreateRequestProcessor(
+        private TestMessageProcessor CreateMessageProcessor(
             IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories = null,
             IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories = null,
             IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories = null)
@@ -651,11 +651,17 @@ namespace Kephas.Messaging.Tests
                                                   // new ExportFactory<IMessageHandler, MessageHandlerMetadata>(() => new DefaultMessageHandlerSelector(mms), new AppServiceMetadata()),
                                               };
 
-            return new TestMessageProcessor(
-                Substitute.For<ICompositionContext>(),
+            var contextFactory = Substitute.For<IContextFactory>();
+            var processor = new TestMessageProcessor(
+                contextFactory,
                 mms,
                 new DefaultMessageHandlerRegistry(mms, handlerSelectorFactories, handlerFactories),
                 behaviorFactories);
+
+            contextFactory.CreateContext<MessagingContext>(Arg.Any<object[]>())
+                .Returns(ci => new MessagingContext(Substitute.For<ICompositionContext>(), processor));
+
+            return processor;
         }
     }
 
@@ -692,8 +698,8 @@ namespace Kephas.Messaging.Tests
     {
         public Func<IMessage, IMessagingContext, IMessagingContext> CreateProcessingContextFunc { get; set; }
 
-        public TestMessageProcessor(ICompositionContext compositionContext, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
-            : base(compositionContext, handlerRegistry, messageMatchService, behaviorFactories)
+        public TestMessageProcessor(IContextFactory contextFactory, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
+            : base(contextFactory, handlerRegistry, messageMatchService, behaviorFactories)
         {
         }
 
