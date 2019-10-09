@@ -20,7 +20,7 @@ namespace Kephas.Orchestration.Tests
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
-    using Kephas.Testing.Composition;
+    using Kephas.Testing.Application;
 
     using NSubstitute;
 

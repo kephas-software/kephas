@@ -20,6 +20,7 @@ namespace Kephas.Testing.Composition
     using Kephas.Composition.Lite.Hosting;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Testing;
 
     /// <summary>
     /// Base class for tests using composition.

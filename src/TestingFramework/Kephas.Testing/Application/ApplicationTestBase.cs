@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Testing.Composition
+namespace Kephas.Testing.Application
 {
     using System.Collections.Generic;
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Testing.Composition;
 
     /// <summary>
     /// Base class for application tests using composition.

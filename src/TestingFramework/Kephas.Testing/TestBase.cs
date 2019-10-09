@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Testing.Composition
+namespace Kephas.Testing
 {
     using System;
     using Kephas.Composition;
@@ -53,7 +53,7 @@ namespace Kephas.Testing.Composition
         protected ISerializationService CreateSerializationServiceMock()
         {
             var serializationService = Substitute.For<ISerializationService, IContextFactoryAware>(/*Behavior.Strict*/);
-            var contextFactoryMock = this.CreateContextFactoryMock(() => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+            var contextFactoryMock = CreateContextFactoryMock(() => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
             ((IContextFactoryAware)serializationService).ContextFactory.Returns(contextFactoryMock);
             return serializationService;
         }
@@ -69,7 +69,7 @@ namespace Kephas.Testing.Composition
         /// </returns>
         protected ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
-            var serializationService = this.CreateSerializationServiceMock();
+            var serializationService = CreateSerializationServiceMock();
             serializationService.GetSerializer(Arg.Is<ISerializationContext>(ctx => ctx != null && ctx.MediaType == typeof(TMediaType)))
                 .Returns(serializer);
             return serializationService;
