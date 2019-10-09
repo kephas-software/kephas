@@ -15,8 +15,25 @@ namespace Kephas.Testing.Composition
 
     using Kephas.Application;
 
+    /// <summary>
+    /// Base class for application tests using composition.
+    /// </summary>
+    /// <content>
+    /// It includes:
+    /// * The default convention assemblies contain:
+    ///   * Kephas.Core 
+    ///   * Kephas.Application
+    /// </content>
     public class ApplicationTestBase : CompositionTestBase
     {
+        /// <summary>
+        /// Gets the default convention assemblies to be considered when building the container. By
+        /// default it includes Kephas.Core and Kephas.Application.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the default convention assemblies in
+        /// this collection.
+        /// </returns>
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {
             return new List<Assembly>(base.GetDefaultConventionAssemblies())

@@ -16,17 +16,26 @@ namespace Kephas.Testing.Composition
     using Kephas.Services;
     using NSubstitute;
 
+    /// <summary>
+    /// Base class for tests.
+    /// </summary>
+    /// <content>
+    /// It includes:
+    /// * Creating mocks for:
+    ///   * <see cref="IContextFactory"/>.
+    ///   * <see cref="ISerializationService"/>.
+    /// </content>
     public class TestBase
     {
         /// <summary>
-        /// Creates a context factory.
+        /// Creates a context factory mock.
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="ctor">The constructor for the created context.</param>
         /// <returns>
         /// The new context factory.
         /// </returns>
-        protected IContextFactory CreateContextFactory<TContext>(Func<TContext> ctor)
+        protected IContextFactory CreateContextFactoryMock<TContext>(Func<TContext> ctor)
             where TContext : IContext
         {
             var contextFactory = Substitute.For<IContextFactory>();
@@ -35,14 +44,29 @@ namespace Kephas.Testing.Composition
             return contextFactory;
         }
 
+        /// <summary>
+        /// Creates a serialization service mock, aware of <see cref="IContextFactory"/>.
+        /// </summary>
+        /// <returns>
+        /// The new serialization service mock.
+        /// </returns>
         protected ISerializationService CreateSerializationServiceMock()
         {
             var serializationService = Substitute.For<ISerializationService, IContextFactoryAware>(/*Behavior.Strict*/);
-            var contextFactoryMock = this.CreateContextFactory(() => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+            var contextFactoryMock = this.CreateContextFactoryMock(() => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
             ((IContextFactoryAware)serializationService).ContextFactory.Returns(contextFactoryMock);
             return serializationService;
         }
 
+        /// <summary>
+        /// Creates a serialization service mock, aware of <see cref="IContextFactory"/>,
+        /// and with a handler for the provided media type.
+        /// </summary>
+        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
+        /// <param name="serializer">The serializer.</param>
+        /// <returns>
+        /// The new serialization service mock.
+        /// </returns>
         protected ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
             var serializationService = this.CreateSerializationServiceMock();

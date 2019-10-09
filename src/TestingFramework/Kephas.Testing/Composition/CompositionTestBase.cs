@@ -12,7 +12,6 @@ namespace Kephas.Testing.Composition
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
 
     using Kephas.Application;
@@ -25,9 +24,22 @@ namespace Kephas.Testing.Composition
     /// <summary>
     /// Base class for tests using composition.
     /// </summary>
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
+    /// <content>
+    /// It includes:
+    /// * Creating composition container in different configurations.
+    /// </content>
     public class CompositionTestBase : TestBase
     {
+        /// <summary>
+        /// Creates a container builder for further configuration.
+        /// </summary>
+        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance
+        ///                               will be created as linked to the newly created container.</param>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        /// <param name="appRuntime">Optional. The application runtime.</param>
+        /// <returns>
+        /// A LiteCompositionContainerBuilder.
+        /// </returns>
         public virtual LiteCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
         {
             logManager = logManager ?? new NullLogManager();
@@ -42,11 +54,28 @@ namespace Kephas.Testing.Composition
             return new LiteCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }
 
+        /// <summary>
+        /// Creates a container for the provided convention assemblies.
+        /// </summary>
+        /// <param name="assemblies">A variable-length parameters list containing assemblies.</param>
+        /// <returns>
+        /// The new container.
+        /// </returns>
         public ICompositionContext CreateContainer(params Assembly[] assemblies)
         {
             return this.CreateContainer(assemblies: (IEnumerable<Assembly>)assemblies);
         }
 
+        /// <summary>
+        /// Creates a container for the provided convention assemblies and parts.
+        /// </summary>
+        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance will be created as linked to the newly created container.</param>
+        /// <param name="assemblies">Optional. A variable-length parameters list containing assemblies.</param>
+        /// <param name="parts">Optional. The parts.</param>
+        /// <param name="config">Optional. The configuration.</param>
+        /// <returns>
+        /// The new container.
+        /// </returns>
         public virtual ICompositionContext CreateContainer(
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
@@ -82,6 +111,13 @@ namespace Kephas.Testing.Composition
                 .CreateContainer();
         }
 
+        /// <summary>
+        /// Gets the default convention assemblies to be considered when building the container. By default it includes Kephas.Core.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the default convention assemblies in
+        /// this collection.
+        /// </returns>
         public virtual IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {
             return new List<Assembly>
@@ -90,6 +126,12 @@ namespace Kephas.Testing.Composition
                        };
         }
 
+        /// <summary>
+        /// Gets the default parts to be included in the container.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the default parts in this collection.
+        /// </returns>
         public virtual IEnumerable<Type> GetDefaultParts()
         {
             return new List<Type>();
