@@ -241,8 +241,8 @@ namespace Kephas.Composition.Autofac.Conventions
                 }
                 else if (this.ServiceType.IsGenericTypeDefinition && !contractType.IsGenericTypeDefinition)
                 {
-                    var closedContractType = contractType.GetInterfaces().First(t => t.IsClosedTypeOf(this.ServiceType));
-                    this.ContractType = closedContractType;
+                    var closedServiceType = this.partType.GetInterfaces().First(t => t.IsClosedTypeOf(this.ServiceType));
+                    this.ServiceType = closedServiceType;
                 }
                 else
                 {
