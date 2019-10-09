@@ -2,7 +2,7 @@
 {
     using Kephas.Services;
 
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface ICalculator
     {
         (double Value, string OperationName) Compute(string input);

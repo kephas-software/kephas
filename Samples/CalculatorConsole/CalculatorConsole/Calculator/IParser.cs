@@ -8,7 +8,7 @@
     /// <summary>
     /// Interface for parser.
     /// </summary>
-    [SharedAppServiceContract]
+    [SingletonAppServiceContract]
     public interface IParser
     {
         /// <summary>
