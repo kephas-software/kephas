@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionTestBase.cs" company="Kephas Software SRL">
+// <copyright file="AutofacCompositionTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Testing.Composition.Autofac
+namespace Kephas.Testing.Composition
 {
     using System;
     using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace Kephas.Testing.Composition.Autofac
     /// Base class for tests using composition.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class CompositionTestBase
+    public class AutofacCompositionTestBase : TestBase
     {
         public virtual ContainerBuilder WithEmptyConfiguration()
         {
@@ -60,7 +60,7 @@ namespace Kephas.Testing.Composition.Autofac
 
         public ICompositionContext CreateContainer(params Assembly[] assemblies)
         {
-            return this.CreateContainer(assemblies: (IEnumerable<Assembly>)assemblies);
+            return CreateContainer(assemblies: (IEnumerable<Assembly>)assemblies);
         }
 
         public virtual ICompositionContext CreateContainer(
@@ -70,8 +70,8 @@ namespace Kephas.Testing.Composition.Autofac
             Action<AutofacCompositionContainerBuilder> config = null)
         {
             ambientServices = ambientServices ?? new AmbientServices();
-            var containerBuilder = this.WithContainerBuilder(ambientServices)
-                    .WithAssemblies(this.GetDefaultConventionAssemblies())
+            var containerBuilder = WithContainerBuilder(ambientServices)
+                    .WithAssemblies(GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? new Assembly[0])
                     .WithParts(parts ?? new Type[0]);
 
@@ -84,7 +84,7 @@ namespace Kephas.Testing.Composition.Autofac
 
         public ICompositionContext CreateContainerWithBuilder(Action<AutofacCompositionContainerBuilder> config = null)
         {
-            var builder = this.WithContainerBuilder()
+            var builder = WithContainerBuilder()
                 .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly);
             config?.Invoke(builder);
             return builder.CreateContainer();
@@ -92,7 +92,7 @@ namespace Kephas.Testing.Composition.Autofac
 
         public ICompositionContext CreateContainerWithBuilder(IAmbientServices ambientServices, params Type[] types)
         {
-            return this.WithContainerBuilder(ambientServices)
+            return WithContainerBuilder(ambientServices)
                 .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
                 .WithParts(types)
                 .CreateContainer();
