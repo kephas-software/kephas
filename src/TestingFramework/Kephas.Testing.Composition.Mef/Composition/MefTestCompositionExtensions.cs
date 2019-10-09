@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TestCompositionExtensions.cs" company="Kephas Software SRL">
+// <copyright file="MefTestCompositionExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Testing.Composition.Mef
+namespace Kephas.Testing.Composition
 {
     using System.Composition.Hosting;
     using System.Diagnostics.CodeAnalysis;
@@ -17,7 +17,7 @@ namespace Kephas.Testing.Composition.Mef
     using Kephas.Diagnostics.Contracts;
 
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public static class TestCompositionExtensions
+    public static class MefTestCompositionExtensions
     {
         public static MefCompositionContainer CreateCompositionContainer(this ContainerConfiguration configuration)
         {
