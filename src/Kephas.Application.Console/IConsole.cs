@@ -10,9 +10,12 @@
 
 namespace Kephas.Application.Console
 {
+    using Kephas.Services;
+
     /// <summary>
     /// Interface for console.
     /// </summary>
+    [SingletonAppServiceContract]
     public interface IConsole
     {
         /// <summary>

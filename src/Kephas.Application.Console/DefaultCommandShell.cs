@@ -14,7 +14,7 @@ namespace Kephas.Application.Console
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
+    using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
@@ -50,7 +50,8 @@ namespace Kephas.Application.Console
         /// <param name="commandProcessor">The command processor.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="contextFactory">The context factory.</param>
-        internal protected DefaultCommandShell(IConsole console, ICommandProcessor commandProcessor, ISerializationService serializationService, IContextFactory contextFactory)
+        [CompositionConstructor]
+        public DefaultCommandShell(IConsole console, ICommandProcessor commandProcessor, ISerializationService serializationService, IContextFactory contextFactory)
         {
             Requires.NotNull(console, nameof(console));
             Requires.NotNull(commandProcessor, nameof(commandProcessor));
