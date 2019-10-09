@@ -10,8 +10,6 @@
 
 namespace Kephas.Data.Composition.Tests
 {
-    using Kephas.Testing.Composition.Mef;
-
     using NUnit.Framework;
 
     [TestFixture]

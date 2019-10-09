@@ -31,7 +31,6 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Serialization;
     using Kephas.Serialization.Json;
     using Kephas.Services;
-    using Kephas.Testing.Composition.Mef;
     using Kephas.Threading.Tasks;
 
     using NSubstitute;
