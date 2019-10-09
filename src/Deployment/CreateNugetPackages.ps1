@@ -55,10 +55,12 @@ $paths = @(
 )
 
 foreach ($path in $paths) {
-    .\NuGet.exe pack $path\Package.nuspec -BasePath $path -Symbols <# -SymbolPackageFormat snupkg #> -properties "Configuration=$build;Version=$version;RefVersion=$refversion"
+    .\NuGet.exe pack $path\Package.nuspec -BasePath $path -Symbols -SymbolPackageFormat symbols.nupkg -properties "Configuration=$build;Version=$version;RefVersion=$refversion"
     .\NuGet.exe pack $path\Package.nuspec -BasePath $path -Symbols -SymbolPackageFormat snupkg -properties "Configuration=$build;Version=$version;RefVersion=$refversion"
     $packagename = get-packagename $path
     .\NuGet.exe sign "$packagename.$version.nupkg" -CertificateSubjectName "$CertificateSubjectName" -Timestamper "$Timestamper"
-#    .\NuGet.exe sign "$packagename.$version.symbols.nupkg" -CertificateSubjectName "$CertificateSubjectName" -Timestamper "$Timestamper"
     .\NuGet.exe sign "$packagename.$version.snupkg" -CertificateSubjectName "$CertificateSubjectName" -Timestamper "$Timestamper"
+
+    # do not sign the symbols.nupkg package as after renamig them for some older nuget servers like ProGet, they are not valid anymore
+    # .\NuGet.exe sign "$packagename.$version.symbols.nupkg" -CertificateSubjectName "$CertificateSubjectName" -Timestamper "$Timestamper"
 }
