@@ -1,4 +1,14 @@
-﻿namespace Kephas.Core.Tests.Application
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FeatureManagerBaseTest.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the feature manager base test class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Application.Tests
 {
     using System;
     using System.Reflection;
@@ -12,7 +22,7 @@
 
     using NUnit.Framework;
 
-    using TaskHelper = Kephas.Threading.Tasks.TaskHelper;
+    using TaskHelper = Threading.Tasks.TaskHelper;
 
     [TestFixture]
     public class FeatureManagerBaseTest
@@ -72,19 +82,19 @@
 
             public InitializationMonitor<IFeatureManager> GetInitializationMonitor()
             {
-                return this.InitializationMonitor;
+                return InitializationMonitor;
             }
 
             public FinalizationMonitor<IFeatureManager> GetFinalizationMonitor()
             {
-                return this.FinalizationMonitor;
+                return FinalizationMonitor;
             }
 
             protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
             {
-                if (this.exception != null)
+                if (exception != null)
                 {
-                    throw this.exception;
+                    throw exception;
                 }
 
                 return TaskHelper.CompletedTask;
@@ -92,9 +102,9 @@
 
             protected override Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
             {
-                if (this.exception != null)
+                if (exception != null)
                 {
-                    throw this.exception;
+                    throw exception;
                 }
 
                 return TaskHelper.CompletedTask;

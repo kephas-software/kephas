@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Application
+namespace Kephas.Application.Tests
 {
     using System;
     using System.Linq;
@@ -27,7 +27,7 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void Composition_compute_auto_feature_info()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(TestFeatureManager) });
+            var container = CreateContainer(parts: new[] { typeof(TestFeatureManager) });
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
@@ -42,7 +42,7 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void Composition_full_feature_info()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager) });
+            var container = CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager) });
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
@@ -59,7 +59,7 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void Composition_enabled_feature_info()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager), typeof(RequiredTestFeatureManager), typeof(RequiredFeatureManagerServiceBehavior) });
+            var container = CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager), typeof(RequiredTestFeatureManager), typeof(RequiredFeatureManagerServiceBehavior) });
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();

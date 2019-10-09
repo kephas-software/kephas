@@ -8,21 +8,22 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Application
+namespace Kephas.Application.Tests
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas;
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Operations;
+    using Kephas.Services;
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class AppBaseTest
+    public class AppBaseTest : ApplicationTestBase
     {
         [Test]
         public async Task ConfigureAmbientServicesAsync_ambient_services_static_instance_set()
@@ -31,7 +32,7 @@ namespace Kephas.Core.Tests.Application
 
             IAmbientServices ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithCompositionContainer(compositionContext));
-            var appContext = await app.BootstrapAsync();
+            var (appContext, instruction) = await app.BootstrapAsync();
 
             Assert.IsNotNull(ambientServices);
             Assert.AreSame(app.AmbientServices, ambientServices);
@@ -45,7 +46,7 @@ namespace Kephas.Core.Tests.Application
 
             IAmbientServices ambientServices = null;
             var app = new TestApp(async b => ambientServices = b.WithCompositionContainer(compositionContext));
-            var appContext = await app.BootstrapAsync();
+            var (appContext, instruction) = await app.BootstrapAsync();
 
             Assert.AreSame(app.AmbientServices, ambientServices);
             Assert.AreSame(app.AmbientServices, appContext.AmbientServices);
@@ -67,6 +68,28 @@ namespace Kephas.Core.Tests.Application
         }
 
         [Test]
+        public async Task BootstrapAsync_wait_for_shutdown_exception_stops_application()
+        {
+            var appManager = Substitute.For<IAppManager>();
+            var termAwaiter = Substitute.For<IAppShutdownAwaiter>();
+            termAwaiter.WaitForShutdownSignalAsync(Arg.Any<CancellationToken>())
+                .Returns<(IOperationResult result, AppShutdownInstruction instruction)>(ci => throw new InvalidOperationException("bad thing happened"));
+
+            var compositionContext = Substitute.For<ICompositionContext>();
+            compositionContext.GetExport<IAppManager>(Arg.Any<string>())
+                .Returns(appManager);
+            compositionContext.GetExport<IAppShutdownAwaiter>(Arg.Any<string>())
+                .Returns(termAwaiter);
+
+            var app = new TestApp(async b => b.WithCompositionContainer(compositionContext));
+            var (appContext, instruction) = await app.BootstrapAsync();
+
+            appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+            var appResult = (IOperationResult)appContext.AppResult;
+            Assert.IsNull(appResult);
+        }
+
+        [Test]
         public async Task BootstrapAsync_shutdown_instruction_stops_application()
         {
             var appManager = Substitute.For<IAppManager>();
@@ -81,7 +104,7 @@ namespace Kephas.Core.Tests.Application
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithCompositionContainer(compositionContext));
-            var appContext = await app.BootstrapAsync();
+            var (appContext, instruction) = await app.BootstrapAsync();
 
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
@@ -103,11 +126,23 @@ namespace Kephas.Core.Tests.Application
                 .Returns(termAwaiter);
 
             var app = new TestApp(async b => b.WithCompositionContainer(compositionContext));
-            var appContext = await app.BootstrapAsync();
+            var (appContext, instruction) = await app.BootstrapAsync();
 
             appManager.Received(0).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
             Assert.AreEqual(23, appResult.ReturnValue);
+        }
+
+        [Test]
+        public async Task BootstrapAsync_composition()
+        {
+            var container = this.CreateContainer(parts: new[] { typeof(TestApp), typeof(TestShutdownAwaiter), typeof(TestShutdownFeatureManager) });
+            var app = new TestApp(ambientServices: container.GetExport<IAmbientServices>());
+            var (appContext, instruction) = await app.BootstrapAsync();
+
+            Assert.AreEqual(AppShutdownInstruction.Ignore, instruction);
+
+            await app.ShutdownAsync();
         }
 
         [Test]
@@ -124,6 +159,45 @@ namespace Kephas.Core.Tests.Application
             await app.ShutdownAsync();
 
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
+        }
+
+        public class TestShutdownFeatureManager : FeatureManagerBase
+        {
+            private readonly IAppShutdownAwaiter awaiter;
+
+            public TestShutdownFeatureManager(IAppShutdownAwaiter awaiter)
+            {
+                this.awaiter = awaiter;
+            }
+
+            protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
+            {
+                (this.awaiter as TestShutdownAwaiter).SignalShutdown();
+                return base.InitializeCoreAsync(appContext, cancellationToken);
+            }
+        }
+
+        public class TestShutdownAwaiter : IAppShutdownAwaiter, IInitializable
+        {
+            bool initialized = false;
+
+            public void SignalShutdown()
+            {
+                if (!this.initialized)
+                {
+                    throw new InvalidOperationException("Awaiter not initialized");
+                }
+            }
+
+            public void Initialize(IContext context = null)
+            {
+                this.initialized = true;
+            }
+
+            public async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+            {
+                return (new OperationResult(), AppShutdownInstruction.Ignore);
+            }
         }
     }
 
@@ -143,9 +217,9 @@ namespace Kephas.Core.Tests.Application
         /// <param name="ambientServices">The ambient services.</param>
         protected override async void ConfigureAmbientServices(IAmbientServices ambientServices)
         {
-            if (this.asyncConfig != null)
+            if (asyncConfig != null)
             {
-                await this.asyncConfig(ambientServices);
+                await asyncConfig(ambientServices);
             }
         }
     }

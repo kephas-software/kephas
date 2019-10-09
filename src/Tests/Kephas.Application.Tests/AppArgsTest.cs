@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Application
+namespace Kephas.Application.Tests
 {
     using Kephas.Application;
     using NUnit.Framework;

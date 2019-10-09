@@ -8,12 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Core.Tests.Application
+namespace Kephas.Application.Tests
 {
-    using System.ComponentModel;
 
     using Kephas.Application;
-    using Kephas.Composition;
 
     using NSubstitute;
 

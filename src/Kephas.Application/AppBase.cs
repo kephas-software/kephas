@@ -71,7 +71,7 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
-        public virtual async Task<IAppContext> BootstrapAsync(
+        public virtual async Task<(IAppContext appContext, AppShutdownInstruction instruction)> BootstrapAsync(
             string[] rawAppArgs = null,
             CancellationToken cancellationToken = default)
         {
@@ -81,26 +81,23 @@ namespace Kephas.Application
 
             await this.InitializeAppManagerAsync(this.AppContext, cancellationToken).PreserveThreadContext();
 
-            try
-            {
-                var container = this.AmbientServices.CompositionContainer;
-                var terminationAwaiter = container.GetExport<IAppShutdownAwaiter>();
-                var (result, instruction) = await terminationAwaiter.WaitForShutdownSignalAsync(cancellationToken).PreserveThreadContext();
-                this.AppContext.AppResult = result;
+            var instruction = await this.WaitForShutdownSignalAsync(cancellationToken).PreserveThreadContext();
 
-                if (instruction == AppShutdownInstruction.Shutdown)
+            if (instruction == AppShutdownInstruction.Shutdown)
+            {
+                try
                 {
                     await this.ShutdownAsync(cancellationToken).PreserveThreadContext();
                 }
-            }
-            catch (Exception ex)
-            {
-                this.Logger.Fatal(ex, "Abnormal application termination.");
-                this.AppContext.Exception = ex;
-                return null;
+                catch (Exception ex)
+                {
+                    this.Logger.Fatal(ex, "Abnormal application termination.");
+                    this.AppContext.Exception = ex;
+                    return (null, instruction);
+                }
             }
 
-            return this.AppContext;
+            return (this.AppContext, instruction);
         }
 
         /// <summary>
@@ -163,6 +160,33 @@ namespace Kephas.Application
             }
 
             return this.prerequisitesInitialized = true;
+        }
+
+        /// <summary>
+        /// Waits for the shutdown signal asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the shutdown instruction.
+        /// </returns>
+        protected virtual async Task<AppShutdownInstruction> WaitForShutdownSignalAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                var container = this.AmbientServices.CompositionContainer;
+                var terminationAwaiter = container.GetExport<IAppShutdownAwaiter>();
+                var (result, instruction) = await terminationAwaiter.WaitForShutdownSignalAsync(cancellationToken).PreserveThreadContext();
+                this.AppContext.AppResult = result;
+
+                return instruction;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error during waiting for shutdown signal.");
+                this.AppContext.Exception = ex;
+
+                return AppShutdownInstruction.Shutdown;
+            }
         }
 
         /// <summary>
