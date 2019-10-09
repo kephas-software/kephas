@@ -35,7 +35,7 @@ namespace Kephas.Application.Console
         /// <summary>
         /// Writes the text to the console followed by a new line.
         /// </summary>
-        /// <param name="value">The text to write.</param>
-        void WriteLine(string value);
+        /// <param name="value">Optional. The text to write.</param>
+        void WriteLine(string value = null);
     }
 }

@@ -35,7 +35,17 @@ namespace Kephas.Application.Console
         /// <summary>
         /// Writes the text to the console followed by a new line.
         /// </summary>
-        /// <param name="value">The text to write.</param>
-        public void WriteLine(string value) => System.Console.WriteLine(value);
+        /// <param name="value">Optional. The text to write.</param>
+        public void WriteLine(string value = null)
+        {
+            if (value == null)
+            {
+                System.Console.WriteLine();
+            }
+            else
+            {
+                System.Console.WriteLine(value);
+            }
+        }
     }
 }
