@@ -21,11 +21,11 @@ namespace Kephas.Messaging.Tests
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Application;
 
     using NSubstitute;
 
-    public class MessagingTestBase : ApplicationTestBase
+    public class MessagingTestBase : MefApplicationTestBase
     {
         public override ICompositionContext CreateContainer(
             IAmbientServices ambientServices = null,

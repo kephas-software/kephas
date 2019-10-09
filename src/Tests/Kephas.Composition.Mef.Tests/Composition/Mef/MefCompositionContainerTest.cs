@@ -25,7 +25,7 @@ namespace Kephas.Tests.Composition.Mef
     using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition;
 
     using NSubstitute;
 
@@ -36,7 +36,7 @@ namespace Kephas.Tests.Composition.Mef
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class MefCompositionContainerTest : CompositionTestBase
+    public class MefCompositionContainerTest : MefCompositionTestBase
     {
         public MefCompositionContainer CreateContainer(params Type[] types)
         {

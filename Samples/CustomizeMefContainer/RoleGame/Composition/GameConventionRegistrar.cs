@@ -1,26 +1,26 @@
 ﻿namespace RoleGame.Composition
 {
+    using System;
+    using System.Collections.Generic;
     using System.Composition.Convention;
-
+    using Kephas.Composition;
+    using Kephas.Composition.Hosting;
+    using Kephas.Composition.Mef.Conventions;
     using RoleGame.Services;
 
-    public class GameConventionRegistrar : IConventionRegistrar
+    public class GameConventionRegistrar : MefConventionsRegistrarBase
     {
-        /// <summary>
-        /// Registers the conventions.
-        /// </summary>
-        /// <param name="builder">The registration builder.</param>
-        public void RegisterConventions(ConventionBuilder builder)
+        protected override void RegisterConventions(ConventionBuilder builder, IList<Type> candidateTypes, ICompositionRegistrationContext registrationContext)
         {
             builder
                 .ForTypesDerivedFrom<IGameManager>()
                 .Export(b => b.AsContractType<IGameManager>())
-                .Shared(ScopeNames.User);
+                .Shared(CompositionScopeNames.Default);
 
             builder
                 .ForTypesDerivedFrom<IUser>()
                 .Export(b => b.AsContractType<IUser>())
-                .Shared(ScopeNames.User);
+                .Shared(CompositionScopeNames.Default);
         }
     }
 }

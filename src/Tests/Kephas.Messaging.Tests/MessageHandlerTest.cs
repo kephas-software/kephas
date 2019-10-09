@@ -18,12 +18,12 @@ namespace Kephas.Messaging.Tests
     using Kephas.Composition;
     using Kephas.Messaging.AttributedModel;
     using Kephas.Messaging.Composition;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageHandlerTest : CompositionTestBase
+    public class MessageHandlerTest : MefCompositionTestBase
     {
         [Test]
         public void Composition_single_handler()

@@ -13,7 +13,7 @@ namespace Metadata.WebApp
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class Startup : Kephas.AspNetCore.StartupBase
+    public class Startup : Kephas.Application.AspNetCore.StartupBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup" /> class.
@@ -39,18 +39,12 @@ namespace Metadata.WebApp
             return serviceProvider;
         }
 
-        /// <summary>Configures the ambient services asynchronously.</summary>
-        /// <remarks>
-        /// Override this method to initialize the startup services, like log manager and configuration manager.
-        /// </remarks>
-        /// <param name="appArgs">The application arguments.</param>
-        /// <param name="ambientServicesBuilder">The ambient services builder.</param>
-        protected override void ConfigureAmbientServices(string[] appArgs, AmbientServicesBuilder ambientServicesBuilder)
+        protected override void ConfigureAmbientServices(IAmbientServices ambientServices)
         {
-            ambientServicesBuilder
+            ambientServices
                 .WithNLogManager()
-                .WithDefaultAppRuntime()
-                .WithMefCompositionContainer();
+                .WithDynamicAppRuntime()
+                .WithAutofacCompositionContainer();
         }
 
         /// <summary>

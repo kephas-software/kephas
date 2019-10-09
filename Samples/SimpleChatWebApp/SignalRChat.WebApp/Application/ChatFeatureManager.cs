@@ -7,14 +7,13 @@
     using Kephas.Messaging;
     using Kephas.Serialization;
     using Kephas.Threading.Tasks;
-    using Kephas.Web.Owin.Application;
 
     using Owin;
 
     using SignalRChat.WebApp.Middleware;
 
     [FeatureInfo(AppFeature.Chat, dependencies: new[] { AppFeature.SignalR })]
-    public class ChatFeatureManager : OwinFeatureManagerBase
+    public class ChatFeatureManager : FeatureManagerBase
     {
         private readonly IMessageProcessor messageProcessor;
 
@@ -35,9 +34,10 @@
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A Task.</returns>
-        protected override Task InitializeCoreAsync(IOwinAppContext appContext, CancellationToken cancellationToken)
+        protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            appContext.AppBuilder.Use<ChatAppApiMiddleware>(this.messageProcessor, this.serializationService);
+            var app = (IAppBuilder)appContext["AppBuilder"];
+            app.Use<ChatAppApiMiddleware>(this.messageProcessor, this.serializationService);
 
             return TaskHelper.CompletedTask;
         }

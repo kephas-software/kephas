@@ -45,23 +45,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Kephas.Composition.Mef, Version=4.5.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.4.5.0-beta08\lib\net45\Kephas.Composition.Mef.dll</HintPath>
+    <Reference Include="Kephas.Application, Version=7.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Application.7.0.0-rc.36\lib\net45\Kephas.Application.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Core, Version=4.5.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Core.4.5.0-beta08\lib\net45\Kephas.Core.dll</HintPath>
+    <Reference Include="Kephas.Composition.Mef, Version=7.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Composition.Mef.7.0.0-rc.36\lib\net45\Kephas.Composition.Mef.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Logging.NLog, Version=4.5.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.4.5.0-beta08\lib\net45\Kephas.Logging.NLog.dll</HintPath>
+    <Reference Include="Kephas.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Core.7.0.0-rc.36\lib\net45\Kephas.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Messaging, Version=4.5.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Messaging.4.5.0-beta08\lib\net45\Kephas.Messaging.dll</HintPath>
+    <Reference Include="Kephas.Logging.NLog, Version=7.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Logging.NLog.7.0.0-rc.36\lib\net45\Kephas.Logging.NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Serialization.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Serialization.Json.4.5.0-beta08\lib\net45\Kephas.Serialization.Json.dll</HintPath>
+    <Reference Include="Kephas.Messaging, Version=7.0.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Messaging.7.0.0-rc.36\lib\net45\Kephas.Messaging.dll</HintPath>
     </Reference>
-    <Reference Include="Kephas.Web.Owin, Version=4.1.0.0, Culture=neutral, PublicKeyToken=15b1115599983c50, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Kephas.Web.Owin.4.1.1\lib\net461\Kephas.Web.Owin.dll</HintPath>
+    <Reference Include="Kephas.Serialization.Json, Version=7.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Kephas.Serialization.Json.7.0.0-rc.36\lib\net45\Kephas.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Microsoft.AspNet.SignalR.Core.2.2.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
@@ -82,8 +82,8 @@
     <Reference Include="Microsoft.Owin.Security, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\Microsoft.Owin.Security.3.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\NLog.4.5.4\lib\net45\NLog.dll</HintPath>
@@ -93,20 +93,20 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Composition.AttributedModel, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\System.Composition.AttributedModel.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.33.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Composition.AttributedModel.1.2.0\lib\netstandard2.0\System.Composition.AttributedModel.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.Convention, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\System.Composition.Convention.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+    <Reference Include="System.Composition.Convention, Version=1.0.33.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Composition.Convention.1.2.0\lib\netstandard2.0\System.Composition.Convention.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.Hosting, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\System.Composition.Hosting.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+    <Reference Include="System.Composition.Hosting, Version=1.0.33.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Composition.Hosting.1.2.0\lib\netstandard2.0\System.Composition.Hosting.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.Runtime, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\System.Composition.Runtime.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+    <Reference Include="System.Composition.Runtime, Version=1.0.33.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Composition.Runtime.1.2.0\lib\netstandard2.0\System.Composition.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.TypedParts, Version=1.0.31.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\Packages\System.Composition.TypedParts.1.0.31\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.33.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Packages\System.Composition.TypedParts.1.2.0\lib\netstandard2.0\System.Composition.TypedParts.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration.ConfigurationManager, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\..\Packages\System.Configuration.ConfigurationManager.4.4.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
@@ -169,6 +169,7 @@
     <Compile Include="Application\ChatFeatureManager.cs" />
     <Compile Include="Application\SignalRFeatureManager.cs" />
     <Compile Include="Application\WebApp.cs" />
+    <Compile Include="Application\WebAppShutdownAwaiter.cs" />
     <Compile Include="ChatHub.cs" />
     <Compile Include="MessageHandlers\PostMessageHandler.cs" />
     <Compile Include="Messages\EmptyMessage.cs" />

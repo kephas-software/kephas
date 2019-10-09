@@ -14,7 +14,7 @@ namespace Kephas.Tests.Composition.Mef
 
     using Kephas.Composition;
     using Kephas.Composition.Mef.Hosting;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition;
 
     using NUnit.Framework;
 
@@ -23,7 +23,7 @@ namespace Kephas.Tests.Composition.Mef
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class MefScopedCompositionContextTest : CompositionTestBase
+    public class MefScopedCompositionContextTest : MefCompositionTestBase
     {
         [Test]
         public void CreateScopedContext_NestedScopes()

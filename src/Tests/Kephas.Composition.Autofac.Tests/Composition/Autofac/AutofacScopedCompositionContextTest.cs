@@ -16,7 +16,7 @@ namespace Kephas.Tests.Composition.Autofac
     using Kephas.Composition.Autofac.Hosting;
     using Kephas.Services;
     using Kephas.Services.Reflection;
-    using Kephas.Testing.Composition.Autofac;
+    using Kephas.Testing.Composition;
 
     using NUnit.Framework;
 
@@ -25,7 +25,7 @@ namespace Kephas.Tests.Composition.Autofac
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class AutofacScopedCompositionContextTest : CompositionTestBase
+    public class AutofacScopedCompositionContextTest : AutofacCompositionTestBase
     {
         [Test]
         public void CreateScopedContext_NestedScopes()

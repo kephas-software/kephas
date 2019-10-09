@@ -16,30 +16,21 @@ namespace ConfigurationConsole.Configuration
     using Kephas.Application.Configuration;
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Net.Mime;
     using Kephas.Reflection;
     using Kephas.Serialization;
-    using Kephas.Threading.Tasks;
+    using Kephas.Services;
 
     /// <summary>
     /// A JSON file configuration provider.
     /// </summary>
-    public class JsonFileConfigurationProvider : IConfigurationProvider
+    public class JsonFileConfigurationProvider : Loggable, ISettingsProvider
     {
-        /// <summary>
-        /// The application runtime.
-        /// </summary>
         private readonly IAppRuntime appRuntime;
-
-        /// <summary>
-        /// The serialization service.
-        /// </summary>
         private readonly ISerializationService serializationService;
-
-        /// <summary>
-        /// The fallback.
-        /// </summary>
-        private readonly IConfigurationProvider fallback;
+        private readonly IContextFactory contextFactory;
+        private readonly ISettingsProvider fallback;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonFileConfigurationProvider"/> class.
@@ -50,14 +41,17 @@ namespace ConfigurationConsole.Configuration
         public JsonFileConfigurationProvider(
             IAppRuntime appRuntime,
             ISerializationService serializationService,
+            IContextFactory contextFactory,
             IAppConfiguration appConfiguration)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(serializationService, nameof(serializationService));
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(appConfiguration, nameof(appConfiguration));
 
             this.appRuntime = appRuntime;
             this.serializationService = serializationService;
+            this.contextFactory = contextFactory;
             this.fallback = new AppConfigurationProvider(appConfiguration);
         }
 
@@ -75,14 +69,10 @@ namespace ConfigurationConsole.Configuration
 
             var settingsContent = File.ReadAllText(filePath);
 
-            var serializationContext = new SerializationContext(this.serializationService, typeof(JsonMediaType))
-            {
-                RootObjectType = settingsType,
-            };
+            var serializationContext = this.contextFactory.CreateContext<SerializationContext>(typeof(JsonMediaType));
+            serializationContext.RootObjectType = settingsType;
 
-            var settings = this.serializationService.JsonDeserializeAsync(settingsContent, serializationContext)
-                .GetResultNonLocking(TimeSpan.FromSeconds(30));
-
+            var settings = this.serializationService.JsonDeserialize(settingsContent, serializationContext);
             return settings;
         }
     }

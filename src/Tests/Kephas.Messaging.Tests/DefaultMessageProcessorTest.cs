@@ -31,7 +31,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Messaging.Messages;
     using Kephas.Services;
     using Kephas.Services.Composition;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition;
 
     using NSubstitute;
     using NSubstitute.ExceptionExtensions;
@@ -45,7 +45,7 @@ namespace Kephas.Messaging.Tests
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class DefaultMessageProcessorTest : CompositionTestBase
+    public class DefaultMessageProcessorTest : MefCompositionTestBase
     {
         public override ICompositionContext CreateContainer(
             IAmbientServices ambientServices = null,

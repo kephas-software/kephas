@@ -9,14 +9,14 @@
     using Kephas.Composition;
     using Kephas.Model;
     using Kephas.Model.Runtime;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition;
 
     using NSubstitute;
 
     /// <summary>
     /// A model test base.
     /// </summary>
-    public abstract class DataModelTestBase : CompositionTestBase
+    public abstract class DataModelTestBase : MefCompositionTestBase
     {
         public IRuntimeModelRegistry GetModelRegistry(params Type[] elements)
         {

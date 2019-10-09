@@ -14,9 +14,9 @@ namespace Kephas.Data.Composition.Tests
     using System.Reflection;
 
     using Kephas.Composition;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition;
 
-    public class DataTestBase : CompositionTestBase
+    public class DataTestBase : MefCompositionTestBase
     {
         public ICompositionContext CreateContainerForData()
         {

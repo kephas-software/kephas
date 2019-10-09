@@ -21,12 +21,12 @@ namespace Kephas.Scripting.Tests
     using Kephas.Dynamic;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
-    using Kephas.Testing.Composition.Mef;
+    using Kephas.Testing.Composition;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultScriptingEngineTest : CompositionTestBase
+    public class DefaultScriptingEngineTest : MefCompositionTestBase
     {
         public override ICompositionContext CreateContainer(
             IAmbientServices ambientServices = null,
