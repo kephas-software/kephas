@@ -174,7 +174,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Plugins", "Kephas.Pl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Plugins.Tests", "Tests\Kephas.Plugins.Tests\Kephas.Plugins.Tests.csproj", "{8FBCE11F-3B56-4166-B5C1-2B391A644127}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting.Python", "Kephas.Scripting.Python\Kephas.Scripting.Python.csproj", "{E21775F9-780B-40E0-A0F7-C020E125CE47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.Python", "Kephas.Scripting.Python\Kephas.Scripting.Python.csproj", "{E21775F9-780B-40E0-A0F7-C020E125CE47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting.Python.Tests", "Tests\Kephas.Scripting.Python.Tests\Kephas.Scripting.Python.Tests.csproj", "{0B937C85-0612-413E-B0C7-3DAAFFF62AFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -474,6 +476,10 @@ Global
 		{E21775F9-780B-40E0-A0F7-C020E125CE47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E21775F9-780B-40E0-A0F7-C020E125CE47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E21775F9-780B-40E0-A0F7-C020E125CE47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B937C85-0612-413E-B0C7-3DAAFFF62AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B937C85-0612-413E-B0C7-3DAAFFF62AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B937C85-0612-413E-B0C7-3DAAFFF62AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B937C85-0612-413E-B0C7-3DAAFFF62AFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -511,6 +517,7 @@ Global
 		{57BEC9B6-84F8-45D3-865D-9B6AB193BC70} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{68289125-FC36-4164-8BC2-4C8B2289B352} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{8FBCE11F-3B56-4166-B5C1-2B391A644127} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{0B937C85-0612-413E-B0C7-3DAAFFF62AFE} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

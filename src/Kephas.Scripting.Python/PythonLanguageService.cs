@@ -11,6 +11,7 @@
 namespace Kephas.Scripting.Python
 {
     using System.CodeDom;
+    using System.Dynamic;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace Kephas.Scripting.Python
     using IronPython.Hosting;
 
     using Kephas.Dynamic;
+    using Kephas.Reflection;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
 
@@ -39,6 +41,11 @@ namespace Kephas.Scripting.Python
         /// The alternate language identifier.
         /// </summary>
         public const string LanguageAlt = "py";
+
+        /// <summary>
+        /// Name of the return value variable.
+        /// </summary>
+        private const string ReturnValueVariableName = "returnValue";
 
         private ScriptEngine engine;
 
@@ -70,22 +77,31 @@ namespace Kephas.Scripting.Python
             scope.ImportModule("clr");
             this.engine.Execute("import clr", scope);
 
-            scope.SetVariable("globals", scriptGlobals);
+            args = args ?? new Expando();
+            scriptGlobals = scriptGlobals ?? new ScriptGlobals { Args = args };
 
-            if (script.SourceCode is string codeText)
+            foreach (var kv in scriptGlobals.ToDictionary(k => k.ToCamelCase(), v => v))
             {
-                var source = this.engine.CreateScriptSourceFromString(codeText, SourceCodeKind.Statements);
-                return source.Execute(scope);
+                scope.SetVariable(kv.Key, kv.Value);
             }
 
-            if (script.SourceCode is Stream codeStream)
-            {
-                var source = this.engine.CreateScriptSource(new BasicStreamContentProvider(codeStream), $"dynamicCode.py");
-                return source.Execute(scope);
-            }
+            var source = script.SourceCode is string codeText
+                ? this.engine.CreateScriptSourceFromString(codeText, SourceCodeKind.AutoDetect)
+                : script.SourceCode is Stream codeStream
+                    ? this.engine.CreateScriptSource(new BasicStreamContentProvider(codeStream), $"dynamicCode.py")
+                    // TODO localization
+                    : throw new ScriptingException($"Source code type {script.GetType()} not supported. Please provide either a {typeof(string)} or a {typeof(Stream)}.");
 
-            // TODO localization
-            throw new ScriptingException($"Source code type {script.GetType()} not supported. Please provide either a {typeof(string)} or a {typeof(Stream)}.");
+            var result = source.Execute(scope);
+            var returnValue = this.GetReturnValue(result, scope);
+            return Task.FromResult((object)returnValue);
+        }
+
+        private object GetReturnValue(dynamic result, ScriptScope scope)
+        {
+            return scope.TryGetVariable(ReturnValueVariableName, out var value)
+                ? value
+                : result;
         }
 
         private class BasicStreamContentProvider : StreamContentProvider

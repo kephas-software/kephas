@@ -26,7 +26,7 @@ namespace Kephas.Scripting.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultScriptingEngineTest : MefCompositionTestBase
+    public class DefaultScriptingProcessorTest : MefCompositionTestBase
     {
         public override ICompositionContext CreateContainer(
             IAmbientServices ambientServices = null,
@@ -35,7 +35,7 @@ namespace Kephas.Scripting.Tests
             Action<MefCompositionContainerBuilder> config = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
-            assemblyList.Add(typeof(DefaultScriptingEngine).Assembly); /* Kephas.Scripting */
+            assemblyList.Add(typeof(DefaultScriptingProcessor).Assembly); /* Kephas.Scripting */
             return base.CreateContainer(ambientServices, assemblyList, parts, config);
         }
 
@@ -43,10 +43,10 @@ namespace Kephas.Scripting.Tests
         public void DefaultMessageProcessor_Composition_success()
         {
             var container = this.CreateContainer();
-            var scriptingEngine = container.GetExport<IScriptingEngine>();
-            Assert.IsInstanceOf<DefaultScriptingEngine>(scriptingEngine);
+            var scriptingEngine = container.GetExport<IScriptingProcessor>();
+            Assert.IsInstanceOf<DefaultScriptingProcessor>(scriptingEngine);
 
-            var typedScriptingService = (DefaultScriptingEngine)scriptingEngine;
+            var typedScriptingService = (DefaultScriptingProcessor)scriptingEngine;
             Assert.IsNotNull(typedScriptingService.Logger);
         }
 
@@ -54,7 +54,7 @@ namespace Kephas.Scripting.Tests
         public async Task ExecuteAsync_composition_success()
         {
             var container = this.CreateContainer(parts: new[] { typeof(TestLanguageService) });
-            var scriptingEngine = container.GetExport<IScriptingEngine>();
+            var scriptingEngine = container.GetExport<IScriptingProcessor>();
 
             var script = new Script("test", "dummy");
             var result = await scriptingEngine.ExecuteAsync(script);
