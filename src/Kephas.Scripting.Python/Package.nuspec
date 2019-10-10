@@ -23,14 +23,14 @@
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
             <group targetFramework=".NETFramework4.6">
-                <dependency id="Kephas.Core" version="$refversion" exclude="Build,Analyzers" />
-                <dependency id="Kephas.Scripting" version="$refversion" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="IronPython" version="2.7.10-alpha0" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.CSharp" version="4.6.0" exclude="Build,Analyzers" />
             </group>
             <group targetFramework=".NETStandard2.0">
-                <dependency id="Kephas.Core" version="$refversion" exclude="Build,Analyzers" />
-                <dependency id="Kephas.Scripting" version="$refversion" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="IronPython" version="2.7.10-alpha0" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.CSharp" version="4.6.0" exclude="Build,Analyzers" />
             </group>
