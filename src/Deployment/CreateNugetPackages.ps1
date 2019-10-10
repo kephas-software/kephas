@@ -42,6 +42,7 @@ $paths = @(
     "..\Kephas.Serialization.ServiceStack.Text",
     "..\Kephas.Scripting",
     "..\Kephas.Scripting.CSharp",
+    "..\Kephas.Scripting.Python",
     "..\Kephas.Orchestration",
     "..\Kephas.Application",
     "..\Kephas.Application.AspNetCore",

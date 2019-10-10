@@ -25,13 +25,13 @@ namespace Kephas.Scripting
     public interface ILanguageService
     {
         /// <summary>
-        /// Executes the expression asynchronously.
+        /// Executes the script asynchronously.
         /// </summary>
         /// <param name="script">The script to be interpreted/executed.</param>
-        /// <param name="scriptGlobals">The script globals (optional).</param>
-        /// <param name="args">The arguments (optional).</param>
-        /// <param name="executionContext">The execution context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="scriptGlobals">Optional. The script globals.</param>
+        /// <param name="args">Optional. The arguments.</param>
+        /// <param name="executionContext">Optional. The execution context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of the execution result.
         /// </returns>

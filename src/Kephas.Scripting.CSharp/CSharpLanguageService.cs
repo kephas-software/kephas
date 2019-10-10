@@ -39,13 +39,13 @@ namespace Kephas.Scripting.CSharp
         public const string LanguageAlt = "csharp";
 
         /// <summary>
-        /// Executes the expression asynchronously.
+        /// Executes the script asynchronously.
         /// </summary>
         /// <param name="script">The script to be interpreted/executed.</param>
-        /// <param name="scriptGlobals">The script globals (optional).</param>
-        /// <param name="args">The arguments (optional).</param>
-        /// <param name="executionContext">The execution context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="scriptGlobals">Optional. The script globals.</param>
+        /// <param name="args">Optional. The arguments.</param>
+        /// <param name="executionContext">Optional. The execution context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
@@ -61,15 +61,16 @@ namespace Kephas.Scripting.CSharp
 
             if (script.SourceCode is string codeText)
             {
-                var result = await CSharpScript.RunAsync(codeText, globals: scriptGlobals, cancellationToken: cancellationToken)
+                var state = await CSharpScript.RunAsync(codeText, globals: scriptGlobals, cancellationToken: cancellationToken)
                     .PreserveThreadContext();
-                return result.ReturnValue;
+                return state.ReturnValue;
             }
 
             if (script.SourceCode is Stream codeStream)
             {
                 var csscript = CSharpScript.Create(codeStream);
-                var state = await csscript.RunAsync(globals: scriptGlobals, cancellationToken: cancellationToken).PreserveThreadContext();
+                var state = await csscript.RunAsync(globals: scriptGlobals, cancellationToken: cancellationToken)
+                    .PreserveThreadContext();
                 return state.ReturnValue;
             }
 
