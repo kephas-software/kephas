@@ -10,7 +10,6 @@
 
 namespace Kephas.Application.Tests
 {
-
     using Kephas.Application;
 
     using NSubstitute;
@@ -21,7 +20,7 @@ namespace Kephas.Application.Tests
     public class AppContextTest
     {
         [Test]
-        public void Constructor_default_AppManifest_is_from_di_container()
+        public void Constructor_default_AppRuntime_is_from_di_container()
         {
             var ambientServices = Substitute.For<IAmbientServices>();
             var appRuntime = Substitute.For<IAppRuntime>();
