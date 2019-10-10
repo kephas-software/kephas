@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataTestBase.cs" company="Kephas Software SRL">
+// <copyright file="AutofacDataTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,20 +10,20 @@
 
 namespace Kephas.Data.Composition.Tests
 {
-    using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
-    using Kephas.Composition;
     using Kephas.Testing.Composition;
 
-    public class DataTestBase : MefCompositionTestBase
+    public class AutofacDataTestBase : AutofacCompositionTestBase
     {
-        public ICompositionContext CreateContainerForData()
+        public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {
-            var container = this.CreateContainer(
-                new[] { typeof(IDataSpace).GetTypeInfo().Assembly });
-
-            return container;
+            var assemblies = new List<Assembly>(base.GetDefaultConventionAssemblies())
+                                {
+                                    typeof(IDataContext).Assembly,      // Kephas.Data
+                                };
+            return assemblies;
         }
     }
 }

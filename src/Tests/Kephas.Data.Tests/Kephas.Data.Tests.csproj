@@ -32,6 +32,8 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Autofac\Kephas.Testing.Composition.Autofac.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 
