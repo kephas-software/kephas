@@ -191,6 +191,19 @@ namespace Kephas.Tests.Composition.Mef
         }
 
         [Test]
+        public void GetExport_AppService_generic_export_with_non_generic_contract()
+        {
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .WithParts(new[] { typeof(ITestGenericWithNonGenericExport), typeof(ITestGenericWithNonGenericExport<>), typeof(TestGenericWithNonGenericExport) })
+                .CreateContainer();
+
+            var export = container.GetExport<ITestGenericWithNonGenericExport>();
+            Assert.IsInstanceOf<TestGenericWithNonGenericExport>(export);
+        }
+
+        [Test]
         public void GetExport_AppService_with_composition_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
@@ -569,6 +582,13 @@ namespace Kephas.Tests.Composition.Mef
         public interface ITestGenericExport<T> { }
 
         public class TestGenericExport : ITestGenericExport<string> { }
+
+        public interface ITestGenericWithNonGenericExport { }
+
+        [AppServiceContract(ContractType = typeof(ITestGenericWithNonGenericExport))]
+        public interface ITestGenericWithNonGenericExport<T> : ITestGenericWithNonGenericExport { }
+
+        public class TestGenericWithNonGenericExport : ITestGenericWithNonGenericExport<string> { }
 
         [SingletonAppServiceContract]
         public interface IConstructorAppService { }

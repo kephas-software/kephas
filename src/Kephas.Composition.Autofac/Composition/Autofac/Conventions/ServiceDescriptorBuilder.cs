@@ -231,18 +231,26 @@ namespace Kephas.Composition.Autofac.Conventions
             {
                 this.ContractType = this.descriptorBuilder.ContractType = contractType;
 
-                if (this.ServiceType == null)
+                if (this.ServiceType == null || this.ServiceType == contractType)
                 {
-                    this.ServiceType = contractType;
-                }
-                else if (this.ServiceType == contractType)
-                {
-                    // nothing to do
+                    this.ServiceType = this.ContractType = this.descriptorBuilder.ContractType = contractType;
                 }
                 else if (this.ServiceType.IsGenericTypeDefinition && !contractType.IsGenericTypeDefinition)
                 {
-                    var closedServiceType = this.partType.GetInterfaces().First(t => t.IsClosedTypeOf(this.ServiceType));
-                    this.ServiceType = closedServiceType;
+                    if (contractType == this.partType)
+                    {
+                        // case 1: the service uses a generic contract interface and it is exported with a closed generic interface
+                        var closedContractType = contractType.GetInterfaces().First(t => t.IsClosedTypeOf(this.ServiceType));
+                        this.ContractType = closedContractType;
+                    }
+                    else
+                    {
+                        // case 2: the service uses a generic contract interface but is exported with a non-generic one
+                        // the generic interface is used also to collect metadata.
+                        var closedServiceType = this.partType.GetInterfaces().First(t => t.IsClosedTypeOf(this.ServiceType));
+                        this.ServiceType = closedServiceType;
+                        this.ContractType = contractType;
+                    }
                 }
                 else
                 {
