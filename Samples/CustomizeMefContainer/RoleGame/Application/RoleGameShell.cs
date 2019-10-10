@@ -27,7 +27,7 @@ namespace RoleGame.Application
         {
             ambientServices
                 .WithNLogManager()
-                .WithDynamicAppRuntime()
+                .WithDynamicAppRuntime(an => an.Name.StartsWith("Kephas") || an.Name.StartsWith("RoleGame"))
                 .WithMefCompositionContainer();
         }
     }

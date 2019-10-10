@@ -19,14 +19,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Kephas.Application" Version="7.0.0-rc.36" />
-        <PackageReference Include="Kephas.Application.Console" Version="7.0.0-rc.36" />
-        <PackageReference Include="Kephas.Composition.Autofac" Version="7.0.0-rc.36" />
-        <PackageReference Include="Kephas.Configuration.Legacy" Version="7.0.0-rc.36" />
-        <PackageReference Include="Kephas.Core" Version="7.0.0-rc.36" />
-        <PackageReference Include="Kephas.Logging.NLog" Version="7.0.0-rc.36" />
-        <PackageReference Include="Kephas.Messaging" Version="7.0.0-rc.36" />
-        <PackageReference Include="Kephas.Serialization.Json" Version="7.0.0-rc.36" />
+        <PackageReference Include="Kephas.Application" Version="7.0.0-rc.37" />
+        <PackageReference Include="Kephas.Application.Console" Version="7.0.0-rc.37" />
+        <PackageReference Include="Kephas.Composition.Autofac" Version="7.0.0-rc.37" />
+        <PackageReference Include="Kephas.Configuration.Legacy" Version="7.0.0-rc.37" />
+        <PackageReference Include="Kephas.Core" Version="7.0.0-rc.37" />
+        <PackageReference Include="Kephas.Logging.NLog" Version="7.0.0-rc.37" />
+        <PackageReference Include="Kephas.Messaging" Version="7.0.0-rc.37" />
+        <PackageReference Include="Kephas.Serialization.Json" Version="7.0.0-rc.37" />
         <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     </ItemGroup>
 
