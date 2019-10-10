@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultScriptingEngine.cs" company="Kephas Software SRL">
+// <copyright file="DefaultScriptingProcessor.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -26,10 +26,10 @@ namespace Kephas.Scripting
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// The default scripting engine.
+    /// The default scripting processor.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultScriptingEngine : Loggable, IScriptingEngine
+    public class DefaultScriptingProcessor : Loggable, IScriptingProcessor
     {
         /// <summary>
         /// The language service factories.
@@ -44,12 +44,12 @@ namespace Kephas.Scripting
             new Dictionary<string, IList<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultScriptingEngine"/> class.
+        /// Initializes a new instance of the <see cref="DefaultScriptingProcessor"/> class.
         /// </summary>
         /// <param name="compositionContext">The ambient services.</param>
         /// <param name="languageServiceFactories">The language service factories.</param>
         /// <param name="scriptingBehaviorFactories">The scripting behavior factories.</param>
-        public DefaultScriptingEngine(
+        public DefaultScriptingProcessor(
             ICompositionContext compositionContext,
             ICollection<IExportFactory<ILanguageService, LanguageServiceMetadata>> languageServiceFactories,
             ICollection<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>> scriptingBehaviorFactories)
