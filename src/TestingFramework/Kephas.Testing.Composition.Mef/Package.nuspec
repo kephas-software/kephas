@@ -6,19 +6,25 @@
         <title>Kephas.Testing.Composition.Mef</title>
         <authors>Kephas Software SRL</authors>
         <owners>Kephas Software SRL</owners>
-        <description>Provides a common infrastructure for testing with MEF composition.</description>
+        <description>Provides a common infrastructure for testing with System.Composition dependency injection container.</description>
         <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
-        <summary>Provides a common infrastructure for testing with MEF composition.</summary>
+        <summary>Provides a common infrastructure for testing with System.Composition dependency injection container.</summary>
         <language>en-US</language>
         <projectUrl>https://github.com/kephas-software/kephas</projectUrl>
         <iconUrl>http://kephas-framework.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
-        <tags>kephas framework testing composition Autofac</tags>
+        <tags>kephas framework testing composition mef</tags>
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
             <group targetFramework=".NETFramework4.5">
+                <dependency id="Kephas.Application" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Composition.Mef" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="System.Composition" version="1.3.0" exclude="Build,Analyzers" />
+            </group>
+            <group targetFramework=".NETFramework4.6.1">
                 <dependency id="Kephas.Application" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Composition.Mef" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
@@ -40,5 +46,8 @@
         <file src="bin\$configuration$\net45\Kephas.Testing.Composition.Mef.dll" target="lib\net45" />
         <file src="bin\$configuration$\net45\Kephas.Testing.Composition.Mef.pdb" target="lib\net45" />
         <file src="bin\$configuration$\net45\Kephas.Testing.Composition.Mef.xml" target="lib\net45" />
+        <file src="bin\$configuration$\net461\Kephas.Testing.Composition.Mef.dll" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Testing.Composition.Mef.pdb" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Testing.Composition.Mef.xml" target="lib\net461" />
     </files>
 </package>
