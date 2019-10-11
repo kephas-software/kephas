@@ -13,6 +13,7 @@ namespace Kephas.Scripting
     using System;
 
     using Kephas.Composition;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Services;
 
@@ -24,10 +25,20 @@ namespace Kephas.Scripting
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptingContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context (optional).</param>
+        /// <param name="compositionContext">The composition context.</param>
         public ScriptingContext(ICompositionContext compositionContext)
             : base(compositionContext)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScriptingContext"/> class.
+        /// </summary>
+        /// <param name="executionContext">The execution context.</param>
+        public ScriptingContext(IContext executionContext)
+            : base(executionContext)
+        {
+            Requires.NotNull(executionContext, nameof(executionContext));
         }
 
         /// <summary>
