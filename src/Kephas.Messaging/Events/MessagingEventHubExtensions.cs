@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEventHub.cs" company="Kephas Software SRL">
+// <copyright file="MessagingEventHubExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,42 +15,17 @@ namespace Kephas.Messaging.Events
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Interaction;
     using Kephas.Messaging.Composition;
+    using Kephas.Messaging.Resources;
     using Kephas.Services;
+    using Kephas.Text;
     using Kephas.Threading.Tasks;
-
-    /// <summary>
-    /// Contract for the shared application service handling in-process publish/subscribe .
-    /// </summary>
-    [SingletonAppServiceContract]
-    public interface IEventHub
-    {
-        /// <summary>
-        /// Publishes the event asynchronously to its subscribers.
-        /// </summary>
-        /// <param name="event">The event.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        Task PublishAsync(object @event, IContext context, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Subscribes to the event(s) matching the criteria.
-        /// </summary>
-        /// <param name="match">Specifies the match criteria.</param>
-        /// <param name="callback">The callback.</param>
-        /// <returns>
-        /// An IEventSubscription.
-        /// </returns>
-        IEventSubscription Subscribe(IMessageMatch match, Func<object, IContext, CancellationToken, Task> callback);
-    }
 
     /// <summary>
     /// Extension methods for <see cref="IEventHub"/>.
     /// </summary>
-    public static class EventHubExtensions
+    public static class MessagingEventHubExtensions
     {
         /// <summary>
         /// Subscribes to the event with the provided type.
@@ -65,13 +40,14 @@ namespace Kephas.Messaging.Events
         public static IEventSubscription Subscribe<TEvent>(
             this IEventHub eventHub,
             Func<TEvent, IContext, CancellationToken, Task> callback,
-            MessageTypeMatching messageTypeMatching = MessageTypeMatching.Type)
+            MessageTypeMatching messageTypeMatching)
             where TEvent : class
         {
             Requires.NotNull(eventHub, nameof(eventHub));
             Requires.NotNull(callback, nameof(callback));
 
-            return eventHub.Subscribe(
+            var messagingEventHub = GetMessagingEventHub(eventHub);
+            return messagingEventHub.Subscribe(
                 new MessageMatch
                 {
                     MessageType = typeof(TEvent),
@@ -93,13 +69,14 @@ namespace Kephas.Messaging.Events
         public static IEventSubscription Subscribe<TEvent>(
             this IEventHub eventHub,
             Action<TEvent, IContext> callback,
-            MessageTypeMatching messageTypeMatching = MessageTypeMatching.Type)
+            MessageTypeMatching messageTypeMatching)
             where TEvent : class
         {
             Requires.NotNull(eventHub, nameof(eventHub));
             Requires.NotNull(callback, nameof(callback));
 
-            return eventHub.Subscribe(
+            var messagingEventHub = GetMessagingEventHub(eventHub);
+            return messagingEventHub.Subscribe(
                 new MessageMatch
                 {
                     MessageType = typeof(TEvent),
@@ -110,6 +87,36 @@ namespace Kephas.Messaging.Events
                     callback((TEvent)e, ctx);
                     return TaskHelper.CompletedTask;
                 });
+        }
+
+        /// <summary>
+        /// Subscribes to the event(s) matching the criteria.
+        /// </summary>
+        /// <param name="eventHub">The eventHub to act on.</param>
+        /// <param name="match">Specifies the match criteria.</param>
+        /// <param name="callback">The callback.</param>
+        /// <returns>
+        /// An IEventSubscription.
+        /// </returns>
+        public static IEventSubscription Subscribe(this IEventHub eventHub, IMessageMatch match, Func<object, IContext, CancellationToken, Task> callback)
+        {
+            Requires.NotNull(eventHub, nameof(eventHub));
+            Requires.NotNull(match, nameof(match));
+            Requires.NotNull(callback, nameof(callback));
+
+            var messagingEventHub = GetMessagingEventHub(eventHub);
+            return messagingEventHub.Subscribe(match, callback);
+        }
+
+
+        private static IMessagingEventHub GetMessagingEventHub(IEventHub eventHub)
+        {
+            if (eventHub is IMessagingEventHub messagingEventHub)
+            {
+                return messagingEventHub;
+            }
+
+            throw new MessagingException(Strings.EventHubExtensions_MissingMessagingEventHubImplementation.FormatWith(eventHub.GetType(), typeof(IMessagingEventHub)));
         }
     }
 }

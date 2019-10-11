@@ -178,6 +178,15 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The event hub &apos;{0}&apos; must implement the &apos;{1}&apos; interface to use the messaging extensions..
+        /// </summary>
+        public static string EventHubExtensions_MissingMessagingEventHubImplementation {
+            get {
+                return ResourceManager.GetString("EventHubExtensions_MissingMessagingEventHubImplementation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The message is not set in the message adapter..
         /// </summary>
         public static string MessageAdapter_MessageNotSet_Exception {

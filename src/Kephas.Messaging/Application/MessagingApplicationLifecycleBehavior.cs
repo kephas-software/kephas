@@ -15,8 +15,8 @@ namespace Kephas.Messaging.Application
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Interaction;
     using Kephas.Messaging.Distributed;
-    using Kephas.Messaging.Events;
     using Kephas.Messaging.Runtime;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -29,21 +29,17 @@ namespace Kephas.Messaging.Application
     public class MessagingApplicationLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IMessageBroker messageBroker;
-        private readonly IEventHub eventHub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingApplicationLifecycleBehavior"/>
         /// class.
         /// </summary>
         /// <param name="messageBroker">The message broker.</param>
-        /// <param name="eventHub">The event hub.</param>
-        public MessagingApplicationLifecycleBehavior(IMessageBroker messageBroker, IEventHub eventHub)
+        public MessagingApplicationLifecycleBehavior(IMessageBroker messageBroker)
         {
             Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(eventHub, nameof(eventHub));
 
             this.messageBroker = messageBroker;
-            this.eventHub = eventHub;
         }
 
         /// <summary>
@@ -54,19 +50,11 @@ namespace Kephas.Messaging.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public async Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
             RuntimeTypeInfo.RegisterFactory(new MessagingTypeInfoFactory());
 
-            if (this.messageBroker is IAsyncInitializable initMessageBroker)
-            {
-                await initMessageBroker.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
-            }
-
-            if (this.eventHub is IAsyncInitializable initEventHub)
-            {
-                await initEventHub.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
-            }
+            return ServiceHelper.InitializeAsync(this.messageBroker, appContext, cancellationToken);
         }
 
         /// <summary>
@@ -103,17 +91,9 @@ namespace Kephas.Messaging.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            if (this.messageBroker is IAsyncFinalizable finMessageBroker)
-            {
-                await finMessageBroker.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
-            }
-
-            if (this.eventHub is IAsyncFinalizable finEventHub)
-            {
-                await finEventHub.FinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
-            }
+            return ServiceHelper.FinalizeAsync(this.messageBroker, appContext, cancellationToken);
         }
     }
 }

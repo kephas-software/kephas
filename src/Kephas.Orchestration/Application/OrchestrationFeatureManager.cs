@@ -48,12 +48,7 @@ namespace Kephas.Orchestration.Application
         /// <returns>A Task.</returns>
         protected override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            if (this.orchestrationManager is IAsyncInitializable asyncInitManager)
-            {
-                return asyncInitManager.InitializeAsync(appContext, cancellationToken);
-            }
-
-            return TaskHelper.CompletedTask;
+            return ServiceHelper.InitializeAsync(this.orchestrationManager, appContext, cancellationToken);
         }
 
         /// <summary>
@@ -66,12 +61,7 @@ namespace Kephas.Orchestration.Application
         /// </returns>
         protected override Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            if (this.orchestrationManager is IAsyncFinalizable asyncFinManager)
-            {
-                return asyncFinManager.FinalizeAsync(appContext, cancellationToken);
-            }
-
-            return TaskHelper.CompletedTask;
+            return ServiceHelper.FinalizeAsync(this.orchestrationManager, appContext, cancellationToken);
         }
     }
 }

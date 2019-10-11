@@ -192,4 +192,7 @@
   <data name="MessageRouterBase_ErrorsOccurredWhileProcessingOneWay_Exception" xml:space="preserve">
     <value>Errors occurred while asynchronously processing one way message '{0}'.</value>
   </data>
+  <data name="EventHubExtensions_MissingMessagingEventHubImplementation" xml:space="preserve">
+    <value>The event hub '{0}' must implement the '{1}' interface to use the messaging extensions.</value>
+  </data>
 </root>

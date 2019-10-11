@@ -12,12 +12,12 @@ namespace Kephas.Orchestration.Application
 {
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Application.Composition;
-    using Kephas.Messaging.Events;
+    using Kephas.Interaction;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// An orchestration feature lifecycle behavior.
@@ -46,10 +46,9 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public override async Task AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
+        public override Task AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
-            await this.eventHub.PublishAsync(new FeatureStartedEvent { Feature = serviceMetadata.FeatureInfo }, appContext, cancellationToken)
-                .PreserveThreadContext();
+            return this.eventHub.PublishAsync(new FeatureStartedEvent { Feature = serviceMetadata.FeatureInfo }, appContext, cancellationToken);
         }
 
         /// <summary>
@@ -61,10 +60,9 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public override async Task AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
+        public override Task AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default)
         {
-            await this.eventHub.PublishAsync(new FeatureStoppedEvent { Feature = serviceMetadata.FeatureInfo }, appContext, cancellationToken)
-                .PreserveThreadContext();
+            return this.eventHub.PublishAsync(new FeatureStoppedEvent { Feature = serviceMetadata.FeatureInfo }, appContext, cancellationToken);
         }
     }
 }

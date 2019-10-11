@@ -21,6 +21,7 @@ namespace Kephas.Orchestration
     using Kephas.Application.Reflection;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
