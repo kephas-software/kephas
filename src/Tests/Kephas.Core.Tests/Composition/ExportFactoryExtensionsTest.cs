@@ -39,7 +39,7 @@ namespace Kephas.Core.Tests.Composition
         }
 
         [Test]
-        public void GetExportedValue_context_Initializable()
+        public void CreateInitializedValue_context_Initializable()
         {
             var initializable = Substitute.For<IInitializable>();
             var export = Substitute.For<IExport<IInitializable>>();
@@ -48,14 +48,14 @@ namespace Kephas.Core.Tests.Composition
             factory.CreateExport().Returns(export);
 
             var context = Substitute.For<IContext>();
-            var initializableValue = factory.CreateExportedValue(context);
+            var initializableValue = factory.CreateInitializedValue(context);
 
             Assert.AreSame(initializable, initializableValue);
             initializable.Received(1).Initialize(context);
         }
 
         [Test]
-        public async Task GetExportedValueAsync_context_AsyncInitializable()
+        public async Task CreateInitializedValueAsync_context_AsyncInitializable()
         {
             var initializable = Substitute.For<IAsyncInitializable>();
             var export = Substitute.For<IExport<IAsyncInitializable>>();
@@ -64,10 +64,42 @@ namespace Kephas.Core.Tests.Composition
             factory.CreateExport().Returns(export);
 
             var context = Substitute.For<IContext>();
-            var initializableValue = await factory.CreateExportedValueAsync(context);
+            var initializableValue = await factory.CreateInitializedValueAsync(context);
 
             Assert.AreSame(initializable, initializableValue);
             initializable.Received(1).InitializeAsync(context, Arg.Any<CancellationToken>());
+        }
+
+        [Test]
+        public void CreateInitializedValue_context_AsyncInitializable()
+        {
+            var initializable = Substitute.For<IAsyncInitializable>();
+            var export = Substitute.For<IExport<IAsyncInitializable>>();
+            export.Value.Returns(initializable);
+            var factory = Substitute.For<IExportFactory<IAsyncInitializable>>();
+            factory.CreateExport().Returns(export);
+
+            var context = Substitute.For<IContext>();
+            var initializableValue = factory.CreateInitializedValue(context);
+
+            Assert.AreSame(initializable, initializableValue);
+            initializable.Received(1).InitializeAsync(context, Arg.Any<CancellationToken>());
+        }
+
+        [Test]
+        public async Task CreateInitializedValueAsync_context_Initializable()
+        {
+            var initializable = Substitute.For<IInitializable>();
+            var export = Substitute.For<IExport<IInitializable>>();
+            export.Value.Returns(initializable);
+            var factory = Substitute.For<IExportFactory<IInitializable>>();
+            factory.CreateExport().Returns(export);
+
+            var context = Substitute.For<IContext>();
+            var initializableValue = await factory.CreateInitializedValueAsync(context);
+
+            Assert.AreSame(initializable, initializableValue);
+            initializable.Received(1).Initialize(context);
         }
     }
 }

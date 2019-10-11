@@ -93,7 +93,7 @@ namespace Kephas.Composition
         /// <returns>
         /// The exported value.
         /// </returns>
-        public static T CreateExportedValue<T>(
+        public static T CreateInitializedValue<T>(
             this IExportFactory<T> exportFactory,
             IContext context)
         {
@@ -101,8 +101,7 @@ namespace Kephas.Composition
             Requires.NotNull(context, nameof(context));
 
             var export = exportFactory.CreateExport().Value;
-            var initializableExport = export as IInitializable;
-            initializableExport?.Initialize(context);
+            ServiceHelper.Initialize(export, context);
             return export;
         }
 
@@ -116,7 +115,7 @@ namespace Kephas.Composition
         /// <returns>
         /// The exported value.
         /// </returns>
-        public static async Task<T> CreateExportedValueAsync<T>(
+        public static async Task<T> CreateInitializedValueAsync<T>(
             this IExportFactory<T> exportFactory,
             IContext context,
             CancellationToken cancellationToken = default)
@@ -125,11 +124,7 @@ namespace Kephas.Composition
             Requires.NotNull(context, nameof(context));
 
             var export = exportFactory.CreateExport().Value;
-            if (export is IAsyncInitializable initializableExport)
-            {
-                await initializableExport.InitializeAsync(context, cancellationToken).PreserveThreadContext();
-            }
-
+            await ServiceHelper.InitializeAsync(export, context, cancellationToken).PreserveThreadContext();
             return export;
         }
     }
