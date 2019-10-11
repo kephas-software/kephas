@@ -11,7 +11,12 @@
 namespace Kephas.Testing
 {
     using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Kephas.Composition;
+    using Kephas.Interaction;
+    using Kephas.Reflection;
     using Kephas.Serialization;
     using Kephas.Services;
     using NSubstitute;
@@ -53,7 +58,7 @@ namespace Kephas.Testing
         protected ISerializationService CreateSerializationServiceMock()
         {
             var serializationService = Substitute.For<ISerializationService, IContextFactoryAware>(/*Behavior.Strict*/);
-            var contextFactoryMock = CreateContextFactoryMock(() => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+            var contextFactoryMock = this.CreateContextFactoryMock(() => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
             ((IContextFactoryAware)serializationService).ContextFactory.Returns(contextFactoryMock);
             return serializationService;
         }
@@ -69,10 +74,81 @@ namespace Kephas.Testing
         /// </returns>
         protected ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
-            var serializationService = CreateSerializationServiceMock();
+            var serializationService = this.CreateSerializationServiceMock();
             serializationService.GetSerializer(Arg.Is<ISerializationContext>(ctx => ctx != null && ctx.MediaType == typeof(TMediaType)))
                 .Returns(serializer);
             return serializationService;
+        }
+
+        /// <summary>
+        /// Creates an event hub mock.
+        /// </summary>
+        /// <returns>
+        /// The new event hub mock.
+        /// </returns>
+        protected IEventHub CreateEventHubMock()
+        {
+            var eventHub = Substitute.For<IEventHub>();
+
+            var dict = new Dictionary<IEventSubscription, Func<object, IContext, CancellationToken, Task>>();
+
+            eventHub.PublishAsync(Arg.Any<object>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
+                .Returns(
+                    async ci =>
+                    {
+                        foreach (var func in dict.Values)
+                        {
+                            await func(ci.Arg<object>(), ci.Arg<IContext>(), ci.Arg<CancellationToken>());
+                        }
+                    });
+
+            eventHub.Subscribe(Arg.Any<ITypeInfo>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
+                .Returns(
+                    ci =>
+                    {
+                        var subscription = Substitute.For<IEventSubscription>();
+                        var match = ci.Arg<ITypeInfo>();
+                        var func = ci.Arg<Func<object, IContext, CancellationToken, Task>>();
+                        dict.Add(subscription, (e, c, t) =>
+                        {
+                            if (match.AsType() == e.GetType())
+                            {
+                                return func(e, c, t);
+                            }
+
+                            return Task.FromResult(0);
+                        });
+
+                        subscription.When(s => s.Dispose())
+                            .Do(cis => dict.Remove(subscription));
+
+                        return subscription;
+                    });
+
+            eventHub.Subscribe(Arg.Any<Func<object, bool>>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
+                .Returns(
+                    ci =>
+                    {
+                        var subscription = Substitute.For<IEventSubscription>();
+                        var match = ci.Arg<Func<object, bool>>();
+                        var func = ci.Arg<Func<object, IContext, CancellationToken, Task>>();
+                        dict.Add(subscription, (e, c, t) =>
+                        {
+                            if (match(e))
+                            {
+                                return func(e, c, t);
+                            }
+
+                            return Task.FromResult(0);
+                        });
+
+                        subscription.When(s => s.Dispose())
+                            .Do(cis => dict.Remove(subscription));
+
+                        return subscription;
+                    });
+
+            return eventHub;
         }
 
         public interface IContextFactoryAware { public IContextFactory ContextFactory { get; } }
