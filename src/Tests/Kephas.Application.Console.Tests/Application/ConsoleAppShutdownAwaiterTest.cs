@@ -15,9 +15,9 @@ namespace Kephas.Application.Console.Tests.Application
     using System.Threading.Tasks;
 
     using Kephas.Application.Console.Application;
-    using Kephas.Messaging;
-    using Kephas.Messaging.Events;
+    using Kephas.Interaction;
     using Kephas.Operations;
+    using Kephas.Reflection;
     using Kephas.Services;
 
     using NSubstitute;
@@ -42,7 +42,7 @@ namespace Kephas.Application.Console.Tests.Application
             var shell = Substitute.For<ICommandShell>();
             var eventHub = Substitute.For<IEventHub>();
             Func<object, IContext, CancellationToken, Task> callback = null;
-            eventHub.Subscribe(Arg.Any<IMessageMatch>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
+            eventHub.Subscribe(Arg.Any<ITypeInfo>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
                 .Returns(ci =>
                 {
                     callback = ci.Arg<Func<object, IContext, CancellationToken, Task>>();
@@ -70,7 +70,7 @@ namespace Kephas.Application.Console.Tests.Application
                 .Returns(Task.Delay(10));
             var eventHub = Substitute.For<IEventHub>();
             Func<object, IContext, CancellationToken, Task> callback = null;
-            eventHub.Subscribe(Arg.Any<IMessageMatch>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
+            eventHub.Subscribe(Arg.Any<Func<object, bool>>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
                 .Returns(ci =>
                 {
                     callback = ci.Arg<Func<object, IContext, CancellationToken, Task>>();

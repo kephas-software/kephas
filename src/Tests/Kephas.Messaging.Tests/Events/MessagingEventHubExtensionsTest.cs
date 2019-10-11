@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EventHubExtensionsTest.cs" company="Kephas Software SRL">
+// <copyright file="MessagingEventHubExtensionsTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -13,7 +13,7 @@ namespace Kephas.Messaging.Tests.Events
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Interaction;
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.Events;
     using Kephas.Services;
@@ -23,21 +23,21 @@ namespace Kephas.Messaging.Tests.Events
     using NUnit.Framework;
 
     [TestFixture]
-    public class EventHubExtensionsTest
+    public class MessagingEventHubExtensionsTest
     {
         [Test]
         public void Subscribe_wrong_args()
         {
             var calls = 0;
-            Assert.Throws<ArgumentNullException>(() => EventHubExtensions.Subscribe<ITestEvent>(null, async (e, c, t) => calls++));
+            Assert.Throws<ArgumentNullException>(() => MessagingEventHubExtensions.Subscribe<ITestEvent>(null, async (e, c, t) => calls++, MessageTypeMatching.Type));
 
-            Assert.Throws<ArgumentNullException>(() => EventHubExtensions.Subscribe<ITestEvent>(Substitute.For<IEventHub>(), null));
+            Assert.Throws<ArgumentNullException>(() => MessagingEventHubExtensions.Subscribe<ITestEvent>(Substitute.For<IEventHub>(), null, MessageTypeMatching.TypeOrHierarchy));
         }
 
         [Test]
         public void Subscribe_match_exact()
         {
-            var hub = Substitute.For<IEventHub>();
+            var hub = (IMessagingEventHub)Substitute.For<IEventHub, IMessagingEventHub>();
             var calls = 0;
             hub.Subscribe(Arg.Any<IMessageMatch>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>()).Returns(
                 ci =>
@@ -52,17 +52,17 @@ namespace Kephas.Messaging.Tests.Events
                         return null;
                     });
 
-            var subscription = EventHubExtensions.Subscribe<ITestEvent>(hub, async (e, c, t) => calls++);
+            var subscription = MessagingEventHubExtensions.Subscribe<ITestEvent>((IEventHub)hub, async (e, c, t) => calls++, MessageTypeMatching.Type);
             Assert.IsNotNull(subscription);
 
-            subscription = EventHubExtensions.Subscribe<IEvent>(hub, async (e, c, t) => calls++);
+            subscription = MessagingEventHubExtensions.Subscribe<IEvent>((IEventHub)hub, async (e, c, t) => calls++, MessageTypeMatching.Type);
             Assert.IsNull(subscription);
         }
 
         [Test]
         public void Subscribe_match_hierarchy()
         {
-            var hub = Substitute.For<IEventHub>();
+            var hub = (IMessagingEventHub)Substitute.For<IEventHub, IMessagingEventHub>();
             var calls = 0;
             hub.Subscribe(Arg.Any<IMessageMatch>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>()).Returns(
                 ci =>
@@ -77,10 +77,10 @@ namespace Kephas.Messaging.Tests.Events
                         return null;
                     });
 
-            var subscription = EventHubExtensions.Subscribe<ITestEvent>(hub, async (e, c, t) => calls++, MessageTypeMatching.TypeOrHierarchy);
+            var subscription = MessagingEventHubExtensions.Subscribe<ITestEvent>((IEventHub)hub, async (e, c, t) => calls++, MessageTypeMatching.TypeOrHierarchy);
             Assert.IsNotNull(subscription);
 
-            subscription = EventHubExtensions.Subscribe<IEvent>(hub, async (e, c, t) => calls++, MessageTypeMatching.TypeOrHierarchy);
+            subscription = MessagingEventHubExtensions.Subscribe<IEvent>((IEventHub)hub, async (e, c, t) => calls++, MessageTypeMatching.TypeOrHierarchy);
             Assert.IsNull(subscription);
         }
 

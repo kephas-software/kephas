@@ -43,10 +43,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public async Task<IMessageBroker> GetMessageBrokerAsync(ICompositionContext compositionContext)
         {
             var messageBroker = compositionContext.GetExport<IMessageBroker>();
-            if (messageBroker is IAsyncInitializable initMessageBroker)
-            {
-                await initMessageBroker.InitializeAsync(new Context(compositionContext));
-            }
+            await ServiceHelper.InitializeAsync(messageBroker, new Context(compositionContext));
 
             return messageBroker;
         }

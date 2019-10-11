@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Tests.Events
     using System;
     using System.Threading.Tasks;
 
+    using Kephas.Interaction;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
@@ -23,7 +24,7 @@ namespace Kephas.Messaging.Tests.Events
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultEventHubTest : MessagingTestBase
+    public class MessagingEventHubTest : MessagingTestBase
     {
         [Test]
         public void Composition()
@@ -32,7 +33,7 @@ namespace Kephas.Messaging.Tests.Events
             var hub = container.GetExport<IEventHub>();
 
             Assert.IsNotNull(hub);
-            Assert.IsInstanceOf<DefaultEventHub>(hub);
+            Assert.IsInstanceOf<MessagingEventHub>(hub);
         }
 
         [Test]
@@ -57,7 +58,7 @@ namespace Kephas.Messaging.Tests.Events
         {
             var matchService = Substitute.For<IMessageMatchService>();
             matchService.IsMatch(Arg.Any<IMessageMatch>(), Arg.Any<Type>(), Arg.Any<Type>(), Arg.Any<object>()).Returns(true);
-            var hub = new DefaultEventHub(matchService, Substitute.For<IMessageHandlerRegistry>());
+            var hub = new MessagingEventHub(matchService, Substitute.For<IMessageHandlerRegistry>());
             var calls = 0;
             using (var s = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => calls++))
             {
@@ -75,7 +76,7 @@ namespace Kephas.Messaging.Tests.Events
         {
             var matchService = Substitute.For<IMessageMatchService>();
             matchService.IsMatch(Arg.Any<IMessageMatch>(), Arg.Any<Type>(), Arg.Any<Type>(), Arg.Any<object>()).Returns(false);
-            var hub = new DefaultEventHub(matchService, Substitute.For<IMessageHandlerRegistry>());
+            var hub = new MessagingEventHub(matchService, Substitute.For<IMessageHandlerRegistry>());
             var calls = 0;
             using (var s = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => calls++))
             {
@@ -93,7 +94,7 @@ namespace Kephas.Messaging.Tests.Events
         {
             var matchService = Substitute.For<IMessageMatchService>();
             matchService.IsMatch(Arg.Any<IMessageMatch>(), Arg.Any<Type>(), Arg.Any<Type>(), Arg.Any<object>()).Returns(true);
-            var hub = new DefaultEventHub(matchService, Substitute.For<IMessageHandlerRegistry>());
+            var hub = new MessagingEventHub(matchService, Substitute.For<IMessageHandlerRegistry>());
             var s1calls = 0;
             var s2calls = 0;
             using (var s1 = hub.Subscribe(Substitute.For<IMessageMatch>(), async (e, c, t) => s1calls++))
