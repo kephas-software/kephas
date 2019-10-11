@@ -357,4 +357,7 @@
   <data name="SerializationExtensions_GetContextFactory_CannotGetContextFactory" xml:space="preserve">
     <value>The type {0} should export a public property {1}: {2} to be able to create a serialization context.</value>
   </data>
+  <data name="DefaultEventHub_ErrorWhenInvokingSubscriptionCallback" xml:space="preserve">
+    <value>An error occurred when invoking subscription callback for {0}.</value>
+  </data>
 </root>

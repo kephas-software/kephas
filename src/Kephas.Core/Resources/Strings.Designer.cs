@@ -422,6 +422,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred when invoking subscription callback for {0}..
+        /// </summary>
+        public static string DefaultEventHub_ErrorWhenInvokingSubscriptionCallback {
+            get {
+                return ResourceManager.GetString("DefaultEventHub_ErrorWhenInvokingSubscriptionCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No media type class  found for &apos;{0}&apos;. Resolution: define a class implementing {1} with the indicated media type..
         /// </summary>
         public static string DefaultMediaTypeProvider_NotFound_Exception {
