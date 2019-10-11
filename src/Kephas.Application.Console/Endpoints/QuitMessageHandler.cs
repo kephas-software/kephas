@@ -13,8 +13,8 @@ namespace Kephas.Application.Console.Endpoints
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Interaction;
     using Kephas.Messaging;
-    using Kephas.Messaging.Events;
     using Kephas.Threading.Tasks;
 
     /// <summary>
