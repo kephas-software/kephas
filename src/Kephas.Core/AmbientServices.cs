@@ -82,9 +82,7 @@ namespace Kephas
 
             this.registry
                 .RegisterSource(new LazyServiceSource(this.registry))
-#if NETSTANDARD2_0
                 .RegisterSource(new LazyWithMetadataServiceSource(this.registry))
-#endif
                 .RegisterSource(new ExportFactoryServiceSource(this.registry))
                 .RegisterSource(new ExportFactoryWithMetadataServiceSource(this.registry))
                 .RegisterSource(new ListServiceSource(this.registry))

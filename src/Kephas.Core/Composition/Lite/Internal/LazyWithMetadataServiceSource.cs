@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if NETSTANDARD2_0
-
 namespace Kephas.Composition.Lite.Internal
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Reflection;
     using Kephas.Services.Composition;
 
@@ -61,5 +60,3 @@ namespace Kephas.Composition.Lite.Internal
         }
     }
 }
-
-#endif

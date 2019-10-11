@@ -85,7 +85,7 @@ namespace Kephas.Application
         /// <param name="threadContext">Context for the server threading.</param>
         private static void StoreThreadCulture(ThreadContext threadContext)
         {
-#if NETSTANDARD2_0
+#if !NET45
             threadContext.CurrentCulture = CultureInfo.CurrentCulture;
             threadContext.CurrentUICulture = CultureInfo.CurrentUICulture;
 #else
@@ -100,7 +100,7 @@ namespace Kephas.Application
         /// <param name="threadContext">Context for the server threading.</param>
         private static void RestoreThreadCulture(ThreadContext threadContext)
         {
-#if NETSTANDARD2_0
+#if !NET45
             if (threadContext.CurrentCulture != null)
             {
                 CultureInfo.CurrentCulture = threadContext.CurrentCulture;
