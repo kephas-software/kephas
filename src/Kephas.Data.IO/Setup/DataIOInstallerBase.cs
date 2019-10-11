@@ -156,7 +156,7 @@ namespace Kephas.Data.IO.Setup
         protected virtual async Task<IOperationResult> ImportDataFileAsync(IDataSetupContext dataSetupContext, string dataFilePath, CancellationToken cancellationToken)
         {
             using (var dataSource = this.CreateDataSource(dataFilePath))
-            using (var dataSpace = this.DataSpaceFactory.CreateExportedValue(dataSetupContext))
+            using (var dataSpace = this.DataSpaceFactory.CreateInitializedValue(dataSetupContext))
             {
                 var importContext = this.CreateDataImportContext(dataSetupContext, dataSpace);
 

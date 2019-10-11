@@ -85,7 +85,7 @@ namespace Kephas.Data.Endpoints
             }
 
             var dataSpaceContext = new Context(context).WithInitialData(message.EntityEntries);
-            using (var dataSpace = this.dataSpaceFactory.CreateExportedValue(dataSpaceContext))
+            using (var dataSpace = this.dataSpaceFactory.CreateInitializedValue(dataSpaceContext))
             {
                 // convert to entities
                 foreach (var dtoEntityEntry in message.EntityEntries.Where(e => e.Entity != null))

@@ -458,7 +458,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(context, nameof(context));
 
             var builderFactory = context.CompositionContext.GetExportFactory<IBrokeredMessageBuilder>();
-            return builderFactory.CreateExportedValue(context);
+            return builderFactory.CreateInitializedValue(context);
         }
     }
 }

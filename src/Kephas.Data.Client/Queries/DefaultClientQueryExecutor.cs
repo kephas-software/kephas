@@ -163,7 +163,7 @@ namespace Kephas.Data.Client.Queries
         {
             var mappings = new List<(TClientEntity clientEntity, TEntity entity)>();
 
-            using (var dataSpace = this.DataSpaceFactory.CreateExportedValue(executionContext))
+            using (var dataSpace = this.DataSpaceFactory.CreateInitializedValue(executionContext))
             {
                 var dataContext = dataSpace[executionContext.EntityType, executionContext];
                 var queryConversionContext = new ClientQueryConversionContext(dataContext)

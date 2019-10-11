@@ -138,7 +138,7 @@ namespace Kephas.Messaging.Distributed.Routing
         {
             Requires.NotNull(context, nameof(context));
 
-            return this.messageBuilderFactory.CreateExportedValue(context);
+            return this.messageBuilderFactory.CreateInitializedValue(context);
         }
 
         /// <summary>

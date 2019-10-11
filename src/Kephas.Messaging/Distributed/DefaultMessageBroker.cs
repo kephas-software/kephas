@@ -142,7 +142,7 @@ namespace Kephas.Messaging.Distributed
         {
             try
             {
-                return await f.CreateExportedValueAsync(context).PreserveThreadContext();
+                return await f.CreateInitializedValueAsync(context).PreserveThreadContext();
             }
             catch (Exception ex)
             {
@@ -198,7 +198,7 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(context, nameof(context));
 
-            return this.builderFactory.CreateExportedValue(context);
+            return this.builderFactory.CreateInitializedValue(context);
         }
 
         /// <summary>
