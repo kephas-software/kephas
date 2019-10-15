@@ -6,7 +6,7 @@
         <AssemblyName>Kephas.Extensions.Configuration</AssemblyName>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>7.0.0-rc.40</Version>
+        <Version>7.0.0-rc.40.1</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
