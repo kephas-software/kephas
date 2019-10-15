@@ -18,12 +18,15 @@ namespace Kephas.Orchestration.Endpoints
     using Kephas.Application;
     using Kephas.Interaction;
     using Kephas.Messaging;
+    using Kephas.Messaging.AttributedModel;
+    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Distributed;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A stop application message handler.
     /// </summary>
+    [MessageHandler(MessageTypeMatching.TypeOrHierarchy)]
     public class StopAppHandler : MessageHandlerBase<StopAppMessage, StopAppResponseMessage>
     {
         private readonly IAppRuntime appRuntime;
