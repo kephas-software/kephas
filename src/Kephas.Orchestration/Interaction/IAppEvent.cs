@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Endpoints
+namespace Kephas.Orchestration.Interaction
 {
     using System;
 

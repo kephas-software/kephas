@@ -1,38 +1,36 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFeatureEvent.cs" company="Kephas Software SRL">
+// <copyright file="AppHeartbeatEvent.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IFeatureEvent interface.
+//   Implements the application heartbeat event class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Endpoints
+namespace Kephas.Orchestration.Interaction
 {
     using System;
-    using Kephas.Application.Reflection;
-    using Kephas.Messaging.Events;
 
     /// <summary>
-    /// Interface for feature event.
+    /// An application heartbeat event.
     /// </summary>
-    public interface IFeatureEvent : IEvent
+    public class AppHeartbeatEvent : IAppEvent
     {
         /// <summary>
-        /// Gets or sets the feature.
+        /// Gets or sets runtime information describing the application.
         /// </summary>
         /// <value>
-        /// The feature.
+        /// Runtime information describing the application.
         /// </value>
-        IFeatureInfo Feature { get; set; }
+        public IRuntimeAppInfo AppInfo { get; set; }
 
         /// <summary>
-        /// Gets or sets the time stamp.
+        /// Gets or sets the timestamp.
         /// </summary>
         /// <value>
-        /// The time stamp.
+        /// The timestamp.
         /// </value>
-        DateTimeOffset TimeStamp { get; set; }
+        public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.Now;
     }
 }

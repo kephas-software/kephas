@@ -1,21 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppHeartbeatEvent.cs" company="Kephas Software SRL">
+// <copyright file="AppStartedEvent.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the application heartbeat event class.
+//   Implements the application started event class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Endpoints
+namespace Kephas.Orchestration.Interaction
 {
     using System;
 
     /// <summary>
-    /// An application heartbeat event.
+    /// An application started event.
     /// </summary>
-    public class AppHeartbeatEvent : IAppEvent
+    public class AppStartedEvent : IAppEvent
     {
         /// <summary>
         /// Gets or sets runtime information describing the application.

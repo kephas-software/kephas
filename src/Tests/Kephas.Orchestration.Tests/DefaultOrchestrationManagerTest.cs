@@ -19,11 +19,12 @@ namespace Kephas.Orchestration.Tests
 
     using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Diagnostics;
     using Kephas.Interaction;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
-    using Kephas.Orchestration.Endpoints;
+    using Kephas.Orchestration.Interaction;
     using Kephas.Reflection;
     using Kephas.Security.Authentication;
     using Kephas.Services;
@@ -78,12 +79,12 @@ namespace Kephas.Orchestration.Tests
             appRuntime[AppRuntimeBase.AppInstanceIdKey].Returns("there");
             appRuntime.GetHostAddress().Returns(IPAddress.Loopback);
 
-            var eventHub = this.CreateEventHub();
+            var eventHub = this.CreateEventHubMock();
 
             var compositionContext = this.CreateSubstituteContainer();
             var appContext = new Context(compositionContext);
 
-            var manager = new DefaultOrchestrationManager(appRuntime, eventHub, messageBroker);
+            var manager = new DefaultOrchestrationManager(appRuntime, eventHub, messageBroker, Substitute.For<IExportFactory<IProcessStarterFactory>>());
             manager.TimerDueTime = TimeSpan.FromMilliseconds(100);
             manager.TimerPeriod = TimeSpan.FromMilliseconds(100);
 
@@ -106,36 +107,6 @@ namespace Kephas.Orchestration.Tests
             var builder = new BrokeredMessageBuilder(Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
             builder.Initialize(context);
             return builder;
-        }
-
-        private IEventHub CreateEventHub()
-        {
-            var subscriptions = new Dictionary<string, (Func<object, bool> match, Func<object, IContext, CancellationToken, Task> callback, string id)>();
-            var eventHub = Substitute.For<IEventHub>();
-            var i = 0;
-            IEventSubscription AddSubscription(Func<object, bool> match, Func<object, IContext, CancellationToken, Task> callback)
-            {
-                var id = i++.ToString();
-                subscriptions.Add(id, (match, callback, id));
-                var subscription = Substitute.For<IEventSubscription>();
-                subscription
-                    .When(s => s.Dispose())
-                    .Do(_ => subscriptions.Remove(id));
-                return subscription;
-            }
-            eventHub.Subscribe(Arg.Any<Func<object, bool>>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
-                .Returns(ci => AddSubscription(ci.Arg<Func<object, bool>>(), ci.Arg<Func<object, IContext, CancellationToken, Task>>()));
-            eventHub.Subscribe(Arg.Any<ITypeInfo>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
-                .Returns(ci => AddSubscription(e => e.GetType() == ci.Arg<ITypeInfo>().AsType(), ci.Arg<Func<object, IContext, CancellationToken, Task>>()));
-            eventHub.PublishAsync(Arg.Any<object>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
-                .Returns(async ci =>
-                {
-                    var tasks = subscriptions.Values
-                        .Where(t => t.match(ci.Arg<object>()))
-                        .Select(t => t.callback(ci.Arg<object>(), ci.Arg<IContext>(), ci.Arg<CancellationToken>()));
-                    await Task.WhenAll(tasks);
-                });
-            return eventHub;
         }
     }
 }

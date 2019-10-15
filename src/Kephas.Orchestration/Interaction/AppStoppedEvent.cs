@@ -1,21 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppStartedEvent.cs" company="Kephas Software SRL">
+// <copyright file="AppStoppedEvent.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the application started event class.
+//   Implements the application stopped event class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Endpoints
+namespace Kephas.Orchestration.Interaction
 {
     using System;
 
     /// <summary>
-    /// An application started event.
+    /// An application stopped event.
     /// </summary>
-    public class AppStartedEvent : IAppEvent
+    public class AppStoppedEvent : IAppEvent
     {
         /// <summary>
         /// Gets or sets runtime information describing the application.

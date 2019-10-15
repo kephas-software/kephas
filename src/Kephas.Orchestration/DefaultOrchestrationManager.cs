@@ -14,11 +14,14 @@ namespace Kephas.Orchestration
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Application.Reflection;
+    using Kephas.Composition;
+    using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Interaction;
@@ -28,6 +31,7 @@ namespace Kephas.Orchestration
     using Kephas.Operations;
     using Kephas.Orchestration.Application;
     using Kephas.Orchestration.Endpoints;
+    using Kephas.Orchestration.Interaction;
     using Kephas.Orchestration.Resources;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -38,6 +42,8 @@ namespace Kephas.Orchestration
     [OverridePriority(Priority.Low)]
     public class DefaultOrchestrationManager : Loggable, IOrchestrationManager, IAsyncInitializable, IAsyncFinalizable
     {
+        private readonly IExportFactory<IProcessStarterFactory> processStarterFactoryFactory;
+
         private Timer timer;
         private IEventSubscription appStartedSubscription;
         private IEventSubscription appStoppedSubscription;
@@ -46,22 +52,25 @@ namespace Kephas.Orchestration
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOrchestrationManager"/> class.
         /// </summary>
-        /// <param name="appManifest">The application manifest.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="messageBroker">The message broker.</param>
+        /// <param name="processStarterFactoryFactory">Factory for the process starter factory.</param>
         public DefaultOrchestrationManager(
             IAppRuntime appRuntime,
             IEventHub eventHub,
-            IMessageBroker messageBroker)
+            IMessageBroker messageBroker,
+            IExportFactory<IProcessStarterFactory> processStarterFactoryFactory)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(eventHub, nameof(eventHub));
             Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(processStarterFactoryFactory, nameof(processStarterFactoryFactory));
 
             this.AppRuntime = appRuntime;
             this.EventHub = eventHub;
             this.MessageBroker = messageBroker;
+            this.processStarterFactoryFactory = processStarterFactoryFactory;
         }
 
         /// <summary>
@@ -190,11 +199,19 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        public virtual Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, IContext context = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, IContext context = null, CancellationToken cancellationToken = default)
         {
-            var result = new OperationResult { OperationState = OperationState.Failed };
-            result.Exceptions.Add(new NotSupportedException(Strings.OrchestrationManager_StartAppAsync_NotSupported));
-            return Task.FromResult<IOperationResult>(result);
+            var processedArguments = this.GetAppExecutableArgs(appInfo);
+            var executablePath = this.GetAppExecutablePath(appInfo);
+
+            var processStarterFactory = this.CreateProcessStarterFactory(appInfo, arguments, context)
+                .WithManagedExecutable(executablePath)
+                .WithArguments(processedArguments.ToArray())
+                .WithWorkingDirectory(this.AppRuntime.GetAppLocation())
+                .CreateProcessStarter();
+
+            var processStartResult = await processStarterFactory.StartAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            return processStartResult;
         }
 
         /// <summary>
@@ -206,11 +223,32 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        public virtual Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, IContext context = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, IContext context = null, CancellationToken cancellationToken = default)
         {
-            var result = new OperationResult { OperationState = OperationState.Failed };
-            result.Exceptions.Add(new NotSupportedException(Strings.OrchestrationManager_StopAppAsync_NotSupported));
-            return Task.FromResult<IOperationResult>(result);
+            this.Logger.Info($"Stopping application {runtimeAppInfo.AppInstanceId}...");
+
+            var stopMessage = this.CreateStopAppMessage(runtimeAppInfo, context);
+
+            try
+            {
+                var reply = await this.MessageBroker.ProcessAsync(
+                    stopMessage,
+                    new Endpoint(appId: runtimeAppInfo.AppId, appInstanceId: runtimeAppInfo.AppInstanceId),
+                    this.AppContext,
+                    cancellationToken).PreserveThreadContext();
+                var message = reply as StopAppResponseMessage;
+                return new OperationResult
+                {
+                    OperationState = OperationState.Completed,
+                    [nameof(StopAppResponseMessage)] = message,
+                };
+            }
+            catch (Exception ex)
+            {
+                // TODO localization
+                this.Logger.Error(ex, $"Error while trying to stop application {runtimeAppInfo}.");
+                return new OperationResult { OperationState = OperationState.Failed }.MergeException(ex);
+            }
         }
 
         /// <summary>
@@ -331,12 +369,72 @@ namespace Kephas.Orchestration
             return $"{appInfo.AppId}/{appInfo.AppInstanceId}";
         }
 
-        private AppHeartbeatEvent CreateAppHeartbeatEvent()
+        /// <summary>
+        /// Gets the app executable path.
+        /// </summary>
+        /// <param name="appInfo">Information describing the application.</param>
+        /// <returns>
+        /// The app executable path.
+        /// </returns>
+        protected virtual string GetAppExecutablePath(IAppInfo appInfo)
+        {
+            var entryAssembly = Assembly.GetEntryAssembly();
+            return entryAssembly.Location;
+        }
+
+        /// <summary>
+        /// Gets the app executable arguments.
+        /// </summary>
+        /// <param name="appInfo">Information describing the application.</param>
+        /// <returns>
+        /// The app executable arguments.
+        /// </returns>
+        protected virtual IEnumerable<string> GetAppExecutableArgs(IAppInfo appInfo)
+        {
+            yield break;
+        }
+
+        /// <summary>
+        /// Creates a new process starter factory.
+        /// </summary>
+        /// <param name="appInfo">Information describing the application.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="context">Optional. A context for initialization.</param>
+        /// <returns>
+        /// The new process starter factory.
+        /// </returns>
+        protected virtual IProcessStarterFactory CreateProcessStarterFactory(IAppInfo appInfo, IExpando arguments, IContext context = null)
+            => this.processStarterFactoryFactory.CreateExportedValue();
+
+        /// <summary>
+        /// Creates application heartbeat event.
+        /// </summary>
+        /// <returns>
+        /// The new application heartbeat event.
+        /// </returns>
+        protected virtual AppHeartbeatEvent CreateAppHeartbeatEvent()
         {
             return new AppHeartbeatEvent
             {
                 AppInfo = this.AppRuntime.GetAppInfo(),
                 Timestamp = DateTimeOffset.Now,
+            };
+        }
+
+        /// <summary>
+        /// Creates stop application message.
+        /// </summary>
+        /// <param name="runtimeAppInfo">Information describing the runtime application.</param>
+        /// <param name="context">Optional. A context for initialization.</param>
+        /// <returns>
+        /// The new stop application message.
+        /// </returns>
+        protected virtual StopAppMessage CreateStopAppMessage(IRuntimeAppInfo runtimeAppInfo, IContext context = null)
+        {
+            return new StopAppMessage
+            {
+                AppId = runtimeAppInfo.AppId,
+                AppInstanceId = runtimeAppInfo.AppInstanceId,
             };
         }
     }
