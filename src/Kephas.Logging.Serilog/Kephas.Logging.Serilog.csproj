@@ -6,7 +6,7 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Description>Provides the Serilog implementation of logging abstractions.</Description>
-        <Version>7.0.0-rc.41</Version>
+        <Version>7.0.0</Version>
         <AssemblyVersion>7.0.0.0</AssemblyVersion>
         <FileVersion>7.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
