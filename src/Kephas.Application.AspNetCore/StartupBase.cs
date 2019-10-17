@@ -16,7 +16,6 @@ namespace Kephas.Application.AspNetCore
 
     using Kephas;
     using Kephas.Application;
-    using Kephas.Application.AspNetCore.Application;
     using Kephas.Application.AspNetCore.Configuration;
     using Kephas.Application.AspNetCore.Hosting;
     using Kephas.Application.AspNetCore.Logging;

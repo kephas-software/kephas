@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore.Application
+namespace Kephas.Application.AspNetCore
 {
     using Kephas.Application;
 

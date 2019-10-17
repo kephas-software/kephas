@@ -8,20 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore.Application
+namespace Kephas.Application.AspNetCore
 {
-    using System;
-    using System.Threading.Tasks;
-
+    using Kephas;
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
-    using Kephas.Services;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
-
-    using AppContext = Kephas.Application.AppContext;
 
     /// <summary>
     /// The OWIN web application context.

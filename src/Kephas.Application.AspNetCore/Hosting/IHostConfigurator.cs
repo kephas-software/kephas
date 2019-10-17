@@ -10,7 +10,7 @@
 
 namespace Kephas.Application.AspNetCore.Hosting
 {
-    using Kephas.Application.AspNetCore.Application;
+    using Kephas.Application.AspNetCore;
     using Kephas.Services;
 
     /// <summary>

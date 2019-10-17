@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore.Application
+namespace Kephas.Application.AspNetCore
 {
     /// <summary>
     /// The OWIN feature.
