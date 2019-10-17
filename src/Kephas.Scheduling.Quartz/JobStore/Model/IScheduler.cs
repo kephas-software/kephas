@@ -19,10 +19,25 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
     /// </summary>
     public enum SchedulerState
     {
+        /// <summary>
+        /// An enum constant representing the started option.
+        /// </summary>
         Started,
+
+        /// <summary>
+        /// An enum constant representing the running option.
+        /// </summary>
         Running,
+
+        /// <summary>
+        /// An enum constant representing the paused option.
+        /// </summary>
         Paused,
-        Resumed
+
+        /// <summary>
+        /// An enum constant representing the resumed option.
+        /// </summary>
+        Resumed,
     }
 
     /// <summary>

@@ -18,6 +18,9 @@ namespace Quartz.Spi.MongoDbJobStore.Serializers
 
     using Quartz.Simpl;
 
+    /// <summary>
+    /// A job data map serializer.
+    /// </summary>
     internal class JobDataMapSerializer : SerializerBase<JobDataMap>
     {
         private readonly DefaultObjectSerializer _objectSerializer = new DefaultObjectSerializer();

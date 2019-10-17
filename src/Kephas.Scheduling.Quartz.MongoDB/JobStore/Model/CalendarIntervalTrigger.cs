@@ -20,12 +20,24 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
     using Kephas.Scheduling.Quartz.JobStore.Model;
 
+    /// <summary>
+    /// A calendar interval trigger.
+    /// </summary>
     public class CalendarIntervalTrigger : Trigger
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CalendarIntervalTrigger"/> class.
+        /// </summary>
         public CalendarIntervalTrigger()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CalendarIntervalTrigger"/> class.
+        /// </summary>
+        /// <param name="trigger">The trigger.</param>
+        /// <param name="state">The state.</param>
+        /// <param name="instanceName">Name of the instance.</param>
         public CalendarIntervalTrigger(ICalendarIntervalTrigger trigger, Model.TriggerState state, string instanceName)
             : base(trigger, state, instanceName)
         {

@@ -49,7 +49,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
             var trigger = new CronTriggerImpl()
             {
                 CronExpressionString = this.CronExpression,
-                TimeZone = TimeZoneInfo.FindSystemTimeZoneById(this.TimeZone)
+                TimeZone = TimeZoneInfo.FindSystemTimeZoneById(this.TimeZone),
             };
             this.FillTrigger(trigger);
             return trigger;

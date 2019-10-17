@@ -20,8 +20,15 @@ namespace Kephas.Scheduling.Quartz.JobStore.Model
     /// <seealso/>
     public enum LockType
     {
+        /// <summary>
+        /// An enum constant representing the trigger access option.
+        /// </summary>
         TriggerAccess,
-        StateAccess
+
+        /// <summary>
+        /// An enum constant representing the state access option.
+        /// </summary>
+        StateAccess,
     }
 
     /// <summary>

@@ -418,7 +418,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                   criteria,
                                   new Expando
                                       {
-                                          [nameof(Model.ITrigger.State)] = newState
+                                          [nameof(Model.ITrigger.State)] = newState,
                                       },
                                   cancellationToken: cancellationToken)
                               .PreserveThreadContext();
@@ -450,7 +450,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                             && trigger.State == oldState,
                                  new Expando
                                      {
-                                         [nameof(Model.ITrigger.State)] = newState
+                                         [nameof(Model.ITrigger.State)] = newState,
                                      },
                                  cancellationToken: cancellationToken)
                              .PreserveThreadContext();
@@ -478,7 +478,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                             && trigger.JobGroup == jobKey.Group && trigger.JobName == jobKey.Name,
                                  new Expando
                                      {
-                                         [nameof(Model.ITrigger.State)] = newState
+                                         [nameof(Model.ITrigger.State)] = newState,
                                      },
                                  cancellationToken: cancellationToken)
                              .PreserveThreadContext();
@@ -506,7 +506,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
                                             && oldStates.Contains(trigger.State),
                                  new Expando
                                      {
-                                         [nameof(Model.ITrigger.State)] = newState
+                                         [nameof(Model.ITrigger.State)] = newState,
                                      },
                                  cancellationToken: cancellationToken)
                              .PreserveThreadContext();

@@ -19,7 +19,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
     using Kephas.Logging;
     using Kephas.Threading.Tasks;
 
-    internal class MisfireHandler : global::Quartz.QuartzThread
+    internal class MisfireHandler : global::Kephas.Scheduling.Quartz.Threading.QuartzThread
     {
         private readonly ILogger Log;
 

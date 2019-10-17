@@ -19,7 +19,7 @@ namespace Kephas.Scheduling.Quartz.Logging
     using LogLevel = Kephas.Logging.LogLevel;
 
     /// <summary>
-    ///     A quartz log provider.
+    /// A quartz log provider.
     /// </summary>
     public class QuartzLogProvider : ILogProvider
     {

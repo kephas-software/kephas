@@ -1,27 +1,43 @@
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-
-using Quartz.Spi;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DefaultObjectSerializer.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the default object serializer class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Quartz.Simpl
 {
+    using System.IO;
+    using System.Runtime.Serialization.Formatters.Binary;
+
+    using Quartz.Spi;
+
     /// <summary>
     /// Default object serialization strategy that uses <see cref="BinaryFormatter" /> 
     /// under the hood.
     /// </summary>
-    /// <author>Marko Lahma</author>
     public class DefaultObjectSerializer : IObjectSerializer
     {
+        /// <summary>
+        /// Initializes this object.
+        /// </summary>
         public void Initialize()
         {
         }
 
         /// <summary>
-        /// Serializes given object as bytes 
-        /// that can be stored to permanent stores.
+        /// Serializes given object as bytes that can be stored to permanent stores.
         /// </summary>
+        /// <typeparam name="T">The object type.</typeparam>
         /// <param name="obj">Object to serialize.</param>
-        public byte[] Serialize<T>(T obj) where T : class
+        /// <returns>
+        /// A byte[].
+        /// </returns>
+        public byte[] Serialize<T>(T obj)
+            where T : class
         {
             using (MemoryStream ms = new MemoryStream())
             {
@@ -34,8 +50,13 @@ namespace Quartz.Simpl
         /// <summary>
         /// Deserializes object from byte array presentation.
         /// </summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="data">Data to deserialize object from.</param>
-        public T DeSerialize<T>(byte[] data) where T : class
+        /// <returns>
+        /// A deserialized object.
+        /// </returns>
+        public T DeSerialize<T>(byte[] data)
+            where T : class
         {
             using (MemoryStream ms = new MemoryStream(data))
             {

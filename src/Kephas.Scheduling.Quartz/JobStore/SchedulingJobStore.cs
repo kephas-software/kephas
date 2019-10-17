@@ -32,6 +32,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
     using Kephas.Logging;
     using Kephas.Scheduling.Quartz.JobStore.Model;
     using Kephas.Scheduling.Quartz.JobStore.Repositories;
+    using Kephas.Scheduling.Quartz.Threading;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

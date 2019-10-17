@@ -1,42 +1,25 @@
-﻿#region License
-/* 
- * All content copyright Terracotta, Inc., unless otherwise indicated. All rights reserved. 
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not 
- * use this file except in compliance with the License. You may obtain a copy 
- * of the License at 
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0 
- *   
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
- * License for the specific language governing permissions and limitations 
- * under the License.
- * 
- */
-#endregion
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LogicalThreadContext.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary>
+//   Implements the logical thread context class.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-/*
- * Geniuslink (dba GeoRiot Networks) is using a modified version of this code from Quartz 2.x.
- * The original code uses .NET Framework remoting CallContext (and HttpContext in the alternative)
- * to share thread-local data. This code is being used to avoid a rewrite of Quartz.Spi.MongoDBJobStore
- * which requires the LogicalThreadContext class, which was removed in Quartz 3. Additionally, the
- * remoting feature is being removed in .NET Core, so we use a work around instead of the CallContext.
- */
+namespace Kephas.Scheduling.Quartz.Threading
+{
+    using System.Collections.Concurrent;
+    using System.Security;
 
-using System.Collections.Concurrent;
-using System.Security;
-
-// Workaround for getting off remoting removed in NET Core: http://www.cazzulino.com/callcontext-netstandard-netcore.html
+    // Workaround for getting off remoting removed in NET Core: http://www.cazzulino.com/callcontext-netstandard-netcore.html
 #if NET452
-using System.Runtime.Remoting.Messaging;
+    using System.Runtime.Remoting.Messaging;
 #elif NET462 || NETSTANDARD2_0
-using System.Threading;
+    using System.Threading;
 #endif
 
-namespace Quartz.Util
-{
     /// <summary>
     /// Wrapper class to access thread local data.
     /// Data is either accessed from thread or HTTP Context's 
@@ -55,12 +38,20 @@ namespace Quartz.Util
         static ConcurrentDictionary<string, AsyncLocal<object>> state = new ConcurrentDictionary<string, AsyncLocal<object>>();
 #endif
 
+        /// <summary>
+        /// Gets the object associated with the specified name.
+        /// </summary>
+        /// <typeparam name="T">The .</typeparam>
+        /// <param name="name">The name with which to associate the new item.</param>
+        /// <returns>
+        /// The data.
+        /// </returns>
         public static T GetData<T>(string name)
         {
 #if NET452
             return (T)CallContext.GetData(name);
 #elif NET462 || NETSTANDARD2_0
-            return state.TryGetValue(name, out AsyncLocal<object> data) ? (T)data.Value : default(T);
+            return state.TryGetValue(name, out AsyncLocal<object> data) ? (T)data.Value : default;
 #endif
         }
 
