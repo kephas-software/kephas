@@ -15,11 +15,13 @@ namespace Kephas.Application.Console
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Application.Console.Resources;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
     using Kephas.Services;
+    using Kephas.Text;
 
     /// <summary>
     /// A default command registry.
@@ -75,12 +77,12 @@ namespace Kephas.Application.Console
                 var commands = this.commandTypes.Where(m => m.Name.StartsWith(command, StringComparison.InvariantCultureIgnoreCase)).ToList();
                 if (commands.Count == 0)
                 {
-                    throw new InvalidOperationException($"Command type for '{command}' not found.");
+                    throw new InvalidOperationException(Strings.DefaultCommandRegistry_CommandNotFound.FormatWith(command));
                 }
 
                 if (commands.Count > 1)
                 {
-                    throw new AmbiguousMatchException($"Multiple command types found for '{command}': '{string.Join("', '", commands.Select(m => m.Name))}'.");
+                    throw new AmbiguousMatchException(Strings.DefaultCommandRegistry_AmbiguousCommandName.FormatWith(command, string.Join("', '", commands.Select(m => m.Name))));
                 }
 
                 commandType = commands[0];

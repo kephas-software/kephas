@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Kephas.Orchestration.Resources {
+namespace Kephas.Application.Console.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Kephas.Orchestration.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Orchestration.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Application.Console.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace Kephas.Orchestration.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please provide a proper implementation for starting an application..
+        ///   Looks up a localized string similar to Multiple command types found for &apos;{0}&apos;: &apos;{1}&apos;..
         /// </summary>
-        internal static string OrchestrationManager_StartAppAsync_NotSupported {
+        internal static string DefaultCommandRegistry_AmbiguousCommandName {
             get {
-                return ResourceManager.GetString("OrchestrationManager_StartAppAsync_NotSupported", resourceCulture);
+                return ResourceManager.GetString("DefaultCommandRegistry_AmbiguousCommandName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please provide a proper implementation for stopping an application..
+        ///   Looks up a localized string similar to Command type for &apos;{0}&apos; not found..
         /// </summary>
-        internal static string OrchestrationManager_StopAppAsync_NotSupported {
+        internal static string DefaultCommandRegistry_CommandNotFound {
             get {
-                return ResourceManager.GetString("OrchestrationManager_StopAppAsync_NotSupported", resourceCulture);
+                return ResourceManager.GetString("DefaultCommandRegistry_CommandNotFound", resourceCulture);
             }
         }
     }

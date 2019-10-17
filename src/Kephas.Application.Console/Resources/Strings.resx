@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DefaultCommandRegistry_AmbiguousCommandName" xml:space="preserve">
+    <value>Multiple command types found for '{0}': '{1}'.</value>
+  </data>
+  <data name="DefaultCommandRegistry_CommandNotFound" xml:space="preserve">
+    <value>Command type for '{0}' not found.</value>
+  </data>
 </root>
