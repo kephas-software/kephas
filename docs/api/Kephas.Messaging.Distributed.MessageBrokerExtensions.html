@@ -708,6 +708,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static void Publish&lt;TEvent&gt;(this IMessageBroker messageBroker, IContext context)
+
     where TEvent : class, new()</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1067,6 +1068,7 @@ just for the acknowledgement of the message being sent.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task PublishAsync&lt;TEvent&gt;(this IMessageBroker messageBroker, IContext context, CancellationToken cancellationToken = default(CancellationToken))
+
     where TEvent : class, new()</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

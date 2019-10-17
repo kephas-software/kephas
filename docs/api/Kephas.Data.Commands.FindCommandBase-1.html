@@ -237,6 +237,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual Task&lt;IFindResult&gt; FindAsync&lt;T&gt;(TFindContext findContext, CancellationToken cancellationToken)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -382,6 +383,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected abstract Expression&lt;Func&lt;T, bool&gt;&gt; GetFindCriteria&lt;T&gt;(TFindContext findContext)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -449,6 +451,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual IFindResult GetFindResult&lt;T&gt;(TFindContext findContext, IList&lt;T&gt; result, Expression&lt;Func&lt;T, bool&gt;&gt; criteria)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -528,6 +531,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;T&gt; TryGetLocalCacheQuery&lt;T&gt;(TFindContext findContext)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

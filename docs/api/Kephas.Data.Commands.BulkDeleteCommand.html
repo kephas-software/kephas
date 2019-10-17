@@ -178,6 +178,7 @@ public class BulkDeleteCommand : BulkOperationCommandBase&lt;IBulkDeleteContext,
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual Task&lt;IBulkDataOperationResult&gt; BulkDeleteAsync&lt;T&gt;(IBulkDeleteContext bulkDeleteContext, CancellationToken cancellationToken)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -251,6 +252,7 @@ public class BulkDeleteCommand : BulkOperationCommandBase&lt;IBulkDeleteContext,
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual Task&lt;long&gt; BulkDeleteCoreAsync&lt;T&gt;(IBulkDeleteContext bulkDeleteContext, Expression&lt;Func&lt;T, bool&gt;&gt; criteria, CancellationToken cancellationToken)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

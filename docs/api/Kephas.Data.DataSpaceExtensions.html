@@ -252,6 +252,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; CreateAsync&lt;T&gt;(this IDataSpace dataSpace, ICreateEntityContext operationContext, CancellationToken cancellationToken = default(CancellationToken))
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -331,6 +332,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; CreateAsync&lt;T&gt;(this IDataSpace dataSpace, CancellationToken cancellationToken = default(CancellationToken))
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -404,6 +406,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static void Delete&lt;T&gt;(this IDataSpace dataSpace, params T[] entities)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -461,6 +464,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static void Delete&lt;T&gt;(this IDataSpace dataSpace, IEnumerable&lt;T&gt; entities)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -704,6 +708,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; FindAsync&lt;T&gt;(this IDataSpace dataSpace, IFindContext findContext, CancellationToken cancellationToken = default(CancellationToken))
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -783,6 +788,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; FindAsync&lt;T&gt;(this IDataSpace dataSpace, object id, bool throwIfNotFound = true, CancellationToken cancellationToken = default(CancellationToken))
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -930,6 +936,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; FindOneAsync&lt;T&gt;(this IDataSpace dataSpace, IFindOneContext findContext, CancellationToken cancellationToken = default(CancellationToken))
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1009,6 +1016,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;T&gt; FindOneAsync&lt;T&gt;(this IDataSpace dataSpace, Expression&lt;Func&lt;T, bool&gt;&gt; criteria, bool throwIfNotFound = true, CancellationToken cancellationToken = default(CancellationToken))
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1222,6 +1230,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IQueryable&lt;T&gt; Query&lt;T&gt;(this IDataSpace dataSpace, IQueryOperationContext operationContext = null)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

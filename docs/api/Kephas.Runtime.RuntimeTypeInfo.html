@@ -1004,6 +1004,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected static IDictionary&lt;string, TMemberInfo&gt; CreateMembers&lt;TRuntimeMemberInfo, TMemberInfo&gt;(Type type, IEnumerable&lt;TRuntimeMemberInfo&gt; runtimeMembers, Func&lt;TRuntimeMemberInfo, Type&gt; memberTypeGetter, Func&lt;TRuntimeMemberInfo, bool&gt; criteria = null)
+
     where TRuntimeMemberInfo : MemberInfo</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1150,6 +1151,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerable&lt;TAttribute&gt; GetAttributes&lt;TAttribute&gt;()
+
     where TAttribute : Attribute</code></pre>
   </div>
   <h5 class="returns">Returns</h5>

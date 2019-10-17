@@ -190,6 +190,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IEventSubscription Subscribe&lt;TEvent&gt;(this IEventHub eventHub, Action&lt;TEvent, IContext&gt; callback, MessageTypeMatching messageTypeMatching)
+
     where TEvent : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -269,6 +270,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IEventSubscription Subscribe&lt;TEvent&gt;(this IEventHub eventHub, Func&lt;TEvent, IContext, CancellationToken, Task&gt; callback, MessageTypeMatching messageTypeMatching)
+
     where TEvent : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

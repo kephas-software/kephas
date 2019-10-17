@@ -233,6 +233,7 @@ public class MongoPersistChangesCommand : PersistChangesCommand, ILoggable, IPer
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual Task BulkWriteAsync&lt;T&gt;(IPersistChangesContext operationContext, IList&lt;IEntityEntry&gt; changeSet, string collectionName, CancellationToken cancellationToken)
+
     where T : IIdentifiable</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

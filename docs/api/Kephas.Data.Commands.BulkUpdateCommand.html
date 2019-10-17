@@ -178,6 +178,7 @@ public class BulkUpdateCommand : BulkOperationCommandBase&lt;IBulkUpdateContext,
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual Task&lt;IBulkDataOperationResult&gt; BulkUpdateAsync&lt;T&gt;(IBulkUpdateContext bulkUpdateContext, CancellationToken cancellationToken)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -252,6 +253,7 @@ entities.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual Task&lt;long&gt; BulkUpdateCoreAsync&lt;T&gt;(IBulkUpdateContext bulkDeleteContext, Expression&lt;Func&lt;T, bool&gt;&gt; criteria, IDictionary&lt;string, object&gt; values, CancellationToken cancellationToken)
+
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

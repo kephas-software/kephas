@@ -210,6 +210,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static TContext WithInitialData&lt;TContext&gt;(this TContext context, IEnumerable&lt;IChangeStateTrackableEntityEntry&gt; initialData)
+
     where TContext : class, IContext</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -283,6 +284,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static TContext WithInitialData&lt;TContext&gt;(this TContext context, IEnumerable&lt;object&gt; initialData)
+
     where TContext : class, IContext</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -356,6 +358,7 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static TContext WithInitialData&lt;TContext&gt;(this TContext context, IEnumerable&lt;(object entity, ChangeState changeState)&gt; initialData)
+
     where TContext : class, IContext</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
