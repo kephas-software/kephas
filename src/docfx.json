@@ -325,6 +325,17 @@
                     "files": [
                         "*.csproj"
                     ],
+                    "cwd": "./Kephas.Scripting.Python",
+                    "exclude": [
+                        "**/obj/**",
+                        "**/bin/**",
+                        "_site/**"
+                    ]
+                },
+                {
+                    "files": [
+                        "*.csproj"
+                    ],
                     "cwd": "./Kephas.Serialization.Json",
                     "exclude": [
                         "**/obj/**",
