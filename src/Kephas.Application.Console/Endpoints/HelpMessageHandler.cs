@@ -65,7 +65,7 @@ namespace Kephas.Application.Console.Endpoints
 
             if (commands.Count > 1)
             {
-                response.Command = commands.Select(t => t.Key).OrderBy(c => c).ToArray();
+                response.Command = commands.OrderBy(t => t.Key).ToDictionary(c => c.Key, c => c.Value.GetLocalization().Description).ToArray();
                 response.Description = "Please provide one command name to see the information about that command. Example: help command=help.";
             }
             else if (commands.Count == 1)

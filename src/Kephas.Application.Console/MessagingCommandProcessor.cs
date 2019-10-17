@@ -166,7 +166,7 @@ namespace Kephas.Application.Console
             {
                 context.Identity = this.identityResolver.ResolveIdentity(context);
                 var result = await this.messageProcessor.ProcessAsync(message, context, cancellationToken).PreserveThreadContext();
-                return result;
+                return result.GetContent();
             }
         }
     }
