@@ -107,7 +107,7 @@
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Services_Behaviors_IEnabledServiceBehaviorRule_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(ContractType = typeof(IEnabledServiceBehaviorRule), AllowMultiple = true)]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(ContractType = typeof(IEnabledServiceBehaviorRule), AllowMultiple = true)]
 public interface IEnabledServiceBehaviorRule&lt;in TServiceContract&gt; : IBehaviorRule&lt;IServiceBehaviorContext&lt;TServiceContract&gt;, bool&gt;, IBehaviorRule&lt;IServiceBehaviorContext&lt;TServiceContract&gt;&gt;, IEnabledServiceBehaviorRule, IBehaviorRule&lt;IContext, bool&gt;, IBehaviorRule&lt;IContext&gt;, IBehaviorRuleFlowControl</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>

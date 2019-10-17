@@ -73,7 +73,7 @@
   
   <h1 id="Kephas_Configuration_IConfiguration_1" data-uid="Kephas.Configuration.IConfiguration`1" class="text-break">Interface IConfiguration&lt;TSettings&gt;
   </h1>
-  <div class="markdown level0 summary"><p>Shared service contract for getting.</p>
+  <div class="markdown level0 summary"><p>Singleton service contract for getting.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
@@ -95,8 +95,8 @@
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Configuration_IConfiguration_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(AsOpenGeneric = true)]
-public interface IConfiguration&lt;out TSettings&gt; : IExpando, IDynamicMetaObjectProvider, IIndexable</code></pre>
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(AsOpenGeneric = true)]
+public interface IConfiguration&lt;out TSettings&gt; : IExpando, IDynamicMetaObjectProvider, IIndexable where TSettings : class, new()</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -116,38 +116,6 @@ public interface IConfiguration&lt;out TSettings&gt; : IExpando, IDynamicMetaObj
   </table>
   <h3 id="properties">Properties
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_IConfiguration_1_Provider.md&amp;value=---%0Auid%3A%20Kephas.Configuration.IConfiguration%601.Provider%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Configuration/IConfiguration.cs/#L38">View Source</a>
-  </span>
-  <a id="Kephas_Configuration_IConfiguration_1_Provider_" data-uid="Kephas.Configuration.IConfiguration`1.Provider*"></a>
-  <h4 id="Kephas_Configuration_IConfiguration_1_Provider" data-uid="Kephas.Configuration.IConfiguration`1.Provider">Provider</h4>
-  <div class="markdown level1 summary"><p>Gets the configuration provider.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IConfigurationProvider Provider { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Configuration.Providers.IConfigurationProvider.html">IConfigurationProvider</a></td>
-        <td><p>The configuration provider.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_IConfiguration_1_Settings.md&amp;value=---%0Auid%3A%20Kephas.Configuration.IConfiguration%601.Settings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -240,7 +208,7 @@ public interface IConfiguration&lt;out TSettings&gt; : IExpando, IDynamicMetaObj
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_IConfiguration_1.md&amp;value=---%0Auid%3A%20Kephas.Configuration.IConfiguration%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Configuration/IConfiguration.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Configuration/IConfiguration.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

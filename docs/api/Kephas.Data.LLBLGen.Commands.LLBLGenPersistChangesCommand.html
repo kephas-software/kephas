@@ -79,23 +79,23 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
-    <div class="level2"><a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html">PersistChangesCommand</a></div>
-    <div class="level3"><span class="xref">LLBLGenPersistChangesCommand</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
+    <div class="level3"><a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html">PersistChangesCommand</a></div>
+    <div class="level4"><span class="xref">LLBLGenPersistChangesCommand</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.IPersistChangesCommand.html">IPersistChangesCommand</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand</a>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
     <div><a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a></div>
+    <div><a class="xref" href="Kephas.Operations.IAsyncOperation.html">IAsyncOperation</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
       <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_BehaviorProvider">PersistChangesCommand.BehaviorProvider</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_Logger">PersistChangesCommand.Logger</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_ExecuteAsync_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.ExecuteAsync(IPersistChangesContext, CancellationToken)</a>
@@ -134,6 +134,9 @@
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Operations_IAsyncOperation_ExecuteAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.IAsyncOperation.ExecuteAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_GetIdEqualityExpression__1_Kephas_Data_IDataContext_System_Object_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.GetIdEqualityExpression&lt;T&gt;(IDataContext, Object)</a>
     </div>
     <div>
@@ -141,6 +144,12 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetEntityActivator_Kephas_Data_IDataContext_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.TryGetEntityActivator(IDataContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -169,7 +178,7 @@
   <h5 id="Kephas_Data_LLBLGen_Commands_LLBLGenPersistChangesCommand_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DataContextType(typeof(LLBLGenDataContext))]
-public class LLBLGenPersistChangesCommand : PersistChangesCommand, IPersistChangesCommand, IDataCommand&lt;IPersistChangesContext, IDataCommandResult&gt;, IDataCommand</code></pre>
+public class LLBLGenPersistChangesCommand : PersistChangesCommand, ILoggable, IPersistChangesCommand, IDataCommand&lt;IPersistChangesContext, IDataCommandResult&gt;, IDataCommand, IAsyncOperation</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -275,6 +284,9 @@ public class LLBLGenPersistChangesCommand : PersistChangesCommand, IPersistChang
   <div><a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html#Kephas_Data_Commands_PersistChangesCommand_PersistChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_">PersistChangesCommand.PersistChangeSetAsync(IList&lt;IEntityEntry&gt;, IPersistChangesContext, CancellationToken)</a></div>
   <h3 id="implements">Implements</h3>
   <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.Commands.IPersistChangesCommand.html">IPersistChangesCommand</a>
   </div>
   <div>
@@ -282,6 +294,9 @@ public class LLBLGenPersistChangesCommand : PersistChangesCommand, IPersistChang
   </div>
   <div>
       <a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Operations.IAsyncOperation.html">IAsyncOperation</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

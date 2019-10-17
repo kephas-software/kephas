@@ -73,14 +73,14 @@
   
   <h1 id="Kephas_Data_Client_Queries_Conversion_IExpressionConverter" data-uid="Kephas.Data.Client.Queries.Conversion.IExpressionConverter" class="text-break">Interface IExpressionConverter
   </h1>
-  <div class="markdown level0 summary"><p>Shared application service contract for expression converters.</p>
+  <div class="markdown level0 summary"><p>Singleton application service contract for expression converters.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Client.Queries.Conversion.html">Kephas.Data.Client.Queries.Conversion</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.Client.dll</h6>
   <h5 id="Kephas_Data_Client_Queries_Conversion_IExpressionConverter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(OperatorAttribute)})]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(OperatorAttribute)})]
 public interface IExpressionConverter</code></pre>
   </div>
   <h3 id="methods">Methods

@@ -73,14 +73,14 @@
   
   <h1 id="Kephas_ServiceStack_Hosting_IHostConfigurator" data-uid="Kephas.ServiceStack.Hosting.IHostConfigurator" class="text-break">Interface IHostConfigurator
   </h1>
-  <div class="markdown level0 summary"><p>Shared application service contract for configurating a host.</p>
+  <div class="markdown level0 summary"><p>Singleton application service contract for configurating a host.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.ServiceStack.Hosting.html">Kephas.ServiceStack.Hosting</a></h6>
   <h6><strong>Assembly</strong>: Kephas.ServiceStack.dll</h6>
   <h5 id="Kephas_ServiceStack_Hosting_IHostConfigurator_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(RequiredFeatureAttribute)})]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(RequiredFeatureAttribute)})]
 public interface IHostConfigurator</code></pre>
   </div>
   <h3 id="methods">Methods

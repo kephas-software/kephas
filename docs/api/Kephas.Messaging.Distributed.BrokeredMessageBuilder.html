@@ -83,7 +83,6 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="Kephas.Messaging.Distributed.IBrokeredMessageBuilder-1.html">IBrokeredMessageBuilder</a>&lt;<a class="xref" href="Kephas.Messaging.Distributed.BrokeredMessage.html">BrokeredMessage</a>&gt;</div>
     <div><a class="xref" href="Kephas.Messaging.Distributed.IBrokeredMessageBuilder.html">IBrokeredMessageBuilder</a></div>
     <div><a class="xref" href="Kephas.Services.IInitializable.html">IInitializable</a></div>
   </div>
@@ -115,25 +114,25 @@
   <h6><strong>Assembly</strong>: Kephas.Messaging.dll</h6>
   <h5 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BrokeredMessageBuilder : IBrokeredMessageBuilder&lt;BrokeredMessage&gt;, IBrokeredMessageBuilder, IInitializable</code></pre>
+    <pre><code class="lang-csharp hljs">public class BrokeredMessageBuilder : IBrokeredMessageBuilder, IInitializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder__ctor_Kephas_Application_IAppManifest_Kephas_Security_Authentication_IAuthenticationService_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.%23ctor(Kephas.Application.IAppManifest%2CKephas.Security.Authentication.IAuthenticationService)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder__ctor_Kephas_Application_IAppRuntime_Kephas_Security_Authentication_IAuthenticationService_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.%23ctor(Kephas.Application.IAppRuntime%2CKephas.Security.Authentication.IAuthenticationService)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L37">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L39">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder__ctor_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.#ctor*"></a>
-  <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder__ctor_Kephas_Application_IAppManifest_Kephas_Security_Authentication_IAuthenticationService_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.#ctor(Kephas.Application.IAppManifest,Kephas.Security.Authentication.IAuthenticationService)">BrokeredMessageBuilder(IAppManifest, IAuthenticationService)</h4>
+  <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder__ctor_Kephas_Application_IAppRuntime_Kephas_Security_Authentication_IAuthenticationService_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.#ctor(Kephas.Application.IAppRuntime,Kephas.Security.Authentication.IAuthenticationService)">BrokeredMessageBuilder(IAppRuntime, IAuthenticationService)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Messaging.Distributed.BrokeredMessageBuilder.html">BrokeredMessageBuilder</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BrokeredMessageBuilder(IAppManifest appManifest, IAuthenticationService authenticationService)</code></pre>
+    <pre><code class="lang-csharp hljs">public BrokeredMessageBuilder(IAppRuntime appRuntime, IAuthenticationService authenticationService)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -146,9 +145,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppManifest.html">IAppManifest</a></td>
-        <td><span class="parametername">appManifest</span></td>
-        <td><p>The application manifest.</p>
+        <td><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></td>
+        <td><span class="parametername">appRuntime</span></td>
+        <td><p>The application runtime.</p>
 </td>
       </tr>
       <tr>
@@ -159,23 +158,69 @@
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
-  </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_AppManifest.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.AppManifest%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder__ctor_Kephas_Application_IAppRuntime_Kephas_Security_Authentication_IAuthenticationService_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.%23ctor(Kephas.Application.IAppRuntime%2CKephas.Security.Authentication.IAuthenticationService%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L70">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L55">View Source</a>
   </span>
-  <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_AppManifest_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.AppManifest*"></a>
-  <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_AppManifest" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.AppManifest">AppManifest</h4>
-  <div class="markdown level1 summary"><p>Gets the application manifest.</p>
+  <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder__ctor_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.#ctor*"></a>
+  <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder__ctor_Kephas_Application_IAppRuntime_Kephas_Security_Authentication_IAuthenticationService_Kephas_Services_IContext_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.#ctor(Kephas.Application.IAppRuntime,Kephas.Security.Authentication.IAuthenticationService,Kephas.Services.IContext)">BrokeredMessageBuilder(IAppRuntime, IAuthenticationService, IContext)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Messaging.Distributed.BrokeredMessageBuilder.html">BrokeredMessageBuilder</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAppManifest AppManifest { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public BrokeredMessageBuilder(IAppRuntime appRuntime, IAuthenticationService authenticationService, IContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></td>
+        <td><span class="parametername">appRuntime</span></td>
+        <td><p>The application runtime.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Security.Authentication.IAuthenticationService.html">IAuthenticationService</a></td>
+        <td><span class="parametername">authenticationService</span></td>
+        <td><p>The authentication service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context for initialization.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_AppRuntime.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.AppRuntime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L87">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_AppRuntime_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.AppRuntime*"></a>
+  <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_AppRuntime" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.AppRuntime">AppRuntime</h4>
+  <div class="markdown level1 summary"><p>Gets the application runtime.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAppRuntime AppRuntime { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,7 +232,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppManifest.html">IAppManifest</a></td>
+        <td><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -197,7 +242,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_AuthenticationService.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.AuthenticationService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L78">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L95">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_AuthenticationService_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.AuthenticationService*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_AuthenticationService" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.AuthenticationService">AuthenticationService</h4>
@@ -229,7 +274,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_BrokeredMessage.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.BrokeredMessage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L65">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L82">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_BrokeredMessage_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.BrokeredMessage*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_BrokeredMessage" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.BrokeredMessage">BrokeredMessage</h4>
@@ -261,7 +306,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Context.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Context%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L86">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L103">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Context_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Context*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Context" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Context">Context</h4>
@@ -293,7 +338,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_DefaultTimeout.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.DefaultTimeout%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L49">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L66">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_DefaultTimeout_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.DefaultTimeout*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_DefaultTimeout" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.DefaultTimeout">DefaultTimeout</h4>
@@ -326,7 +371,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_CreateBrokeredMessage.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.CreateBrokeredMessage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L420">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L467">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_CreateBrokeredMessage_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.CreateBrokeredMessage*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_CreateBrokeredMessage" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.CreateBrokeredMessage">CreateBrokeredMessage()</h4>
@@ -358,7 +403,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_CreateEndpoint_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.CreateEndpoint(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L436">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L483">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_CreateEndpoint_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.CreateEndpoint*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_CreateEndpoint_System_String_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.CreateEndpoint(System.String)">CreateEndpoint(String)</h4>
@@ -408,7 +453,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_GetBearerToken_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.GetBearerToken(Kephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L448">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L495">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_GetBearerToken_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.GetBearerToken*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_GetBearerToken_Kephas_Services_IContext_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.GetBearerToken(Kephas.Services.IContext)">GetBearerToken(IContext)</h4>
@@ -458,7 +503,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Initialize_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Initialize(Kephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L403">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L453">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Initialize_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Initialize*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Initialize_Kephas_Services_IContext_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Initialize(Kephas.Services.IContext)">Initialize(IContext)</h4>
@@ -492,7 +537,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Of_Kephas_Messaging_Distributed_IBrokeredMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Of(Kephas.Messaging.Distributed.IBrokeredMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L95">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L112">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Of_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Of*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Of_Kephas_Messaging_Distributed_IBrokeredMessage_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Of(Kephas.Messaging.Distributed.IBrokeredMessage)">Of(IBrokeredMessage)</h4>
@@ -542,7 +587,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_OneWay.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.OneWay%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L297">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L314">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_OneWay_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.OneWay*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_OneWay" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.OneWay">OneWay()</h4>
@@ -574,7 +619,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_ReplyTo_Kephas_Messaging_Distributed_IBrokeredMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.ReplyTo(Kephas.Messaging.Distributed.IBrokeredMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L387">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L409">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_ReplyTo_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.ReplyTo*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_ReplyTo_Kephas_Messaging_Distributed_IBrokeredMessage_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.ReplyTo(Kephas.Messaging.Distributed.IBrokeredMessage)">ReplyTo(IBrokeredMessage)</h4>
@@ -624,7 +669,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_ReplyTo_System_String_Kephas_Messaging_Distributed_IEndpoint___.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.ReplyTo(System.String%2CKephas.Messaging.Distributed.IEndpoint%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L358">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L375">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_ReplyTo_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.ReplyTo*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_ReplyTo_System_String_Kephas_Messaging_Distributed_IEndpoint___" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.ReplyTo(System.String,Kephas.Messaging.Distributed.IEndpoint[])">ReplyTo(String, IEndpoint[])</h4>
@@ -680,7 +725,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Timeout_System_TimeSpan_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Timeout(System.TimeSpan)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L325">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L342">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Timeout_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Timeout*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Timeout_System_TimeSpan_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Timeout(System.TimeSpan)">Timeout(TimeSpan)</h4>
@@ -743,14 +788,64 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_UseChannel_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.UseChannel(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L440">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_UseChannel_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.UseChannel*"></a>
+  <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_UseChannel_System_String_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.UseChannel(System.String)">UseChannel(String)</h4>
+  <div class="markdown level1 summary"><p>Sets the channel to use.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IBrokeredMessageBuilder UseChannel(string channel)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">channel</span></td>
+        <td><p>The channel.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IBrokeredMessageBuilder.html">IBrokeredMessageBuilder</a></td>
+        <td><p>This <a class="xref" href="Kephas.Messaging.Distributed.IBrokeredMessageBuilder.html">IBrokeredMessageBuilder</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithContent_Kephas_Messaging_IMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithContent(Kephas.Messaging.IMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L128">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L140">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithContent_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithContent*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithContent_Kephas_Messaging_IMessage_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithContent(Kephas.Messaging.IMessage)">WithContent(IMessage)</h4>
-  <div class="markdown level1 summary"><p>Sets the content message.</p>
+  <div class="markdown level1 summary"><p>Sets the content message. An event content makes the message one-way.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -796,7 +891,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithRecipients_Kephas_Messaging_Distributed_IEndpoint___.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithRecipients(Kephas.Messaging.Distributed.IEndpoint%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L243">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L260">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithRecipients_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithRecipients*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithRecipients_Kephas_Messaging_Distributed_IEndpoint___" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithRecipients(Kephas.Messaging.Distributed.IEndpoint[])">WithRecipients(IEndpoint[])</h4>
@@ -846,7 +941,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithRecipients_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithRecipients(System.Collections.Generic.IEnumerable%7BKephas.Messaging.Distributed.IEndpoint%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L271">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L288">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithRecipients_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithRecipients*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithRecipients_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithRecipients(System.Collections.Generic.IEnumerable{Kephas.Messaging.Distributed.IEndpoint})">WithRecipients(IEnumerable&lt;IEndpoint&gt;)</h4>
@@ -896,7 +991,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithSender_Kephas_Messaging_Distributed_IEndpoint_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithSender(Kephas.Messaging.Distributed.IEndpoint)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L187">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L204">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithSender_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithSender*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithSender_Kephas_Messaging_Distributed_IEndpoint_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithSender(Kephas.Messaging.Distributed.IEndpoint)">WithSender(IEndpoint)</h4>
@@ -946,7 +1041,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithSender_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithSender(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L159">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L176">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithSender_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithSender*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithSender_System_String_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithSender(System.String)">WithSender(String)</h4>
@@ -996,7 +1091,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithSender_System_Uri_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithSender(System.Uri)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L215">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L232">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithSender_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithSender*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_WithSender_System_Uri_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.WithSender(System.Uri)">WithSender(Uri)</h4>
@@ -1048,7 +1143,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_BrokeredMessage.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23BrokeredMessage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L57">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L74">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_BrokeredMessage_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#BrokeredMessage*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_BrokeredMessage" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#BrokeredMessage">IBrokeredMessageBuilder.BrokeredMessage</h4>
@@ -1080,7 +1175,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_OneWay.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23OneWay%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L286">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L303">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_OneWay_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#OneWay*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_OneWay" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#OneWay">IBrokeredMessageBuilder.OneWay()</h4>
@@ -1112,7 +1207,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_ReplyTo_Kephas_Messaging_Distributed_IBrokeredMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23ReplyTo(Kephas.Messaging.Distributed.IBrokeredMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L375">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L397">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_ReplyTo_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#ReplyTo*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_ReplyTo_Kephas_Messaging_Distributed_IBrokeredMessage_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#ReplyTo(Kephas.Messaging.Distributed.IBrokeredMessage)">IBrokeredMessageBuilder.ReplyTo(IBrokeredMessage)</h4>
@@ -1162,7 +1257,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_ReplyTo_System_String_Kephas_Messaging_Distributed_IEndpoint___.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23ReplyTo(System.String%2CKephas.Messaging.Distributed.IEndpoint%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L345">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L362">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_ReplyTo_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#ReplyTo*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_ReplyTo_System_String_Kephas_Messaging_Distributed_IEndpoint___" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#ReplyTo(System.String,Kephas.Messaging.Distributed.IEndpoint[])">IBrokeredMessageBuilder.ReplyTo(String, IEndpoint[])</h4>
@@ -1218,7 +1313,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_Timeout_System_TimeSpan_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23Timeout(System.TimeSpan)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L312">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L329">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_Timeout_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#Timeout*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_Timeout_System_TimeSpan_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#Timeout(System.TimeSpan)">IBrokeredMessageBuilder.Timeout(TimeSpan)</h4>
@@ -1281,10 +1376,60 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_UseChannel_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23UseChannel(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L428">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_UseChannel_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#UseChannel*"></a>
+  <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_UseChannel_System_String_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#UseChannel(System.String)">IBrokeredMessageBuilder.UseChannel(String)</h4>
+  <div class="markdown level1 summary"><p>Sets the channel to use.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IBrokeredMessageBuilder IBrokeredMessageBuilder.UseChannel(string channel)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">channel</span></td>
+        <td><p>The channel.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IBrokeredMessageBuilder.html">IBrokeredMessageBuilder</a></td>
+        <td><p>This <a class="xref" href="Kephas.Messaging.Distributed.IBrokeredMessageBuilder.html">IBrokeredMessageBuilder</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithContent_Kephas_Messaging_IMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23WithContent(Kephas.Messaging.IMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L116">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L128">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithContent_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithContent*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithContent_Kephas_Messaging_IMessage_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithContent(Kephas.Messaging.IMessage)">IBrokeredMessageBuilder.WithContent(IMessage)</h4>
@@ -1334,7 +1479,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithRecipients_Kephas_Messaging_Distributed_IEndpoint___.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23WithRecipients(Kephas.Messaging.Distributed.IEndpoint%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L231">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L248">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithRecipients_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithRecipients*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithRecipients_Kephas_Messaging_Distributed_IEndpoint___" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithRecipients(Kephas.Messaging.Distributed.IEndpoint[])">IBrokeredMessageBuilder.WithRecipients(IEndpoint[])</h4>
@@ -1384,7 +1529,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithRecipients_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23WithRecipients(System.Collections.Generic.IEnumerable%7BKephas.Messaging.Distributed.IEndpoint%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L259">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L276">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithRecipients_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithRecipients*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithRecipients_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithRecipients(System.Collections.Generic.IEnumerable{Kephas.Messaging.Distributed.IEndpoint})">IBrokeredMessageBuilder.WithRecipients(IEnumerable&lt;IEndpoint&gt;)</h4>
@@ -1434,7 +1579,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithSender_Kephas_Messaging_Distributed_IEndpoint_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23WithSender(Kephas.Messaging.Distributed.IEndpoint)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L175">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L192">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithSender_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithSender*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithSender_Kephas_Messaging_Distributed_IEndpoint_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithSender(Kephas.Messaging.Distributed.IEndpoint)">IBrokeredMessageBuilder.WithSender(IEndpoint)</h4>
@@ -1484,7 +1629,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithSender_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23WithSender(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L147">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L164">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithSender_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithSender*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithSender_System_String_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithSender(System.String)">IBrokeredMessageBuilder.WithSender(String)</h4>
@@ -1534,7 +1679,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithSender_System_Uri_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas%23Messaging%23Distributed%23IBrokeredMessageBuilder%23WithSender(System.Uri)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L203">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L220">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithSender_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithSender*"></a>
   <h4 id="Kephas_Messaging_Distributed_BrokeredMessageBuilder_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_WithSender_System_Uri_" data-uid="Kephas.Messaging.Distributed.BrokeredMessageBuilder.Kephas#Messaging#Distributed#IBrokeredMessageBuilder#WithSender(System.Uri)">IBrokeredMessageBuilder.WithSender(Uri)</h4>
@@ -1580,9 +1725,6 @@
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Kephas.Messaging.Distributed.IBrokeredMessageBuilder-1.html">IBrokeredMessageBuilder&lt;TMessage&gt;</a>
-  </div>
   <div>
       <a class="xref" href="Kephas.Messaging.Distributed.IBrokeredMessageBuilder.html">IBrokeredMessageBuilder</a>
   </div>
@@ -1630,6 +1772,24 @@
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.BrokeredMessageBuilderExtensions.html#Kephas_Messaging_Distributed_BrokeredMessageBuilderExtensions_WithMessageContent_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_System_Object_">BrokeredMessageBuilderExtensions.WithMessageContent(IBrokeredMessageBuilder, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.BrokeredMessageBuilderExtensions.html#Kephas_Messaging_Distributed_BrokeredMessageBuilderExtensions_WithEventContent_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_System_Object_">BrokeredMessageBuilderExtensions.WithEventContent(IBrokeredMessageBuilder, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.BrokeredMessageBuilderExtensions.html#Kephas_Messaging_Distributed_BrokeredMessageBuilderExtensions_WithRecipients_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_System_Uri___">BrokeredMessageBuilderExtensions.WithRecipients(IBrokeredMessageBuilder, Uri[])</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.BrokeredMessageBuilderExtensions.html#Kephas_Messaging_Distributed_BrokeredMessageBuilderExtensions_WithRecipients_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_System_Collections_Generic_IEnumerable_System_Uri__">BrokeredMessageBuilderExtensions.WithRecipients(IBrokeredMessageBuilder, IEnumerable&lt;Uri&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.BrokeredMessageBuilderExtensions.html#Kephas_Messaging_Distributed_BrokeredMessageBuilderExtensions_WithRecipients_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_System_String___">BrokeredMessageBuilderExtensions.WithRecipients(IBrokeredMessageBuilder, String[])</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.BrokeredMessageBuilderExtensions.html#Kephas_Messaging_Distributed_BrokeredMessageBuilderExtensions_WithRecipients_Kephas_Messaging_Distributed_IBrokeredMessageBuilder_System_Collections_Generic_IEnumerable_System_String__">BrokeredMessageBuilderExtensions.WithRecipients(IBrokeredMessageBuilder, IEnumerable&lt;String&gt;)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
@@ -1643,7 +1803,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_BrokeredMessageBuilder.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.BrokeredMessageBuilder%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L25" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/BrokeredMessageBuilder.cs/#L27" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

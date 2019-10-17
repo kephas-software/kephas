@@ -85,6 +85,9 @@
       <a class="xref" href="Kephas.Data.Commands.IDataCommand.html#Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Operations.IAsyncOperation.html#Kephas_Operations_IAsyncOperation_ExecuteAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">IAsyncOperation.ExecuteAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Data.Commands.ISyncDataCommand-2.html#Kephas_Data_Commands_ISyncDataCommand_2_Execute__0_">ISyncDataCommand&lt;IDiscardChangesContext, IDataCommandResult&gt;.Execute(IDiscardChangesContext)</a>
     </div>
     <div>
@@ -96,7 +99,7 @@
   <h5 id="Kephas_Data_Commands_IDiscardChangesCommand_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[AppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(DataContextTypeAttribute)})]
-public interface IDiscardChangesCommand : IDataCommand&lt;IDiscardChangesContext, IDataCommandResult&gt;, IDataCommand, ISyncDataCommand&lt;IDiscardChangesContext, IDataCommandResult&gt;, ISyncDataCommand</code></pre>
+public interface IDiscardChangesCommand : IDataCommand&lt;IDiscardChangesContext, IDataCommandResult&gt;, IDataCommand, IAsyncOperation, ISyncDataCommand&lt;IDiscardChangesContext, IDataCommandResult&gt;, ISyncDataCommand</code></pre>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

@@ -94,8 +94,7 @@
     <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
     <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
     <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
-    <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
-    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a></div>
     <div><span class="xref">System.IDisposable</span></div>
     <div><a class="xref" href="Kephas.Services.IInitializable.html">IInitializable</a></div>
@@ -127,9 +126,6 @@
       <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Detach_Kephas_Data_Capabilities_IEntityEntry_">DataContextBase.Detach(IEntityEntry)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Dispose">DataContextBase.Dispose()</a>
-    </div>
-    <div>
       <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_GetIdEqualityExpression__1_System_Object_">DataContextBase.GetIdEqualityExpression&lt;T&gt;(Object)</a>
     </div>
     <div>
@@ -154,7 +150,10 @@
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Identity">Context.Identity</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ContextLogger">Context.ContextLogger</a>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Logger">Context.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose">Context.Dispose()</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ValidateIdentity_System_Security_Principal_IIdentity_System_Security_Principal_IIdentity_">Context.ValidateIdentity(IIdentity, IIdentity)</a>
@@ -255,7 +254,7 @@
   <h5 id="Kephas_Data_InMemory_InMemoryDataContext_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[SupportedDataStoreKinds(new DataStoreKind[]{DataStoreKind.InMemory})]
-public class InMemoryDataContext : DataContextBase, IDataContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware, IIdentifiable, IDisposable, IInitializable</code></pre>
+public class InMemoryDataContext : DataContextBase, IDataContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable, IIdentifiable, IDisposable, IInitializable</code></pre>
   </div>
   <h5 id="Kephas_Data_InMemory_InMemoryDataContext_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>For the connection string, use something like in the example below:
@@ -453,7 +452,7 @@ resources.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Dispose_System_Boolean_">DataContextBase.Dispose(Boolean)</a></div>
+  <div><a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose_System_Boolean_">Context.Dispose(Boolean)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_InMemory_InMemoryDataContext_GetEntityEntry_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Data.InMemory.InMemoryDataContext.GetEntityEntry(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -557,7 +556,6 @@ resources.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override IQueryable&lt;T&gt; QueryCore&lt;T&gt;(IQueryOperationContext queryOperationContext)
-
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -629,10 +627,7 @@ resources.</p>
       <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a>
@@ -682,6 +677,9 @@ resources.</p>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerExtensions.html#Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_">MessageBrokerExtensions.CreateBrokeredMessageBuilder(IContext)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>

@@ -90,9 +90,6 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">Newtonsoft.Json.Serialization.DefaultSerializationBinder.BindToName(System.Type, System.String, System.String)</span>
-    </div>
-    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
@@ -158,6 +155,56 @@
   </table>
   <h3 id="methods">Methods
   </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_Json_TypeResolverSerializationBinder_BindToName_System_Type_System_String__System_String__.md&amp;value=---%0Auid%3A%20Kephas.Serialization.Json.TypeResolverSerializationBinder.BindToName(System.Type%2CSystem.String%40%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Serialization.Json/TypeResolverSerializationBinder.cs/#L66">View Source</a>
+  </span>
+  <a id="Kephas_Serialization_Json_TypeResolverSerializationBinder_BindToName_" data-uid="Kephas.Serialization.Json.TypeResolverSerializationBinder.BindToName*"></a>
+  <h4 id="Kephas_Serialization_Json_TypeResolverSerializationBinder_BindToName_System_Type_System_String__System_String__" data-uid="Kephas.Serialization.Json.TypeResolverSerializationBinder.BindToName(System.Type,System.String@,System.String@)">BindToName(Type, out String, out String)</h4>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, controls the binding of a serialized object to a type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void BindToName(Type serializedType, out string assemblyName, out string typeName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">serializedType</span></td>
+        <td><p>The type of the object the formatter creates a new instance of.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">assemblyName</span></td>
+        <td><p>[out] Specifies the <span class="xref">System.Reflection.Assembly</span>
+                           name of the serialized object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">typeName</span></td>
+        <td><p>[out] Specifies the <span class="xref">System.Type</span> name of the
+                       serialized object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Newtonsoft.Json.Serialization.DefaultSerializationBinder.BindToName(System.Type, System.String, System.String)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_Json_TypeResolverSerializationBinder_BindToType_System_String_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.Json.TypeResolverSerializationBinder.BindToType(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>

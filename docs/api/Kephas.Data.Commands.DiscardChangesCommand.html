@@ -79,15 +79,18 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IDiscardChangesContext.html">IDiscardChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
-    <div class="level2"><a class="xref" href="Kephas.Data.Commands.SyncDataCommandBase-2.html">SyncDataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IDiscardChangesContext.html">IDiscardChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
-    <div class="level3"><span class="xref">DiscardChangesCommand</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IDiscardChangesContext.html">IDiscardChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
+    <div class="level3"><a class="xref" href="Kephas.Data.Commands.SyncDataCommandBase-2.html">SyncDataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IDiscardChangesContext.html">IDiscardChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
+    <div class="level4"><span class="xref">DiscardChangesCommand</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.IDiscardChangesCommand.html">IDiscardChangesCommand</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand</a>&lt;<a class="xref" href="Kephas.Data.Commands.IDiscardChangesContext.html">IDiscardChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
     <div><a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a></div>
+    <div><a class="xref" href="Kephas.Operations.IAsyncOperation.html">IAsyncOperation</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.ISyncDataCommand-2.html">ISyncDataCommand</a>&lt;<a class="xref" href="Kephas.Data.Commands.IDiscardChangesContext.html">IDiscardChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
     <div><a class="xref" href="Kephas.Data.Commands.ISyncDataCommand.html">ISyncDataCommand</a></div>
   </div>
@@ -106,6 +109,9 @@
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataCommandBase&lt;IDiscardChangesContext, IDataCommandResult&gt;.IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Operations_IAsyncOperation_ExecuteAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">DataCommandBase&lt;IDiscardChangesContext, IDataCommandResult&gt;.IAsyncOperation.ExecuteAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_GetIdEqualityExpression__1_Kephas_Data_IDataContext_System_Object_">DataCommandBase&lt;IDiscardChangesContext, IDataCommandResult&gt;.GetIdEqualityExpression&lt;T&gt;(IDataContext, Object)</a>
     </div>
     <div>
@@ -113,6 +119,12 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetEntityActivator_Kephas_Data_IDataContext_">DataCommandBase&lt;IDiscardChangesContext, IDataCommandResult&gt;.TryGetEntityActivator(IDataContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -141,7 +153,7 @@
   <h5 id="Kephas_Data_Commands_DiscardChangesCommand_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DataContextType(typeof(DataContextBase))]
-public class DiscardChangesCommand : SyncDataCommandBase&lt;IDiscardChangesContext, IDataCommandResult&gt;, IDiscardChangesCommand, IDataCommand&lt;IDiscardChangesContext, IDataCommandResult&gt;, IDataCommand, ISyncDataCommand&lt;IDiscardChangesContext, IDataCommandResult&gt;, ISyncDataCommand</code></pre>
+public class DiscardChangesCommand : SyncDataCommandBase&lt;IDiscardChangesContext, IDataCommandResult&gt;, ILoggable, IDiscardChangesCommand, IDataCommand&lt;IDiscardChangesContext, IDataCommandResult&gt;, IDataCommand, IAsyncOperation, ISyncDataCommand&lt;IDiscardChangesContext, IDataCommandResult&gt;, ISyncDataCommand</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -249,6 +261,9 @@ public class DiscardChangesCommand : SyncDataCommandBase&lt;IDiscardChangesConte
   <div><span class="xref">Kephas.Data.Commands.SyncDataCommandBase&lt;Kephas.Data.Commands.IDiscardChangesContext, Kephas.Data.Commands.IDataCommandResult&gt;.Execute(Kephas.Data.Commands.IDiscardChangesContext)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.Commands.IDiscardChangesCommand.html">IDiscardChangesCommand</a>
   </div>
   <div>
@@ -256,6 +271,9 @@ public class DiscardChangesCommand : SyncDataCommandBase&lt;IDiscardChangesConte
   </div>
   <div>
       <a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Operations.IAsyncOperation.html">IAsyncOperation</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.Commands.ISyncDataCommand-2.html">ISyncDataCommand&lt;TOperationContext, TResult&gt;</a>

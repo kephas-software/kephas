@@ -80,7 +80,7 @@
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Behaviors_IDataBehavior_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(ContractType = typeof(IDataBehavior))]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(ContractType = typeof(IDataBehavior), AllowMultiple = true)]
 public interface IDataBehavior&lt;TEntity&gt; : IDataBehavior</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>

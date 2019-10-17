@@ -79,14 +79,16 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DataBehaviorBase&lt;TEntity&gt;</span></div>
-      <div class="level2"><a class="xref" href="Kephas.Data.Behaviors.DataAnnotationsBehaviorBase-1.html">DataAnnotationsBehaviorBase&lt;TEntity&gt;</a></div>
-      <div class="level2"><a class="xref" href="Kephas.Data.LLBLGen.Behaviors.LLBLGenDeleteEntityBehavior.html">LLBLGenDeleteEntityBehavior</a></div>
-      <div class="level2"><a class="xref" href="Kephas.Data.LLBLGen.Behaviors.LLBLGenPersistEntityBehavior.html">LLBLGenPersistEntityBehavior</a></div>
-      <div class="level2"><a class="xref" href="Kephas.Data.LLBLGen.Behaviors.LLBLGenRefBehavior.html">LLBLGenRefBehavior</a></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">DataBehaviorBase&lt;TEntity&gt;</span></div>
+      <div class="level3"><a class="xref" href="Kephas.Data.Behaviors.DataAnnotationsBehaviorBase-1.html">DataAnnotationsBehaviorBase&lt;TEntity&gt;</a></div>
+      <div class="level3"><a class="xref" href="Kephas.Data.LLBLGen.Behaviors.LLBLGenDeleteEntityBehavior.html">LLBLGenDeleteEntityBehavior</a></div>
+      <div class="level3"><a class="xref" href="Kephas.Data.LLBLGen.Behaviors.LLBLGenPersistEntityBehavior.html">LLBLGenPersistEntityBehavior</a></div>
+      <div class="level3"><a class="xref" href="Kephas.Data.LLBLGen.Behaviors.LLBLGenRefBehavior.html">LLBLGenRefBehavior</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IDataBehavior-1.html">IDataBehavior</a>&lt;TEntity&gt;</div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IDataBehavior.html">IDataBehavior</a></div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IOnPersistBehavior.html">IOnPersistBehavior</a></div>
@@ -95,6 +97,12 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -121,7 +129,7 @@
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Behaviors_DataBehaviorBase_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class DataBehaviorBase&lt;TEntity&gt; : IDataBehavior&lt;TEntity&gt;, IDataBehavior, IOnPersistBehavior, IOnInitializeBehavior, IOnValidateBehavior</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DataBehaviorBase&lt;TEntity&gt; : Loggable, ILoggable, IDataBehavior&lt;TEntity&gt;, IDataBehavior, IOnPersistBehavior, IOnInitializeBehavior, IOnValidateBehavior</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -146,7 +154,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_AfterPersist__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.AfterPersist(%600%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L51">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L52">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_AfterPersist_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.AfterPersist*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_AfterPersist__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.AfterPersist(`0,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext)">AfterPersist(TEntity, IEntityEntry, IDataOperationContext)</h4>
@@ -192,7 +200,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_AfterPersistAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.AfterPersistAsync(%600%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L126">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L127">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_AfterPersistAsync_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.AfterPersistAsync*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_AfterPersistAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.AfterPersistAsync(`0,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext,System.Threading.CancellationToken)">AfterPersistAsync(TEntity, IEntityEntry, IDataOperationContext, CancellationToken)</h4>
@@ -260,7 +268,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_BeforePersist__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.BeforePersist(%600%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L41">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L42">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_BeforePersist_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.BeforePersist*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_BeforePersist__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.BeforePersist(`0,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext)">BeforePersist(TEntity, IEntityEntry, IDataOperationContext)</h4>
@@ -306,7 +314,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_BeforePersistAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.BeforePersistAsync(%600%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L94">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L95">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_BeforePersistAsync_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.BeforePersistAsync*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_BeforePersistAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.BeforePersistAsync(`0,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext,System.Threading.CancellationToken)">BeforePersistAsync(TEntity, IEntityEntry, IDataOperationContext, CancellationToken)</h4>
@@ -374,7 +382,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_Initialize__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.Initialize(%600%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L31">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L32">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_Initialize_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Initialize*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_Initialize__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Initialize(`0,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext)">Initialize(TEntity, IEntityEntry, IDataOperationContext)</h4>
@@ -420,7 +428,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_InitializeAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.InitializeAsync(%600%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L158">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L159">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_InitializeAsync_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.InitializeAsync*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_InitializeAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.InitializeAsync(`0,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext,System.Threading.CancellationToken)">InitializeAsync(TEntity, IEntityEntry, IDataOperationContext, CancellationToken)</h4>
@@ -488,7 +496,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_Validate__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.Validate(%600%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L64">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L65">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_Validate_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Validate*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_Validate__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Validate(`0,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext)">Validate(TEntity, IEntityEntry, IDataOperationContext)</h4>
@@ -550,7 +558,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_ValidateAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.ValidateAsync(%600%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L190">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L191">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_ValidateAsync_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.ValidateAsync*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_ValidateAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.ValidateAsync(`0,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext,System.Threading.CancellationToken)">ValidateAsync(TEntity, IEntityEntry, IDataOperationContext, CancellationToken)</h4>
@@ -620,7 +628,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnInitializeBehavior_InitializeAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.Kephas%23Data%23Behaviors%23IOnInitializeBehavior%23InitializeAsync(System.Object%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L143">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L144">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnInitializeBehavior_InitializeAsync_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Kephas#Data#Behaviors#IOnInitializeBehavior#InitializeAsync*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnInitializeBehavior_InitializeAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Kephas#Data#Behaviors#IOnInitializeBehavior#InitializeAsync(System.Object,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext,System.Threading.CancellationToken)">IOnInitializeBehavior.InitializeAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</h4>
@@ -688,7 +696,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnPersistBehavior_AfterPersistAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.Kephas%23Data%23Behaviors%23IOnPersistBehavior%23AfterPersistAsync(System.Object%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L111">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L112">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnPersistBehavior_AfterPersistAsync_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Kephas#Data#Behaviors#IOnPersistBehavior#AfterPersistAsync*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnPersistBehavior_AfterPersistAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Kephas#Data#Behaviors#IOnPersistBehavior#AfterPersistAsync(System.Object,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext,System.Threading.CancellationToken)">IOnPersistBehavior.AfterPersistAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</h4>
@@ -756,7 +764,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnPersistBehavior_BeforePersistAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.Kephas%23Data%23Behaviors%23IOnPersistBehavior%23BeforePersistAsync(System.Object%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L79">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L80">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnPersistBehavior_BeforePersistAsync_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Kephas#Data#Behaviors#IOnPersistBehavior#BeforePersistAsync*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Behaviors_IOnPersistBehavior_BeforePersistAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Kephas#Data#Behaviors#IOnPersistBehavior#BeforePersistAsync(System.Object,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext,System.Threading.CancellationToken)">IOnPersistBehavior.BeforePersistAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</h4>
@@ -824,7 +832,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Validation_IOnValidateBehavior_ValidateAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601.Kephas%23Data%23Validation%23IOnValidateBehavior%23ValidateAsync(System.Object%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IDataOperationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L175">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L176">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Validation_IOnValidateBehavior_ValidateAsync_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Kephas#Data#Validation#IOnValidateBehavior#ValidateAsync*"></a>
   <h4 id="Kephas_Data_Behaviors_DataBehaviorBase_1_Kephas_Data_Validation_IOnValidateBehavior_ValidateAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Behaviors.DataBehaviorBase`1.Kephas#Data#Validation#IOnValidateBehavior#ValidateAsync(System.Object,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IDataOperationContext,System.Threading.CancellationToken)">IOnValidateBehavior.ValidateAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</h4>
@@ -888,6 +896,9 @@
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Data.Behaviors.IDataBehavior-1.html">IDataBehavior&lt;TEntity&gt;</a>
   </div>
@@ -957,7 +968,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_DataBehaviorBase_1.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.DataBehaviorBase%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/DataBehaviorBase.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

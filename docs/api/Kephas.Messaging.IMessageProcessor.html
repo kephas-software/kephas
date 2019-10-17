@@ -80,7 +80,7 @@
   <h6><strong>Assembly</strong>: Kephas.Messaging.dll</h6>
   <h5 id="Kephas_Messaging_IMessageProcessor_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract]
 public interface IMessageProcessor</code></pre>
   </div>
   <h5 id="Kephas_Messaging_IMessageProcessor_remarks"><strong>Remarks</strong></h5>
@@ -90,19 +90,19 @@ public interface IMessageProcessor</code></pre>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_IMessageProcessor_ProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.IMessageProcessor.ProcessAsync(Kephas.Messaging.IMessage%2CKephas.Messaging.IMessageProcessingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_IMessageProcessor_ProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.IMessageProcessor.ProcessAsync(Kephas.Messaging.IMessage%2CKephas.Messaging.IMessagingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/IMessageProcessor.cs/#L36">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/IMessageProcessor.cs/#L37">View Source</a>
   </span>
   <a id="Kephas_Messaging_IMessageProcessor_ProcessAsync_" data-uid="Kephas.Messaging.IMessageProcessor.ProcessAsync*"></a>
-  <h4 id="Kephas_Messaging_IMessageProcessor_ProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.IMessageProcessor.ProcessAsync(Kephas.Messaging.IMessage,Kephas.Messaging.IMessageProcessingContext,System.Threading.CancellationToken)">ProcessAsync(IMessage, IMessageProcessingContext, CancellationToken)</h4>
+  <h4 id="Kephas_Messaging_IMessageProcessor_ProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.IMessageProcessor.ProcessAsync(Kephas.Messaging.IMessage,Kephas.Messaging.IMessagingContext,System.Threading.CancellationToken)">ProcessAsync(IMessage, IMessagingContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Processes the specified message asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;IMessage&gt; ProcessAsync(IMessage message, IMessageProcessingContext context = null, CancellationToken token = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;IMessage&gt; ProcessAsync(IMessage message, IMessagingContext context = null, CancellationToken token = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -121,7 +121,7 @@ public interface IMessageProcessor</code></pre>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.IMessageProcessingContext.html">IMessageProcessingContext</a></td>
+        <td><a class="xref" href="Kephas.Messaging.IMessagingContext.html">IMessagingContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>Context for the message processing.</p>
 </td>
@@ -191,6 +191,9 @@ public interface IMessageProcessor</code></pre>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Messaging.MessageProcessorExtensions.html#Kephas_Messaging_MessageProcessorExtensions_ProcessAsync_Kephas_Messaging_IMessageProcessor_System_Object_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_">MessageProcessorExtensions.ProcessAsync(IMessageProcessor, Object, IMessagingContext, CancellationToken)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
@@ -204,7 +207,7 @@ public interface IMessageProcessor</code></pre>
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_IMessageProcessor.md&amp;value=---%0Auid%3A%20Kephas.Messaging.IMessageProcessor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/IMessageProcessor.cs/#L24" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/IMessageProcessor.cs/#L25" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

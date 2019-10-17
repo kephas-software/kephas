@@ -128,7 +128,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IDictionary&lt;TKey, IExportFactory&lt;TService, TServiceMetadata&gt;&gt; ToPrioritizedDictionary&lt;TService, TServiceMetadata, TKey&gt;(this IEnumerable&lt;IExportFactory&lt;TService, TServiceMetadata&gt;&gt; serviceFactories, Func&lt;IExportFactory&lt;TService, TServiceMetadata&gt;, TKey&gt; keyFunc, IEqualityComparer&lt;TKey&gt; keyComparer = null)
-
     where TServiceMetadata : AppServiceMetadata</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -223,7 +222,6 @@ equal, then a <a class="xref" href="Kephas.Data.DuplicateKeyException.html">Dupl
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static IDictionary&lt;TKey, TValue&gt; ToPrioritizedDictionary&lt;TService, TServiceMetadata, TKey, TValue&gt;(this IEnumerable&lt;IExportFactory&lt;TService, TServiceMetadata&gt;&gt; serviceFactories, Func&lt;IExportFactory&lt;TService, TServiceMetadata&gt;, TKey&gt; keyFunc, Func&lt;IExportFactory&lt;TService, TServiceMetadata&gt;, TValue&gt; valueFunc, IEqualityComparer&lt;TKey&gt; keyComparer = null)
-
     where TServiceMetadata : AppServiceMetadata</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>

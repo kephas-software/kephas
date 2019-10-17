@@ -80,13 +80,15 @@ The service must implement the contract <code data-dev-comment-type="typeparamre
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Behaviors.BehaviorRuleFlowControlBase.html">BehaviorRuleFlowControlBase</a></div>
-    <div class="level2"><a class="xref" href="Kephas.Behaviors.BehaviorRuleBase-2.html">BehaviorRuleBase</a>&lt;<a class="xref" href="Kephas.Services.Behaviors.IServiceBehaviorContext-1.html">IServiceBehaviorContext</a>&lt;TServiceContract&gt;, <span class="xref">System.Boolean</span>&gt;</div>
-    <div class="level3"><a class="xref" href="Kephas.Services.Behaviors.EnabledServiceBehaviorRuleBase-1.html">EnabledServiceBehaviorRuleBase</a>&lt;TServiceContract&gt;</div>
-    <div class="level4"><span class="xref">EnabledServiceBehaviorRuleBase&lt;TServiceContract, TServiceImplementation&gt;</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Behaviors.BehaviorRuleFlowControlBase.html">BehaviorRuleFlowControlBase</a></div>
+    <div class="level3"><a class="xref" href="Kephas.Behaviors.BehaviorRuleBase-2.html">BehaviorRuleBase</a>&lt;<a class="xref" href="Kephas.Services.Behaviors.IServiceBehaviorContext-1.html">IServiceBehaviorContext</a>&lt;TServiceContract&gt;, <span class="xref">System.Boolean</span>&gt;</div>
+    <div class="level4"><a class="xref" href="Kephas.Services.Behaviors.EnabledServiceBehaviorRuleBase-1.html">EnabledServiceBehaviorRuleBase</a>&lt;TServiceContract&gt;</div>
+    <div class="level5"><span class="xref">EnabledServiceBehaviorRuleBase&lt;TServiceContract, TServiceImplementation&gt;</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Services.Behaviors.IEnabledServiceBehaviorRule-1.html">IEnabledServiceBehaviorRule</a>&lt;TServiceContract&gt;</div>
     <div><a class="xref" href="Kephas.Behaviors.IBehaviorRule-2.html">IBehaviorRule</a>&lt;<a class="xref" href="Kephas.Services.Behaviors.IServiceBehaviorContext-1.html">IServiceBehaviorContext</a>&lt;TServiceContract&gt;, <span class="xref">System.Boolean</span>&gt;</div>
     <div><a class="xref" href="Kephas.Behaviors.IBehaviorRule-1.html">IBehaviorRule</a>&lt;<a class="xref" href="Kephas.Services.Behaviors.IServiceBehaviorContext-1.html">IServiceBehaviorContext</a>&lt;TServiceContract&gt;&gt;</div>
@@ -128,6 +130,12 @@ The service must implement the contract <code data-dev-comment-type="typeparamre
       <a class="xref" href="Kephas.Behaviors.BehaviorRuleFlowControlBase.html#Kephas_Behaviors_BehaviorRuleFlowControlBase_ComputeProcessingPriority">BehaviorRuleFlowControlBase.ComputeProcessingPriority()</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
+    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
@@ -153,7 +161,7 @@ The service must implement the contract <code data-dev-comment-type="typeparamre
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Services_Behaviors_EnabledServiceBehaviorRuleBase_2_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class EnabledServiceBehaviorRuleBase&lt;TServiceContract, TServiceImplementation&gt; : EnabledServiceBehaviorRuleBase&lt;TServiceContract&gt;, IEnabledServiceBehaviorRule&lt;TServiceContract&gt;, IBehaviorRule&lt;IServiceBehaviorContext&lt;TServiceContract&gt;, bool&gt;, IBehaviorRule&lt;IServiceBehaviorContext&lt;TServiceContract&gt;&gt;, IEnabledServiceBehaviorRule, IBehaviorRule&lt;IContext, bool&gt;, IBehaviorRule&lt;IContext&gt;, IBehaviorRuleFlowControl where TServiceImplementation : TServiceContract</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class EnabledServiceBehaviorRuleBase&lt;TServiceContract, TServiceImplementation&gt; : EnabledServiceBehaviorRuleBase&lt;TServiceContract&gt;, ILoggable, IEnabledServiceBehaviorRule&lt;TServiceContract&gt;, IBehaviorRule&lt;IServiceBehaviorContext&lt;TServiceContract&gt;, bool&gt;, IBehaviorRule&lt;IServiceBehaviorContext&lt;TServiceContract&gt;&gt;, IEnabledServiceBehaviorRule, IBehaviorRule&lt;IContext, bool&gt;, IBehaviorRule&lt;IContext&gt;, IBehaviorRuleFlowControl where TServiceImplementation : TServiceContract</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -232,6 +240,9 @@ implementing the contract <code data-dev-comment-type="typeparamref" class="type
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Kephas.Behaviors.BehaviorRuleBase&lt;Kephas.Services.Behaviors.IServiceBehaviorContext&lt;TServiceContract&gt;, System.Boolean&gt;.CanApply(Kephas.Services.Behaviors.IServiceBehaviorContext&lt;TServiceContract&gt;)</span></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Services.Behaviors.IEnabledServiceBehaviorRule-1.html">IEnabledServiceBehaviorRule&lt;TServiceContract&gt;</a>
   </div>

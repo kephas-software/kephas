@@ -83,8 +83,8 @@ and added to the container.</p>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">System.Attribute</span></div>
     <div class="level2"><span class="xref">AppServiceContractAttribute</span></div>
-      <div class="level3"><a class="xref" href="Kephas.Services.ScopeSharedAppServiceContractAttribute.html">ScopeSharedAppServiceContractAttribute</a></div>
-      <div class="level3"><a class="xref" href="Kephas.Services.SharedAppServiceContractAttribute.html">SharedAppServiceContractAttribute</a></div>
+      <div class="level3"><a class="xref" href="Kephas.Services.ScopedAppServiceContractAttribute.html">ScopedAppServiceContractAttribute</a></div>
+      <div class="level3"><a class="xref" href="Kephas.Services.SingletonAppServiceContractAttribute.html">SingletonAppServiceContractAttribute</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -215,9 +215,6 @@ and added to the container.</p>
     <div>
       <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Services.html">Kephas.Services</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
@@ -233,7 +230,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute__ctor.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L70">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L63">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute__ctor_" data-uid="Kephas.Services.AppServiceContractAttribute.#ctor*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute__ctor" data-uid="Kephas.Services.AppServiceContractAttribute.#ctor">AppServiceContractAttribute()</h4>
@@ -249,7 +246,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute__ctor_Kephas_Services_AppServiceLifetime_.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.%23ctor(Kephas.Services.AppServiceLifetime)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L79">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L72">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute__ctor_" data-uid="Kephas.Services.AppServiceContractAttribute.#ctor*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute__ctor_Kephas_Services_AppServiceLifetime_" data-uid="Kephas.Services.AppServiceContractAttribute.#ctor(Kephas.Services.AppServiceLifetime)">AppServiceContractAttribute(AppServiceLifetime)</h4>
@@ -278,40 +275,6 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute__ctor_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L88">View Source</a>
-  </span>
-  <a id="Kephas_Services_AppServiceContractAttribute__ctor_" data-uid="Kephas.Services.AppServiceContractAttribute.#ctor*"></a>
-  <h4 id="Kephas_Services_AppServiceContractAttribute__ctor_System_String_" data-uid="Kephas.Services.AppServiceContractAttribute.#ctor(System.String)">AppServiceContractAttribute(String)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Services.AppServiceContractAttribute.html">AppServiceContractAttribute</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected AppServiceContractAttribute(string scopeName)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">scopeName</span></td>
-        <td><p>Name of the scope.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="fields">Fields
   </h3>
   <span class="small pull-right mobile-hide">
@@ -319,7 +282,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_DefaultMetadataAttributeTypes.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.DefaultMetadataAttributeTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L34">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L33">View Source</a>
   </span>
   <h4 id="Kephas_Services_AppServiceContractAttribute_DefaultMetadataAttributeTypes" data-uid="Kephas.Services.AppServiceContractAttribute.DefaultMetadataAttributeTypes">DefaultMetadataAttributeTypes</h4>
   <div class="markdown level1 summary"><p>The default metadata attribute types.</p>
@@ -349,7 +312,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_EmptyMetadataAttributeTypes.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.EmptyMetadataAttributeTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L39">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L38">View Source</a>
   </span>
   <h4 id="Kephas_Services_AppServiceContractAttribute_EmptyMetadataAttributeTypes" data-uid="Kephas.Services.AppServiceContractAttribute.EmptyMetadataAttributeTypes">EmptyMetadataAttributeTypes</h4>
   <div class="markdown level1 summary"><p>The empty metadata attribute types.</p>
@@ -381,7 +344,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_AllowMultiple.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.AllowMultiple%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L110">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L91">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute_AllowMultiple_" data-uid="Kephas.Services.AppServiceContractAttribute.AllowMultiple*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute_AllowMultiple" data-uid="Kephas.Services.AppServiceContractAttribute.AllowMultiple">AllowMultiple</h4>
@@ -413,7 +376,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_AsOpenGeneric.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.AsOpenGeneric%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L118">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L99">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute_AsOpenGeneric_" data-uid="Kephas.Services.AppServiceContractAttribute.AsOpenGeneric*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute_AsOpenGeneric" data-uid="Kephas.Services.AppServiceContractAttribute.AsOpenGeneric">AsOpenGeneric</h4>
@@ -445,7 +408,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_ContractType.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.ContractType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L135">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L116">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute_ContractType_" data-uid="Kephas.Services.AppServiceContractAttribute.ContractType*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute_ContractType" data-uid="Kephas.Services.AppServiceContractAttribute.ContractType">ContractType</h4>
@@ -477,7 +440,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_Lifetime.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.Lifetime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L102">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L83">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute_Lifetime_" data-uid="Kephas.Services.AppServiceContractAttribute.Lifetime*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute_Lifetime" data-uid="Kephas.Services.AppServiceContractAttribute.Lifetime">Lifetime</h4>
@@ -509,7 +472,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_MetadataAttributes.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.MetadataAttributes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L127">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L108">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute_MetadataAttributes_" data-uid="Kephas.Services.AppServiceContractAttribute.MetadataAttributes*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute_MetadataAttributes" data-uid="Kephas.Services.AppServiceContractAttribute.MetadataAttributes">MetadataAttributes</h4>
@@ -546,7 +509,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_RegisterDefaultMetadataAttributeTypes_System_Type___.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.RegisterDefaultMetadataAttributeTypes(System.Type%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L173">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L146">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute_RegisterDefaultMetadataAttributeTypes_" data-uid="Kephas.Services.AppServiceContractAttribute.RegisterDefaultMetadataAttributeTypes*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute_RegisterDefaultMetadataAttributeTypes_System_Type___" data-uid="Kephas.Services.AppServiceContractAttribute.RegisterDefaultMetadataAttributeTypes(System.Type[])">RegisterDefaultMetadataAttributeTypes(Type[])</h4>
@@ -575,6 +538,40 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_ToString.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L163">View Source</a>
+  </span>
+  <a id="Kephas_Services_AppServiceContractAttribute_ToString_" data-uid="Kephas.Services.AppServiceContractAttribute.ToString*"></a>
+  <h4 id="Kephas_Services_AppServiceContractAttribute_ToString" data-uid="Kephas.Services.AppServiceContractAttribute.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Returns a string that represents the current object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>A string that represents the current object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
   <h3 id="eii">Explicit Interface Implementations
   </h3>
   <span class="small pull-right mobile-hide">
@@ -582,7 +579,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_Instance.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.Kephas%23Services%23Reflection%23IAppServiceInfo%23Instance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L143">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L124">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_Instance_" data-uid="Kephas.Services.AppServiceContractAttribute.Kephas#Services#Reflection#IAppServiceInfo#Instance*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_Instance" data-uid="Kephas.Services.AppServiceContractAttribute.Kephas#Services#Reflection#IAppServiceInfo#Instance">IAppServiceInfo.Instance</h4>
@@ -614,7 +611,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_InstanceFactory.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.Kephas%23Services%23Reflection%23IAppServiceInfo%23InstanceFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L159">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L140">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_InstanceFactory_" data-uid="Kephas.Services.AppServiceContractAttribute.Kephas#Services#Reflection#IAppServiceInfo#InstanceFactory*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_InstanceFactory" data-uid="Kephas.Services.AppServiceContractAttribute.Kephas#Services#Reflection#IAppServiceInfo#InstanceFactory">IAppServiceInfo.InstanceFactory</h4>
@@ -646,7 +643,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_InstanceType.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.Kephas%23Services%23Reflection%23IAppServiceInfo%23InstanceType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L151">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L132">View Source</a>
   </span>
   <a id="Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_InstanceType_" data-uid="Kephas.Services.AppServiceContractAttribute.Kephas#Services#Reflection#IAppServiceInfo#InstanceType*"></a>
   <h4 id="Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_InstanceType" data-uid="Kephas.Services.AppServiceContractAttribute.Kephas#Services#Reflection#IAppServiceInfo#InstanceType">IAppServiceInfo.InstanceType</h4>
@@ -669,38 +666,6 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
       <tr>
         <td><span class="xref">System.Type</span></td>
         <td><p>The type of the service instance.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_ScopeName.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute.Kephas%23Services%23Reflection%23IAppServiceInfo%23ScopeName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L167">View Source</a>
-  </span>
-  <a id="Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_ScopeName_" data-uid="Kephas.Services.AppServiceContractAttribute.Kephas#Services#Reflection#IAppServiceInfo#ScopeName*"></a>
-  <h4 id="Kephas_Services_AppServiceContractAttribute_Kephas_Services_Reflection_IAppServiceInfo_ScopeName" data-uid="Kephas.Services.AppServiceContractAttribute.Kephas#Services#Reflection#IAppServiceInfo#ScopeName">IAppServiceInfo.ScopeName</h4>
-  <div class="markdown level1 summary"><p>Gets the name of the scope for scoped shared services.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">string IAppServiceInfo.ScopeName { get; }</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><p>The name of the scope for scoped shared services.</p>
 </td>
       </tr>
     </tbody>
@@ -750,13 +715,13 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsShared_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsShared(IAppServiceInfo)</a>
+      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsSingleton_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsSingleton(IAppServiceInfo)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsScopeShared_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsScopeShared(IAppServiceInfo)</a>
+      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsScoped_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsScoped(IAppServiceInfo)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsInstance_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsInstance(IAppServiceInfo)</a>
+      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsTransient_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsTransient(IAppServiceInfo)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
@@ -772,7 +737,7 @@ public class AppServiceContractAttribute : Attribute, IAppServiceInfo</code></pr
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_AppServiceContractAttribute.md&amp;value=---%0Auid%3A%20Kephas.Services.AppServiceContractAttribute%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L28" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/AppServiceContractAttribute.cs/#L27" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

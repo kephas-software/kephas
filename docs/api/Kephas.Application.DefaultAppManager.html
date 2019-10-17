@@ -79,15 +79,23 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DefaultAppManager</span></div>
-      <div class="level2"><a class="xref" href="Kephas.AspNetCore.Application.AspNetAppManager.html">AspNetAppManager</a></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">DefaultAppManager</span></div>
+      <div class="level3"><a class="xref" href="Kephas.Application.AspNetCore.Application.AspNetAppManager.html">AspNetAppManager</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Application.IAppManager.html">IAppManager</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -111,29 +119,29 @@
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
-  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h6><strong>Assembly</strong>: Kephas.Application.dll</h6>
   <h5 id="Kephas_Application_DefaultAppManager_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Low)]
-public class DefaultAppManager : IAppManager</code></pre>
+public class DefaultAppManager : Loggable, ILoggable, IAppManager</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager__ctor_Kephas_Application_IAppManifest_Kephas_Composition_ICompositionContext_Kephas_Services_Behaviors_IServiceBehaviorProvider_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IFeatureManager_Kephas_Application_Composition_FeatureManagerMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.%23ctor(Kephas.Application.IAppManifest%2CKephas.Composition.ICompositionContext%2CKephas.Services.Behaviors.IServiceBehaviorProvider%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Application.IAppLifecycleBehavior%2CKephas.Services.Composition.AppServiceMetadata%7D%7D%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Application.IFeatureManager%2CKephas.Application.Composition.FeatureManagerMetadata%7D%7D%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Application.IFeatureLifecycleBehavior%2CKephas.Application.Composition.FeatureLifecycleBehaviorMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager__ctor_Kephas_Application_IAppRuntime_Kephas_Composition_ICompositionContext_Kephas_Services_Behaviors_IServiceBehaviorProvider_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IFeatureManager_Kephas_Application_Composition_FeatureManagerMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.%23ctor(Kephas.Application.IAppRuntime%2CKephas.Composition.ICompositionContext%2CKephas.Services.Behaviors.IServiceBehaviorProvider%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Application.IAppLifecycleBehavior%2CKephas.Services.Composition.AppServiceMetadata%7D%7D%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Application.IFeatureManager%2CKephas.Application.Composition.FeatureManagerMetadata%7D%7D%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Application.IFeatureLifecycleBehavior%2CKephas.Application.Composition.FeatureLifecycleBehaviorMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L47">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L48">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager__ctor_" data-uid="Kephas.Application.DefaultAppManager.#ctor*"></a>
-  <h4 id="Kephas_Application_DefaultAppManager__ctor_Kephas_Application_IAppManifest_Kephas_Composition_ICompositionContext_Kephas_Services_Behaviors_IServiceBehaviorProvider_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IFeatureManager_Kephas_Application_Composition_FeatureManagerMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___" data-uid="Kephas.Application.DefaultAppManager.#ctor(Kephas.Application.IAppManifest,Kephas.Composition.ICompositionContext,Kephas.Services.Behaviors.IServiceBehaviorProvider,System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Application.IAppLifecycleBehavior,Kephas.Services.Composition.AppServiceMetadata}},System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Application.IFeatureManager,Kephas.Application.Composition.FeatureManagerMetadata}},System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Application.IFeatureLifecycleBehavior,Kephas.Application.Composition.FeatureLifecycleBehaviorMetadata}})">DefaultAppManager(IAppManifest, ICompositionContext, IServiceBehaviorProvider, ICollection&lt;IExportFactory&lt;IAppLifecycleBehavior, AppServiceMetadata&gt;&gt;, ICollection&lt;IExportFactory&lt;IFeatureManager, FeatureManagerMetadata&gt;&gt;, ICollection&lt;IExportFactory&lt;IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata&gt;&gt;)</h4>
+  <h4 id="Kephas_Application_DefaultAppManager__ctor_Kephas_Application_IAppRuntime_Kephas_Composition_ICompositionContext_Kephas_Services_Behaviors_IServiceBehaviorProvider_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IFeatureManager_Kephas_Application_Composition_FeatureManagerMetadata___System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___" data-uid="Kephas.Application.DefaultAppManager.#ctor(Kephas.Application.IAppRuntime,Kephas.Composition.ICompositionContext,Kephas.Services.Behaviors.IServiceBehaviorProvider,System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Application.IAppLifecycleBehavior,Kephas.Services.Composition.AppServiceMetadata}},System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Application.IFeatureManager,Kephas.Application.Composition.FeatureManagerMetadata}},System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Application.IFeatureLifecycleBehavior,Kephas.Application.Composition.FeatureLifecycleBehaviorMetadata}})">DefaultAppManager(IAppRuntime, ICompositionContext, IServiceBehaviorProvider, ICollection&lt;IExportFactory&lt;IAppLifecycleBehavior, AppServiceMetadata&gt;&gt;, ICollection&lt;IExportFactory&lt;IFeatureManager, FeatureManagerMetadata&gt;&gt;, ICollection&lt;IExportFactory&lt;IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Application.DefaultAppManager.html">DefaultAppManager</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultAppManager(IAppManifest appManifest, ICompositionContext compositionContext, IServiceBehaviorProvider serviceBehaviorProvider, ICollection&lt;IExportFactory&lt;IAppLifecycleBehavior, AppServiceMetadata&gt;&gt; appLifecycleBehaviorFactories, ICollection&lt;IExportFactory&lt;IFeatureManager, FeatureManagerMetadata&gt;&gt; featureManagerFactories, ICollection&lt;IExportFactory&lt;IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata&gt;&gt; featureLifecycleBehaviorFactories)</code></pre>
+    <pre><code class="lang-csharp hljs">public DefaultAppManager(IAppRuntime appRuntime, ICompositionContext compositionContext, IServiceBehaviorProvider serviceBehaviorProvider = null, ICollection&lt;IExportFactory&lt;IAppLifecycleBehavior, AppServiceMetadata&gt;&gt; appLifecycleBehaviorFactories = null, ICollection&lt;IExportFactory&lt;IFeatureManager, FeatureManagerMetadata&gt;&gt; featureManagerFactories = null, ICollection&lt;IExportFactory&lt;IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata&gt;&gt; featureLifecycleBehaviorFactories = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -146,9 +154,9 @@ public class DefaultAppManager : IAppManager</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppManifest.html">IAppManifest</a></td>
-        <td><span class="parametername">appManifest</span></td>
-        <td><p>The application manifest.</p>
+        <td><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></td>
+        <td><span class="parametername">appRuntime</span></td>
+        <td><p>The application runtime.</p>
 </td>
       </tr>
       <tr>
@@ -160,25 +168,25 @@ public class DefaultAppManager : IAppManager</code></pre>
       <tr>
         <td><a class="xref" href="Kephas.Services.Behaviors.IServiceBehaviorProvider.html">IServiceBehaviorProvider</a></td>
         <td><span class="parametername">serviceBehaviorProvider</span></td>
-        <td><p>The service behavior provider.</p>
+        <td><p>Optional. The service behavior provider.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Composition.IExportFactory-2.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Application.IAppLifecycleBehavior.html">IAppLifecycleBehavior</a>, <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html">AppServiceMetadata</a>&gt;&gt;</td>
         <td><span class="parametername">appLifecycleBehaviorFactories</span></td>
-        <td><p>The application lifecycle behavior factories.</p>
+        <td><p>Optional. The application lifecycle behavior factories.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Composition.IExportFactory-2.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Application.IFeatureManager.html">IFeatureManager</a>, <a class="xref" href="Kephas.Application.Composition.FeatureManagerMetadata.html">FeatureManagerMetadata</a>&gt;&gt;</td>
         <td><span class="parametername">featureManagerFactories</span></td>
-        <td><p>The feature manager factories.</p>
+        <td><p>Optional. The feature manager factories.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Composition.IExportFactory-2.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Application.IFeatureLifecycleBehavior.html">IFeatureLifecycleBehavior</a>, <a class="xref" href="Kephas.Application.Composition.FeatureLifecycleBehaviorMetadata.html">FeatureLifecycleBehaviorMetadata</a>&gt;&gt;</td>
         <td><span class="parametername">featureLifecycleBehaviorFactories</span></td>
-        <td><p>The feature lifecycle behavior factories.</p>
+        <td><p>Optional. The feature lifecycle behavior factories.</p>
 </td>
       </tr>
     </tbody>
@@ -190,7 +198,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_AppLifecycleBehaviorFactories.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.AppLifecycleBehaviorFactories%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L109">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L100">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_AppLifecycleBehaviorFactories_" data-uid="Kephas.Application.DefaultAppManager.AppLifecycleBehaviorFactories*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_AppLifecycleBehaviorFactories" data-uid="Kephas.Application.DefaultAppManager.AppLifecycleBehaviorFactories">AppLifecycleBehaviorFactories</h4>
@@ -219,19 +227,19 @@ public class DefaultAppManager : IAppManager</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_AppManifest.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.AppManifest%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_AppRuntime.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.AppRuntime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L88">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L79">View Source</a>
   </span>
-  <a id="Kephas_Application_DefaultAppManager_AppManifest_" data-uid="Kephas.Application.DefaultAppManager.AppManifest*"></a>
-  <h4 id="Kephas_Application_DefaultAppManager_AppManifest" data-uid="Kephas.Application.DefaultAppManager.AppManifest">AppManifest</h4>
-  <div class="markdown level1 summary"><p>Gets the application manifest.</p>
+  <a id="Kephas_Application_DefaultAppManager_AppRuntime_" data-uid="Kephas.Application.DefaultAppManager.AppRuntime*"></a>
+  <h4 id="Kephas_Application_DefaultAppManager_AppRuntime" data-uid="Kephas.Application.DefaultAppManager.AppRuntime">AppRuntime</h4>
+  <div class="markdown level1 summary"><p>Gets the application runtime.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAppManifest AppManifest { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IAppRuntime AppRuntime { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -243,7 +251,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppManifest.html">IAppManifest</a></td>
+        <td><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -253,7 +261,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_CompositionContext.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.CompositionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L96">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L87">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_CompositionContext_" data-uid="Kephas.Application.DefaultAppManager.CompositionContext*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_CompositionContext" data-uid="Kephas.Application.DefaultAppManager.CompositionContext">CompositionContext</h4>
@@ -285,7 +293,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_FeatureLifecycleBehaviorFactories.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.FeatureLifecycleBehaviorFactories%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L125">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L116">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_FeatureLifecycleBehaviorFactories_" data-uid="Kephas.Application.DefaultAppManager.FeatureLifecycleBehaviorFactories*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_FeatureLifecycleBehaviorFactories" data-uid="Kephas.Application.DefaultAppManager.FeatureLifecycleBehaviorFactories">FeatureLifecycleBehaviorFactories</h4>
@@ -317,7 +325,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_FeatureManagerFactories.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.FeatureManagerFactories%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L117">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L108">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_FeatureManagerFactories_" data-uid="Kephas.Application.DefaultAppManager.FeatureManagerFactories*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_FeatureManagerFactories" data-uid="Kephas.Application.DefaultAppManager.FeatureManagerFactories">FeatureManagerFactories</h4>
@@ -346,42 +354,10 @@ public class DefaultAppManager : IAppManager</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_Logger.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L83">View Source</a>
-  </span>
-  <a id="Kephas_Application_DefaultAppManager_Logger_" data-uid="Kephas.Application.DefaultAppManager.Logger*"></a>
-  <h4 id="Kephas_Application_DefaultAppManager_Logger" data-uid="Kephas.Application.DefaultAppManager.Logger">Logger</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ILogger&lt;IAppManager&gt; Logger { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.Application.IAppManager.html">IAppManager</a>&gt;</td>
-        <td><p>The logger.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_ServiceBehaviorProvider.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.ServiceBehaviorProvider%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L101">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L92">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_ServiceBehaviorProvider_" data-uid="Kephas.Application.DefaultAppManager.ServiceBehaviorProvider*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_ServiceBehaviorProvider" data-uid="Kephas.Application.DefaultAppManager.ServiceBehaviorProvider">ServiceBehaviorProvider</h4>
@@ -414,7 +390,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_AfterAppFinalizeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.AfterAppFinalizeAsync(System.Collections.Generic.ICollection%7BKephas.Composition.IExport%7BKephas.Application.IAppLifecycleBehavior%2CKephas.Services.Composition.AppServiceMetadata%7D%7D%2CKephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L432">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L423">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_AfterAppFinalizeAsync_" data-uid="Kephas.Application.DefaultAppManager.AfterAppFinalizeAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_AfterAppFinalizeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.AfterAppFinalizeAsync(System.Collections.Generic.ICollection{Kephas.Composition.IExport{Kephas.Application.IAppLifecycleBehavior,Kephas.Services.Composition.AppServiceMetadata}},Kephas.Application.IAppContext,System.Threading.CancellationToken)">AfterAppFinalizeAsync(ICollection&lt;IExport&lt;IAppLifecycleBehavior, AppServiceMetadata&gt;&gt;, IAppContext, CancellationToken)</h4>
@@ -476,7 +452,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_AfterAppInitializeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.AfterAppInitializeAsync(System.Collections.Generic.ICollection%7BKephas.Composition.IExport%7BKephas.Application.IAppLifecycleBehavior%2CKephas.Services.Composition.AppServiceMetadata%7D%7D%2CKephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L252">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L243">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_AfterAppInitializeAsync_" data-uid="Kephas.Application.DefaultAppManager.AfterAppInitializeAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_AfterAppInitializeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.AfterAppInitializeAsync(System.Collections.Generic.ICollection{Kephas.Composition.IExport{Kephas.Application.IAppLifecycleBehavior,Kephas.Services.Composition.AppServiceMetadata}},Kephas.Application.IAppContext,System.Threading.CancellationToken)">AfterAppInitializeAsync(ICollection&lt;IExport&lt;IAppLifecycleBehavior, AppServiceMetadata&gt;&gt;, IAppContext, CancellationToken)</h4>
@@ -538,7 +514,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_AfterFeatureFinalizeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.AfterFeatureFinalizeAsync(System.Collections.Generic.ICollection%7BKephas.Composition.IExport%7BKephas.Application.IFeatureLifecycleBehavior%2CKephas.Application.Composition.FeatureLifecycleBehaviorMetadata%7D%7D%2CKephas.Application.IAppContext%2CKephas.Application.Composition.FeatureManagerMetadata%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L563">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L554">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_AfterFeatureFinalizeAsync_" data-uid="Kephas.Application.DefaultAppManager.AfterFeatureFinalizeAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_AfterFeatureFinalizeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.AfterFeatureFinalizeAsync(System.Collections.Generic.ICollection{Kephas.Composition.IExport{Kephas.Application.IFeatureLifecycleBehavior,Kephas.Application.Composition.FeatureLifecycleBehaviorMetadata}},Kephas.Application.IAppContext,Kephas.Application.Composition.FeatureManagerMetadata,System.Threading.CancellationToken)">AfterFeatureFinalizeAsync(ICollection&lt;IExport&lt;IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata&gt;&gt;, IAppContext, FeatureManagerMetadata, CancellationToken)</h4>
@@ -606,7 +582,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_AfterFeatureInitializeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.AfterFeatureInitializeAsync(System.Collections.Generic.ICollection%7BKephas.Composition.IExport%7BKephas.Application.IFeatureLifecycleBehavior%2CKephas.Application.Composition.FeatureLifecycleBehaviorMetadata%7D%7D%2CKephas.Application.IAppContext%2CKephas.Application.Composition.FeatureManagerMetadata%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L387">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L378">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_AfterFeatureInitializeAsync_" data-uid="Kephas.Application.DefaultAppManager.AfterFeatureInitializeAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_AfterFeatureInitializeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.AfterFeatureInitializeAsync(System.Collections.Generic.ICollection{Kephas.Composition.IExport{Kephas.Application.IFeatureLifecycleBehavior,Kephas.Application.Composition.FeatureLifecycleBehaviorMetadata}},Kephas.Application.IAppContext,Kephas.Application.Composition.FeatureManagerMetadata,System.Threading.CancellationToken)">AfterFeatureInitializeAsync(ICollection&lt;IExport&lt;IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata&gt;&gt;, IAppContext, FeatureManagerMetadata, CancellationToken)</h4>
@@ -674,7 +650,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_BeforeAppFinalizeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.BeforeAppFinalizeAsync(System.Collections.Generic.ICollection%7BKephas.Composition.IExport%7BKephas.Application.IAppLifecycleBehavior%2CKephas.Services.Composition.AppServiceMetadata%7D%7D%2CKephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L412">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L403">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_BeforeAppFinalizeAsync_" data-uid="Kephas.Application.DefaultAppManager.BeforeAppFinalizeAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_BeforeAppFinalizeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.BeforeAppFinalizeAsync(System.Collections.Generic.ICollection{Kephas.Composition.IExport{Kephas.Application.IAppLifecycleBehavior,Kephas.Services.Composition.AppServiceMetadata}},Kephas.Application.IAppContext,System.Threading.CancellationToken)">BeforeAppFinalizeAsync(ICollection&lt;IExport&lt;IAppLifecycleBehavior, AppServiceMetadata&gt;&gt;, IAppContext, CancellationToken)</h4>
@@ -736,7 +712,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_BeforeAppInitializeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.BeforeAppInitializeAsync(System.Collections.Generic.ICollection%7BKephas.Composition.IExport%7BKephas.Application.IAppLifecycleBehavior%2CKephas.Services.Composition.AppServiceMetadata%7D%7D%2CKephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L232">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L223">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_BeforeAppInitializeAsync_" data-uid="Kephas.Application.DefaultAppManager.BeforeAppInitializeAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_BeforeAppInitializeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IAppLifecycleBehavior_Kephas_Services_Composition_AppServiceMetadata___Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.BeforeAppInitializeAsync(System.Collections.Generic.ICollection{Kephas.Composition.IExport{Kephas.Application.IAppLifecycleBehavior,Kephas.Services.Composition.AppServiceMetadata}},Kephas.Application.IAppContext,System.Threading.CancellationToken)">BeforeAppInitializeAsync(ICollection&lt;IExport&lt;IAppLifecycleBehavior, AppServiceMetadata&gt;&gt;, IAppContext, CancellationToken)</h4>
@@ -798,7 +774,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_BeforeFeatureFinalizeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.BeforeFeatureFinalizeAsync(System.Collections.Generic.ICollection%7BKephas.Composition.IExport%7BKephas.Application.IFeatureLifecycleBehavior%2CKephas.Application.Composition.FeatureLifecycleBehaviorMetadata%7D%7D%2CKephas.Application.IAppContext%2CKephas.Application.Composition.FeatureManagerMetadata%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L537">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L528">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_BeforeFeatureFinalizeAsync_" data-uid="Kephas.Application.DefaultAppManager.BeforeFeatureFinalizeAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_BeforeFeatureFinalizeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.BeforeFeatureFinalizeAsync(System.Collections.Generic.ICollection{Kephas.Composition.IExport{Kephas.Application.IFeatureLifecycleBehavior,Kephas.Application.Composition.FeatureLifecycleBehaviorMetadata}},Kephas.Application.IAppContext,Kephas.Application.Composition.FeatureManagerMetadata,System.Threading.CancellationToken)">BeforeFeatureFinalizeAsync(ICollection&lt;IExport&lt;IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata&gt;&gt;, IAppContext, FeatureManagerMetadata, CancellationToken)</h4>
@@ -866,7 +842,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_BeforeFeatureInitializeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.BeforeFeatureInitializeAsync(System.Collections.Generic.ICollection%7BKephas.Composition.IExport%7BKephas.Application.IFeatureLifecycleBehavior%2CKephas.Application.Composition.FeatureLifecycleBehaviorMetadata%7D%7D%2CKephas.Application.IAppContext%2CKephas.Application.Composition.FeatureManagerMetadata%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L361">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L352">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_BeforeFeatureInitializeAsync_" data-uid="Kephas.Application.DefaultAppManager.BeforeFeatureInitializeAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_BeforeFeatureInitializeAsync_System_Collections_Generic_ICollection_Kephas_Composition_IExport_Kephas_Application_IFeatureLifecycleBehavior_Kephas_Application_Composition_FeatureLifecycleBehaviorMetadata___Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.BeforeFeatureInitializeAsync(System.Collections.Generic.ICollection{Kephas.Composition.IExport{Kephas.Application.IFeatureLifecycleBehavior,Kephas.Application.Composition.FeatureLifecycleBehaviorMetadata}},Kephas.Application.IAppContext,Kephas.Application.Composition.FeatureManagerMetadata,System.Threading.CancellationToken)">BeforeFeatureInitializeAsync(ICollection&lt;IExport&lt;IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata&gt;&gt;, IAppContext, FeatureManagerMetadata, CancellationToken)</h4>
@@ -934,7 +910,7 @@ public class DefaultAppManager : IAppManager</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_ComputeDefaultFeatureInfo_Kephas_Application_Composition_FeatureManagerMetadata_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.ComputeDefaultFeatureInfo(Kephas.Application.Composition.FeatureManagerMetadata)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L623">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L611">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_ComputeDefaultFeatureInfo_" data-uid="Kephas.Application.DefaultAppManager.ComputeDefaultFeatureInfo*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_ComputeDefaultFeatureInfo_Kephas_Application_Composition_FeatureManagerMetadata_" data-uid="Kephas.Application.DefaultAppManager.ComputeDefaultFeatureInfo(Kephas.Application.Composition.FeatureManagerMetadata)">ComputeDefaultFeatureInfo(FeatureManagerMetadata)</h4>
@@ -974,7 +950,7 @@ if not explicitely provided.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.FeatureInfo.html">FeatureInfo</a></td>
+        <td><a class="xref" href="Kephas.Application.Reflection.FeatureInfo.html">FeatureInfo</a></td>
         <td><p>The calculated feature information.</p>
 </td>
       </tr>
@@ -985,7 +961,7 @@ if not explicitely provided.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_FinalizeAppAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.FinalizeAppAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L186">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L177">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_FinalizeAppAsync_" data-uid="Kephas.Application.DefaultAppManager.FinalizeAppAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_FinalizeAppAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.FinalizeAppAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">FinalizeAppAsync(IAppContext, CancellationToken)</h4>
@@ -1041,7 +1017,7 @@ if not explicitely provided.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_FinalizeFeatureAsync_Kephas_Application_IFeatureManager_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.FinalizeFeatureAsync(Kephas.Application.IFeatureManager%2CKephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L519">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L510">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_FinalizeFeatureAsync_" data-uid="Kephas.Application.DefaultAppManager.FinalizeFeatureAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_FinalizeFeatureAsync_Kephas_Application_IFeatureManager_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.FinalizeFeatureAsync(Kephas.Application.IFeatureManager,Kephas.Application.IAppContext,System.Threading.CancellationToken)">FinalizeFeatureAsync(IFeatureManager, IAppContext, CancellationToken)</h4>
@@ -1103,7 +1079,7 @@ if not explicitely provided.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_FinalizeFeaturesAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.FinalizeFeaturesAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L451">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L442">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_FinalizeFeaturesAsync_" data-uid="Kephas.Application.DefaultAppManager.FinalizeFeaturesAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_FinalizeFeaturesAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.FinalizeFeaturesAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">FinalizeFeaturesAsync(IAppContext, CancellationToken)</h4>
@@ -1159,7 +1135,7 @@ if not explicitely provided.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_InitializeAppAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.InitializeAppAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L135">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L126">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_InitializeAppAsync_" data-uid="Kephas.Application.DefaultAppManager.InitializeAppAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_InitializeAppAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.InitializeAppAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">InitializeAppAsync(IAppContext, CancellationToken)</h4>
@@ -1215,7 +1191,7 @@ if not explicitely provided.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_InitializeFeatureAsync_Kephas_Application_IFeatureManager_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.InitializeFeatureAsync(Kephas.Application.IFeatureManager%2CKephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L343">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L334">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_InitializeFeatureAsync_" data-uid="Kephas.Application.DefaultAppManager.InitializeFeatureAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_InitializeFeatureAsync_Kephas_Application_IFeatureManager_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.InitializeFeatureAsync(Kephas.Application.IFeatureManager,Kephas.Application.IAppContext,System.Threading.CancellationToken)">InitializeFeatureAsync(IFeatureManager, IAppContext, CancellationToken)</h4>
@@ -1277,7 +1253,7 @@ if not explicitely provided.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_InitializeFeaturesAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.InitializeFeaturesAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L271">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L262">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_InitializeFeaturesAsync_" data-uid="Kephas.Application.DefaultAppManager.InitializeFeaturesAsync*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_InitializeFeaturesAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.DefaultAppManager.InitializeFeaturesAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">InitializeFeaturesAsync(IAppContext, CancellationToken)</h4>
@@ -1330,19 +1306,19 @@ if not explicitely provided.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_RemoveFailedAppManifestFeature_Kephas_Application_FeatureInfo_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.RemoveFailedAppManifestFeature(Kephas.Application.FeatureInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_RemoveFailedAppRuntimeFeature_Kephas_Application_Reflection_FeatureInfo_.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.RemoveFailedAppRuntimeFeature(Kephas.Application.Reflection.FeatureInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L595">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L583">View Source</a>
   </span>
-  <a id="Kephas_Application_DefaultAppManager_RemoveFailedAppManifestFeature_" data-uid="Kephas.Application.DefaultAppManager.RemoveFailedAppManifestFeature*"></a>
-  <h4 id="Kephas_Application_DefaultAppManager_RemoveFailedAppManifestFeature_Kephas_Application_FeatureInfo_" data-uid="Kephas.Application.DefaultAppManager.RemoveFailedAppManifestFeature(Kephas.Application.FeatureInfo)">RemoveFailedAppManifestFeature(FeatureInfo)</h4>
-  <div class="markdown level1 summary"><p>Removes the failed feature from the application manifest.</p>
+  <a id="Kephas_Application_DefaultAppManager_RemoveFailedAppRuntimeFeature_" data-uid="Kephas.Application.DefaultAppManager.RemoveFailedAppRuntimeFeature*"></a>
+  <h4 id="Kephas_Application_DefaultAppManager_RemoveFailedAppRuntimeFeature_Kephas_Application_Reflection_FeatureInfo_" data-uid="Kephas.Application.DefaultAppManager.RemoveFailedAppRuntimeFeature(Kephas.Application.Reflection.FeatureInfo)">RemoveFailedAppRuntimeFeature(FeatureInfo)</h4>
+  <div class="markdown level1 summary"><p>Removes the failed feature from the application runtime.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void RemoveFailedAppManifestFeature(FeatureInfo featureInfo)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void RemoveFailedAppRuntimeFeature(FeatureInfo featureInfo)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1355,7 +1331,7 @@ if not explicitely provided.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.FeatureInfo.html">FeatureInfo</a></td>
+        <td><a class="xref" href="Kephas.Application.Reflection.FeatureInfo.html">FeatureInfo</a></td>
         <td><span class="parametername">featureInfo</span></td>
         <td><p>Information describing the feature.</p>
 </td>
@@ -1364,19 +1340,19 @@ if not explicitely provided.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_SetAppManifestFeatures_System_Collections_Generic_IList_Kephas_Application_FeatureInfo__.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.SetAppManifestFeatures(System.Collections.Generic.IList%7BKephas.Application.FeatureInfo%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_SetAppRuntimeFeatures_System_Collections_Generic_IList_Kephas_Application_Reflection_FeatureInfo__.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.SetAppRuntimeFeatures(System.Collections.Generic.IList%7BKephas.Application.Reflection.FeatureInfo%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L583">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L574">View Source</a>
   </span>
-  <a id="Kephas_Application_DefaultAppManager_SetAppManifestFeatures_" data-uid="Kephas.Application.DefaultAppManager.SetAppManifestFeatures*"></a>
-  <h4 id="Kephas_Application_DefaultAppManager_SetAppManifestFeatures_System_Collections_Generic_IList_Kephas_Application_FeatureInfo__" data-uid="Kephas.Application.DefaultAppManager.SetAppManifestFeatures(System.Collections.Generic.IList{Kephas.Application.FeatureInfo})">SetAppManifestFeatures(IList&lt;FeatureInfo&gt;)</h4>
-  <div class="markdown level1 summary"><p>Sets the features in the application manifest.</p>
+  <a id="Kephas_Application_DefaultAppManager_SetAppRuntimeFeatures_" data-uid="Kephas.Application.DefaultAppManager.SetAppRuntimeFeatures*"></a>
+  <h4 id="Kephas_Application_DefaultAppManager_SetAppRuntimeFeatures_System_Collections_Generic_IList_Kephas_Application_Reflection_FeatureInfo__" data-uid="Kephas.Application.DefaultAppManager.SetAppRuntimeFeatures(System.Collections.Generic.IList{Kephas.Application.Reflection.FeatureInfo})">SetAppRuntimeFeatures(IList&lt;FeatureInfo&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets the features in the application runtime.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void SetAppManifestFeatures(IList&lt;FeatureInfo&gt; features)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual void SetAppRuntimeFeatures(IList&lt;FeatureInfo&gt; features)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1389,7 +1365,7 @@ if not explicitely provided.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="Kephas.Application.FeatureInfo.html">FeatureInfo</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<a class="xref" href="Kephas.Application.Reflection.FeatureInfo.html">FeatureInfo</a>&gt;</td>
         <td><span class="parametername">features</span></td>
         <td><p>The features.</p>
 </td>
@@ -1401,7 +1377,7 @@ if not explicitely provided.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager_SortEnabledFeatureManagerFactories_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IFeatureManager_Kephas_Application_Composition_FeatureManagerMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager.SortEnabledFeatureManagerFactories(System.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Application.IFeatureManager%2CKephas.Application.Composition.FeatureManagerMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L608">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L596">View Source</a>
   </span>
   <a id="Kephas_Application_DefaultAppManager_SortEnabledFeatureManagerFactories_" data-uid="Kephas.Application.DefaultAppManager.SortEnabledFeatureManagerFactories*"></a>
   <h4 id="Kephas_Application_DefaultAppManager_SortEnabledFeatureManagerFactories_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Application_IFeatureManager_Kephas_Application_Composition_FeatureManagerMetadata___" data-uid="Kephas.Application.DefaultAppManager.SortEnabledFeatureManagerFactories(System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Application.IFeatureManager,Kephas.Application.Composition.FeatureManagerMetadata}})">SortEnabledFeatureManagerFactories(ICollection&lt;IExportFactory&lt;IFeatureManager, FeatureManagerMetadata&gt;&gt;)</h4>
@@ -1447,6 +1423,9 @@ if not explicitely provided.</p>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Application.IAppManager.html">IAppManager</a>
   </div>
@@ -1504,7 +1483,7 @@ if not explicitely provided.</p>
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DefaultAppManager.md&amp;value=---%0Auid%3A%20Kephas.Application.DefaultAppManager%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DefaultAppManager.cs/#L35" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/DefaultAppManager.cs/#L36" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

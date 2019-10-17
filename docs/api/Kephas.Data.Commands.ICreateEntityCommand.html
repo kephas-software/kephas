@@ -84,13 +84,16 @@
     <div>
       <a class="xref" href="Kephas.Data.Commands.IDataCommand.html#Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
     </div>
+    <div>
+      <a class="xref" href="Kephas.Operations.IAsyncOperation.html#Kephas_Operations_IAsyncOperation_ExecuteAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">IAsyncOperation.ExecuteAsync(IContext, CancellationToken)</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Commands.html">Kephas.Data.Commands</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Commands_ICreateEntityCommand_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[AppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(DataContextTypeAttribute)})]
-public interface ICreateEntityCommand : IDataCommand&lt;ICreateEntityContext, ICreateEntityResult&gt;, IDataCommand</code></pre>
+public interface ICreateEntityCommand : IDataCommand&lt;ICreateEntityContext, ICreateEntityResult&gt;, IDataCommand, IAsyncOperation</code></pre>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

@@ -79,20 +79,40 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Application.AppLifecycleBehaviorBase.html">AppLifecycleBehaviorBase</a></div>
-    <div class="level2"><span class="xref">OrchestrationAppLifecycleBehavior</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Application.AppLifecycleBehaviorBase.html">AppLifecycleBehaviorBase</a></div>
+    <div class="level3"><span class="xref">OrchestrationAppLifecycleBehavior</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Application.IAppLifecycleBehavior.html">IAppLifecycleBehavior</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="Kephas.Application.AppLifecycleBehaviorBase.html#Kephas_Application_AppLifecycleBehaviorBase_Kephas_Application_IAppLifecycleBehavior_BeforeAppInitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">AppLifecycleBehaviorBase.IAppLifecycleBehavior.BeforeAppInitializeAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Application.AppLifecycleBehaviorBase.html#Kephas_Application_AppLifecycleBehaviorBase_BeforeAppInitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_">AppLifecycleBehaviorBase.BeforeAppInitializeAsync(IAppContext, CancellationToken)</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Application.AppLifecycleBehaviorBase.html#Kephas_Application_AppLifecycleBehaviorBase_Kephas_Application_IAppLifecycleBehavior_AfterAppInitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">AppLifecycleBehaviorBase.IAppLifecycleBehavior.AfterAppInitializeAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppLifecycleBehaviorBase.html#Kephas_Application_AppLifecycleBehaviorBase_Kephas_Application_IAppLifecycleBehavior_BeforeAppFinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">AppLifecycleBehaviorBase.IAppLifecycleBehavior.BeforeAppFinalizeAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppLifecycleBehaviorBase.html#Kephas_Application_AppLifecycleBehaviorBase_Kephas_Application_IAppLifecycleBehavior_AfterAppFinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">AppLifecycleBehaviorBase.IAppLifecycleBehavior.AfterAppFinalizeAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Application.AppLifecycleBehaviorBase.html#Kephas_Application_AppLifecycleBehaviorBase_AfterAppFinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_">AppLifecycleBehaviorBase.AfterAppFinalizeAsync(IAppContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -121,25 +141,25 @@
   <h5 id="Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[ProcessingPriority(Priority.Low)]
-public class OrchestrationAppLifecycleBehavior : AppLifecycleBehaviorBase, IAppLifecycleBehavior</code></pre>
+public class OrchestrationAppLifecycleBehavior : AppLifecycleBehaviorBase, ILoggable, IAppLifecycleBehavior</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior__ctor_Kephas_Application_IAppManifest_Kephas_Application_IAppRuntime_Kephas_Messaging_Events_IEventPublisher_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.%23ctor(Kephas.Application.IAppManifest%2CKephas.Application.IAppRuntime%2CKephas.Messaging.Events.IEventPublisher)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior__ctor_Kephas_Application_IAppRuntime_Kephas_Messaging_Distributed_IMessageBroker_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.%23ctor(Kephas.Application.IAppRuntime%2CKephas.Messaging.Distributed.IMessageBroker)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/Application/OrchestrationAppLifecycleBehavior.cs/#L43">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/Application/OrchestrationAppLifecycleBehavior.cs/#L40">View Source</a>
   </span>
   <a id="Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior__ctor_" data-uid="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.#ctor*"></a>
-  <h4 id="Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior__ctor_Kephas_Application_IAppManifest_Kephas_Application_IAppRuntime_Kephas_Messaging_Events_IEventPublisher_" data-uid="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.#ctor(Kephas.Application.IAppManifest,Kephas.Application.IAppRuntime,Kephas.Messaging.Events.IEventPublisher)">OrchestrationAppLifecycleBehavior(IAppManifest, IAppRuntime, IEventPublisher)</h4>
+  <h4 id="Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior__ctor_Kephas_Application_IAppRuntime_Kephas_Messaging_Distributed_IMessageBroker_" data-uid="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.#ctor(Kephas.Application.IAppRuntime,Kephas.Messaging.Distributed.IMessageBroker)">OrchestrationAppLifecycleBehavior(IAppRuntime, IMessageBroker)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.html">OrchestrationAppLifecycleBehavior</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public OrchestrationAppLifecycleBehavior(IAppManifest appManifest, IAppRuntime appRuntime, IEventPublisher eventPublisher)</code></pre>
+    <pre><code class="lang-csharp hljs">public OrchestrationAppLifecycleBehavior(IAppRuntime appRuntime, IMessageBroker messageBroker)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -152,55 +172,15 @@ public class OrchestrationAppLifecycleBehavior : AppLifecycleBehaviorBase, IAppL
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppManifest.html">IAppManifest</a></td>
-        <td><span class="parametername">appManifest</span></td>
-        <td><p>The application manifest.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></td>
         <td><span class="parametername">appRuntime</span></td>
         <td><p>The application runtime.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.Events.IEventPublisher.html">IEventPublisher</a></td>
-        <td><span class="parametername">eventPublisher</span></td>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
         <td><p>The application event publisher.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="properties">Properties
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior_Logger.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/Application/OrchestrationAppLifecycleBehavior.cs/#L63">View Source</a>
-  </span>
-  <a id="Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior_Logger_" data-uid="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.Logger*"></a>
-  <h4 id="Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior_Logger" data-uid="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.Logger">Logger</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ILogger&lt;OrchestrationAppLifecycleBehavior&gt; Logger { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.html">OrchestrationAppLifecycleBehavior</a>&gt;</td>
-        <td><p>The logger.</p>
 </td>
       </tr>
     </tbody>
@@ -212,7 +192,7 @@ public class OrchestrationAppLifecycleBehavior : AppLifecycleBehaviorBase, IAppL
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior_AfterAppInitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.AfterAppInitializeAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/Application/OrchestrationAppLifecycleBehavior.cs/#L71">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/Application/OrchestrationAppLifecycleBehavior.cs/#L57">View Source</a>
   </span>
   <a id="Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior_AfterAppInitializeAsync_" data-uid="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.AfterAppInitializeAsync*"></a>
   <h4 id="Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior_AfterAppInitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.AfterAppInitializeAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">AfterAppInitializeAsync(IAppContext, CancellationToken)</h4>
@@ -270,7 +250,7 @@ public class OrchestrationAppLifecycleBehavior : AppLifecycleBehaviorBase, IAppL
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior_BeforeAppFinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.BeforeAppFinalizeAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/Application/OrchestrationAppLifecycleBehavior.cs/#L100">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/Application/OrchestrationAppLifecycleBehavior.cs/#L86">View Source</a>
   </span>
   <a id="Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior_BeforeAppFinalizeAsync_" data-uid="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.BeforeAppFinalizeAsync*"></a>
   <h4 id="Kephas_Orchestration_Application_OrchestrationAppLifecycleBehavior_BeforeAppFinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.Application.OrchestrationAppLifecycleBehavior.BeforeAppFinalizeAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">BeforeAppFinalizeAsync(IAppContext, CancellationToken)</h4>
@@ -328,6 +308,9 @@ public class OrchestrationAppLifecycleBehavior : AppLifecycleBehaviorBase, IAppL
 Caution! Interrupting the finalization may cause the application to remain in an undefined state.</p>
 </div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Application.IAppLifecycleBehavior.html">IAppLifecycleBehavior</a>
   </div>

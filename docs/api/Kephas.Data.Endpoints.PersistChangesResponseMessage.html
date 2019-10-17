@@ -79,11 +79,14 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Data.Endpoints.DataResponseMessage.html">DataResponseMessage</a></div>
-    <div class="level2"><span class="xref">PersistChangesResponseMessage</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Messaging.Messages.ResponseMessage.html">ResponseMessage</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Endpoints.DataResponseMessage.html">DataResponseMessage</a></div>
+    <div class="level3"><span class="xref">PersistChangesResponseMessage</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Messaging.Messages.IResponseMessage.html">IResponseMessage</a></div>
+    <div><a class="xref" href="Kephas.Messaging.IResponse.html">IResponse</a></div>
     <div><a class="xref" href="Kephas.Data.Endpoints.IDataResponseMessage.html">IDataResponseMessage</a></div>
     <div><a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a></div>
   </div>
@@ -91,6 +94,12 @@
     <h5>Inherited Members</h5>
     <div>
       <a class="xref" href="Kephas.Data.Endpoints.DataResponseMessage.html#Kephas_Data_Endpoints_DataResponseMessage_EntityEntries">DataResponseMessage.EntityEntries</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Messaging.Messages.ResponseMessage.html#Kephas_Messaging_Messages_ResponseMessage_Severity">ResponseMessage.Severity</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Messaging.Messages.ResponseMessage.html#Kephas_Messaging_Messages_ResponseMessage_Message">ResponseMessage.Message</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -118,9 +127,15 @@
   <h6><strong>Assembly</strong>: Kephas.Data.Endpoints.dll</h6>
   <h5 id="Kephas_Data_Endpoints_PersistChangesResponseMessage_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PersistChangesResponseMessage : DataResponseMessage, IDataResponseMessage, IMessage</code></pre>
+    <pre><code class="lang-csharp hljs">public class PersistChangesResponseMessage : DataResponseMessage, IResponseMessage, IResponse, IDataResponseMessage, IMessage</code></pre>
   </div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Messages.IResponseMessage.html">IResponseMessage</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.IResponse.html">IResponse</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Data.Endpoints.IDataResponseMessage.html">IDataResponseMessage</a>
   </div>

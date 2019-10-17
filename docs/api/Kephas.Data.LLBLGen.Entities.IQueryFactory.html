@@ -73,7 +73,7 @@
   
   <h1 id="Kephas_Data_LLBLGen_Entities_IQueryFactory" data-uid="Kephas.Data.LLBLGen.Entities.IQueryFactory" class="text-break">Interface IQueryFactory
   </h1>
-  <div class="markdown level0 summary"><p>Interface for linq meta data.</p>
+  <div class="markdown level0 summary"><p>Factory contract for creating entity queries.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.LLBLGen.Entities.html">Kephas.Data.LLBLGen.Entities</a></h6>
@@ -93,13 +93,12 @@
   </span>
   <a id="Kephas_Data_LLBLGen_Entities_IQueryFactory_ToQueryable_" data-uid="Kephas.Data.LLBLGen.Entities.IQueryFactory.ToQueryable*"></a>
   <h4 id="Kephas_Data_LLBLGen_Entities_IQueryFactory_ToQueryable__1" data-uid="Kephas.Data.LLBLGen.Entities.IQueryFactory.ToQueryable``1">ToQueryable&lt;TEntity&gt;()</h4>
-  <div class="markdown level1 summary"><p>Returns the datasource to use in a Linq query for the entity type specified.</p>
+  <div class="markdown level1 summary"><p>Returns the data source to use in a Linq query for the entity type specified.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">IQueryable&lt;TEntity&gt; ToQueryable&lt;TEntity&gt;()
-
     where TEntity : class</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
@@ -113,7 +112,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Linq.IQueryable</span>&lt;TEntity&gt;</td>
-        <td><p>The requested datasource.</p>
+        <td><p>The requested data source.</p>
 </td>
       </tr>
     </tbody>
@@ -129,7 +128,7 @@
     <tbody>
       <tr>
         <td><span class="parametername">TEntity</span></td>
-        <td><p>The type of the entity to get the datasource for.</p>
+        <td><p>The type of the entity to get the data source for.</p>
 </td>
       </tr>
     </tbody>

@@ -73,14 +73,14 @@
   
   <h1 id="Kephas_Scripting_IScriptingBehavior" data-uid="Kephas.Scripting.IScriptingBehavior" class="text-break">Interface IScriptingBehavior
   </h1>
-  <div class="markdown level0 summary"><p>Shared application service contract responsible for adding behavior to script execution for a specified language.</p>
+  <div class="markdown level0 summary"><p>Singleton application service contract responsible for adding behavior to script execution for a specified language.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Scripting.html">Kephas.Scripting</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Scripting.dll</h6>
   <h5 id="Kephas_Scripting_IScriptingBehavior_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(LanguageAttribute)})]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(LanguageAttribute)})]
 public interface IScriptingBehavior</code></pre>
   </div>
   <h3 id="methods">Methods

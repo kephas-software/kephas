@@ -73,14 +73,14 @@
   
   <h1 id="Kephas_Data_LLBLGen_IDataAccessAdapterFactory" data-uid="Kephas.Data.LLBLGen.IDataAccessAdapterFactory" class="text-break">Interface IDataAccessAdapterFactory
   </h1>
-  <div class="markdown level0 summary"><p>Interface for LLBLGen data access adapter factory.</p>
+  <div class="markdown level0 summary"><p>Singleton application service contract for the data access adapter factory.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.LLBLGen.html">Kephas.Data.LLBLGen</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.LLBLGen.dll</h6>
   <h5 id="Kephas_Data_LLBLGen_IDataAccessAdapterFactory_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract]
 public interface IDataAccessAdapterFactory</code></pre>
   </div>
   <h3 id="methods">Methods
@@ -94,7 +94,7 @@ public interface IDataAccessAdapterFactory</code></pre>
   </span>
   <a id="Kephas_Data_LLBLGen_IDataAccessAdapterFactory_CreateDataAccessAdapter_" data-uid="Kephas.Data.LLBLGen.IDataAccessAdapterFactory.CreateDataAccessAdapter*"></a>
   <h4 id="Kephas_Data_LLBLGen_IDataAccessAdapterFactory_CreateDataAccessAdapter_Kephas_Services_IContext_" data-uid="Kephas.Data.LLBLGen.IDataAccessAdapterFactory.CreateDataAccessAdapter(Kephas.Services.IContext)">CreateDataAccessAdapter(IContext)</h4>
-  <div class="markdown level1 summary"><p>Creates data access adapter.</p>
+  <div class="markdown level1 summary"><p>Creates the data access adapter.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

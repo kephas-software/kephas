@@ -79,18 +79,17 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html">DataIOInstallerBase</a></div>
-    <div class="level2"><span class="xref">DirectoryDataInstallerBase</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html">DataIOInstallerBase</a></div>
+    <div class="level3"><span class="xref">DirectoryDataInstallerBase</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Setup.IDataInstaller.html">IDataInstaller</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_Logger">DataIOInstallerBase.Logger</a>
-    </div>
     <div>
       <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_DataImportService">DataIOInstallerBase.DataImportService</a>
     </div>
@@ -114,6 +113,12 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_CreateDataSource_System_String_">DataIOInstallerBase.CreateDataSource(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -141,7 +146,7 @@
   <h6><strong>Assembly</strong>: Kephas.Data.IO.dll</h6>
   <h5 id="Kephas_Data_IO_Setup_DirectoryDataInstallerBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class DirectoryDataInstallerBase : DataIOInstallerBase, IDataInstaller</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DirectoryDataInstallerBase : DataIOInstallerBase, ILoggable, IDataInstaller</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -459,6 +464,9 @@ Also, the file names should be provided in the right order for the import.</p>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Kephas.Data.IO.Setup.DataIOInstallerBase.html#Kephas_Data_IO_Setup_DataIOInstallerBase_GetUninstallDataFilePaths">DataIOInstallerBase.GetUninstallDataFilePaths()</a></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Data.Setup.IDataInstaller.html">IDataInstaller</a>
   </div>

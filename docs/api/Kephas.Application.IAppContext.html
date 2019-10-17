@@ -79,10 +79,13 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_Identity">IContext.Identity</a>
+      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_CompositionContext">IContext.CompositionContext</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_ContextLogger">IContext.ContextLogger</a>
+      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_AmbientServices">IContext.AmbientServices</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_Identity">IContext.Identity</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasDynamicMember_System_String_">IExpando.HasDynamicMember(String)</a>
@@ -97,17 +100,17 @@
       <a class="xref" href="Kephas.Dynamic.IIndexable.html#Kephas_Dynamic_IIndexable_Item_System_String_">IIndexable.Item[String]</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html#Kephas_IAmbientServicesAware_AmbientServices">IAmbientServicesAware.AmbientServices</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html#Kephas_Logging_ILoggable_Logger">ILoggable.Logger</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html#Kephas_Composition_ICompositionContextAware_CompositionContext">ICompositionContextAware.CompositionContext</a>
+      <span class="xref">System.IDisposable.Dispose()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
-  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h6><strong>Assembly</strong>: Kephas.Application.dll</h6>
   <h5 id="Kephas_Application_IAppContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IAppContext : IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IAppContext : IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable, IDisposable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -116,7 +119,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppContext_AppArgs.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppContext.AppArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IAppContext.cs/#L34">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/IAppContext.cs/#L33">View Source</a>
   </span>
   <a id="Kephas_Application_IAppContext_AppArgs_" data-uid="Kephas.Application.IAppContext.AppArgs*"></a>
   <h4 id="Kephas_Application_IAppContext_AppArgs" data-uid="Kephas.Application.IAppContext.AppArgs">AppArgs</h4>
@@ -125,7 +128,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">string[] AppArgs { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">IAppArgs AppArgs { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -137,7 +140,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span>[]</td>
+        <td><a class="xref" href="Kephas.Application.IAppArgs.html">IAppArgs</a></td>
         <td><p>The application arguments.</p>
 </td>
       </tr>
@@ -145,19 +148,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppContext_AppManifest.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppContext.AppManifest%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppContext_AppResult.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppContext.AppResult%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IAppContext.cs/#L26">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/IAppContext.cs/#L52">View Source</a>
   </span>
-  <a id="Kephas_Application_IAppContext_AppManifest_" data-uid="Kephas.Application.IAppContext.AppManifest*"></a>
-  <h4 id="Kephas_Application_IAppContext_AppManifest" data-uid="Kephas.Application.IAppContext.AppManifest">AppManifest</h4>
-  <div class="markdown level1 summary"><p>Gets the application manifest.</p>
+  <a id="Kephas_Application_IAppContext_AppResult_" data-uid="Kephas.Application.IAppContext.AppResult*"></a>
+  <h4 id="Kephas_Application_IAppContext_AppResult" data-uid="Kephas.Application.IAppContext.AppResult">AppResult</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the application result.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IAppManifest AppManifest { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">object AppResult { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -169,7 +172,42 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppManifest.html">IAppManifest</a></td>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>The application result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Application_IAppContext_AppResult_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>For console applications this is typically the integer return code.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppContext_AppRuntime.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppContext.AppRuntime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/IAppContext.cs/#L25">View Source</a>
+  </span>
+  <a id="Kephas_Application_IAppContext_AppRuntime_" data-uid="Kephas.Application.IAppContext.AppRuntime*"></a>
+  <h4 id="Kephas_Application_IAppContext_AppRuntime" data-uid="Kephas.Application.IAppContext.AppRuntime">AppRuntime</h4>
+  <div class="markdown level1 summary"><p>Gets the application runtime.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IAppRuntime AppRuntime { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -179,7 +217,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppContext_Exception.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppContext.Exception%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IAppContext.cs/#L42">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/IAppContext.cs/#L41">View Source</a>
   </span>
   <a id="Kephas_Application_IAppContext_Exception_" data-uid="Kephas.Application.IAppContext.Exception*"></a>
   <h4 id="Kephas_Application_IAppContext_Exception" data-uid="Kephas.Application.IAppContext.Exception">Exception</h4>
@@ -202,38 +240,6 @@
       <tr>
         <td><span class="xref">System.Exception</span></td>
         <td><p>The application root exception.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppContext_SignalShutdown.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppContext.SignalShutdown%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IAppContext.cs/#L50">View Source</a>
-  </span>
-  <a id="Kephas_Application_IAppContext_SignalShutdown_" data-uid="Kephas.Application.IAppContext.SignalShutdown*"></a>
-  <h4 id="Kephas_Application_IAppContext_SignalShutdown" data-uid="Kephas.Application.IAppContext.SignalShutdown">SignalShutdown</h4>
-  <div class="markdown level1 summary"><p>Gets a function for signalling the application to shutdown.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Func&lt;IContext, Task&lt;IAppContext&gt;&gt; SignalShutdown { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Kephas.Services.IContext.html">IContext</a>, <span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a>&gt;&gt;</td>
-        <td><p>The signal shutdown.</p>
 </td>
       </tr>
     </tbody>
@@ -267,12 +273,6 @@
       <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_GetLaxValue__1_Kephas_Dynamic_IIndexable_System_String___0_">ExpandoExtensions.GetLaxValue&lt;T&gt;(IIndexable, String, T)</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
   </div>
   <div>
@@ -285,10 +285,7 @@
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Services.ContextExtensions.html#Kephas_Services_ContextExtensions_WithIdentity__1___0_System_Security_Principal_IIdentity_">ContextExtensions.WithIdentity&lt;TContext&gt;(TContext, IIdentity)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Services.ContextExtensions.html#Kephas_Services_ContextExtensions_WithLogger__1___0_Kephas_Logging_ILogger_">ContextExtensions.WithLogger&lt;TContext&gt;(TContext, ILogger)</a>
+      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerExtensions.html#Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_">MessageBrokerExtensions.CreateBrokeredMessageBuilder(IContext)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>
@@ -316,7 +313,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppContext.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IAppContext.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/IAppContext.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

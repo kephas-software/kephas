@@ -82,41 +82,16 @@
     <div class="level1"><span class="xref">System.Dynamic.DynamicObject</span></div>
     <div class="level2"><a class="xref" href="Kephas.Dynamic.ExpandoBase.html">ExpandoBase</a></div>
     <div class="level3"><a class="xref" href="Kephas.Dynamic.Expando.html">Expando</a></div>
-    <div class="level4"><a class="xref" href="Kephas.Services.Context.html">Context</a></div>
-    <div class="level5"><span class="xref">ThreadContext</span></div>
+    <div class="level4"><span class="xref">ThreadContext</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="Kephas.Services.IContext.html">IContext</a></div>
     <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
     <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
     <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
-    <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
-    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_AmbientServices">Context.AmbientServices</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_CompositionContext">Context.CompositionContext</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Identity">Context.Identity</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ContextLogger">Context.ContextLogger</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ValidateIdentity_System_Security_Principal_IIdentity_System_Security_Principal_IIdentity_">Context.ValidateIdentity(IIdentity, IIdentity)</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetCompositionContext_Kephas_Composition_ICompositionContext_">Context.SetCompositionContext(ICompositionContext)</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetAmbientServices_Kephas_IAmbientServices_">Context.SetAmbientServices(IAmbientServices)</a>
-    </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
     </div>
@@ -206,26 +181,26 @@
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Threading_Tasks_ThreadContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ThreadContext : Context, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware</code></pre>
+    <pre><code class="lang-csharp hljs">public class ThreadContext : Expando, IExpando, IDynamicMetaObjectProvider, IIndexable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_ThreadContext__ctor_Kephas_IAmbientServices_System_Collections_Generic_IEnumerable_System_Action_Kephas_Threading_Tasks_ThreadContext___System_Collections_Generic_IEnumerable_System_Action_Kephas_Threading_Tasks_ThreadContext___.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.ThreadContext.%23ctor(Kephas.IAmbientServices%2CSystem.Collections.Generic.IEnumerable%7BSystem.Action%7BKephas.Threading.Tasks.ThreadContext%7D%7D%2CSystem.Collections.Generic.IEnumerable%7BSystem.Action%7BKephas.Threading.Tasks.ThreadContext%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_ThreadContext__ctor_System_Collections_Generic_IEnumerable_System_Action_Kephas_Threading_Tasks_ThreadContext___System_Collections_Generic_IEnumerable_System_Action_Kephas_Threading_Tasks_ThreadContext___.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.ThreadContext.%23ctor(System.Collections.Generic.IEnumerable%7BSystem.Action%7BKephas.Threading.Tasks.ThreadContext%7D%7D%2CSystem.Collections.Generic.IEnumerable%7BSystem.Action%7BKephas.Threading.Tasks.ThreadContext%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L42">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L40">View Source</a>
   </span>
   <a id="Kephas_Threading_Tasks_ThreadContext__ctor_" data-uid="Kephas.Threading.Tasks.ThreadContext.#ctor*"></a>
-  <h4 id="Kephas_Threading_Tasks_ThreadContext__ctor_Kephas_IAmbientServices_System_Collections_Generic_IEnumerable_System_Action_Kephas_Threading_Tasks_ThreadContext___System_Collections_Generic_IEnumerable_System_Action_Kephas_Threading_Tasks_ThreadContext___" data-uid="Kephas.Threading.Tasks.ThreadContext.#ctor(Kephas.IAmbientServices,System.Collections.Generic.IEnumerable{System.Action{Kephas.Threading.Tasks.ThreadContext}},System.Collections.Generic.IEnumerable{System.Action{Kephas.Threading.Tasks.ThreadContext}})">ThreadContext(IAmbientServices, IEnumerable&lt;Action&lt;ThreadContext&gt;&gt;, IEnumerable&lt;Action&lt;ThreadContext&gt;&gt;)</h4>
+  <h4 id="Kephas_Threading_Tasks_ThreadContext__ctor_System_Collections_Generic_IEnumerable_System_Action_Kephas_Threading_Tasks_ThreadContext___System_Collections_Generic_IEnumerable_System_Action_Kephas_Threading_Tasks_ThreadContext___" data-uid="Kephas.Threading.Tasks.ThreadContext.#ctor(System.Collections.Generic.IEnumerable{System.Action{Kephas.Threading.Tasks.ThreadContext}},System.Collections.Generic.IEnumerable{System.Action{Kephas.Threading.Tasks.ThreadContext}})">ThreadContext(IEnumerable&lt;Action&lt;ThreadContext&gt;&gt;, IEnumerable&lt;Action&lt;ThreadContext&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Threading.Tasks.ThreadContext.html">ThreadContext</a>
 class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ThreadContext(IAmbientServices ambientServices, IEnumerable&lt;Action&lt;ThreadContext&gt;&gt; storeActions, IEnumerable&lt;Action&lt;ThreadContext&gt;&gt; restoreActions)</code></pre>
+    <pre><code class="lang-csharp hljs">public ThreadContext(IEnumerable&lt;Action&lt;ThreadContext&gt;&gt; storeActions, IEnumerable&lt;Action&lt;ThreadContext&gt;&gt; restoreActions)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -237,12 +212,6 @@ class.</p>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
-        <td><span class="parametername">ambientServices</span></td>
-        <td><p>The ambient services.</p>
-</td>
-      </tr>
       <tr>
         <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Action</span>&lt;<a class="xref" href="Kephas.Threading.Tasks.ThreadContext.html">ThreadContext</a>&gt;&gt;</td>
         <td><span class="parametername">storeActions</span></td>
@@ -264,7 +233,7 @@ class.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_ThreadContext_CurrentCulture.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.ThreadContext.CurrentCulture%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L57">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L52">View Source</a>
   </span>
   <a id="Kephas_Threading_Tasks_ThreadContext_CurrentCulture_" data-uid="Kephas.Threading.Tasks.ThreadContext.CurrentCulture*"></a>
   <h4 id="Kephas_Threading_Tasks_ThreadContext_CurrentCulture" data-uid="Kephas.Threading.Tasks.ThreadContext.CurrentCulture">CurrentCulture</h4>
@@ -296,7 +265,7 @@ class.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_ThreadContext_CurrentUICulture.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.ThreadContext.CurrentUICulture%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L65">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L60">View Source</a>
   </span>
   <a id="Kephas_Threading_Tasks_ThreadContext_CurrentUICulture_" data-uid="Kephas.Threading.Tasks.ThreadContext.CurrentUICulture*"></a>
   <h4 id="Kephas_Threading_Tasks_ThreadContext_CurrentUICulture" data-uid="Kephas.Threading.Tasks.ThreadContext.CurrentUICulture">CurrentUICulture</h4>
@@ -330,7 +299,7 @@ class.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_ThreadContext_Restore.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.ThreadContext.Restore%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L86">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L81">View Source</a>
   </span>
   <a id="Kephas_Threading_Tasks_ThreadContext_Restore_" data-uid="Kephas.Threading.Tasks.ThreadContext.Restore*"></a>
   <h4 id="Kephas_Threading_Tasks_ThreadContext_Restore" data-uid="Kephas.Threading.Tasks.ThreadContext.Restore">Restore()</h4>
@@ -346,7 +315,7 @@ class.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_ThreadContext_Store.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.ThreadContext.Store%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L70">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L65">View Source</a>
   </span>
   <a id="Kephas_Threading_Tasks_ThreadContext_Store_" data-uid="Kephas.Threading.Tasks.ThreadContext.Store*"></a>
   <h4 id="Kephas_Threading_Tasks_ThreadContext_Store" data-uid="Kephas.Threading.Tasks.ThreadContext.Store">Store()</h4>
@@ -359,9 +328,6 @@ class.</p>
   </div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="Kephas.Services.IContext.html">IContext</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a>
   </div>
   <div>
@@ -369,12 +335,6 @@ class.</p>
   </div>
   <div>
       <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -423,24 +383,6 @@ class.</p>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Services.ContextExtensions.html#Kephas_Services_ContextExtensions_WithIdentity__1___0_System_Security_Principal_IIdentity_">ContextExtensions.WithIdentity&lt;TContext&gt;(TContext, IIdentity)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Services.ContextExtensions.html#Kephas_Services_ContextExtensions_WithLogger__1___0_Kephas_Logging_ILogger_">ContextExtensions.WithLogger&lt;TContext&gt;(TContext, ILogger)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_System_ValueTuple_System_Object_Kephas_Data_Capabilities_ChangeState___">ContextExtensions.WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;(Object entity, ChangeState changeState)&gt;)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_System_Object__">ContextExtensions.WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;Object&gt;)</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_WithInitialData__1___0_System_Collections_Generic_IEnumerable_Kephas_Data_Capabilities_IChangeStateTrackableEntityEntry__">ContextExtensions.WithInitialData&lt;TContext&gt;(TContext, IEnumerable&lt;IChangeStateTrackableEntityEntry&gt;)</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
@@ -454,7 +396,7 @@ class.</p>
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Threading_Tasks_ThreadContext.md&amp;value=---%0Auid%3A%20Kephas.Threading.Tasks.ThreadContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Threading/Tasks/ThreadContext.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

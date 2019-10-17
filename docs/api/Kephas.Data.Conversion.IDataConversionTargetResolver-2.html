@@ -73,7 +73,7 @@
   
   <h1 id="Kephas_Data_Conversion_IDataConversionTargetResolver_2" data-uid="Kephas.Data.Conversion.IDataConversionTargetResolver`2" class="text-break">Interface IDataConversionTargetResolver&lt;TSource, TTarget&gt;
   </h1>
-  <div class="markdown level0 summary"><p>Shared application service contract for resolving targets during data conversion.</p>
+  <div class="markdown level0 summary"><p>Singleton application service contract for resolving targets during data conversion.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
@@ -86,7 +86,7 @@
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Conversion_IDataConversionTargetResolver_2_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(ContractType = typeof(IDataConversionTargetResolver))]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(ContractType = typeof(IDataConversionTargetResolver), AllowMultiple = true)]
 public interface IDataConversionTargetResolver&lt;TSource, TTarget&gt; : IDataConversionTargetResolver</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>

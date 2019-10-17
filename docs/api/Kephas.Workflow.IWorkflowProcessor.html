@@ -73,14 +73,14 @@
   
   <h1 id="Kephas_Workflow_IWorkflowProcessor" data-uid="Kephas.Workflow.IWorkflowProcessor" class="text-break">Interface IWorkflowProcessor
   </h1>
-  <div class="markdown level0 summary"><p>Shared application service for processing activities.</p>
+  <div class="markdown level0 summary"><p>Singleton application service for processing activities.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Workflow.html">Kephas.Workflow</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Workflow.dll</h6>
   <h5 id="Kephas_Workflow_IWorkflowProcessor_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract]
 public interface IWorkflowProcessor</code></pre>
   </div>
   <h3 id="methods">Methods
@@ -90,7 +90,7 @@ public interface IWorkflowProcessor</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Workflow_IWorkflowProcessor_ExecuteAsync_Kephas_Workflow_IActivity_System_Object_Kephas_Dynamic_IExpando_Kephas_Workflow_IActivityContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Workflow.IWorkflowProcessor.ExecuteAsync(Kephas.Workflow.IActivity%2CSystem.Object%2CKephas.Dynamic.IExpando%2CKephas.Workflow.IActivityContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Workflow/IWorkflowProcessor.cs/#L36">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Workflow/IWorkflowProcessor.cs/#L39">View Source</a>
   </span>
   <a id="Kephas_Workflow_IWorkflowProcessor_ExecuteAsync_" data-uid="Kephas.Workflow.IWorkflowProcessor.ExecuteAsync*"></a>
   <h4 id="Kephas_Workflow_IWorkflowProcessor_ExecuteAsync_Kephas_Workflow_IActivity_System_Object_Kephas_Dynamic_IExpando_Kephas_Workflow_IActivityContext_System_Threading_CancellationToken_" data-uid="Kephas.Workflow.IWorkflowProcessor.ExecuteAsync(Kephas.Workflow.IActivity,System.Object,Kephas.Dynamic.IExpando,Kephas.Workflow.IActivityContext,System.Threading.CancellationToken)">ExecuteAsync(IActivity, Object, IExpando, IActivityContext, CancellationToken)</h4>
@@ -159,6 +159,9 @@ public interface IWorkflowProcessor</code></pre>
       </tr>
     </tbody>
   </table>
+  <h5 id="Kephas_Workflow_IWorkflowProcessor_ExecuteAsync_Kephas_Workflow_IActivity_System_Object_Kephas_Dynamic_IExpando_Kephas_Workflow_IActivityContext_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The provided target and arguments may overwrite those set in the activity.</p>
+</div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>

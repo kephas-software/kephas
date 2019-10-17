@@ -93,8 +93,8 @@
     <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
     <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
     <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
-    <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
-    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -108,7 +108,10 @@
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Identity">Context.Identity</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ContextLogger">Context.ContextLogger</a>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Logger">Context.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose">Context.Dispose()</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ValidateIdentity_System_Security_Principal_IIdentity_System_Security_Principal_IIdentity_">Context.ValidateIdentity(IIdentity, IIdentity)</a>
@@ -118,6 +121,9 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetAmbientServices_Kephas_IAmbientServices_">Context.SetAmbientServices(IAmbientServices)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose_System_Boolean_">Context.Dispose(Boolean)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
@@ -208,25 +214,25 @@
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_DataContextConfiguration_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DataContextConfiguration : Context, IDataContextConfiguration, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware</code></pre>
+    <pre><code class="lang-csharp hljs">public class DataContextConfiguration : Context, IDataContextConfiguration, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextConfiguration__ctor_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextConfiguration.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextConfiguration__ctor_Kephas_Composition_ICompositionContext_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextConfiguration.%23ctor(Kephas.Composition.ICompositionContext%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextConfiguration.cs/#L24">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextConfiguration.cs/#L26">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextConfiguration__ctor_" data-uid="Kephas.Data.DataContextConfiguration.#ctor*"></a>
-  <h4 id="Kephas_Data_DataContextConfiguration__ctor_System_String_" data-uid="Kephas.Data.DataContextConfiguration.#ctor(System.String)">DataContextConfiguration(String)</h4>
+  <h4 id="Kephas_Data_DataContextConfiguration__ctor_Kephas_Composition_ICompositionContext_System_String_" data-uid="Kephas.Data.DataContextConfiguration.#ctor(Kephas.Composition.ICompositionContext,System.String)">DataContextConfiguration(ICompositionContext, String)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.DataContextConfiguration.html">DataContextConfiguration</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DataContextConfiguration(string connectionString)</code></pre>
+    <pre><code class="lang-csharp hljs">public DataContextConfiguration(ICompositionContext compositionContext, string connectionString)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -238,6 +244,12 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><span class="parametername">compositionContext</span></td>
+        <td><p>Context for the composition.</p>
+</td>
+      </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">connectionString</span></td>
@@ -253,7 +265,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextConfiguration_ConnectionString.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextConfiguration.ConnectionString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextConfiguration.cs/#L35">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextConfiguration.cs/#L40">View Source</a>
   </span>
   <a id="Kephas_Data_DataContextConfiguration_ConnectionString_" data-uid="Kephas.Data.DataContextConfiguration.ConnectionString*"></a>
   <h4 id="Kephas_Data_DataContextConfiguration_ConnectionString" data-uid="Kephas.Data.DataContextConfiguration.ConnectionString">ConnectionString</h4>
@@ -297,10 +309,10 @@
       <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
+      <span class="xref">System.IDisposable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -343,6 +355,9 @@
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerExtensions.html#Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_">MessageBrokerExtensions.CreateBrokeredMessageBuilder(IContext)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>
   </div>
   <div>
@@ -368,7 +383,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_DataContextConfiguration.md&amp;value=---%0Auid%3A%20Kephas.Data.DataContextConfiguration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextConfiguration.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/DataContextConfiguration.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

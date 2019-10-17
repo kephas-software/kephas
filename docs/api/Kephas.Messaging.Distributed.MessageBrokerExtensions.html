@@ -115,19 +115,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Services_IContext_Kephas_Messaging_Distributed_BrokeredMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Services.IContext%2CKephas.Messaging.Distributed.BrokeredMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder(Kephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L194">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L456">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder*"></a>
-  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Services_IContext_Kephas_Messaging_Distributed_BrokeredMessage_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Services.IContext,Kephas.Messaging.Distributed.BrokeredMessage)">CreateBrokeredMessageBuilder(IMessageBroker, IContext, BrokeredMessage)</h4>
-  <div class="markdown level1 summary"><p>Creates a untyped brokered message builder.</p>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder(Kephas.Services.IContext)">CreateBrokeredMessageBuilder(IContext)</h4>
+  <div class="markdown level1 summary"><p>Creates an initialized brokered message builder.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IBrokeredMessageBuilder CreateBrokeredMessageBuilder(this IMessageBroker messageBroker, IContext context = null, BrokeredMessage brokeredMessage = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IBrokeredMessageBuilder CreateBrokeredMessageBuilder(this IContext context)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -140,89 +140,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
-        <td><span class="parametername">messageBroker</span></td>
-        <td><p>The message broker to act on.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td><p>Optional. The sending context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.Messaging.Distributed.BrokeredMessage.html">BrokeredMessage</a></td>
-        <td><span class="parametername">brokeredMessage</span></td>
-        <td><p>Optional. The brokered message.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Messaging.Distributed.IBrokeredMessageBuilder.html">IBrokeredMessageBuilder</a></td>
-        <td><p>The new untyped brokered message builder.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Messaging_Distributed_IMessageBroker_System_Type_Kephas_Services_IContext_Kephas_Messaging_Distributed_IBrokeredMessage_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Type%2CKephas.Services.IContext%2CKephas.Messaging.Distributed.IBrokeredMessage)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L171">View Source</a>
-  </span>
-  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder*"></a>
-  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Messaging_Distributed_IMessageBroker_System_Type_Kephas_Services_IContext_Kephas_Messaging_Distributed_IBrokeredMessage_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.CreateBrokeredMessageBuilder(Kephas.Messaging.Distributed.IMessageBroker,System.Type,Kephas.Services.IContext,Kephas.Messaging.Distributed.IBrokeredMessage)">CreateBrokeredMessageBuilder(IMessageBroker, Type, IContext, IBrokeredMessage)</h4>
-  <div class="markdown level1 summary"><p>Creates a brokered message builder.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IBrokeredMessageBuilder CreateBrokeredMessageBuilder(this IMessageBroker messageBroker, Type messageType, IContext context = null, IBrokeredMessage brokeredMessage = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
-        <td><span class="parametername">messageBroker</span></td>
-        <td><p>The message broker to act on.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Type</span></td>
-        <td><span class="parametername">messageType</span></td>
-        <td><p>Type of the message. It is used to identify the brokered message builder.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td><p>Optional. The sending context.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.Messaging.Distributed.IBrokeredMessage.html">IBrokeredMessage</a></td>
-        <td><span class="parametername">brokeredMessage</span></td>
-        <td><p>Optional. The brokered message.</p>
+        <td><p>The publishing context.</p>
 </td>
       </tr>
     </tbody>
@@ -245,19 +165,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_Kephas_Messaging_Distributed_IEndpoint_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Messaging.IMessage%2CKephas.Messaging.Distributed.IEndpoint%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Messaging_Distributed_IEndpoint_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CKephas.Messaging.Distributed.IEndpoint%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L107">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L286">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync*"></a>
-  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_Kephas_Messaging_Distributed_IEndpoint_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Messaging.IMessage,Kephas.Messaging.Distributed.IEndpoint,Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessAsync(IMessageBroker, IMessage, IEndpoint, IContext, CancellationToken)</h4>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Messaging_Distributed_IEndpoint_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker,System.Object,Kephas.Messaging.Distributed.IEndpoint,Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessAsync(IMessageBroker, Object, IEndpoint, IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Processes a message asynchronously, waiting for a response from the handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessAsync(this IMessageBroker messageBroker, IMessage message, IEndpoint recipient, IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessAsync(this IMessageBroker messageBroker, object message, IEndpoint recipient, IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -276,7 +196,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a></td>
+        <td><span class="xref">System.Object</span></td>
         <td><span class="parametername">message</span></td>
         <td><p>The message to be processed.</p>
 </td>
@@ -290,13 +210,13 @@
       <tr>
         <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td><p>Optional. The processing context.</p>
+        <td><p>The processing context.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Optional. The cancellation token (optional).</p>
+        <td><p>Optional. The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -319,19 +239,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Messaging.IMessage%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L76">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L252">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync*"></a>
-  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Messaging.IMessage,Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessAsync(IMessageBroker, IMessage, IContext, CancellationToken)</h4>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker,System.Object,Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessAsync(IMessageBroker, Object, IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Processes a message asynchronously, waiting for a response from the handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessAsync(this IMessageBroker messageBroker, IMessage message, IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessAsync(this IMessageBroker messageBroker, object message, IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -350,7 +270,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a></td>
+        <td><span class="xref">System.Object</span></td>
         <td><span class="parametername">message</span></td>
         <td><p>The message to be processed.</p>
 </td>
@@ -364,7 +284,7 @@
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><p>Optional. The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -387,19 +307,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Messaging.IMessage%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CSystem.Collections.Generic.IEnumerable%7BKephas.Messaging.Distributed.IEndpoint%7D%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L140">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L321">View Source</a>
   </span>
-  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync*"></a>
-  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_IMessage_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Messaging.IMessage,Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessOneWayAsync(IMessageBroker, IMessage, IContext, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Processes a message asynchronously without waiting for a response from the handler.</p>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessAsync(Kephas.Messaging.Distributed.IMessageBroker,System.Object,System.Collections.Generic.IEnumerable{Kephas.Messaging.Distributed.IEndpoint},Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessAsync(IMessageBroker, Object, IEnumerable&lt;IEndpoint&gt;, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Processes a message asynchronously, waiting for a response from the handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessOneWayAsync(this IMessageBroker messageBroker, IMessage message, IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessAsync(this IMessageBroker messageBroker, object message, IEnumerable&lt;IEndpoint&gt; recipients, IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -418,9 +338,15 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a></td>
+        <td><span class="xref">System.Object</span></td>
         <td><span class="parametername">message</span></td>
         <td><p>The message to be processed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Messaging.Distributed.IEndpoint.html">IEndpoint</a>&gt;</td>
+        <td><span class="parametername">recipients</span></td>
+        <td><p>The recipients.</p>
 </td>
       </tr>
       <tr>
@@ -432,7 +358,81 @@
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a>&gt;</td>
+        <td><p>The asynchronous result yielding the response message.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Messaging_Distributed_IEndpoint_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CKephas.Messaging.Distributed.IEndpoint%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L388">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Messaging_Distributed_IEndpoint_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker,System.Object,Kephas.Messaging.Distributed.IEndpoint,Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessOneWayAsync(IMessageBroker, Object, IEndpoint, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Processes a message asynchronously without waiting for a response from the handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessOneWayAsync(this IMessageBroker messageBroker, object message, IEndpoint recipient, IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
+        <td><p>The message broker to act on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to be processed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IEndpoint.html">IEndpoint</a></td>
+        <td><span class="parametername">recipient</span></td>
+        <td><p>The recipient.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The processing context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -455,19 +455,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_Events_IEvent_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Messaging.Events.IEvent%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L45">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L355">View Source</a>
   </span>
-  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync*"></a>
-  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_Events_IEvent_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Messaging.Events.IEvent,Kephas.Services.IContext,System.Threading.CancellationToken)">PublishAsync(IMessageBroker, IEvent, IContext, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Publishes an event asynchronously.</p>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker,System.Object,Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessOneWayAsync(IMessageBroker, Object, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Processes a message asynchronously without waiting for a response from the handler.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task PublishAsync(this IMessageBroker messageBroker, IEvent event, IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessOneWayAsync(this IMessageBroker messageBroker, object message, IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -486,9 +486,386 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.Events.IEvent.html">IEvent</a></td>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to be processed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The processing context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a>&gt;</td>
+        <td><p>The asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CSystem.Collections.Generic.IEnumerable%7BKephas.Messaging.Distributed.IEndpoint%7D%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L424">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_ProcessOneWayAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.ProcessOneWayAsync(Kephas.Messaging.Distributed.IMessageBroker,System.Object,System.Collections.Generic.IEnumerable{Kephas.Messaging.Distributed.IEndpoint},Kephas.Services.IContext,System.Threading.CancellationToken)">ProcessOneWayAsync(IMessageBroker, Object, IEnumerable&lt;IEndpoint&gt;, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Processes a message asynchronously without waiting for a response from the handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;IMessage&gt; ProcessOneWayAsync(this IMessageBroker messageBroker, object message, IEnumerable&lt;IEndpoint&gt; recipients, IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
+        <td><p>The message broker to act on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to be processed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Messaging.Distributed.IEndpoint.html">IEndpoint</a>&gt;</td>
+        <td><span class="parametername">recipients</span></td>
+        <td><p>The recipients.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The processing context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a>&gt;</td>
+        <td><p>The asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_Publish_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Dynamic_IExpando_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.Publish(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CKephas.Dynamic.IExpando%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L229">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_Publish_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.Publish*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_Publish_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Dynamic_IExpando_Kephas_Services_IContext_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.Publish(Kephas.Messaging.Distributed.IMessageBroker,System.Object,Kephas.Dynamic.IExpando,Kephas.Services.IContext)">Publish(IMessageBroker, Object, IExpando, IContext)</h4>
+  <div class="markdown level1 summary"><p>Publishes the event with the provided ID and arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Publish(this IMessageBroker messageBroker, object eventId, IExpando eventArgs, IContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
+        <td><p>The message broker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">eventId</span></td>
+        <td><p>Identifier for the application event.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></td>
+        <td><span class="parametername">eventArgs</span></td>
+        <td><p>The application event arguments.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Optional. the context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_Publish_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.Publish(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L173">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_Publish_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.Publish*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_Publish_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Services_IContext_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.Publish(Kephas.Messaging.Distributed.IMessageBroker,System.Object,Kephas.Services.IContext)">Publish(IMessageBroker, Object, IContext)</h4>
+  <div class="markdown level1 summary"><p>Publishes the provided event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Publish(this IMessageBroker messageBroker, object event, IContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
+        <td><p>The message broker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">event</span></td>
+        <td><p>The event.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_Publish__1_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.Publish%60%601(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L187">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_Publish_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.Publish*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_Publish__1_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Services_IContext_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.Publish``1(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Services.IContext)">Publish&lt;TEvent&gt;(IMessageBroker, IContext)</h4>
+  <div class="markdown level1 summary"><p>Publishes the provided event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Publish&lt;TEvent&gt;(this IMessageBroker messageBroker, IContext context)
+    where TEvent : class, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
+        <td><p>The message broker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TEvent</span></td>
+        <td><p>Type of the event.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Dynamic_IExpando_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CKephas.Dynamic.IExpando%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L208">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Dynamic_IExpando_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker,System.Object,Kephas.Dynamic.IExpando,Kephas.Services.IContext,System.Threading.CancellationToken)">PublishAsync(IMessageBroker, Object, IExpando, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Asynchronously publishes the event with the provided ID and arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task PublishAsync(this IMessageBroker messageBroker, object eventId, IExpando eventArgs, IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
+        <td><p>The message broker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">eventId</span></td>
+        <td><p>Identifier for the event.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></td>
+        <td><span class="parametername">eventArgs</span></td>
+        <td><p>The application event arguments.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Messaging_Distributed_IEndpoint_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CKephas.Messaging.Distributed.IEndpoint%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L80">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Messaging_Distributed_IEndpoint_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker,System.Object,Kephas.Messaging.Distributed.IEndpoint,Kephas.Services.IContext,System.Threading.CancellationToken)">PublishAsync(IMessageBroker, Object, IEndpoint, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Publishes an event asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task PublishAsync(this IMessageBroker messageBroker, object event, IEndpoint recipient, IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
+        <td><p>The message broker to act on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
         <td><span class="parametername">event</span></td>
         <td><p>The event message.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IEndpoint.html">IEndpoint</a></td>
+        <td><span class="parametername">recipient</span></td>
+        <td><p>The recipient.</p>
 </td>
       </tr>
       <tr>
@@ -500,7 +877,7 @@
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><p>Optional. The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -521,10 +898,239 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Messaging_Events_IEvent_Kephas_Services_IContext_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <h5 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Messaging_Distributed_IEndpoint_Kephas_Services_IContext_System_Threading_CancellationToken__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>It does not wait for an answer from the subscribers,
 just for the acknowledgement of the message being sent.</p>
 </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L43">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker,System.Object,Kephas.Services.IContext,System.Threading.CancellationToken)">PublishAsync(IMessageBroker, Object, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Publishes an event asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task PublishAsync(this IMessageBroker messageBroker, object event, IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
+        <td><p>The message broker to act on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">event</span></td>
+        <td><p>The event message.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The publishing context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>The asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_Kephas_Services_IContext_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It does not wait for an answer from the subscribers,
+just for the acknowledgement of the message being sent.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker%2CSystem.Object%2CSystem.Collections.Generic.IEnumerable%7BKephas.Messaging.Distributed.IEndpoint%7D%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L120">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync(Kephas.Messaging.Distributed.IMessageBroker,System.Object,System.Collections.Generic.IEnumerable{Kephas.Messaging.Distributed.IEndpoint},Kephas.Services.IContext,System.Threading.CancellationToken)">PublishAsync(IMessageBroker, Object, IEnumerable&lt;IEndpoint&gt;, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Publishes an event asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task PublishAsync(this IMessageBroker messageBroker, object event, IEnumerable&lt;IEndpoint&gt; recipients, IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
+        <td><p>The message broker to act on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">event</span></td>
+        <td><p>The event message.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Messaging.Distributed.IEndpoint.html">IEndpoint</a>&gt;</td>
+        <td><span class="parametername">recipients</span></td>
+        <td><p>The recipients.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The publishing context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>The asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_Kephas_Messaging_Distributed_IMessageBroker_System_Object_System_Collections_Generic_IEnumerable_Kephas_Messaging_Distributed_IEndpoint__Kephas_Services_IContext_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It does not wait for an answer from the subscribers,
+just for the acknowledgement of the message being sent.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync__1_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync%60%601(Kephas.Messaging.Distributed.IMessageBroker%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L155">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync*"></a>
+  <h4 id="Kephas_Messaging_Distributed_MessageBrokerExtensions_PublishAsync__1_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Distributed.MessageBrokerExtensions.PublishAsync``1(Kephas.Messaging.Distributed.IMessageBroker,Kephas.Services.IContext,System.Threading.CancellationToken)">PublishAsync&lt;TEvent&gt;(IMessageBroker, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Publishes the provided event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task PublishAsync&lt;TEvent&gt;(this IMessageBroker messageBroker, IContext context, CancellationToken cancellationToken = default(CancellationToken))
+    where TEvent : class, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><span class="parametername">messageBroker</span></td>
+        <td><p>The message broker.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TEvent</span></td>
+        <td><p>Type of the event.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -536,7 +1142,7 @@ just for the acknowledgement of the message being sent.</p>
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_MessageBrokerExtensions.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.MessageBrokerExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L26" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/MessageBrokerExtensions.cs/#L27" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

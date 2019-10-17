@@ -174,9 +174,6 @@
     <div>
       <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
     </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Services.Reflection.html">Kephas.Services.Reflection</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
@@ -188,19 +185,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_Kephas_Services_AppServiceLifetime_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.%23ctor(System.Type%2CKephas.Services.AppServiceLifetime%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_Kephas_Services_AppServiceLifetime_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.%23ctor(System.Type%2CKephas.Services.AppServiceLifetime%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L37">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L33">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo__ctor_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor*"></a>
-  <h4 id="Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_Kephas_Services_AppServiceLifetime_System_Boolean_System_Boolean_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor(System.Type,Kephas.Services.AppServiceLifetime,System.Boolean,System.Boolean)">AppServiceInfo(Type, AppServiceLifetime, Boolean, Boolean)</h4>
+  <h4 id="Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_Kephas_Services_AppServiceLifetime_System_Boolean_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor(System.Type,Kephas.Services.AppServiceLifetime,System.Boolean)">AppServiceInfo(Type, AppServiceLifetime, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Services.Reflection.AppServiceInfo.html">AppServiceInfo</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AppServiceInfo(Type contractType, AppServiceLifetime lifetime = AppServiceLifetime.Shared, bool allowMultiple = false, bool asOpenGeneric = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public AppServiceInfo(Type contractType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool asOpenGeneric = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -226,14 +223,6 @@
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">allowMultiple</span></td>
-        <td><p>Optional.
-<code>true</code> if multiple services are allowed; otherwise,
-<code>false</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">asOpenGeneric</span></td>
         <td><p>Optional.
 <code>true</code> if the contract should be exported as an open generic;
@@ -244,19 +233,19 @@ otherwise, <code>false</code>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Func_Kephas_Composition_ICompositionContext_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.%23ctor(System.Type%2CSystem.Func%7BKephas.Composition.ICompositionContext%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Func_Kephas_Composition_ICompositionContext_System_Object__Kephas_Services_AppServiceLifetime_.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.%23ctor(System.Type%2CSystem.Func%7BKephas.Composition.ICompositionContext%2CSystem.Object%7D%2CKephas.Services.AppServiceLifetime)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L67">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L63">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo__ctor_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor*"></a>
-  <h4 id="Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Func_Kephas_Composition_ICompositionContext_System_Object__" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor(System.Type,System.Func{Kephas.Composition.ICompositionContext,System.Object})">AppServiceInfo(Type, Func&lt;ICompositionContext, Object&gt;)</h4>
+  <h4 id="Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Func_Kephas_Composition_ICompositionContext_System_Object__Kephas_Services_AppServiceLifetime_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor(System.Type,System.Func{Kephas.Composition.ICompositionContext,System.Object},Kephas.Services.AppServiceLifetime)">AppServiceInfo(Type, Func&lt;ICompositionContext, Object&gt;, AppServiceLifetime)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Services.Reflection.AppServiceInfo.html">AppServiceInfo</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AppServiceInfo(Type contractType, Func&lt;ICompositionContext, object&gt; serviceInstanceFactory)</code></pre>
+    <pre><code class="lang-csharp hljs">public AppServiceInfo(Type contractType, Func&lt;ICompositionContext, object&gt; serviceInstanceFactory, AppServiceLifetime lifetime = AppServiceLifetime.Transient)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -280,6 +269,12 @@ otherwise, <code>false</code>.</p>
         <td><p>The service instance factory.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.AppServiceLifetime.html">AppServiceLifetime</a></td>
+        <td><span class="parametername">lifetime</span></td>
+        <td><p>Optional. The application service lifetime.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
@@ -287,7 +282,7 @@ otherwise, <code>false</code>.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.%23ctor(System.Type%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L52">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L47">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo__ctor_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor*"></a>
   <h4 id="Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Object_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor(System.Type,System.Object)">AppServiceInfo(Type, Object)</h4>
@@ -324,19 +319,19 @@ otherwise, <code>false</code>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Type_Kephas_Services_AppServiceLifetime_.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.%23ctor(System.Type%2CSystem.Type%2CKephas.Services.AppServiceLifetime)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Type_Kephas_Services_AppServiceLifetime_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.%23ctor(System.Type%2CSystem.Type%2CKephas.Services.AppServiceLifetime%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L83">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo__ctor_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor*"></a>
-  <h4 id="Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Type_Kephas_Services_AppServiceLifetime_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor(System.Type,System.Type,Kephas.Services.AppServiceLifetime)">AppServiceInfo(Type, Type, AppServiceLifetime)</h4>
+  <h4 id="Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Type_Kephas_Services_AppServiceLifetime_System_Boolean_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor(System.Type,System.Type,Kephas.Services.AppServiceLifetime,System.Boolean)">AppServiceInfo(Type, Type, AppServiceLifetime, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Services.Reflection.AppServiceInfo.html">AppServiceInfo</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AppServiceInfo(Type contractType, Type serviceInstanceType, AppServiceLifetime lifetime = AppServiceLifetime.Shared)</code></pre>
+    <pre><code class="lang-csharp hljs">public AppServiceInfo(Type contractType, Type serviceInstanceType, AppServiceLifetime lifetime = AppServiceLifetime.Singleton, bool asOpenGeneric = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -366,50 +361,12 @@ otherwise, <code>false</code>.</p>
         <td><p>Optional. The application service lifetime.</p>
 </td>
       </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Type_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.%23ctor(System.Type%2CSystem.Type%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L99">View Source</a>
-  </span>
-  <a id="Kephas_Services_Reflection_AppServiceInfo__ctor_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor*"></a>
-  <h4 id="Kephas_Services_Reflection_AppServiceInfo__ctor_System_Type_System_Type_System_String_" data-uid="Kephas.Services.Reflection.AppServiceInfo.#ctor(System.Type,System.Type,System.String)">AppServiceInfo(Type, Type, String)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Services.Reflection.AppServiceInfo.html">AppServiceInfo</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AppServiceInfo(Type contractType, Type serviceInstanceType, string scopeName)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
       <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Type</span></td>
-        <td><span class="parametername">contractType</span></td>
-        <td><p>The contract type of the export.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Type</span></td>
-        <td><span class="parametername">serviceInstanceType</span></td>
-        <td><p>Type of the service instance.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">scopeName</span></td>
-        <td><p>The name of the scope for scoped shared services.</p>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">asOpenGeneric</span></td>
+        <td><p>Optional.
+<code>true</code> if the contract should be exported as an open generic;
+otherwise, <code>false</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -421,16 +378,16 @@ otherwise, <code>false</code>.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo_AllowMultiple.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.AllowMultiple%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L124">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L108">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo_AllowMultiple_" data-uid="Kephas.Services.Reflection.AppServiceInfo.AllowMultiple*"></a>
   <h4 id="Kephas_Services_Reflection_AppServiceInfo_AllowMultiple" data-uid="Kephas.Services.Reflection.AppServiceInfo.AllowMultiple">AllowMultiple</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether multiple services for this contract are allowed.</p>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether multiple services for this contract are allowed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool AllowMultiple { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool AllowMultiple { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -453,7 +410,7 @@ otherwise, <code>false</code>.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo_AsOpenGeneric.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.AsOpenGeneric%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L132">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L116">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo_AsOpenGeneric_" data-uid="Kephas.Services.Reflection.AppServiceInfo.AsOpenGeneric*"></a>
   <h4 id="Kephas_Services_Reflection_AppServiceInfo_AsOpenGeneric" data-uid="Kephas.Services.Reflection.AppServiceInfo.AsOpenGeneric">AsOpenGeneric</h4>
@@ -485,7 +442,7 @@ otherwise, <code>false</code>.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo_ContractType.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.ContractType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L149">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L133">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo_ContractType_" data-uid="Kephas.Services.Reflection.AppServiceInfo.ContractType*"></a>
   <h4 id="Kephas_Services_Reflection_AppServiceInfo_ContractType" data-uid="Kephas.Services.Reflection.AppServiceInfo.ContractType">ContractType</h4>
@@ -517,7 +474,7 @@ otherwise, <code>false</code>.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo_Instance.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.Instance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L157">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L141">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo_Instance_" data-uid="Kephas.Services.Reflection.AppServiceInfo.Instance*"></a>
   <h4 id="Kephas_Services_Reflection_AppServiceInfo_Instance" data-uid="Kephas.Services.Reflection.AppServiceInfo.Instance">Instance</h4>
@@ -549,7 +506,7 @@ otherwise, <code>false</code>.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo_InstanceFactory.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.InstanceFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L173">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L157">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo_InstanceFactory_" data-uid="Kephas.Services.Reflection.AppServiceInfo.InstanceFactory*"></a>
   <h4 id="Kephas_Services_Reflection_AppServiceInfo_InstanceFactory" data-uid="Kephas.Services.Reflection.AppServiceInfo.InstanceFactory">InstanceFactory</h4>
@@ -581,7 +538,7 @@ otherwise, <code>false</code>.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo_InstanceType.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.InstanceType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L165">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L149">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo_InstanceType_" data-uid="Kephas.Services.Reflection.AppServiceInfo.InstanceType*"></a>
   <h4 id="Kephas_Services_Reflection_AppServiceInfo_InstanceType" data-uid="Kephas.Services.Reflection.AppServiceInfo.InstanceType">InstanceType</h4>
@@ -613,7 +570,7 @@ otherwise, <code>false</code>.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo_Lifetime.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.Lifetime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L116">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L100">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo_Lifetime_" data-uid="Kephas.Services.Reflection.AppServiceInfo.Lifetime*"></a>
   <h4 id="Kephas_Services_Reflection_AppServiceInfo_Lifetime" data-uid="Kephas.Services.Reflection.AppServiceInfo.Lifetime">Lifetime</h4>
@@ -645,7 +602,7 @@ otherwise, <code>false</code>.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo_MetadataAttributes.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.MetadataAttributes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L141">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L125">View Source</a>
   </span>
   <a id="Kephas_Services_Reflection_AppServiceInfo_MetadataAttributes_" data-uid="Kephas.Services.Reflection.AppServiceInfo.MetadataAttributes*"></a>
   <h4 id="Kephas_Services_Reflection_AppServiceInfo_MetadataAttributes" data-uid="Kephas.Services.Reflection.AppServiceInfo.MetadataAttributes">MetadataAttributes</h4>
@@ -675,23 +632,25 @@ otherwise, <code>false</code>.</p>
   <h5 id="Kephas_Services_Reflection_AppServiceInfo_MetadataAttributes_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The metadata attributes are used to register the conventions for application services.</p>
 </div>
+  <h3 id="methods">Methods
+  </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo_ScopeName.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.ScopeName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Reflection_AppServiceInfo_ToString.md&amp;value=---%0Auid%3A%20Kephas.Services.Reflection.AppServiceInfo.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L181">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Reflection/AppServiceInfo.cs/#L165">View Source</a>
   </span>
-  <a id="Kephas_Services_Reflection_AppServiceInfo_ScopeName_" data-uid="Kephas.Services.Reflection.AppServiceInfo.ScopeName*"></a>
-  <h4 id="Kephas_Services_Reflection_AppServiceInfo_ScopeName" data-uid="Kephas.Services.Reflection.AppServiceInfo.ScopeName">ScopeName</h4>
-  <div class="markdown level1 summary"><p>Gets the name of the scope for scoped shared services.</p>
+  <a id="Kephas_Services_Reflection_AppServiceInfo_ToString_" data-uid="Kephas.Services.Reflection.AppServiceInfo.ToString*"></a>
+  <h4 id="Kephas_Services_Reflection_AppServiceInfo_ToString" data-uid="Kephas.Services.Reflection.AppServiceInfo.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Returns a string that represents the current object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ScopeName { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -702,11 +661,13 @@ otherwise, <code>false</code>.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>The name of the scope for scoped shared services.</p>
+        <td><p>A string that represents the current object.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a>
@@ -767,13 +728,13 @@ otherwise, <code>false</code>.</p>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsShared_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsShared(IAppServiceInfo)</a>
+      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsSingleton_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsSingleton(IAppServiceInfo)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsScopeShared_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsScopeShared(IAppServiceInfo)</a>
+      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsScoped_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsScoped(IAppServiceInfo)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsInstance_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsInstance(IAppServiceInfo)</a>
+      <a class="xref" href="Kephas.Services.Reflection.AppServiceInfoExtensions.html#Kephas_Services_Reflection_AppServiceInfoExtensions_IsTransient_Kephas_Services_Reflection_IAppServiceInfo_">AppServiceInfoExtensions.IsTransient(IAppServiceInfo)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>

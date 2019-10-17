@@ -93,8 +93,8 @@
     <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
     <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
     <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
-    <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
-    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -111,7 +111,10 @@
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Identity">Context.Identity</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ContextLogger">Context.ContextLogger</a>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Logger">Context.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose">Context.Dispose()</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ValidateIdentity_System_Security_Principal_IIdentity_System_Security_Principal_IIdentity_">Context.ValidateIdentity(IIdentity, IIdentity)</a>
@@ -121,6 +124,9 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetAmbientServices_Kephas_IAmbientServices_">Context.SetAmbientServices(IAmbientServices)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose_System_Boolean_">Context.Dispose(Boolean)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
@@ -211,25 +217,25 @@
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_InMemory_InMemoryDataContextConfiguration_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class InMemoryDataContextConfiguration : DataContextConfiguration, IDataContextConfiguration, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware</code></pre>
+    <pre><code class="lang-csharp hljs">public class InMemoryDataContextConfiguration : DataContextConfiguration, IDataContextConfiguration, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_InMemory_InMemoryDataContextConfiguration__ctor_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Data.InMemory.InMemoryDataContextConfiguration.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_InMemory_InMemoryDataContextConfiguration__ctor_Kephas_Composition_ICompositionContext_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Data.InMemory.InMemoryDataContextConfiguration.%23ctor(Kephas.Composition.ICompositionContext%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/InMemory/InMemoryDataContextConfiguration.cs/#L26">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/InMemory/InMemoryDataContextConfiguration.cs/#L28">View Source</a>
   </span>
   <a id="Kephas_Data_InMemory_InMemoryDataContextConfiguration__ctor_" data-uid="Kephas.Data.InMemory.InMemoryDataContextConfiguration.#ctor*"></a>
-  <h4 id="Kephas_Data_InMemory_InMemoryDataContextConfiguration__ctor_System_String_" data-uid="Kephas.Data.InMemory.InMemoryDataContextConfiguration.#ctor(System.String)">InMemoryDataContextConfiguration(String)</h4>
+  <h4 id="Kephas_Data_InMemory_InMemoryDataContextConfiguration__ctor_Kephas_Composition_ICompositionContext_System_String_" data-uid="Kephas.Data.InMemory.InMemoryDataContextConfiguration.#ctor(Kephas.Composition.ICompositionContext,System.String)">InMemoryDataContextConfiguration(ICompositionContext, String)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.InMemory.InMemoryDataContextConfiguration.html">InMemoryDataContextConfiguration</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InMemoryDataContextConfiguration(string connectionString)</code></pre>
+    <pre><code class="lang-csharp hljs">public InMemoryDataContextConfiguration(ICompositionContext compositionContext, string connectionString)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -241,6 +247,12 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><span class="parametername">compositionContext</span></td>
+        <td><p>Context for the composition.</p>
+</td>
+      </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">connectionString</span></td>
@@ -256,7 +268,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_InMemory_InMemoryDataContextConfiguration_InitialData.md&amp;value=---%0Auid%3A%20Kephas.Data.InMemory.InMemoryDataContextConfiguration.InitialData%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/InMemory/InMemoryDataContextConfiguration.cs/#L37">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/InMemory/InMemoryDataContextConfiguration.cs/#L39">View Source</a>
   </span>
   <a id="Kephas_Data_InMemory_InMemoryDataContextConfiguration_InitialData_" data-uid="Kephas.Data.InMemory.InMemoryDataContextConfiguration.InitialData*"></a>
   <h4 id="Kephas_Data_InMemory_InMemoryDataContextConfiguration_InitialData" data-uid="Kephas.Data.InMemory.InMemoryDataContextConfiguration.InitialData">InitialData</h4>
@@ -288,7 +300,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_InMemory_InMemoryDataContextConfiguration_UseSharedCache.md&amp;value=---%0Auid%3A%20Kephas.Data.InMemory.InMemoryDataContextConfiguration.UseSharedCache%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/InMemory/InMemoryDataContextConfiguration.cs/#L45">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/InMemory/InMemoryDataContextConfiguration.cs/#L47">View Source</a>
   </span>
   <a id="Kephas_Data_InMemory_InMemoryDataContextConfiguration_UseSharedCache_" data-uid="Kephas.Data.InMemory.InMemoryDataContextConfiguration.UseSharedCache*"></a>
   <h4 id="Kephas_Data_InMemory_InMemoryDataContextConfiguration_UseSharedCache" data-uid="Kephas.Data.InMemory.InMemoryDataContextConfiguration.UseSharedCache">UseSharedCache</h4>
@@ -332,10 +344,10 @@
       <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
+      <span class="xref">System.IDisposable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -378,6 +390,9 @@
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerExtensions.html#Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_">MessageBrokerExtensions.CreateBrokeredMessageBuilder(IContext)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>
   </div>
   <div>
@@ -403,7 +418,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_InMemory_InMemoryDataContextConfiguration.md&amp;value=---%0Auid%3A%20Kephas.Data.InMemory.InMemoryDataContextConfiguration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/InMemory/InMemoryDataContextConfiguration.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/InMemory/InMemoryDataContextConfiguration.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

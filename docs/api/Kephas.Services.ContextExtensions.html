@@ -115,10 +115,83 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_ContextExtensions_AddResource__1___0_System_IDisposable___.md&amp;value=---%0Auid%3A%20Kephas.Services.ContextExtensions.AddResource%60%601(%60%600%2CSystem.IDisposable%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L116">View Source</a>
+  </span>
+  <a id="Kephas_Services_ContextExtensions_AddResource_" data-uid="Kephas.Services.ContextExtensions.AddResource*"></a>
+  <h4 id="Kephas_Services_ContextExtensions_AddResource__1___0_System_IDisposable___" data-uid="Kephas.Services.ContextExtensions.AddResource``1(``0,System.IDisposable[])">AddResource&lt;TContext&gt;(TContext, IDisposable[])</h4>
+  <div class="markdown level1 summary"><p>Registers with the context disposable resources to be disposed together with the context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TContext AddResource&lt;TContext&gt;(this TContext context, params IDisposable[] resources)
+    where TContext : class, IContext</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TContext</span></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The context to act on.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IDisposable</span>[]</td>
+        <td><span class="parametername">resources</span></td>
+        <td><p>The resources to add.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TContext</span></td>
+        <td><p>The provided context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TContext</span></td>
+        <td><p>Type of the context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_ContextExtensions_WithIdentity__1___0_System_Security_Principal_IIdentity_.md&amp;value=---%0Auid%3A%20Kephas.Services.ContextExtensions.WithIdentity%60%601(%60%600%2CSystem.Security.Principal.IIdentity)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L56">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L72">View Source</a>
   </span>
   <a id="Kephas_Services_ContextExtensions_WithIdentity_" data-uid="Kephas.Services.ContextExtensions.WithIdentity*"></a>
   <h4 id="Kephas_Services_ContextExtensions_WithIdentity__1___0_System_Security_Principal_IIdentity_" data-uid="Kephas.Services.ContextExtensions.WithIdentity``1(``0,System.Security.Principal.IIdentity)">WithIdentity&lt;TContext&gt;(TContext, IIdentity)</h4>
@@ -128,7 +201,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static TContext WithIdentity&lt;TContext&gt;(this TContext context, IIdentity identity)
-
     where TContext : class, IContext</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -192,7 +264,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_ContextExtensions_WithLogger__1___0_Kephas_Logging_ILogger_.md&amp;value=---%0Auid%3A%20Kephas.Services.ContextExtensions.WithLogger%60%601(%60%600%2CKephas.Logging.ILogger)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L74">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L90">View Source</a>
   </span>
   <a id="Kephas_Services_ContextExtensions_WithLogger_" data-uid="Kephas.Services.ContextExtensions.WithLogger*"></a>
   <h4 id="Kephas_Services_ContextExtensions_WithLogger__1___0_Kephas_Logging_ILogger_" data-uid="Kephas.Services.ContextExtensions.WithLogger``1(``0,Kephas.Logging.ILogger)">WithLogger&lt;TContext&gt;(TContext, ILogger)</h4>
@@ -202,7 +274,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static TContext WithLogger&lt;TContext&gt;(this TContext context, ILogger contextLogger)
-
     where TContext : class, IContext</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -272,7 +343,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_ContextExtensions.md&amp;value=---%0Auid%3A%20Kephas.Services.ContextExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L45" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L56" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -86,6 +86,7 @@
   <div classs="implements">
     <h5>Implements</h5>
     <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
+    <div><a class="xref" href="Kephas.ExceptionHandling.ISeverityQualifiedException.html">ISeverityQualifiedException</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -148,16 +149,50 @@
   <h6><strong>Assembly</strong>: Kephas.Messaging.dll</h6>
   <h5 id="Kephas_Messaging_MessagingException_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MessagingException : Exception, ISerializable</code></pre>
+    <pre><code class="lang-csharp hljs">public class MessagingException : Exception, ISerializable, ISeverityQualifiedException</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_MessagingException__ctor_Kephas_ExceptionHandling_ExceptionData_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.MessagingException.%23ctor(Kephas.ExceptionHandling.ExceptionData)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/MessagingException.cs/#L36">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_MessagingException__ctor_" data-uid="Kephas.Messaging.MessagingException.#ctor*"></a>
+  <h4 id="Kephas_Messaging_MessagingException__ctor_Kephas_ExceptionHandling_ExceptionData_" data-uid="Kephas.Messaging.MessagingException.#ctor(Kephas.ExceptionHandling.ExceptionData)">MessagingException(ExceptionData)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Messaging.MessagingException.html">MessagingException</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MessagingException(ExceptionData exceptionData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.ExceptionHandling.ExceptionData.html">ExceptionData</a></td>
+        <td><span class="parametername">exceptionData</span></td>
+        <td><p>Information describing the exception.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_MessagingException__ctor_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.MessagingException.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/MessagingException.cs/#L24">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/MessagingException.cs/#L26">View Source</a>
   </span>
   <a id="Kephas_Messaging_MessagingException__ctor_" data-uid="Kephas.Messaging.MessagingException.#ctor*"></a>
   <h4 id="Kephas_Messaging_MessagingException__ctor_System_String_" data-uid="Kephas.Messaging.MessagingException.#ctor(System.String)">MessagingException(String)</h4>
@@ -191,7 +226,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_MessagingException__ctor_System_String_System_Exception_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.MessagingException.%23ctor(System.String%2CSystem.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/MessagingException.cs/#L35">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/MessagingException.cs/#L49">View Source</a>
   </span>
   <a id="Kephas_Messaging_MessagingException__ctor_" data-uid="Kephas.Messaging.MessagingException.#ctor*"></a>
   <h4 id="Kephas_Messaging_MessagingException__ctor_System_String_System_Exception_" data-uid="Kephas.Messaging.MessagingException.#ctor(System.String,System.Exception)">MessagingException(String, Exception)</h4>
@@ -227,9 +262,78 @@ class.</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_MessagingException_OriginalExceptionType.md&amp;value=---%0Auid%3A%20Kephas.Messaging.MessagingException.OriginalExceptionType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/MessagingException.cs/#L68">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_MessagingException_OriginalExceptionType_" data-uid="Kephas.Messaging.MessagingException.OriginalExceptionType*"></a>
+  <h4 id="Kephas_Messaging_MessagingException_OriginalExceptionType" data-uid="Kephas.Messaging.MessagingException.OriginalExceptionType">OriginalExceptionType</h4>
+  <div class="markdown level1 summary"><p>Gets the type of the original exception.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string OriginalExceptionType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The type of the original exception.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_MessagingException_Severity.md&amp;value=---%0Auid%3A%20Kephas.Messaging.MessagingException.Severity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/MessagingException.cs/#L60">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_MessagingException_Severity_" data-uid="Kephas.Messaging.MessagingException.Severity*"></a>
+  <h4 id="Kephas_Messaging_MessagingException_Severity" data-uid="Kephas.Messaging.MessagingException.Severity">Severity</h4>
+  <div class="markdown level1 summary"><p>Gets the severity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SeverityLevel Severity { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.ExceptionHandling.SeverityLevel.html">SeverityLevel</a></td>
+        <td><p>The severity.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">System.Runtime.Serialization.ISerializable</span>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.ExceptionHandling.ISeverityQualifiedException.html">ISeverityQualifiedException</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -288,7 +392,7 @@ class.</p>
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_MessagingException.md&amp;value=---%0Auid%3A%20Kephas.Messaging.MessagingException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/MessagingException.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/MessagingException.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

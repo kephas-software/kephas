@@ -81,12 +81,15 @@
     <div>
       <a class="xref" href="Kephas.Data.Commands.IDataCommand.html#Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
     </div>
+    <div>
+      <a class="xref" href="Kephas.Operations.IAsyncOperation.html#Kephas_Operations_IAsyncOperation_ExecuteAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">IAsyncOperation.ExecuteAsync(IContext, CancellationToken)</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Commands.html">Kephas.Data.Commands</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Commands_IDataCommand_2_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IDataCommand&lt;in TOperationContext, TResult&gt; : IDataCommand where TOperationContext : IDataOperationContext where TResult : IDataCommandResult</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IDataCommand&lt;in TOperationContext, TResult&gt; : IDataCommand, IAsyncOperation where TOperationContext : IDataOperationContext where TResult : IDataCommandResult</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -116,7 +119,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_IDataCommand_2_ExecuteAsync__0_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.IDataCommand%602.ExecuteAsync(%600%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/IDataCommand.cs/#L49">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/IDataCommand.cs/#L51">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_IDataCommand_2_ExecuteAsync_" data-uid="Kephas.Data.Commands.IDataCommand`2.ExecuteAsync*"></a>
   <h4 id="Kephas_Data_Commands_IDataCommand_2_ExecuteAsync__0_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.IDataCommand`2.ExecuteAsync(`0,System.Threading.CancellationToken)">ExecuteAsync(TOperationContext, CancellationToken)</h4>
@@ -221,7 +224,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_IDataCommand_2.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.IDataCommand%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/IDataCommand.cs/#L37" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/IDataCommand.cs/#L39" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

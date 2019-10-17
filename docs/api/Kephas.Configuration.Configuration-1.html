@@ -182,7 +182,7 @@
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Configuration_Configuration_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Configuration&lt;TSettings&gt; : Expando, IConfiguration&lt;TSettings&gt;, IExpando, IDynamicMetaObjectProvider, IIndexable where TSettings : class</code></pre>
+    <pre><code class="lang-csharp hljs">public class Configuration&lt;TSettings&gt; : Expando, IConfiguration&lt;TSettings&gt;, IExpando, IDynamicMetaObjectProvider, IIndexable where TSettings : class, new()</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -207,19 +207,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_Configuration_1__ctor_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Configuration_Providers_IConfigurationProvider_Kephas_Configuration_Composition_ConfigurationProviderMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Configuration.Configuration%601.%23ctor(System.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Configuration.Providers.IConfigurationProvider%2CKephas.Configuration.Composition.ConfigurationProviderMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_Configuration_1__ctor_Kephas_Configuration_Providers_ISettingsProviderSelector_.md&amp;value=---%0Auid%3A%20Kephas.Configuration.Configuration%601.%23ctor(Kephas.Configuration.Providers.ISettingsProviderSelector)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L52">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L41">View Source</a>
   </span>
   <a id="Kephas_Configuration_Configuration_1__ctor_" data-uid="Kephas.Configuration.Configuration`1.#ctor*"></a>
-  <h4 id="Kephas_Configuration_Configuration_1__ctor_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Configuration_Providers_IConfigurationProvider_Kephas_Configuration_Composition_ConfigurationProviderMetadata___" data-uid="Kephas.Configuration.Configuration`1.#ctor(System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Configuration.Providers.IConfigurationProvider,Kephas.Configuration.Composition.ConfigurationProviderMetadata}})">Configuration(ICollection&lt;IExportFactory&lt;IConfigurationProvider, ConfigurationProviderMetadata&gt;&gt;)</h4>
+  <h4 id="Kephas_Configuration_Configuration_1__ctor_Kephas_Configuration_Providers_ISettingsProviderSelector_" data-uid="Kephas.Configuration.Configuration`1.#ctor(Kephas.Configuration.Providers.ISettingsProviderSelector)">Configuration(ISettingsProviderSelector)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Configuration.Configuration-1.html">Configuration&lt;TSettings&gt;</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Configuration(ICollection&lt;IExportFactory&lt;IConfigurationProvider, ConfigurationProviderMetadata&gt;&gt; providerFactories)</code></pre>
+    <pre><code class="lang-csharp hljs">public Configuration(ISettingsProviderSelector settingsProviderSelector)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -232,9 +232,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Composition.IExportFactory-2.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Configuration.Providers.IConfigurationProvider.html">IConfigurationProvider</a>, <a class="xref" href="Kephas.Configuration.Composition.ConfigurationProviderMetadata.html">ConfigurationProviderMetadata</a>&gt;&gt;</td>
-        <td><span class="parametername">providerFactories</span></td>
-        <td><p>The provider factories.</p>
+        <td><a class="xref" href="Kephas.Configuration.Providers.ISettingsProviderSelector.html">ISettingsProviderSelector</a></td>
+        <td><span class="parametername">settingsProviderSelector</span></td>
+        <td><p>The settings provider selector.</p>
 </td>
       </tr>
     </tbody>
@@ -243,42 +243,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_Configuration_1_Provider.md&amp;value=---%0Auid%3A%20Kephas.Configuration.Configuration%601.Provider%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L73">View Source</a>
-  </span>
-  <a id="Kephas_Configuration_Configuration_1_Provider_" data-uid="Kephas.Configuration.Configuration`1.Provider*"></a>
-  <h4 id="Kephas_Configuration_Configuration_1_Provider" data-uid="Kephas.Configuration.Configuration`1.Provider">Provider</h4>
-  <div class="markdown level1 summary"><p>Gets the configuration provider.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IConfigurationProvider Provider { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Configuration.Providers.IConfigurationProvider.html">IConfigurationProvider</a></td>
-        <td><p>The configuration provider.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_Configuration_1_Settings.md&amp;value=---%0Auid%3A%20Kephas.Configuration.Configuration%601.Settings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L65">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L54">View Source</a>
   </span>
   <a id="Kephas_Configuration_Configuration_1_Settings_" data-uid="Kephas.Configuration.Configuration`1.Settings*"></a>
   <h4 id="Kephas_Configuration_Configuration_1_Settings" data-uid="Kephas.Configuration.Configuration`1.Settings">Settings</h4>
@@ -378,7 +346,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Configuration_Configuration_1.md&amp;value=---%0Auid%3A%20Kephas.Configuration.Configuration%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L30" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Configuration/Configuration.cs/#L31" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

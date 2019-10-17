@@ -79,14 +79,22 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DefaultJsonSerializerConfigurator</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">DefaultJsonSerializerConfigurator</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Serialization.ServiceStack.Text.IJsonSerializerConfigurator.html">IJsonSerializerConfigurator</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -114,7 +122,7 @@
   <h5 id="Kephas_Serialization_ServiceStack_Text_DefaultJsonSerializerConfigurator_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Low)]
-public class DefaultJsonSerializerConfigurator : IJsonSerializerConfigurator</code></pre>
+public class DefaultJsonSerializerConfigurator : Loggable, ILoggable, IJsonSerializerConfigurator</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -162,42 +170,10 @@ public class DefaultJsonSerializerConfigurator : IJsonSerializerConfigurator</co
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_ServiceStack_Text_DefaultJsonSerializerConfigurator_Logger.md&amp;value=---%0Auid%3A%20Kephas.Serialization.ServiceStack.Text.DefaultJsonSerializerConfigurator.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Serialization.ServiceStack.Text/DefaultJsonSerializerConfigurator.cs/#L80">View Source</a>
-  </span>
-  <a id="Kephas_Serialization_ServiceStack_Text_DefaultJsonSerializerConfigurator_Logger_" data-uid="Kephas.Serialization.ServiceStack.Text.DefaultJsonSerializerConfigurator.Logger*"></a>
-  <h4 id="Kephas_Serialization_ServiceStack_Text_DefaultJsonSerializerConfigurator_Logger" data-uid="Kephas.Serialization.ServiceStack.Text.DefaultJsonSerializerConfigurator.Logger">Logger</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ILogger&lt;IJsonSerializerConfigurator&gt; Logger { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.Serialization.ServiceStack.Text.IJsonSerializerConfigurator.html">IJsonSerializerConfigurator</a>&gt;</td>
-        <td><p>The logger.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_ServiceStack_Text_DefaultJsonSerializerConfigurator_TypeAttr.md&amp;value=---%0Auid%3A%20Kephas.Serialization.ServiceStack.Text.DefaultJsonSerializerConfigurator.TypeAttr%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Serialization.ServiceStack.Text/DefaultJsonSerializerConfigurator.cs/#L88">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Serialization.ServiceStack.Text/DefaultJsonSerializerConfigurator.cs/#L80">View Source</a>
   </span>
   <a id="Kephas_Serialization_ServiceStack_Text_DefaultJsonSerializerConfigurator_TypeAttr_" data-uid="Kephas.Serialization.ServiceStack.Text.DefaultJsonSerializerConfigurator.TypeAttr*"></a>
   <h4 id="Kephas_Serialization_ServiceStack_Text_DefaultJsonSerializerConfigurator_TypeAttr" data-uid="Kephas.Serialization.ServiceStack.Text.DefaultJsonSerializerConfigurator.TypeAttr">TypeAttr</h4>
@@ -263,7 +239,7 @@ public class DefaultJsonSerializerConfigurator : IJsonSerializerConfigurator</co
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_ServiceStack_Text_DefaultJsonSerializerConfigurator_ConfigureJsonSerialization_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.ServiceStack.Text.DefaultJsonSerializerConfigurator.ConfigureJsonSerialization(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Serialization.ServiceStack.Text/DefaultJsonSerializerConfigurator.cs/#L97">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Serialization.ServiceStack.Text/DefaultJsonSerializerConfigurator.cs/#L89">View Source</a>
   </span>
   <a id="Kephas_Serialization_ServiceStack_Text_DefaultJsonSerializerConfigurator_ConfigureJsonSerialization_" data-uid="Kephas.Serialization.ServiceStack.Text.DefaultJsonSerializerConfigurator.ConfigureJsonSerialization*"></a>
   <h4 id="Kephas_Serialization_ServiceStack_Text_DefaultJsonSerializerConfigurator_ConfigureJsonSerialization_System_Boolean_" data-uid="Kephas.Serialization.ServiceStack.Text.DefaultJsonSerializerConfigurator.ConfigureJsonSerialization(System.Boolean)">ConfigureJsonSerialization(Boolean)</h4>
@@ -309,6 +285,9 @@ public class DefaultJsonSerializerConfigurator : IJsonSerializerConfigurator</co
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Serialization.ServiceStack.Text.IJsonSerializerConfigurator.html">IJsonSerializerConfigurator</a>
   </div>

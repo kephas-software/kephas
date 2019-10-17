@@ -79,15 +79,22 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DefaultTypeResolver</span></div>
-      <div class="level2"><a class="xref" href="Kephas.Serialization.ServiceStack.Text.Reflection.ServiceStackTypeResolver.html">ServiceStackTypeResolver</a></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">DefaultTypeResolver</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Reflection.ITypeResolver.html">ITypeResolver</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -115,7 +122,7 @@
   <h5 id="Kephas_Reflection_DefaultTypeResolver_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Low)]
-public class DefaultTypeResolver : ITypeResolver</code></pre>
+public class DefaultTypeResolver : Loggable, ILoggable, ITypeResolver</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -153,40 +160,6 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_DefaultTypeResolver_Logger.md&amp;value=---%0Auid%3A%20Kephas.Reflection.DefaultTypeResolver.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L57">View Source</a>
-  </span>
-  <a id="Kephas_Reflection_DefaultTypeResolver_Logger_" data-uid="Kephas.Reflection.DefaultTypeResolver.Logger*"></a>
-  <h4 id="Kephas_Reflection_DefaultTypeResolver_Logger" data-uid="Kephas.Reflection.DefaultTypeResolver.Logger">Logger</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ILogger&lt;DefaultTypeResolver&gt; Logger { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.Reflection.DefaultTypeResolver.html">DefaultTypeResolver</a>&gt;</td>
-        <td><p>The logger.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -194,7 +167,7 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_DefaultTypeResolver_GetAllAssemblies.md&amp;value=---%0Auid%3A%20Kephas.Reflection.DefaultTypeResolver.GetAllAssemblies%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L124">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L116">View Source</a>
   </span>
   <a id="Kephas_Reflection_DefaultTypeResolver_GetAllAssemblies_" data-uid="Kephas.Reflection.DefaultTypeResolver.GetAllAssemblies*"></a>
   <h4 id="Kephas_Reflection_DefaultTypeResolver_GetAllAssemblies" data-uid="Kephas.Reflection.DefaultTypeResolver.GetAllAssemblies">GetAllAssemblies()</h4>
@@ -226,7 +199,7 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_DefaultTypeResolver_ResolveType_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.DefaultTypeResolver.ResolveType(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L67">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L59">View Source</a>
   </span>
   <a id="Kephas_Reflection_DefaultTypeResolver_ResolveType_" data-uid="Kephas.Reflection.DefaultTypeResolver.ResolveType*"></a>
   <h4 id="Kephas_Reflection_DefaultTypeResolver_ResolveType_System_String_System_Boolean_" data-uid="Kephas.Reflection.DefaultTypeResolver.ResolveType(System.String,System.Boolean)">ResolveType(String, Boolean)</h4>
@@ -282,7 +255,7 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Reflection_DefaultTypeResolver_ResolveTypeCore_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Reflection.DefaultTypeResolver.ResolveTypeCore(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L85">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Reflection/DefaultTypeResolver.cs/#L77">View Source</a>
   </span>
   <a id="Kephas_Reflection_DefaultTypeResolver_ResolveTypeCore_" data-uid="Kephas.Reflection.DefaultTypeResolver.ResolveTypeCore*"></a>
   <h4 id="Kephas_Reflection_DefaultTypeResolver_ResolveTypeCore_System_String_" data-uid="Kephas.Reflection.DefaultTypeResolver.ResolveTypeCore(System.String)">ResolveTypeCore(String)</h4>
@@ -328,6 +301,9 @@ public class DefaultTypeResolver : ITypeResolver</code></pre>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ITypeResolver.html">ITypeResolver</a>
   </div>

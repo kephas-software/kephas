@@ -73,7 +73,7 @@
   
   <h1 id="Kephas_Application_IFeatureManager" data-uid="Kephas.Application.IFeatureManager" class="text-break">Interface IFeatureManager
   </h1>
-  <div class="markdown level0 summary"><p>Shared service contract for managers of features within the application.</p>
+  <div class="markdown level0 summary"><p>Singleton service contract for managers of features within the application.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
@@ -86,10 +86,10 @@
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
-  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h6><strong>Assembly</strong>: Kephas.Application.dll</h6>
   <h5 id="Kephas_Application_IFeatureManager_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(FeatureInfoAttribute)})]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(FeatureInfoAttribute)})]
 public interface IFeatureManager : IAsyncInitializable, IAsyncFinalizable</code></pre>
   </div>
   <h5 id="Kephas_Application_IFeatureManager_remarks"><strong>Remarks</strong></h5>
@@ -103,7 +103,7 @@ It supports initialization and finalization.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IFeatureManager_FinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IFeatureManager.FinalizeAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IFeatureManager.cs/#L46">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/IFeatureManager.cs/#L46">View Source</a>
   </span>
   <a id="Kephas_Application_IFeatureManager_FinalizeAsync_" data-uid="Kephas.Application.IFeatureManager.FinalizeAsync*"></a>
   <h4 id="Kephas_Application_IFeatureManager_FinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.IFeatureManager.FinalizeAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">FinalizeAsync(IAppContext, CancellationToken)</h4>
@@ -159,7 +159,7 @@ It supports initialization and finalization.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IFeatureManager_InitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IFeatureManager.InitializeAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IFeatureManager.cs/#L36">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/IFeatureManager.cs/#L36">View Source</a>
   </span>
   <a id="Kephas_Application_IFeatureManager_InitializeAsync_" data-uid="Kephas.Application.IFeatureManager.InitializeAsync*"></a>
   <h4 id="Kephas_Application_IFeatureManager_InitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.IFeatureManager.InitializeAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">InitializeAsync(IAppContext, CancellationToken)</h4>
@@ -264,7 +264,7 @@ It supports initialization and finalization.</p>
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IFeatureManager.md&amp;value=---%0Auid%3A%20Kephas.Application.IFeatureManager%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IFeatureManager.cs/#L25" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/IFeatureManager.cs/#L25" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

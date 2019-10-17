@@ -92,7 +92,7 @@
   <h6><strong>Assembly</strong>: Kephas.Model.dll</h6>
   <h5 id="Kephas_Model_Runtime_Configuration_IRuntimeModelElementConfigurator_2_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(AllowMultiple = true, ContractType = typeof(IRuntimeModelElementConfigurator))]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(AllowMultiple = true, ContractType = typeof(IRuntimeModelElementConfigurator))]
 public interface IRuntimeModelElementConfigurator&lt;TElement, TRuntimeElement&gt; : IRuntimeModelElementConfigurator, IElementConfigurator</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>

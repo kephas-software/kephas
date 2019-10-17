@@ -91,35 +91,35 @@
       <a class="xref" href="Kephas.Dynamic.IIndexable.html#Kephas_Dynamic_IIndexable_Item_System_String_">IIndexable.Item[String]</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html#Kephas_IAmbientServicesAware_AmbientServices">IAmbientServicesAware.AmbientServices</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html#Kephas_Logging_ILoggable_Logger">ILoggable.Logger</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html#Kephas_Composition_ICompositionContextAware_CompositionContext">ICompositionContextAware.CompositionContext</a>
+      <span class="xref">System.IDisposable.Dispose()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Services.html">Kephas.Services</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Services_IContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IContext : IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IContext : IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable, IDisposable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_IContext_ContextLogger.md&amp;value=---%0Auid%3A%20Kephas.Services.IContext.ContextLogger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_IContext_AmbientServices.md&amp;value=---%0Auid%3A%20Kephas.Services.IContext.AmbientServices%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L39">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L42">View Source</a>
   </span>
-  <a id="Kephas_Services_IContext_ContextLogger_" data-uid="Kephas.Services.IContext.ContextLogger*"></a>
-  <h4 id="Kephas_Services_IContext_ContextLogger" data-uid="Kephas.Services.IContext.ContextLogger">ContextLogger</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the context logger.</p>
+  <a id="Kephas_Services_IContext_AmbientServices_" data-uid="Kephas.Services.IContext.AmbientServices*"></a>
+  <h4 id="Kephas_Services_IContext_AmbientServices" data-uid="Kephas.Services.IContext.AmbientServices">AmbientServices</h4>
+  <div class="markdown level1 summary"><p>Gets the ambient services.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ILogger ContextLogger { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">IAmbientServices AmbientServices { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -131,8 +131,40 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Logging.ILogger.html">ILogger</a></td>
-        <td><p>The context logger.</p>
+        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
+        <td><p>The ambient services.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_IContext_CompositionContext.md&amp;value=---%0Auid%3A%20Kephas.Services.IContext.CompositionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L34">View Source</a>
+  </span>
+  <a id="Kephas_Services_IContext_CompositionContext_" data-uid="Kephas.Services.IContext.CompositionContext*"></a>
+  <h4 id="Kephas_Services_IContext_CompositionContext" data-uid="Kephas.Services.IContext.CompositionContext">CompositionContext</h4>
+  <div class="markdown level1 summary"><p>Gets a context for the dependency injection/composition.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ICompositionContext CompositionContext { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><p>The composition context.</p>
 </td>
       </tr>
     </tbody>
@@ -142,7 +174,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_IContext_Identity.md&amp;value=---%0Auid%3A%20Kephas.Services.IContext.Identity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L31">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L50">View Source</a>
   </span>
   <a id="Kephas_Services_IContext_Identity_" data-uid="Kephas.Services.IContext.Identity*"></a>
   <h4 id="Kephas_Services_IContext_Identity" data-uid="Kephas.Services.IContext.Identity">Identity</h4>
@@ -222,6 +254,12 @@
       <a class="xref" href="Kephas.Services.ContextExtensions.html#Kephas_Services_ContextExtensions_WithLogger__1___0_Kephas_Logging_ILogger_">ContextExtensions.WithLogger&lt;TContext&gt;(TContext, ILogger)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Services.ContextExtensions.html#Kephas_Services_ContextExtensions_AddResource__1___0_System_IDisposable___">ContextExtensions.AddResource&lt;TContext&gt;(TContext, IDisposable[])</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerExtensions.html#Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_">MessageBrokerExtensions.CreateBrokeredMessageBuilder(IContext)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>
   </div>
   <div>
@@ -247,7 +285,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_IContext.md&amp;value=---%0Auid%3A%20Kephas.Services.IContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/IContext.cs/#L26" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

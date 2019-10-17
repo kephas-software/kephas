@@ -79,16 +79,24 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DataIOInstallerBase</span></div>
-      <div class="level2"><a class="xref" href="Kephas.Data.IO.Setup.AssemblyEmbeddedResourcesDataInstallerBase.html">AssemblyEmbeddedResourcesDataInstallerBase</a></div>
-      <div class="level2"><a class="xref" href="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.html">DirectoryDataInstallerBase</a></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">DataIOInstallerBase</span></div>
+      <div class="level3"><a class="xref" href="Kephas.Data.IO.Setup.AssemblyEmbeddedResourcesDataInstallerBase.html">AssemblyEmbeddedResourcesDataInstallerBase</a></div>
+      <div class="level3"><a class="xref" href="Kephas.Data.IO.Setup.DirectoryDataInstallerBase.html">DirectoryDataInstallerBase</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Setup.IDataInstaller.html">IDataInstaller</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -115,7 +123,7 @@
   <h6><strong>Assembly</strong>: Kephas.Data.IO.dll</h6>
   <h5 id="Kephas_Data_IO_Setup_DataIOInstallerBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class DataIOInstallerBase : IDataInstaller</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DataIOInstallerBase : Loggable, ILoggable, IDataInstaller</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -166,7 +174,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_DataImportService.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.DataImportService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L65">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L57">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_DataImportService_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.DataImportService*"></a>
   <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_DataImportService" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.DataImportService">DataImportService</h4>
@@ -198,7 +206,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_DataSpaceFactory.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.DataSpaceFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L73">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L65">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_DataSpaceFactory_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.DataSpaceFactory*"></a>
   <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_DataSpaceFactory" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.DataSpaceFactory">DataSpaceFactory</h4>
@@ -225,38 +233,6 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_Logger.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L57">View Source</a>
-  </span>
-  <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_Logger_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.Logger*"></a>
-  <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_Logger" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.Logger">Logger</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ILogger&lt;IDataInstaller&gt; Logger { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.Data.Setup.IDataInstaller.html">IDataInstaller</a>&gt;</td>
-        <td><p>The logger.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -264,7 +240,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_CreateDataImportContext_Kephas_Data_Setup_IDataSetupContext_Kephas_Data_IDataSpace_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.CreateDataImportContext(Kephas.Data.Setup.IDataSetupContext%2CKephas.Data.IDataSpace)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L201">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L193">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_CreateDataImportContext_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.CreateDataImportContext*"></a>
   <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_CreateDataImportContext_Kephas_Data_Setup_IDataSetupContext_Kephas_Data_IDataSpace_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.CreateDataImportContext(Kephas.Data.Setup.IDataSetupContext,Kephas.Data.IDataSpace)">CreateDataImportContext(IDataSetupContext, IDataSpace)</h4>
@@ -320,7 +296,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_CreateDataSource_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.CreateDataSource(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L215">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L207">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_CreateDataSource_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.CreateDataSource*"></a>
   <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_CreateDataSource_System_String_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.CreateDataSource(System.String)">CreateDataSource(String)</h4>
@@ -370,7 +346,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_GetInstallDataFilePaths.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.GetInstallDataFilePaths%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L111">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L103">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_GetInstallDataFilePaths_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.GetInstallDataFilePaths*"></a>
   <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_GetInstallDataFilePaths" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.GetInstallDataFilePaths">GetInstallDataFilePaths()</h4>
@@ -402,7 +378,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_GetUninstallDataFilePaths.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.GetUninstallDataFilePaths%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L123">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L115">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_GetUninstallDataFilePaths_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.GetUninstallDataFilePaths*"></a>
   <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_GetUninstallDataFilePaths" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.GetUninstallDataFilePaths">GetUninstallDataFilePaths()</h4>
@@ -435,7 +411,7 @@ collection.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_ImportDataAsync_Kephas_Data_Setup_IDataSetupContext_System_Collections_Generic_IEnumerable_System_String__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.ImportDataAsync(Kephas.Data.Setup.IDataSetupContext%2CSystem.Collections.Generic.IEnumerable%7BSystem.String%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L137">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L129">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_ImportDataAsync_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.ImportDataAsync*"></a>
   <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_ImportDataAsync_Kephas_Data_Setup_IDataSetupContext_System_Collections_Generic_IEnumerable_System_String__System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.ImportDataAsync(Kephas.Data.Setup.IDataSetupContext,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">ImportDataAsync(IDataSetupContext, IEnumerable&lt;String&gt;, CancellationToken)</h4>
@@ -497,7 +473,7 @@ collection.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_ImportDataFileAsync_Kephas_Data_Setup_IDataSetupContext_System_String_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.ImportDataFileAsync(Kephas.Data.Setup.IDataSetupContext%2CSystem.String%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L164">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L156">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_ImportDataFileAsync_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.ImportDataFileAsync*"></a>
   <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_ImportDataFileAsync_Kephas_Data_Setup_IDataSetupContext_System_String_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.ImportDataFileAsync(Kephas.Data.Setup.IDataSetupContext,System.String,System.Threading.CancellationToken)">ImportDataFileAsync(IDataSetupContext, String, CancellationToken)</h4>
@@ -559,7 +535,7 @@ collection.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_InstallDataAsync_Kephas_Data_Setup_IDataSetupContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.InstallDataAsync(Kephas.Data.Setup.IDataSetupContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L83">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L75">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_InstallDataAsync_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.InstallDataAsync*"></a>
   <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_InstallDataAsync_Kephas_Data_Setup_IDataSetupContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.InstallDataAsync(Kephas.Data.Setup.IDataSetupContext,System.Threading.CancellationToken)">InstallDataAsync(IDataSetupContext, CancellationToken)</h4>
@@ -615,7 +591,7 @@ collection.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Setup_DataIOInstallerBase_UninstallDataAsync_Kephas_Data_Setup_IDataSetupContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Setup.DataIOInstallerBase.UninstallDataAsync(Kephas.Data.Setup.IDataSetupContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L98">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Setup/DataIOInstallerBase.cs/#L90">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Setup_DataIOInstallerBase_UninstallDataAsync_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.UninstallDataAsync*"></a>
   <h4 id="Kephas_Data_IO_Setup_DataIOInstallerBase_UninstallDataAsync_Kephas_Data_Setup_IDataSetupContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Setup.DataIOInstallerBase.UninstallDataAsync(Kephas.Data.Setup.IDataSetupContext,System.Threading.CancellationToken)">UninstallDataAsync(IDataSetupContext, CancellationToken)</h4>
@@ -667,6 +643,9 @@ collection.</p>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Data.Setup.IDataInstaller.html">IDataInstaller</a>
   </div>

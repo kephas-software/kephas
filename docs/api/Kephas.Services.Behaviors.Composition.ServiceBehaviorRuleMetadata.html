@@ -101,13 +101,13 @@
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_OverridePriority">AppServiceMetadata.OverridePriority</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_OptionalService">AppServiceMetadata.OptionalService</a>
-    </div>
-    <div>
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_ServiceName">AppServiceMetadata.ServiceName</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_AppServiceImplementationType">AppServiceMetadata.AppServiceImplementationType</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_Dependencies">AppServiceMetadata.Dependencies</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_ToString">AppServiceMetadata.ToString()</a>
@@ -241,19 +241,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Behaviors_Composition_ServiceBehaviorRuleMetadata__ctor_System_Type_System_Int32_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Services.Behaviors.Composition.ServiceBehaviorRuleMetadata.%23ctor(System.Type%2CSystem.Int32%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Behaviors_Composition_ServiceBehaviorRuleMetadata__ctor_System_Type_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Kephas.Services.Behaviors.Composition.ServiceBehaviorRuleMetadata.%23ctor(System.Type%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Behaviors/Composition/ServiceBehaviorRuleMetadata.cs/#L47">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Behaviors/Composition/ServiceBehaviorRuleMetadata.cs/#L46">View Source</a>
   </span>
   <a id="Kephas_Services_Behaviors_Composition_ServiceBehaviorRuleMetadata__ctor_" data-uid="Kephas.Services.Behaviors.Composition.ServiceBehaviorRuleMetadata.#ctor*"></a>
-  <h4 id="Kephas_Services_Behaviors_Composition_ServiceBehaviorRuleMetadata__ctor_System_Type_System_Int32_System_Int32_System_Boolean_" data-uid="Kephas.Services.Behaviors.Composition.ServiceBehaviorRuleMetadata.#ctor(System.Type,System.Int32,System.Int32,System.Boolean)">ServiceBehaviorRuleMetadata(Type, Int32, Int32, Boolean)</h4>
+  <h4 id="Kephas_Services_Behaviors_Composition_ServiceBehaviorRuleMetadata__ctor_System_Type_System_Int32_System_Int32_" data-uid="Kephas.Services.Behaviors.Composition.ServiceBehaviorRuleMetadata.#ctor(System.Type,System.Int32,System.Int32)">ServiceBehaviorRuleMetadata(Type, Int32, Int32)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Services.Behaviors.Composition.ServiceBehaviorRuleMetadata.html">ServiceBehaviorRuleMetadata</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ServiceBehaviorRuleMetadata(Type serviceContractType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public ServiceBehaviorRuleMetadata(Type serviceContractType, int processingPriority = 0, int overridePriority = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -274,19 +274,13 @@
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">processingPriority</span></td>
-        <td><p>The processing priority (optional).</p>
+        <td><p>Optional. The processing priority.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">overridePriority</span></td>
-        <td><p>The override priority (optional).</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">optionalService</span></td>
-        <td><p><code>true</code> if the service is optional, <code>false</code> if not (optional).</p>
+        <td><p>Optional. The override priority.</p>
 </td>
       </tr>
     </tbody>
@@ -298,7 +292,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Services_Behaviors_Composition_ServiceBehaviorRuleMetadata_ServiceContractType.md&amp;value=---%0Auid%3A%20Kephas.Services.Behaviors.Composition.ServiceBehaviorRuleMetadata.ServiceContractType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Behaviors/Composition/ServiceBehaviorRuleMetadata.cs/#L61">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Services/Behaviors/Composition/ServiceBehaviorRuleMetadata.cs/#L60">View Source</a>
   </span>
   <a id="Kephas_Services_Behaviors_Composition_ServiceBehaviorRuleMetadata_ServiceContractType_" data-uid="Kephas.Services.Behaviors.Composition.ServiceBehaviorRuleMetadata.ServiceContractType*"></a>
   <h4 id="Kephas_Services_Behaviors_Composition_ServiceBehaviorRuleMetadata_ServiceContractType" data-uid="Kephas.Services.Behaviors.Composition.ServiceBehaviorRuleMetadata.ServiceContractType">ServiceContractType</h4>

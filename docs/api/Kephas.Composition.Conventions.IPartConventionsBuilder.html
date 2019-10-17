@@ -86,10 +86,112 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_AllowMultiple_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.AllowMultiple(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L82">View Source</a>
+  </span>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_AllowMultiple_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.AllowMultiple*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_AllowMultiple_System_Boolean_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.AllowMultiple(System.Boolean)">AllowMultiple(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Indicates that this service allows multiple registrations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder AllowMultiple(bool value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>True if multiple service registrations are allowed, false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.Conventions.IPartConventionsBuilder.html">IPartConventionsBuilder</a></td>
+        <td><p>A part builder allowing further configuration of the part.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_AsServiceType_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.AsServiceType(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L31">View Source</a>
+  </span>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_AsServiceType_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.AsServiceType*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_AsServiceType_System_Type_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.AsServiceType(System.Type)">AsServiceType(Type)</h4>
+  <div class="markdown level1 summary"><p>Indicates the declared service type. Typically this is the same as the contract type, but
+this may get overwritten, for example when declaring generic type services for collecting
+metadata.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder AsServiceType(Type serviceType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">serviceType</span></td>
+        <td><p>Type of the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.Conventions.IPartConventionsBuilder.html">IPartConventionsBuilder</a></td>
+        <td><p>A part builder allowing further configuration of the part.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_Export_System_Action_Kephas_Composition_Conventions_IExportConventionsBuilder__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.Export(System.Action%7BKephas.Composition.Conventions.IExportConventionsBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L42">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L52">View Source</a>
   </span>
   <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_Export_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Export*"></a>
   <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_Export_System_Action_Kephas_Composition_Conventions_IExportConventionsBuilder__" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Export(System.Action{Kephas.Composition.Conventions.IExportConventionsBuilder})">Export(Action&lt;IExportConventionsBuilder&gt;)</h4>
@@ -136,19 +238,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_ExportInterfaces_System_Predicate_System_Type__System_Action_System_Type_Kephas_Composition_Conventions_IExportConventionsBuilder__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.ExportInterfaces(System.Predicate%7BSystem.Type%7D%2CSystem.Action%7BSystem.Type%2CKephas.Composition.Conventions.IExportConventionsBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_ExportInterface_System_Type_System_Action_System_Type_Kephas_Composition_Conventions_IExportConventionsBuilder__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.ExportInterface(System.Type%2CSystem.Action%7BSystem.Type%2CKephas.Composition.Conventions.IExportConventionsBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L52">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L62">View Source</a>
   </span>
-  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_ExportInterfaces_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ExportInterfaces*"></a>
-  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_ExportInterfaces_System_Predicate_System_Type__System_Action_System_Type_Kephas_Composition_Conventions_IExportConventionsBuilder__" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ExportInterfaces(System.Predicate{System.Type},System.Action{System.Type,Kephas.Composition.Conventions.IExportConventionsBuilder})">ExportInterfaces(Predicate&lt;Type&gt;, Action&lt;Type, IExportConventionsBuilder&gt;)</h4>
-  <div class="markdown level1 summary"><p>Select the interfaces on the part type that will be exported.</p>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_ExportInterface_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ExportInterface*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_ExportInterface_System_Type_System_Action_System_Type_Kephas_Composition_Conventions_IExportConventionsBuilder__" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ExportInterface(System.Type,System.Action{System.Type,Kephas.Composition.Conventions.IExportConventionsBuilder})">ExportInterface(Type, Action&lt;Type, IExportConventionsBuilder&gt;)</h4>
+  <div class="markdown level1 summary"><p>Select the interface on the part type that will be exported.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IPartConventionsBuilder ExportInterfaces(Predicate&lt;Type&gt; interfaceFilter = null, Action&lt;Type, IExportConventionsBuilder&gt; exportConfiguration = null)</code></pre>
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder ExportInterface(Type exportInterface, Action&lt;Type, IExportConventionsBuilder&gt; exportConfiguration = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -161,9 +263,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Predicate</span>&lt;<span class="xref">System.Type</span>&gt;</td>
-        <td><span class="parametername">interfaceFilter</span></td>
-        <td><p>The interface filter.</p>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">exportInterface</span></td>
+        <td><p>The interface to export.</p>
 </td>
       </tr>
       <tr>
@@ -192,94 +294,20 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_ImportProperties_System_Predicate_System_Reflection_PropertyInfo__System_Action_System_Reflection_PropertyInfo_Kephas_Composition_Conventions_IImportConventionsBuilder__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.ImportProperties(System.Predicate%7BSystem.Reflection.PropertyInfo%7D%2CSystem.Action%7BSystem.Reflection.PropertyInfo%2CKephas.Composition.Conventions.IImportConventionsBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_Scoped.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.Scoped%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L69">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L45">View Source</a>
   </span>
-  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_ImportProperties_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ImportProperties*"></a>
-  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_ImportProperties_System_Predicate_System_Reflection_PropertyInfo__System_Action_System_Reflection_PropertyInfo_Kephas_Composition_Conventions_IImportConventionsBuilder__" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ImportProperties(System.Predicate{System.Reflection.PropertyInfo},System.Action{System.Reflection.PropertyInfo,Kephas.Composition.Conventions.IImportConventionsBuilder})">ImportProperties(Predicate&lt;PropertyInfo&gt;, Action&lt;PropertyInfo, IImportConventionsBuilder&gt;)</h4>
-  <div class="markdown level1 summary"><p>Select properties to import into the part.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IPartConventionsBuilder ImportProperties(Predicate&lt;PropertyInfo&gt; propertyFilter, Action&lt;PropertyInfo, IImportConventionsBuilder&gt; importConfiguration = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Predicate</span>&lt;<span class="xref">System.Reflection.PropertyInfo</span>&gt;</td>
-        <td><span class="parametername">propertyFilter</span></td>
-        <td><p>Filter to select matching properties.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Action</span>&lt;<span class="xref">System.Reflection.PropertyInfo</span>, <a class="xref" href="Kephas.Composition.Conventions.IImportConventionsBuilder.html">IImportConventionsBuilder</a>&gt;</td>
-        <td><span class="parametername">importConfiguration</span></td>
-        <td><p>Action to configure selected properties.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Composition.Conventions.IPartConventionsBuilder.html">IPartConventionsBuilder</a></td>
-        <td><p>A part builder allowing further configuration of the part.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_ScopeShared_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.ScopeShared(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L35">View Source</a>
-  </span>
-  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_ScopeShared_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ScopeShared*"></a>
-  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_ScopeShared_System_String_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.ScopeShared(System.String)">ScopeShared(String)</h4>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_Scoped_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Scoped*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_Scoped" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Scoped">Scoped()</h4>
   <div class="markdown level1 summary"><p>Mark the part as being shared within the scope.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IPartConventionsBuilder ScopeShared(string scopeName = &quot;default&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder Scoped()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">scopeName</span></td>
-        <td><p>Name of the scope.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -301,7 +329,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_SelectConstructor_System_Func_System_Collections_Generic_IEnumerable_System_Reflection_ConstructorInfo__System_Reflection_ConstructorInfo__System_Action_System_Reflection_ParameterInfo_Kephas_Composition_Conventions_IImportConventionsBuilder__.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.SelectConstructor(System.Func%7BSystem.Collections.Generic.IEnumerable%7BSystem.Reflection.ConstructorInfo%7D%2CSystem.Reflection.ConstructorInfo%7D%2CSystem.Action%7BSystem.Reflection.ParameterInfo%2CKephas.Composition.Conventions.IImportConventionsBuilder%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L61">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L73">View Source</a>
   </span>
   <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_SelectConstructor_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.SelectConstructor*"></a>
   <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_SelectConstructor_System_Func_System_Collections_Generic_IEnumerable_System_Reflection_ConstructorInfo__System_Reflection_ConstructorInfo__System_Action_System_Reflection_ParameterInfo_Kephas_Composition_Conventions_IImportConventionsBuilder__" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.SelectConstructor(System.Func{System.Collections.Generic.IEnumerable{System.Reflection.ConstructorInfo},System.Reflection.ConstructorInfo},System.Action{System.Reflection.ParameterInfo,Kephas.Composition.Conventions.IImportConventionsBuilder})">SelectConstructor(Func&lt;IEnumerable&lt;ConstructorInfo&gt;, ConstructorInfo&gt;, Action&lt;ParameterInfo, IImportConventionsBuilder&gt;)</h4>
@@ -354,19 +382,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_Shared.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.Shared%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_IPartConventionsBuilder_Singleton.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.IPartConventionsBuilder.Singleton%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L26">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/IPartConventionsBuilder.cs/#L37">View Source</a>
   </span>
-  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_Shared_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Shared*"></a>
-  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_Shared" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Shared">Shared()</h4>
+  <a id="Kephas_Composition_Conventions_IPartConventionsBuilder_Singleton_" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Singleton*"></a>
+  <h4 id="Kephas_Composition_Conventions_IPartConventionsBuilder_Singleton" data-uid="Kephas.Composition.Conventions.IPartConventionsBuilder.Singleton">Singleton()</h4>
   <div class="markdown level1 summary"><p>Mark the part as being shared within the entire composition.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IPartConventionsBuilder Shared()</code></pre>
+    <pre><code class="lang-csharp hljs">IPartConventionsBuilder Singleton()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">

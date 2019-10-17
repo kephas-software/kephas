@@ -79,18 +79,17 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Model.Runtime.RuntimeModelInfoProviderBase-1.html">RuntimeModelInfoProviderBase</a>&lt;<a class="xref" href="Kephas.Model.Runtime.SystemPrimitiveTypesModelInfoProvider.html">SystemPrimitiveTypesModelInfoProvider</a>&gt;</div>
-    <div class="level2"><span class="xref">SystemPrimitiveTypesModelInfoProvider</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Model.Runtime.RuntimeModelInfoProviderBase-1.html">RuntimeModelInfoProviderBase</a>&lt;<a class="xref" href="Kephas.Model.Runtime.SystemPrimitiveTypesModelInfoProvider.html">SystemPrimitiveTypesModelInfoProvider</a>&gt;</div>
+    <div class="level3"><span class="xref">SystemPrimitiveTypesModelInfoProvider</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Model.Construction.IModelInfoProvider.html">IModelInfoProvider</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Kephas.Model.Runtime.RuntimeModelInfoProviderBase-1.html#Kephas_Model_Runtime_RuntimeModelInfoProviderBase_1_Logger">RuntimeModelInfoProviderBase&lt;SystemPrimitiveTypesModelInfoProvider&gt;.Logger</a>
-    </div>
     <div>
       <a class="xref" href="Kephas.Model.Runtime.RuntimeModelInfoProviderBase-1.html#Kephas_Model_Runtime_RuntimeModelInfoProviderBase_1_RuntimeModelElementFactory">RuntimeModelInfoProviderBase&lt;SystemPrimitiveTypesModelInfoProvider&gt;.RuntimeModelElementFactory</a>
     </div>
@@ -99,6 +98,12 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Model.Runtime.RuntimeModelInfoProviderBase-1.html#Kephas_Model_Runtime_RuntimeModelInfoProviderBase_1_TryGetModelElementInfo_Kephas_Reflection_IElementInfo_Kephas_Model_Construction_IModelConstructionContext_">RuntimeModelInfoProviderBase&lt;SystemPrimitiveTypesModelInfoProvider&gt;.TryGetModelElementInfo(IElementInfo, IModelConstructionContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -126,7 +131,7 @@
   <h6><strong>Assembly</strong>: Kephas.Model.dll</h6>
   <h5 id="Kephas_Model_Runtime_SystemPrimitiveTypesModelInfoProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SystemPrimitiveTypesModelInfoProvider : RuntimeModelInfoProviderBase&lt;SystemPrimitiveTypesModelInfoProvider&gt;, IModelInfoProvider</code></pre>
+    <pre><code class="lang-csharp hljs">public class SystemPrimitiveTypesModelInfoProvider : RuntimeModelInfoProviderBase&lt;SystemPrimitiveTypesModelInfoProvider&gt;, ILoggable, IModelInfoProvider</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -225,6 +230,9 @@
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Kephas.Model.Runtime.RuntimeModelInfoProviderBase&lt;Kephas.Model.Runtime.SystemPrimitiveTypesModelInfoProvider&gt;.GetElementInfosCoreAsync(Kephas.Model.Construction.IModelConstructionContext, System.Threading.CancellationToken)</span></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Model.Construction.IModelInfoProvider.html">IModelInfoProvider</a>
   </div>

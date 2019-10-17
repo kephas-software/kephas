@@ -79,17 +79,20 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
-    <div class="level2"><span class="xref">PersistChangesCommand</span></div>
-      <div class="level3"><a class="xref" href="Kephas.Data.Client.DTO.DtoPersistChangesCommand.html">DtoPersistChangesCommand</a></div>
-      <div class="level3"><a class="xref" href="Kephas.Data.LLBLGen.Commands.LLBLGenPersistChangesCommand.html">LLBLGenPersistChangesCommand</a></div>
-      <div class="level3"><a class="xref" href="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.html">MongoPersistChangesCommand</a></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
+    <div class="level3"><span class="xref">PersistChangesCommand</span></div>
+      <div class="level4"><a class="xref" href="Kephas.Data.Client.DTO.DtoPersistChangesCommand.html">DtoPersistChangesCommand</a></div>
+      <div class="level4"><a class="xref" href="Kephas.Data.LLBLGen.Commands.LLBLGenPersistChangesCommand.html">LLBLGenPersistChangesCommand</a></div>
+      <div class="level4"><a class="xref" href="Kephas.Data.MongoDB.Commands.MongoPersistChangesCommand.html">MongoPersistChangesCommand</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.IPersistChangesCommand.html">IPersistChangesCommand</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand</a>&lt;<a class="xref" href="Kephas.Data.Commands.IPersistChangesContext.html">IPersistChangesContext</a>, <a class="xref" href="Kephas.Data.Commands.IDataCommandResult.html">IDataCommandResult</a>&gt;</div>
     <div><a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a></div>
+    <div><a class="xref" href="Kephas.Operations.IAsyncOperation.html">IAsyncOperation</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -100,6 +103,9 @@
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Operations_IAsyncOperation_ExecuteAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.IAsyncOperation.ExecuteAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_GetIdEqualityExpression__1_Kephas_Data_IDataContext_System_Object_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.GetIdEqualityExpression&lt;T&gt;(IDataContext, Object)</a>
     </div>
     <div>
@@ -107,6 +113,12 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetEntityActivator_Kephas_Data_IDataContext_">DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;.TryGetEntityActivator(IDataContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -135,7 +147,7 @@
   <h5 id="Kephas_Data_Commands_PersistChangesCommand_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DataContextType(typeof(DataContextBase))]
-public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;, IPersistChangesCommand, IDataCommand&lt;IPersistChangesContext, IDataCommandResult&gt;, IDataCommand</code></pre>
+public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, IDataCommandResult&gt;, ILoggable, IPersistChangesCommand, IDataCommand&lt;IPersistChangesContext, IDataCommandResult&gt;, IDataCommand, IAsyncOperation</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -207,38 +219,6 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_Logger.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L61">View Source</a>
-  </span>
-  <a id="Kephas_Data_Commands_PersistChangesCommand_Logger_" data-uid="Kephas.Data.Commands.PersistChangesCommand.Logger*"></a>
-  <h4 id="Kephas_Data_Commands_PersistChangesCommand_Logger" data-uid="Kephas.Data.Commands.PersistChangesCommand.Logger">Logger</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ILogger&lt;PersistChangesCommand&gt; Logger { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.Data.Commands.PersistChangesCommand.html">PersistChangesCommand</a>&gt;</td>
-        <td><p>The logger.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -246,7 +226,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_AcceptChanges_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.AcceptChanges(Kephas.Data.Commands.IPersistChangesContext%2CSystem.Collections.Generic.IList%7BKephas.Data.Capabilities.IEntityEntry%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L166">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L158">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_AcceptChanges_" data-uid="Kephas.Data.Commands.PersistChangesCommand.AcceptChanges*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_AcceptChanges_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__" data-uid="Kephas.Data.Commands.PersistChangesCommand.AcceptChanges(Kephas.Data.Commands.IPersistChangesContext,System.Collections.Generic.IList{Kephas.Data.Capabilities.IEntityEntry})">AcceptChanges(IPersistChangesContext, IList&lt;IEntityEntry&gt;)</h4>
@@ -286,7 +266,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_ApplyAfterPersistBehaviorsAsync_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.ApplyAfterPersistBehaviorsAsync(Kephas.Data.Commands.IPersistChangesContext%2CSystem.Collections.Generic.IList%7BKephas.Data.Capabilities.IEntityEntry%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L191">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L183">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_ApplyAfterPersistBehaviorsAsync_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ApplyAfterPersistBehaviorsAsync*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_ApplyAfterPersistBehaviorsAsync_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ApplyAfterPersistBehaviorsAsync(Kephas.Data.Commands.IPersistChangesContext,System.Collections.Generic.IList{Kephas.Data.Capabilities.IEntityEntry},System.Threading.CancellationToken)">ApplyAfterPersistBehaviorsAsync(IPersistChangesContext, IList&lt;IEntityEntry&gt;, CancellationToken)</h4>
@@ -348,7 +328,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_ApplyBeforePersistBehaviorsAsync_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.ApplyBeforePersistBehaviorsAsync(Kephas.Data.Commands.IPersistChangesContext%2CSystem.Collections.Generic.IList%7BKephas.Data.Capabilities.IEntityEntry%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L212">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L204">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_ApplyBeforePersistBehaviorsAsync_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ApplyBeforePersistBehaviorsAsync*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_ApplyBeforePersistBehaviorsAsync_Kephas_Data_Commands_IPersistChangesContext_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ApplyBeforePersistBehaviorsAsync(Kephas.Data.Commands.IPersistChangesContext,System.Collections.Generic.IList{Kephas.Data.Capabilities.IEntityEntry},System.Threading.CancellationToken)">ApplyBeforePersistBehaviorsAsync(IPersistChangesContext, IList&lt;IEntityEntry&gt;, CancellationToken)</h4>
@@ -410,7 +390,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_ComputeIterationChangeSet_Kephas_Data_Commands_IPersistChangesContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.ComputeIterationChangeSet(Kephas.Data.Commands.IPersistChangesContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L231">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L223">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_ComputeIterationChangeSet_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ComputeIterationChangeSet*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_ComputeIterationChangeSet_Kephas_Data_Commands_IPersistChangesContext_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ComputeIterationChangeSet(Kephas.Data.Commands.IPersistChangesContext)">ComputeIterationChangeSet(IPersistChangesContext)</h4>
@@ -460,7 +440,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_ExecuteAsync_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.ExecuteAsync(Kephas.Data.Commands.IPersistChangesContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L71">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L63">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_ExecuteAsync_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ExecuteAsync*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_ExecuteAsync_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ExecuteAsync(Kephas.Data.Commands.IPersistChangesContext,System.Threading.CancellationToken)">ExecuteAsync(IPersistChangesContext, CancellationToken)</h4>
@@ -518,7 +498,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_PersistChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.PersistChangeSetAsync(System.Collections.Generic.IList%7BKephas.Data.Capabilities.IEntityEntry%7D%2CKephas.Data.Commands.IPersistChangesContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L413">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L405">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_PersistChangeSetAsync_" data-uid="Kephas.Data.Commands.PersistChangesCommand.PersistChangeSetAsync*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_PersistChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.PersistChangesCommand.PersistChangeSetAsync(System.Collections.Generic.IList{Kephas.Data.Capabilities.IEntityEntry},Kephas.Data.Commands.IPersistChangesContext,System.Threading.CancellationToken)">PersistChangeSetAsync(IList&lt;IEntityEntry&gt;, IPersistChangesContext, CancellationToken)</h4>
@@ -580,7 +560,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_PostProcessChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.PostProcessChangeSetAsync(System.Collections.Generic.IList%7BKephas.Data.Capabilities.IEntityEntry%7D%2CKephas.Data.Commands.IPersistChangesContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L399">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L391">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_PostProcessChangeSetAsync_" data-uid="Kephas.Data.Commands.PersistChangesCommand.PostProcessChangeSetAsync*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_PostProcessChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.PersistChangesCommand.PostProcessChangeSetAsync(System.Collections.Generic.IList{Kephas.Data.Capabilities.IEntityEntry},Kephas.Data.Commands.IPersistChangesContext,System.Threading.CancellationToken)">PostProcessChangeSetAsync(IList&lt;IEntityEntry&gt;, IPersistChangesContext, CancellationToken)</h4>
@@ -642,7 +622,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_PreProcessChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.PreProcessChangeSetAsync(System.Collections.Generic.IList%7BKephas.Data.Capabilities.IEntityEntry%7D%2CKephas.Data.Commands.IPersistChangesContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L380">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L372">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_PreProcessChangeSetAsync_" data-uid="Kephas.Data.Commands.PersistChangesCommand.PreProcessChangeSetAsync*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_PreProcessChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.PersistChangesCommand.PreProcessChangeSetAsync(System.Collections.Generic.IList{Kephas.Data.Capabilities.IEntityEntry},Kephas.Data.Commands.IPersistChangesContext,System.Threading.CancellationToken)">PreProcessChangeSetAsync(IList&lt;IEntityEntry&gt;, IPersistChangesContext, CancellationToken)</h4>
@@ -707,7 +687,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_ValidateAndPersistChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__System_Int32_Kephas_Data_Commands_IPersistChangesContext_System_Text_StringBuilder_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.ValidateAndPersistChangeSetAsync(System.Collections.Generic.IList%7BKephas.Data.Capabilities.IEntityEntry%7D%2CSystem.Int32%2CKephas.Data.Commands.IPersistChangesContext%2CSystem.Text.StringBuilder%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L267">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L259">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_ValidateAndPersistChangeSetAsync_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ValidateAndPersistChangeSetAsync*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_ValidateAndPersistChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__System_Int32_Kephas_Data_Commands_IPersistChangesContext_System_Text_StringBuilder_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ValidateAndPersistChangeSetAsync(System.Collections.Generic.IList{Kephas.Data.Capabilities.IEntityEntry},System.Int32,Kephas.Data.Commands.IPersistChangesContext,System.Text.StringBuilder,System.Threading.CancellationToken)">ValidateAndPersistChangeSetAsync(IList&lt;IEntityEntry&gt;, Int32, IPersistChangesContext, StringBuilder, CancellationToken)</h4>
@@ -781,7 +761,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_ValidateChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.ValidateChangeSetAsync(System.Collections.Generic.IList%7BKephas.Data.Capabilities.IEntityEntry%7D%2CKephas.Data.Commands.IPersistChangesContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L312">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L304">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_ValidateChangeSetAsync_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ValidateChangeSetAsync*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_ValidateChangeSetAsync_System_Collections_Generic_IList_Kephas_Data_Capabilities_IEntityEntry__Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ValidateChangeSetAsync(System.Collections.Generic.IList{Kephas.Data.Capabilities.IEntityEntry},Kephas.Data.Commands.IPersistChangesContext,System.Threading.CancellationToken)">ValidateChangeSetAsync(IList&lt;IEntityEntry&gt;, IPersistChangesContext, CancellationToken)</h4>
@@ -843,7 +823,7 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Commands_PersistChangesCommand_ValidateEntityAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Commands.PersistChangesCommand.ValidateEntityAsync(System.Object%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.Commands.IPersistChangesContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L351">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Commands/PersistChangesCommand.cs/#L343">View Source</a>
   </span>
   <a id="Kephas_Data_Commands_PersistChangesCommand_ValidateEntityAsync_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ValidateEntityAsync*"></a>
   <h4 id="Kephas_Data_Commands_PersistChangesCommand_ValidateEntityAsync_System_Object_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_Commands_IPersistChangesContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Commands.PersistChangesCommand.ValidateEntityAsync(System.Object,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.Commands.IPersistChangesContext,System.Threading.CancellationToken)">ValidateEntityAsync(Object, IEntityEntry, IPersistChangesContext, CancellationToken)</h4>
@@ -908,6 +888,9 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
   </table>
   <h3 id="implements">Implements</h3>
   <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.Commands.IPersistChangesCommand.html">IPersistChangesCommand</a>
   </div>
   <div>
@@ -915,6 +898,9 @@ public class PersistChangesCommand : DataCommandBase&lt;IPersistChangesContext, 
   </div>
   <div>
       <a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Operations.IAsyncOperation.html">IAsyncOperation</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

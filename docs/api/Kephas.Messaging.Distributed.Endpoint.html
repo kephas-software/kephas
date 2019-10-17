@@ -132,19 +132,19 @@
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint__ctor_System_String_System_String_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.%23ctor(System.String%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint__ctor_System_String_System_String_System_String_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.%23ctor(System.String%2CSystem.String%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L57">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L58">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_Endpoint__ctor_" data-uid="Kephas.Messaging.Distributed.Endpoint.#ctor*"></a>
-  <h4 id="Kephas_Messaging_Distributed_Endpoint__ctor_System_String_System_String_System_String_" data-uid="Kephas.Messaging.Distributed.Endpoint.#ctor(System.String,System.String,System.String)">Endpoint(String, String, String)</h4>
+  <h4 id="Kephas_Messaging_Distributed_Endpoint__ctor_System_String_System_String_System_String_System_String_" data-uid="Kephas.Messaging.Distributed.Endpoint.#ctor(System.String,System.String,System.String,System.String)">Endpoint(String, String, String, String)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Messaging.Distributed.Endpoint.html">Endpoint</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Endpoint(string appId = null, string appInstanceId = null, string endpointId = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Endpoint(string appId = null, string appInstanceId = null, string endpointId = null, string scheme = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,19 +159,25 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">appId</span></td>
-        <td><p>The identifier of the application (optional).</p>
+        <td><p>Optional. The identifier of the application.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">appInstanceId</span></td>
-        <td><p>The identifier of the application instance (optional).</p>
+        <td><p>Optional. The identifier of the application instance.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">endpointId</span></td>
-        <td><p>The identifier of the endpoint (optional).</p>
+        <td><p>Optional. The identifier of the endpoint.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">scheme</span></td>
+        <td><p>Optional. The scheme.</p>
 </td>
       </tr>
     </tbody>
@@ -249,7 +255,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_AppId.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.AppId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L107">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L109">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_Endpoint_AppId_" data-uid="Kephas.Messaging.Distributed.Endpoint.AppId*"></a>
   <h4 id="Kephas_Messaging_Distributed_Endpoint_AppId" data-uid="Kephas.Messaging.Distributed.Endpoint.AppId">AppId</h4>
@@ -281,7 +287,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_AppInstanceId.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.AppInstanceId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L99">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L101">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_Endpoint_AppInstanceId_" data-uid="Kephas.Messaging.Distributed.Endpoint.AppInstanceId*"></a>
   <h4 id="Kephas_Messaging_Distributed_Endpoint_AppInstanceId" data-uid="Kephas.Messaging.Distributed.Endpoint.AppInstanceId">AppInstanceId</h4>
@@ -313,7 +319,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_EndpointId.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.EndpointId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L91">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L93">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_Endpoint_EndpointId_" data-uid="Kephas.Messaging.Distributed.Endpoint.EndpointId*"></a>
   <h4 id="Kephas_Messaging_Distributed_Endpoint_EndpointId" data-uid="Kephas.Messaging.Distributed.Endpoint.EndpointId">EndpointId</h4>
@@ -342,10 +348,42 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_Scheme.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.Scheme%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L117">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Distributed_Endpoint_Scheme_" data-uid="Kephas.Messaging.Distributed.Endpoint.Scheme*"></a>
+  <h4 id="Kephas_Messaging_Distributed_Endpoint_Scheme" data-uid="Kephas.Messaging.Distributed.Endpoint.Scheme">Scheme</h4>
+  <div class="markdown level1 summary"><p>Gets the scheme.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Scheme { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The scheme.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_Url.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.Url%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L71">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L73">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_Endpoint_Url_" data-uid="Kephas.Messaging.Distributed.Endpoint.Url*"></a>
   <h4 id="Kephas_Messaging_Distributed_Endpoint_Url" data-uid="Kephas.Messaging.Distributed.Endpoint.Url">Url</h4>
@@ -379,7 +417,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Distributed_Endpoint_ToString.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Distributed.Endpoint.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L111">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Distributed/Endpoint.cs/#L121">View Source</a>
   </span>
   <a id="Kephas_Messaging_Distributed_Endpoint_ToString_" data-uid="Kephas.Messaging.Distributed.Endpoint.ToString*"></a>
   <h4 id="Kephas_Messaging_Distributed_Endpoint_ToString" data-uid="Kephas.Messaging.Distributed.Endpoint.ToString">ToString()</h4>

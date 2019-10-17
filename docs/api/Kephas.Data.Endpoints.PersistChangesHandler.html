@@ -79,11 +79,13 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html">MessageHandlerBase</a>&lt;<a class="xref" href="Kephas.Data.Endpoints.PersistChangesMessage.html">PersistChangesMessage</a>, <a class="xref" href="Kephas.Data.Endpoints.PersistChangesResponseMessage.html">PersistChangesResponseMessage</a>&gt;</div>
-    <div class="level2"><span class="xref">PersistChangesHandler</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html">MessageHandlerBase</a>&lt;<a class="xref" href="Kephas.Data.Endpoints.PersistChangesMessage.html">PersistChangesMessage</a>, <a class="xref" href="Kephas.Data.Endpoints.PersistChangesResponseMessage.html">PersistChangesResponseMessage</a>&gt;</div>
+    <div class="level3"><span class="xref">PersistChangesHandler</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Messaging.IMessageHandler-1.html">IMessageHandler</a>&lt;<a class="xref" href="Kephas.Data.Endpoints.PersistChangesMessage.html">PersistChangesMessage</a>&gt;</div>
     <div><a class="xref" href="Kephas.Messaging.IMessageHandler.html">IMessageHandler</a></div>
     <div><span class="xref">System.IDisposable</span></div>
@@ -91,19 +93,25 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_ProcessAsync__0_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.ProcessAsync(PersistChangesMessage, IMessageProcessingContext, CancellationToken)</a>
+      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_ProcessAsync__0_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.ProcessAsync(PersistChangesMessage, IMessagingContext, CancellationToken)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_Kephas_Messaging_IMessageHandler_TMessage__ProcessAsync__0_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.IMessageHandler&lt;PersistChangesMessage&gt;.ProcessAsync(PersistChangesMessage, IMessageProcessingContext, CancellationToken)</a>
+      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_Kephas_Messaging_IMessageHandler_TMessage__ProcessAsync__0_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.IMessageHandler&lt;PersistChangesMessage&gt;.ProcessAsync(PersistChangesMessage, IMessagingContext, CancellationToken)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_Kephas_Messaging_IMessageHandler_ProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.IMessageHandler.ProcessAsync(IMessage, IMessageProcessingContext, CancellationToken)</a>
+      <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_Kephas_Messaging_IMessageHandler_ProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.IMessageHandler.ProcessAsync(IMessage, IMessagingContext, CancellationToken)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_Dispose">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.Dispose()</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Messaging.MessageHandlerBase-2.html#Kephas_Messaging_MessageHandlerBase_2_Dispose_System_Boolean_">MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;.Dispose(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -131,7 +139,7 @@
   <h6><strong>Assembly</strong>: Kephas.Data.Endpoints.dll</h6>
   <h5 id="Kephas_Data_Endpoints_PersistChangesHandler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PersistChangesHandler : MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;, IMessageHandler&lt;PersistChangesMessage&gt;, IMessageHandler, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class PersistChangesHandler : MessageHandlerBase&lt;PersistChangesMessage, PersistChangesResponseMessage&gt;, ILoggable, IMessageHandler&lt;PersistChangesMessage&gt;, IMessageHandler, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -421,19 +429,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Endpoints_PersistChangesHandler_ProcessAsync_Kephas_Data_Endpoints_PersistChangesMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Endpoints.PersistChangesHandler.ProcessAsync(Kephas.Data.Endpoints.PersistChangesMessage%2CKephas.Messaging.IMessageProcessingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Endpoints_PersistChangesHandler_ProcessAsync_Kephas_Data_Endpoints_PersistChangesMessage_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.Endpoints.PersistChangesHandler.ProcessAsync(Kephas.Data.Endpoints.PersistChangesMessage%2CKephas.Messaging.IMessagingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.Endpoints/PersistChangesHandler.cs/#L77">View Source</a>
   </span>
   <a id="Kephas_Data_Endpoints_PersistChangesHandler_ProcessAsync_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.ProcessAsync*"></a>
-  <h4 id="Kephas_Data_Endpoints_PersistChangesHandler_ProcessAsync_Kephas_Data_Endpoints_PersistChangesMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.ProcessAsync(Kephas.Data.Endpoints.PersistChangesMessage,Kephas.Messaging.IMessageProcessingContext,System.Threading.CancellationToken)">ProcessAsync(PersistChangesMessage, IMessageProcessingContext, CancellationToken)</h4>
+  <h4 id="Kephas_Data_Endpoints_PersistChangesHandler_ProcessAsync_Kephas_Data_Endpoints_PersistChangesMessage_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.Endpoints.PersistChangesHandler.ProcessAsync(Kephas.Data.Endpoints.PersistChangesMessage,Kephas.Messaging.IMessagingContext,System.Threading.CancellationToken)">ProcessAsync(PersistChangesMessage, IMessagingContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Processes the provided message asynchronously and returns a response promise.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override Task&lt;PersistChangesResponseMessage&gt; ProcessAsync(PersistChangesMessage message, IMessageProcessingContext context, CancellationToken token)</code></pre>
+    <pre><code class="lang-csharp hljs">public override Task&lt;PersistChangesResponseMessage&gt; ProcessAsync(PersistChangesMessage message, IMessagingContext context, CancellationToken token)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -452,7 +460,7 @@
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.IMessageProcessingContext.html">IMessageProcessingContext</a></td>
+        <td><a class="xref" href="Kephas.Messaging.IMessagingContext.html">IMessagingContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The processing context.</p>
 </td>
@@ -482,8 +490,11 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Kephas.Messaging.MessageHandlerBase&lt;Kephas.Data.Endpoints.PersistChangesMessage, Kephas.Data.Endpoints.PersistChangesResponseMessage&gt;.ProcessAsync(Kephas.Data.Endpoints.PersistChangesMessage, Kephas.Messaging.IMessageProcessingContext, System.Threading.CancellationToken)</span></div>
+  <div><span class="xref">Kephas.Messaging.MessageHandlerBase&lt;Kephas.Data.Endpoints.PersistChangesMessage, Kephas.Data.Endpoints.PersistChangesResponseMessage&gt;.ProcessAsync(Kephas.Data.Endpoints.PersistChangesMessage, Kephas.Messaging.IMessagingContext, System.Threading.CancellationToken)</span></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Messaging.IMessageHandler-1.html">IMessageHandler&lt;TMessage&gt;</a>
   </div>

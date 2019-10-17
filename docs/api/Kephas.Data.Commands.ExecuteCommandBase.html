@@ -79,14 +79,17 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IExecuteContext.html">IExecuteContext</a>, <a class="xref" href="Kephas.Data.Commands.IExecuteResult.html">IExecuteResult</a>&gt;</div>
-    <div class="level2"><span class="xref">ExecuteCommandBase</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IExecuteContext.html">IExecuteContext</a>, <a class="xref" href="Kephas.Data.Commands.IExecuteResult.html">IExecuteResult</a>&gt;</div>
+    <div class="level3"><span class="xref">ExecuteCommandBase</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.IExecuteCommand.html">IExecuteCommand</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand</a>&lt;<a class="xref" href="Kephas.Data.Commands.IExecuteContext.html">IExecuteContext</a>, <a class="xref" href="Kephas.Data.Commands.IExecuteResult.html">IExecuteResult</a>&gt;</div>
     <div><a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a></div>
+    <div><a class="xref" href="Kephas.Operations.IAsyncOperation.html">IAsyncOperation</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -97,6 +100,9 @@
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataCommandBase&lt;IExecuteContext, IExecuteResult&gt;.IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Operations_IAsyncOperation_ExecuteAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">DataCommandBase&lt;IExecuteContext, IExecuteResult&gt;.IAsyncOperation.ExecuteAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_GetIdEqualityExpression__1_Kephas_Data_IDataContext_System_Object_">DataCommandBase&lt;IExecuteContext, IExecuteResult&gt;.GetIdEqualityExpression&lt;T&gt;(IDataContext, Object)</a>
     </div>
     <div>
@@ -104,6 +110,12 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetEntityActivator_Kephas_Data_IDataContext_">DataCommandBase&lt;IExecuteContext, IExecuteResult&gt;.TryGetEntityActivator(IDataContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -131,9 +143,12 @@
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Commands_ExecuteCommandBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class ExecuteCommandBase : DataCommandBase&lt;IExecuteContext, IExecuteResult&gt;, IExecuteCommand, IDataCommand&lt;IExecuteContext, IExecuteResult&gt;, IDataCommand</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class ExecuteCommandBase : DataCommandBase&lt;IExecuteContext, IExecuteResult&gt;, ILoggable, IExecuteCommand, IDataCommand&lt;IExecuteContext, IExecuteResult&gt;, IDataCommand, IAsyncOperation</code></pre>
   </div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Data.Commands.IExecuteCommand.html">IExecuteCommand</a>
   </div>
@@ -142,6 +157,9 @@
   </div>
   <div>
       <a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Operations.IAsyncOperation.html">IAsyncOperation</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

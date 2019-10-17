@@ -119,19 +119,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_AttributedAppServiceInfoProvider_GetAppServiceInfos_System_Collections_Generic_IEnumerable_System_Reflection_TypeInfo__Kephas_Composition_Hosting_ICompositionRegistrationContext_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.AttributedAppServiceInfoProvider.GetAppServiceInfos(System.Collections.Generic.IEnumerable%7BSystem.Reflection.TypeInfo%7D%2CKephas.Composition.Hosting.ICompositionRegistrationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_AttributedAppServiceInfoProvider_GetAppServiceInfos_System_Collections_Generic_IList_System_Type__Kephas_Composition_Hosting_ICompositionRegistrationContext_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.AttributedAppServiceInfoProvider.GetAppServiceInfos(System.Collections.Generic.IList%7BSystem.Type%7D%2CKephas.Composition.Hosting.ICompositionRegistrationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/AttributedAppServiceInfoProvider.cs/#L33">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/AttributedAppServiceInfoProvider.cs/#L34">View Source</a>
   </span>
   <a id="Kephas_Composition_Conventions_AttributedAppServiceInfoProvider_GetAppServiceInfos_" data-uid="Kephas.Composition.Conventions.AttributedAppServiceInfoProvider.GetAppServiceInfos*"></a>
-  <h4 id="Kephas_Composition_Conventions_AttributedAppServiceInfoProvider_GetAppServiceInfos_System_Collections_Generic_IEnumerable_System_Reflection_TypeInfo__Kephas_Composition_Hosting_ICompositionRegistrationContext_" data-uid="Kephas.Composition.Conventions.AttributedAppServiceInfoProvider.GetAppServiceInfos(System.Collections.Generic.IEnumerable{System.Reflection.TypeInfo},Kephas.Composition.Hosting.ICompositionRegistrationContext)">GetAppServiceInfos(IEnumerable&lt;TypeInfo&gt;, ICompositionRegistrationContext)</h4>
+  <h4 id="Kephas_Composition_Conventions_AttributedAppServiceInfoProvider_GetAppServiceInfos_System_Collections_Generic_IList_System_Type__Kephas_Composition_Hosting_ICompositionRegistrationContext_" data-uid="Kephas.Composition.Conventions.AttributedAppServiceInfoProvider.GetAppServiceInfos(System.Collections.Generic.IList{System.Type},Kephas.Composition.Hosting.ICompositionRegistrationContext)">GetAppServiceInfos(IList&lt;Type&gt;, ICompositionRegistrationContext)</h4>
   <div class="markdown level1 summary"><p>Gets an enumeration of application service information objects.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;(TypeInfo contractType, IAppServiceInfo appServiceInfo)&gt; GetAppServiceInfos(IEnumerable&lt;TypeInfo&gt; candidateTypes, ICompositionRegistrationContext registrationContext)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;(Type contractType, IAppServiceInfo appServiceInfo)&gt; GetAppServiceInfos(IList&lt;Type&gt; candidateTypes, ICompositionRegistrationContext registrationContext)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -144,7 +144,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.TypeInfo</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.Type</span>&gt;</td>
         <td><span class="parametername">candidateTypes</span></td>
         <td><p>The candidate types which can take part in the composition.</p>
 </td>
@@ -167,7 +167,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Reflection.TypeInfo</span>, <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html">IAppServiceInfo</a>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Type</span>, <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html">IAppServiceInfo</a>&gt;&gt;</td>
         <td><p>An enumeration of application service information objects and their associated contract type.</p>
 </td>
       </tr>
@@ -175,19 +175,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_AttributedAppServiceInfoProvider_TryGetAppServiceInfo_System_Reflection_TypeInfo_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.AttributedAppServiceInfoProvider.TryGetAppServiceInfo(System.Reflection.TypeInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_AttributedAppServiceInfoProvider_TryGetAppServiceInfo_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.AttributedAppServiceInfoProvider.TryGetAppServiceInfo(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/AttributedAppServiceInfoProvider.cs/#L52">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/AttributedAppServiceInfoProvider.cs/#L55">View Source</a>
   </span>
   <a id="Kephas_Composition_Conventions_AttributedAppServiceInfoProvider_TryGetAppServiceInfo_" data-uid="Kephas.Composition.Conventions.AttributedAppServiceInfoProvider.TryGetAppServiceInfo*"></a>
-  <h4 id="Kephas_Composition_Conventions_AttributedAppServiceInfoProvider_TryGetAppServiceInfo_System_Reflection_TypeInfo_" data-uid="Kephas.Composition.Conventions.AttributedAppServiceInfoProvider.TryGetAppServiceInfo(System.Reflection.TypeInfo)">TryGetAppServiceInfo(TypeInfo)</h4>
+  <h4 id="Kephas_Composition_Conventions_AttributedAppServiceInfoProvider_TryGetAppServiceInfo_System_Type_" data-uid="Kephas.Composition.Conventions.AttributedAppServiceInfoProvider.TryGetAppServiceInfo(System.Type)">TryGetAppServiceInfo(Type)</h4>
   <div class="markdown level1 summary"><p>Tries to get the <a class="xref" href="Kephas.Services.Reflection.IAppServiceInfo.html">IAppServiceInfo</a> for the provided type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual IAppServiceInfo TryGetAppServiceInfo(TypeInfo typeInfo)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual IAppServiceInfo TryGetAppServiceInfo(Type type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -200,9 +200,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Reflection.TypeInfo</span></td>
-        <td><span class="parametername">typeInfo</span></td>
-        <td><p>Information describing the type.</p>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type.</p>
 </td>
       </tr>
     </tbody>
@@ -281,7 +281,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Composition_Conventions_AttributedAppServiceInfoProvider.md&amp;value=---%0Auid%3A%20Kephas.Composition.Conventions.AttributedAppServiceInfoProvider%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/AttributedAppServiceInfoProvider.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Composition/Conventions/AttributedAppServiceInfoProvider.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

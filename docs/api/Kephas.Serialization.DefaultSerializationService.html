@@ -119,19 +119,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_DefaultSerializationService__ctor_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Serialization_ISerializer_Kephas_Serialization_Composition_SerializerMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Serialization.DefaultSerializationService.%23ctor(System.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Serialization.ISerializer%2CKephas.Serialization.Composition.SerializerMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_DefaultSerializationService__ctor_Kephas_Services_IContextFactory_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Serialization_ISerializer_Kephas_Serialization_Composition_SerializerMetadata___.md&amp;value=---%0Auid%3A%20Kephas.Serialization.DefaultSerializationService.%23ctor(Kephas.Services.IContextFactory%2CSystem.Collections.Generic.ICollection%7BKephas.Composition.IExportFactory%7BKephas.Serialization.ISerializer%2CKephas.Serialization.Composition.SerializerMetadata%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/DefaultSerializationService.cs/#L37">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/DefaultSerializationService.cs/#L36">View Source</a>
   </span>
   <a id="Kephas_Serialization_DefaultSerializationService__ctor_" data-uid="Kephas.Serialization.DefaultSerializationService.#ctor*"></a>
-  <h4 id="Kephas_Serialization_DefaultSerializationService__ctor_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Serialization_ISerializer_Kephas_Serialization_Composition_SerializerMetadata___" data-uid="Kephas.Serialization.DefaultSerializationService.#ctor(System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Serialization.ISerializer,Kephas.Serialization.Composition.SerializerMetadata}})">DefaultSerializationService(ICollection&lt;IExportFactory&lt;ISerializer, SerializerMetadata&gt;&gt;)</h4>
+  <h4 id="Kephas_Serialization_DefaultSerializationService__ctor_Kephas_Services_IContextFactory_System_Collections_Generic_ICollection_Kephas_Composition_IExportFactory_Kephas_Serialization_ISerializer_Kephas_Serialization_Composition_SerializerMetadata___" data-uid="Kephas.Serialization.DefaultSerializationService.#ctor(Kephas.Services.IContextFactory,System.Collections.Generic.ICollection{Kephas.Composition.IExportFactory{Kephas.Serialization.ISerializer,Kephas.Serialization.Composition.SerializerMetadata}})">DefaultSerializationService(IContextFactory, ICollection&lt;IExportFactory&lt;ISerializer, SerializerMetadata&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Serialization.DefaultSerializationService.html">DefaultSerializationService</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultSerializationService(ICollection&lt;IExportFactory&lt;ISerializer, SerializerMetadata&gt;&gt; serializerFactories)</code></pre>
+    <pre><code class="lang-csharp hljs">public DefaultSerializationService(IContextFactory contextFactory, ICollection&lt;IExportFactory&lt;ISerializer, SerializerMetadata&gt;&gt; serializerFactories)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -144,9 +144,49 @@
     </thead>
     <tbody>
       <tr>
+        <td><a class="xref" href="Kephas.Services.IContextFactory.html">IContextFactory</a></td>
+        <td><span class="parametername">contextFactory</span></td>
+        <td><p>The context factory.</p>
+</td>
+      </tr>
+      <tr>
         <td><span class="xref">System.Collections.Generic.ICollection</span>&lt;<a class="xref" href="Kephas.Composition.IExportFactory-2.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Serialization.ISerializer.html">ISerializer</a>, <a class="xref" href="Kephas.Serialization.Composition.SerializerMetadata.html">SerializerMetadata</a>&gt;&gt;</td>
         <td><span class="parametername">serializerFactories</span></td>
         <td><p>The serializer factories.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_DefaultSerializationService_ContextFactory.md&amp;value=---%0Auid%3A%20Kephas.Serialization.DefaultSerializationService.ContextFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/DefaultSerializationService.cs/#L51">View Source</a>
+  </span>
+  <a id="Kephas_Serialization_DefaultSerializationService_ContextFactory_" data-uid="Kephas.Serialization.DefaultSerializationService.ContextFactory*"></a>
+  <h4 id="Kephas_Serialization_DefaultSerializationService_ContextFactory" data-uid="Kephas.Serialization.DefaultSerializationService.ContextFactory">ContextFactory</h4>
+  <div class="markdown level1 summary"><p>Gets the context factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IContextFactory ContextFactory { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContextFactory.html">IContextFactory</a></td>
+        <td><p>The context factory.</p>
 </td>
       </tr>
     </tbody>
@@ -158,7 +198,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_DefaultSerializationService_GetSerializer_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.DefaultSerializationService.GetSerializer(Kephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/DefaultSerializationService.cs/#L51">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/DefaultSerializationService.cs/#L60">View Source</a>
   </span>
   <a id="Kephas_Serialization_DefaultSerializationService_GetSerializer_" data-uid="Kephas.Serialization.DefaultSerializationService.GetSerializer*"></a>
   <h4 id="Kephas_Serialization_DefaultSerializationService_GetSerializer_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.DefaultSerializationService.GetSerializer(Kephas.Serialization.ISerializationContext)">GetSerializer(ISerializationContext)</h4>
@@ -302,9 +342,6 @@
       <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_XmlSerialize_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_">SerializationExtensions.XmlSerialize(ISerializationService, Object, ISerializationContext)</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Serialization.SerializationExtensions.html#Kephas_Serialization_SerializationExtensions_CreateOrUpdateSerializationContext__1_Kephas_Serialization_ISerializationService_Kephas_Serialization_ISerializationContext_System_Action_Kephas_Serialization_ISerializationContext__">SerializationExtensions.CreateOrUpdateSerializationContext&lt;TMediaType&gt;(ISerializationService, ISerializationContext, Action&lt;ISerializationContext&gt;)</a>
-  </div>
-  <div>
       <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
   </div>
 </article>
@@ -318,7 +355,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_DefaultSerializationService.md&amp;value=---%0Auid%3A%20Kephas.Serialization.DefaultSerializationService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/DefaultSerializationService.cs/#L26" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/DefaultSerializationService.cs/#L27" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

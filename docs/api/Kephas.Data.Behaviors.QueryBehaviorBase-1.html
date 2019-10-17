@@ -79,16 +79,24 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">QueryBehaviorBase&lt;T&gt;</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">QueryBehaviorBase&lt;T&gt;</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IDataBehavior-1.html">IDataBehavior</a>&lt;T&gt;</div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IDataBehavior.html">IDataBehavior</a></div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IOnQueryBehavior.html">IOnQueryBehavior</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -115,7 +123,7 @@
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Behaviors_QueryBehaviorBase_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class QueryBehaviorBase&lt;T&gt; : IDataBehavior&lt;T&gt;, IDataBehavior, IOnQueryBehavior</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class QueryBehaviorBase&lt;T&gt; : Loggable, ILoggable, IDataBehavior&lt;T&gt;, IDataBehavior, IOnQueryBehavior</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -140,7 +148,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_QueryBehaviorBase_1_AfterQuery_System_Type_Kephas_Data_IQueryOperationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.QueryBehaviorBase%601.AfterQuery(System.Type%2CKephas.Data.IQueryOperationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/QueryBehaviorBase.cs/#L35">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/QueryBehaviorBase.cs/#L37">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_QueryBehaviorBase_1_AfterQuery_" data-uid="Kephas.Data.Behaviors.QueryBehaviorBase`1.AfterQuery*"></a>
   <h4 id="Kephas_Data_Behaviors_QueryBehaviorBase_1_AfterQuery_System_Type_Kephas_Data_IQueryOperationContext_" data-uid="Kephas.Data.Behaviors.QueryBehaviorBase`1.AfterQuery(System.Type,Kephas.Data.IQueryOperationContext)">AfterQuery(Type, IQueryOperationContext)</h4>
@@ -180,7 +188,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_QueryBehaviorBase_1_BeforeQuery_System_Type_Kephas_Data_IQueryOperationContext_.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.QueryBehaviorBase%601.BeforeQuery(System.Type%2CKephas.Data.IQueryOperationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/QueryBehaviorBase.cs/#L26">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/QueryBehaviorBase.cs/#L28">View Source</a>
   </span>
   <a id="Kephas_Data_Behaviors_QueryBehaviorBase_1_BeforeQuery_" data-uid="Kephas.Data.Behaviors.QueryBehaviorBase`1.BeforeQuery*"></a>
   <h4 id="Kephas_Data_Behaviors_QueryBehaviorBase_1_BeforeQuery_System_Type_Kephas_Data_IQueryOperationContext_" data-uid="Kephas.Data.Behaviors.QueryBehaviorBase`1.BeforeQuery(System.Type,Kephas.Data.IQueryOperationContext)">BeforeQuery(Type, IQueryOperationContext)</h4>
@@ -216,6 +224,9 @@
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Data.Behaviors.IDataBehavior-1.html">IDataBehavior&lt;TEntity&gt;</a>
   </div>
@@ -279,7 +290,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Behaviors_QueryBehaviorBase_1.md&amp;value=---%0Auid%3A%20Kephas.Data.Behaviors.QueryBehaviorBase%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/QueryBehaviorBase.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Behaviors/QueryBehaviorBase.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

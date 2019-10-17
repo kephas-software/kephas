@@ -73,7 +73,7 @@
   
   <h1 id="Kephas_Data_Commands_Factory_IDataCommandFactory_1" data-uid="Kephas.Data.Commands.Factory.IDataCommandFactory`1" class="text-break">Interface IDataCommandFactory&lt;TCommand&gt;
   </h1>
-  <div class="markdown level0 summary"><p>Shared application service contract for data command factory.</p>
+  <div class="markdown level0 summary"><p>Singleton application service contract for data command factory.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
@@ -86,7 +86,7 @@
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Commands_Factory_IDataCommandFactory_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(AsOpenGeneric = true)]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(AsOpenGeneric = true)]
 public interface IDataCommandFactory&lt;out TCommand&gt; : IDataCommandFactory where TCommand : IDataCommand</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>

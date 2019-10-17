@@ -115,20 +115,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_CreateOrUpdateSerializationContext__1_Kephas_Serialization_ISerializationService_Kephas_Serialization_ISerializationContext_System_Action_Kephas_Serialization_ISerializationContext__.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.CreateOrUpdateSerializationContext%60%601(Kephas.Serialization.ISerializationService%2CKephas.Serialization.ISerializationContext%2CSystem.Action%7BKephas.Serialization.ISerializationContext%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_CreateOrUpdateSerializationContext__1_Kephas_Services_IContextFactory_Kephas_Serialization_ISerializationContext_System_Action_Kephas_Serialization_ISerializationContext__.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.CreateOrUpdateSerializationContext%60%601(Kephas.Services.IContextFactory%2CKephas.Serialization.ISerializationContext%2CSystem.Action%7BKephas.Serialization.ISerializationContext%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L596">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L605">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_CreateOrUpdateSerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.CreateOrUpdateSerializationContext*"></a>
-  <h4 id="Kephas_Serialization_SerializationExtensions_CreateOrUpdateSerializationContext__1_Kephas_Serialization_ISerializationService_Kephas_Serialization_ISerializationContext_System_Action_Kephas_Serialization_ISerializationContext__" data-uid="Kephas.Serialization.SerializationExtensions.CreateOrUpdateSerializationContext``1(Kephas.Serialization.ISerializationService,Kephas.Serialization.ISerializationContext,System.Action{Kephas.Serialization.ISerializationContext})">CreateOrUpdateSerializationContext&lt;TMediaType&gt;(ISerializationService, ISerializationContext, Action&lt;ISerializationContext&gt;)</h4>
+  <h4 id="Kephas_Serialization_SerializationExtensions_CreateOrUpdateSerializationContext__1_Kephas_Services_IContextFactory_Kephas_Serialization_ISerializationContext_System_Action_Kephas_Serialization_ISerializationContext__" data-uid="Kephas.Serialization.SerializationExtensions.CreateOrUpdateSerializationContext``1(Kephas.Services.IContextFactory,Kephas.Serialization.ISerializationContext,System.Action{Kephas.Serialization.ISerializationContext})">CreateOrUpdateSerializationContext&lt;TMediaType&gt;(IContextFactory, ISerializationContext, Action&lt;ISerializationContext&gt;)</h4>
   <div class="markdown level1 summary"><p>Creates the serialization context or updates it with the serialization service and media type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static ISerializationContext CreateOrUpdateSerializationContext&lt;TMediaType&gt;(this ISerializationService serializationService, ISerializationContext context = null, Action&lt;ISerializationContext&gt; contextConfig = null)
-
+    <pre><code class="lang-csharp hljs">public static ISerializationContext CreateOrUpdateSerializationContext&lt;TMediaType&gt;(this IContextFactory contextFactory, ISerializationContext context = null, Action&lt;ISerializationContext&gt; contextConfig = null)
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -142,21 +141,21 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Serialization.ISerializationService.html">ISerializationService</a></td>
-        <td><span class="parametername">serializationService</span></td>
-        <td><p>The serializationService to act on.</p>
+        <td><a class="xref" href="Kephas.Services.IContextFactory.html">IContextFactory</a></td>
+        <td><span class="parametername">contextFactory</span></td>
+        <td><p>The context factory.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Kephas.Serialization.ISerializationContext.html">ISerializationContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td><p>The serialization context (optional).</p>
+        <td><p>Optional. The serialization context.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Action</span>&lt;<a class="xref" href="Kephas.Serialization.ISerializationContext.html">ISerializationContext</a>&gt;</td>
         <td><span class="parametername">contextConfig</span></td>
-        <td><p>The context configuration (optional).</p>
+        <td><p>Optional. The context configuration.</p>
 </td>
       </tr>
     </tbody>
@@ -193,12 +192,213 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown when the requested operation is invalid.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_CreateSerializationContext__1_Kephas_Services_IContextFactory_System_Func_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.CreateSerializationContext%60%601(Kephas.Services.IContextFactory%2CSystem.Func%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L643">View Source</a>
+  </span>
+  <a id="Kephas_Serialization_SerializationExtensions_CreateSerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.CreateSerializationContext*"></a>
+  <h4 id="Kephas_Serialization_SerializationExtensions_CreateSerializationContext__1_Kephas_Services_IContextFactory_System_Func_System_Object__" data-uid="Kephas.Serialization.SerializationExtensions.CreateSerializationContext``1(Kephas.Services.IContextFactory,System.Func{System.Object})">CreateSerializationContext&lt;TMediaType&gt;(IContextFactory, Func&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new configured <a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SerializationContext CreateSerializationContext&lt;TMediaType&gt;(this IContextFactory contextFactory, Func&lt;object&gt; rootObjectFactory = null)
+    where TMediaType : IMediaType</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContextFactory.html">IContextFactory</a></td>
+        <td><span class="parametername">contextFactory</span></td>
+        <td><p>The context factory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">rootObjectFactory</span></td>
+        <td><p>Optional. The root object factory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a></td>
+        <td><p>A configured <a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TMediaType</span></td>
+        <td><p>Type of the media type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when one or more arguments have unsupported or
+                                    illegal values.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_CreateSerializationContext__2_Kephas_Services_IContextFactory_System_Func_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.CreateSerializationContext%60%602(Kephas.Services.IContextFactory%2CSystem.Func%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L666">View Source</a>
+  </span>
+  <a id="Kephas_Serialization_SerializationExtensions_CreateSerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.CreateSerializationContext*"></a>
+  <h4 id="Kephas_Serialization_SerializationExtensions_CreateSerializationContext__2_Kephas_Services_IContextFactory_System_Func_System_Object__" data-uid="Kephas.Serialization.SerializationExtensions.CreateSerializationContext``2(Kephas.Services.IContextFactory,System.Func{System.Object})">CreateSerializationContext&lt;TMediaType, TRootObject&gt;(IContextFactory, Func&lt;Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates a new configured <a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SerializationContext CreateSerializationContext&lt;TMediaType, TRootObject&gt;(IContextFactory contextFactory, Func&lt;object&gt; rootObjectFactory = null)
+    where TMediaType : IMediaType</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContextFactory.html">IContextFactory</a></td>
+        <td><span class="parametername">contextFactory</span></td>
+        <td><p>The context factory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Object</span>&gt;</td>
+        <td><span class="parametername">rootObjectFactory</span></td>
+        <td><p>Optional. The root object factory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a></td>
+        <td><p>A configured <a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TMediaType</span></td>
+        <td><p>Type of the media type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TRootObject</span></td>
+        <td><p>Type of the root object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Thrown when one or more arguments have unsupported or
+                                    illegal values.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_Deserialize_Kephas_Serialization_ISerializer_System_IO_TextReader_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.Deserialize(Kephas.Serialization.ISerializer%2CSystem.IO.TextReader%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L662">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L713">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_Deserialize_" data-uid="Kephas.Serialization.SerializationExtensions.Deserialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_Deserialize_Kephas_Serialization_ISerializer_System_IO_TextReader_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.Deserialize(Kephas.Serialization.ISerializer,System.IO.TextReader,Kephas.Serialization.ISerializationContext)">Deserialize(ISerializer, TextReader, ISerializationContext)</h4>
@@ -260,7 +460,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_Deserialize_Kephas_Serialization_ISerializer_System_String_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.Deserialize(Kephas.Serialization.ISerializer%2CSystem.String%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L567">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L575">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_Deserialize_" data-uid="Kephas.Serialization.SerializationExtensions.Deserialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_Deserialize_Kephas_Serialization_ISerializer_System_String_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.Deserialize(Kephas.Serialization.ISerializer,System.String,Kephas.Serialization.ISerializationContext)">Deserialize(ISerializer, String, ISerializationContext)</h4>
@@ -322,7 +522,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_Deserialize__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.Deserialize%60%601(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L135">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L140">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_Deserialize_" data-uid="Kephas.Serialization.SerializationExtensions.Deserialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_Deserialize__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.Deserialize``1(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext)">Deserialize&lt;TMediaType&gt;(ISerializationService, String, ISerializationContext)</h4>
@@ -332,7 +532,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static object Deserialize&lt;TMediaType&gt;(this ISerializationService serializationService, string serializedObj, ISerializationContext context = null)
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -402,7 +601,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_Deserialize__2_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.Deserialize%60%602(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L73">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L76">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_Deserialize_" data-uid="Kephas.Serialization.SerializationExtensions.Deserialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_Deserialize__2_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.Deserialize``2(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext)">Deserialize&lt;TMediaType, TRootObject&gt;(ISerializationService, String, ISerializationContext)</h4>
@@ -412,7 +611,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static TRootObject Deserialize&lt;TMediaType, TRootObject&gt;(this ISerializationService serializationService, string serializedObj, ISerializationContext context = null)
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -487,7 +685,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_DeserializeAsync_Kephas_Serialization_ISerializer_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.DeserializeAsync(Kephas.Serialization.ISerializer%2CSystem.String%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L538">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L546">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_DeserializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.DeserializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_DeserializeAsync_Kephas_Serialization_ISerializer_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.DeserializeAsync(Kephas.Serialization.ISerializer,System.String,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">DeserializeAsync(ISerializer, String, ISerializationContext, CancellationToken)</h4>
@@ -555,7 +753,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_DeserializeAsync__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.DeserializeAsync%60%601(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L105">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L109">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_DeserializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.DeserializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_DeserializeAsync__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.DeserializeAsync``1(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">DeserializeAsync&lt;TMediaType&gt;(ISerializationService, String, ISerializationContext, CancellationToken)</h4>
@@ -565,7 +763,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;object&gt; DeserializeAsync&lt;TMediaType&gt;(this ISerializationService serializationService, string serializedObj, ISerializationContext context = null, CancellationToken cancellationToken = default(CancellationToken))
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -641,7 +838,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_DeserializeAsync__2_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.DeserializeAsync%60%602(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L40">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L42">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_DeserializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.DeserializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_DeserializeAsync__2_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.DeserializeAsync``2(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">DeserializeAsync&lt;TMediaType, TRootObject&gt;(ISerializationService, String, ISerializationContext, CancellationToken)</h4>
@@ -651,7 +848,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;TRootObject&gt; DeserializeAsync&lt;TMediaType, TRootObject&gt;(this ISerializationService serializationService, string serializedObj, ISerializationContext context = null, CancellationToken cancellationToken = default(CancellationToken))
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -732,7 +928,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_JsonDeserialize_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.JsonDeserialize(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L184">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L190">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_JsonDeserialize_" data-uid="Kephas.Serialization.SerializationExtensions.JsonDeserialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_JsonDeserialize_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.JsonDeserialize(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext)">JsonDeserialize(ISerializationService, String, ISerializationContext)</h4>
@@ -794,7 +990,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_JsonDeserialize__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.JsonDeserialize%60%601(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L226">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L232">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_JsonDeserialize_" data-uid="Kephas.Serialization.SerializationExtensions.JsonDeserialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_JsonDeserialize__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.JsonDeserialize``1(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext)">JsonDeserialize&lt;TRootObject&gt;(ISerializationService, String, ISerializationContext)</h4>
@@ -872,7 +1068,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_JsonDeserializeAsync_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.JsonDeserializeAsync(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L164">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L170">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_JsonDeserializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.JsonDeserializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_JsonDeserializeAsync_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.JsonDeserializeAsync(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">JsonDeserializeAsync(ISerializationService, String, ISerializationContext, CancellationToken)</h4>
@@ -940,7 +1136,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_JsonDeserializeAsync__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.JsonDeserializeAsync%60%601(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L205">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L211">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_JsonDeserializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.JsonDeserializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_JsonDeserializeAsync__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.JsonDeserializeAsync``1(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">JsonDeserializeAsync&lt;TRootObject&gt;(ISerializationService, String, ISerializationContext, CancellationToken)</h4>
@@ -1024,7 +1220,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_JsonSerialize_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.JsonSerialize(Kephas.Serialization.ISerializationService%2CSystem.Object%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L416">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L424">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_JsonSerialize_" data-uid="Kephas.Serialization.SerializationExtensions.JsonSerialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_JsonSerialize_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.JsonSerialize(Kephas.Serialization.ISerializationService,System.Object,Kephas.Serialization.ISerializationContext)">JsonSerialize(ISerializationService, Object, ISerializationContext)</h4>
@@ -1102,7 +1298,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_JsonSerializeAsync_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.JsonSerializeAsync(Kephas.Serialization.ISerializationService%2CSystem.Object%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L395">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L403">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_JsonSerializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.JsonSerializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_JsonSerializeAsync_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.JsonSerializeAsync(Kephas.Serialization.ISerializationService,System.Object,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">JsonSerializeAsync(ISerializationService, Object, ISerializationContext, CancellationToken)</h4>
@@ -1186,7 +1382,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_Serialize_Kephas_Serialization_ISerializer_System_Object_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.Serialize(Kephas.Serialization.ISerializer%2CSystem.Object%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L508">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L516">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_Serialize_" data-uid="Kephas.Serialization.SerializationExtensions.Serialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_Serialize_Kephas_Serialization_ISerializer_System_Object_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.Serialize(Kephas.Serialization.ISerializer,System.Object,Kephas.Serialization.ISerializationContext)">Serialize(ISerializer, Object, ISerializationContext)</h4>
@@ -1248,7 +1444,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_Serialize_Kephas_Serialization_ISerializer_System_Object_System_IO_TextWriter_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.Serialize(Kephas.Serialization.ISerializer%2CSystem.Object%2CSystem.IO.TextWriter%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L635">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L686">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_Serialize_" data-uid="Kephas.Serialization.SerializationExtensions.Serialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_Serialize_Kephas_Serialization_ISerializer_System_Object_System_IO_TextWriter_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.Serialize(Kephas.Serialization.ISerializer,System.Object,System.IO.TextWriter,Kephas.Serialization.ISerializationContext)">Serialize(ISerializer, Object, TextWriter, ISerializationContext)</h4>
@@ -1300,7 +1496,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_Serialize__1_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.Serialize%60%601(Kephas.Serialization.ISerializationService%2CSystem.Object%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L365">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L372">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_Serialize_" data-uid="Kephas.Serialization.SerializationExtensions.Serialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_Serialize__1_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.Serialize``1(Kephas.Serialization.ISerializationService,System.Object,Kephas.Serialization.ISerializationContext)">Serialize&lt;TMediaType&gt;(ISerializationService, Object, ISerializationContext)</h4>
@@ -1310,7 +1506,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static string Serialize&lt;TMediaType&gt;(this ISerializationService serializationService, object obj, ISerializationContext context = null)
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1398,7 +1593,7 @@ mismatched in the provided context.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_SerializeAsync_Kephas_Serialization_ISerializer_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.SerializeAsync(Kephas.Serialization.ISerializer%2CSystem.Object%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L478">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L486">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_SerializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.SerializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_SerializeAsync_Kephas_Serialization_ISerializer_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.SerializeAsync(Kephas.Serialization.ISerializer,System.Object,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">SerializeAsync(ISerializer, Object, ISerializationContext, CancellationToken)</h4>
@@ -1466,7 +1661,7 @@ mismatched in the provided context.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_SerializeAsync__1_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.SerializeAsync%60%601(Kephas.Serialization.ISerializationService%2CSystem.Object%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L332">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L338">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_SerializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.SerializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_SerializeAsync__1_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.SerializeAsync``1(Kephas.Serialization.ISerializationService,System.Object,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">SerializeAsync&lt;TMediaType&gt;(ISerializationService, Object, ISerializationContext, CancellationToken)</h4>
@@ -1476,7 +1671,6 @@ mismatched in the provided context.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static Task&lt;string&gt; SerializeAsync&lt;TMediaType&gt;(this ISerializationService serializationService, object obj, ISerializationContext context = null, CancellationToken cancellationToken = default(CancellationToken))
-
     where TMediaType : IMediaType</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -1570,7 +1764,7 @@ mismatched in the provided context.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_XmlDeserialize_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.XmlDeserialize(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L266">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L272">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_XmlDeserialize_" data-uid="Kephas.Serialization.SerializationExtensions.XmlDeserialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_XmlDeserialize_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.XmlDeserialize(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext)">XmlDeserialize(ISerializationService, String, ISerializationContext)</h4>
@@ -1632,7 +1826,7 @@ mismatched in the provided context.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_XmlDeserialize__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.XmlDeserialize%60%601(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L308">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L314">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_XmlDeserialize_" data-uid="Kephas.Serialization.SerializationExtensions.XmlDeserialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_XmlDeserialize__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.XmlDeserialize``1(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext)">XmlDeserialize&lt;TRootObject&gt;(ISerializationService, String, ISerializationContext)</h4>
@@ -1710,7 +1904,7 @@ mismatched in the provided context.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_XmlDeserializeAsync_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.XmlDeserializeAsync(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L246">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L252">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_XmlDeserializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.XmlDeserializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_XmlDeserializeAsync_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.XmlDeserializeAsync(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">XmlDeserializeAsync(ISerializationService, String, ISerializationContext, CancellationToken)</h4>
@@ -1778,7 +1972,7 @@ mismatched in the provided context.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_XmlDeserializeAsync__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.XmlDeserializeAsync%60%601(Kephas.Serialization.ISerializationService%2CSystem.String%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L287">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L293">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_XmlDeserializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.XmlDeserializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_XmlDeserializeAsync__1_Kephas_Serialization_ISerializationService_System_String_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.XmlDeserializeAsync``1(Kephas.Serialization.ISerializationService,System.String,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">XmlDeserializeAsync&lt;TRootObject&gt;(ISerializationService, String, ISerializationContext, CancellationToken)</h4>
@@ -1862,7 +2056,7 @@ mismatched in the provided context.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_XmlSerialize_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.XmlSerialize(Kephas.Serialization.ISerializationService%2CSystem.Object%2CKephas.Serialization.ISerializationContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L458">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L466">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_XmlSerialize_" data-uid="Kephas.Serialization.SerializationExtensions.XmlSerialize*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_XmlSerialize_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_" data-uid="Kephas.Serialization.SerializationExtensions.XmlSerialize(Kephas.Serialization.ISerializationService,System.Object,Kephas.Serialization.ISerializationContext)">XmlSerialize(ISerializationService, Object, ISerializationContext)</h4>
@@ -1940,7 +2134,7 @@ mismatched in the provided context.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions_XmlSerializeAsync_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions.XmlSerializeAsync(Kephas.Serialization.ISerializationService%2CSystem.Object%2CKephas.Serialization.ISerializationContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L437">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L445">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationExtensions_XmlSerializeAsync_" data-uid="Kephas.Serialization.SerializationExtensions.XmlSerializeAsync*"></a>
   <h4 id="Kephas_Serialization_SerializationExtensions_XmlSerializeAsync_Kephas_Serialization_ISerializationService_System_Object_Kephas_Serialization_ISerializationContext_System_Threading_CancellationToken_" data-uid="Kephas.Serialization.SerializationExtensions.XmlSerializeAsync(Kephas.Serialization.ISerializationService,System.Object,Kephas.Serialization.ISerializationContext,System.Threading.CancellationToken)">XmlSerializeAsync(ISerializationService, Object, ISerializationContext, CancellationToken)</h4>
@@ -2030,7 +2224,7 @@ mismatched in the provided context.</p>
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationExtensions.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L26" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationExtensions.cs/#L28" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

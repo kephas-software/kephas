@@ -92,8 +92,8 @@
     <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
     <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
     <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
-    <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
-    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -107,7 +107,10 @@
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Identity">Context.Identity</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ContextLogger">Context.ContextLogger</a>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Logger">Context.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose">Context.Dispose()</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ValidateIdentity_System_Security_Principal_IIdentity_System_Security_Principal_IIdentity_">Context.ValidateIdentity(IIdentity, IIdentity)</a>
@@ -117,6 +120,9 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetAmbientServices_Kephas_IAmbientServices_">Context.SetAmbientServices(IAmbientServices)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose_System_Boolean_">Context.Dispose(Boolean)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
@@ -207,7 +213,7 @@
   <h6><strong>Assembly</strong>: Kephas.Scripting.dll</h6>
   <h5 id="Kephas_Scripting_ScriptingContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ScriptingContext : Context, IScriptingContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware</code></pre>
+    <pre><code class="lang-csharp hljs">public class ScriptingContext : Context, IScriptingContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -216,7 +222,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_ScriptingContext__ctor_Kephas_Composition_ICompositionContext_.md&amp;value=---%0Auid%3A%20Kephas.Scripting.ScriptingContext.%23ctor(Kephas.Composition.ICompositionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L28">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L29">View Source</a>
   </span>
   <a id="Kephas_Scripting_ScriptingContext__ctor_" data-uid="Kephas.Scripting.ScriptingContext.#ctor*"></a>
   <h4 id="Kephas_Scripting_ScriptingContext__ctor_Kephas_Composition_ICompositionContext_" data-uid="Kephas.Scripting.ScriptingContext.#ctor(Kephas.Composition.ICompositionContext)">ScriptingContext(ICompositionContext)</h4>
@@ -225,7 +231,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ScriptingContext(ICompositionContext compositionContext = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public ScriptingContext(ICompositionContext compositionContext)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -240,7 +246,41 @@
       <tr>
         <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
         <td><span class="parametername">compositionContext</span></td>
-        <td><p>The composition context (optional).</p>
+        <td><p>The composition context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_ScriptingContext__ctor_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Scripting.ScriptingContext.%23ctor(Kephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L38">View Source</a>
+  </span>
+  <a id="Kephas_Scripting_ScriptingContext__ctor_" data-uid="Kephas.Scripting.ScriptingContext.#ctor*"></a>
+  <h4 id="Kephas_Scripting_ScriptingContext__ctor_Kephas_Services_IContext_" data-uid="Kephas.Scripting.ScriptingContext.#ctor(Kephas.Services.IContext)">ScriptingContext(IContext)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Scripting.ScriptingContext.html">ScriptingContext</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ScriptingContext(IContext executionContext)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">executionContext</span></td>
+        <td><p>The execution context.</p>
 </td>
       </tr>
     </tbody>
@@ -252,7 +292,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_ScriptingContext_Args.md&amp;value=---%0Auid%3A%20Kephas.Scripting.ScriptingContext.Args%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L47">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L58">View Source</a>
   </span>
   <a id="Kephas_Scripting_ScriptingContext_Args_" data-uid="Kephas.Scripting.ScriptingContext.Args*"></a>
   <h4 id="Kephas_Scripting_ScriptingContext_Args" data-uid="Kephas.Scripting.ScriptingContext.Args">Args</h4>
@@ -284,7 +324,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_ScriptingContext_Exception.md&amp;value=---%0Auid%3A%20Kephas.Scripting.ScriptingContext.Exception%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L79">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L90">View Source</a>
   </span>
   <a id="Kephas_Scripting_ScriptingContext_Exception_" data-uid="Kephas.Scripting.ScriptingContext.Exception*"></a>
   <h4 id="Kephas_Scripting_ScriptingContext_Exception" data-uid="Kephas.Scripting.ScriptingContext.Exception">Exception</h4>
@@ -316,7 +356,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_ScriptingContext_ExecutionContext.md&amp;value=---%0Auid%3A%20Kephas.Scripting.ScriptingContext.ExecutionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L63">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L74">View Source</a>
   </span>
   <a id="Kephas_Scripting_ScriptingContext_ExecutionContext_" data-uid="Kephas.Scripting.ScriptingContext.ExecutionContext*"></a>
   <h4 id="Kephas_Scripting_ScriptingContext_ExecutionContext" data-uid="Kephas.Scripting.ScriptingContext.ExecutionContext">ExecutionContext</h4>
@@ -348,7 +388,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_ScriptingContext_Result.md&amp;value=---%0Auid%3A%20Kephas.Scripting.ScriptingContext.Result%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L71">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L82">View Source</a>
   </span>
   <a id="Kephas_Scripting_ScriptingContext_Result_" data-uid="Kephas.Scripting.ScriptingContext.Result*"></a>
   <h4 id="Kephas_Scripting_ScriptingContext_Result" data-uid="Kephas.Scripting.ScriptingContext.Result">Result</h4>
@@ -380,7 +420,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_ScriptingContext_Script.md&amp;value=---%0Auid%3A%20Kephas.Scripting.ScriptingContext.Script%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L39">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L50">View Source</a>
   </span>
   <a id="Kephas_Scripting_ScriptingContext_Script_" data-uid="Kephas.Scripting.ScriptingContext.Script*"></a>
   <h4 id="Kephas_Scripting_ScriptingContext_Script" data-uid="Kephas.Scripting.ScriptingContext.Script">Script</h4>
@@ -412,7 +452,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_ScriptingContext_ScriptGlobals.md&amp;value=---%0Auid%3A%20Kephas.Scripting.ScriptingContext.ScriptGlobals%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L55">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L66">View Source</a>
   </span>
   <a id="Kephas_Scripting_ScriptingContext_ScriptGlobals_" data-uid="Kephas.Scripting.ScriptingContext.ScriptGlobals*"></a>
   <h4 id="Kephas_Scripting_ScriptingContext_ScriptGlobals" data-uid="Kephas.Scripting.ScriptingContext.ScriptGlobals">ScriptGlobals</h4>
@@ -456,10 +496,10 @@
       <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
+      <span class="xref">System.IDisposable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -502,6 +542,9 @@
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
   </div>
   <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerExtensions.html#Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_">MessageBrokerExtensions.CreateBrokeredMessageBuilder(IContext)</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>
   </div>
   <div>
@@ -527,7 +570,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Scripting_ScriptingContext.md&amp;value=---%0Auid%3A%20Kephas.Scripting.ScriptingContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L22" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Scripting/ScriptingContext.cs/#L23" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

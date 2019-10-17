@@ -73,14 +73,14 @@
   
   <h1 id="Kephas_Application_IAppLifecycleBehavior" data-uid="Kephas.Application.IAppLifecycleBehavior" class="text-break">Interface IAppLifecycleBehavior
   </h1>
-  <div class="markdown level0 summary"><p>Shared service contract for application lifecycle behavior.</p>
+  <div class="markdown level0 summary"><p>Singleton service contract for application lifecycle behavior.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Application_IAppLifecycleBehavior_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract(AllowMultiple = true)]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract(AllowMultiple = true)]
 public interface IAppLifecycleBehavior</code></pre>
   </div>
   <h5 id="Kephas_Application_IAppLifecycleBehavior_remarks"><strong>Remarks</strong></h5>
@@ -91,19 +91,19 @@ and reacts to them.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppLifecycleBehavior_AfterAppFinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppLifecycleBehavior.AfterAppFinalizeAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppLifecycleBehavior_AfterAppFinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppLifecycleBehavior.AfterAppFinalizeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IAppLifecycleBehavior.cs/#L73">View Source</a>
   </span>
   <a id="Kephas_Application_IAppLifecycleBehavior_AfterAppFinalizeAsync_" data-uid="Kephas.Application.IAppLifecycleBehavior.AfterAppFinalizeAsync*"></a>
-  <h4 id="Kephas_Application_IAppLifecycleBehavior_AfterAppFinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.IAppLifecycleBehavior.AfterAppFinalizeAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">AfterAppFinalizeAsync(IAppContext, CancellationToken)</h4>
+  <h4 id="Kephas_Application_IAppLifecycleBehavior_AfterAppFinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.IAppLifecycleBehavior.AfterAppFinalizeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">AfterAppFinalizeAsync(IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Interceptor called after the application completes its asynchronous finalization.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -116,7 +116,7 @@ and reacts to them.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a></td>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
         <td><span class="parametername">appContext</span></td>
         <td><p>Context for the application.</p>
 </td>
@@ -124,7 +124,7 @@ and reacts to them.</p>
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><p>Optional. The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -147,19 +147,19 @@ and reacts to them.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppLifecycleBehavior_AfterAppInitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppLifecycleBehavior.AfterAppInitializeAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppLifecycleBehavior_AfterAppInitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppLifecycleBehavior.AfterAppInitializeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IAppLifecycleBehavior.cs/#L49">View Source</a>
   </span>
   <a id="Kephas_Application_IAppLifecycleBehavior_AfterAppInitializeAsync_" data-uid="Kephas.Application.IAppLifecycleBehavior.AfterAppInitializeAsync*"></a>
-  <h4 id="Kephas_Application_IAppLifecycleBehavior_AfterAppInitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.IAppLifecycleBehavior.AfterAppInitializeAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">AfterAppInitializeAsync(IAppContext, CancellationToken)</h4>
+  <h4 id="Kephas_Application_IAppLifecycleBehavior_AfterAppInitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.IAppLifecycleBehavior.AfterAppInitializeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">AfterAppInitializeAsync(IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Interceptor called after the application completes its asynchronous initialization.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -172,7 +172,7 @@ and reacts to them.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a></td>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
         <td><span class="parametername">appContext</span></td>
         <td><p>Context for the application.</p>
 </td>
@@ -203,19 +203,19 @@ and reacts to them.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppLifecycleBehavior_BeforeAppFinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppLifecycleBehavior.BeforeAppFinalizeAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppLifecycleBehavior_BeforeAppFinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppLifecycleBehavior.BeforeAppFinalizeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IAppLifecycleBehavior.cs/#L63">View Source</a>
   </span>
   <a id="Kephas_Application_IAppLifecycleBehavior_BeforeAppFinalizeAsync_" data-uid="Kephas.Application.IAppLifecycleBehavior.BeforeAppFinalizeAsync*"></a>
-  <h4 id="Kephas_Application_IAppLifecycleBehavior_BeforeAppFinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.IAppLifecycleBehavior.BeforeAppFinalizeAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">BeforeAppFinalizeAsync(IAppContext, CancellationToken)</h4>
+  <h4 id="Kephas_Application_IAppLifecycleBehavior_BeforeAppFinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.IAppLifecycleBehavior.BeforeAppFinalizeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">BeforeAppFinalizeAsync(IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Interceptor called before the application starts its asynchronous finalization.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -228,7 +228,7 @@ and reacts to them.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a></td>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
         <td><span class="parametername">appContext</span></td>
         <td><p>Context for the application.</p>
 </td>
@@ -236,7 +236,7 @@ and reacts to them.</p>
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><p>Optional. The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -257,25 +257,25 @@ and reacts to them.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Kephas_Application_IAppLifecycleBehavior_BeforeAppFinalizeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <h5 id="Kephas_Application_IAppLifecycleBehavior_BeforeAppFinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>To interrupt finalization, simply throw any appropriate exception.
 Caution! Interrupting the finalization may cause the application to remain in an undefined state.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppLifecycleBehavior_BeforeAppInitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppLifecycleBehavior.BeforeAppInitializeAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_IAppLifecycleBehavior_BeforeAppInitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.IAppLifecycleBehavior.BeforeAppInitializeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/IAppLifecycleBehavior.cs/#L39">View Source</a>
   </span>
   <a id="Kephas_Application_IAppLifecycleBehavior_BeforeAppInitializeAsync_" data-uid="Kephas.Application.IAppLifecycleBehavior.BeforeAppInitializeAsync*"></a>
-  <h4 id="Kephas_Application_IAppLifecycleBehavior_BeforeAppInitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.IAppLifecycleBehavior.BeforeAppInitializeAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">BeforeAppInitializeAsync(IAppContext, CancellationToken)</h4>
+  <h4 id="Kephas_Application_IAppLifecycleBehavior_BeforeAppInitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.IAppLifecycleBehavior.BeforeAppInitializeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">BeforeAppInitializeAsync(IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Interceptor called before the application starts its asynchronous initialization.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -288,7 +288,7 @@ Caution! Interrupting the finalization may cause the application to remain in an
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a></td>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
         <td><span class="parametername">appContext</span></td>
         <td><p>Context for the application.</p>
 </td>
@@ -317,7 +317,7 @@ Caution! Interrupting the finalization may cause the application to remain in an
       </tr>
     </tbody>
   </table>
-  <h5 id="Kephas_Application_IAppLifecycleBehavior_BeforeAppInitializeAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <h5 id="Kephas_Application_IAppLifecycleBehavior_BeforeAppInitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>To interrupt the application initialization, simply throw an appropriate exception.</p>
 </div>
   <h3 id="extensionmethods">Extension Methods</h3>

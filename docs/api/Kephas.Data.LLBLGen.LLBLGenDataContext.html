@@ -94,8 +94,7 @@
     <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
     <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
     <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
-    <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
-    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a></div>
     <div><span class="xref">System.IDisposable</span></div>
     <div><a class="xref" href="Kephas.Services.IInitializable.html">IInitializable</a></div>
@@ -130,16 +129,10 @@
       <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Detach_Kephas_Data_Capabilities_IEntityEntry_">DataContextBase.Detach(IEntityEntry)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Dispose">DataContextBase.Dispose()</a>
-    </div>
-    <div>
       <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_GetIdEqualityExpression__1_System_Object_">DataContextBase.GetIdEqualityExpression&lt;T&gt;(Object)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Initialize_Kephas_Data_IDataInitializationContext_">DataContextBase.Initialize(IDataInitializationContext)</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_Dispose_System_Boolean_">DataContextBase.Dispose(Boolean)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Data.DataContextBase.html#Kephas_Data_DataContextBase_AttachCore_System_Object_System_Boolean_">DataContextBase.AttachCore(Object, Boolean)</a>
@@ -157,7 +150,10 @@
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Identity">Context.Identity</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ContextLogger">Context.ContextLogger</a>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Logger">Context.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose">Context.Dispose()</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ValidateIdentity_System_Security_Principal_IIdentity_System_Security_Principal_IIdentity_">Context.ValidateIdentity(IIdentity, IIdentity)</a>
@@ -167,6 +163,9 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetAmbientServices_Kephas_IAmbientServices_">Context.SetAmbientServices(IAmbientServices)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose_System_Boolean_">Context.Dispose(Boolean)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
@@ -258,7 +257,7 @@
   <h5 id="Kephas_Data_LLBLGen_LLBLGenDataContext_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[SupportedDataStoreKinds(new string[]{&quot;LLBLGen&quot;})]
-public class LLBLGenDataContext : DataContextBase, ILLBLGenDataContext, IDataContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware, IIdentifiable, IDisposable, IInitializable</code></pre>
+public class LLBLGenDataContext : DataContextBase, ILLBLGenDataContext, IDataContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable, IIdentifiable, IDisposable, IInitializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -530,7 +529,6 @@ public class LLBLGenDataContext : DataContextBase, ILLBLGenDataContext, IDataCon
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override IQueryable&lt;T&gt; QueryCore&lt;T&gt;(IQueryOperationContext queryOperationContext)
-
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -672,10 +670,7 @@ public class LLBLGenDataContext : DataContextBase, ILLBLGenDataContext, IDataCon
       <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.IIdentifiable.html">IIdentifiable</a>

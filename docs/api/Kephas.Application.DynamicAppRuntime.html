@@ -1,0 +1,687 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DynamicAppRuntime
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DynamicAppRuntime
+   ">
+    <meta name="generator" content="docfx 2.43.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Application.DynamicAppRuntime">
+  
+  
+  <h1 id="Kephas_Application_DynamicAppRuntime" data-uid="Kephas.Application.DynamicAppRuntime" class="text-break">Class DynamicAppRuntime
+  </h1>
+  <div class="markdown level0 summary"><p>An application application runtime loading dynamically assemblies from the application localtion.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">System.Dynamic.DynamicObject</span></div>
+    <div class="level2"><a class="xref" href="Kephas.Dynamic.ExpandoBase.html">ExpandoBase</a></div>
+    <div class="level3"><a class="xref" href="Kephas.Dynamic.Expando.html">Expando</a></div>
+    <div class="level4"><a class="xref" href="Kephas.Application.AppRuntimeBase.html">AppRuntimeBase</a></div>
+    <div class="level5"><span class="xref">DynamicAppRuntime</span></div>
+      <div class="level6"><a class="xref" href="Kephas.Plugins.Application.PluginsAppRuntime.html">PluginsAppRuntime</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></div>
+    <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
+    <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
+    <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_AppIdKey">AppRuntimeBase.AppIdKey</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_AppInstanceIdKey">AppRuntimeBase.AppInstanceIdKey</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_AppVersionKey">AppRuntimeBase.AppVersionKey</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_AssemblyFileSearchPattern">AppRuntimeBase.AssemblyFileSearchPattern</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_AssemblyFileExtension">AppRuntimeBase.AssemblyFileExtension</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_AssemblyLoader">AppRuntimeBase.AssemblyLoader</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_Logger">AppRuntimeBase.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_AssemblyFilter">AppRuntimeBase.AssemblyFilter</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_GetAppLocation">AppRuntimeBase.GetAppLocation()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_GetAppBinDirectories">AppRuntimeBase.GetAppBinDirectories()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_GetAppAssemblies_System_Func_System_Reflection_AssemblyName_System_Boolean__">AppRuntimeBase.GetAppAssemblies(Func&lt;AssemblyName, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_GetHostAddress">AppRuntimeBase.GetHostAddress()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_GetHostName">AppRuntimeBase.GetHostName()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_GetLogger">AppRuntimeBase.GetLogger()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_InitializeAppProperties_System_Reflection_Assembly_System_String_System_String_">AppRuntimeBase.InitializeAppProperties(Assembly, String, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_GetLoadedAssemblies">AppRuntimeBase.GetLoadedAssemblies()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_GetReferencedAssemblies_System_Reflection_Assembly_">AppRuntimeBase.GetReferencedAssemblies(Assembly)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetDynamicMemberNames">ExpandoBase.GetDynamicMemberNames()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_HasDynamicMember_System_String_">ExpandoBase.HasDynamicMember(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryGetMember_System_Dynamic_GetMemberBinder_System_Object__">ExpandoBase.TryGetMember(GetMemberBinder, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetMember_System_Dynamic_SetMemberBinder_System_Object_">ExpandoBase.TrySetMember(SetMemberBinder, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryInvokeMember_System_Dynamic_InvokeMemberBinder_System_Object___System_Object__">ExpandoBase.TryInvokeMember(InvokeMemberBinder, Object[], Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_ToDictionary_System_Func_System_String_System_String__System_Func_System_Object_System_Object__">ExpandoBase.ToDictionary(Func&lt;String, String&gt;, Func&lt;Object, Object&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetInnerObjectTypeInfo">ExpandoBase.GetInnerObjectTypeInfo()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_GetThisTypeInfo">ExpandoBase.GetThisTypeInfo()</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TryGetValue_System_String_System_Object__">ExpandoBase.TryGetValue(String, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_TrySetValue_System_String_System_Object_">ExpandoBase.TrySetValue(String, Object)</a>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.GetMetaObject(System.Linq.Expressions.Expression)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryBinaryOperation(System.Dynamic.BinaryOperationBinder, System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryConvert(System.Dynamic.ConvertBinder, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryCreateInstance(System.Dynamic.CreateInstanceBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteIndex(System.Dynamic.DeleteIndexBinder, System.Object[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryDeleteMember(System.Dynamic.DeleteMemberBinder)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryGetIndex(System.Dynamic.GetIndexBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryInvoke(System.Dynamic.InvokeBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TrySetIndex(System.Dynamic.SetIndexBinder, System.Object[], System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Dynamic.DynamicObject.TryUnaryOperation(System.Dynamic.UnaryOperationBinder, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h5 id="Kephas_Application_DynamicAppRuntime_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DynamicAppRuntime : AppRuntimeBase, IAppRuntime, IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DynamicAppRuntime__ctor_Kephas_Reflection_IAssemblyLoader_Kephas_Logging_ILogManager_System_Func_System_Reflection_AssemblyName_System_Boolean__System_String_System_String_System_String_Kephas_Dynamic_IExpando_.md&amp;value=---%0Auid%3A%20Kephas.Application.DynamicAppRuntime.%23ctor(Kephas.Reflection.IAssemblyLoader%2CKephas.Logging.ILogManager%2CSystem.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D%2CSystem.String%2CSystem.String%2CSystem.String%2CKephas.Dynamic.IExpando)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DynamicAppRuntime.cs/#L39">View Source</a>
+  </span>
+  <a id="Kephas_Application_DynamicAppRuntime__ctor_" data-uid="Kephas.Application.DynamicAppRuntime.#ctor*"></a>
+  <h4 id="Kephas_Application_DynamicAppRuntime__ctor_Kephas_Reflection_IAssemblyLoader_Kephas_Logging_ILogManager_System_Func_System_Reflection_AssemblyName_System_Boolean__System_String_System_String_System_String_Kephas_Dynamic_IExpando_" data-uid="Kephas.Application.DynamicAppRuntime.#ctor(Kephas.Reflection.IAssemblyLoader,Kephas.Logging.ILogManager,System.Func{System.Reflection.AssemblyName,System.Boolean},System.String,System.String,System.String,Kephas.Dynamic.IExpando)">DynamicAppRuntime(IAssemblyLoader, ILogManager, Func&lt;AssemblyName, Boolean&gt;, String, String, String, IExpando)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Application.DynamicAppRuntime.html">DynamicAppRuntime</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DynamicAppRuntime(IAssemblyLoader assemblyLoader = null, ILogManager logManager = null, Func&lt;AssemblyName, bool&gt; defaultAssemblyFilter = null, string appLocation = null, string appId = null, string appVersion = null, IExpando appArgs = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Reflection.IAssemblyLoader.html">IAssemblyLoader</a></td>
+        <td><span class="parametername">assemblyLoader</span></td>
+        <td><p>Optional. The assembly loader.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Logging.ILogManager.html">ILogManager</a></td>
+        <td><span class="parametername">logManager</span></td>
+        <td><p>Optional. Manager for log.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Reflection.AssemblyName</span>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">defaultAssemblyFilter</span></td>
+        <td><p>Optional. The default assembly filter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">appLocation</span></td>
+        <td><p>Optional. The application location.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">appId</span></td>
+        <td><p>Optional. Identifier for the application.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">appVersion</span></td>
+        <td><p>Optional. The application version.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></td>
+        <td><span class="parametername">appArgs</span></td>
+        <td><p>Optional. The application arguments.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DynamicAppRuntime_AddAdditionalAssemblies_System_Collections_Generic_IList_System_Reflection_Assembly__System_Func_System_Reflection_AssemblyName_System_Boolean__.md&amp;value=---%0Auid%3A%20Kephas.Application.DynamicAppRuntime.AddAdditionalAssemblies(System.Collections.Generic.IList%7BSystem.Reflection.Assembly%7D%2CSystem.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DynamicAppRuntime.cs/#L70">View Source</a>
+  </span>
+  <a id="Kephas_Application_DynamicAppRuntime_AddAdditionalAssemblies_" data-uid="Kephas.Application.DynamicAppRuntime.AddAdditionalAssemblies*"></a>
+  <h4 id="Kephas_Application_DynamicAppRuntime_AddAdditionalAssemblies_System_Collections_Generic_IList_System_Reflection_Assembly__System_Func_System_Reflection_AssemblyName_System_Boolean__" data-uid="Kephas.Application.DynamicAppRuntime.AddAdditionalAssemblies(System.Collections.Generic.IList{System.Reflection.Assembly},System.Func{System.Reflection.AssemblyName,System.Boolean})">AddAdditionalAssemblies(IList&lt;Assembly&gt;, Func&lt;AssemblyName, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds additional assemblies to the ones already collected.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void AddAdditionalAssemblies(IList&lt;Assembly&gt; assemblies, Func&lt;AssemblyName, bool&gt; assemblyFilter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IList</span>&lt;<span class="xref">System.Reflection.Assembly</span>&gt;</td>
+        <td><span class="parametername">assemblies</span></td>
+        <td><p>The collected assemblies.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Reflection.AssemblyName</span>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">assemblyFilter</span></td>
+        <td><p>A filter for the assemblies.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DynamicAppRuntime_ComputeAppAssemblies_System_Func_System_Reflection_AssemblyName_System_Boolean__.md&amp;value=---%0Auid%3A%20Kephas.Application.DynamicAppRuntime.ComputeAppAssemblies(System.Func%7BSystem.Reflection.AssemblyName%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DynamicAppRuntime.cs/#L58">View Source</a>
+  </span>
+  <a id="Kephas_Application_DynamicAppRuntime_ComputeAppAssemblies_" data-uid="Kephas.Application.DynamicAppRuntime.ComputeAppAssemblies*"></a>
+  <h4 id="Kephas_Application_DynamicAppRuntime_ComputeAppAssemblies_System_Func_System_Reflection_AssemblyName_System_Boolean__" data-uid="Kephas.Application.DynamicAppRuntime.ComputeAppAssemblies(System.Func{System.Reflection.AssemblyName,System.Boolean})">ComputeAppAssemblies(Func&lt;AssemblyName, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Computes the application assemblies.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IEnumerable&lt;Assembly&gt; ComputeAppAssemblies(Func&lt;AssemblyName, bool&gt; assemblyFilter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Reflection.AssemblyName</span>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">assemblyFilter</span></td>
+        <td><p>A filter for the assemblies.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.Assembly</span>&gt;</td>
+        <td><p>An enumeration of application assemblies.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Kephas.Application.AppRuntimeBase.html#Kephas_Application_AppRuntimeBase_ComputeAppAssemblies_System_Func_System_Reflection_AssemblyName_System_Boolean__">AppRuntimeBase.ComputeAppAssemblies(Func&lt;AssemblyName, Boolean&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DynamicAppRuntime_EnumerateFiles_System_String_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Application.DynamicAppRuntime.EnumerateFiles(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DynamicAppRuntime.cs/#L95">View Source</a>
+  </span>
+  <a id="Kephas_Application_DynamicAppRuntime_EnumerateFiles_" data-uid="Kephas.Application.DynamicAppRuntime.EnumerateFiles*"></a>
+  <h4 id="Kephas_Application_DynamicAppRuntime_EnumerateFiles_System_String_System_String_" data-uid="Kephas.Application.DynamicAppRuntime.EnumerateFiles(System.String,System.String)">EnumerateFiles(String, String)</h4>
+  <div class="markdown level1 summary"><p>Enumerates the files in the provided directory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;string&gt; EnumerateFiles(string directory, string filePattern)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">directory</span></td>
+        <td><p>Pathname of the directory.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">filePattern</span></td>
+        <td><p>A pattern specifying the files to retrieve.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>An enumeration of file names.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DynamicAppRuntime_GetAssemblyNameFromAssemblyFileName_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Application.DynamicAppRuntime.GetAssemblyNameFromAssemblyFileName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DynamicAppRuntime.cs/#L119">View Source</a>
+  </span>
+  <a id="Kephas_Application_DynamicAppRuntime_GetAssemblyNameFromAssemblyFileName_" data-uid="Kephas.Application.DynamicAppRuntime.GetAssemblyNameFromAssemblyFileName*"></a>
+  <h4 id="Kephas_Application_DynamicAppRuntime_GetAssemblyNameFromAssemblyFileName_System_String_" data-uid="Kephas.Application.DynamicAppRuntime.GetAssemblyNameFromAssemblyFileName(System.String)">GetAssemblyNameFromAssemblyFileName(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the assembly name from the assembly file name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected AssemblyName GetAssemblyNameFromAssemblyFileName(string f)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">f</span></td>
+        <td><p>The format string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.AssemblyName</span></td>
+        <td><p>The assembly name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DynamicAppRuntime_GetFileName_System_Reflection_Assembly_.md&amp;value=---%0Auid%3A%20Kephas.Application.DynamicAppRuntime.GetFileName(System.Reflection.Assembly)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DynamicAppRuntime.cs/#L107">View Source</a>
+  </span>
+  <a id="Kephas_Application_DynamicAppRuntime_GetFileName_" data-uid="Kephas.Application.DynamicAppRuntime.GetFileName*"></a>
+  <h4 id="Kephas_Application_DynamicAppRuntime_GetFileName_System_Reflection_Assembly_" data-uid="Kephas.Application.DynamicAppRuntime.GetFileName(System.Reflection.Assembly)">GetFileName(Assembly)</h4>
+  <div class="markdown level1 summary"><p>Gets the file name of the provided assembly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetFileName(Assembly assembly)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.Assembly</span></td>
+        <td><span class="parametername">assembly</span></td>
+        <td><p>The assembly.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The assembly file name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a>
+  </div>
+  <div>
+      <span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.Orchestration.Application.AppRuntimeExtensions.html#Kephas_Orchestration_Application_AppRuntimeExtensions_GetAppInfo_Kephas_Application_IAppRuntime_">AppRuntimeExtensions.GetAppInfo(IAppRuntime)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeExtensions.html#Kephas_Application_AppRuntimeExtensions_GetAppId_Kephas_Application_IAppRuntime_">AppRuntimeExtensions.GetAppId(IAppRuntime)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeExtensions.html#Kephas_Application_AppRuntimeExtensions_GetAppVersion_Kephas_Application_IAppRuntime_">AppRuntimeExtensions.GetAppVersion(IAppRuntime)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Application.AppRuntimeExtensions.html#Kephas_Application_AppRuntimeExtensions_GetAppInstanceId_Kephas_Application_IAppRuntime_">AppRuntimeExtensions.GetAppInstanceId(IAppRuntime)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_Merge__1___0_System_Object_">ExpandoExtensions.Merge&lt;T&gt;(T, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Dynamic.ExpandoExtensions.html#Kephas_Dynamic_ExpandoExtensions_GetLaxValue__1_Kephas_Dynamic_IIndexable_System_String___0_">ExpandoExtensions.GetLaxValue&lt;T&gt;(IIndexable, String, T)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Application.ApplicationExtensions.html#Kephas_Application_ApplicationExtensions_GetFeatures_Kephas_Application_IAppRuntime_">ApplicationExtensions.GetFeatures(IAppRuntime)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Application.ApplicationExtensions.html#Kephas_Application_ApplicationExtensions_ContainsFeature_Kephas_Application_IAppRuntime_System_String_">ApplicationExtensions.ContainsFeature(IAppRuntime, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_DynamicAppRuntime.md&amp;value=---%0Auid%3A%20Kephas.Application.DynamicAppRuntime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/DynamicAppRuntime.cs/#L27" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

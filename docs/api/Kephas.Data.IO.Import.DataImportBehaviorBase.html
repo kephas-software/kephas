@@ -79,14 +79,22 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DataImportBehaviorBase</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">DataImportBehaviorBase</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.IO.Import.IDataImportBehavior.html">IDataImportBehavior</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -113,7 +121,7 @@
   <h6><strong>Assembly</strong>: Kephas.Data.IO.dll</h6>
   <h5 id="Kephas_Data_IO_Import_DataImportBehaviorBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class DataImportBehaviorBase : IDataImportBehavior</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class DataImportBehaviorBase : Loggable, ILoggable, IDataImportBehavior</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -122,7 +130,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportBehaviorBase_AfterPersistEntityAsync_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IO_Import_IDataImportContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportBehaviorBase.AfterPersistEntityAsync(Kephas.Data.Capabilities.IEntityEntry%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IO.Import.IDataImportContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L104">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L105">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Import_DataImportBehaviorBase_AfterPersistEntityAsync_" data-uid="Kephas.Data.IO.Import.DataImportBehaviorBase.AfterPersistEntityAsync*"></a>
   <h4 id="Kephas_Data_IO_Import_DataImportBehaviorBase_AfterPersistEntityAsync_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IO_Import_IDataImportContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Import.DataImportBehaviorBase.AfterPersistEntityAsync(Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IO.Import.IDataImportContext,System.Threading.CancellationToken)">AfterPersistEntityAsync(IEntityEntry, IEntityEntry, IDataImportContext, CancellationToken)</h4>
@@ -190,7 +198,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportBehaviorBase_AfterReadDataSourceAsync_Kephas_Data_IO_DataStreams_DataStream_Kephas_Data_IO_Import_IDataImportContext_System_Collections_Generic_IList_System_Object__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportBehaviorBase.AfterReadDataSourceAsync(Kephas.Data.IO.DataStreams.DataStream%2CKephas.Data.IO.Import.IDataImportContext%2CSystem.Collections.Generic.IList%7BSystem.Object%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L49">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L50">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Import_DataImportBehaviorBase_AfterReadDataSourceAsync_" data-uid="Kephas.Data.IO.Import.DataImportBehaviorBase.AfterReadDataSourceAsync*"></a>
   <h4 id="Kephas_Data_IO_Import_DataImportBehaviorBase_AfterReadDataSourceAsync_Kephas_Data_IO_DataStreams_DataStream_Kephas_Data_IO_Import_IDataImportContext_System_Collections_Generic_IList_System_Object__System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Import.DataImportBehaviorBase.AfterReadDataSourceAsync(Kephas.Data.IO.DataStreams.DataStream,Kephas.Data.IO.Import.IDataImportContext,System.Collections.Generic.IList{System.Object},System.Threading.CancellationToken)">AfterReadDataSourceAsync(DataStream, IDataImportContext, IList&lt;Object&gt;, CancellationToken)</h4>
@@ -258,7 +266,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportBehaviorBase_BeforeConvertEntityAsync_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IO_Import_IDataImportContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportBehaviorBase.BeforeConvertEntityAsync(Kephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IO.Import.IDataImportContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L67">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L68">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Import_DataImportBehaviorBase_BeforeConvertEntityAsync_" data-uid="Kephas.Data.IO.Import.DataImportBehaviorBase.BeforeConvertEntityAsync*"></a>
   <h4 id="Kephas_Data_IO_Import_DataImportBehaviorBase_BeforeConvertEntityAsync_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IO_Import_IDataImportContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Import.DataImportBehaviorBase.BeforeConvertEntityAsync(Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IO.Import.IDataImportContext,System.Threading.CancellationToken)">BeforeConvertEntityAsync(IEntityEntry, IDataImportContext, CancellationToken)</h4>
@@ -320,7 +328,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportBehaviorBase_BeforePersistEntityAsync_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IO_Import_IDataImportContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportBehaviorBase.BeforePersistEntityAsync(Kephas.Data.Capabilities.IEntityEntry%2CKephas.Data.Capabilities.IEntityEntry%2CKephas.Data.IO.Import.IDataImportContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L85">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L86">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Import_DataImportBehaviorBase_BeforePersistEntityAsync_" data-uid="Kephas.Data.IO.Import.DataImportBehaviorBase.BeforePersistEntityAsync*"></a>
   <h4 id="Kephas_Data_IO_Import_DataImportBehaviorBase_BeforePersistEntityAsync_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IO_Import_IDataImportContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Import.DataImportBehaviorBase.BeforePersistEntityAsync(Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.Capabilities.IEntityEntry,Kephas.Data.IO.Import.IDataImportContext,System.Threading.CancellationToken)">BeforePersistEntityAsync(IEntityEntry, IEntityEntry, IDataImportContext, CancellationToken)</h4>
@@ -388,7 +396,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportBehaviorBase_BeforeReadDataSourceAsync_Kephas_Data_IO_DataStreams_DataStream_Kephas_Data_IO_Import_IDataImportContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportBehaviorBase.BeforeReadDataSourceAsync(Kephas.Data.IO.DataStreams.DataStream%2CKephas.Data.IO.Import.IDataImportContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L34">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L35">View Source</a>
   </span>
   <a id="Kephas_Data_IO_Import_DataImportBehaviorBase_BeforeReadDataSourceAsync_" data-uid="Kephas.Data.IO.Import.DataImportBehaviorBase.BeforeReadDataSourceAsync*"></a>
   <h4 id="Kephas_Data_IO_Import_DataImportBehaviorBase_BeforeReadDataSourceAsync_Kephas_Data_IO_DataStreams_DataStream_Kephas_Data_IO_Import_IDataImportContext_System_Threading_CancellationToken_" data-uid="Kephas.Data.IO.Import.DataImportBehaviorBase.BeforeReadDataSourceAsync(Kephas.Data.IO.DataStreams.DataStream,Kephas.Data.IO.Import.IDataImportContext,System.Threading.CancellationToken)">BeforeReadDataSourceAsync(DataStream, IDataImportContext, CancellationToken)</h4>
@@ -447,6 +455,9 @@
   </table>
   <h3 id="implements">Implements</h3>
   <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.IO.Import.IDataImportBehavior.html">IDataImportBehavior</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
@@ -503,7 +514,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_IO_Import_DataImportBehaviorBase.md&amp;value=---%0Auid%3A%20Kephas.Data.IO.Import.DataImportBehaviorBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data.IO/Import/DataImportBehaviorBase.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

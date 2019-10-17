@@ -73,14 +73,14 @@
   
   <h1 id="Kephas_Data_LLBLGen_IQueryFactoryProvider" data-uid="Kephas.Data.LLBLGen.IQueryFactoryProvider" class="text-break">Interface IQueryFactoryProvider
   </h1>
-  <div class="markdown level0 summary"><p>Interface for LLBLGen query factory provider.</p>
+  <div class="markdown level0 summary"><p>Singleton application service contract for the query factory provider.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.LLBLGen.html">Kephas.Data.LLBLGen</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.LLBLGen.dll</h6>
   <h5 id="Kephas_Data_LLBLGen_IQueryFactoryProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract]
 public interface IQueryFactoryProvider</code></pre>
   </div>
   <h3 id="methods">Methods
@@ -94,7 +94,7 @@ public interface IQueryFactoryProvider</code></pre>
   </span>
   <a id="Kephas_Data_LLBLGen_IQueryFactoryProvider_CreateQueryFactory_" data-uid="Kephas.Data.LLBLGen.IQueryFactoryProvider.CreateQueryFactory*"></a>
   <h4 id="Kephas_Data_LLBLGen_IQueryFactoryProvider_CreateQueryFactory_SD_LLBLGen_Pro_ORMSupportClasses_DataAccessAdapterBase_SD_LLBLGen_Pro_ORMSupportClasses_Context_" data-uid="Kephas.Data.LLBLGen.IQueryFactoryProvider.CreateQueryFactory(SD.LLBLGen.Pro.ORMSupportClasses.DataAccessAdapterBase,SD.LLBLGen.Pro.ORMSupportClasses.Context)">CreateQueryFactory(DataAccessAdapterBase, Context)</h4>
-  <div class="markdown level1 summary"><p>Creates query factory.</p>
+  <div class="markdown level1 summary"><p>Creates query factory based on the data access adapter and the context to use.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

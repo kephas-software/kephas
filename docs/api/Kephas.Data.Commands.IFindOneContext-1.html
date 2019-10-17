@@ -88,10 +88,13 @@
       <a class="xref" href="Kephas.Data.IDataOperationContext.html#Kephas_Data_IDataOperationContext_DataContext">IDataOperationContext.DataContext</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_Identity">IContext.Identity</a>
+      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_CompositionContext">IContext.CompositionContext</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_ContextLogger">IContext.ContextLogger</a>
+      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_AmbientServices">IContext.AmbientServices</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_Identity">IContext.Identity</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasDynamicMember_System_String_">IExpando.HasDynamicMember(String)</a>
@@ -106,17 +109,17 @@
       <a class="xref" href="Kephas.Dynamic.IIndexable.html#Kephas_Dynamic_IIndexable_Item_System_String_">IIndexable.Item[String]</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html#Kephas_IAmbientServicesAware_AmbientServices">IAmbientServicesAware.AmbientServices</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html#Kephas_Logging_ILoggable_Logger">ILoggable.Logger</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html#Kephas_Composition_ICompositionContextAware_CompositionContext">ICompositionContextAware.CompositionContext</a>
+      <span class="xref">System.IDisposable.Dispose()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.Commands.html">Kephas.Data.Commands</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.dll</h6>
   <h5 id="Kephas_Data_Commands_IFindOneContext_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IFindOneContext&lt;TEntity&gt; : IFindOneContext, IFindContextBase, IDataOperationContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IFindOneContext&lt;TEntity&gt; : IFindOneContext, IFindContextBase, IDataOperationContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable, IDisposable</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -211,6 +214,9 @@ to provide LINQ-support.</p>
   </div>
   <div>
       <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerExtensions.html#Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_">MessageBrokerExtensions.CreateBrokeredMessageBuilder(IContext)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>

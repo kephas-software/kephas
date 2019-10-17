@@ -1,0 +1,592 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DefaultCommandShell
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DefaultCommandShell
+   ">
+    <meta name="generator" content="docfx 2.43.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Kephas.Application.Console.DefaultCommandShell">
+  
+  
+  <h1 id="Kephas_Application_Console_DefaultCommandShell" data-uid="Kephas.Application.Console.DefaultCommandShell" class="text-break">Class DefaultCommandShell
+  </h1>
+  <div class="markdown level0 summary"><p>A default command shell.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">DefaultCommandShell</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
+    <div><a class="xref" href="Kephas.Application.Console.ICommandShell.html">ICommandShell</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.Console.html">Kephas.Application.Console</a></h6>
+  <h6><strong>Assembly</strong>: Kephas.Application.Console.dll</h6>
+  <h5 id="Kephas_Application_Console_DefaultCommandShell_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Lowest)]
+public class DefaultCommandShell : Loggable, ILoggable, ICommandShell</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_Console_DefaultCommandShell__ctor_Kephas_Application_Console_ICommandProcessor_Kephas_Serialization_ISerializationService_Kephas_Services_IContextFactory_.md&amp;value=---%0Auid%3A%20Kephas.Application.Console.DefaultCommandShell.%23ctor(Kephas.Application.Console.ICommandProcessor%2CKephas.Serialization.ISerializationService%2CKephas.Services.IContextFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application.Console/DefaultCommandShell.cs/#L41">View Source</a>
+  </span>
+  <a id="Kephas_Application_Console_DefaultCommandShell__ctor_" data-uid="Kephas.Application.Console.DefaultCommandShell.#ctor*"></a>
+  <h4 id="Kephas_Application_Console_DefaultCommandShell__ctor_Kephas_Application_Console_ICommandProcessor_Kephas_Serialization_ISerializationService_Kephas_Services_IContextFactory_" data-uid="Kephas.Application.Console.DefaultCommandShell.#ctor(Kephas.Application.Console.ICommandProcessor,Kephas.Serialization.ISerializationService,Kephas.Services.IContextFactory)">DefaultCommandShell(ICommandProcessor, ISerializationService, IContextFactory)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Application.Console.DefaultCommandShell.html">DefaultCommandShell</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DefaultCommandShell(ICommandProcessor commandProcessor, ISerializationService serializationService, IContextFactory contextFactory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.Console.ICommandProcessor.html">ICommandProcessor</a></td>
+        <td><span class="parametername">commandProcessor</span></td>
+        <td><p>The command processor.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Serialization.ISerializationService.html">ISerializationService</a></td>
+        <td><span class="parametername">serializationService</span></td>
+        <td><p>The serialization service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContextFactory.html">IContextFactory</a></td>
+        <td><span class="parametername">contextFactory</span></td>
+        <td><p>The context factory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_Console_DefaultCommandShell__ctor_Kephas_Application_Console_IConsole_Kephas_Application_Console_ICommandProcessor_Kephas_Serialization_ISerializationService_Kephas_Services_IContextFactory_.md&amp;value=---%0Auid%3A%20Kephas.Application.Console.DefaultCommandShell.%23ctor(Kephas.Application.Console.IConsole%2CKephas.Application.Console.ICommandProcessor%2CKephas.Serialization.ISerializationService%2CKephas.Services.IContextFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application.Console/DefaultCommandShell.cs/#L53">View Source</a>
+  </span>
+  <a id="Kephas_Application_Console_DefaultCommandShell__ctor_" data-uid="Kephas.Application.Console.DefaultCommandShell.#ctor*"></a>
+  <h4 id="Kephas_Application_Console_DefaultCommandShell__ctor_Kephas_Application_Console_IConsole_Kephas_Application_Console_ICommandProcessor_Kephas_Serialization_ISerializationService_Kephas_Services_IContextFactory_" data-uid="Kephas.Application.Console.DefaultCommandShell.#ctor(Kephas.Application.Console.IConsole,Kephas.Application.Console.ICommandProcessor,Kephas.Serialization.ISerializationService,Kephas.Services.IContextFactory)">DefaultCommandShell(IConsole, ICommandProcessor, ISerializationService, IContextFactory)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Application.Console.DefaultCommandShell.html">DefaultCommandShell</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DefaultCommandShell(IConsole console, ICommandProcessor commandProcessor, ISerializationService serializationService, IContextFactory contextFactory)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.Console.IConsole.html">IConsole</a></td>
+        <td><span class="parametername">console</span></td>
+        <td><p>The console.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.Console.ICommandProcessor.html">ICommandProcessor</a></td>
+        <td><span class="parametername">commandProcessor</span></td>
+        <td><p>The command processor.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Serialization.ISerializationService.html">ISerializationService</a></td>
+        <td><span class="parametername">serializationService</span></td>
+        <td><p>The serialization service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContextFactory.html">IContextFactory</a></td>
+        <td><span class="parametername">contextFactory</span></td>
+        <td><p>The context factory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_Console_DefaultCommandShell_Console.md&amp;value=---%0Auid%3A%20Kephas.Application.Console.DefaultCommandShell.Console%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application.Console/DefaultCommandShell.cs/#L72">View Source</a>
+  </span>
+  <a id="Kephas_Application_Console_DefaultCommandShell_Console_" data-uid="Kephas.Application.Console.DefaultCommandShell.Console*"></a>
+  <h4 id="Kephas_Application_Console_DefaultCommandShell_Console" data-uid="Kephas.Application.Console.DefaultCommandShell.Console">Console</h4>
+  <div class="markdown level1 summary"><p>Gets the console.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IConsole Console { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.Console.IConsole.html">IConsole</a></td>
+        <td><p>The console.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_Console_DefaultCommandShell_ParseCommandLine_System_String_.md&amp;value=---%0Auid%3A%20Kephas.Application.Console.DefaultCommandShell.ParseCommandLine(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application.Console/DefaultCommandShell.cs/#L172">View Source</a>
+  </span>
+  <a id="Kephas_Application_Console_DefaultCommandShell_ParseCommandLine_" data-uid="Kephas.Application.Console.DefaultCommandShell.ParseCommandLine*"></a>
+  <h4 id="Kephas_Application_Console_DefaultCommandShell_ParseCommandLine_System_String_" data-uid="Kephas.Application.Console.DefaultCommandShell.ParseCommandLine(System.String)">ParseCommandLine(String)</h4>
+  <div class="markdown level1 summary"><p>Parses the command line.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual (string command, IExpando args)ParseCommandLine(string commandLine)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">commandLine</span></td>
+        <td><p>The command line.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a>&gt;</td>
+        <td><p>A Tuple consisting of the command and the command arguments.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_Console_DefaultCommandShell_ReadCommandLineAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.Console.DefaultCommandShell.ReadCommandLineAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application.Console/DefaultCommandShell.cs/#L141">View Source</a>
+  </span>
+  <a id="Kephas_Application_Console_DefaultCommandShell_ReadCommandLineAsync_" data-uid="Kephas.Application.Console.DefaultCommandShell.ReadCommandLineAsync*"></a>
+  <h4 id="Kephas_Application_Console_DefaultCommandShell_ReadCommandLineAsync_System_Threading_CancellationToken_" data-uid="Kephas.Application.Console.DefaultCommandShell.ReadCommandLineAsync(System.Threading.CancellationToken)">ReadCommandLineAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Reads the command line asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;string&gt; ReadCommandLineAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A token that allows processing to be cancelled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>An asynchronous result that yields the read command.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_Console_DefaultCommandShell_StartAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.Console.DefaultCommandShell.StartAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application.Console/DefaultCommandShell.cs/#L81">View Source</a>
+  </span>
+  <a id="Kephas_Application_Console_DefaultCommandShell_StartAsync_" data-uid="Kephas.Application.Console.DefaultCommandShell.StartAsync*"></a>
+  <h4 id="Kephas_Application_Console_DefaultCommandShell_StartAsync_System_Threading_CancellationToken_" data-uid="Kephas.Application.Console.DefaultCommandShell.StartAsync(System.Threading.CancellationToken)">StartAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Starts processing commands asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task StartAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A token that allows processing to be cancelled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_Console_DefaultCommandShell_WriteCommandOutputAsync_System_Object_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.Console.DefaultCommandShell.WriteCommandOutputAsync(System.Object%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application.Console/DefaultCommandShell.cs/#L189">View Source</a>
+  </span>
+  <a id="Kephas_Application_Console_DefaultCommandShell_WriteCommandOutputAsync_" data-uid="Kephas.Application.Console.DefaultCommandShell.WriteCommandOutputAsync*"></a>
+  <h4 id="Kephas_Application_Console_DefaultCommandShell_WriteCommandOutputAsync_System_Object_System_Threading_CancellationToken_" data-uid="Kephas.Application.Console.DefaultCommandShell.WriteCommandOutputAsync(System.Object,System.Threading.CancellationToken)">WriteCommandOutputAsync(Object, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Writes a command output asynchronous.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task WriteCommandOutputAsync(object result, CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">result</span></td>
+        <td><p>The result.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>A token that allows processing to be cancelled.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_Console_DefaultCommandShell_WritePrompt.md&amp;value=---%0Auid%3A%20Kephas.Application.Console.DefaultCommandShell.WritePrompt%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application.Console/DefaultCommandShell.cs/#L160">View Source</a>
+  </span>
+  <a id="Kephas_Application_Console_DefaultCommandShell_WritePrompt_" data-uid="Kephas.Application.Console.DefaultCommandShell.WritePrompt*"></a>
+  <h4 id="Kephas_Application_Console_DefaultCommandShell_WritePrompt" data-uid="Kephas.Application.Console.DefaultCommandShell.WritePrompt">WritePrompt()</h4>
+  <div class="markdown level1 summary"><p>Writes the prompt.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void WritePrompt()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_Console_DefaultCommandShell_WriteWelcomeScreen.md&amp;value=---%0Auid%3A%20Kephas.Application.Console.DefaultCommandShell.WriteWelcomeScreen%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application.Console/DefaultCommandShell.cs/#L151">View Source</a>
+  </span>
+  <a id="Kephas_Application_Console_DefaultCommandShell_WriteWelcomeScreen_" data-uid="Kephas.Application.Console.DefaultCommandShell.WriteWelcomeScreen*"></a>
+  <h4 id="Kephas_Application_Console_DefaultCommandShell_WriteWelcomeScreen" data-uid="Kephas.Application.Console.DefaultCommandShell.WriteWelcomeScreen">WriteWelcomeScreen()</h4>
+  <div class="markdown level1 summary"><p>Writes the welcome screen.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void WriteWelcomeScreen()</code></pre>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Application.Console.ICommandShell.html">ICommandShell</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_SetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.SetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TrySetPropertyValue_System_Object_System_String_System_Object_">DynamicObjectExtensions.TrySetPropertyValue(Object, String, Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetPropertyValue_System_Object_System_String_">DynamicObjectExtensions.GetPropertyValue(Object, String)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_TryGetPropertyValue_System_Object_System_String_System_Object__">DynamicObjectExtensions.TryGetPropertyValue(Object, String, out Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_GetRuntimeTypeInfo_System_Object_">DynamicObjectExtensions.GetRuntimeTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToDynamic_System_Object_">DynamicObjectExtensions.ToDynamic(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.DynamicObjectExtensions.html#Kephas_DynamicObjectExtensions_ToExpando_System_Object_">DynamicObjectExtensions.ToExpando(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Behaviors.BehaviorValue.html#Kephas_Behaviors_BehaviorValue_ToBehaviorValue__1___0_">BehaviorValue.ToBehaviorValue&lt;TValue&gt;(TValue)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Collections.CollectionExtensions.html#Kephas_Collections_CollectionExtensions_AddRange__2___0_System_Collections_Generic_IEnumerable___1__">CollectionExtensions.AddRange&lt;T, TItem&gt;(T, IEnumerable&lt;TItem&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Logging.LoggingExtensions.html#Kephas_Logging_LoggingExtensions_GetLogger_System_Object_Kephas_Services_IContext_">LoggingExtensions.GetLogger(Object, IContext)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractType_System_Object_">TypeExtensions.GetAbstractType(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Model.TypeExtensions.html#Kephas_Model_TypeExtensions_GetAbstractTypeInfo_System_Object_">TypeExtensions.GetAbstractTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Reflection.ReflectionHelper.html#Kephas_Reflection_ReflectionHelper_GetTypeInfo_System_Object_">ReflectionHelper.GetTypeInfo(Object)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Data.Capabilities.EntityEntryExtensions.html#Kephas_Data_Capabilities_EntityEntryExtensions_TryGetAttachedEntityEntry_System_Object_">EntityEntryExtensions.TryGetAttachedEntityEntry(Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_Console_DefaultCommandShell.md&amp;value=---%0Auid%3A%20Kephas.Application.Console.DefaultCommandShell%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application.Console/DefaultCommandShell.cs/#L28" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

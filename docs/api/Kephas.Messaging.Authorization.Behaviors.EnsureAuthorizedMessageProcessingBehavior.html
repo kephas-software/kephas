@@ -79,24 +79,32 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Messaging.Behaviors.MessageProcessingBehaviorBase-1.html">MessageProcessingBehaviorBase</a>&lt;<a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a>&gt;</div>
-    <div class="level2"><span class="xref">EnsureAuthorizedMessageProcessingBehavior</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Messaging.Behaviors.MessagingBehaviorBase-1.html">MessagingBehaviorBase</a>&lt;<a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a>&gt;</div>
+    <div class="level3"><span class="xref">EnsureAuthorizedMessageProcessingBehavior</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="Kephas.Messaging.Behaviors.IMessageProcessingBehavior-1.html">IMessageProcessingBehavior</a>&lt;<a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a>&gt;</div>
-    <div><a class="xref" href="Kephas.Messaging.Behaviors.IMessageProcessingBehavior.html">IMessageProcessingBehavior</a></div>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
+    <div><a class="xref" href="Kephas.Messaging.Behaviors.IMessagingBehavior-1.html">IMessagingBehavior</a>&lt;<a class="xref" href="Kephas.Messaging.IMessage.html">IMessage</a>&gt;</div>
+    <div><a class="xref" href="Kephas.Messaging.Behaviors.IMessagingBehavior.html">IMessagingBehavior</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Kephas.Messaging.Behaviors.MessageProcessingBehaviorBase-1.html#Kephas_Messaging_Behaviors_MessageProcessingBehaviorBase_1_Kephas_Messaging_Behaviors_IMessageProcessingBehavior_BeforeProcessAsync_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">MessageProcessingBehaviorBase&lt;IMessage&gt;.IMessageProcessingBehavior.BeforeProcessAsync(IMessageProcessingContext, CancellationToken)</a>
+      <a class="xref" href="Kephas.Messaging.Behaviors.MessagingBehaviorBase-1.html#Kephas_Messaging_Behaviors_MessagingBehaviorBase_1_Kephas_Messaging_Behaviors_IMessagingBehavior_BeforeProcessAsync_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_">MessagingBehaviorBase&lt;IMessage&gt;.IMessagingBehavior.BeforeProcessAsync(IMessagingContext, CancellationToken)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Messaging.Behaviors.MessageProcessingBehaviorBase-1.html#Kephas_Messaging_Behaviors_MessageProcessingBehaviorBase_1_Kephas_Messaging_Behaviors_IMessageProcessingBehavior_AfterProcessAsync_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">MessageProcessingBehaviorBase&lt;IMessage&gt;.IMessageProcessingBehavior.AfterProcessAsync(IMessageProcessingContext, CancellationToken)</a>
+      <a class="xref" href="Kephas.Messaging.Behaviors.MessagingBehaviorBase-1.html#Kephas_Messaging_Behaviors_MessagingBehaviorBase_1_Kephas_Messaging_Behaviors_IMessagingBehavior_AfterProcessAsync_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_">MessagingBehaviorBase&lt;IMessage&gt;.IMessagingBehavior.AfterProcessAsync(IMessagingContext, CancellationToken)</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Messaging.Behaviors.MessageProcessingBehaviorBase-1.html#Kephas_Messaging_Behaviors_MessageProcessingBehaviorBase_1_AfterProcessAsync__0_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_">MessageProcessingBehaviorBase&lt;IMessage&gt;.AfterProcessAsync(IMessage, IMessageProcessingContext, CancellationToken)</a>
+      <a class="xref" href="Kephas.Messaging.Behaviors.MessagingBehaviorBase-1.html#Kephas_Messaging_Behaviors_MessagingBehaviorBase_1_AfterProcessAsync__0_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_">MessagingBehaviorBase&lt;IMessage&gt;.AfterProcessAsync(IMessage, IMessagingContext, CancellationToken)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -124,9 +132,9 @@
   <h6><strong>Assembly</strong>: Kephas.Messaging.dll</h6>
   <h5 id="Kephas_Messaging_Authorization_Behaviors_EnsureAuthorizedMessageProcessingBehavior_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[MessageProcessingBehavior(MessageTypeMatching.TypeOrHierarchy)]
+    <pre><code class="lang-csharp hljs">[MessagingBehavior(MessageTypeMatching.TypeOrHierarchy)]
 [ProcessingPriority((Priority)-2147483638)]
-public class EnsureAuthorizedMessageProcessingBehavior : MessageProcessingBehaviorBase&lt;IMessage&gt;, IMessageProcessingBehavior&lt;IMessage&gt;, IMessageProcessingBehavior</code></pre>
+public class EnsureAuthorizedMessageProcessingBehavior : MessagingBehaviorBase&lt;IMessage&gt;, ILoggable, IMessagingBehavior&lt;IMessage&gt;, IMessagingBehavior</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -175,19 +183,19 @@ class.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Authorization_Behaviors_EnsureAuthorizedMessageProcessingBehavior_BeforeProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Authorization.Behaviors.EnsureAuthorizedMessageProcessingBehavior.BeforeProcessAsync(Kephas.Messaging.IMessage%2CKephas.Messaging.IMessageProcessingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Authorization_Behaviors_EnsureAuthorizedMessageProcessingBehavior_BeforeProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Authorization.Behaviors.EnsureAuthorizedMessageProcessingBehavior.BeforeProcessAsync(Kephas.Messaging.IMessage%2CKephas.Messaging.IMessagingContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Authorization/Behaviors/EnsureAuthorizedMessageProcessingBehavior.cs/#L78">View Source</a>
   </span>
   <a id="Kephas_Messaging_Authorization_Behaviors_EnsureAuthorizedMessageProcessingBehavior_BeforeProcessAsync_" data-uid="Kephas.Messaging.Authorization.Behaviors.EnsureAuthorizedMessageProcessingBehavior.BeforeProcessAsync*"></a>
-  <h4 id="Kephas_Messaging_Authorization_Behaviors_EnsureAuthorizedMessageProcessingBehavior_BeforeProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessageProcessingContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Authorization.Behaviors.EnsureAuthorizedMessageProcessingBehavior.BeforeProcessAsync(Kephas.Messaging.IMessage,Kephas.Messaging.IMessageProcessingContext,System.Threading.CancellationToken)">BeforeProcessAsync(IMessage, IMessageProcessingContext, CancellationToken)</h4>
+  <h4 id="Kephas_Messaging_Authorization_Behaviors_EnsureAuthorizedMessageProcessingBehavior_BeforeProcessAsync_Kephas_Messaging_IMessage_Kephas_Messaging_IMessagingContext_System_Threading_CancellationToken_" data-uid="Kephas.Messaging.Authorization.Behaviors.EnsureAuthorizedMessageProcessingBehavior.BeforeProcessAsync(Kephas.Messaging.IMessage,Kephas.Messaging.IMessagingContext,System.Threading.CancellationToken)">BeforeProcessAsync(IMessage, IMessagingContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Interception called before invoking the handler to process the message.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override Task BeforeProcessAsync(IMessage message, IMessageProcessingContext context, CancellationToken token)</code></pre>
+    <pre><code class="lang-csharp hljs">public override Task BeforeProcessAsync(IMessage message, IMessagingContext context, CancellationToken token)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -206,7 +214,7 @@ class.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.IMessageProcessingContext.html">IMessageProcessingContext</a></td>
+        <td><a class="xref" href="Kephas.Messaging.IMessagingContext.html">IMessagingContext</a></td>
         <td><span class="parametername">context</span></td>
         <td><p>The processing context.</p>
 </td>
@@ -236,13 +244,16 @@ class.</p>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">Kephas.Messaging.Behaviors.MessageProcessingBehaviorBase&lt;Kephas.Messaging.IMessage&gt;.BeforeProcessAsync(Kephas.Messaging.IMessage, Kephas.Messaging.IMessageProcessingContext, System.Threading.CancellationToken)</span></div>
+  <div><span class="xref">Kephas.Messaging.Behaviors.MessagingBehaviorBase&lt;Kephas.Messaging.IMessage&gt;.BeforeProcessAsync(Kephas.Messaging.IMessage, Kephas.Messaging.IMessagingContext, System.Threading.CancellationToken)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="Kephas.Messaging.Behaviors.IMessageProcessingBehavior-1.html">IMessageProcessingBehavior&lt;TMessage&gt;</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Messaging.Behaviors.IMessageProcessingBehavior.html">IMessageProcessingBehavior</a>
+      <a class="xref" href="Kephas.Messaging.Behaviors.IMessagingBehavior-1.html">IMessagingBehavior&lt;TMessage&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Behaviors.IMessagingBehavior.html">IMessagingBehavior</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

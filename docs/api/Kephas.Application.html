@@ -77,29 +77,29 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
+      <h4><a class="xref" href="Kephas.Application.AmbientServicesApplicationExtensions.html">AmbientServicesApplicationExtensions</a></h4>
+      <section><p>Extension methods for the <a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a>.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Application.AppArgs.html">AppArgs</a></h4>
+      <section><p>Settings retrieved from the application command line arguments.</p>
+</section>
       <h4><a class="xref" href="Kephas.Application.AppBase.html">AppBase</a></h4>
       <section><p>Base class for the application&apos;s root.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.AppContext.html">AppContext</a></h4>
       <section><p>The default application context.</p>
 </section>
-      <h4><a class="xref" href="Kephas.Application.ApplicationAmbientServicesBuilderExtensions.html">ApplicationAmbientServicesBuilderExtensions</a></h4>
-      <section><p>Extension methods for the <a class="xref" href="Kephas.AmbientServicesBuilder.html">AmbientServicesBuilder</a>.</p>
+      <h4><a class="xref" href="Kephas.Application.ApplicationExtensions.html">ApplicationExtensions</a></h4>
+      <section><p>Extension methods for <a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a>.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.AppLifecycleBehaviorBase.html">AppLifecycleBehaviorBase</a></h4>
       <section><p>Base class for application lifecycle behaviors.</p>
 </section>
-      <h4><a class="xref" href="Kephas.Application.AppManifestAttribute.html">AppManifestAttribute</a></h4>
-      <section><p>Attribute for providing information for the application manifest.</p>
-</section>
-      <h4><a class="xref" href="Kephas.Application.AppManifestBase.html">AppManifestBase</a></h4>
-      <section><p>Base class for the application manifest.</p>
-</section>
-      <h4><a class="xref" href="Kephas.Application.AppManifestExtensions.html">AppManifestExtensions</a></h4>
-      <section><p>Extension methods for <a class="xref" href="Kephas.Application.IAppManifest.html">IAppManifest</a>.</p>
-</section>
       <h4><a class="xref" href="Kephas.Application.AppRuntimeBase.html">AppRuntimeBase</a></h4>
-      <section><p>Base class for the application runtime service.</p>
+      <section><p>An application application runtime providing only assemblies loaded by the runtime.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Application.AppRuntimeExtensions.html">AppRuntimeExtensions</a></h4>
+      <section><p>Extension methods for <a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a>.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.BootstrapException.html">BootstrapException</a></h4>
       <section><p>Exception for signalling bootstrap errors.</p>
@@ -107,11 +107,11 @@
       <h4><a class="xref" href="Kephas.Application.DefaultAppManager.html">DefaultAppManager</a></h4>
       <section><p>The default application manager.</p>
 </section>
-      <h4><a class="xref" href="Kephas.Application.DefaultAppRuntime.html">DefaultAppRuntime</a></h4>
-      <section><p>The default application runtime.</p>
+      <h4><a class="xref" href="Kephas.Application.DefaultAppShutdownAwaiter.html">DefaultAppShutdownAwaiter</a></h4>
+      <section><p>A default application shutdown awaiter.</p>
 </section>
-      <h4><a class="xref" href="Kephas.Application.FeatureInfo.html">FeatureInfo</a></h4>
-      <section><p>Provides information about an application feature.</p>
+      <h4><a class="xref" href="Kephas.Application.DynamicAppRuntime.html">DynamicAppRuntime</a></h4>
+      <section><p>An application application runtime loading dynamically assemblies from the application localtion.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.FeatureInfoAttribute.html">FeatureInfoAttribute</a></h4>
       <section><p>Attribute providing feature information.</p>
@@ -125,46 +125,57 @@
       <h4><a class="xref" href="Kephas.Application.FeatureRef.html">FeatureRef</a></h4>
       <section><p>A feature reference.</p>
 </section>
-      <h4><a class="xref" href="Kephas.Application.NullAppManifest.html">NullAppManifest</a></h4>
-      <section><p>An application manifest returning the &quot;null&quot; ID and version 0.0.0.0.</p>
-</section>
       <h4><a class="xref" href="Kephas.Application.PreserveCultureThreadContextAppLifecycleBehavior.html">PreserveCultureThreadContextAppLifecycleBehavior</a></h4>
       <section><p>Feature manager configuring the <a class="xref" href="Kephas.Threading.Tasks.ThreadContextAwaiter.html">ThreadContextAwaiter</a> to preserve the thread culture.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.RequiredFeatureAttribute.html">RequiredFeatureAttribute</a></h4>
       <section><p>Attribute declaring a required feature for the annotated entity.</p>
 </section>
+      <h4><a class="xref" href="Kephas.Application.ShutdownAwaiterAppLifecycleBehavior.html">ShutdownAwaiterAppLifecycleBehavior</a></h4>
+      <section><p>A shutdown awaiter application lifecycle behavior.</p>
+</section>
       <h4><a class="xref" href="Kephas.Application.ShutdownException.html">ShutdownException</a></h4>
       <section><p>Exception for signaling shutdown errors.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Application.ShutdownSignal.html">ShutdownSignal</a></h4>
+      <section><p>Signal for terminating the application. This class cannot be inherited.</p>
+</section>
+      <h4><a class="xref" href="Kephas.Application.StaticAppRuntime.html">StaticAppRuntime</a></h4>
+      <section><p>An application application runtime providing only assemblies loaded by the runtime.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.TargetFeatureAttribute.html">TargetFeatureAttribute</a></h4>
       <section><p>Attribute for indicating the feature for which a behavior apply.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
+      <h4><a class="xref" href="Kephas.Application.IAppArgs.html">IAppArgs</a></h4>
+      <section><p>Interface for accessing application arguments.</p>
+</section>
       <h4><a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a></h4>
       <section><p>Contract for application contextual information.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.IAppLifecycleBehavior.html">IAppLifecycleBehavior</a></h4>
-      <section><p>Shared service contract for application lifecycle behavior.</p>
+      <section><p>Singleton service contract for application lifecycle behavior.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.IAppManager.html">IAppManager</a></h4>
-      <section><p>Shared service contract for the application manager.</p>
-</section>
-      <h4><a class="xref" href="Kephas.Application.IAppManifest.html">IAppManifest</a></h4>
-      <section><p>Contract for the application manifest.</p>
+      <section><p>Singleton service contract for the application manager.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></h4>
       <section><p>Interface for abstracting away the runtime for the application.</p>
 </section>
-      <h4><a class="xref" href="Kephas.Application.IFeatureInfo.html">IFeatureInfo</a></h4>
-      <section><p>Contract providing information about an application feature.</p>
+      <h4><a class="xref" href="Kephas.Application.IAppShutdownAwaiter.html">IAppShutdownAwaiter</a></h4>
+      <section><p>Singleton application service contract for the service awaiting for the application shutdown signal.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.IFeatureLifecycleBehavior.html">IFeatureLifecycleBehavior</a></h4>
-      <section><p>Shared service contract for feature lifecycle behaviors.</p>
+      <section><p>Singleton service contract for feature lifecycle behaviors.</p>
 </section>
       <h4><a class="xref" href="Kephas.Application.IFeatureManager.html">IFeatureManager</a></h4>
-      <section><p>Shared service contract for managers of features within the application.</p>
+      <section><p>Singleton service contract for managers of features within the application.</p>
+</section>
+    <h3 id="enums">Enums
+  </h3>
+      <h4><a class="xref" href="Kephas.Application.AppShutdownInstruction.html">AppShutdownInstruction</a></h4>
+      <section><p>Values that represent application shutdown instructions.</p>
 </section>
 </article>
           </div>

@@ -101,13 +101,13 @@
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_OverridePriority">AppServiceMetadata.OverridePriority</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_OptionalService">AppServiceMetadata.OptionalService</a>
-    </div>
-    <div>
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_ServiceName">AppServiceMetadata.ServiceName</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_AppServiceImplementationType">AppServiceMetadata.AppServiceImplementationType</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_Dependencies">AppServiceMetadata.Dependencies</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_ToString">AppServiceMetadata.ToString()</a>
@@ -241,20 +241,20 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_Composition_DataConverterMetadata__ctor_System_Type_System_Type_System_Int32_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.Composition.DataConverterMetadata.%23ctor(System.Type%2CSystem.Type%2CSystem.Int32%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_Composition_DataConverterMetadata__ctor_System_Type_System_Type_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.Composition.DataConverterMetadata.%23ctor(System.Type%2CSystem.Type%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Conversion/Composition/DataConverterMetadata.cs/#L48">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Conversion/Composition/DataConverterMetadata.cs/#L47">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_Composition_DataConverterMetadata__ctor_" data-uid="Kephas.Data.Conversion.Composition.DataConverterMetadata.#ctor*"></a>
-  <h4 id="Kephas_Data_Conversion_Composition_DataConverterMetadata__ctor_System_Type_System_Type_System_Int32_System_Int32_System_Boolean_" data-uid="Kephas.Data.Conversion.Composition.DataConverterMetadata.#ctor(System.Type,System.Type,System.Int32,System.Int32,System.Boolean)">DataConverterMetadata(Type, Type, Int32, Int32, Boolean)</h4>
+  <h4 id="Kephas_Data_Conversion_Composition_DataConverterMetadata__ctor_System_Type_System_Type_System_Int32_System_Int32_" data-uid="Kephas.Data.Conversion.Composition.DataConverterMetadata.#ctor(System.Type,System.Type,System.Int32,System.Int32)">DataConverterMetadata(Type, Type, Int32, Int32)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Data.Conversion.Composition.DataConverterMetadata.html">DataConverterMetadata</a>
 class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DataConverterMetadata(Type sourceType, Type targetType, int processingPriority = 0, int overridePriority = 0, bool optionalService = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public DataConverterMetadata(Type sourceType, Type targetType, int processingPriority = 0, int overridePriority = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -281,19 +281,13 @@ class.</p>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">processingPriority</span></td>
-        <td><p>The processing priority (optional).</p>
+        <td><p>Optional. The processing priority.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">overridePriority</span></td>
-        <td><p>The override priority.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">optionalService</span></td>
-        <td><p><code>true</code> if the service is optional, <code>false</code> if not.</p>
+        <td><p>Optional. The override priority.</p>
 </td>
       </tr>
     </tbody>
@@ -305,7 +299,7 @@ class.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_Composition_DataConverterMetadata_SourceType.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.Composition.DataConverterMetadata.SourceType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Conversion/Composition/DataConverterMetadata.cs/#L61">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Conversion/Composition/DataConverterMetadata.cs/#L60">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_Composition_DataConverterMetadata_SourceType_" data-uid="Kephas.Data.Conversion.Composition.DataConverterMetadata.SourceType*"></a>
   <h4 id="Kephas_Data_Conversion_Composition_DataConverterMetadata_SourceType" data-uid="Kephas.Data.Conversion.Composition.DataConverterMetadata.SourceType">SourceType</h4>
@@ -337,7 +331,7 @@ class.</p>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Data_Conversion_Composition_DataConverterMetadata_TargetType.md&amp;value=---%0Auid%3A%20Kephas.Data.Conversion.Composition.DataConverterMetadata.TargetType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Conversion/Composition/DataConverterMetadata.cs/#L69">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Data/Conversion/Composition/DataConverterMetadata.cs/#L68">View Source</a>
   </span>
   <a id="Kephas_Data_Conversion_Composition_DataConverterMetadata_TargetType_" data-uid="Kephas.Data.Conversion.Composition.DataConverterMetadata.TargetType*"></a>
   <h4 id="Kephas_Data_Conversion_Composition_DataConverterMetadata_TargetType" data-uid="Kephas.Data.Conversion.Composition.DataConverterMetadata.TargetType">TargetType</h4>

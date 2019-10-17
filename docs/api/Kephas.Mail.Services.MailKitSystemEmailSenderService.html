@@ -79,11 +79,13 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html">MailKitEmailSenderServiceBase</a></div>
-    <div class="level2"><span class="xref">MailKitSystemEmailSenderService</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html">MailKitEmailSenderServiceBase</a></div>
+    <div class="level3"><span class="xref">MailKitSystemEmailSenderService</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Mail.Services.ISystemEmailSenderService.html">ISystemEmailSenderService</a></div>
     <div><a class="xref" href="Kephas.Mail.Services.IEmailSenderService.html">IEmailSenderService</a></div>
   </div>
@@ -91,9 +93,6 @@
     <h5>Inherited Members</h5>
     <div>
       <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_SendAsync_Kephas_Mail_IEmailMessage_Kephas_Services_IContext_System_Threading_CancellationToken_">MailKitEmailSenderServiceBase.SendAsync(IEmailMessage, IContext, CancellationToken)</a>
-    </div>
-    <div>
-      <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_Logger">MailKitEmailSenderServiceBase.Logger</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_CreateEmailMessageBuilder_Kephas_Services_IContext_">MailKitEmailSenderServiceBase.CreateEmailMessageBuilder(IContext)</a>
@@ -106,6 +105,12 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_GetConnectionData_Kephas_Services_IContext_">MailKitEmailSenderServiceBase.GetConnectionData(IContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -134,7 +139,7 @@
   <h5 id="Kephas_Mail_Services_MailKitSystemEmailSenderService_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Low)]
-public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, ISystemEmailSenderService, IEmailSenderService</code></pre>
+public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, ILoggable, ISystemEmailSenderService, IEmailSenderService</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -209,6 +214,9 @@ public class MailKitSystemEmailSenderService : MailKitEmailSenderServiceBase, IS
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Kephas.Mail.Services.MailKitEmailSenderServiceBase.html#Kephas_Mail_Services_MailKitEmailSenderServiceBase_GetEmailSenderSettings">MailKitEmailSenderServiceBase.GetEmailSenderSettings()</a></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Mail.Services.ISystemEmailSenderService.html">ISystemEmailSenderService</a>
   </div>

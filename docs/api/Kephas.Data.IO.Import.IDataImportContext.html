@@ -85,10 +85,13 @@
       <a class="xref" href="Kephas.Data.IO.IDataIOContext.html#Kephas_Data_IO_IDataIOContext_SerializationContextConfig">IDataIOContext.SerializationContextConfig</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_Identity">IContext.Identity</a>
+      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_CompositionContext">IContext.CompositionContext</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_ContextLogger">IContext.ContextLogger</a>
+      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_AmbientServices">IContext.AmbientServices</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.IContext.html#Kephas_Services_IContext_Identity">IContext.Identity</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.IExpando.html#Kephas_Dynamic_IExpando_HasDynamicMember_System_String_">IExpando.HasDynamicMember(String)</a>
@@ -103,17 +106,17 @@
       <a class="xref" href="Kephas.Dynamic.IIndexable.html#Kephas_Dynamic_IIndexable_Item_System_String_">IIndexable.Item[String]</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html#Kephas_IAmbientServicesAware_AmbientServices">IAmbientServicesAware.AmbientServices</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html#Kephas_Logging_ILoggable_Logger">ILoggable.Logger</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html#Kephas_Composition_ICompositionContextAware_CompositionContext">ICompositionContextAware.CompositionContext</a>
+      <span class="xref">System.IDisposable.Dispose()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.IO.Import.html">Kephas.Data.IO.Import</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.IO.dll</h6>
   <h5 id="Kephas_Data_IO_Import_IDataImportContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IDataImportContext : IDataIOContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IDataImportContext : IDataIOContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable, IDisposable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -270,6 +273,9 @@
   </div>
   <div>
       <a class="xref" href="Kephas.Data.IO.Import.DataImportContextExtensions.html#Kephas_Data_IO_Import_DataImportContextExtensions_WithPersistChangesContextConfig_Kephas_Data_IO_Import_IDataImportContext_System_Action_Kephas_Data_Commands_IPersistChangesContext__">DataImportContextExtensions.WithPersistChangesContextConfig(IDataImportContext, Action&lt;IPersistChangesContext&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerExtensions.html#Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_">MessageBrokerExtensions.CreateBrokeredMessageBuilder(IContext)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>

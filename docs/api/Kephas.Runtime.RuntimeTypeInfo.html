@@ -835,6 +835,62 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_CreateFieldInfos_System_Type_System_Func_System_Reflection_FieldInfo_System_Boolean__.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.CreateFieldInfos(System.Type%2CSystem.Func%7BSystem.Reflection.FieldInfo%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L765">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeTypeInfo_CreateFieldInfos_" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreateFieldInfos*"></a>
+  <h4 id="Kephas_Runtime_RuntimeTypeInfo_CreateFieldInfos_System_Type_System_Func_System_Reflection_FieldInfo_System_Boolean__" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreateFieldInfos(System.Type,System.Func{System.Reflection.FieldInfo,System.Boolean})">CreateFieldInfos(Type, Func&lt;FieldInfo, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates the fields.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IDictionary&lt;string, IRuntimeFieldInfo&gt; CreateFieldInfos(Type type, Func&lt;FieldInfo, bool&gt; criteria = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Reflection.FieldInfo</span>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">criteria</span></td>
+        <td><p>Optional. The criteria.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="Kephas.Runtime.IRuntimeFieldInfo.html">IRuntimeFieldInfo</a>&gt;</td>
+        <td><p>A dictionary of fields.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_CreateInstance_System_Collections_Generic_IEnumerable_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.CreateInstance(System.Collections.Generic.IEnumerable%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -885,6 +941,202 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_CreateMemberInfos_System_Action_System_Collections_Generic_IDictionary_System_String_Kephas_Runtime_IRuntimeElementInfo___.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.CreateMemberInfos(System.Action%7BSystem.Collections.Generic.IDictionary%7BSystem.String%2CKephas.Runtime.IRuntimeElementInfo%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L664">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeTypeInfo_CreateMemberInfos_" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreateMemberInfos*"></a>
+  <h4 id="Kephas_Runtime_RuntimeTypeInfo_CreateMemberInfos_System_Action_System_Collections_Generic_IDictionary_System_String_Kephas_Runtime_IRuntimeElementInfo___" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreateMemberInfos(System.Action{System.Collections.Generic.IDictionary{System.String,Kephas.Runtime.IRuntimeElementInfo}})">CreateMemberInfos(Action&lt;IDictionary&lt;String, IRuntimeElementInfo&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates the member infos.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IDictionary&lt;string, IRuntimeElementInfo&gt; CreateMemberInfos(Action&lt;IDictionary&lt;string, IRuntimeElementInfo&gt;&gt; membersConfig = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Action</span>&lt;<span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="Kephas.Runtime.IRuntimeElementInfo.html">IRuntimeElementInfo</a>&gt;&gt;</td>
+        <td><span class="parametername">membersConfig</span></td>
+        <td><p>Optional. The members configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="Kephas.Runtime.IRuntimeElementInfo.html">IRuntimeElementInfo</a>&gt;</td>
+        <td><p>The new member infos.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_CreateMembers__2_System_Type_System_Collections_Generic_IEnumerable___0__System_Func___0_System_Type__System_Func___0_System_Boolean__.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.CreateMembers%60%602(System.Type%2CSystem.Collections.Generic.IEnumerable%7B%60%600%7D%2CSystem.Func%7B%60%600%2CSystem.Type%7D%2CSystem.Func%7B%60%600%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L730">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeTypeInfo_CreateMembers_" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreateMembers*"></a>
+  <h4 id="Kephas_Runtime_RuntimeTypeInfo_CreateMembers__2_System_Type_System_Collections_Generic_IEnumerable___0__System_Func___0_System_Type__System_Func___0_System_Boolean__" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreateMembers``2(System.Type,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Type},System.Func{``0,System.Boolean})">CreateMembers&lt;TRuntimeMemberInfo, TMemberInfo&gt;(Type, IEnumerable&lt;TRuntimeMemberInfo&gt;, Func&lt;TRuntimeMemberInfo, Type&gt;, Func&lt;TRuntimeMemberInfo, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates the members.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static IDictionary&lt;string, TMemberInfo&gt; CreateMembers&lt;TRuntimeMemberInfo, TMemberInfo&gt;(Type type, IEnumerable&lt;TRuntimeMemberInfo&gt; runtimeMembers, Func&lt;TRuntimeMemberInfo, Type&gt; memberTypeGetter, Func&lt;TRuntimeMemberInfo, bool&gt; criteria = null)
+    where TRuntimeMemberInfo : MemberInfo</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;TRuntimeMemberInfo&gt;</td>
+        <td><span class="parametername">runtimeMembers</span></td>
+        <td><p>The runtime members.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TRuntimeMemberInfo, <span class="xref">System.Type</span>&gt;</td>
+        <td><span class="parametername">memberTypeGetter</span></td>
+        <td><p>The member type getter.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;TRuntimeMemberInfo, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">criteria</span></td>
+        <td><p>Optional. The criteria.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">System.String</span>, TMemberInfo&gt;</td>
+        <td><p>A dictionary of members.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TRuntimeMemberInfo</span></td>
+        <td><p>Type of the runtime member.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TMemberInfo</span></td>
+        <td><p>Type of the member.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_CreatePropertyInfos_System_Type_System_Func_System_Reflection_PropertyInfo_System_Boolean__.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.CreatePropertyInfos(System.Type%2CSystem.Func%7BSystem.Reflection.PropertyInfo%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Runtime/RuntimeTypeInfo.cs/#L784">View Source</a>
+  </span>
+  <a id="Kephas_Runtime_RuntimeTypeInfo_CreatePropertyInfos_" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreatePropertyInfos*"></a>
+  <h4 id="Kephas_Runtime_RuntimeTypeInfo_CreatePropertyInfos_System_Type_System_Func_System_Reflection_PropertyInfo_System_Boolean__" data-uid="Kephas.Runtime.RuntimeTypeInfo.CreatePropertyInfos(System.Type,System.Func{System.Reflection.PropertyInfo,System.Boolean})">CreatePropertyInfos(Type, Func&lt;PropertyInfo, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates the properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IDictionary&lt;string, IRuntimePropertyInfo&gt; CreatePropertyInfos(Type type, Func&lt;PropertyInfo, bool&gt; criteria = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The container type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Reflection.PropertyInfo</span>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">criteria</span></td>
+        <td><p>The criteria.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IDictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="Kephas.Runtime.IRuntimePropertyInfo.html">IRuntimePropertyInfo</a>&gt;</td>
+        <td><p>A dictionary of properties.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Runtime_RuntimeTypeInfo_GetAttributes__1.md&amp;value=---%0Auid%3A%20Kephas.Runtime.RuntimeTypeInfo.GetAttributes%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -898,7 +1150,6 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerable&lt;TAttribute&gt; GetAttributes&lt;TAttribute&gt;()
-
     where TAttribute : Attribute</code></pre>
   </div>
   <h5 class="returns">Returns</h5>

@@ -101,13 +101,13 @@
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_OverridePriority">AppServiceMetadata.OverridePriority</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_OptionalService">AppServiceMetadata.OptionalService</a>
-    </div>
-    <div>
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_ServiceName">AppServiceMetadata.ServiceName</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_AppServiceImplementationType">AppServiceMetadata.AppServiceImplementationType</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_Dependencies">AppServiceMetadata.Dependencies</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Composition.AppServiceMetadata.html#Kephas_Services_Composition_AppServiceMetadata_ToString">AppServiceMetadata.ToString()</a>
@@ -241,19 +241,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Composition_MessageHandlerMetadata__ctor_System_Type_Kephas_Messaging_Composition_MessageTypeMatching_System_Object_Kephas_Messaging_Composition_MessageIdMatching_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Composition.MessageHandlerMetadata.%23ctor(System.Type%2CKephas.Messaging.Composition.MessageTypeMatching%2CSystem.Object%2CKephas.Messaging.Composition.MessageIdMatching%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Composition_MessageHandlerMetadata__ctor_System_Type_Kephas_Messaging_Composition_MessageTypeMatching_System_Object_Kephas_Messaging_Composition_MessageIdMatching_System_Type_Kephas_Messaging_Composition_MessageTypeMatching_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Composition.MessageHandlerMetadata.%23ctor(System.Type%2CKephas.Messaging.Composition.MessageTypeMatching%2CSystem.Object%2CKephas.Messaging.Composition.MessageIdMatching%2CSystem.Type%2CKephas.Messaging.Composition.MessageTypeMatching%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L59">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L65">View Source</a>
   </span>
   <a id="Kephas_Messaging_Composition_MessageHandlerMetadata__ctor_" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.#ctor*"></a>
-  <h4 id="Kephas_Messaging_Composition_MessageHandlerMetadata__ctor_System_Type_Kephas_Messaging_Composition_MessageTypeMatching_System_Object_Kephas_Messaging_Composition_MessageIdMatching_System_Int32_System_Int32_" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.#ctor(System.Type,Kephas.Messaging.Composition.MessageTypeMatching,System.Object,Kephas.Messaging.Composition.MessageIdMatching,System.Int32,System.Int32)">MessageHandlerMetadata(Type, MessageTypeMatching, Object, MessageIdMatching, Int32, Int32)</h4>
+  <h4 id="Kephas_Messaging_Composition_MessageHandlerMetadata__ctor_System_Type_Kephas_Messaging_Composition_MessageTypeMatching_System_Object_Kephas_Messaging_Composition_MessageIdMatching_System_Type_Kephas_Messaging_Composition_MessageTypeMatching_System_Int32_System_Int32_" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.#ctor(System.Type,Kephas.Messaging.Composition.MessageTypeMatching,System.Object,Kephas.Messaging.Composition.MessageIdMatching,System.Type,Kephas.Messaging.Composition.MessageTypeMatching,System.Int32,System.Int32)">MessageHandlerMetadata(Type, MessageTypeMatching, Object, MessageIdMatching, Type, MessageTypeMatching, Int32, Int32)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Messaging.Composition.MessageHandlerMetadata.html">MessageHandlerMetadata</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MessageHandlerMetadata(Type messageType, MessageTypeMatching messageTypeMatching = MessageTypeMatching.Type, object messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.All, int processingPriority = 0, int overridePriority = 0)</code></pre>
+    <pre><code class="lang-csharp hljs">public MessageHandlerMetadata(Type messageType = null, MessageTypeMatching messageTypeMatching = MessageTypeMatching.Type, object messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.All, Type envelopeType = null, MessageTypeMatching envelopeTypeMatching = MessageTypeMatching.Type, int processingPriority = 0, int overridePriority = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -268,37 +268,49 @@
       <tr>
         <td><span class="xref">System.Type</span></td>
         <td><span class="parametername">messageType</span></td>
-        <td><p>Type of the message.</p>
+        <td><p>Optional. Type of the message.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Kephas.Messaging.Composition.MessageTypeMatching.html">MessageTypeMatching</a></td>
         <td><span class="parametername">messageTypeMatching</span></td>
-        <td><p>The message type matching (optional).</p>
+        <td><p>Optional. The message type matching.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Object</span></td>
         <td><span class="parametername">messageId</span></td>
-        <td><p>The ID of the message (optional).</p>
+        <td><p>Optional. The ID of the message.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Kephas.Messaging.Composition.MessageIdMatching.html">MessageIdMatching</a></td>
         <td><span class="parametername">messageIdMatching</span></td>
-        <td><p>The message ID matching (optional).</p>
+        <td><p>Optional. The message ID matching.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">envelopeType</span></td>
+        <td><p>Optional. Type of the envelope.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Composition.MessageTypeMatching.html">MessageTypeMatching</a></td>
+        <td><span class="parametername">envelopeTypeMatching</span></td>
+        <td><p>Optional. The envelope type matching.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">processingPriority</span></td>
-        <td><p>The processing priority (optional).</p>
+        <td><p>Optional. The processing priority.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">overridePriority</span></td>
-        <td><p>The override priority (optional).</p>
+        <td><p>Optional. The override priority.</p>
 </td>
       </tr>
     </tbody>
@@ -307,10 +319,74 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Composition_MessageHandlerMetadata_EnvelopeType.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Composition.MessageHandlerMetadata.EnvelopeType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L124">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Composition_MessageHandlerMetadata_EnvelopeType_" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.EnvelopeType*"></a>
+  <h4 id="Kephas_Messaging_Composition_MessageHandlerMetadata_EnvelopeType" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.EnvelopeType">EnvelopeType</h4>
+  <div class="markdown level1 summary"><p>Gets the type of the envelope.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type EnvelopeType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The type of the envelope.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Composition_MessageHandlerMetadata_EnvelopeTypeMatching.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Composition.MessageHandlerMetadata.EnvelopeTypeMatching%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L132">View Source</a>
+  </span>
+  <a id="Kephas_Messaging_Composition_MessageHandlerMetadata_EnvelopeTypeMatching_" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.EnvelopeTypeMatching*"></a>
+  <h4 id="Kephas_Messaging_Composition_MessageHandlerMetadata_EnvelopeTypeMatching" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.EnvelopeTypeMatching">EnvelopeTypeMatching</h4>
+  <div class="markdown level1 summary"><p>Gets the envelope type matching.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MessageTypeMatching EnvelopeTypeMatching { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Composition.MessageTypeMatching.html">MessageTypeMatching</a></td>
+        <td><p>The envelope type matching.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Composition_MessageHandlerMetadata_MessageId.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Composition.MessageHandlerMetadata.MessageId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L98">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L108">View Source</a>
   </span>
   <a id="Kephas_Messaging_Composition_MessageHandlerMetadata_MessageId_" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.MessageId*"></a>
   <h4 id="Kephas_Messaging_Composition_MessageHandlerMetadata_MessageId" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.MessageId">MessageId</h4>
@@ -342,7 +418,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Composition_MessageHandlerMetadata_MessageIdMatching.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Composition.MessageHandlerMetadata.MessageIdMatching%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L106">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L116">View Source</a>
   </span>
   <a id="Kephas_Messaging_Composition_MessageHandlerMetadata_MessageIdMatching_" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.MessageIdMatching*"></a>
   <h4 id="Kephas_Messaging_Composition_MessageHandlerMetadata_MessageIdMatching" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.MessageIdMatching">MessageIdMatching</h4>
@@ -374,7 +450,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Composition_MessageHandlerMetadata_MessageMatch.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Composition.MessageHandlerMetadata.MessageMatch%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L114">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L140">View Source</a>
   </span>
   <a id="Kephas_Messaging_Composition_MessageHandlerMetadata_MessageMatch_" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.MessageMatch*"></a>
   <h4 id="Kephas_Messaging_Composition_MessageHandlerMetadata_MessageMatch" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.MessageMatch">MessageMatch</h4>
@@ -406,7 +482,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Composition_MessageHandlerMetadata_MessageType.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Composition.MessageHandlerMetadata.MessageType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L82">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L92">View Source</a>
   </span>
   <a id="Kephas_Messaging_Composition_MessageHandlerMetadata_MessageType_" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.MessageType*"></a>
   <h4 id="Kephas_Messaging_Composition_MessageHandlerMetadata_MessageType" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.MessageType">MessageType</h4>
@@ -438,7 +514,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Messaging_Composition_MessageHandlerMetadata_MessageTypeMatching.md&amp;value=---%0Auid%3A%20Kephas.Messaging.Composition.MessageHandlerMetadata.MessageTypeMatching%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L90">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Messaging/Composition/MessageHandlerMetadata.cs/#L100">View Source</a>
   </span>
   <a id="Kephas_Messaging_Composition_MessageHandlerMetadata_MessageTypeMatching_" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.MessageTypeMatching*"></a>
   <h4 id="Kephas_Messaging_Composition_MessageHandlerMetadata_MessageTypeMatching" data-uid="Kephas.Messaging.Composition.MessageHandlerMetadata.MessageTypeMatching">MessageTypeMatching</h4>

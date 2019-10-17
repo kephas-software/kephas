@@ -79,14 +79,23 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">FeatureLifecycleBehaviorBase</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">FeatureLifecycleBehaviorBase</span></div>
+      <div class="level3"><a class="xref" href="Kephas.Application.Interaction.InteractionFeatureLifecycleBehavior.html">InteractionFeatureLifecycleBehavior</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Application.IFeatureLifecycleBehavior.html">IFeatureLifecycleBehavior</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -110,10 +119,10 @@
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
-  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h6><strong>Assembly</strong>: Kephas.Application.dll</h6>
   <h5 id="Kephas_Application_FeatureLifecycleBehaviorBase_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class FeatureLifecycleBehaviorBase : IFeatureLifecycleBehavior</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class FeatureLifecycleBehaviorBase : Loggable, ILoggable, IFeatureLifecycleBehavior</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -122,7 +131,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureLifecycleBehaviorBase_AfterFinalizeAsync_Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureLifecycleBehaviorBase.AfterFinalizeAsync(Kephas.Application.IAppContext%2CKephas.Application.Composition.FeatureManagerMetadata%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/FeatureLifecycleBehaviorBase.cs/#L90">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/FeatureLifecycleBehaviorBase.cs/#L91">View Source</a>
   </span>
   <a id="Kephas_Application_FeatureLifecycleBehaviorBase_AfterFinalizeAsync_" data-uid="Kephas.Application.FeatureLifecycleBehaviorBase.AfterFinalizeAsync*"></a>
   <h4 id="Kephas_Application_FeatureLifecycleBehaviorBase_AfterFinalizeAsync_Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_" data-uid="Kephas.Application.FeatureLifecycleBehaviorBase.AfterFinalizeAsync(Kephas.Application.IAppContext,Kephas.Application.Composition.FeatureManagerMetadata,System.Threading.CancellationToken)">AfterFinalizeAsync(IAppContext, FeatureManagerMetadata, CancellationToken)</h4>
@@ -184,7 +193,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureLifecycleBehaviorBase_AfterInitializeAsync_Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureLifecycleBehaviorBase.AfterInitializeAsync(Kephas.Application.IAppContext%2CKephas.Application.Composition.FeatureManagerMetadata%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/FeatureLifecycleBehaviorBase.cs/#L52">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/FeatureLifecycleBehaviorBase.cs/#L53">View Source</a>
   </span>
   <a id="Kephas_Application_FeatureLifecycleBehaviorBase_AfterInitializeAsync_" data-uid="Kephas.Application.FeatureLifecycleBehaviorBase.AfterInitializeAsync*"></a>
   <h4 id="Kephas_Application_FeatureLifecycleBehaviorBase_AfterInitializeAsync_Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_" data-uid="Kephas.Application.FeatureLifecycleBehaviorBase.AfterInitializeAsync(Kephas.Application.IAppContext,Kephas.Application.Composition.FeatureManagerMetadata,System.Threading.CancellationToken)">AfterInitializeAsync(IAppContext, FeatureManagerMetadata, CancellationToken)</h4>
@@ -220,7 +229,7 @@
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><p>Optional. The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -236,7 +245,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>A Task.</p>
+        <td><p>The asynchronous result.</p>
 </td>
       </tr>
     </tbody>
@@ -246,7 +255,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureLifecycleBehaviorBase_BeforeFinalizeAsync_Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureLifecycleBehaviorBase.BeforeFinalizeAsync(Kephas.Application.IAppContext%2CKephas.Application.Composition.FeatureManagerMetadata%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/FeatureLifecycleBehaviorBase.cs/#L73">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/FeatureLifecycleBehaviorBase.cs/#L74">View Source</a>
   </span>
   <a id="Kephas_Application_FeatureLifecycleBehaviorBase_BeforeFinalizeAsync_" data-uid="Kephas.Application.FeatureLifecycleBehaviorBase.BeforeFinalizeAsync*"></a>
   <h4 id="Kephas_Application_FeatureLifecycleBehaviorBase_BeforeFinalizeAsync_Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_" data-uid="Kephas.Application.FeatureLifecycleBehaviorBase.BeforeFinalizeAsync(Kephas.Application.IAppContext,Kephas.Application.Composition.FeatureManagerMetadata,System.Threading.CancellationToken)">BeforeFinalizeAsync(IAppContext, FeatureManagerMetadata, CancellationToken)</h4>
@@ -312,7 +321,7 @@ Caution! Interrupting the finalization may cause the application to remain in an
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureLifecycleBehaviorBase_BeforeInitializeAsync_Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureLifecycleBehaviorBase.BeforeInitializeAsync(Kephas.Application.IAppContext%2CKephas.Application.Composition.FeatureManagerMetadata%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/FeatureLifecycleBehaviorBase.cs/#L35">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/FeatureLifecycleBehaviorBase.cs/#L36">View Source</a>
   </span>
   <a id="Kephas_Application_FeatureLifecycleBehaviorBase_BeforeInitializeAsync_" data-uid="Kephas.Application.FeatureLifecycleBehaviorBase.BeforeInitializeAsync*"></a>
   <h4 id="Kephas_Application_FeatureLifecycleBehaviorBase_BeforeInitializeAsync_Kephas_Application_IAppContext_Kephas_Application_Composition_FeatureManagerMetadata_System_Threading_CancellationToken_" data-uid="Kephas.Application.FeatureLifecycleBehaviorBase.BeforeInitializeAsync(Kephas.Application.IAppContext,Kephas.Application.Composition.FeatureManagerMetadata,System.Threading.CancellationToken)">BeforeInitializeAsync(IAppContext, FeatureManagerMetadata, CancellationToken)</h4>
@@ -348,7 +357,7 @@ Caution! Interrupting the finalization may cause the application to remain in an
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><p>Optional. The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -364,7 +373,7 @@ Caution! Interrupting the finalization may cause the application to remain in an
     <tbody>
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>A Task.</p>
+        <td><p>The asynchronous result.</p>
 </td>
       </tr>
     </tbody>
@@ -373,6 +382,9 @@ Caution! Interrupting the finalization may cause the application to remain in an
   <div class="markdown level1 remarks"><p>To interrupt the feature initialization, simply throw an appropriate exception.</p>
 </div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Application.IFeatureLifecycleBehavior.html">IFeatureLifecycleBehavior</a>
   </div>
@@ -430,7 +442,7 @@ Caution! Interrupting the finalization may cause the application to remain in an
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_FeatureLifecycleBehaviorBase.md&amp;value=---%0Auid%3A%20Kephas.Application.FeatureLifecycleBehaviorBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/FeatureLifecycleBehaviorBase.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/FeatureLifecycleBehaviorBase.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -79,16 +79,24 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DefaultOrchestrationManager</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">DefaultOrchestrationManager</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Orchestration.IOrchestrationManager.html">IOrchestrationManager</a></div>
     <div><a class="xref" href="Kephas.Services.IAsyncInitializable.html">IAsyncInitializable</a></div>
     <div><a class="xref" href="Kephas.Services.IAsyncFinalizable.html">IAsyncFinalizable</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -116,25 +124,25 @@
   <h5 id="Kephas_Orchestration_DefaultOrchestrationManager_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Low)]
-public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitializable, IAsyncFinalizable</code></pre>
+public class DefaultOrchestrationManager : Loggable, ILoggable, IOrchestrationManager, IAsyncInitializable, IAsyncFinalizable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager__ctor_Kephas_Application_IAppManifest_Kephas_Application_IAppRuntime_Kephas_Messaging_Events_IEventHub_Kephas_Messaging_Distributed_IMessageBroker_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.%23ctor(Kephas.Application.IAppManifest%2CKephas.Application.IAppRuntime%2CKephas.Messaging.Events.IEventHub%2CKephas.Messaging.Distributed.IMessageBroker)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager__ctor_Kephas_Application_IAppRuntime_Kephas_Interaction_IEventHub_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Composition_IExportFactory_Kephas_Diagnostics_IProcessStarterFactory__.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.%23ctor(Kephas.Application.IAppRuntime%2CKephas.Interaction.IEventHub%2CKephas.Messaging.Distributed.IMessageBroker%2CKephas.Composition.IExportFactory%7BKephas.Diagnostics.IProcessStarterFactory%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L88">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L59">View Source</a>
   </span>
   <a id="Kephas_Orchestration_DefaultOrchestrationManager__ctor_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.#ctor*"></a>
-  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager__ctor_Kephas_Application_IAppManifest_Kephas_Application_IAppRuntime_Kephas_Messaging_Events_IEventHub_Kephas_Messaging_Distributed_IMessageBroker_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.#ctor(Kephas.Application.IAppManifest,Kephas.Application.IAppRuntime,Kephas.Messaging.Events.IEventHub,Kephas.Messaging.Distributed.IMessageBroker)">DefaultOrchestrationManager(IAppManifest, IAppRuntime, IEventHub, IMessageBroker)</h4>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager__ctor_Kephas_Application_IAppRuntime_Kephas_Interaction_IEventHub_Kephas_Messaging_Distributed_IMessageBroker_Kephas_Composition_IExportFactory_Kephas_Diagnostics_IProcessStarterFactory__" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.#ctor(Kephas.Application.IAppRuntime,Kephas.Interaction.IEventHub,Kephas.Messaging.Distributed.IMessageBroker,Kephas.Composition.IExportFactory{Kephas.Diagnostics.IProcessStarterFactory})">DefaultOrchestrationManager(IAppRuntime, IEventHub, IMessageBroker, IExportFactory&lt;IProcessStarterFactory&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Orchestration.DefaultOrchestrationManager.html">DefaultOrchestrationManager</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultOrchestrationManager(IAppManifest appManifest, IAppRuntime appRuntime, IEventHub eventHub, IMessageBroker messageBroker)</code></pre>
+    <pre><code class="lang-csharp hljs">public DefaultOrchestrationManager(IAppRuntime appRuntime, IEventHub eventHub, IMessageBroker messageBroker, IExportFactory&lt;IProcessStarterFactory&gt; processStarterFactoryFactory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -147,19 +155,13 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Application.IAppManifest.html">IAppManifest</a></td>
-        <td><span class="parametername">appManifest</span></td>
-        <td><p>The application manifest.</p>
-</td>
-      </tr>
-      <tr>
         <td><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></td>
         <td><span class="parametername">appRuntime</span></td>
         <td><p>The application runtime.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Kephas.Messaging.Events.IEventHub.html">IEventHub</a></td>
+        <td><a class="xref" href="Kephas.Interaction.IEventHub.html">IEventHub</a></td>
         <td><span class="parametername">eventHub</span></td>
         <td><p>The event hub.</p>
 </td>
@@ -170,25 +172,31 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
         <td><p>The message broker.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Composition.IExportFactory-1.html">IExportFactory</a>&lt;<a class="xref" href="Kephas.Diagnostics.IProcessStarterFactory.html">IProcessStarterFactory</a>&gt;</td>
+        <td><span class="parametername">processStarterFactoryFactory</span></td>
+        <td><p>Factory for the process starter factory.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_Logger.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_AppContext.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.AppContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L111">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L82">View Source</a>
   </span>
-  <a id="Kephas_Orchestration_DefaultOrchestrationManager_Logger_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.Logger*"></a>
-  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_Logger" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.Logger">Logger</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_AppContext_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.AppContext*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_AppContext" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.AppContext">AppContext</h4>
+  <div class="markdown level1 summary"><p>Gets a context for the application.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ILogger&lt;DefaultOrchestrationManager&gt; Logger { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IContext AppContext { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -200,8 +208,136 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.Orchestration.DefaultOrchestrationManager.html">DefaultOrchestrationManager</a>&gt;</td>
-        <td><p>The logger.</p>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><p>The application context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_AppRuntime.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.AppRuntime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L90">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_AppRuntime_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.AppRuntime*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_AppRuntime" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.AppRuntime">AppRuntime</h4>
+  <div class="markdown level1 summary"><p>Gets the application runtime.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAppRuntime AppRuntime { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.IAppRuntime.html">IAppRuntime</a></td>
+        <td><p>The application runtime.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_EventHub.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.EventHub%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L98">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_EventHub_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.EventHub*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_EventHub" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.EventHub">EventHub</h4>
+  <div class="markdown level1 summary"><p>Gets the event hub.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEventHub EventHub { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Interaction.IEventHub.html">IEventHub</a></td>
+        <td><p>The event hub.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_LiveApps.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.LiveApps%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L130">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_LiveApps_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.LiveApps*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_LiveApps" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.LiveApps">LiveApps</h4>
+  <div class="markdown level1 summary"><p>Gets the live apps cache.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ConcurrentDictionary&lt;string, IAppEvent&gt; LiveApps { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Concurrent.ConcurrentDictionary</span>&lt;<span class="xref">System.String</span>, <a class="xref" href="Kephas.Orchestration.Interaction.IAppEvent.html">IAppEvent</a>&gt;</td>
+        <td><p>The live apps cache.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_MessageBroker.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.MessageBroker%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L106">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_MessageBroker_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.MessageBroker*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_MessageBroker" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.MessageBroker">MessageBroker</h4>
+  <div class="markdown level1 summary"><p>Gets the message broker.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMessageBroker MessageBroker { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Messaging.Distributed.IMessageBroker.html">IMessageBroker</a></td>
+        <td><p>The message broker.</p>
 </td>
       </tr>
     </tbody>
@@ -211,7 +347,7 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_TimerDueTime.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.TimerDueTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L119">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L114">View Source</a>
   </span>
   <a id="Kephas_Orchestration_DefaultOrchestrationManager_TimerDueTime_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.TimerDueTime*"></a>
   <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_TimerDueTime" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.TimerDueTime">TimerDueTime</h4>
@@ -243,7 +379,7 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_TimerPeriod.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.TimerPeriod%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L127">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L122">View Source</a>
   </span>
   <a id="Kephas_Orchestration_DefaultOrchestrationManager_TimerPeriod_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.TimerPeriod*"></a>
   <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_TimerPeriod" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.TimerPeriod">TimerPeriod</h4>
@@ -274,10 +410,160 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_CreateAppHeartbeatEvent.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.CreateAppHeartbeatEvent%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L415">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_CreateAppHeartbeatEvent_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.CreateAppHeartbeatEvent*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_CreateAppHeartbeatEvent" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.CreateAppHeartbeatEvent">CreateAppHeartbeatEvent()</h4>
+  <div class="markdown level1 summary"><p>Creates application heartbeat event.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual AppHeartbeatEvent CreateAppHeartbeatEvent()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Orchestration.Interaction.AppHeartbeatEvent.html">AppHeartbeatEvent</a></td>
+        <td><p>The new application heartbeat event.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_CreateProcessStarterFactory_Kephas_Application_Reflection_IAppInfo_Kephas_Dynamic_IExpando_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.CreateProcessStarterFactory(Kephas.Application.Reflection.IAppInfo%2CKephas.Dynamic.IExpando%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L406">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_CreateProcessStarterFactory_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.CreateProcessStarterFactory*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_CreateProcessStarterFactory_Kephas_Application_Reflection_IAppInfo_Kephas_Dynamic_IExpando_Kephas_Services_IContext_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.CreateProcessStarterFactory(Kephas.Application.Reflection.IAppInfo,Kephas.Dynamic.IExpando,Kephas.Services.IContext)">CreateProcessStarterFactory(IAppInfo, IExpando, IContext)</h4>
+  <div class="markdown level1 summary"><p>Creates a new process starter factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual IProcessStarterFactory CreateProcessStarterFactory(IAppInfo appInfo, IExpando arguments, IContext context = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.Reflection.IAppInfo.html">IAppInfo</a></td>
+        <td><span class="parametername">appInfo</span></td>
+        <td><p>Information describing the application.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></td>
+        <td><span class="parametername">arguments</span></td>
+        <td><p>The arguments.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Optional. A context for initialization.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Diagnostics.IProcessStarterFactory.html">IProcessStarterFactory</a></td>
+        <td><p>The new process starter factory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_CreateStopAppMessage_Kephas_Orchestration_IRuntimeAppInfo_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.CreateStopAppMessage(Kephas.Orchestration.IRuntimeAppInfo%2CKephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L432">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_CreateStopAppMessage_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.CreateStopAppMessage*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_CreateStopAppMessage_Kephas_Orchestration_IRuntimeAppInfo_Kephas_Services_IContext_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.CreateStopAppMessage(Kephas.Orchestration.IRuntimeAppInfo,Kephas.Services.IContext)">CreateStopAppMessage(IRuntimeAppInfo, IContext)</h4>
+  <div class="markdown level1 summary"><p>Creates stop application message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual StopAppMessage CreateStopAppMessage(IRuntimeAppInfo runtimeAppInfo, IContext context = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Orchestration.IRuntimeAppInfo.html">IRuntimeAppInfo</a></td>
+        <td><span class="parametername">runtimeAppInfo</span></td>
+        <td><p>Information describing the runtime application.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Optional. A context for initialization.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Orchestration.Endpoints.StopAppMessage.html">StopAppMessage</a></td>
+        <td><p>The new stop application message.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_FinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.FinalizeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L154">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L161">View Source</a>
   </span>
   <a id="Kephas_Orchestration_DefaultOrchestrationManager_FinalizeAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.FinalizeAsync*"></a>
   <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_FinalizeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.FinalizeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">FinalizeAsync(IContext, CancellationToken)</h4>
@@ -286,7 +572,7 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual Task FinalizeAsync(IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -301,7 +587,7 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
       <tr>
         <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td><p>Optional. An optional context for finalization.</p>
+        <td><p>The context for finalization.</p>
 </td>
       </tr>
       <tr>
@@ -330,19 +616,19 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_GetLiveAppsAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.GetLiveAppsAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_GetAppExecutableArgs_Kephas_Application_Reflection_IAppInfo_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.GetAppExecutableArgs(Kephas.Application.Reflection.IAppInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L176">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L392">View Source</a>
   </span>
-  <a id="Kephas_Orchestration_DefaultOrchestrationManager_GetLiveAppsAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.GetLiveAppsAsync*"></a>
-  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_GetLiveAppsAsync_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.GetLiveAppsAsync(System.Threading.CancellationToken)">GetLiveAppsAsync(CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Gets the live apps asynchronously.</p>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_GetAppExecutableArgs_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.GetAppExecutableArgs*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_GetAppExecutableArgs_Kephas_Application_Reflection_IAppInfo_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.GetAppExecutableArgs(Kephas.Application.Reflection.IAppInfo)">GetAppExecutableArgs(IAppInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the app executable arguments.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;IAppInfo&gt;&gt; GetLiveAppsAsync(CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerable&lt;string&gt; GetAppExecutableArgs(IAppInfo appInfo)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -355,9 +641,9 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><a class="xref" href="Kephas.Application.Reflection.IAppInfo.html">IAppInfo</a></td>
+        <td><span class="parametername">appInfo</span></td>
+        <td><p>Information describing the application.</p>
 </td>
       </tr>
     </tbody>
@@ -372,27 +658,127 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Orchestration.IAppInfo.html">IAppInfo</a>&gt;&gt;</td>
-        <td><p>An asynchronous result that yields the live apps.</p>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><p>The app executable arguments.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.InitializeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_GetAppExecutablePath_Kephas_Application_Reflection_IAppInfo_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.GetAppExecutablePath(Kephas.Application.Reflection.IAppInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L137">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L379">View Source</a>
   </span>
-  <a id="Kephas_Orchestration_DefaultOrchestrationManager_InitializeAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.InitializeAsync*"></a>
-  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.InitializeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">InitializeAsync(IContext, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Initializes the service asynchronously.</p>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_GetAppExecutablePath_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.GetAppExecutablePath*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_GetAppExecutablePath_Kephas_Application_Reflection_IAppInfo_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.GetAppExecutablePath(Kephas.Application.Reflection.IAppInfo)">GetAppExecutablePath(IAppInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the app executable path.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual string GetAppExecutablePath(IAppInfo appInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.Reflection.IAppInfo.html">IAppInfo</a></td>
+        <td><span class="parametername">appInfo</span></td>
+        <td><p>Information describing the application.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The app executable path.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_GetAppKey_Kephas_Orchestration_IRuntimeAppInfo_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.GetAppKey(Kephas.Orchestration.IRuntimeAppInfo)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L362">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_GetAppKey_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.GetAppKey*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_GetAppKey_Kephas_Orchestration_IRuntimeAppInfo_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.GetAppKey(Kephas.Orchestration.IRuntimeAppInfo)">GetAppKey(IRuntimeAppInfo)</h4>
+  <div class="markdown level1 summary"><p>Gets the application key in the live apps collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual string GetAppKey(IRuntimeAppInfo appInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Orchestration.IRuntimeAppInfo.html">IRuntimeAppInfo</a></td>
+        <td><span class="parametername">appInfo</span></td>
+        <td><p>Information describing the application.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The application key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_GetLiveAppsAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.GetLiveAppsAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L186">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_GetLiveAppsAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.GetLiveAppsAsync*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_GetLiveAppsAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.GetLiveAppsAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">GetLiveAppsAsync(IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Gets the live apps asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;IEnumerable&lt;IRuntimeAppInfo&gt;&gt; GetLiveAppsAsync(IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -407,7 +793,63 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
       <tr>
         <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td><p>An optional context for initialization.</p>
+        <td><p>Optional. The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Kephas.Orchestration.IRuntimeAppInfo.html">IRuntimeAppInfo</a>&gt;&gt;</td>
+        <td><p>An asynchronous result that yields the live apps.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.InitializeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L140">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_InitializeAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.InitializeAsync*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.InitializeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">InitializeAsync(IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Initializes the service asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task InitializeAsync(IContext context, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>A context for initialization.</p>
 </td>
       </tr>
       <tr>
@@ -436,13 +878,63 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_OnAppHeartbeatAsync_Kephas_Orchestration_Endpoints_AppHeartbeatEvent_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.OnAppHeartbeatAsync(Kephas.Orchestration.Endpoints.AppHeartbeatEvent%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_InitializeLiveAppsAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.InitializeLiveAppsAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L233">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L261">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_InitializeLiveAppsAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.InitializeLiveAppsAsync*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_InitializeLiveAppsAsync_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.InitializeLiveAppsAsync(System.Threading.CancellationToken)">InitializeLiveAppsAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Initializes the live apps cache asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task InitializeLiveAppsAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td><p>An asynchronous result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_OnAppHeartbeatAsync_Kephas_Orchestration_Interaction_AppHeartbeatEvent_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.OnAppHeartbeatAsync(Kephas.Orchestration.Interaction.AppHeartbeatEvent%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L343">View Source</a>
   </span>
   <a id="Kephas_Orchestration_DefaultOrchestrationManager_OnAppHeartbeatAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnAppHeartbeatAsync*"></a>
-  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_OnAppHeartbeatAsync_Kephas_Orchestration_Endpoints_AppHeartbeatEvent_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnAppHeartbeatAsync(Kephas.Orchestration.Endpoints.AppHeartbeatEvent,Kephas.Services.IContext,System.Threading.CancellationToken)">OnAppHeartbeatAsync(AppHeartbeatEvent, IContext, CancellationToken)</h4>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_OnAppHeartbeatAsync_Kephas_Orchestration_Interaction_AppHeartbeatEvent_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnAppHeartbeatAsync(Kephas.Orchestration.Interaction.AppHeartbeatEvent,Kephas.Services.IContext,System.Threading.CancellationToken)">OnAppHeartbeatAsync(AppHeartbeatEvent, IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Callback invoked when an application notified its heartbeat.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -461,7 +953,7 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Orchestration.Endpoints.AppHeartbeatEvent.html">AppHeartbeatEvent</a></td>
+        <td><a class="xref" href="Kephas.Orchestration.Interaction.AppHeartbeatEvent.html">AppHeartbeatEvent</a></td>
         <td><span class="parametername">appEvent</span></td>
         <td><p>The application event.</p>
 </td>
@@ -498,13 +990,13 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_OnAppStartedAsync_Kephas_Orchestration_Endpoints_AppStartedEvent_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.OnAppStartedAsync(Kephas.Orchestration.Endpoints.AppStartedEvent%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_OnAppStartedAsync_Kephas_Orchestration_Interaction_AppStartedEvent_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.OnAppStartedAsync(Kephas.Orchestration.Interaction.AppStartedEvent%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L191">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L292">View Source</a>
   </span>
   <a id="Kephas_Orchestration_DefaultOrchestrationManager_OnAppStartedAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnAppStartedAsync*"></a>
-  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_OnAppStartedAsync_Kephas_Orchestration_Endpoints_AppStartedEvent_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnAppStartedAsync(Kephas.Orchestration.Endpoints.AppStartedEvent,Kephas.Services.IContext,System.Threading.CancellationToken)">OnAppStartedAsync(AppStartedEvent, IContext, CancellationToken)</h4>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_OnAppStartedAsync_Kephas_Orchestration_Interaction_AppStartedEvent_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnAppStartedAsync(Kephas.Orchestration.Interaction.AppStartedEvent,Kephas.Services.IContext,System.Threading.CancellationToken)">OnAppStartedAsync(AppStartedEvent, IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Callback invoked when an application was started.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -523,7 +1015,7 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Orchestration.Endpoints.AppStartedEvent.html">AppStartedEvent</a></td>
+        <td><a class="xref" href="Kephas.Orchestration.Interaction.AppStartedEvent.html">AppStartedEvent</a></td>
         <td><span class="parametername">appEvent</span></td>
         <td><p>The application event.</p>
 </td>
@@ -560,13 +1052,13 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_OnAppStoppedAsync_Kephas_Orchestration_Endpoints_AppStoppedEvent_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.OnAppStoppedAsync(Kephas.Orchestration.Endpoints.AppStoppedEvent%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_OnAppStoppedAsync_Kephas_Orchestration_Interaction_AppStoppedEvent_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.OnAppStoppedAsync(Kephas.Orchestration.Interaction.AppStoppedEvent%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L212">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L320">View Source</a>
   </span>
   <a id="Kephas_Orchestration_DefaultOrchestrationManager_OnAppStoppedAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnAppStoppedAsync*"></a>
-  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_OnAppStoppedAsync_Kephas_Orchestration_Endpoints_AppStoppedEvent_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnAppStoppedAsync(Kephas.Orchestration.Endpoints.AppStoppedEvent,Kephas.Services.IContext,System.Threading.CancellationToken)">OnAppStoppedAsync(AppStoppedEvent, IContext, CancellationToken)</h4>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_OnAppStoppedAsync_Kephas_Orchestration_Interaction_AppStoppedEvent_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnAppStoppedAsync(Kephas.Orchestration.Interaction.AppStoppedEvent,Kephas.Services.IContext,System.Threading.CancellationToken)">OnAppStoppedAsync(AppStoppedEvent, IContext, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Callback invoked when an application was stopped.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -585,7 +1077,7 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Orchestration.Endpoints.AppStoppedEvent.html">AppStoppedEvent</a></td>
+        <td><a class="xref" href="Kephas.Orchestration.Interaction.AppStoppedEvent.html">AppStoppedEvent</a></td>
         <td><span class="parametername">appEvent</span></td>
         <td><p>The application event.</p>
 </td>
@@ -620,7 +1112,174 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_OnHeartbeat_System_Object_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.OnHeartbeat(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L270">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_OnHeartbeat_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnHeartbeat*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_OnHeartbeat_System_Object_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.OnHeartbeat(System.Object)">OnHeartbeat(Object)</h4>
+  <div class="markdown level1 summary"><p>Executes the heartbeat timer action.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnHeartbeat(object state)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">state</span></td>
+        <td><p>The state.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_StartAppAsync_Kephas_Application_Reflection_IAppInfo_Kephas_Dynamic_IExpando_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.StartAppAsync(Kephas.Application.Reflection.IAppInfo%2CKephas.Dynamic.IExpando%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L202">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_StartAppAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.StartAppAsync*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_StartAppAsync_Kephas_Application_Reflection_IAppInfo_Kephas_Dynamic_IExpando_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.StartAppAsync(Kephas.Application.Reflection.IAppInfo,Kephas.Dynamic.IExpando,Kephas.Services.IContext,System.Threading.CancellationToken)">StartAppAsync(IAppInfo, IExpando, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Starts the application asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;IOperationResult&gt; StartAppAsync(IAppInfo appInfo, IExpando arguments, IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.Reflection.IAppInfo.html">IAppInfo</a></td>
+        <td><span class="parametername">appInfo</span></td>
+        <td><p>Information describing the application.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></td>
+        <td><span class="parametername">arguments</span></td>
+        <td><p>The arguments.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Optional. The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Operations.IOperationResult.html">IOperationResult</a>&gt;</td>
+        <td><p>An asynchronous result that yields an operation result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager_StopAppAsync_Kephas_Orchestration_IRuntimeAppInfo_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager.StopAppAsync(Kephas.Orchestration.IRuntimeAppInfo%2CKephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L226">View Source</a>
+  </span>
+  <a id="Kephas_Orchestration_DefaultOrchestrationManager_StopAppAsync_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.StopAppAsync*"></a>
+  <h4 id="Kephas_Orchestration_DefaultOrchestrationManager_StopAppAsync_Kephas_Orchestration_IRuntimeAppInfo_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Orchestration.DefaultOrchestrationManager.StopAppAsync(Kephas.Orchestration.IRuntimeAppInfo,Kephas.Services.IContext,System.Threading.CancellationToken)">StopAppAsync(IRuntimeAppInfo, IContext, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Stops a running application asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;IOperationResult&gt; StopAppAsync(IRuntimeAppInfo runtimeAppInfo, IContext context = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Orchestration.IRuntimeAppInfo.html">IRuntimeAppInfo</a></td>
+        <td><span class="parametername">runtimeAppInfo</span></td>
+        <td><p>Information describing the runtime application.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>Optional. The context.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Operations.IOperationResult.html">IOperationResult</a>&gt;</td>
+        <td><p>An asynchronous result that yields an operation result.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Orchestration.IOrchestrationManager.html">IOrchestrationManager</a>
   </div>
@@ -684,7 +1343,7 @@ public class DefaultOrchestrationManager : IOrchestrationManager, IAsyncInitiali
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Orchestration_DefaultOrchestrationManager.md&amp;value=---%0Auid%3A%20Kephas.Orchestration.DefaultOrchestrationManager%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L33" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Orchestration/DefaultOrchestrationManager.cs/#L42" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

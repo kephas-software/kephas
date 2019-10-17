@@ -79,16 +79,19 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IBulkUpdateContext.html">IBulkUpdateContext</a>, <a class="xref" href="Kephas.Data.Commands.IBulkDataOperationResult.html">IBulkDataOperationResult</a>&gt;</div>
-    <div class="level2"><a class="xref" href="Kephas.Data.Commands.BulkOperationCommandBase-2.html">BulkOperationCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IBulkUpdateContext.html">IBulkUpdateContext</a>, <a class="xref" href="Kephas.Data.Commands.IBulkDataOperationResult.html">IBulkDataOperationResult</a>&gt;</div>
-    <div class="level3"><a class="xref" href="Kephas.Data.Commands.BulkUpdateCommand.html">BulkUpdateCommand</a></div>
-    <div class="level4"><span class="xref">MongoBulkUpdateCommand</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html">DataCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IBulkUpdateContext.html">IBulkUpdateContext</a>, <a class="xref" href="Kephas.Data.Commands.IBulkDataOperationResult.html">IBulkDataOperationResult</a>&gt;</div>
+    <div class="level3"><a class="xref" href="Kephas.Data.Commands.BulkOperationCommandBase-2.html">BulkOperationCommandBase</a>&lt;<a class="xref" href="Kephas.Data.Commands.IBulkUpdateContext.html">IBulkUpdateContext</a>, <a class="xref" href="Kephas.Data.Commands.IBulkDataOperationResult.html">IBulkDataOperationResult</a>&gt;</div>
+    <div class="level4"><a class="xref" href="Kephas.Data.Commands.BulkUpdateCommand.html">BulkUpdateCommand</a></div>
+    <div class="level5"><span class="xref">MongoBulkUpdateCommand</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.IBulkUpdateCommand.html">IBulkUpdateCommand</a></div>
     <div><a class="xref" href="Kephas.Data.Commands.IDataCommand-2.html">IDataCommand</a>&lt;<a class="xref" href="Kephas.Data.Commands.IBulkUpdateContext.html">IBulkUpdateContext</a>, <a class="xref" href="Kephas.Data.Commands.IBulkDataOperationResult.html">IBulkDataOperationResult</a>&gt;</div>
     <div><a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a></div>
+    <div><a class="xref" href="Kephas.Operations.IAsyncOperation.html">IAsyncOperation</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -120,6 +123,9 @@
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataCommandBase&lt;IBulkUpdateContext, IBulkDataOperationResult&gt;.IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_Kephas_Operations_IAsyncOperation_ExecuteAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">DataCommandBase&lt;IBulkUpdateContext, IBulkDataOperationResult&gt;.IAsyncOperation.ExecuteAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_GetIdEqualityExpression__1_Kephas_Data_IDataContext_System_Object_">DataCommandBase&lt;IBulkUpdateContext, IBulkDataOperationResult&gt;.GetIdEqualityExpression&lt;T&gt;(IDataContext, Object)</a>
     </div>
     <div>
@@ -127,6 +133,12 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Data.Commands.DataCommandBase-2.html#Kephas_Data_Commands_DataCommandBase_2_TryGetEntityActivator_Kephas_Data_IDataContext_">DataCommandBase&lt;IBulkUpdateContext, IBulkDataOperationResult&gt;.TryGetEntityActivator(IDataContext)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -155,7 +167,7 @@
   <h5 id="Kephas_Data_MongoDB_Commands_MongoBulkUpdateCommand_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[DataContextType(typeof(MongoDataContext))]
-public class MongoBulkUpdateCommand : BulkUpdateCommand, IBulkUpdateCommand, IDataCommand&lt;IBulkUpdateContext, IBulkDataOperationResult&gt;, IDataCommand</code></pre>
+public class MongoBulkUpdateCommand : BulkUpdateCommand, ILoggable, IBulkUpdateCommand, IDataCommand&lt;IBulkUpdateContext, IBulkDataOperationResult&gt;, IDataCommand, IAsyncOperation</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -175,7 +187,6 @@ entities.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected override Task&lt;long&gt; BulkUpdateCoreAsync&lt;T&gt;(IBulkUpdateContext bulkDeleteContext, Expression&lt;Func&lt;T, bool&gt;&gt; criteria, IDictionary&lt;string, object&gt; values, CancellationToken cancellationToken)
-
     where T : class</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -250,6 +261,9 @@ entities.</p>
   <div><span class="xref">Kephas.Data.Commands.BulkUpdateCommand.BulkUpdateCoreAsync&lt;T&gt;(Kephas.Data.Commands.IBulkUpdateContext, System.Linq.Expressions.Expression&lt;System.Func&lt;T, System.Boolean&gt;&gt;, System.Collections.Generic.IDictionary&lt;System.String, System.Object&gt;, System.Threading.CancellationToken)</span></div>
   <h3 id="implements">Implements</h3>
   <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Data.Commands.IBulkUpdateCommand.html">IBulkUpdateCommand</a>
   </div>
   <div>
@@ -257,6 +271,9 @@ entities.</p>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.Commands.IDataCommand.html">IDataCommand</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Operations.IAsyncOperation.html">IAsyncOperation</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

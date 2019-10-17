@@ -85,6 +85,9 @@
       <a class="xref" href="Kephas.Data.Commands.IDataCommand.html#Kephas_Data_Commands_IDataCommand_ExecuteAsync_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">IDataCommand.ExecuteAsync(IDataOperationContext, CancellationToken)</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Operations.IAsyncOperation.html#Kephas_Operations_IAsyncOperation_ExecuteAsync_Kephas_Services_IContext_System_Threading_CancellationToken_">IAsyncOperation.ExecuteAsync(IContext, CancellationToken)</a>
+    </div>
+    <div>
       <a class="xref" href="Kephas.Data.Commands.ISyncDataCommand.html#Kephas_Data_Commands_ISyncDataCommand_Execute_Kephas_Data_IDataOperationContext_">ISyncDataCommand.Execute(IDataOperationContext)</a>
     </div>
   </div>
@@ -93,7 +96,7 @@
   <h5 id="Kephas_Data_Commands_IDeleteEntityCommand_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[AppServiceContract(AllowMultiple = true, MetadataAttributes = new Type[]{typeof(DataContextTypeAttribute)})]
-public interface IDeleteEntityCommand : IDataCommand&lt;IDeleteEntityContext, IDataCommandResult&gt;, IDataCommand, ISyncDataCommand</code></pre>
+public interface IDeleteEntityCommand : IDataCommand&lt;IDeleteEntityContext, IDataCommandResult&gt;, IDataCommand, IAsyncOperation, ISyncDataCommand</code></pre>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

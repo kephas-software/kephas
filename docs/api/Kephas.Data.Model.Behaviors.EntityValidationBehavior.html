@@ -79,12 +79,14 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html">DataBehaviorBase</a>&lt;<span class="xref">System.Object</span>&gt;</div>
-    <div class="level2"><a class="xref" href="Kephas.Data.Behaviors.DataAnnotationsBehaviorBase-1.html">DataAnnotationsBehaviorBase</a>&lt;<span class="xref">System.Object</span>&gt;</div>
-    <div class="level3"><span class="xref">EntityValidationBehavior</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html">DataBehaviorBase</a>&lt;<span class="xref">System.Object</span>&gt;</div>
+    <div class="level3"><a class="xref" href="Kephas.Data.Behaviors.DataAnnotationsBehaviorBase-1.html">DataAnnotationsBehaviorBase</a>&lt;<span class="xref">System.Object</span>&gt;</div>
+    <div class="level4"><span class="xref">EntityValidationBehavior</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IDataBehavior-1.html">IDataBehavior</a>&lt;<span class="xref">System.Object</span>&gt;</div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IDataBehavior.html">IDataBehavior</a></div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IOnPersistBehavior.html">IOnPersistBehavior</a></div>
@@ -130,6 +132,12 @@
       <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_ValidateAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataBehaviorBase&lt;Object&gt;.ValidateAsync(Object, IEntityEntry, IDataOperationContext, CancellationToken)</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
+    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
@@ -156,7 +164,7 @@
   <h5 id="Kephas_Data_Model_Behaviors_EntityValidationBehavior_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[ProcessingPriority(Priority.High)]
-public class EntityValidationBehavior : DataAnnotationsBehaviorBase&lt;object&gt;, IDataBehavior&lt;object&gt;, IDataBehavior, IOnPersistBehavior, IOnInitializeBehavior, IOnValidateBehavior</code></pre>
+public class EntityValidationBehavior : DataAnnotationsBehaviorBase&lt;object&gt;, ILoggable, IDataBehavior&lt;object&gt;, IDataBehavior, IOnPersistBehavior, IOnInitializeBehavior, IOnValidateBehavior</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -249,6 +257,9 @@ public class EntityValidationBehavior : DataAnnotationsBehaviorBase&lt;object&gt
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Kephas.Data.Behaviors.DataAnnotationsBehaviorBase&lt;System.Object&gt;.CreateValidationFn(Kephas.Reflection.ITypeInfo)</span></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Data.Behaviors.IDataBehavior-1.html">IDataBehavior&lt;TEntity&gt;</a>
   </div>

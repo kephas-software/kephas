@@ -73,14 +73,14 @@
   
   <h1 id="Kephas_Data_LLBLGen_Entities_IEntityModelProvider" data-uid="Kephas.Data.LLBLGen.Entities.IEntityModelProvider" class="text-break">Interface IEntityModelProvider
   </h1>
-  <div class="markdown level0 summary"><p>Interface for model provider.</p>
+  <div class="markdown level0 summary"><p>Singleton application service contract for providing the LLBLGen entity model.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Data.LLBLGen.Entities.html">Kephas.Data.LLBLGen.Entities</a></h6>
   <h6><strong>Assembly</strong>: Kephas.Data.LLBLGen.dll</h6>
   <h5 id="Kephas_Data_LLBLGen_Entities_IEntityModelProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[SharedAppServiceContract]
+    <pre><code class="lang-csharp hljs">[SingletonAppServiceContract]
 public interface IEntityModelProvider</code></pre>
   </div>
   <h3 id="methods">Methods
@@ -94,7 +94,7 @@ public interface IEntityModelProvider</code></pre>
   </span>
   <a id="Kephas_Data_LLBLGen_Entities_IEntityModelProvider_GetModelTypeInfos_" data-uid="Kephas.Data.LLBLGen.Entities.IEntityModelProvider.GetModelTypeInfos*"></a>
   <h4 id="Kephas_Data_LLBLGen_Entities_IEntityModelProvider_GetModelTypeInfos" data-uid="Kephas.Data.LLBLGen.Entities.IEntityModelProvider.GetModelTypeInfos">GetModelTypeInfos()</h4>
-  <div class="markdown level1 summary"><p>Gets the model <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a>s.</p>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Kephas.Reflection.ITypeInfo.html">ITypeInfo</a>s containing the entity model.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

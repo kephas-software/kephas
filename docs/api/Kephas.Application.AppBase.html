@@ -80,6 +80,7 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">AppBase</span></div>
+      <div class="level2"><a class="xref" href="Kephas.Application.AspNetCore.StartupBase.html">StartupBase</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -106,40 +107,123 @@
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Kephas.Application.html">Kephas.Application</a></h6>
-  <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
+  <h6><strong>Assembly</strong>: Kephas.Application.dll</h6>
   <h5 id="Kephas_Application_AppBase_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class AppBase</code></pre>
   </div>
   <h5 id="Kephas_Application_AppBase_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>You should inherit this class and override at least the <a class="xref" href="Kephas.Application.AppBase.html#Kephas_Application_AppBase_ConfigureAmbientServicesAsync_System_String___Kephas_AmbientServicesBuilder_System_Threading_CancellationToken_">ConfigureAmbientServicesAsync(String[], AmbientServicesBuilder, CancellationToken)</a> method.</p>
+  <div class="markdown level0 remarks"><p>You should inherit this class and override at least the <a class="xref" href="Kephas.Application.AppBase.html#Kephas_Application_AppBase_ConfigureAmbientServices_Kephas_IAmbientServices_">ConfigureAmbientServices(IAmbientServices)</a> method.</p>
 </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase__ctor.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase__ctor_Kephas_IAmbientServices_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.%23ctor(Kephas.IAmbientServices)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L32">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L36">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase__ctor_" data-uid="Kephas.Application.AppBase.#ctor*"></a>
-  <h4 id="Kephas_Application_AppBase__ctor" data-uid="Kephas.Application.AppBase.#ctor">AppBase()</h4>
+  <h4 id="Kephas_Application_AppBase__ctor_Kephas_IAmbientServices_" data-uid="Kephas.Application.AppBase.#ctor(Kephas.IAmbientServices)">AppBase(IAmbientServices)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Application.AppBase.html">AppBase</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected AppBase()</code></pre>
+    <pre><code class="lang-csharp hljs">protected AppBase(IAmbientServices ambientServices = null)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
+        <td><span class="parametername">ambientServices</span></td>
+        <td><p>Optional. The ambient services. If not provided then
+<a class="xref" href="Kephas.AmbientServices.html#Kephas_AmbientServices_Instance">Instance</a> is considered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_AmbientServices.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.AmbientServices%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L48">View Source</a>
+  </span>
+  <a id="Kephas_Application_AppBase_AmbientServices_" data-uid="Kephas.Application.AppBase.AmbientServices*"></a>
+  <h4 id="Kephas_Application_AppBase_AmbientServices" data-uid="Kephas.Application.AppBase.AmbientServices">AmbientServices</h4>
+  <div class="markdown level1 summary"><p>Gets the ambient services.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAmbientServices AmbientServices { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
+        <td><p>The ambient services.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_AppContext.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.AppContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L56">View Source</a>
+  </span>
+  <a id="Kephas_Application_AppBase_AppContext_" data-uid="Kephas.Application.AppBase.AppContext*"></a>
+  <h4 id="Kephas_Application_AppBase_AppContext" data-uid="Kephas.Application.AppBase.AppContext">AppContext</h4>
+  <div class="markdown level1 summary"><p>Gets a context for the application.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAppContext AppContext { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a></td>
+        <td><p>The application context.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_Logger.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L43">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L64">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_Logger_" data-uid="Kephas.Application.AppBase.Logger*"></a>
   <h4 id="Kephas_Application_AppBase_Logger" data-uid="Kephas.Application.AppBase.Logger">Logger</h4>
@@ -170,19 +254,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_BootstrapAsync_System_String___Kephas_IAmbientServices_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.BootstrapAsync(System.String%5B%5D%2CKephas.IAmbientServices%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_BootstrapAsync_System_String___System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.BootstrapAsync(System.String%5B%5D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L54">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L74">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_BootstrapAsync_" data-uid="Kephas.Application.AppBase.BootstrapAsync*"></a>
-  <h4 id="Kephas_Application_AppBase_BootstrapAsync_System_String___Kephas_IAmbientServices_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.BootstrapAsync(System.String[],Kephas.IAmbientServices,System.Threading.CancellationToken)">BootstrapAsync(String[], IAmbientServices, CancellationToken)</h4>
+  <h4 id="Kephas_Application_AppBase_BootstrapAsync_System_String___System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.BootstrapAsync(System.String[],System.Threading.CancellationToken)">BootstrapAsync(String[], CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Bootstraps the application asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;IAppContext&gt; BootstrapAsync(string[] appArgs = null, IAmbientServices ambientServices = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;(IAppContext appContext, AppShutdownInstruction instruction)&gt; BootstrapAsync(string[] rawAppArgs = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -196,20 +280,14 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span>[]</td>
-        <td><span class="parametername">appArgs</span></td>
-        <td><p>The application arguments (optional).</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
-        <td><span class="parametername">ambientServices</span></td>
-        <td><p>The ambient services (optional). If not provided then <a class="xref" href="Kephas.AmbientServices.html#Kephas_AmbientServices_Instance">Instance</a> is considered.</p>
+        <td><span class="parametername">rawAppArgs</span></td>
+        <td><p>Optional. The application arguments.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><p>Optional. The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -224,7 +302,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a>&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.ValueTuple</span>&lt;<a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a>, <a class="xref" href="Kephas.Application.AppShutdownInstruction.html">AppShutdownInstruction</a>&gt;&gt;</td>
         <td><p>The asynchronous result that yields the <a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a>.</p>
 </td>
       </tr>
@@ -232,19 +310,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_ConfigureAmbientServicesAsync_System_String___Kephas_AmbientServicesBuilder_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.ConfigureAmbientServicesAsync(System.String%5B%5D%2CKephas.AmbientServicesBuilder%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_ConfigureAmbientServices_Kephas_IAmbientServices_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.ConfigureAmbientServices(Kephas.IAmbientServices)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L189">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L215">View Source</a>
   </span>
-  <a id="Kephas_Application_AppBase_ConfigureAmbientServicesAsync_" data-uid="Kephas.Application.AppBase.ConfigureAmbientServicesAsync*"></a>
-  <h4 id="Kephas_Application_AppBase_ConfigureAmbientServicesAsync_System_String___Kephas_AmbientServicesBuilder_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.ConfigureAmbientServicesAsync(System.String[],Kephas.AmbientServicesBuilder,System.Threading.CancellationToken)">ConfigureAmbientServicesAsync(String[], AmbientServicesBuilder, CancellationToken)</h4>
+  <a id="Kephas_Application_AppBase_ConfigureAmbientServices_" data-uid="Kephas.Application.AppBase.ConfigureAmbientServices*"></a>
+  <h4 id="Kephas_Application_AppBase_ConfigureAmbientServices_Kephas_IAmbientServices_" data-uid="Kephas.Application.AppBase.ConfigureAmbientServices(Kephas.IAmbientServices)">ConfigureAmbientServices(IAmbientServices)</h4>
   <div class="markdown level1 summary"><p>Configures the ambient services asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Task ConfigureAmbientServicesAsync(string[] appArgs, AmbientServicesBuilder ambientServicesBuilder, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">protected abstract void ConfigureAmbientServices(IAmbientServices ambientServices)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -257,59 +335,31 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span>[]</td>
-        <td><span class="parametername">appArgs</span></td>
-        <td><p>The application arguments.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Kephas.AmbientServicesBuilder.html">AmbientServicesBuilder</a></td>
-        <td><span class="parametername">ambientServicesBuilder</span></td>
-        <td><p>The ambient services builder.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Threading.CancellationToken</span></td>
-        <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token.</p>
+        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
+        <td><span class="parametername">ambientServices</span></td>
+        <td><p>The ambient services.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Threading.Tasks.Task</span></td>
-        <td><p>The asynchronous result.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Kephas_Application_AppBase_ConfigureAmbientServicesAsync_System_String___Kephas_AmbientServicesBuilder_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <h5 id="Kephas_Application_AppBase_ConfigureAmbientServices_Kephas_IAmbientServices__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Override this method to initialize the startup services, like log manager and configuration manager.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_CreateAppContext_System_String___Kephas_IAmbientServices_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.CreateAppContext(System.String%5B%5D%2CKephas.IAmbientServices)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_CreateAppContext_Kephas_IAmbientServices_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.CreateAppContext(Kephas.IAmbientServices)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L239">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L311">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_CreateAppContext_" data-uid="Kephas.Application.AppBase.CreateAppContext*"></a>
-  <h4 id="Kephas_Application_AppBase_CreateAppContext_System_String___Kephas_IAmbientServices_" data-uid="Kephas.Application.AppBase.CreateAppContext(System.String[],Kephas.IAmbientServices)">CreateAppContext(String[], IAmbientServices)</h4>
+  <h4 id="Kephas_Application_AppBase_CreateAppContext_Kephas_IAmbientServices_" data-uid="Kephas.Application.AppBase.CreateAppContext(Kephas.IAmbientServices)">CreateAppContext(IAmbientServices)</h4>
   <div class="markdown level1 summary"><p>Creates the application context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual IAppContext CreateAppContext(string[] appArgs, IAmbientServices ambientServices)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual IAppContext CreateAppContext(IAmbientServices ambientServices)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -321,12 +371,6 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><span class="xref">System.String</span>[]</td>
-        <td><span class="parametername">appArgs</span></td>
-        <td><p>The application arguments.</p>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
         <td><span class="parametername">ambientServices</span></td>
@@ -353,19 +397,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_FinalizeAppManagerAsync_Kephas_IAmbientServices_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.FinalizeAppManagerAsync(Kephas.IAmbientServices%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_FinalizeAppManagerAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.FinalizeAppManagerAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L222">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L274">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_FinalizeAppManagerAsync_" data-uid="Kephas.Application.AppBase.FinalizeAppManagerAsync*"></a>
-  <h4 id="Kephas_Application_AppBase_FinalizeAppManagerAsync_Kephas_IAmbientServices_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.FinalizeAppManagerAsync(Kephas.IAmbientServices,System.Threading.CancellationToken)">FinalizeAppManagerAsync(IAmbientServices, CancellationToken)</h4>
+  <h4 id="Kephas_Application_AppBase_FinalizeAppManagerAsync_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.FinalizeAppManagerAsync(System.Threading.CancellationToken)">FinalizeAppManagerAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Finalizes the application manager asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual Task&lt;IAppContext&gt; FinalizeAppManagerAsync(IAmbientServices ambientServices, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;IAppContext&gt; FinalizeAppManagerAsync(CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -377,12 +421,6 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
-        <td><span class="parametername">ambientServices</span></td>
-        <td><p>The ambient services.</p>
-</td>
-      </tr>
       <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
@@ -412,7 +450,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_InitializeAppManagerAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.InitializeAppManagerAsync(Kephas.Application.IAppContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L205">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L225">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_InitializeAppManagerAsync_" data-uid="Kephas.Application.AppBase.InitializeAppManagerAsync*"></a>
   <h4 id="Kephas_Application_AppBase_InitializeAppManagerAsync_Kephas_Application_IAppContext_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.InitializeAppManagerAsync(Kephas.Application.IAppContext,System.Threading.CancellationToken)">InitializeAppManagerAsync(IAppContext, CancellationToken)</h4>
@@ -465,10 +503,61 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_InitializePrerequisites_System_String___.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.InitializePrerequisites(System.String%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L125">View Source</a>
+  </span>
+  <a id="Kephas_Application_AppBase_InitializePrerequisites_" data-uid="Kephas.Application.AppBase.InitializePrerequisites*"></a>
+  <h4 id="Kephas_Application_AppBase_InitializePrerequisites_System_String___" data-uid="Kephas.Application.AppBase.InitializePrerequisites(System.String[])">InitializePrerequisites(String[])</h4>
+  <div class="markdown level1 summary"><p>Initializes the application prerequisites: the ambient services, the application context
+registration, the logger, other.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool InitializePrerequisites(string[] rawAppArgs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span>[]</td>
+        <td><span class="parametername">rawAppArgs</span></td>
+        <td><p>The application arguments.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if the initialization was performed, false if it was ignored because of subsequent calls.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_Log_Kephas_Logging_LogLevel_System_Exception_System_String_System_Object___.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.Log(Kephas.Logging.LogLevel%2CSystem.Exception%2CSystem.String%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L258">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L329">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_Log_" data-uid="Kephas.Application.AppBase.Log*"></a>
   <h4 id="Kephas_Application_AppBase_Log_Kephas_Logging_LogLevel_System_Exception_System_String_System_Object___" data-uid="Kephas.Application.AppBase.Log(Kephas.Logging.LogLevel,System.Exception,System.String,System.Object[])">Log(LogLevel, Exception, String, Object[])</h4>
@@ -520,7 +609,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_OnCurrentDomainUnhandledException_System_Object_System_UnhandledExceptionEventArgs_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.OnCurrentDomainUnhandledException(System.Object%2CSystem.UnhandledExceptionEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L166">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L197">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_OnCurrentDomainUnhandledException_" data-uid="Kephas.Application.AppBase.OnCurrentDomainUnhandledException*"></a>
   <h4 id="Kephas_Application_AppBase_OnCurrentDomainUnhandledException_System_Object_System_UnhandledExceptionEventArgs_" data-uid="Kephas.Application.AppBase.OnCurrentDomainUnhandledException(System.Object,System.UnhandledExceptionEventArgs)">OnCurrentDomainUnhandledException(Object, UnhandledExceptionEventArgs)</h4>
@@ -557,19 +646,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_ShutdownAsync_Kephas_IAmbientServices_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.ShutdownAsync(Kephas.IAmbientServices%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_ShutdownAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.ShutdownAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L131">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L110">View Source</a>
   </span>
   <a id="Kephas_Application_AppBase_ShutdownAsync_" data-uid="Kephas.Application.AppBase.ShutdownAsync*"></a>
-  <h4 id="Kephas_Application_AppBase_ShutdownAsync_Kephas_IAmbientServices_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.ShutdownAsync(Kephas.IAmbientServices,System.Threading.CancellationToken)">ShutdownAsync(IAmbientServices, CancellationToken)</h4>
+  <h4 id="Kephas_Application_AppBase_ShutdownAsync_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.ShutdownAsync(System.Threading.CancellationToken)">ShutdownAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Shuts down the application asynchronously.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Task&lt;IAppContext&gt; ShutdownAsync(IAmbientServices ambientServices = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;IAppContext&gt; ShutdownAsync(CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -582,15 +671,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.IAmbientServices.html">IAmbientServices</a></td>
-        <td><span class="parametername">ambientServices</span></td>
-        <td><p>The ambient services (optional). If not provided then <a class="xref" href="Kephas.AmbientServices.html#Kephas_AmbientServices_Instance">Instance</a> is considered.</p>
-</td>
-      </tr>
-      <tr>
         <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>The cancellation token (optional).</p>
+        <td><p>Optional. The cancellation token.</p>
 </td>
       </tr>
     </tbody>
@@ -607,6 +690,56 @@
       <tr>
         <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a>&gt;</td>
         <td><p>A promise of the <a class="xref" href="Kephas.Application.IAppContext.html">IAppContext</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase_WaitForShutdownSignalAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase.WaitForShutdownSignalAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L172">View Source</a>
+  </span>
+  <a id="Kephas_Application_AppBase_WaitForShutdownSignalAsync_" data-uid="Kephas.Application.AppBase.WaitForShutdownSignalAsync*"></a>
+  <h4 id="Kephas_Application_AppBase_WaitForShutdownSignalAsync_System_Threading_CancellationToken_" data-uid="Kephas.Application.AppBase.WaitForShutdownSignalAsync(System.Threading.CancellationToken)">WaitForShutdownSignalAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Waits for the shutdown signal asynchronously.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual Task&lt;AppShutdownInstruction&gt; WaitForShutdownSignalAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>Optional. The cancellation token.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="Kephas.Application.AppShutdownInstruction.html">AppShutdownInstruction</a>&gt;</td>
+        <td><p>An asynchronous result that yields the shutdown instruction.</p>
 </td>
       </tr>
     </tbody>
@@ -665,7 +798,7 @@
                     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Application_AppBase.md&amp;value=---%0Auid%3A%20Kephas.Application.AppBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Application/AppBase.cs/#L27" class="contribution-link">View Source</a>
+                    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Application/AppBase.cs/#L27" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -79,11 +79,13 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html">DataBehaviorBase</a>&lt;<a class="xref" href="Kephas.Data.LLBLGen.Entities.IEntityBase.html">IEntityBase</a>&gt;</div>
-    <div class="level2"><span class="xref">LLBLGenRefBehavior</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html">DataBehaviorBase</a>&lt;<a class="xref" href="Kephas.Data.LLBLGen.Entities.IEntityBase.html">IEntityBase</a>&gt;</div>
+    <div class="level3"><span class="xref">LLBLGenRefBehavior</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IDataBehavior-1.html">IDataBehavior</a>&lt;<a class="xref" href="Kephas.Data.LLBLGen.Entities.IEntityBase.html">IEntityBase</a>&gt;</div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IDataBehavior.html">IDataBehavior</a></div>
     <div><a class="xref" href="Kephas.Data.Behaviors.IOnPersistBehavior.html">IOnPersistBehavior</a></div>
@@ -126,6 +128,12 @@
       <a class="xref" href="Kephas.Data.Behaviors.DataBehaviorBase-1.html#Kephas_Data_Behaviors_DataBehaviorBase_1_ValidateAsync__0_Kephas_Data_Capabilities_IEntityEntry_Kephas_Data_IDataOperationContext_System_Threading_CancellationToken_">DataBehaviorBase&lt;IEntityBase&gt;.ValidateAsync(IEntityBase, IEntityEntry, IDataOperationContext, CancellationToken)</a>
     </div>
     <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
+    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
@@ -152,7 +160,7 @@
   <h5 id="Kephas_Data_LLBLGen_Behaviors_LLBLGenRefBehavior_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[ProcessingPriority(Priority.AboveNormal)]
-public class LLBLGenRefBehavior : DataBehaviorBase&lt;IEntityBase&gt;, IDataBehavior&lt;IEntityBase&gt;, IDataBehavior, IOnPersistBehavior, IOnInitializeBehavior, IOnValidateBehavior</code></pre>
+public class LLBLGenRefBehavior : DataBehaviorBase&lt;IEntityBase&gt;, ILoggable, IDataBehavior&lt;IEntityBase&gt;, IDataBehavior, IOnPersistBehavior, IOnInitializeBehavior, IOnValidateBehavior</code></pre>
   </div>
   <h5 id="Kephas_Data_LLBLGen_Behaviors_LLBLGenRefBehavior_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Before persisting, it should resolve all references that are set to temporary IDs.
@@ -268,6 +276,9 @@ temporary IDs.</p>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">Kephas.Data.Behaviors.DataBehaviorBase&lt;Kephas.Data.LLBLGen.Entities.IEntityBase&gt;.BeforePersistAsync(Kephas.Data.LLBLGen.Entities.IEntityBase, Kephas.Data.Capabilities.IEntityEntry, Kephas.Data.IDataOperationContext, System.Threading.CancellationToken)</span></div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
   <div>
       <a class="xref" href="Kephas.Data.Behaviors.IDataBehavior-1.html">IDataBehavior&lt;TEntity&gt;</a>
   </div>

@@ -92,8 +92,8 @@
     <div><a class="xref" href="Kephas.Dynamic.IExpando.html">IExpando</a></div>
     <div><span class="xref">System.Dynamic.IDynamicMetaObjectProvider</span></div>
     <div><a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a></div>
-    <div><a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a></div>
-    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -107,7 +107,10 @@
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Identity">Context.Identity</a>
     </div>
     <div>
-      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ContextLogger">Context.ContextLogger</a>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Logger">Context.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose">Context.Dispose()</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_ValidateIdentity_System_Security_Principal_IIdentity_System_Security_Principal_IIdentity_">Context.ValidateIdentity(IIdentity, IIdentity)</a>
@@ -117,6 +120,9 @@
     </div>
     <div>
       <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_SetAmbientServices_Kephas_IAmbientServices_">Context.SetAmbientServices(IAmbientServices)</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Services.Context.html#Kephas_Services_Context_Dispose_System_Boolean_">Context.Dispose(Boolean)</a>
     </div>
     <div>
       <a class="xref" href="Kephas.Dynamic.ExpandoBase.html#Kephas_Dynamic_ExpandoBase_Item_System_String_">ExpandoBase.Item[String]</a>
@@ -207,25 +213,25 @@
   <h6><strong>Assembly</strong>: Kephas.Core.dll</h6>
   <h5 id="Kephas_Serialization_SerializationContext_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SerializationContext : Context, ISerializationContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, IAmbientServicesAware, ICompositionContextAware</code></pre>
+    <pre><code class="lang-csharp hljs">public class SerializationContext : Context, ISerializationContext, IContext, IExpando, IDynamicMetaObjectProvider, IIndexable, ILoggable, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationContext__ctor_Kephas_Serialization_ISerializationService_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationContext.%23ctor(Kephas.Serialization.ISerializationService%2CSystem.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationContext__ctor_Kephas_Composition_ICompositionContext_Kephas_Serialization_ISerializationService_System_Type_.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationContext.%23ctor(Kephas.Composition.ICompositionContext%2CKephas.Serialization.ISerializationService%2CSystem.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L35">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L36">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationContext__ctor_" data-uid="Kephas.Serialization.SerializationContext.#ctor*"></a>
-  <h4 id="Kephas_Serialization_SerializationContext__ctor_Kephas_Serialization_ISerializationService_System_Type_" data-uid="Kephas.Serialization.SerializationContext.#ctor(Kephas.Serialization.ISerializationService,System.Type)">SerializationContext(ISerializationService, Type)</h4>
+  <h4 id="Kephas_Serialization_SerializationContext__ctor_Kephas_Composition_ICompositionContext_Kephas_Serialization_ISerializationService_System_Type_" data-uid="Kephas.Serialization.SerializationContext.#ctor(Kephas.Composition.ICompositionContext,Kephas.Serialization.ISerializationService,System.Type)">SerializationContext(ICompositionContext, ISerializationService, Type)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SerializationContext(ISerializationService serializationService = null, Type mediaType = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public SerializationContext(ICompositionContext compositionContext, ISerializationService serializationService, Type mediaType = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -238,6 +244,12 @@
     </thead>
     <tbody>
       <tr>
+        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
+        <td><span class="parametername">compositionContext</span></td>
+        <td><p>Context for the composition.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="Kephas.Serialization.ISerializationService.html">ISerializationService</a></td>
         <td><span class="parametername">serializationService</span></td>
         <td><p>The serialization service.</p>
@@ -246,7 +258,7 @@
       <tr>
         <td><span class="xref">System.Type</span></td>
         <td><span class="parametername">mediaType</span></td>
-        <td><p>The media type (type implementing <a class="xref" href="Kephas.Net.Mime.IMediaType.html">IMediaType</a>).</p>
+        <td><p>Optional. The media type (type implementing <a class="xref" href="Kephas.Net.Mime.IMediaType.html">IMediaType</a>).</p>
 </td>
       </tr>
     </tbody>
@@ -258,7 +270,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationContext_Indent.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationContext.Indent%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L93">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L90">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationContext_Indent_" data-uid="Kephas.Serialization.SerializationContext.Indent*"></a>
   <h4 id="Kephas_Serialization_SerializationContext_Indent" data-uid="Kephas.Serialization.SerializationContext.Indent">Indent</h4>
@@ -290,7 +302,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationContext_MediaType.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationContext.MediaType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L69">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L66">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationContext_MediaType_" data-uid="Kephas.Serialization.SerializationContext.MediaType*"></a>
   <h4 id="Kephas_Serialization_SerializationContext_MediaType" data-uid="Kephas.Serialization.SerializationContext.MediaType">MediaType</h4>
@@ -322,7 +334,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationContext_RootObjectFactory.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationContext.RootObjectFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L85">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L82">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationContext_RootObjectFactory_" data-uid="Kephas.Serialization.SerializationContext.RootObjectFactory*"></a>
   <h4 id="Kephas_Serialization_SerializationContext_RootObjectFactory" data-uid="Kephas.Serialization.SerializationContext.RootObjectFactory">RootObjectFactory</h4>
@@ -354,7 +366,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationContext_RootObjectType.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationContext.RootObjectType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L77">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L74">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationContext_RootObjectType_" data-uid="Kephas.Serialization.SerializationContext.RootObjectType*"></a>
   <h4 id="Kephas_Serialization_SerializationContext_RootObjectType" data-uid="Kephas.Serialization.SerializationContext.RootObjectType">RootObjectType</h4>
@@ -386,7 +398,7 @@
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationContext_SerializationService.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationContext.SerializationService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L48">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L49">View Source</a>
   </span>
   <a id="Kephas_Serialization_SerializationContext_SerializationService_" data-uid="Kephas.Serialization.SerializationContext.SerializationService*"></a>
   <h4 id="Kephas_Serialization_SerializationContext_SerializationService" data-uid="Kephas.Serialization.SerializationContext.SerializationService">SerializationService</h4>
@@ -413,161 +425,6 @@
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationContext_Create__1_Kephas_Serialization_ISerializationService_System_Func_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationContext.Create%60%601(Kephas.Serialization.ISerializationService%2CSystem.Func%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L104">View Source</a>
-  </span>
-  <a id="Kephas_Serialization_SerializationContext_Create_" data-uid="Kephas.Serialization.SerializationContext.Create*"></a>
-  <h4 id="Kephas_Serialization_SerializationContext_Create__1_Kephas_Serialization_ISerializationService_System_Func_System_Object__" data-uid="Kephas.Serialization.SerializationContext.Create``1(Kephas.Serialization.ISerializationService,System.Func{System.Object})">Create&lt;TMediaType&gt;(ISerializationService, Func&lt;Object&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates a new configured <a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SerializationContext Create&lt;TMediaType&gt;(ISerializationService serializationService, Func&lt;object&gt; rootObjectFactory = null)
-
-    where TMediaType : IMediaType</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Serialization.ISerializationService.html">ISerializationService</a></td>
-        <td><span class="parametername">serializationService</span></td>
-        <td><p>The serialization service.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Object</span>&gt;</td>
-        <td><span class="parametername">rootObjectFactory</span></td>
-        <td><p>The root object factory (optional).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a></td>
-        <td><p>A configured <a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TMediaType</span></td>
-        <td><p>Type of the media type.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Serialization_SerializationContext_Create__2_Kephas_Serialization_ISerializationService_System_Func_System_Object__.md&amp;value=---%0Auid%3A%20Kephas.Serialization.SerializationContext.Create%60%602(Kephas.Serialization.ISerializationService%2CSystem.Func%7BSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Core/Serialization/SerializationContext.cs/#L122">View Source</a>
-  </span>
-  <a id="Kephas_Serialization_SerializationContext_Create_" data-uid="Kephas.Serialization.SerializationContext.Create*"></a>
-  <h4 id="Kephas_Serialization_SerializationContext_Create__2_Kephas_Serialization_ISerializationService_System_Func_System_Object__" data-uid="Kephas.Serialization.SerializationContext.Create``2(Kephas.Serialization.ISerializationService,System.Func{System.Object})">Create&lt;TMediaType, TRootObject&gt;(ISerializationService, Func&lt;Object&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates a new configured <a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SerializationContext Create&lt;TMediaType, TRootObject&gt;(ISerializationService serializationService, Func&lt;object&gt; rootObjectFactory = null)
-
-    where TMediaType : IMediaType</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Serialization.ISerializationService.html">ISerializationService</a></td>
-        <td><span class="parametername">serializationService</span></td>
-        <td><p>The serialization service.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Object</span>&gt;</td>
-        <td><span class="parametername">rootObjectFactory</span></td>
-        <td><p>The root object factory (optional).</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a></td>
-        <td><p>A configured <a class="xref" href="Kephas.Serialization.SerializationContext.html">SerializationContext</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TMediaType</span></td>
-        <td><p>Type of the media type.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="parametername">TRootObject</span></td>
-        <td><p>Type of the root object.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Kephas.Serialization.ISerializationContext.html">ISerializationContext</a>
@@ -585,10 +442,10 @@
       <a class="xref" href="Kephas.Dynamic.IIndexable.html">IIndexable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.IAmbientServicesAware.html">IAmbientServicesAware</a>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
   </div>
   <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
+      <span class="xref">System.IDisposable</span>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -641,6 +498,12 @@
   </div>
   <div>
       <a class="xref" href="Kephas.Services.ContextExtensions.html#Kephas_Services_ContextExtensions_WithLogger__1___0_Kephas_Logging_ILogger_">ContextExtensions.WithLogger&lt;TContext&gt;(TContext, ILogger)</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Services.ContextExtensions.html#Kephas_Services_ContextExtensions_AddResource__1___0_System_IDisposable___">ContextExtensions.AddResource&lt;TContext&gt;(TContext, IDisposable[])</a>
+  </div>
+  <div>
+      <a class="xref" href="Kephas.Messaging.Distributed.MessageBrokerExtensions.html#Kephas_Messaging_Distributed_MessageBrokerExtensions_CreateBrokeredMessageBuilder_Kephas_Services_IContext_">MessageBrokerExtensions.CreateBrokeredMessageBuilder(IContext)</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Data.ContextExtensions.html#Kephas_Data_ContextExtensions_InitialData_Kephas_Services_IContext_">ContextExtensions.InitialData(IContext)</a>

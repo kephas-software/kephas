@@ -79,16 +79,23 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DefaultModelSpaceProvider</span></div>
+    <div class="level1"><a class="xref" href="Kephas.Logging.Loggable.html">Loggable</a></div>
+    <div class="level2"><span class="xref">DefaultModelSpaceProvider</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a></div>
     <div><a class="xref" href="Kephas.Model.IModelSpaceProvider.html">IModelSpaceProvider</a></div>
     <div><a class="xref" href="Kephas.Services.IAsyncInitializable.html">IAsyncInitializable</a></div>
-    <div><a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_Logger">Loggable.Logger</a>
+    </div>
+    <div>
+      <a class="xref" href="Kephas.Logging.Loggable.html#Kephas_Logging_Loggable_GetLogger">Loggable.GetLogger()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -116,25 +123,25 @@
   <h5 id="Kephas_Model_DefaultModelSpaceProvider_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[OverridePriority(Priority.Low)]
-public class DefaultModelSpaceProvider : IModelSpaceProvider, IAsyncInitializable, ICompositionContextAware</code></pre>
+public class DefaultModelSpaceProvider : Loggable, ILoggable, IModelSpaceProvider, IAsyncInitializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider__ctor_Kephas_Composition_ICompositionContext_System_Collections_Generic_ICollection_Kephas_Model_Construction_IModelInfoProvider__Kephas_Model_Runtime_Construction_IRuntimeModelElementFactory_.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.%23ctor(Kephas.Composition.ICompositionContext%2CSystem.Collections.Generic.ICollection%7BKephas.Model.Construction.IModelInfoProvider%7D%2CKephas.Model.Runtime.Construction.IRuntimeModelElementFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider__ctor_Kephas_Services_IContextFactory_System_Collections_Generic_ICollection_Kephas_Model_Construction_IModelInfoProvider__Kephas_Model_Runtime_Construction_IRuntimeModelElementFactory_.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.%23ctor(Kephas.Services.IContextFactory%2CSystem.Collections.Generic.ICollection%7BKephas.Model.Construction.IModelInfoProvider%7D%2CKephas.Model.Runtime.Construction.IRuntimeModelElementFactory)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L57">View Source</a>
   </span>
   <a id="Kephas_Model_DefaultModelSpaceProvider__ctor_" data-uid="Kephas.Model.DefaultModelSpaceProvider.#ctor*"></a>
-  <h4 id="Kephas_Model_DefaultModelSpaceProvider__ctor_Kephas_Composition_ICompositionContext_System_Collections_Generic_ICollection_Kephas_Model_Construction_IModelInfoProvider__Kephas_Model_Runtime_Construction_IRuntimeModelElementFactory_" data-uid="Kephas.Model.DefaultModelSpaceProvider.#ctor(Kephas.Composition.ICompositionContext,System.Collections.Generic.ICollection{Kephas.Model.Construction.IModelInfoProvider},Kephas.Model.Runtime.Construction.IRuntimeModelElementFactory)">DefaultModelSpaceProvider(ICompositionContext, ICollection&lt;IModelInfoProvider&gt;, IRuntimeModelElementFactory)</h4>
+  <h4 id="Kephas_Model_DefaultModelSpaceProvider__ctor_Kephas_Services_IContextFactory_System_Collections_Generic_ICollection_Kephas_Model_Construction_IModelInfoProvider__Kephas_Model_Runtime_Construction_IRuntimeModelElementFactory_" data-uid="Kephas.Model.DefaultModelSpaceProvider.#ctor(Kephas.Services.IContextFactory,System.Collections.Generic.ICollection{Kephas.Model.Construction.IModelInfoProvider},Kephas.Model.Runtime.Construction.IRuntimeModelElementFactory)">DefaultModelSpaceProvider(IContextFactory, ICollection&lt;IModelInfoProvider&gt;, IRuntimeModelElementFactory)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Kephas.Model.DefaultModelSpaceProvider.html">DefaultModelSpaceProvider</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DefaultModelSpaceProvider(ICompositionContext compositionContext, ICollection&lt;IModelInfoProvider&gt; modelInfoProviders, IRuntimeModelElementFactory runtimeModelElementFactory)</code></pre>
+    <pre><code class="lang-csharp hljs">public DefaultModelSpaceProvider(IContextFactory contextFactory, ICollection&lt;IModelInfoProvider&gt; modelInfoProviders, IRuntimeModelElementFactory runtimeModelElementFactory)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -147,9 +154,9 @@ public class DefaultModelSpaceProvider : IModelSpaceProvider, IAsyncInitializabl
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
-        <td><span class="parametername">compositionContext</span></td>
-        <td><p>The composition context.</p>
+        <td><a class="xref" href="Kephas.Services.IContextFactory.html">IContextFactory</a></td>
+        <td><span class="parametername">contextFactory</span></td>
+        <td><p>The context factory.</p>
 </td>
       </tr>
       <tr>
@@ -170,19 +177,19 @@ public class DefaultModelSpaceProvider : IModelSpaceProvider, IAsyncInitializabl
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider_CompositionContext.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.CompositionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider_ContextFactory.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.ContextFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L77">View Source</a>
   </span>
-  <a id="Kephas_Model_DefaultModelSpaceProvider_CompositionContext_" data-uid="Kephas.Model.DefaultModelSpaceProvider.CompositionContext*"></a>
-  <h4 id="Kephas_Model_DefaultModelSpaceProvider_CompositionContext" data-uid="Kephas.Model.DefaultModelSpaceProvider.CompositionContext">CompositionContext</h4>
-  <div class="markdown level1 summary"><p>Gets the ambient services.</p>
+  <a id="Kephas_Model_DefaultModelSpaceProvider_ContextFactory_" data-uid="Kephas.Model.DefaultModelSpaceProvider.ContextFactory*"></a>
+  <h4 id="Kephas_Model_DefaultModelSpaceProvider_ContextFactory" data-uid="Kephas.Model.DefaultModelSpaceProvider.ContextFactory">ContextFactory</h4>
+  <div class="markdown level1 summary"><p>Gets the context factory.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ICompositionContext CompositionContext { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IContextFactory ContextFactory { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -194,40 +201,8 @@ public class DefaultModelSpaceProvider : IModelSpaceProvider, IAsyncInitializabl
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Kephas.Composition.ICompositionContext.html">ICompositionContext</a></td>
-        <td><p>The ambient services.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider_Logger.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.Logger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L85">View Source</a>
-  </span>
-  <a id="Kephas_Model_DefaultModelSpaceProvider_Logger_" data-uid="Kephas.Model.DefaultModelSpaceProvider.Logger*"></a>
-  <h4 id="Kephas_Model_DefaultModelSpaceProvider_Logger" data-uid="Kephas.Model.DefaultModelSpaceProvider.Logger">Logger</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the logger.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ILogger&lt;DefaultModelSpaceProvider&gt; Logger { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Kephas.Logging.ILogger-1.html">ILogger</a>&lt;<a class="xref" href="Kephas.Model.DefaultModelSpaceProvider.html">DefaultModelSpaceProvider</a>&gt;</td>
-        <td><p>The logger.</p>
+        <td><a class="xref" href="Kephas.Services.IContextFactory.html">IContextFactory</a></td>
+        <td><p>The context factory.</p>
 </td>
       </tr>
     </tbody>
@@ -237,7 +212,7 @@ public class DefaultModelSpaceProvider : IModelSpaceProvider, IAsyncInitializabl
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider_ModelInfoProviders.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.ModelInfoProviders%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L93">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L85">View Source</a>
   </span>
   <a id="Kephas_Model_DefaultModelSpaceProvider_ModelInfoProviders_" data-uid="Kephas.Model.DefaultModelSpaceProvider.ModelInfoProviders*"></a>
   <h4 id="Kephas_Model_DefaultModelSpaceProvider_ModelInfoProviders" data-uid="Kephas.Model.DefaultModelSpaceProvider.ModelInfoProviders">ModelInfoProviders</h4>
@@ -268,20 +243,38 @@ public class DefaultModelSpaceProvider : IModelSpaceProvider, IAsyncInitializabl
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider_CreateModelConstructionContext.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.CreateModelConstructionContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider_CreateModelConstructionContext_Kephas_Services_IContext_.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.CreateModelConstructionContext(Kephas.Services.IContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L154">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L147">View Source</a>
   </span>
   <a id="Kephas_Model_DefaultModelSpaceProvider_CreateModelConstructionContext_" data-uid="Kephas.Model.DefaultModelSpaceProvider.CreateModelConstructionContext*"></a>
-  <h4 id="Kephas_Model_DefaultModelSpaceProvider_CreateModelConstructionContext" data-uid="Kephas.Model.DefaultModelSpaceProvider.CreateModelConstructionContext">CreateModelConstructionContext()</h4>
+  <h4 id="Kephas_Model_DefaultModelSpaceProvider_CreateModelConstructionContext_Kephas_Services_IContext_" data-uid="Kephas.Model.DefaultModelSpaceProvider.CreateModelConstructionContext(Kephas.Services.IContext)">CreateModelConstructionContext(IContext)</h4>
   <div class="markdown level1 summary"><p>Creates the model construction context.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual ModelConstructionContext CreateModelConstructionContext()</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual ModelConstructionContext CreateModelConstructionContext(IContext parentContext)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Kephas.Services.IContext.html">IContext</a></td>
+        <td><span class="parametername">parentContext</span></td>
+        <td><p>Context for the parent.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -303,7 +296,7 @@ public class DefaultModelSpaceProvider : IModelSpaceProvider, IAsyncInitializabl
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider_CreateModelSpace_Kephas_Model_Construction_IModelConstructionContext_.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.CreateModelSpace(Kephas.Model.Construction.IModelConstructionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L176">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L167">View Source</a>
   </span>
   <a id="Kephas_Model_DefaultModelSpaceProvider_CreateModelSpace_" data-uid="Kephas.Model.DefaultModelSpaceProvider.CreateModelSpace*"></a>
   <h4 id="Kephas_Model_DefaultModelSpaceProvider_CreateModelSpace_Kephas_Model_Construction_IModelConstructionContext_" data-uid="Kephas.Model.DefaultModelSpaceProvider.CreateModelSpace(Kephas.Model.Construction.IModelConstructionContext)">CreateModelSpace(IModelConstructionContext)</h4>
@@ -353,7 +346,7 @@ public class DefaultModelSpaceProvider : IModelSpaceProvider, IAsyncInitializabl
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider_GetModelSpace.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.GetModelSpace%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L101">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L93">View Source</a>
   </span>
   <a id="Kephas_Model_DefaultModelSpaceProvider_GetModelSpace_" data-uid="Kephas.Model.DefaultModelSpaceProvider.GetModelSpace*"></a>
   <h4 id="Kephas_Model_DefaultModelSpaceProvider_GetModelSpace" data-uid="Kephas.Model.DefaultModelSpaceProvider.GetModelSpace">GetModelSpace()</h4>
@@ -385,7 +378,7 @@ public class DefaultModelSpaceProvider : IModelSpaceProvider, IAsyncInitializabl
     <a href="https://github.com/kephas-software/kephas/new/master/apiSpec/new?filename=Kephas_Model_DefaultModelSpaceProvider_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Kephas.Model.DefaultModelSpaceProvider.InitializeAsync(Kephas.Services.IContext%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L116">View Source</a>
+    <a href="https://github.com/kephas-software/kephas/blob/master/src/Kephas.Model/DefaultModelSpaceProvider.cs/#L108">View Source</a>
   </span>
   <a id="Kephas_Model_DefaultModelSpaceProvider_InitializeAsync_" data-uid="Kephas.Model.DefaultModelSpaceProvider.InitializeAsync*"></a>
   <h4 id="Kephas_Model_DefaultModelSpaceProvider_InitializeAsync_Kephas_Services_IContext_System_Threading_CancellationToken_" data-uid="Kephas.Model.DefaultModelSpaceProvider.InitializeAsync(Kephas.Services.IContext,System.Threading.CancellationToken)">InitializeAsync(IContext, CancellationToken)</h4>
@@ -438,13 +431,13 @@ public class DefaultModelSpaceProvider : IModelSpaceProvider, IAsyncInitializabl
   </table>
   <h3 id="implements">Implements</h3>
   <div>
+      <a class="xref" href="Kephas.Logging.ILoggable.html">ILoggable</a>
+  </div>
+  <div>
       <a class="xref" href="Kephas.Model.IModelSpaceProvider.html">IModelSpaceProvider</a>
   </div>
   <div>
       <a class="xref" href="Kephas.Services.IAsyncInitializable.html">IAsyncInitializable</a>
-  </div>
-  <div>
-      <a class="xref" href="Kephas.Composition.ICompositionContextAware.html">ICompositionContextAware</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
