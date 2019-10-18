@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Kephas.Scripting.Lua</id>
+        <version>$version$</version>
+        <title>Kephas.Scripting.Lua</title>
+        <authors>Kephas Software SRL</authors>
+        <owners>Kephas Software SRL</owners>
+        <description>
+            Provides the infrastructure for executing LUA scripts.
+            Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+        </description>
+        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
+        <summary>Provides the infrastructure for executing LUA scripts.</summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/kephas-software/kephas</projectUrl>
+        <iconUrl>http://kephas-framework.com/favicon.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <license type="expression">MIT</license>
+        <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <tags>kephas scripting lua</tags>
+        <repository type="github" url="https://github.com/kephas-software/kephas" />
+        <dependencies>
+            <group targetFramework=".NETFramework4.6">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.CSharp" version="4.6.0" exclude="Build,Analyzers" />
+                <dependency id="NeoLua" version="1.3.11" exclude="Build,Analyzers" />
+            </group>
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.CSharp" version="4.6.0" exclude="Build,Analyzers" />
+                <dependency id="NeoLua" version="1.3.11" exclude="Build,Analyzers" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.Lua.dll" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.Lua.pdb" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.Lua.xml" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\net46\Kephas.Scripting.Lua.dll" target="lib\net46" />
+        <file src="bin\$configuration$\net46\Kephas.Scripting.Lua.pdb" target="lib\net46" />
+        <file src="bin\$configuration$\net46\Kephas.Scripting.Lua.xml" target="lib\net46" />
+    </files>
+</package>

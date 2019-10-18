@@ -37,6 +37,7 @@ $packages = @(
 #    "Kephas.Scheduling.Quartz.MongoDB",
     "Kephas.Scripting",
     "Kephas.Scripting.CSharp",
+    "Kephas.Scripting.Lua",
     "Kephas.Scripting.Python",
     "Kephas.Serialization.Json",
     "Kephas.Serialization.ServiceStack.Text",
