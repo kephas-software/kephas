@@ -13,9 +13,11 @@ namespace Kephas.Scripting
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A shared application service contract responsible for interpreting/executing scripts
@@ -41,5 +43,39 @@ namespace Kephas.Scripting
             IExpando args = null,
             IContext executionContext = null,
             CancellationToken cancellationToken = default);
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="ILanguageService"/>.
+    /// </summary>
+    public static class LanguageServiceExtensions
+    {
+        /// <summary>
+        /// Executes the script.
+        /// </summary>
+        /// <param name="languageService">The language service.</param>
+        /// <param name="script">The script to be interpreted/executed.</param>
+        /// <param name="scriptGlobals">Optional. The script globals.</param>
+        /// <param name="args">Optional. The arguments.</param>
+        /// <param name="executionContext">Optional. The execution context.</param>
+        /// <returns>
+        /// A promise of the execution result.
+        /// </returns>
+        public static object Execute(
+            this ILanguageService languageService,
+            IScript script,
+            IScriptGlobals scriptGlobals = null,
+            IExpando args = null,
+            IContext executionContext = null)
+        {
+            Requires.NotNull(languageService, nameof(languageService));
+
+            if(languageService is ISyncLanguageService syncLanguageService)
+            {
+                return syncLanguageService.Execute(script, scriptGlobals, args, executionContext);
+            }
+
+            return languageService.ExecuteAsync(script, scriptGlobals, args, executionContext).GetResultNonLocking();
+        }
     }
 }

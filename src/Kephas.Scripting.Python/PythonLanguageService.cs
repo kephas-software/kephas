@@ -10,8 +10,7 @@
 
 namespace Kephas.Scripting.Python
 {
-    using System.CodeDom;
-    using System.Dynamic;
+    using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -22,7 +21,7 @@ namespace Kephas.Scripting.Python
     using Kephas.Reflection;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
-
+    using Kephas.Threading.Tasks;
     using Microsoft.Scripting;
     using Microsoft.Scripting.Hosting;
 
@@ -30,7 +29,7 @@ namespace Kephas.Scripting.Python
     /// A Python language service.
     /// </summary>
     [Language(Language, LanguageAlt)]
-    public class PythonLanguageService : ILanguageService
+    public class PythonLanguageService : ILanguageService, ISyncLanguageService
     {
         /// <summary>
         /// The language identifier.
@@ -58,6 +57,30 @@ namespace Kephas.Scripting.Python
         }
 
         /// <summary>
+        /// Executes the script.
+        /// </summary>
+        /// <param name="script">The script to be interpreted/executed.</param>
+        /// <param name="scriptGlobals">Optional. The script globals.</param>
+        /// <param name="args">Optional. The arguments.</param>
+        /// <param name="executionContext">Optional. The execution context.</param>
+        /// <returns>
+        /// A promise of the execution result.
+        /// </returns>
+        public object Execute(IScript script, IScriptGlobals scriptGlobals = null, IExpando args = null, IContext executionContext = null)
+        {
+            // http://putridparrot.com/blog/hosting-ironpython-in-a-c-application/
+
+            args = args ?? new Expando();
+            scriptGlobals = scriptGlobals ?? new ScriptGlobals { Args = args };
+
+            var (scope, source) = this.PrepareScope(script, scriptGlobals);
+
+            var result = source.Execute(scope);
+            var returnValue = this.GetReturnValue(result, scope);
+            return returnValue;
+        }
+
+        /// <summary>
         /// Executes the script asynchronously.
         /// </summary>
         /// <param name="script">The script to be interpreted/executed.</param>
@@ -68,17 +91,25 @@ namespace Kephas.Scripting.Python
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        public Task<object> ExecuteAsync(IScript script, IScriptGlobals scriptGlobals = null, IExpando args = null, IContext executionContext = null, CancellationToken cancellationToken = default)
+        public async Task<object> ExecuteAsync(IScript script, IScriptGlobals scriptGlobals = null, IExpando args = null, IContext executionContext = null, CancellationToken cancellationToken = default)
         {
             // http://putridparrot.com/blog/hosting-ironpython-in-a-c-application/
 
-            var scope = this.engine.CreateScope();
-
-            scope.ImportModule("clr");
-            this.engine.Execute("import clr", scope);
-
             args = args ?? new Expando();
             scriptGlobals = scriptGlobals ?? new ScriptGlobals { Args = args };
+
+            var (scope, source) = this.PrepareScope(script, scriptGlobals);
+
+            var result = await ((Func<dynamic>)(() => source.Execute(scope))).AsAsync(cancellationToken).PreserveThreadContext();
+            var returnValue = this.GetReturnValue(result, scope);
+            return returnValue;
+        }
+
+        private (ScriptScope scope, ScriptSource source) PrepareScope(IScript script, IScriptGlobals scriptGlobals)
+        {
+            var scope = this.engine.CreateScope();
+            scope.ImportModule("clr");
+            this.engine.Execute("import clr", scope);
 
             foreach (var kv in scriptGlobals.ToDictionary(k => k.ToCamelCase(), v => v))
             {
@@ -92,9 +123,7 @@ namespace Kephas.Scripting.Python
                     // TODO localization
                     : throw new ScriptingException($"Source code type {script.GetType()} not supported. Please provide either a {typeof(string)} or a {typeof(Stream)}.");
 
-            var result = source.Execute(scope);
-            var returnValue = this.GetReturnValue(result, scope);
-            return Task.FromResult((object)returnValue);
+            return (scope, source);
         }
 
         private object GetReturnValue(dynamic result, ScriptScope scope)
