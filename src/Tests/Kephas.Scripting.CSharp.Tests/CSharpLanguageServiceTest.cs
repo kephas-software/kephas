@@ -31,14 +31,69 @@ namespace Kephas.Scripting.CSharp.Tests
         }
 
         [Test]
+        public void Execute_simple()
+        {
+            var langService = new CSharpLanguageService();
+            var script = new Script(CSharpLanguageService.Language, "(1 + 2) * 3");
+            var result = langService.Execute(script);
+
+            Assert.AreEqual(9, result);
+        }
+
+        [Test]
         public async Task ExecuteAsync_function()
         {
             var langService = new CSharpLanguageService();
             var script = new Script(
                 CSharpLanguageService.Language,
-                "int Power(int a) => a * a;" + 
+                "int Power(int a) => a * a;" +
                 "return Power(2);");
             var result = await langService.ExecuteAsync(script);
+
+            Assert.AreEqual(4, result);
+        }
+
+        [Test]
+        public void Execute_function()
+        {
+            var langService = new CSharpLanguageService();
+            var script = new Script(
+                CSharpLanguageService.Language,
+                "int Power(int a) => a * a;" +
+                "return Power(2);");
+            var result = langService.Execute(script);
+
+            Assert.AreEqual(4, result);
+        }
+
+        [Test]
+        public async Task ExecuteAsync_lambda()
+        {
+            var langService = new CSharpLanguageService();
+            var script = new Script(
+                CSharpLanguageService.Language,
+                "return globals.Power(2);");
+            var globals = new ScriptGlobals
+            {
+                ["Power"] = (Func<int, int>)(s => s * s),
+            };
+            var result = await langService.ExecuteAsync(script, globals);
+
+            Assert.AreEqual(4, result);
+        }
+
+        [Test]
+        public void Execute_lambda()
+        {
+            var langService = new CSharpLanguageService();
+            var script = new Script(
+                CSharpLanguageService.Language,
+                "return globals.Power(2);");
+            var globals = new ScriptGlobals
+            {
+                ["Power"] = (Func<int, int>)(s => s * s),
+            };
+            var result = langService.Execute(script, globals);
 
             Assert.AreEqual(4, result);
         }
@@ -49,13 +104,30 @@ namespace Kephas.Scripting.CSharp.Tests
             var langService = new CSharpLanguageService();
             var script = new Script(
                 CSharpLanguageService.Language,
-                "int Power(int a) => a * a;" + 
-                "return Power((int)Args[\"a\"]);");
+                "int Power(int a) => a * a;" +
+                "return Power((int)globals.Args[\"a\"]);");
             var args = new Expando
-                           {
-                               ["a"] = 2,
-                           };
+            {
+                ["a"] = 2,
+            };
             var result = await langService.ExecuteAsync(script, new ScriptGlobals { Args = args });
+
+            Assert.AreEqual(4, result);
+        }
+
+        [Test]
+        public void Execute_args()
+        {
+            var langService = new CSharpLanguageService();
+            var script = new Script(
+                CSharpLanguageService.Language,
+                "int Power(int a) => a * a;" +
+                "return Power((int)globals.Args[\"a\"]);");
+            var args = new Expando
+            {
+                ["a"] = 2,
+            };
+            var result = langService.Execute(script, new ScriptGlobals { Args = args });
 
             Assert.AreEqual(4, result);
         }
@@ -69,13 +141,13 @@ namespace Kephas.Scripting.CSharp.Tests
                 CSharpLanguageService.Language,
                 "#r \"System.Dynamic\"" + Environment.NewLine +
                 "#r \"Microsoft.CSharp\"" + Environment.NewLine +
-                "int Power(int a) => a * a;" + 
-                "dynamic dargs = Args;" + 
+                "int Power(int a) => a * a;" +
+                "dynamic dargs = globals.Args;" +
                 "return Power(dargs.a);");
             var args = new Expando
-                           {
-                               ["a"] = 2,
-                           };
+            {
+                ["a"] = 2,
+            };
             var result = await langService.ExecuteAsync(script, new ScriptGlobals { Args = args });
 
             Assert.AreEqual(4, result);
