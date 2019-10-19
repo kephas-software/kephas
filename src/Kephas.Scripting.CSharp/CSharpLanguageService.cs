@@ -10,12 +10,18 @@
 
 namespace Kephas.Scripting.CSharp
 {
+    using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Reflection;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -59,23 +65,81 @@ namespace Kephas.Scripting.CSharp
             Requires.NotNull(script, nameof(script));
             Requires.NotNull(script.SourceCode, nameof(script.SourceCode));
 
+            args = args ?? new Expando();
+            scriptGlobals = scriptGlobals ?? new ScriptGlobals { Args = args };
+
+            var globalsScript = this.GetGlobalsScript(scriptGlobals);
+
             if (script.SourceCode is string codeText)
             {
-                var state = await CSharpScript.RunAsync(codeText, globals: scriptGlobals, cancellationToken: cancellationToken)
-                    .PreserveThreadContext();
-                return state.ReturnValue;
             }
-
-            if (script.SourceCode is Stream codeStream)
+            else if (script.SourceCode is Stream codeStream)
             {
-                var csscript = CSharpScript.Create(codeStream);
-                var state = await csscript.RunAsync(globals: scriptGlobals, cancellationToken: cancellationToken)
-                    .PreserveThreadContext();
-                return state.ReturnValue;
+                using (var reader = new StreamReader(codeStream))
+                {
+                    codeText = reader.ReadToEnd();
+                }
+            }
+            else
+            {
+                // TODO localization
+                throw new ScriptingException($"Source code type {script.GetType()} not supported. Please provide either a {typeof(string)} or a {typeof(Stream)}.");
             }
 
-            // TODO localization
-            throw new ScriptingException($"Source code type {script.GetType()} not supported. Please provide either a {typeof(string)} or a {typeof(Stream)}.");
+            var state = await CSharpScript.RunAsync(globalsScript + codeText, globals: new Globals { __g = scriptGlobals }, cancellationToken: cancellationToken)
+                .PreserveThreadContext();
+            return state.ReturnValue;
+        }
+
+        private string GetGlobalsScript(IScriptGlobals scriptGlobals)
+        {
+            // TODO workaround for CSharp not supporting dynamic
+            var sb = new StringBuilder("var globals = new {").AppendLine();
+            var assemblies = new HashSet<Assembly>();
+            foreach (var kv in scriptGlobals.ToDictionary())
+            {
+                var typeName = this.GetValueType(kv.Value, assemblies);
+                sb.AppendLine($"{kv.Key} = ({typeName})__g[\"{kv.Key}\"],");
+            }
+
+            sb.AppendLine("};");
+
+            assemblies.ForEach(a => sb.Insert(0, $"#r \"{a.GetName().Name}\"" + Environment.NewLine));
+
+            return sb.ToString();
+        }
+
+        private string GetValueType(object value, HashSet<Assembly> assemblies)
+        {
+            if (value == null)
+            {
+                return "object";
+            }
+
+            var valueType = value.GetType();
+            return this.GetTypeName(valueType, assemblies);
+        }
+
+        private string GetTypeName(Type valueType, HashSet<Assembly> assemblies)
+        {
+            assemblies.Add(valueType.Assembly);
+
+            if (!valueType.IsGenericType)
+            {
+                return valueType.FullName;
+            }
+
+            var typeDef = valueType.GetGenericTypeDefinition();
+            var args = string.Join(",", valueType.GetGenericArguments()
+                .Select(t => this.GetTypeName(t, assemblies)));
+            var genericMarkerIndex = typeDef.Name.IndexOf('`');
+
+            return $"{typeDef.Namespace}.{typeDef.Name.Substring(0, genericMarkerIndex)}<{args}>";
+        }
+
+        public class Globals
+        {
+            public IExpando __g { get; set; }
         }
     }
 }
