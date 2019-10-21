@@ -16,7 +16,9 @@ namespace Kephas.Composition.Lite.Internal
     using System.Reflection;
 
     using Kephas.Reflection;
+    using Kephas.Resources;
     using Kephas.Services.Composition;
+    using Kephas.Text;
 
     internal class LazyWithMetadataServiceSource : ServiceSourceBase
     {
@@ -39,7 +41,14 @@ namespace Kephas.Composition.Lite.Internal
         public override object GetService(IAmbientServices parent, Type serviceType)
         {
             var descriptors = this.GetServiceDescriptors(parent, serviceType);
-            return descriptors.Single().factory();
+            var (_, factory) = descriptors.SingleOrDefault();
+            if (factory == null)
+            {
+                var innerType = serviceType.GetGenericArguments()[0];
+                throw new CompositionException(Strings.NoImplementationForServiceType_Exception.FormatWith(innerType));
+            }
+
+            return factory();
         }
 
         public override IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(

@@ -18,6 +18,8 @@ namespace Kephas.Composition.Lite.Internal
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Reflection;
+    using Kephas.Resources;
+    using Kephas.Text;
 
     internal class ExportFactoryServiceSource : ServiceSourceBase
     {
@@ -36,8 +38,15 @@ namespace Kephas.Composition.Lite.Internal
 
         public override object GetService(IAmbientServices parent, Type serviceType)
         {
-            var descriptors = GetServiceDescriptors(parent, serviceType);
-            return descriptors.Single().factory();
+            var descriptors = this.GetServiceDescriptors(parent, serviceType);
+            var (_, factory) = descriptors.SingleOrDefault();
+            if (factory == null)
+            {
+                var innerType = serviceType.GetGenericArguments()[0];
+                throw new CompositionException(Strings.NoImplementationForServiceType_Exception.FormatWith(innerType));
+            }
+
+            return factory();
         }
 
         public override IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
@@ -46,7 +55,7 @@ namespace Kephas.Composition.Lite.Internal
         {
             var innerType = serviceType.GetGenericArguments()[0];
             var getService = GetServiceMethod.MakeGenericMethod(innerType);
-            return GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, tuple.serviceInfo, tuple.fn));
+            return this.GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, tuple.serviceInfo, tuple.fn));
         }
 
         private static IExportFactory<T> GetService<T>(IServiceInfo serviceInfo, Func<object> factory)

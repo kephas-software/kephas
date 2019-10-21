@@ -152,6 +152,50 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         }
 
         [Test]
+        public void GetExport_ExportFactory_NotFound()
+        {
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .CreateContainer();
+
+            Assert.Throws<CompositionException>(() => container.GetExport<IExportFactory<ITestAppService>>());
+        }
+
+        [Test]
+        public void GetExport_ExportFactoryWithMetadata_NotFound()
+        {
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .CreateContainer();
+
+            Assert.Throws<CompositionException>(() => container.GetExport<IExportFactory<ITestAppService, AppServiceMetadata>>());
+        }
+
+        [Test]
+        public void GetExport_Lazy_NotFound()
+        {
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .CreateContainer();
+
+            Assert.Throws<CompositionException>(() => container.GetExport<Lazy<ITestAppService>>());
+        }
+
+        [Test]
+        public void GetExport_LazyWithMetadata_NotFound()
+        {
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
+            var container = builder
+                .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
+                .CreateContainer();
+
+            Assert.Throws<CompositionException>(() => container.GetExport<Lazy<ITestAppService, AppServiceMetadata>>());
+        }
+
+        [Test]
         public void GetExports_AppService_Multiple_Singleton()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();

@@ -39,7 +39,7 @@ namespace Kephas.Composition.Lite.Internal
             Type serviceType,
             Func<(IServiceInfo serviceInfo, Func<object> factory), Func<object>> selector)
         {
-            if (registry.TryGet(serviceType, out var serviceInfo))
+            if (this.registry.TryGet(serviceType, out var serviceInfo))
             {
                 if (serviceInfo is IEnumerable<IServiceInfo> multiServiceInfo)
                 {

@@ -575,6 +575,15 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No implementation found for service type &apos;{0}&apos;..
+        /// </summary>
+        public static string NoImplementationForServiceType_Exception {
+            get {
+                return ResourceManager.GetString("NoImplementationForServiceType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} is intended to be replaced by a proper implementation..
         /// </summary>
         public static string NullServiceExceptionMessage {

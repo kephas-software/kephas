@@ -360,4 +360,7 @@
   <data name="DefaultEventHub_ErrorWhenInvokingSubscriptionCallback" xml:space="preserve">
     <value>An error occurred when invoking subscription callback for {0}.</value>
   </data>
+  <data name="NoImplementationForServiceType_Exception" xml:space="preserve">
+    <value>No implementation found for service type '{0}'.</value>
+  </data>
 </root>
