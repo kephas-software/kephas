@@ -28,7 +28,11 @@ namespace Kephas.Threading.Tasks
         /// </summary>
         static TaskHelper()
         {
+#if NET45
             CompletedTask = Task.FromResult(0);
+#else
+            CompletedTask = Task.CompletedTask;
+#endif
             DefaultWaitMilliseconds = 20;
             DefaultTimeout = TimeSpan.FromSeconds(30);
         }
