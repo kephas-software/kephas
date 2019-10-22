@@ -19,7 +19,6 @@ namespace Kephas.Composition.Lite.Internal
     using Kephas.Composition.ExportFactories;
     using Kephas.Reflection;
     using Kephas.Resources;
-    using Kephas.Text;
 
     internal class ExportFactoryServiceSource : ServiceSourceBase
     {

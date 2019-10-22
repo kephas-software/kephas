@@ -13,12 +13,11 @@ namespace Kephas.Messaging
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
-    using Kephas.Text;
     using Kephas.Threading.Tasks;
 
     /// <summary>

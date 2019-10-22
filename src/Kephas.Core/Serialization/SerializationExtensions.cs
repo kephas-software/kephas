@@ -14,12 +14,11 @@ namespace Kephas.Serialization
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Resources;
     using Kephas.Services;
-    using Kephas.Text;
     using Kephas.Threading.Tasks;
 
     /// <summary>

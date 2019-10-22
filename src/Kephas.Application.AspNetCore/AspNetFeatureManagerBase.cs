@@ -11,11 +11,13 @@
 namespace Kephas.Application.AspNetCore
 {
     using System;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Application.AspNetCore.Resources;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base OWIN implementation of a <see cref="IFeatureManager"/>.
@@ -32,16 +34,7 @@ namespace Kephas.Application.AspNetCore
         /// </returns>
         protected override sealed Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            if (!(appContext is IAspNetAppContext aspNetAppContext))
-            {
-                throw new InvalidOperationException(
-                    string.Format(
-                        Strings.AspNetFeatureManager_InvalidAppContext_Exception,
-                        appContext?.GetType().FullName,
-                        typeof(IAspNetAppContext).FullName));
-            }
-
-            return this.InitializeCoreAsync(aspNetAppContext, cancellationToken);
+            return this.InitializeCoreAsync(GetAspNetAppContext(appContext), cancellationToken);
         }
 
         /// <summary>
@@ -54,7 +47,7 @@ namespace Kephas.Application.AspNetCore
         /// </returns>
         protected virtual Task InitializeCoreAsync(IAspNetAppContext appContext, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -67,12 +60,7 @@ namespace Kephas.Application.AspNetCore
         /// </returns>
         protected override sealed Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            if (!(appContext is IAspNetAppContext aspNetAppContext))
-            {
-                throw new InvalidOperationException(string.Format(Strings.AspNetFeatureManager_InvalidAppContext_Exception, appContext?.GetType().FullName, typeof(IAspNetAppContext).FullName));
-            }
-
-            return this.FinalizeCoreAsync(aspNetAppContext, cancellationToken);
+            return this.FinalizeCoreAsync(GetAspNetAppContext(appContext), cancellationToken);
         }
 
         /// <summary>
@@ -85,7 +73,19 @@ namespace Kephas.Application.AspNetCore
         /// </returns>
         protected virtual Task FinalizeCoreAsync(IAspNetAppContext appContext, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IAspNetAppContext GetAspNetAppContext(IAppContext appContext)
+        {
+            return appContext is IAspNetAppContext aspNetAppContext
+                ? aspNetAppContext
+                : throw new InvalidOperationException(
+                    string.Format(
+                        Strings.AspNetFeatureManager_InvalidAppContext_Exception,
+                        appContext?.GetType().FullName,
+                        typeof(IAspNetAppContext).FullName));
         }
     }
 }

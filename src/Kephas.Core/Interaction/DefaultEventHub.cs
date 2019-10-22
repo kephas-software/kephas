@@ -15,14 +15,13 @@ namespace Kephas.Interaction
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Text;
     using Kephas.Threading.Tasks;
 
     /// <summary>

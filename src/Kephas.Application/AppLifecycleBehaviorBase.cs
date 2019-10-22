@@ -14,10 +14,11 @@ namespace Kephas.Application
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
+    using Kephas;
     using Kephas.Application.Resources;
     using Kephas.Logging;
     using Kephas.Services;
-    using Kephas.Text;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for application lifecycle behaviors.
@@ -53,7 +54,7 @@ namespace Kephas.Application
         /// </remarks>
         public virtual Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace Kephas.Application
         /// </returns>
         public virtual Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace Kephas.Application
         /// </returns>
         public virtual Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -139,7 +140,7 @@ namespace Kephas.Application
         /// </returns>
         public virtual Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -147,7 +148,7 @@ namespace Kephas.Application
         {
             return context is IAppContext appContext
                 ? appContext
-                : throw new ApplicationException(Strings.AppLifecycleBehaviorBase_MismatchedAppContext_Exception.FormatWith(nameof(IAppContext)));
+                : throw new ApplicationException(Strings.MismatchedAppContext_Exception.FormatWith(nameof(IAppContext)));
         }
     }
 }

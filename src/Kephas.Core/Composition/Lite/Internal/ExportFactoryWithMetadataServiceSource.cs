@@ -20,7 +20,6 @@ namespace Kephas.Composition.Lite.Internal
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services.Composition;
-    using Kephas.Text;
 
     internal class ExportFactoryWithMetadataServiceSource : ServiceSourceBase
     {

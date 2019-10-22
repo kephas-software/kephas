@@ -15,6 +15,7 @@ namespace Kephas.Application
 
     using Kephas.Application.Composition;
     using Kephas.Logging;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for feature lifecycle behaviors.
@@ -38,7 +39,7 @@ namespace Kephas.Application
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace Kephas.Application
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace Kephas.Application
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -93,7 +94,7 @@ namespace Kephas.Application
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
     }
 }

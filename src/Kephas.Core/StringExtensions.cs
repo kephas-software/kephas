@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Text
+namespace Kephas
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.CompilerServices;
+
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -81,8 +82,7 @@ namespace Kephas.Text
             Requires.NotNull(quote, nameof(quote));
 
             char? quoteChar = null;
-            return Split(
-                str,
+            return str.Split(
                 c =>
                     {
                         if (quoteChar == null)
@@ -117,5 +117,21 @@ namespace Kephas.Text
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string FormatWith(this string format, params object[] args)
             => string.Format(format, args);
+
+        /// <summary>
+        /// Concatenates the elements of an object array, using the specified separator between
+        /// each element.
+        /// </summary>
+        /// <param name="separator">
+        /// The string to use as a separator. <paramref name="separator"/> is included in the returned string
+        /// only if values has more than one element.
+        /// </param>
+        /// <param name="args">An array that contains the elements to concatenate.</param>
+        /// <returns>
+        /// A string.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string JoinWith(this string separator, params object[] args)
+            => string.Join(separator, args);
     }
 }

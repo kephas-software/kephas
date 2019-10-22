@@ -11,9 +11,11 @@
 namespace Kephas.Application
 {
     using System;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas;
+    using Kephas.Application.Resources;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
@@ -103,7 +105,7 @@ namespace Kephas.Application
         /// </returns>
         Task IAsyncInitializable.InitializeAsync(IContext context, CancellationToken cancellationToken)
         {
-            return this.InitializeAsync((IAppContext)context, cancellationToken);
+            return this.InitializeAsync(GetAppContext(context), cancellationToken);
         }
 
         /// <summary>
@@ -116,7 +118,7 @@ namespace Kephas.Application
         /// </returns>
         Task IAsyncFinalizable.FinalizeAsync(IContext context, CancellationToken cancellationToken)
         {
-            return this.FinalizeAsync((IAppContext)context, cancellationToken);
+            return this.FinalizeAsync(GetAppContext(context), cancellationToken);
         }
 
         /// <summary>
@@ -129,7 +131,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -142,7 +144,15 @@ namespace Kephas.Application
         /// </returns>
         protected virtual Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static IAppContext GetAppContext(IContext context)
+        {
+            return context is IAppContext appContext
+                ? appContext
+                : throw new ApplicationException(Strings.MismatchedAppContext_Exception.FormatWith(nameof(IAppContext)));
         }
     }
 }

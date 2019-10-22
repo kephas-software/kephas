@@ -11,8 +11,7 @@
 namespace Kephas.Core.Tests.Text
 {
     using System.Linq;
-
-    using Kephas.Text;
+    using Kephas;
 
     using NUnit.Framework;
 

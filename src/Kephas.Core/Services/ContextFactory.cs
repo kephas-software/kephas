@@ -15,13 +15,12 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using Kephas;
     using Kephas.Composition;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
-    using Kephas.Text;
 
     /// <summary>
     /// A context factory.

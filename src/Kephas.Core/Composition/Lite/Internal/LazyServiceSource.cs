@@ -17,7 +17,6 @@ namespace Kephas.Composition.Lite.Internal
     using Kephas;
     using Kephas.Reflection;
     using Kephas.Resources;
-    using Kephas.Text;
 
     internal class LazyServiceSource : ServiceSourceBase
     {

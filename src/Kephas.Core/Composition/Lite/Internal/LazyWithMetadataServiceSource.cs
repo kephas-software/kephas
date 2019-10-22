@@ -14,11 +14,10 @@ namespace Kephas.Composition.Lite.Internal
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using Kephas;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services.Composition;
-    using Kephas.Text;
 
     internal class LazyWithMetadataServiceSource : ServiceSourceBase
     {

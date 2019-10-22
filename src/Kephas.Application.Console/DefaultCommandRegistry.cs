@@ -14,14 +14,13 @@ namespace Kephas.Application.Console
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using Kephas;
     using Kephas.Application.Console.Resources;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Text;
 
     /// <summary>
     /// A default command registry.

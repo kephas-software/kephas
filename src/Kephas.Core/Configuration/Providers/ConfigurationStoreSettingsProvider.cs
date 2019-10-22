@@ -11,12 +11,11 @@
 namespace Kephas.Configuration.Providers
 {
     using System;
-
+    using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services;
-    using Kephas.Text;
 
     /// <summary>
     /// A configuration store settings provider.

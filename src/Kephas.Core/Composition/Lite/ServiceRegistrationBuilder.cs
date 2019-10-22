@@ -13,12 +13,11 @@ namespace Kephas.Composition.Lite
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using Kephas;
     using Kephas.Composition.Lite.Internal;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Resources;
     using Kephas.Services;
-    using Kephas.Text;
 
     /// <summary>
     /// A service registration builder.

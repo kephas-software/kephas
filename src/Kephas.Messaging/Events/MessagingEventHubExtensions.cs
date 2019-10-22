@@ -13,13 +13,12 @@ namespace Kephas.Messaging.Events
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Interaction;
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
-    using Kephas.Text;
     using Kephas.Threading.Tasks;
 
     /// <summary>

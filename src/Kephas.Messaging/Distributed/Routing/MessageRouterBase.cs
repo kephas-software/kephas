@@ -13,7 +13,7 @@ namespace Kephas.Messaging.Distributed.Routing
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas;
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.ExceptionHandling;
@@ -21,7 +21,6 @@ namespace Kephas.Messaging.Distributed.Routing
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
-    using Kephas.Text;
     using Kephas.Threading.Tasks;
 
     /// <summary>
