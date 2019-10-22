@@ -23,6 +23,40 @@ namespace Kephas.IO
     public static class StreamExtensions
     {
         /// <summary>
+        /// A Stream extension method that reads the content as a string.
+        /// </summary>
+        /// <param name="input">The input to act on.</param>
+        /// <returns>
+        /// The content as string.
+        /// </returns>
+        public static string ReadAllString(this Stream input)
+        {
+            Requires.NotNull(input, nameof(input));
+
+            using (var reader = new StreamReader(input))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+        /// <summary>
+        /// A Stream extension method that reads the content as a string asynchronously.
+        /// </summary>
+        /// <param name="input">The input to act on.</param>
+        /// <returns>
+        /// The content as string.
+        /// </returns>
+        public static async Task<string> ReadAllStringAsync(this Stream input)
+        {
+            Requires.NotNull(input, nameof(input));
+
+            using (var reader = new StreamReader(input))
+            {
+                return await reader.ReadToEndAsync().PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
         /// A Stream extension method that reads all bytes.
         /// </summary>
         /// <param name="input">The input to act on.</param>
