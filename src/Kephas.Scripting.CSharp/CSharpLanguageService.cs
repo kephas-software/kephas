@@ -18,17 +18,17 @@ namespace Kephas.Scripting.CSharp
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.IO;
-    using Kephas.Reflection;
     using Kephas.Scripting.AttributedModel;
-    using Kephas.Scripting.Resources;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     using Microsoft.CodeAnalysis.CSharp.Scripting;
+    using Microsoft.CodeAnalysis.Scripting;
 
     /// <summary>
     /// A C# language service.
@@ -70,7 +70,7 @@ namespace Kephas.Scripting.CSharp
             args = args ?? new Expando();
             scriptGlobals = scriptGlobals ?? new ScriptGlobals { Args = args };
 
-            var globalsScript = this.GetGlobalsScript(scriptGlobals);
+            var (globalsScript, assemblies) = this.GetGlobalsScript(scriptGlobals);
 
             var source = script.SourceCode is string codeText
                 ? codeText
@@ -78,12 +78,21 @@ namespace Kephas.Scripting.CSharp
                     ? codeStream.ReadAllString()
                     : throw new SourceCodeNotSupportedException(script, typeof(string), typeof(Stream));
 
-            var state = await CSharpScript.RunAsync(globalsScript + source, globals: new Globals { __g = scriptGlobals }, cancellationToken: cancellationToken)
+            var state = await CSharpScript.RunAsync(
+                globalsScript + source,
+                options: this.GetScriptOptions(assemblies),
+                globals: new Globals { __g = scriptGlobals },
+                cancellationToken: cancellationToken)
                 .PreserveThreadContext();
             return state.ReturnValue;
         }
 
-        private string GetGlobalsScript(IScriptGlobals scriptGlobals)
+        private ScriptOptions GetScriptOptions(IEnumerable<Assembly> assemblies)
+        {
+            return ScriptOptions.Default.WithReferences(assemblies.ToArray());
+        }
+
+        private (string globalsScript, IEnumerable<Assembly> assemblies) GetGlobalsScript(IScriptGlobals scriptGlobals)
         {
             // TODO workaround for CSharp not supporting dynamic
             var sb = new StringBuilder("var globals = new {").AppendLine();
@@ -98,7 +107,7 @@ namespace Kephas.Scripting.CSharp
 
             assemblies.ForEach(a => sb.Insert(0, $"#r \"{a.GetName().Name}\"" + Environment.NewLine));
 
-            return sb.ToString();
+            return (sb.ToString(), assemblies);
         }
 
         private string GetValueType(object value, HashSet<Assembly> assemblies)
