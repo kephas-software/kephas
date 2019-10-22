@@ -12,6 +12,7 @@ namespace Kephas.Application.Console.Tests
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Kephas.Application.Console.Endpoints;
@@ -41,10 +42,10 @@ namespace Kephas.Application.Console.Tests
             Assert.IsInstanceOf<HelpResponseMessage>(response);
 
             var helpResponse = (HelpResponseMessage)response;
-            Assert.Contains("Help", helpResponse.Command as ICollection);
-            Assert.Contains("Ping", helpResponse.Command as ICollection);
-            Assert.Contains("Quit", helpResponse.Command as ICollection);
-            Assert.AreEqual("Please provide one command name to see the information about that command. Example: help command=help.", helpResponse.Description);
+            var commands = helpResponse.Command as IEnumerable<KeyValuePair<string, string>>;
+            Assert.IsTrue(commands.Any(c => c.Key == "Ping"));
+            Assert.IsTrue(commands.Any(c => c.Key == "Quit"));
+            Assert.AreEqual("Please provide one command name to see the information about that command. Example: 'help <command>'.", helpResponse.Description);
         }
 
         [Test]

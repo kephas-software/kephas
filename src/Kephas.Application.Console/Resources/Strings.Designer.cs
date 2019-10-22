@@ -77,5 +77,23 @@ namespace Kephas.Application.Console.Resources {
                 return ResourceManager.GetString("DefaultCommandRegistry_CommandNotFound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please provide one command name to see the information about that command. Example: &apos;help &lt;command&gt;&apos;..
+        /// </summary>
+        internal static string MissingCommandName_Warning {
+            get {
+                return ResourceManager.GetString("MissingCommandName_Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No commands with the filter &apos;{0}*&apos; found..
+        /// </summary>
+        internal static string NoMatchingCommands_Warning {
+            get {
+                return ResourceManager.GetString("NoMatchingCommands_Warning", resourceCulture);
+            }
+        }
     }
 }

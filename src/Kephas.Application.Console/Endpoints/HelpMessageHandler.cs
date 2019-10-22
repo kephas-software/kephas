@@ -14,7 +14,7 @@ namespace Kephas.Application.Console.Endpoints
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Application.Console.Resources;
     using Kephas.Messaging;
     using Kephas.Reflection;
 
@@ -66,7 +66,7 @@ namespace Kephas.Application.Console.Endpoints
             if (commands.Count > 1)
             {
                 response.Command = commands.OrderBy(t => t.Key).ToDictionary(c => c.Key, c => c.Value.GetLocalization().Description).ToArray();
-                response.Description = "Please provide one command name to see the information about that command. Example: help command=help.";
+                response.Description = Strings.MissingCommandName_Warning;
             }
             else if (commands.Count == 1)
             {
@@ -79,7 +79,7 @@ namespace Kephas.Application.Console.Endpoints
             else
             {
                 response.Command = null;
-                response.Description = $"No commands with the filter '{message.Command}*' found.";
+                response.Description = Strings.NoMatchingCommands_Warning.FormatWith(message.Command);
             }
 
             return Task.FromResult(response);
