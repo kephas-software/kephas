@@ -16,6 +16,7 @@ namespace Kephas.Scripting.Lua
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.IO;
     using Kephas.Reflection;
     using Kephas.Scripting.AttributedModel;
     using Kephas.Services;
@@ -104,9 +105,8 @@ namespace Kephas.Scripting.Lua
             var source = script.SourceCode is string codeText
                 ? codeText
                 : script.SourceCode is Stream codeStream
-                    ? this.ReadAll(codeStream)
-                    // TODO localization
-                    : throw new ScriptingException($"Source code type {script.GetType()} not supported. Please provide either a {typeof(string)} or a {typeof(Stream)}.");
+                    ? codeStream.ReadAllString()
+                    : throw new SourceCodeNotSupportedException(script, typeof(string), typeof(Stream));
 
             return (scope, source);
         }
@@ -115,14 +115,6 @@ namespace Kephas.Scripting.Lua
         {
             // TODO
             return result.Values.Length == 0 ? null : result.Values[0];
-        }
-
-        private string ReadAll(Stream codeStream)
-        {
-            using (var reader = new StreamReader(codeStream))
-            {
-                return reader.ReadToEnd();
-            }
         }
     }
 }

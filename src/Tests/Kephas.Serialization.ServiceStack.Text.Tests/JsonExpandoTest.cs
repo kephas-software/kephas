@@ -12,9 +12,9 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
 
     using Kephas.Dynamic;
+    using Kephas.IO;
     using Kephas.Reflection;
 
     using NSubstitute;
@@ -63,10 +63,8 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var assemblyNamespace = assembly.GetName().Name;
             var assemblyResourceName = $"{assemblyNamespace}.Resources.{resourceName}.json";
             using (var data = assembly.GetManifestResourceStream(assemblyResourceName))
-            using (var textReader = new StreamReader(data))
             {
-                var str = textReader.ReadToEnd();
-                return new JsonExpando(str);
+                return new JsonExpando(data.ReadAllString());
             }
         }
     }

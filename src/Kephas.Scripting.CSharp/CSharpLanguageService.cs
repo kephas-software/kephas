@@ -21,8 +21,10 @@ namespace Kephas.Scripting.CSharp
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.IO;
     using Kephas.Reflection;
     using Kephas.Scripting.AttributedModel;
+    using Kephas.Scripting.Resources;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -70,23 +72,13 @@ namespace Kephas.Scripting.CSharp
 
             var globalsScript = this.GetGlobalsScript(scriptGlobals);
 
-            if (script.SourceCode is string codeText)
-            {
-            }
-            else if (script.SourceCode is Stream codeStream)
-            {
-                using (var reader = new StreamReader(codeStream))
-                {
-                    codeText = reader.ReadToEnd();
-                }
-            }
-            else
-            {
-                // TODO localization
-                throw new ScriptingException($"Source code type {script.GetType()} not supported. Please provide either a {typeof(string)} or a {typeof(Stream)}.");
-            }
+            var source = script.SourceCode is string codeText
+                ? codeText
+                : script.SourceCode is Stream codeStream
+                    ? codeStream.ReadAllString()
+                    : throw new SourceCodeNotSupportedException(script, typeof(string), typeof(Stream));
 
-            var state = await CSharpScript.RunAsync(globalsScript + codeText, globals: new Globals { __g = scriptGlobals }, cancellationToken: cancellationToken)
+            var state = await CSharpScript.RunAsync(globalsScript + source, globals: new Globals { __g = scriptGlobals }, cancellationToken: cancellationToken)
                 .PreserveThreadContext();
             return state.ReturnValue;
         }

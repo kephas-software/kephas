@@ -120,8 +120,7 @@ namespace Kephas.Scripting.Python
                 ? this.engine.CreateScriptSourceFromString(codeText, SourceCodeKind.AutoDetect)
                 : script.SourceCode is Stream codeStream
                     ? this.engine.CreateScriptSource(new BasicStreamContentProvider(codeStream), $"dynamicCode.py")
-                    // TODO localization
-                    : throw new ScriptingException($"Source code type {script.GetType()} not supported. Please provide either a {typeof(string)} or a {typeof(Stream)}.");
+                    : throw new SourceCodeNotSupportedException(script, typeof(string), typeof(Stream));
 
             return (scope, source);
         }
