@@ -13,6 +13,7 @@ namespace Kephas.Serialization.Json.Tests
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ namespace Kephas.Serialization.Json.Tests
     using Kephas.Logging;
     using Kephas.Net.Mime;
     using Kephas.Reflection;
+    using Kephas.Serialization.Composition;
     using Kephas.Serialization.Json;
     using Kephas.Services;
 
@@ -112,6 +114,82 @@ namespace Kephas.Serialization.Json.Tests
                               PersonalSite = new Uri("http://site.com/my-site"),
                           };
             var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { Indent = true };
+            var serializedObj = serializer.Serialize(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
+                    .Replace("\r\n", Environment.NewLine),
+                serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_with_type_info()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site"),
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = true };
+            var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
+                    .Replace("\r\n", Environment.NewLine),
+                serializedObj);
+        }
+
+        [Test]
+        public void Serialize_with_type_info()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site"),
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = true };
+            var serializedObj = serializer.Serialize(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
+                    .Replace("\r\n", Environment.NewLine),
+                serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_no_type_info()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site"),
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = false };
+            var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
+                    .Replace("\r\n", Environment.NewLine),
+                serializedObj);
+        }
+
+        [Test]
+        public void Serialize_no_type_info()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site"),
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = false };
             var serializedObj = serializer.Serialize(obj, serializationContext);
 
             Assert.AreEqual(
@@ -289,9 +367,8 @@ namespace Kephas.Serialization.Json.Tests
             var ambientServices = new AmbientServices().WithMefCompositionContainer(
                 b =>
                 b.WithAssemblies(new[] { typeof(ISerializationService).GetTypeInfo().Assembly, typeof(JsonSerializer).GetTypeInfo().Assembly }));
-            var serializationService = ambientServices.CompositionContainer.GetExport<ISerializationService>();
-            var contextFactory = ambientServices.CompositionContainer.GetExport<IContextFactory>();
-            var jsonSerializer = serializationService.GetSerializer(contextFactory.CreateSerializationContext<JsonMediaType>());
+            var serializers = ambientServices.CompositionContainer.GetExportFactories<ISerializer, SerializerMetadata>();
+            var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.CreateExportedValue();
 
             Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
         }

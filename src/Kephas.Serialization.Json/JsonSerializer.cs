@@ -10,6 +10,7 @@
 
 namespace Kephas.Serialization.Json
 {
+    using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Kephas.Serialization.Json
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Services;
-
+    using Kephas.Threading.Tasks;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -44,12 +45,12 @@ namespace Kephas.Serialization.Json
         /// <summary>
         /// Serializes the provided object asynchronously.
         /// </summary>
-        /// <param name="obj">The object.</param>
+        /// <param name="obj">The object to be serialized.</param>
         /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task promising the serialized object as a string.
+        /// An asynchronous result.
         /// </returns>
         public Task SerializeAsync(
             object obj,
@@ -59,9 +60,24 @@ namespace Kephas.Serialization.Json
         {
             Requires.NotNull(textWriter, nameof(textWriter));
 
-            return Task.Factory.StartNew(
-                () => this.Serialize(obj, textWriter, context),
-                cancellationToken);
+            return ((Action)(() => this.Serialize(obj, textWriter, context))).AsAsync(cancellationToken);
+        }
+
+        /// <summary>
+        /// Serializes the provided object asynchronously.
+        /// </summary>
+        /// <param name="obj">The object to be serialized.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the serialized object.
+        /// </returns>
+        public Task<string> SerializeAsync(
+            object obj,
+            ISerializationContext context = null,
+            CancellationToken cancellationToken = default)
+        {
+            return ((Func<string>)(() => this.Serialize(obj, context))).AsAsync(cancellationToken);
         }
 
         /// <summary>
@@ -80,36 +96,73 @@ namespace Kephas.Serialization.Json
         {
             Requires.NotNull(textReader, nameof(textReader));
 
-            return Task.Factory.StartNew(
-                () => this.Deserialize(textReader, context),
-                cancellationToken);
+            return ((Func<object>)(() => this.Deserialize(textReader, context))).AsAsync(cancellationToken);
+        }
+
+        /// <summary>
+        /// Deserializes an object asynchronously.
+        /// </summary>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the deserialized object.
+        /// </returns>
+        public Task<object> DeserializeAsync(
+            string serializedObj,
+            ISerializationContext context = null,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(serializedObj, nameof(serializedObj));
+
+            return ((Func<object>)(() => this.Deserialize(serializedObj, context))).AsAsync(cancellationToken);
         }
 
         /// <summary>
         /// Serializes the provided object.
         /// </summary>
-        /// <param name="obj">The object.</param>
+        /// <param name="obj">The object to be serialized.</param>
         /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The context containing serialization options.</param>
         public void Serialize(object obj, TextWriter textWriter, ISerializationContext context = null)
         {
             Requires.NotNull(textWriter, nameof(textWriter));
 
-            var settings = this.settingsProvider.GetJsonSerializerSettings();
-            if (context?.Indent ?? false)
-            {
-                settings.Formatting = Formatting.Indented;
-            }
-
+            var settings = this.GetJsonSerializerSettings(context);
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
             serializer.Serialize(textWriter, obj);
+        }
+
+        /// <summary>
+        /// Serializes the provided object.
+        /// </summary>
+        /// <param name="obj">The object to be serialized.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <returns>
+        /// The serialized object.
+        /// </returns>
+        public string Serialize(object obj, ISerializationContext context = null)
+        {
+            if (obj == null)
+            {
+                return null;
+            }
+
+            var settings = this.GetJsonSerializerSettings(context);
+            var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
+            using (var writer = new StringWriter())
+            {
+                serializer.Serialize(writer, obj);
+                var stringBuilder = writer.GetStringBuilder();
+                return stringBuilder.ToString();
+            }
         }
 
         /// <summary>
         /// Deserializes an object.
         /// </summary>
         /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The context containing serialization options.</param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
@@ -117,7 +170,7 @@ namespace Kephas.Serialization.Json
         {
             Requires.NotNull(textReader, nameof(textReader));
 
-            var settings = this.settingsProvider.GetJsonSerializerSettings();
+            var settings = this.GetJsonSerializerSettings(context);
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
 
             object result;
@@ -137,6 +190,39 @@ namespace Kephas.Serialization.Json
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Deserializes an object.
+        /// </summary>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public object Deserialize(string serializedObj, ISerializationContext context = null)
+        {
+            if (serializedObj == null)
+            {
+                return null;
+            }
+
+            using (var reader = new StringReader(serializedObj))
+            {
+                return this.Deserialize(reader, context);
+            }
+        }
+
+        private JsonSerializerSettings GetJsonSerializerSettings(ISerializationContext context)
+        {
+            var settings = this.settingsProvider.GetJsonSerializerSettings();
+            if (context != null)
+            {
+                settings.Formatting = context.Indent ? Formatting.Indented : Formatting.None;
+                settings.TypeNameHandling = context.IncludeTypeInfo ? TypeNameHandling.Objects : TypeNameHandling.None;
+            }
+
+            return settings;
         }
     }
 }

@@ -13,13 +13,16 @@ namespace Kephas.Core.Tests.Serialization
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
+    using System.IO;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
     using Kephas.Serialization.Composition;
     using Kephas.Services;
-
+    using Kephas.Threading.Tasks;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -34,38 +37,33 @@ namespace Kephas.Core.Tests.Serialization
         [Test]
         [TestCase(typeof(XmlMediaType))]
         [TestCase(typeof(JsonMediaType))]
-        public void GetSerializer_WithContext_Exception(Type mediaType)
-        {
-            var serializationService = new DefaultSerializationService(Substitute.For<IContextFactory>(), new List<IExportFactory<ISerializer, SerializerMetadata>>());
-            var context = new SerializationContext(Substitute.For<ICompositionContext>(), serializationService, mediaType);
-            Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer(context));
-        }
-
-        [Test]
-        public void GetSerializer_NoContext_Exception()
+        public void GetSerializer_not_found(Type mediaType)
         {
             var contextFactory = Substitute.For<IContextFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, new List<IExportFactory<ISerializer, SerializerMetadata>>());
-            contextFactory.CreateContext<SerializationContext>(serializationService, typeof(JsonMediaType))
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService, typeof(JsonMediaType)));
-            Assert.Throws<KeyNotFoundException>(() => serializationService.GetSerializer());
+            contextFactory.CreateContext<SerializationContext>(serializationService)
+                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+            Assert.Throws<KeyNotFoundException>(() => serializationService.Deserialize("123", ctx => ctx.MediaType = mediaType));
         }
 
         [Test]
-        public void GetSerializer()
+        public void GetSerializer_default()
         {
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
             factories.Add(this.GetSerializerFactory(typeof(JsonMediaType)));
             var contextFactory = Substitute.For<IContextFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, factories);
-            contextFactory.CreateContext<SerializationContext>(serializationService, typeof(JsonMediaType))
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService, typeof(JsonMediaType)));
-            var serializer = serializationService.GetSerializer();
-            Assert.IsNotNull(serializer);
+            contextFactory.CreateContext<SerializationContext>(serializationService)
+                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+
+            ISerializationContext context = null;
+            serializationService.Deserialize("123", ctx => context = ctx);
+
+            Assert.AreSame(context.MediaType, typeof(JsonMediaType));
         }
 
         [Test]
-        public void GetSerializer_WithOverride()
+        public void GetSerializer_proper_serializer_override()
         {
             var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
             var oldSerializer = Substitute.For<ISerializer>();
@@ -74,11 +72,191 @@ namespace Kephas.Core.Tests.Serialization
             factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), newSerializer, Priority.AboveNormal));
             var contextFactory = Substitute.For<IContextFactory>();
             var serializationService = new DefaultSerializationService(contextFactory, factories);
-            contextFactory.CreateContext<SerializationContext>(serializationService, typeof(JsonMediaType))
-                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService, typeof(JsonMediaType)));
+            contextFactory.CreateContext<SerializationContext>(serializationService)
+                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
 
-            var serializer = serializationService.GetSerializer();
-            Assert.AreSame(serializer, newSerializer);
+            serializationService.Deserialize("123");
+            oldSerializer.Received(0)
+                .DeserializeAsync(Arg.Any<string>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>());
+            newSerializer.Received(1)
+                .DeserializeAsync(Arg.Any<string>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>());
+        }
+
+        [Test]
+        public void Deserialize_object()
+        {
+            var serializer = Substitute.For<ISerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            serializer.DeserializeAsync("123", Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => Task.FromResult<object>("234"));
+
+            var result = serializationService.Deserialize("123");
+
+            Assert.AreEqual("234", result);
+        }
+
+        [Test]
+        public void Deserialize_object_sync()
+        {
+            var serializer = Substitute.For<ISerializer, ISyncSerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            ((ISyncSerializer)serializer).Deserialize("123", Arg.Any<ISerializationContext>())
+                .Returns(ci => "234");
+
+            var result = serializationService.Deserialize("123");
+
+            Assert.AreEqual("234", result);
+        }
+
+        [Test]
+        public void Deserialize_textreader()
+        {
+            var serializer = Substitute.For<ISerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            var reader = Substitute.For<TextReader>();
+            serializer.DeserializeAsync(reader, Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => Task.FromResult<object>("234"));
+
+            var result = serializationService.Deserialize(reader);
+
+            Assert.AreEqual("234", result);
+        }
+
+        [Test]
+        public void Deserialize_textreader_sync()
+        {
+            var serializer = Substitute.For<ISerializer, ISyncSerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            var reader = Substitute.For<TextReader>();
+            ((ISyncSerializer)serializer).Deserialize(reader, Arg.Any<ISerializationContext>())
+                .Returns(ci => "234");
+
+            var result = serializationService.Deserialize(reader);
+
+            Assert.AreEqual("234", result);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_object()
+        {
+            var serializer = Substitute.For<ISerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            serializer.DeserializeAsync("123", Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => Task.FromResult<object>("234"));
+
+            var result = await serializationService.DeserializeAsync("123");
+
+            Assert.AreEqual("234", result);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_textreader()
+        {
+            var serializer = Substitute.For<ISerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            var reader = Substitute.For<TextReader>();
+            serializer.DeserializeAsync(reader, Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => Task.FromResult<object>("234"));
+
+            var result = await serializationService.DeserializeAsync(reader);
+
+            Assert.AreEqual("234", result);
+        }
+
+        [Test]
+        public void Serialize_object()
+        {
+            var serializer = Substitute.For<ISerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            serializer.SerializeAsync("123", Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => Task.FromResult("234"));
+
+            var result = serializationService.Serialize("123");
+
+            Assert.AreEqual("234", result);
+        }
+
+        [Test]
+        public void Serialize_object_sync()
+        {
+            var serializer = Substitute.For<ISerializer, ISyncSerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            ((ISyncSerializer)serializer).Serialize("123", Arg.Any<ISerializationContext>())
+                .Returns(ci => "234");
+
+            var result = serializationService.Serialize("123");
+
+            Assert.AreEqual("234", result);
+        }
+
+        [Test]
+        public void Serialize_textwriter()
+        {
+            var serializer = Substitute.For<ISerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            var writer = new StringWriter();
+            serializer.SerializeAsync("123", writer, Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => TaskHelper.CompletedTask)
+                .AndDoes(ci => writer.Write(234));
+
+            serializationService.Serialize("123", writer);
+
+            Assert.AreEqual("234", writer.GetStringBuilder().ToString());
+        }
+
+        [Test]
+        public void Serialize_textwriter_sync()
+        {
+            var serializer = Substitute.For<ISerializer, ISyncSerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            var writer = new StringWriter();
+            ((ISyncSerializer)serializer)
+                .When(s => s.Serialize("123", writer, Arg.Any<ISerializationContext>()))
+                .Do(ci => writer.Write("234"));
+
+            serializationService.Serialize("123", writer);
+
+            Assert.AreEqual("234", writer.GetStringBuilder().ToString());
+        }
+
+        [Test]
+        public async Task SerializeAsync_object()
+        {
+            var serializer = Substitute.For<ISerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            serializer.SerializeAsync("123", Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => Task.FromResult("234"));
+
+            var result = await serializationService.SerializeAsync("123");
+
+            Assert.AreEqual("234", result);
+        }
+
+        [Test]
+        public async Task SerializeAsync_textwriter()
+        {
+            var serializer = Substitute.For<ISerializer>();
+            var serializationService = this.CreateSerializationServiceForJson(serializer);
+            var writer = new StringWriter();
+            serializer.SerializeAsync("123", writer, Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => TaskHelper.CompletedTask)
+                .AndDoes(ci => writer.Write(234));
+
+            await serializationService.SerializeAsync("123", writer);
+
+            Assert.AreEqual("234", writer.GetStringBuilder().ToString());
+        }
+
+        private DefaultSerializationService CreateSerializationServiceForJson(ISerializer serializer = null)
+        {
+            var factories = new List<IExportFactory<ISerializer, SerializerMetadata>>();
+            factories.Add(this.GetSerializerFactory(typeof(JsonMediaType), serializer));
+            var contextFactory = Substitute.For<IContextFactory>();
+            var serializationService = new DefaultSerializationService(contextFactory, factories);
+            contextFactory.CreateContext<SerializationContext>(serializationService)
+                .Returns(ci => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
+
+            return serializationService;
         }
 
         private IExportFactory<ISerializer, SerializerMetadata> GetSerializerFactory(
@@ -88,14 +266,7 @@ namespace Kephas.Core.Tests.Serialization
         {
             var metadata = new SerializerMetadata(mediaType, overridePriority: (int)overridePriority);
             serializer = serializer ?? Substitute.For<ISerializer>();
-            var export = Substitute.For<IExport<ISerializer, SerializerMetadata>>();
-            export.Value.Returns(serializer);
-            export.Metadata.Returns(metadata);
-
-            var factory = Substitute.For<IExportFactory<ISerializer, SerializerMetadata>>();
-            factory.Metadata.Returns(metadata);
-            factory.CreateExport().Returns(export);
-
+            var factory = new ExportFactory<ISerializer, SerializerMetadata>(() => serializer, metadata);
             return factory;
         }
     }

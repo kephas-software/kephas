@@ -15,9 +15,11 @@ namespace Kephas.Testing
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Composition;
+    using Kephas.Composition.ExportFactories;
     using Kephas.Interaction;
     using Kephas.Reflection;
     using Kephas.Serialization;
+    using Kephas.Serialization.Composition;
     using Kephas.Services;
     using NSubstitute;
 
@@ -57,9 +59,8 @@ namespace Kephas.Testing
         /// </returns>
         protected ISerializationService CreateSerializationServiceMock()
         {
-            var serializationService = Substitute.For<ISerializationService, IContextFactoryAware>(/*Behavior.Strict*/);
+            var serializationService = Substitute.For<ISerializationService>(/*Behavior.Strict*/);
             var contextFactoryMock = this.CreateContextFactoryMock(() => new SerializationContext(Substitute.For<ICompositionContext>(), serializationService));
-            ((IContextFactoryAware)serializationService).ContextFactory.Returns(contextFactoryMock);
             return serializationService;
         }
 
@@ -74,9 +75,13 @@ namespace Kephas.Testing
         /// </returns>
         protected ISerializationService CreateSerializationServiceMock<TMediaType>(ISerializer serializer)
         {
-            var serializationService = this.CreateSerializationServiceMock();
-            serializationService.GetSerializer(Arg.Is<ISerializationContext>(ctx => ctx != null && ctx.MediaType == typeof(TMediaType)))
-                .Returns(serializer);
+            var contextFactoryMock = this.CreateContextFactoryMock(() => new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>()));
+            var serializationService = new DefaultSerializationService(
+                contextFactoryMock,
+                new List<IExportFactory<ISerializer, SerializerMetadata>>
+                {
+                    new ExportFactory<ISerializer, SerializerMetadata>(() => serializer, new SerializerMetadata(typeof(TMediaType))),
+                });
             return serializationService;
         }
 
@@ -150,7 +155,5 @@ namespace Kephas.Testing
 
             return eventHub;
         }
-
-        public interface IContextFactoryAware { public IContextFactory ContextFactory { get; } }
     }
 }

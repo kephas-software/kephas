@@ -24,24 +24,48 @@ namespace Kephas.Serialization
         /// <summary>
         /// Serializes the provided object.
         /// </summary>
-        /// <param name="obj">The object.</param>
+        /// <param name="obj">The object to be serialized.</param>
         /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The context containing serialization options.</param>
         void Serialize(
             object obj,
             TextWriter textWriter,
-            ISerializationContext context = null);
+            ISerializationContext context);
+
+        /// <summary>
+        /// Serializes the provided object.
+        /// </summary>
+        /// <param name="obj">The object to be serialized.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <returns>
+        /// The serialized object.
+        /// </returns>
+        string Serialize(
+            object obj,
+            ISerializationContext context);
 
         /// <summary>
         /// Deserializes an object.
         /// </summary>
         /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The context containing serialization options.</param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         object Deserialize(
             TextReader textReader,
-            ISerializationContext context = null);
+            ISerializationContext context);
+
+        /// <summary>
+        /// Deserializes an object.
+        /// </summary>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        object Deserialize(
+            string serializedObj,
+            ISerializationContext context);
     }
 }

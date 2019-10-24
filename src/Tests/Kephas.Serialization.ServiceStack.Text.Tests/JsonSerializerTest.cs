@@ -14,6 +14,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
     using Kephas.Dynamic;
     using Kephas.Net.Mime;
     using Kephas.Reflection;
+    using Kephas.Serialization.Composition;
     using Kephas.Services;
     using NSubstitute;
 
@@ -312,9 +314,8 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
             var ambientServices = new AmbientServices().WithMefCompositionContainer(
                 b =>
                 b.WithAssemblies(new[] { typeof(ISerializationService).GetTypeInfo().Assembly, typeof(JsonSerializer).GetTypeInfo().Assembly }));
-            var serializationService = ambientServices.CompositionContainer.GetExport<ISerializationService>();
-            var contextFactory = ambientServices.CompositionContainer.GetExport<IContextFactory>();
-            var jsonSerializer = serializationService.GetSerializer(contextFactory.CreateSerializationContext<JsonMediaType>());
+            var serializers = ambientServices.CompositionContainer.GetExportFactories<ISerializer, SerializerMetadata>();
+            var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.CreateExportedValue();
 
             Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
         }

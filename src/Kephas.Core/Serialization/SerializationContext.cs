@@ -23,11 +23,6 @@ namespace Kephas.Serialization
     public class SerializationContext : Context, ISerializationContext
     {
         /// <summary>
-        /// The serialization service.
-        /// </summary>
-        private ISerializationService serializationService;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SerializationContext"/> class.
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
@@ -36,26 +31,19 @@ namespace Kephas.Serialization
         public SerializationContext(ICompositionContext compositionContext, ISerializationService serializationService, Type mediaType = null)
             : base(compositionContext)
         {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
             this.SerializationService = serializationService;
             this.MediaType = mediaType;
         }
 
         /// <summary>
-        /// Gets or sets the serialization service.
+        /// Gets the serialization service.
         /// </summary>
         /// <value>
         /// The serialization service.
         /// </value>
-        public ISerializationService SerializationService
-        {
-            get => this.serializationService;
-            set
-            {
-                Requires.NotNull(value, nameof(value));
-
-                this.serializationService = value;
-            }
-        }
+        public ISerializationService SerializationService { get; }
 
         /// <summary>
         /// Gets or sets the media type.
@@ -88,5 +76,13 @@ namespace Kephas.Serialization
         /// True if the output should be indented, false if not.
         /// </value>
         public bool Indent { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the type information should be included.
+        /// </summary>
+        /// <value>
+        /// True to include type information, false otherwise.
+        /// </value>
+        public bool IncludeTypeInfo { get; set; } = true;
     }
 }

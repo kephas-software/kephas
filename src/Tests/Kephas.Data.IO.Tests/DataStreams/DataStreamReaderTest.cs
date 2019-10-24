@@ -20,13 +20,13 @@ namespace Kephas.Data.IO.Tests.DataStreams
     using Kephas.Data.IO.DataStreams;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
-
+    using Kephas.Testing;
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class DataStreamReaderTest
+    public class DataStreamReaderTest : TestBase
     {
         [Test]
         public async Task ReadAsync_entity_check()
@@ -40,10 +40,9 @@ namespace Kephas.Data.IO.Tests.DataStreams
             serializer.DeserializeAsync(Arg.Any<TextReader>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
                 .Returns(entity);
 
-            var serializationService = Substitute.For<ISerializationService>();
-            serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var reader = new DataStreamReader(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
+            var reader = new DataStreamReader(serializationService, mediaTypeProvider);
             using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
             {
                 var result = await reader.ReadAsync(dataStream);
@@ -65,10 +64,9 @@ namespace Kephas.Data.IO.Tests.DataStreams
                 .Returns(entity)
                 .AndDoes(ci => serializationContext = ci.Arg<ISerializationContext>());
 
-            var serializationService = Substitute.For<ISerializationService>();
-            serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var reader = new DataStreamReader(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
+            var reader = new DataStreamReader(serializationService, mediaTypeProvider);
             using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
             {
                 await reader.ReadAsync(dataStream, new DataIOContext().WithRootObjectType(typeof(bool)));
@@ -91,10 +89,9 @@ namespace Kephas.Data.IO.Tests.DataStreams
                 .Returns(entity)
                 .AndDoes(ci => serializationContext = ci.Arg<ISerializationContext>());
 
-            var serializationService = Substitute.For<ISerializationService>();
-            serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var reader = new DataStreamReader(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
+            var reader = new DataStreamReader(serializationService, mediaTypeProvider);
             using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
             {
                 await reader.ReadAsync(dataStream);

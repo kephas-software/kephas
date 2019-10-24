@@ -23,6 +23,7 @@ namespace Kephas.Data.Tests.InMemory
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.InMemory;
     using Kephas.Data.Store;
+    using Kephas.Net.Mime;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Serialization;
@@ -81,15 +82,13 @@ namespace Kephas.Data.Tests.InMemory
         [Test]
         public void Initialize_initial_data_from_connection_string()
         {
-            var dataContext = this.CreateInMemoryDataContext();
-
             var serializer = Substitute.For<ISerializer>();
             serializer.DeserializeAsync(
                 Arg.Any<TextReader>(),
                 Arg.Any<ISerializationContext>(),
                 Arg.Any<CancellationToken>()).Returns(Task.FromResult((object)new[] { "mama", "papa" }));
 
-            dataContext.SerializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+            var dataContext = this.CreateInMemoryDataContext(serializer: serializer);
 
             dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextConfiguration(Substitute.For<ICompositionContext>(), "InitialData=dummy-will-be-mocked")));
 
@@ -217,13 +216,14 @@ namespace Kephas.Data.Tests.InMemory
             ICompositionContext compositionContext = null,
             IDataCommandProvider dataCommandProvider = null,
             IDataBehaviorProvider dataBehaviorProvider = null,
-            ISerializationService serializationService = null)
+            ISerializationService serializationService = null,
+            ISerializer serializer = null)
         {
             return new InMemoryDataContext(
                 compositionContext ?? Substitute.For<ICompositionContext>(),
                 dataCommandProvider ?? Substitute.For<IDataCommandProvider>(),
                 dataBehaviorProvider ?? Substitute.For<IDataBehaviorProvider>(),
-                serializationService ?? this.CreateSerializationServiceMock());
+                serializationService ?? (serializer == null ? this.CreateSerializationServiceMock() : this.CreateSerializationServiceMock<JsonMediaType>(serializer)));
         }
 
         private IDataInitializationContext GetDataInitializationContext(

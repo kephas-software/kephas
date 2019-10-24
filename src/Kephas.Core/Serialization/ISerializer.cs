@@ -20,42 +20,76 @@ namespace Kephas.Serialization
     /// <summary>
     /// Base contract for serializers.
     /// </summary>
+    /// <remarks>
+    /// Serializers handle a single media type and are aggregated by the <see cref="ISerializationService"/>.
+    /// </remarks>
     public interface ISerializer
     {
         /// <summary>
         /// Serializes the provided object asynchronously.
         /// </summary>
-        /// <param name="obj">The object.</param>
+        /// <param name="obj">The object to be serialized.</param>
         /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task promising the serialized object as a string.
+        /// An asynchronous result.
         /// </returns>
         Task SerializeAsync(
             object obj,
             TextWriter textWriter,
-            ISerializationContext context = null,
+            ISerializationContext context,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Serializes the provided object asynchronously.
+        /// </summary>
+        /// <param name="obj">The object to be serialized.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the serialized object.
+        /// </returns>
+        Task<string> SerializeAsync(
+            object obj,
+            ISerializationContext context,
             CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deserializes an object asynchronously.
         /// </summary>
         /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task promising the deserialized object.
+        /// An asynchronous result that yields the deserialized object.
         /// </returns>
         Task<object> DeserializeAsync(
             TextReader textReader,
-            ISerializationContext context = null,
+            ISerializationContext context,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Deserializes an object asynchronously.
+        /// </summary>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the deserialized object.
+        /// </returns>
+        Task<object> DeserializeAsync(
+            string serializedObj,
+            ISerializationContext context,
             CancellationToken cancellationToken = default);
     }
 
     /// <summary>
     /// Application service contract for a serializer based on the indicated media type.
     /// </summary>
+    /// <remarks>
+    /// Serializers handle a single media type and are aggregated by the <see cref="ISerializationService"/>.
+    /// </remarks>
     /// <typeparam name="TMedia">The media type.</typeparam>
     [AppServiceContract(ContractType = typeof(ISerializer), AllowMultiple = true)]
     public interface ISerializer<TMedia> : ISerializer

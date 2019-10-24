@@ -21,13 +21,13 @@ namespace Kephas.Data.IO.Tests.DataStreams
     using Kephas.Data.IO.DataStreams;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
-
+    using Kephas.Testing;
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class DataStreamWriterTest
+    public class DataStreamWriterTest : TestBase
     {
         [Test]
         public async Task WriteAsync_entity_check()
@@ -46,10 +46,9 @@ namespace Kephas.Data.IO.Tests.DataStreams
                             textWriter.Write(serializedEntity);
                         });
 
-            var serializationService = Substitute.For<ISerializationService>();
-            serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var writer = new DataStreamWriter(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
+            var writer = new DataStreamWriter(serializationService, mediaTypeProvider);
             var memStream = new MemoryStream();
             using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
             {
@@ -72,10 +71,9 @@ namespace Kephas.Data.IO.Tests.DataStreams
             serializer.When(s => s.SerializeAsync(Arg.Any<object>(), Arg.Any<TextWriter>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>()))
                 .Do(ci => serializationContext = ci.Arg<ISerializationContext>());
 
-            var serializationService = Substitute.For<ISerializationService>();
-            serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var writer = new DataStreamWriter(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
+            var writer = new DataStreamWriter(serializationService, mediaTypeProvider);
             var memStream = new MemoryStream();
             using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
             {
@@ -98,10 +96,9 @@ namespace Kephas.Data.IO.Tests.DataStreams
             serializer.When(s => s.SerializeAsync(Arg.Any<object>(), Arg.Any<TextWriter>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>()))
                 .Do(ci => serializationContext = ci.Arg<ISerializationContext>());
 
-            var serializationService = Substitute.For<ISerializationService>();
-            serializationService.GetSerializer(Arg.Any<ISerializationContext>()).Returns(serializer);
+            var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            var writer = new DataStreamWriter(Substitute.For<ICompositionContext>(), serializationService, mediaTypeProvider);
+            var writer = new DataStreamWriter(serializationService, mediaTypeProvider);
             var memStream = new MemoryStream();
             using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
             {

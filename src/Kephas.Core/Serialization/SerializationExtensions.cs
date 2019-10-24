@@ -14,6 +14,7 @@ namespace Kephas.Serialization
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
@@ -27,21 +28,134 @@ namespace Kephas.Serialization
     public static class SerializationExtensions
     {
         /// <summary>
+        /// Serializes the object with the provided options.
+        /// </summary>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="obj">The object to be serialized.</param>
+        /// <param name="textWriter">The text writer where the serialized object should be written.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        public static void Serialize(
+            this ISerializationService serializationService,
+            object obj,
+            TextWriter textWriter,
+            Action<ISerializationContext> optionsConfig = null)
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            if (obj == null)
+            {
+                return;
+            }
+
+            if (serializationService is ISyncSerializationService syncService)
+            {
+                syncService.Serialize(obj, textWriter, optionsConfig);
+            }
+            else
+            {
+                serializationService.SerializeAsync(obj, textWriter, optionsConfig).WaitNonLocking();
+            }
+        }
+
+        /// <summary>
+        /// Serializes the object with the options provided in the serialization context.
+        /// </summary>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="obj">The object to be serialized.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <returns>
+        /// The serialized object.
+        /// </returns>
+        public static string Serialize(
+            this ISerializationService serializationService,
+            object obj,
+            Action<ISerializationContext> optionsConfig = null)
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            if (obj == null)
+            {
+                return null;
+            }
+
+            if (serializationService is ISyncSerializationService syncService)
+            {
+                return syncService.Serialize(obj, optionsConfig);
+            }
+            else
+            {
+                return serializationService.SerializeAsync(obj, optionsConfig).GetResultNonLocking();
+            }
+        }
+
+        /// <summary>
+        /// Deserializes the object with the options provided in the serialization context.
+        /// </summary>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="textReader">The text reader where from the serialized object should be read.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <returns>
+        /// The serialized object.
+        /// </returns>
+        public static object Deserialize(
+            this ISerializationService serializationService,
+            TextReader textReader,
+            Action<ISerializationContext> optionsConfig = null)
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            if (serializationService is ISyncSerializationService syncService)
+            {
+                return syncService.Deserialize(textReader, optionsConfig);
+            }
+            else
+            {
+                return serializationService.DeserializeAsync(textReader, optionsConfig).GetResultNonLocking();
+            }
+        }
+
+        /// <summary>
+        /// Deserializes the object with the options provided in the serialization context.
+        /// </summary>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="obj">The object to be serialized.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <returns>
+        /// The serialized object.
+        /// </returns>
+        public static object Deserialize(
+            this ISerializationService serializationService,
+            string obj,
+            Action<ISerializationContext> optionsConfig = null)
+        {
+            Requires.NotNull(serializationService, nameof(serializationService));
+
+            if (serializationService is ISyncSerializationService syncService)
+            {
+                return syncService.Deserialize(obj, optionsConfig);
+            }
+            else
+            {
+                return serializationService.DeserializeAsync(obj, optionsConfig).GetResultNonLocking();
+            }
+        }
+
+        /// <summary>
         /// Deserializes the object from the provided format asynchronously.
         /// </summary>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>
         /// <typeparam name="TRootObject">Type of the root object.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// A Task promising the deserialized object.
+        /// An asynchronous result that yields the deserialized object.
         /// </returns>
         public static async Task<TRootObject> DeserializeAsync<TMediaType, TRootObject>(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null,
+            Action<ISerializationContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
@@ -52,12 +166,14 @@ namespace Kephas.Serialization
                 return default;
             }
 
-            var contextFactory = serializationService.GetContextFactory();
-            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
-            context.RootObjectType = typeof(TRootObject);
+            Action<ISerializationContext> config = ctx =>
+            {
+                ctx.MediaType = typeof(TMediaType);
+                ctx.RootObjectType = typeof(TRootObject);
+                optionsConfig?.Invoke(ctx);
+            };
 
-            var serializer = serializationService.GetSerializer(context);
-            var result = await serializer.DeserializeAsync(serializedObj, context, cancellationToken).PreserveThreadContext();
+            var result = await serializationService.DeserializeAsync(serializedObj, config, cancellationToken).PreserveThreadContext();
             return (TRootObject)result;
         }
 
@@ -66,16 +182,16 @@ namespace Kephas.Serialization
         /// </summary>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>
         /// <typeparam name="TRootObject">Type of the root object.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         public static TRootObject Deserialize<TMediaType, TRootObject>(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null)
+            Action<ISerializationContext> optionsConfig = null)
             where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
@@ -85,12 +201,14 @@ namespace Kephas.Serialization
                 return default;
             }
 
-            var contextFactory = serializationService.GetContextFactory();
-            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
-            context.RootObjectType = typeof(TRootObject);
+            Action<ISerializationContext> config = ctx =>
+            {
+                ctx.MediaType = typeof(TMediaType);
+                ctx.RootObjectType = typeof(TRootObject);
+                optionsConfig?.Invoke(ctx);
+            };
 
-            var serializer = serializationService.GetSerializer(context);
-            var result = serializer.Deserialize(serializedObj, context);
+            var result = serializationService.Deserialize(serializedObj, config);
             return (TRootObject)result;
         }
 
@@ -98,17 +216,17 @@ namespace Kephas.Serialization
         /// Deserializes the object from the provided format asynchronously.
         /// </summary>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// A Task promising the deserialized object.
+        /// An asynchronous result that yields the deserialized object.
         /// </returns>
         public static Task<object> DeserializeAsync<TMediaType>(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null,
+            Action<ISerializationContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
@@ -119,27 +237,29 @@ namespace Kephas.Serialization
                 return Task.FromResult((object)null);
             }
 
-            var contextFactory = serializationService.GetContextFactory();
-            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
+            Action<ISerializationContext> config = ctx =>
+            {
+                ctx.MediaType = typeof(TMediaType);
+                optionsConfig?.Invoke(ctx);
+            };
 
-            var serializer = serializationService.GetSerializer(context);
-            return serializer.DeserializeAsync(serializedObj, context, cancellationToken);
+            return serializationService.DeserializeAsync(serializedObj, config, cancellationToken);
         }
 
         /// <summary>
         /// Deserializes the object from the provided format.
         /// </summary>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         public static object Deserialize<TMediaType>(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null)
+            Action<ISerializationContext> optionsConfig = null)
             where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
@@ -149,195 +269,178 @@ namespace Kephas.Serialization
                 return null;
             }
 
-            var contextFactory = serializationService.GetContextFactory();
-            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
+            Action<ISerializationContext> config = ctx =>
+            {
+                ctx.MediaType = typeof(TMediaType);
+                optionsConfig?.Invoke(ctx);
+            };
 
-            var serializer = serializationService.GetSerializer(context);
-            return serializer.Deserialize(serializedObj, context);
+            return serializationService.Deserialize(serializedObj, config);
         }
 
         /// <summary>
         /// Deserializes the object from JSON asynchronously.
         /// </summary>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task promising the deserialized object.
+        /// An asynchronous result that yields the deserialized object.
         /// </returns>
         public static Task<object> JsonDeserializeAsync(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null,
+            Action<ISerializationContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return DeserializeAsync<JsonMediaType>(serializationService, serializedObj, context, cancellationToken);
+            return DeserializeAsync<JsonMediaType>(serializationService, serializedObj, optionsConfig, cancellationToken);
         }
 
         /// <summary>
         /// Deserializes the object from JSON.
         /// </summary>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         public static object JsonDeserialize(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null)
+            Action<ISerializationContext> optionsConfig = null)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return Deserialize<JsonMediaType>(serializationService, serializedObj, context);
+            return Deserialize<JsonMediaType>(serializationService, serializedObj, optionsConfig);
         }
 
         /// <summary>
         /// Deserializes the object from JSON asynchronously.
         /// </summary>
         /// <typeparam name="TRootObject">Type of the root object.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task promising the deserialized object.
+        /// An asynchronous result that yields the deserialized object.
         /// </returns>
         public static Task<TRootObject> JsonDeserializeAsync<TRootObject>(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null,
+            Action<ISerializationContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return DeserializeAsync<JsonMediaType, TRootObject>(serializationService, serializedObj, context, cancellationToken);
+            return DeserializeAsync<JsonMediaType, TRootObject>(serializationService, serializedObj, optionsConfig, cancellationToken);
         }
 
         /// <summary>
         /// Deserializes the object from JSON.
         /// </summary>
         /// <typeparam name="TRootObject">Type of the root object.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         public static TRootObject JsonDeserialize<TRootObject>(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null)
+            Action<ISerializationContext> optionsConfig = null)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return Deserialize<JsonMediaType, TRootObject>(serializationService, serializedObj, context);
+            return Deserialize<JsonMediaType, TRootObject>(serializationService, serializedObj, optionsConfig);
         }
 
         /// <summary>
         /// Deserializes the object from XML asynchronously.
         /// </summary>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task promising the deserialized object.
+        /// An asynchronous result that yields the deserialized object.
         /// </returns>
         public static Task<object> XmlDeserializeAsync(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null,
+            Action<ISerializationContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return DeserializeAsync<XmlMediaType>(serializationService, serializedObj, context, cancellationToken);
+            return DeserializeAsync<XmlMediaType>(serializationService, serializedObj, optionsConfig, cancellationToken);
         }
 
         /// <summary>
         /// Deserializes the object from XML.
         /// </summary>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         public static object XmlDeserialize(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null)
+            Action<ISerializationContext> optionsConfig = null)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return Deserialize<XmlMediaType>(serializationService, serializedObj, context);
+            return Deserialize<XmlMediaType>(serializationService, serializedObj, optionsConfig);
         }
 
         /// <summary>
         /// Deserializes the object from XML asynchronously.
         /// </summary>
         /// <typeparam name="TRootObject">Type of the root object.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task promising the deserialized object.
+        /// An asynchronous result that yields the deserialized object.
         /// </returns>
         public static Task<TRootObject> XmlDeserializeAsync<TRootObject>(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null,
+            Action<ISerializationContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return DeserializeAsync<XmlMediaType, TRootObject>(serializationService, serializedObj, context, cancellationToken);
+            return DeserializeAsync<XmlMediaType, TRootObject>(serializationService, serializedObj, optionsConfig, cancellationToken);
         }
 
         /// <summary>
         /// Deserializes the object from XML.
         /// </summary>
         /// <typeparam name="TRootObject">Type of the root object.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         public static TRootObject XmlDeserialize<TRootObject>(
             this ISerializationService serializationService,
             string serializedObj,
-            ISerializationContext context = null)
+            Action<ISerializationContext> optionsConfig = null)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return Deserialize<XmlMediaType, TRootObject>(serializationService, serializedObj, context);
+            return Deserialize<XmlMediaType, TRootObject>(serializationService, serializedObj, optionsConfig);
         }
 
         /// <summary>
         /// Serializes the provided object in the specified format.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the
-        ///                                             <see cref="ISerializationContext.MediaType"/> is
-        ///                                             mismatched in the provided context.</exception>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
-        /// <param name="obj">The object.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="obj">The object to be serialized.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task promising the serialized object as a string.
         /// </returns>
         public static Task<string> SerializeAsync<TMediaType>(
             this ISerializationService serializationService,
             object obj,
-            ISerializationContext context = null,
+            Action<ISerializationContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
@@ -348,30 +451,29 @@ namespace Kephas.Serialization
                 return Task.FromResult((string)null);
             }
 
-            var contextFactory = serializationService.GetContextFactory();
-            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
+            Action<ISerializationContext> config = ctx =>
+            {
+                ctx.MediaType = typeof(TMediaType);
+                optionsConfig?.Invoke(ctx);
+            };
 
-            var serializer = serializationService.GetSerializer(context);
-            return serializer.SerializeAsync(obj, context, cancellationToken);
+            return serializationService.SerializeAsync(obj, config, cancellationToken);
         }
 
         /// <summary>
         /// Serializes the provided object in the specified format.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the
-        ///                                             <see cref="ISerializationContext.MediaType"/> is
-        ///                                             mismatched in the provided context.</exception>
         /// <typeparam name="TMediaType">Type of the media type.</typeparam>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="obj">The object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
         /// The serialized object as a string in the specified format.
         /// </returns>
         public static string Serialize<TMediaType>(
             this ISerializationService serializationService,
             object obj,
-            ISerializationContext context = null)
+            Action<ISerializationContext> optionsConfig = null)
             where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
@@ -381,298 +483,88 @@ namespace Kephas.Serialization
                 return null;
             }
 
-            var contextFactory = serializationService.GetContextFactory();
-            context = contextFactory.CreateOrUpdateSerializationContext<TMediaType>(context);
+            Action<ISerializationContext> config = ctx =>
+            {
+                ctx.MediaType = typeof(TMediaType);
+                optionsConfig?.Invoke(ctx);
+            };
 
-            var serializer = serializationService.GetSerializer(context);
-            return serializer.Serialize(obj, context);
+            return serializationService.Serialize(obj, config);
         }
 
         /// <summary>
         /// Serializes the provided object as JSON asynchronously.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the <see cref="ISerializationContext.MediaType"/> is not <see cref="JsonMediaType"/> in the provided context.</exception>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="obj">The object.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task promising the serialized object as a JSON string.
         /// </returns>
         public static Task<string> JsonSerializeAsync(
             this ISerializationService serializationService,
             object obj,
-            ISerializationContext context = null,
+            Action<ISerializationContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return SerializeAsync<JsonMediaType>(serializationService, obj, context, cancellationToken);
+            return SerializeAsync<JsonMediaType>(serializationService, obj, optionsConfig, cancellationToken);
         }
 
         /// <summary>
         /// Serializes the provided object as JSON.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the <see cref="ISerializationContext.MediaType"/> is not <see cref="JsonMediaType"/> in the provided context.</exception>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="obj">The object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
         /// The serialized object as a JSON string.
         /// </returns>
         public static string JsonSerialize(
             this ISerializationService serializationService,
             object obj,
-            ISerializationContext context = null)
+            Action<ISerializationContext> optionsConfig = null)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return Serialize<JsonMediaType>(serializationService, obj, context);
+            return Serialize<JsonMediaType>(serializationService, obj, optionsConfig);
         }
 
         /// <summary>
         /// Serializes the provided object as XML asynchronously.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the <see cref="ISerializationContext.MediaType"/> is not <see cref="XmlMediaType"/> in the provided context.</exception>
-        /// <param name="serializationService">The serializationService to act on.</param>
-        /// <param name="obj">The object.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="obj">The object to be serialized.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task promising the serialized object as a XML string.
         /// </returns>
+        /// <example>
+        /// .
+        /// </example>
         public static Task<string> XmlSerializeAsync(
             this ISerializationService serializationService,
             object obj,
-            ISerializationContext context = null,
+            Action<ISerializationContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return SerializeAsync<XmlMediaType>(serializationService, obj, context, cancellationToken);
+            return SerializeAsync<XmlMediaType>(serializationService, obj, optionsConfig, cancellationToken);
         }
 
         /// <summary>
         /// Serializes the provided object as XML.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the <see cref="ISerializationContext.MediaType"/> is not <see cref="XmlMediaType"/> in the provided context.</exception>
-        /// <param name="serializationService">The serializationService to act on.</param>
+        /// <param name="serializationService">The serialization service.</param>
         /// <param name="obj">The object.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
         /// The serialized object as a XML string.
         /// </returns>
         public static string XmlSerialize(
             this ISerializationService serializationService,
             object obj,
-            ISerializationContext context = null)
+            Action<ISerializationContext> optionsConfig = null)
         {
-            Requires.NotNull(serializationService, nameof(serializationService));
-
-            return Serialize<XmlMediaType>(serializationService, obj, context);
-        }
-
-        /// <summary>
-        /// Serializes the provided object asynchronously.
-        /// </summary>
-        /// <param name="serializer">The serializer to act on.</param>
-        /// <param name="obj">The object.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A Task promising the serialized object as a string.
-        /// </returns>
-        public static async Task<string> SerializeAsync(
-            this ISerializer serializer,
-            object obj,
-            ISerializationContext context = null,
-            CancellationToken cancellationToken = default)
-        {
-            Requires.NotNull(serializer, nameof(serializer));
-
-            var writer = new StringWriter();
-            try
-            {
-                await serializer.SerializeAsync(obj, writer, context, cancellationToken).PreserveThreadContext();
-                var stringBuilder = writer.GetStringBuilder();
-                return stringBuilder.ToString();
-            }
-            finally
-            {
-                writer.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Serializes the provided object.
-        /// </summary>
-        /// <param name="serializer">The serializer to act on.</param>
-        /// <param name="obj">The object.</param>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        /// The serialized object as a string.
-        /// </returns>
-        public static string Serialize(
-            this ISerializer serializer,
-            object obj,
-            ISerializationContext context = null)
-        {
-            Requires.NotNull(serializer, nameof(serializer));
-
-            var writer = new StringWriter();
-            try
-            {
-                serializer.Serialize(obj, writer, context);
-                var stringBuilder = writer.GetStringBuilder();
-                return stringBuilder.ToString();
-            }
-            finally
-            {
-                writer.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Deserialize an object asynchronously.
-        /// </summary>
-        /// <param name="serializer">The serializer to act on.</param>
-        /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A Task promising the deserialized object.
-        /// </returns>
-        public static async Task<object> DeserializeAsync(
-            this ISerializer serializer,
-            string serializedObj,
-            ISerializationContext context = null,
-            CancellationToken cancellationToken = default)
-        {
-            Requires.NotNull(serializer, nameof(serializer));
-
-            var reader = new StringReader(serializedObj);
-            try
-            {
-                var result = await serializer.DeserializeAsync(reader, context, cancellationToken).PreserveThreadContext();
-                return result;
-            }
-            finally
-            {
-                reader.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Deserializes an object.
-        /// </summary>
-        /// <param name="serializer">The serializer to act on.</param>
-        /// <param name="serializedObj">The serialized object.</param>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        /// The deserialized object.
-        /// </returns>
-        public static object Deserialize(
-            this ISerializer serializer,
-            string serializedObj,
-            ISerializationContext context = null)
-        {
-            Requires.NotNull(serializer, nameof(serializer));
-
-            var reader = new StringReader(serializedObj);
-            try
-            {
-                var result = serializer.Deserialize(reader, context);
-                return result;
-            }
-            finally
-            {
-                reader.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Creates the serialization context or updates it with the serialization service and media type.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
-        /// <param name="contextFactory">The context factory.</param>
-        /// <param name="context">Optional. The serialization context.</param>
-        /// <param name="contextConfig">Optional. The context configuration.</param>
-        /// <returns>
-        /// The new serialization context.
-        /// </returns>
-        public static ISerializationContext CreateOrUpdateSerializationContext<TMediaType>(this IContextFactory contextFactory, ISerializationContext context = null, Action<ISerializationContext> contextConfig = null)
-            where TMediaType : IMediaType
-        {
-            if (context == null)
-            {
-                context = contextFactory.CreateSerializationContext<TMediaType>();
-            }
-            else
-            {
-                if (context.MediaType == null)
-                {
-                    context.MediaType = typeof(TMediaType);
-                }
-                else if (context.MediaType != typeof(TMediaType))
-                {
-                    throw new InvalidOperationException(
-                        string.Format(
-                            Strings.Serialization_MediaTypeMismatch_Exception,
-                            typeof(TMediaType),
-                            context.MediaType));
-                }
-            }
-
-            contextConfig?.Invoke(context);
-            return context;
-        }
-
-        /// <summary>
-        /// Creates a new configured <see cref="SerializationContext"/>.
-        /// </summary>
-        /// <exception cref="ArgumentException">Thrown when one or more arguments have unsupported or
-        ///                                     illegal values.</exception>
-        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
-        /// <param name="contextFactory">The context factory.</param>
-        /// <param name="rootObjectFactory">Optional. The root object factory.</param>
-        /// <returns>
-        /// A configured <see cref="SerializationContext"/>.
-        /// </returns>
-        public static SerializationContext CreateSerializationContext<TMediaType>(this IContextFactory contextFactory, Func<object> rootObjectFactory = null)
-            where TMediaType : IMediaType
-        {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
-
-            var context = contextFactory.CreateContext<SerializationContext>();
-            context.MediaType = typeof(TMediaType);
-            context.RootObjectFactory = rootObjectFactory;
-            return context;
-        }
-
-        /// <summary>
-        /// Creates a new configured <see cref="SerializationContext"/>.
-        /// </summary>
-        /// <exception cref="ArgumentException">Thrown when one or more arguments have unsupported or
-        ///                                     illegal values.</exception>
-        /// <typeparam name="TMediaType">Type of the media type.</typeparam>
-        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
-        /// <param name="contextFactory">The context factory.</param>
-        /// <param name="rootObjectFactory">Optional. The root object factory.</param>
-        /// <returns>
-        /// A configured <see cref="SerializationContext"/>.
-        /// </returns>
-        public static SerializationContext CreateSerializationContext<TMediaType, TRootObject>(IContextFactory contextFactory, Func<object> rootObjectFactory = null)
-            where TMediaType : IMediaType
-        {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
-
-            var context = contextFactory.CreateContext<SerializationContext>();
-            context.MediaType = typeof(TMediaType);
-            context.RootObjectType = typeof(TRootObject);
-            context.RootObjectFactory = rootObjectFactory;
-
-            return context;
+            return Serialize<XmlMediaType>(serializationService, obj, optionsConfig);
         }
 
         /// <summary>
@@ -681,12 +573,12 @@ namespace Kephas.Serialization
         /// <param name="serializer">The serializer to act on.</param>
         /// <param name="obj">The object.</param>
         /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="context">The context containing serialization options.</param>
         public static void Serialize(
             this ISerializer serializer,
             object obj,
             TextWriter textWriter,
-            ISerializationContext context = null)
+            ISerializationContext context)
         {
             Requires.NotNull(serializer, nameof(serializer));
 
@@ -701,18 +593,44 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
+        /// Serializes the provided object.
+        /// </summary>
+        /// <param name="serializer">The serializer to act on.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="context">The context containing serialization options.</param>
+        /// <returns>
+        /// The serialized object.
+        /// </returns>
+        public static string Serialize(
+            this ISerializer serializer,
+            object obj,
+            ISerializationContext context)
+        {
+            Requires.NotNull(serializer, nameof(serializer));
+
+            if (serializer is ISyncSerializer syncSerializer)
+            {
+                return syncSerializer.Serialize(obj, context);
+            }
+            else
+            {
+                return serializer.SerializeAsync(obj, context).GetResultNonLocking();
+            }
+        }
+
+        /// <summary>
         /// Deserializes an object.
         /// </summary>
         /// <param name="serializer">The serializer to act on.</param>
         /// <param name="textReader">The <see cref="TextReader"/> containing the serialized object.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="context">The context containing serialization options.</param>
         /// <returns>
         /// The deserialized object.
         /// </returns>
         public static object Deserialize(
             this ISerializer serializer,
             TextReader textReader,
-            ISerializationContext context = null)
+            ISerializationContext context)
         {
             Requires.NotNull(serializer, nameof(serializer));
 
@@ -724,24 +642,28 @@ namespace Kephas.Serialization
             return serializer.DeserializeAsync(textReader, context).GetResultNonLocking();
         }
 
-        private static IContextFactory GetContextFactory(this ISerializationService serializationService)
+        /// <summary>
+        /// Deserializes an object.
+        /// </summary>
+        /// <param name="serializer">The serializer to act on.</param>
+        /// <param name="serializedObject">The serialized object.</param>
+        /// <param name="context">Optional. The context containing serialization options.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static object Deserialize(
+            this ISerializer serializer,
+            string serializedObject,
+            ISerializationContext context)
         {
-            if (serializationService is DefaultSerializationService defaultService)
+            Requires.NotNull(serializer, nameof(serializer));
+
+            if (serializer is ISyncSerializer syncSerializer)
             {
-                return defaultService.ContextFactory;
+                return syncSerializer.Deserialize(serializedObject, context);
             }
 
-            if (!serializationService.TryGetPropertyValue(nameof(DefaultSerializationService.ContextFactory), out var rawContextFactory))
-            {
-                throw new SerializationException(Strings.SerializationExtensions_GetContextFactory_CannotGetContextFactory.FormatWith(serializationService.GetType(), nameof(DefaultSerializationService.ContextFactory), typeof(IContextFactory)));
-            }
-
-            if (rawContextFactory is IContextFactory contextFactory)
-            {
-                return contextFactory;
-            }
-
-            throw new SerializationException(Strings.SerializationExtensions_GetContextFactory_CannotGetContextFactory.FormatWith(serializationService.GetType(), nameof(DefaultSerializationService.ContextFactory), typeof(IContextFactory)));
+            return serializer.DeserializeAsync(serializedObject, context).GetResultNonLocking();
         }
     }
 }

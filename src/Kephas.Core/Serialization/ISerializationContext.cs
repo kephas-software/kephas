@@ -20,12 +20,12 @@ namespace Kephas.Serialization
     public interface ISerializationContext : IContext
     {
         /// <summary>
-        /// Gets or sets the serialization service.
+        /// Gets the serialization service.
         /// </summary>
         /// <value>
         /// The serialization service.
         /// </value>
-        ISerializationService SerializationService { get; set; }
+        ISerializationService SerializationService { get; }
 
         /// <summary>
         /// Gets or sets the media type.
@@ -58,5 +58,13 @@ namespace Kephas.Serialization
         /// True if the output should be indented, false if not.
         /// </value>
         bool Indent { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the type information should be included.
+        /// </summary>
+        /// <value>
+        /// True to include type information, false otherwise.
+        /// </value>
+        bool IncludeTypeInfo { get; set; }
     }
 }

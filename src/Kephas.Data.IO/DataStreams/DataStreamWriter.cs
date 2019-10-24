@@ -11,14 +11,11 @@
 namespace Kephas.Data.IO.DataStreams
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
-    using Kephas.Data.IO.Export;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
@@ -31,8 +28,6 @@ namespace Kephas.Data.IO.DataStreams
     [ProcessingPriority(Priority.Low)]
     public class DataStreamWriter : IDataStreamWriter
     {
-        private readonly ICompositionContext compositionContext;
-
         private readonly ISerializationService serializationService;
 
         private readonly IMediaTypeProvider mediaTypeProvider;
@@ -40,16 +35,13 @@ namespace Kephas.Data.IO.DataStreams
         /// <summary>
         /// Initializes a new instance of the <see cref="DataStreamWriter"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="mediaTypeProvider">The media type provider.</param>
-        public DataStreamWriter(ICompositionContext compositionContext, ISerializationService serializationService, IMediaTypeProvider mediaTypeProvider)
+        public DataStreamWriter(ISerializationService serializationService, IMediaTypeProvider mediaTypeProvider)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(serializationService, nameof(serializationService));
             Requires.NotNull(mediaTypeProvider, nameof(mediaTypeProvider));
 
-            this.compositionContext = compositionContext;
             this.serializationService = serializationService;
             this.mediaTypeProvider = mediaTypeProvider;
         }
@@ -81,16 +73,16 @@ namespace Kephas.Data.IO.DataStreams
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            var serializationContext = new SerializationContext(this.compositionContext, this.serializationService, this.GetMediaType(dataStream))
-                                           {
-                                               RootObjectType = context?.RootObjectType ?? data.GetType(),
-                                           };
-            context?.SerializationContextConfig?.Invoke(serializationContext);
-            var serializer = this.serializationService.GetSerializer(serializationContext);
+            Action<ISerializationContext> serializationConfig = ctx =>
+                {
+                    ctx.MediaType = this.GetMediaType(dataStream);
+                    ctx.RootObjectType = context?.RootObjectType ?? data.GetType();
+                    context?.SerializationContextConfig?.Invoke(ctx);
+                };
 
             using (var writer = this.CreateEncodedStreamWriter(dataStream))
             {
-                var rawResult = await serializer.SerializeAsync(data, serializationContext, cancellationToken).PreserveThreadContext();
+                var rawResult = await this.serializationService.SerializeAsync(data, serializationConfig, cancellationToken).PreserveThreadContext();
 
                 cancellationToken.ThrowIfCancellationRequested();
 
