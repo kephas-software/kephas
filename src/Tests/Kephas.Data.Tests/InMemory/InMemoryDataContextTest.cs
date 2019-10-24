@@ -84,7 +84,7 @@ namespace Kephas.Data.Tests.InMemory
         {
             var serializer = Substitute.For<ISerializer>();
             serializer.DeserializeAsync(
-                Arg.Any<TextReader>(),
+                Arg.Any<string>(),
                 Arg.Any<ISerializationContext>(),
                 Arg.Any<CancellationToken>()).Returns(Task.FromResult((object)new[] { "mama", "papa" }));
 

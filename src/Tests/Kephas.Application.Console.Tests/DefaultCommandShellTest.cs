@@ -66,12 +66,8 @@ namespace Kephas.Application.Console.Tests
                 .Returns(ci => inputEnumerator.MoveNext() ? inputEnumerator.Current : throw new OperationCanceledException());
 
             var serializer = Substitute.For<ISerializer>();
-            serializer.SerializeAsync(Arg.Any<object>(), Arg.Any<TextWriter>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
-                .ReturnsForAnyArgs(ci =>
-                {
-                    ci.Arg<TextWriter>().Write(ci.Arg<object>().ToString());
-                    return TaskHelper.CompletedTask;
-                });
+            serializer.SerializeAsync(Arg.Any<object>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => Task.FromResult(ci.Arg<object>().ToString()));
             var serialization = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
             processor.ProcessAsync(Arg.Any<string>(), Arg.Any<IExpando>(), Arg.Any<CancellationToken>())

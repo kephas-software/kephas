@@ -120,6 +120,78 @@ namespace Kephas.Serialization.ServiceStack.Text.Tests
         }
 
         [Test]
+        public async Task SerializeAsync_with_type_info()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site"),
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = true };
+            var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\"$type\":\"Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity\",\"name\":\"John Doe\",\"personalSite\":\"http://site.com/my-site\"}",
+                serializedObj);
+        }
+
+        [Test]
+        public void Serialize_with_type_info()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site"),
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = true };
+            var serializedObj = serializer.Serialize(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\"$type\":\"Kephas.Serialization.ServiceStack.Text.Tests.JsonSerializerTest+TestEntity\",\"name\":\"John Doe\",\"personalSite\":\"http://site.com/my-site\"}",
+                serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_no_type_info()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site"),
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = false };
+            var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\"name\":\"John Doe\",\"personalSite\":\"http://site.com/my-site\"}",
+                serializedObj);
+        }
+
+        [Test]
+        public void Serialize_no_type_info()
+        {
+            var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = new Uri("http://site.com/my-site"),
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeTypeInfo = false };
+            var serializedObj = serializer.Serialize(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\"name\":\"John Doe\",\"personalSite\":\"http://site.com/my-site\"}",
+                serializedObj);
+        }
+
+        [Test]
         public async Task SerializeAsync_Expando()
         {
             var settingsProvider = new DefaultJsonSerializerConfigurator(new DefaultTypeResolver(new DefaultAssemblyLoader()));

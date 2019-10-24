@@ -49,7 +49,6 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        [Ignore("Until a fix is found for BUG https://github.com/dotnet/corefx/issues/40094, ignore this test.")]
         public void WithAutofacCompositionContainer_with_open_generic_override_and_dependency()
         {
             var ambientServices = new AmbientServices();

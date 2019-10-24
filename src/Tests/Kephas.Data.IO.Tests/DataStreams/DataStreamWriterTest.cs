@@ -38,13 +38,8 @@ namespace Kephas.Data.IO.Tests.DataStreams
             mediaTypeProvider.GetMediaType(Arg.Any<string>(), Arg.Any<bool>()).Returns(typeof(JsonMediaType));
 
             var serializer = Substitute.For<ISerializer>();
-            serializer.When(s => s.SerializeAsync(Arg.Any<object>(), Arg.Any<TextWriter>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>()))
-                .Do(
-                    ci =>
-                        {
-                            var textWriter = ci.Arg<TextWriter>();
-                            textWriter.Write(serializedEntity);
-                        });
+            serializer.SerializeAsync(Arg.Any<object>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci => Task.FromResult(serializedEntity));
 
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
@@ -52,7 +47,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var memStream = new MemoryStream();
             using (var dataStream = new DataStream(memStream, "test", ownsStream: true))
             {
-                await writer.WriteAsync(new [] { "abcd" }, dataStream);
+                await writer.WriteAsync(new[] { "abcd" }, dataStream);
                 var str = Encoding.UTF8.GetString(memStream.ToArray()).Substring(1); // cut the first unicode char
                 Assert.AreEqual(serializedEntity, str);
             }
@@ -68,8 +63,12 @@ namespace Kephas.Data.IO.Tests.DataStreams
             mediaTypeProvider.GetMediaType(Arg.Any<string>(), Arg.Any<bool>()).Returns(typeof(JsonMediaType));
 
             var serializer = Substitute.For<ISerializer>();
-            serializer.When(s => s.SerializeAsync(Arg.Any<object>(), Arg.Any<TextWriter>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>()))
-                .Do(ci => serializationContext = ci.Arg<ISerializationContext>());
+            serializer.SerializeAsync(Arg.Any<object>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci =>
+                {
+                    serializationContext = ci.Arg<ISerializationContext>();
+                    return Task.FromResult("abc");
+                });
 
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
@@ -93,8 +92,12 @@ namespace Kephas.Data.IO.Tests.DataStreams
             mediaTypeProvider.GetMediaType(Arg.Any<string>(), Arg.Any<bool>()).Returns(typeof(JsonMediaType));
 
             var serializer = Substitute.For<ISerializer>();
-            serializer.When(s => s.SerializeAsync(Arg.Any<object>(), Arg.Any<TextWriter>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>()))
-                .Do(ci => serializationContext = ci.Arg<ISerializationContext>());
+            serializer.SerializeAsync(Arg.Any<object>(), Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
+                .Returns(ci =>
+                {
+                    serializationContext = ci.Arg<ISerializationContext>();
+                    return Task.FromResult("abc");
+                });
 
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
