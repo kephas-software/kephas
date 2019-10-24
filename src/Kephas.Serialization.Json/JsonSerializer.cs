@@ -20,6 +20,7 @@ namespace Kephas.Serialization.Json
     using Kephas.Services;
     using Kephas.Threading.Tasks;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// JSON serializer.
@@ -189,7 +190,7 @@ namespace Kephas.Serialization.Json
                 }
             }
 
-            return result;
+            return this.PostDeserialize(result, context?.RootObjectType ?? typeof(object));
         }
 
         /// <summary>
@@ -223,6 +224,26 @@ namespace Kephas.Serialization.Json
             }
 
             return settings;
+        }
+
+        private object PostDeserialize(object obj, Type rootObjectType)
+        {
+            if (rootObjectType != typeof(object))
+            {
+                return obj;
+            }
+
+            if (obj is JObject jobj)
+            {
+                return new JObjectDictionary(jobj);
+            }
+
+            if (obj is JArray jarr)
+            {
+                return new JObjectList(jarr);
+            }
+
+            return obj;
         }
     }
 }

@@ -136,8 +136,7 @@ namespace Kephas.Serialization.Json.Tests
             var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
 
             Assert.AreEqual(
-                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
-                    .Replace("\r\n", Environment.NewLine),
+                "{\"$type\":\"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\"name\":\"John Doe\",\"personalSite\":\"http://site.com/my-site\"}",
                 serializedObj);
         }
 
@@ -155,8 +154,7 @@ namespace Kephas.Serialization.Json.Tests
             var serializedObj = serializer.Serialize(obj, serializationContext);
 
             Assert.AreEqual(
-                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
-                    .Replace("\r\n", Environment.NewLine),
+                "{\"$type\":\"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\"name\":\"John Doe\",\"personalSite\":\"http://site.com/my-site\"}",
                 serializedObj);
         }
 
@@ -174,8 +172,7 @@ namespace Kephas.Serialization.Json.Tests
             var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
 
             Assert.AreEqual(
-                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
-                    .Replace("\r\n", Environment.NewLine),
+                "{\"name\":\"John Doe\",\"personalSite\":\"http://site.com/my-site\"}",
                 serializedObj);
         }
 
@@ -193,8 +190,7 @@ namespace Kephas.Serialization.Json.Tests
             var serializedObj = serializer.Serialize(obj, serializationContext);
 
             Assert.AreEqual(
-                "{\r\n  \"$type\": \"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\r\n  \"name\": \"John Doe\",\r\n  \"personalSite\": \"http://site.com/my-site\"\r\n}"
-                    .Replace("\r\n", Environment.NewLine),
+                "{\"name\":\"John Doe\",\"personalSite\":\"http://site.com/my-site\"}",
                 serializedObj);
         }
 
@@ -212,13 +208,28 @@ namespace Kephas.Serialization.Json.Tests
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity"",""description"":""John Doe""}", serializedObj);
         }
 
-        [Test, Ignore("The solution of deserializing objects by default in dictionaries still pending... Try wrapping the resulted IDictionary<string, JToken> into a IDictionary<string, object>.")]
+        [Test]
         public async Task DeserializeAsync_untyped()
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
+
+            Assert.IsInstanceOf<IDictionary<string, object>>(obj);
+
+            var dict = (IDictionary<string, object>)obj;
+            Assert.AreEqual("there", dict["hi"]);
+            Assert.AreEqual("friend", dict["my"]);
+        }
+
+        [Test]
+        public void Deserialize_untyped()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
+            var obj = serializer.Deserialize(serializedObj);
 
             Assert.IsInstanceOf<IDictionary<string, object>>(obj);
 
