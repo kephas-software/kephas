@@ -21,16 +21,16 @@
             <group targetFramework=".NETFramework4.5.2">
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Data" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="MongoDB.Bson.signed" version="2.9.2" exclude="Build,Analyzers" />
-                <dependency id="MongoDB.Driver.Core.signed" version="2.9.2" exclude="Build,Analyzers" />
-                <dependency id="MongoDB.Driver.signed" version="2.9.2" exclude="Build,Analyzers" />
+                <dependency id="MongoDB.Bson.signed" version="2.9.2.1" exclude="Build,Analyzers" />
+                <dependency id="MongoDB.Driver.Core.signed" version="2.9.2.1" exclude="Build,Analyzers" />
+                <dependency id="MongoDB.Driver.signed" version="2.9.2.1" exclude="Build,Analyzers" />
             </group>
             <group targetFramework=".NETStandard2.0">
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Data" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="MongoDB.Bson.signed" version="2.9.2" exclude="Build,Analyzers" />
-                <dependency id="MongoDB.Driver.Core.signed" version="2.9.2" exclude="Build,Analyzers" />
-                <dependency id="MongoDB.Driver.signed" version="2.9.2" exclude="Build,Analyzers" />
+                <dependency id="MongoDB.Bson.signed" version="2.9.2.1" exclude="Build,Analyzers" />
+                <dependency id="MongoDB.Driver.Core.signed" version="2.9.2.1" exclude="Build,Analyzers" />
+                <dependency id="MongoDB.Driver.signed" version="2.9.2.1" exclude="Build,Analyzers" />
             </group>
         </dependencies>
     </metadata>
