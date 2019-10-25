@@ -11,7 +11,9 @@
 namespace Kephas.Serialization
 {
     using System;
+    using System.Runtime.CompilerServices;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -66,5 +68,96 @@ namespace Kephas.Serialization
         /// True to include type information, false otherwise.
         /// </value>
         bool IncludeTypeInfo { get; set; }
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="ISerializationContext"/>.
+    /// </summary>
+    public static class SerializationContextExtensions {
+
+        /// <summary>
+        /// Sets a value indicating whether to indent the serialized value.
+        /// </summary>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="value">True to indent, false otherwise.</param>
+        /// <returns>
+        /// This <see cref="ISerializationContext"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ISerializationContext Indent(this ISerializationContext context, bool value)
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.Indent = value;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets a value indicating whether to include the type information in the serialized value.
+        /// </summary>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="value">True to include type information, false otherwise.</param>
+        /// <returns>
+        /// This <see cref="ISerializationContext"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ISerializationContext IncludeTypeInfo(this ISerializationContext context, bool value)
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.IncludeTypeInfo = value;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the root object type.
+        /// </summary>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="value">The root object type.</param>
+        /// <returns>
+        /// This <see cref="ISerializationContext"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ISerializationContext RootObjectType(this ISerializationContext context, Type value)
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.RootObjectType = value;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the root object factory.
+        /// </summary>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="value">The root object factory.</param>
+        /// <returns>
+        /// This <see cref="ISerializationContext"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ISerializationContext RootObjectFactory(this ISerializationContext context, Func<object> value)
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.RootObjectFactory = value;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the media type.
+        /// </summary>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="value">The media type.</param>
+        /// <returns>
+        /// This <see cref="ISerializationContext"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ISerializationContext MediaType(this ISerializationContext context, Type value)
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.MediaType = value;
+            return context;
+        }
     }
 }
