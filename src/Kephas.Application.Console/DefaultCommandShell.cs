@@ -185,7 +185,7 @@ namespace Kephas.Application.Console
         {
             var serializedResult = await this.serializationService.JsonSerializeAsync(
                                        result,
-                                       ctx => ctx.Indent = true,
+                                       ctx => ctx.Indent(true).IncludeTypeInfo(false),
                                        cancellationToken: cancellationToken).PreserveThreadContext();
             this.Console.WriteLine(serializedResult);
         }
