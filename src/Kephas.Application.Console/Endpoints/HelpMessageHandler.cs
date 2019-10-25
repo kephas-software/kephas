@@ -51,7 +51,8 @@ namespace Kephas.Application.Console.Endpoints
                          : t.Name.EndsWith("Event")
                              ? t.Name.Substring(0, t.Name.Length - "Event".Length)
                              : t.Name,
-                t => t).ToList();
+                t => t);
+            var commandList = commands.ToList();
 
             var response = new HelpResponseMessage();
 
@@ -61,16 +62,16 @@ namespace Kephas.Application.Console.Endpoints
                                    kv => kv.Key.StartsWith(
                                        message.Command,
                                        StringComparison.InvariantCultureIgnoreCase))
-                               .ToList();
+                               .ToDictionary(kv => kv.Key, kv => kv.Value);
 
             if (commands.Count > 1)
             {
-                response.Command = commands.OrderBy(t => t.Key).ToDictionary(c => c.Key, c => c.Value.GetLocalization().Description).ToArray();
+                response.Command = commands.OrderBy(t => t.Key).ToDictionary(c => c.Key, c => c.Value.GetLocalization().Description);
                 response.Description = Strings.MissingCommandName_Warning;
             }
             else if (commands.Count == 1)
             {
-                var cmd = commands[0];
+                var cmd = commands.First();
                 response.Command = commands.Select(t => t.Key).Single();
                 var localization = cmd.Value.GetLocalization();
                 response.Description = localization.Description;
