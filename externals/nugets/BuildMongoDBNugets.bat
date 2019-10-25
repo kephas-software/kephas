@@ -6,11 +6,6 @@ nuget pack MongoDB.Driver.Core.signed.%1\MongoDB.Driver.Core.signed.nuspec -Base
 nuget pack MongoDB.Driver.signed.%1\MongoDB.Driver.signed.nuspec -BasePath MongoDB.Driver.signed.%1
 nuget pack MongoDB.Driver.GridFS.signed.%1\MongoDB.Driver.GridFS.signed.nuspec -BasePath MongoDB.Driver.GridFS.signed.%1
 
-nuget add MongoDB.Bson.signed.%1.nupkg -source ..\local-package-source
-nuget add MongoDB.Driver.Core.signed.%1.nupkg -source ..\local-package-source
-nuget add MongoDB.Driver.signed.%1.nupkg -source ..\local-package-source
-nuget add MongoDB.Driver.GridFS.signed.%1.nupkg -source ..\local-package-source
-
 @echo Done.
 pause
 

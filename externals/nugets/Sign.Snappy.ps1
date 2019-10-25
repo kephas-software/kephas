@@ -1,6 +1,4 @@
 ﻿param (
-    [string]$version = $( Read-Host "Please provide package version" ),
-    [string]$build = "Debug",
     [string]$CertificateSubjectName = "KEPHAS SOFTWARE SRL",
     [string]$Timestamper = "http://timestamp.digicert.com"
 )
@@ -11,12 +9,10 @@
 
 
 $packages = @(
-    "MongoDB.Bson.signed",
-    "MongoDB.Driver.Core.signed",
-    "MongoDB.Driver.signed",
-    "MongoDB.Driver.GridFS.signed"
+    "Crc32C.NET.signed.1.0.5",
+    "Snappy.NET.signed.1.1.1.8"
 )
 
 foreach ($package in $packages) {
-    .\NuGet.exe sign "$package.$version.nupkg" -CertificateSubjectName "$CertificateSubjectName" -Timestamper "$Timestamper"
+    .\NuGet.exe sign "$package.nupkg" -CertificateSubjectName "$CertificateSubjectName" -Timestamper "$Timestamper"
 }
