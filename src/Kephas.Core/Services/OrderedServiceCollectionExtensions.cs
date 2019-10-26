@@ -10,6 +10,7 @@
 
 namespace Kephas.Services
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Composition;
@@ -21,7 +22,7 @@ namespace Kephas.Services
     public static class OrderedServiceCollectionExtensions
     {
         /// <summary>
-        /// Orders the given factories.
+        /// Orders the given factory service collection.
         /// </summary>
         /// <typeparam name="T">The service type.</typeparam>
         /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
@@ -29,11 +30,27 @@ namespace Kephas.Services
         /// <returns>
         /// A list of ordered services.
         /// </returns>
-        public static IOrderedServiceCollection<T, TMetadata> Order<T, TMetadata>(
+        public static IOrderedServiceFactoryCollection<T, TMetadata> Order<T, TMetadata>(
             this IEnumerable<IExportFactory<T, TMetadata>> factories)
             where TMetadata : AppServiceMetadata
         {
-            return new OrderedServiceCollection<T, TMetadata>(factories);
+            return new OrderedServiceFactoryCollection<T, TMetadata>(factories);
+        }
+
+        /// <summary>
+        /// Orders the given lazy service collection.
+        /// </summary>
+        /// <typeparam name="T">The service type.</typeparam>
+        /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
+        /// <param name="factories">The factories to act on.</param>
+        /// <returns>
+        /// A list of ordered services.
+        /// </returns>
+        public static IOrderedLazyServiceCollection<T, TMetadata> Order<T, TMetadata>(
+            this IEnumerable<Lazy<T, TMetadata>> factories)
+            where TMetadata : AppServiceMetadata
+        {
+            return new OrderedLazyServiceCollection<T, TMetadata>(factories);
         }
     }
 }
