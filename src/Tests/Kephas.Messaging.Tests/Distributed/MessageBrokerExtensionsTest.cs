@@ -22,7 +22,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageBrokerExtensionsTest : MessagingTestBase
+    public class MessageBrokerExtensionsTest : MefMessagingTestBase
     {
         [Test]
         public async Task PublishAsync_anonymous_event()

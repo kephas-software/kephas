@@ -16,22 +16,22 @@ namespace Kephas.Messaging.Tests
 
     using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Composition.Autofac.Hosting;
     using Kephas.Composition.ExportFactories;
     using Kephas.Composition.ExportFactoryImporters;
-    using Kephas.Composition.Lite.Hosting;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
     using Kephas.Testing.Application;
 
     using NSubstitute;
 
-    public class MessagingTestBase : ApplicationTestBase
+    public class AutofacMessagingTestBase : AutofacApplicationTestBase
     {
         public override ICompositionContext CreateContainer(
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<LiteCompositionContainerBuilder> config = null)
+            Action<AutofacCompositionContainerBuilder> config = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */

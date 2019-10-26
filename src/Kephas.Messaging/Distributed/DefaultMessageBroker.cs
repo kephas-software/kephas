@@ -43,7 +43,7 @@ namespace Kephas.Messaging.Distributed
                 TaskCompletionSource<IMessage> taskCompletionSource)> messageSyncDictionary =
                 new ConcurrentDictionary<string, (CancellationTokenSource, TaskCompletionSource<IMessage>)>();
 
-        private readonly ICollection<IExportFactory<IMessageRouter, MessageRouterMetadata>> routerFactories;
+        private readonly ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories;
         private readonly IExportFactory<IBrokeredMessageBuilder> builderFactory;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
         private ICollection<(Regex regex, string channel, bool isFallback, IMessageRouter router)> routerMap;
@@ -54,7 +54,7 @@ namespace Kephas.Messaging.Distributed
         /// <param name="routerFactories">The router factories.</param>
         /// <param name="builderFactory">The builder factory.</param>
         public DefaultMessageBroker(
-            ICollection<IExportFactory<IMessageRouter, MessageRouterMetadata>> routerFactories,
+            ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
             IExportFactory<IBrokeredMessageBuilder> builderFactory)
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());
@@ -121,7 +121,7 @@ namespace Kephas.Messaging.Distributed
                     regex: string.IsNullOrEmpty(f.Metadata.ReceiverUrlRegex) ? null : new Regex(f.Metadata.ReceiverUrlRegex, RegexOptions.IgnoreCase | RegexOptions.Compiled),
                     channel: f.Metadata.Channel,
                     isFallback: f.Metadata.IsFallback,
-                    asyncRouter: this.TryCreateRouterAsync(f, context)))
+                    asyncRouter: this.TryCreateRouterAsync(f, context, cancellationToken)))
                 .ToList();
 
             await Task.WhenAll(asyncRouterMap.Select(m => m.asyncRouter)).PreserveThreadContext();
@@ -138,15 +138,30 @@ namespace Kephas.Messaging.Distributed
             this.initMonitor.Complete();
         }
 
-        private async Task<IMessageRouter> TryCreateRouterAsync(IExportFactory<IMessageRouter, MessageRouterMetadata> f, IContext context)
+        private async Task<IMessageRouter> TryCreateRouterAsync(Lazy<IMessageRouter, MessageRouterMetadata> f, IContext context, CancellationToken cancellationToken)
         {
+            const string InitializationException = nameof(InitializationException);
+
+            if (f.Metadata[InitializationException] is Exception initEx)
+            {
+                return f.Metadata.IsOptional ? (IMessageRouter)null : throw initEx;
+            }
+
+            if (f.IsValueCreated)
+            {
+                return f.Value;
+            }
+
             try
             {
-                return await f.CreateInitializedValueAsync(context).PreserveThreadContext();
+                var router = f.Value;
+                await ServiceHelper.InitializeAsync(router, context, cancellationToken).PreserveThreadContext();
+                return router;
             }
             catch (Exception ex)
             {
                 this.Logger.Warn(ex, $"Error while trying to create and initialize router '{f.Metadata.AppServiceImplementationType}'.");
+                f.Metadata[InitializationException] = ex;
                 if (f.Metadata.IsOptional)
                 {
                     this.Logger.Warn($"Router '{f.Metadata.AppServiceImplementationType}' will be ignored.");

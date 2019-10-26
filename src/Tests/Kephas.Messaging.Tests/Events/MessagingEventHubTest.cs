@@ -24,7 +24,7 @@ namespace Kephas.Messaging.Tests.Events
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessagingEventHubTest : MessagingTestBase
+    public class MessagingEventHubTest : MefMessagingTestBase
     {
         [Test]
         public void Composition()

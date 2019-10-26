@@ -26,7 +26,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageRouterBaseTest : MessagingTestBase
+    public class MessageRouterBaseTest : MefMessagingTestBase
     {
         [Test]
         public async Task DispatchAsync_calls_RouteOutputAsync()
