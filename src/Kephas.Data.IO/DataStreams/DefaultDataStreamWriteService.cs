@@ -30,7 +30,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <summary>
         /// The writer factories.
         /// </summary>
-        private readonly IOrderedServiceCollection<IDataStreamWriter, DataStreamWriterMetadata> writerFactories;
+        private readonly IOrderedServiceFactoryCollection<IDataStreamWriter, DataStreamWriterMetadata> writerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataStreamWriteService"/> class.

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OrderedServiceCollectionTest.cs" company="Kephas Software SRL">
+// <copyright file="OrderedLazyServiceCollectionTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,11 +10,10 @@
 
 namespace Kephas.Core.Tests.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Services;
     using Kephas.Services.Composition;
 
@@ -23,68 +22,68 @@ namespace Kephas.Core.Tests.Services
     using NUnit.Framework;
 
     [TestFixture]
-    public class OrderedServiceCollectionTest
+    public class OrderedLazyServiceCollectionTest
     {
         [Test]
-        public void OrderedServiceCollection_null()
+        public void OrderedLazyServiceCollection_null()
         {
-            var ordered = new OrderedServiceCollection<IInstance, AppServiceMetadata>(null);
-            
+            var ordered = new OrderedLazyServiceCollection<IInstance, AppServiceMetadata>(null);
+
             Assert.AreEqual(0, ordered.Count());
         }
 
         [Test]
-        public void OrderedServiceCollection_proper_order_same_override_priority()
+        public void OrderedLazyServiceCollection_proper_order_same_override_priority()
         {
             var instance1 = Substitute.For<IInstance>();
             var instance2 = Substitute.For<IInstance>();
-            var orderedList = new OrderedServiceCollection<IInstance, AppServiceMetadata>(
-                new List<IExportFactory<IInstance, AppServiceMetadata>>
+            var orderedList = new OrderedLazyServiceCollection<IInstance, AppServiceMetadata>(
+                new List<Lazy<IInstance, AppServiceMetadata>>
                     {
-                        new ExportFactory<IInstance, AppServiceMetadata>(
+                        new Lazy<IInstance, AppServiceMetadata>(
                             () => instance1,
                             new AppServiceMetadata(overridePriority: 3, processingPriority: 1)),
-                        new ExportFactory<IInstance, AppServiceMetadata>(
+                        new Lazy<IInstance, AppServiceMetadata>(
                             () => instance2,
                             new AppServiceMetadata(overridePriority: 3, processingPriority: -1)),
                     }).ToList();
 
 
             Assert.AreEqual(2, orderedList.Count);
-            Assert.AreSame(instance2, orderedList[0].CreateExportedValue());
-            Assert.AreSame(instance1, orderedList[1].CreateExportedValue());
+            Assert.AreSame(instance2, orderedList[0].Value);
+            Assert.AreSame(instance1, orderedList[1].Value);
         }
 
         [Test]
-        public void OrderedServiceCollection_proper_order()
+        public void OrderedLazyServiceCollection_proper_order()
         {
             var instance1 = Substitute.For<IInstance>();
             var instance2 = Substitute.For<IInstance>();
             var instance3 = Substitute.For<IInstance>();
             var instance4 = Substitute.For<IInstance>();
-            var orderedList = new OrderedServiceCollection<IInstance, AppServiceMetadata>(
-                new List<IExportFactory<IInstance, AppServiceMetadata>>
+            var orderedList = new OrderedLazyServiceCollection<IInstance, AppServiceMetadata>(
+                new List<Lazy<IInstance, AppServiceMetadata>>
                     {
-                        new ExportFactory<IInstance, AppServiceMetadata>(
+                        new Lazy<IInstance, AppServiceMetadata>(
                             () => instance1,
                             new AppServiceMetadata(overridePriority: 3, processingPriority: 1)),
-                        new ExportFactory<IInstance, AppServiceMetadata>(
+                        new Lazy<IInstance, AppServiceMetadata>(
                             () => instance2,
                             new AppServiceMetadata(overridePriority: 2, processingPriority: 2)),
-                        new ExportFactory<IInstance, AppServiceMetadata>(
+                        new Lazy<IInstance, AppServiceMetadata>(
                             () => instance3,
                             new AppServiceMetadata(overridePriority: 2, processingPriority: 3)),
-                        new ExportFactory<IInstance, AppServiceMetadata>(
+                        new Lazy<IInstance, AppServiceMetadata>(
                             () => instance4,
                             new AppServiceMetadata(overridePriority: 1, processingPriority: 1)),
                     }).ToList();
 
 
             Assert.AreEqual(4, orderedList.Count);
-            Assert.AreSame(instance4, orderedList[0].CreateExportedValue());
-            Assert.AreSame(instance2, orderedList[1].CreateExportedValue());
-            Assert.AreSame(instance3, orderedList[2].CreateExportedValue());
-            Assert.AreSame(instance1, orderedList[3].CreateExportedValue());
+            Assert.AreSame(instance4, orderedList[0].Value);
+            Assert.AreSame(instance2, orderedList[1].Value);
+            Assert.AreSame(instance3, orderedList[2].Value);
+            Assert.AreSame(instance1, orderedList[3].Value);
         }
 
         [Test]
@@ -94,19 +93,19 @@ namespace Kephas.Core.Tests.Services
             var instance2 = Substitute.For<IInstance>();
             var instance3 = Substitute.For<IInstance>();
             var instance4 = Substitute.For<IInstance>();
-            var orderedList = new OrderedServiceCollection<IInstance, AppServiceMetadata>(
-                new List<IExportFactory<IInstance, AppServiceMetadata>>
+            var orderedList = new OrderedLazyServiceCollection<IInstance, AppServiceMetadata>(
+                new List<Lazy<IInstance, AppServiceMetadata>>
                     {
-                        new ExportFactory<IInstance, AppServiceMetadata>(
+                        new Lazy<IInstance, AppServiceMetadata>(
                             () => instance1,
                             new AppServiceMetadata(overridePriority: 3, processingPriority: 1)),
-                        new ExportFactory<IInstance, AppServiceMetadata>(
+                        new Lazy<IInstance, AppServiceMetadata>(
                             () => instance2,
                             new AppServiceMetadata(overridePriority: 2, processingPriority: 2)),
-                        new ExportFactory<IInstance, AppServiceMetadata>(
+                        new Lazy<IInstance, AppServiceMetadata>(
                             () => instance3,
                             new AppServiceMetadata(overridePriority: 2, processingPriority: 3)),
-                        new ExportFactory<IInstance, AppServiceMetadata>(
+                        new Lazy<IInstance, AppServiceMetadata>(
                             () => instance4,
                             new AppServiceMetadata(overridePriority: 1, processingPriority: 1)),
                     })
@@ -115,8 +114,8 @@ namespace Kephas.Core.Tests.Services
 
 
             Assert.AreEqual(2, orderedList.Count);
-            Assert.AreSame(instance4, orderedList[0].CreateExportedValue());
-            Assert.AreSame(instance1, orderedList[1].CreateExportedValue());
+            Assert.AreSame(instance4, orderedList[0].Value);
+            Assert.AreSame(instance1, orderedList[1].Value);
         }
 
         [Test]
@@ -126,19 +125,19 @@ namespace Kephas.Core.Tests.Services
             var instance2 = Substitute.For<IInstance>();
             var instance3 = Substitute.For<IInstance>();
             var instance4 = Substitute.For<IInstance>();
-            var orderedList = new OrderedServiceCollection<IInstance, AppServiceMetadata>(
-                    new List<IExportFactory<IInstance, AppServiceMetadata>>
+            var orderedList = new OrderedLazyServiceCollection<IInstance, AppServiceMetadata>(
+                    new List<Lazy<IInstance, AppServiceMetadata>>
                         {
-                            new ExportFactory<IInstance, AppServiceMetadata>(
+                            new Lazy<IInstance, AppServiceMetadata>(
                                 () => instance1,
                                 new AppServiceMetadata(overridePriority: 3, processingPriority: 1)),
-                            new ExportFactory<IInstance, AppServiceMetadata>(
+                            new Lazy<IInstance, AppServiceMetadata>(
                                 () => instance2,
                                 new AppServiceMetadata(overridePriority: 2, processingPriority: 2)),
-                            new ExportFactory<IInstance, AppServiceMetadata>(
+                            new Lazy<IInstance, AppServiceMetadata>(
                                 () => instance3,
                                 new AppServiceMetadata(overridePriority: 2, processingPriority: 3)),
-                            new ExportFactory<IInstance, AppServiceMetadata>(
+                            new Lazy<IInstance, AppServiceMetadata>(
                                 () => instance4,
                                 new AppServiceMetadata(overridePriority: 1, processingPriority: 1)),
                         })

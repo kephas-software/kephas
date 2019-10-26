@@ -31,7 +31,7 @@ namespace Kephas.Data.Commands.Factory
         /// <summary>
         /// The command factories.
         /// </summary>
-        private readonly IOrderedServiceCollection<TCommand, DataCommandMetadata> commandFactories;
+        private readonly IOrderedServiceFactoryCollection<TCommand, DataCommandMetadata> commandFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataCommandFactory{TCommand}"/> class.

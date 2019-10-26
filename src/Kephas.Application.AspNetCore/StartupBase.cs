@@ -129,7 +129,7 @@ namespace Kephas.Application.AspNetCore
             // use host configurators to setup the application.
             var container = appContext.CompositionContext;
             var hostConfigurators = container
-                .GetExport<IOrderedServiceCollection<IHostConfigurator, AppServiceMetadata>>()
+                .GetExport<IOrderedServiceFactoryCollection<IHostConfigurator, AppServiceMetadata>>()
                 .GetServices();
             foreach (var hostConfigurator in hostConfigurators)
             {
