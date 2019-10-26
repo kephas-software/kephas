@@ -47,7 +47,7 @@ namespace Kephas.Cryptography
             Requires.NotNull(hashingContext, nameof(hashingContext));
             Requires.NotNull(salt, nameof(salt));
 
-            hashingContext.Salt(salt);
+            hashingContext.Salt = salt;
 
             return hashingContext;
         }
