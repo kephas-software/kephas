@@ -74,9 +74,16 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The hashing context.
         /// </returns>
-        protected virtual HashingContext GetHashingContext(Action<IHashingContext> optionsConfig)
+        protected virtual IHashingContext GetHashingContext(Action<IHashingContext> optionsConfig)
         {
-            return optionsConfig == null ? null : this.contextFactory.CreateContext<HashingContext>();
+            if (optionsConfig == null)
+            {
+                return null;
+            }
+
+            var context = this.contextFactory.CreateContext<HashingContext>();
+            optionsConfig(context);
+            return context;
         }
 
         /// <summary>

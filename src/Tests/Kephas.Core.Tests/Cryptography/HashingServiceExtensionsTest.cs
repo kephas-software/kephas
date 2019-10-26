@@ -29,7 +29,7 @@ namespace Kephas.Core.Tests.Cryptography
             var valueString = "123";
             Action<IHashingContext> optionsConfig = ctx => { };
             var hashBytes = Encoding.UTF8.GetBytes("8910");
-            hashingService.Hash(Arg.Any<byte[]>(), optionsConfig).Returns(ci =>
+            hashingService.Hash(Arg.Any<byte[]>(), Arg.Any<Action<IHashingContext>>()).Returns(ci =>
                 {
                     var value = Encoding.UTF8.GetString(ci.ArgAt<byte[]>(0));
                     return value == valueString ? hashBytes : null;
