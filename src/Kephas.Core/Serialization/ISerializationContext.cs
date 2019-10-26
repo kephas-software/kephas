@@ -78,13 +78,15 @@ namespace Kephas.Serialization
         /// <summary>
         /// Sets a value indicating whether to indent the serialized value.
         /// </summary>
+        /// <typeparam name="TContext">Actual type of the serialization context.</typeparam>
         /// <param name="context">The serialization context.</param>
         /// <param name="value">True to indent, false otherwise.</param>
         /// <returns>
         /// This <see cref="ISerializationContext"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ISerializationContext Indent(this ISerializationContext context, bool value)
+        public static TContext Indent<TContext>(this TContext context, bool value)
+            where TContext : class, ISerializationContext
         {
             Requires.NotNull(context, nameof(context));
 
@@ -95,13 +97,15 @@ namespace Kephas.Serialization
         /// <summary>
         /// Sets a value indicating whether to include the type information in the serialized value.
         /// </summary>
+        /// <typeparam name="TContext">Actual type of the serialization context.</typeparam>
         /// <param name="context">The serialization context.</param>
         /// <param name="value">True to include type information, false otherwise.</param>
         /// <returns>
         /// This <see cref="ISerializationContext"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ISerializationContext IncludeTypeInfo(this ISerializationContext context, bool value)
+        public static TContext IncludeTypeInfo<TContext>(this TContext context, bool value)
+            where TContext : class, ISerializationContext
         {
             Requires.NotNull(context, nameof(context));
 
@@ -112,13 +116,15 @@ namespace Kephas.Serialization
         /// <summary>
         /// Sets the root object type.
         /// </summary>
+        /// <typeparam name="TContext">Actual type of the serialization context.</typeparam>
         /// <param name="context">The serialization context.</param>
         /// <param name="value">The root object type.</param>
         /// <returns>
         /// This <see cref="ISerializationContext"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ISerializationContext RootObjectType(this ISerializationContext context, Type value)
+        public static TContext RootObjectType<TContext>(this TContext context, Type value)
+            where TContext : class, ISerializationContext
         {
             Requires.NotNull(context, nameof(context));
 
@@ -129,13 +135,15 @@ namespace Kephas.Serialization
         /// <summary>
         /// Sets the root object factory.
         /// </summary>
+        /// <typeparam name="TContext">Actual type of the serialization context.</typeparam>
         /// <param name="context">The serialization context.</param>
         /// <param name="value">The root object factory.</param>
         /// <returns>
         /// This <see cref="ISerializationContext"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ISerializationContext RootObjectFactory(this ISerializationContext context, Func<object> value)
+        public static TContext RootObjectFactory<TContext>(this TContext context, Func<object> value)
+            where TContext : class, ISerializationContext
         {
             Requires.NotNull(context, nameof(context));
 
@@ -146,13 +154,15 @@ namespace Kephas.Serialization
         /// <summary>
         /// Sets the media type.
         /// </summary>
+        /// <typeparam name="TContext">Actual type of the serialization context.</typeparam>
         /// <param name="context">The serialization context.</param>
         /// <param name="value">The media type.</param>
         /// <returns>
         /// This <see cref="ISerializationContext"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ISerializationContext MediaType(this ISerializationContext context, Type value)
+        public static TContext MediaType<TContext>(this TContext context, Type value)
+            where TContext : class, ISerializationContext
         {
             Requires.NotNull(context, nameof(context));
 

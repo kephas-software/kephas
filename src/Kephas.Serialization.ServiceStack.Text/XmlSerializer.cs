@@ -14,6 +14,7 @@ namespace Kephas.Serialization.ServiceStack.Text
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
+
     using global::ServiceStack.Text;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
