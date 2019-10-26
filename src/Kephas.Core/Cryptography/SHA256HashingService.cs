@@ -21,12 +21,21 @@ namespace Kephas.Cryptography
     public class SHA256HashingService : HashingServiceBase
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SHA256HashingService"/> class.
+        /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
+        public SHA256HashingService(IContextFactory contextFactory)
+            : base(contextFactory)
+        {
+        }
+
+        /// <summary>
         /// Creates the hash algorithm.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>
         /// The new hash algorithm.
         /// </returns>
-        protected override HashAlgorithm CreateHashAlgorithm(IContext context) => new SHA256Managed();
+        protected override HashAlgorithm CreateHashAlgorithm(IHashingContext context = null) => new SHA256Managed();
     }
 }

@@ -13,6 +13,7 @@ namespace Kephas.Cryptography
     using System;
     using System.Security.Cryptography;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -20,34 +21,72 @@ namespace Kephas.Cryptography
     /// </summary>
     public abstract class HashingServiceBase : IHashingService
     {
+        private readonly IContextFactory contextFactory;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HashingServiceBase"/> class.
+        /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
+        public HashingServiceBase(IContextFactory contextFactory)
+        {
+            Requires.NotNull(contextFactory, nameof(contextFactory));
+
+            this.contextFactory = contextFactory;
+        }
+
         /// <summary>
         /// Hashes the value with the optionally provided string.
         /// </summary>
         /// <param name="value">The value to be hashed.</param>
-        /// <param name="hashingContext">Optional. Context for the hashing.</param>
+        /// <param name="optionsConfig">Optional. Function for hashing options configuration.</param>
         /// <returns>
         /// The hashed value.
         /// </returns>
-        public virtual byte[] Hash(byte[] value, IHashingContext hashingContext = null)
+        public virtual byte[] Hash(byte[] value, Action<IHashingContext> optionsConfig = null)
         {
             if (value == null)
             {
                 return null;
             }
 
-            var hasher = this.CreateHashAlgorithm(hashingContext);
-            var hash = hasher.ComputeHash(this.GetSaltedValue(value, hashingContext?.Salt));
-            return hash;
+            var hashingContext = this.GetHashingContext(optionsConfig);
+
+            try
+            {
+                var hasher = this.CreateHashAlgorithm(hashingContext);
+                var hash = hasher.ComputeHash(this.GetSaltedValue(value, hashingContext?.Salt));
+                return hash;
+            }
+            finally
+            {
+                hashingContext?.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Gets the hashing context.
+        /// </summary>
+        /// <remarks>
+        /// If a configuration is provided, a new <see cref="HashingContext"/> is created and the configuration applied,
+        /// otherwise <c>null</c> is returned.
+        /// </remarks>
+        /// <param name="optionsConfig">Function for hashing options configuration.</param>
+        /// <returns>
+        /// The hashing context.
+        /// </returns>
+        protected virtual HashingContext GetHashingContext(Action<IHashingContext> optionsConfig)
+        {
+            return optionsConfig == null ? null : this.contextFactory.CreateContext<HashingContext>();
         }
 
         /// <summary>
         /// Creates the hash algorithm.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="context">The hashing context.</param>
         /// <returns>
         /// The new hash algorithm.
         /// </returns>
-        protected abstract HashAlgorithm CreateHashAlgorithm(IContext context);
+        protected abstract HashAlgorithm CreateHashAlgorithm(IHashingContext context = null);
 
         /// <summary>
         /// Gets salted value.
