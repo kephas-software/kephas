@@ -32,6 +32,7 @@
         <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Serialization.ServiceStack.Text\Kephas.Serialization.ServiceStack.Text.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 
 </Project>

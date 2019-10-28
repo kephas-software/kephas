@@ -23,7 +23,7 @@ namespace Kephas.Serialization.ServiceStack.Text
     /// Generic interface for JSON serializer of a given value type.
     /// </summary>
     /// <typeparam name="TValue">Type of the value.</typeparam>
-    [SingletonAppServiceContract(ContractType = typeof(ITypeJsonSerializer))]
+    [SingletonAppServiceContract(ContractType = typeof(ITypeJsonSerializer), AllowMultiple = true)]
     public interface ITypeJsonSerializer<TValue> : ITypeJsonSerializer
     {
         /// <summary>
