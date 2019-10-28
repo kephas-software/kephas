@@ -27,6 +27,7 @@ $packages = @(
     "Kephas.Mail",
     "Kephas.Mail.MailKit",
     "Kephas.Messaging",
+#    "Kephas.Messaging.Azure.ServiceBus",
     "Kephas.Messaging.Model",
     "Kephas.Messaging.Redis",
     "Kephas.Model",
