@@ -17,11 +17,13 @@ namespace Kephas.Messaging.Redis.Routing
 
     using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Redis;
+    using Kephas.Redis.Configuration;
     using Kephas.Serialization;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
@@ -31,20 +33,22 @@ namespace Kephas.Messaging.Redis.Routing
     /// <summary>
     /// The Redis message router.
     /// </summary>
-    [MessageRouter(ReceiverUrlRegex = "app:.*", IsFallback = true)]
+    [MessageRouter(ReceiverUrlRegex = ChannelType + ":.*", IsFallback = true)]
     public class RedisMessageRouter : MessageRouterBase, IAsyncInitializable
     {
-        private const string ChannelName = "app";
+        private const string ChannelType = "app";
 
         private readonly InitializationMonitor<RedisMessageRouter, RedisMessageRouter> initializationMonitor = new InitializationMonitor<RedisMessageRouter, RedisMessageRouter>();
         private readonly FinalizationMonitor<RedisMessageRouter, RedisMessageRouter> finalizationMonitor = new FinalizationMonitor<RedisMessageRouter, RedisMessageRouter>();
         private readonly IRedisClient redisClient;
         private readonly ISerializationService serializationService;
+        private readonly IConfiguration<RedisClientSettings> redisConfiguration;
         private ISubscriber subscriber;
         private IContext appContext;
         private ChannelMessageQueue messageQueue;
         private ChannelMessageQueue appMessageQueue;
         private ChannelMessageQueue appInstanceMessageQueue;
+        private string rootChannelName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisMessageRouter"/> class.
@@ -54,16 +58,19 @@ namespace Kephas.Messaging.Redis.Routing
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="messageBuilderFactory">The message builder factory.</param>
         /// <param name="serializationService">The serialization service.</param>
+        /// <param name="redisConfiguration">The redis configuration.</param>
         public RedisMessageRouter(
             IAppRuntime appRuntime,
             IRedisClient redisClient,
             IMessageProcessor messageProcessor,
             IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory,
-            ISerializationService serializationService)
+            ISerializationService serializationService,
+            IConfiguration<RedisClientSettings> redisConfiguration)
             : base(messageProcessor, messageBuilderFactory)
         {
             this.redisClient = redisClient;
             this.serializationService = serializationService;
+            this.redisConfiguration = redisConfiguration;
             this.AppRuntime = appRuntime;
         }
 
@@ -98,19 +105,22 @@ namespace Kephas.Messaging.Redis.Routing
 
                 this.Logger.Info($"Initializing the {messageRouterName}...");
 
+                var redisNS = this.redisConfiguration.Settings.Namespace;
+                this.rootChannelName = string.IsNullOrEmpty(redisNS) ? ChannelType : $"{redisNS}:{ChannelType}";
+
                 this.appContext = context;
                 var connection = this.redisClient.GetConnection();
 
                 this.Logger.Info($"Starting the {messageRouterName}...");
 
                 this.subscriber = connection.GetSubscriber();
-                this.messageQueue = await this.subscriber.SubscribeAsync(ChannelName).PreserveThreadContext();
+                this.messageQueue = await this.subscriber.SubscribeAsync(this.rootChannelName).PreserveThreadContext();
                 this.messageQueue.OnMessage(this.ReceiveMessageAsync);
 
-                this.appMessageQueue = await this.subscriber.SubscribeAsync($"{ChannelName}:{this.AppRuntime.GetAppId()}").PreserveThreadContext();
+                this.appMessageQueue = await this.subscriber.SubscribeAsync($"{this.rootChannelName}:{this.AppRuntime.GetAppId()}").PreserveThreadContext();
                 this.appMessageQueue.OnMessage(this.ReceiveMessageAsync);
 
-                this.appInstanceMessageQueue = await this.subscriber.SubscribeAsync($"{ChannelName}:{this.AppRuntime.GetAppInstanceId()}").PreserveThreadContext();
+                this.appInstanceMessageQueue = await this.subscriber.SubscribeAsync($"{this.rootChannelName}:{this.AppRuntime.GetAppInstanceId()}").PreserveThreadContext();
                 this.appInstanceMessageQueue.OnMessage(this.ReceiveMessageAsync);
 
                 this.Logger.Info($"{messageRouterName} started.");
@@ -189,15 +199,15 @@ namespace Kephas.Messaging.Redis.Routing
                 {
                     var channelName = string.IsNullOrEmpty(recipient.AppInstanceId)
                                         ? string.IsNullOrEmpty(recipient.AppId)
-                                            ? ChannelName
-                                            : $"{ChannelName}:{recipient.AppId}"
-                                        : $"{ChannelName}:{recipient.AppInstanceId}";
+                                            ? this.rootChannelName
+                                            : $"{this.rootChannelName}:{recipient.AppId}"
+                                        : $"{this.rootChannelName}:{recipient.AppInstanceId}";
                     await this.PublishAsync(serializedMessage, channelName, brokeredMessage.IsOneWay).PreserveThreadContext();
                 }
             }
             else
             {
-                await this.PublishAsync(serializedMessage, ChannelName, brokeredMessage.IsOneWay).PreserveThreadContext();
+                await this.PublishAsync(serializedMessage, this.rootChannelName, brokeredMessage.IsOneWay).PreserveThreadContext();
             }
 
             return (RoutingInstruction.None, null);
