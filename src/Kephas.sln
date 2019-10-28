@@ -178,9 +178,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.Python", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.Python.Tests", "Tests\Kephas.Scripting.Python.Tests\Kephas.Scripting.Python.Tests.csproj", "{0B937C85-0612-413E-B0C7-3DAAFFF62AFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting.Lua", "Kephas.Scripting.Lua\Kephas.Scripting.Lua.csproj", "{BAEFABFA-124F-4FCA-A594-9111FB16EFD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.Lua", "Kephas.Scripting.Lua\Kephas.Scripting.Lua.csproj", "{BAEFABFA-124F-4FCA-A594-9111FB16EFD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Scripting.Lua.Tests", "Tests\Kephas.Scripting.Lua.Tests\Kephas.Scripting.Lua.Tests.csproj", "{060279F8-A987-485A-96E0-6DBB96C3AD59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.Lua.Tests", "Tests\Kephas.Scripting.Lua.Tests\Kephas.Scripting.Lua.Tests.csproj", "{060279F8-A987-485A-96E0-6DBB96C3AD59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Redis", "Kephas.Messaging.Redis\Kephas.Messaging.Redis.csproj", "{78363C10-A2E4-45A3-8574-22A392980529}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Redis", "Kephas.Redis\Kephas.Redis.csproj", "{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -492,6 +496,14 @@ Global
 		{060279F8-A987-485A-96E0-6DBB96C3AD59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{060279F8-A987-485A-96E0-6DBB96C3AD59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{060279F8-A987-485A-96E0-6DBB96C3AD59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78363C10-A2E4-45A3-8574-22A392980529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78363C10-A2E4-45A3-8574-22A392980529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78363C10-A2E4-45A3-8574-22A392980529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78363C10-A2E4-45A3-8574-22A392980529}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
