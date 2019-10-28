@@ -210,9 +210,44 @@ namespace Kephas.Application
         /// <param name="appVersion">The application version.</param>
         protected virtual void InitializeAppProperties(Assembly entryAssembly, string appId, string appVersion)
         {
-            this[AppIdKey] = appId = string.IsNullOrEmpty(appId) ? (entryAssembly?.GetName().Name ?? "App") : appId;
+            this[AppIdKey] = appId = this.GetAppId(entryAssembly, appId);
             this[AppInstanceIdKey] = $"{appId}-{Guid.NewGuid():N}";
             this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? (entryAssembly?.GetName().Version.ToString() ?? "0.0.0.0") : appVersion;
+        }
+
+        /// <summary>
+        /// Gets the application identifier.
+        /// </summary>
+        /// <param name="entryAssembly">The entry assembly.</param>
+        /// <param name="appId">Identifier for the application.</param>
+        /// <returns>
+        /// The application identifier.
+        /// </returns>
+        protected virtual string GetAppId(Assembly entryAssembly, string appId)
+        {
+            if (!string.IsNullOrEmpty(appId))
+            {
+                return appId;
+            }
+
+            if (entryAssembly == null)
+            {
+                return "App";
+            }
+
+            var titleAttr = entryAssembly.GetCustomAttribute<AssemblyTitleAttribute>();
+            if (titleAttr != null)
+            {
+                return titleAttr.Title;
+            }
+
+            var productAttr = entryAssembly.GetCustomAttribute<AssemblyProductAttribute>();
+            if (productAttr != null)
+            {
+                return productAttr.Product;
+            }
+
+            return entryAssembly.GetName().Name;
         }
 
         /// <summary>
