@@ -22,16 +22,16 @@ namespace Kephas.Core.Tests.Cryptography
     using NUnit.Framework;
 
     [TestFixture]
-    public class AesEncryptionServiceTest
+    public class AesEncryptionServiceTest : TestBase
     {
         [Test]
         [TestCase("some text to encrypt", "/gPFNSFpnBLe1jOr7rqEpUPlJ1iM9ZhBCt9hE9DgYlk=")]
         public async Task EncryptAsync(string value, string key)
         {
-            var service = new AesEncryptionService();
-            var context = new EncryptionContext(Substitute.For<ICompositionContext>()) { Key = this.GetKey(key) };
-            var encrypted = await service.EncryptAsync(value, context);
-            var decrypted = await service.DecryptAsync(encrypted, context);
+            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<ICompositionContext>()));
+            var service = new AesEncryptionService(ctxFactory);
+            var encrypted = await service.EncryptAsync(value, ctx => ctx.Key(this.GetKey(key)));
+            var decrypted = await service.DecryptAsync(encrypted, ctx => ctx.Key(this.GetKey(key)));
 
             Assert.AreEqual(value, decrypted);
         }
@@ -40,10 +40,10 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("some text to encrypt", "/gPFNSFpnBLe1jOr7rqEpUPlJ1iM9ZhBCt9hE9DgYlk=")]
         public async Task EncryptAsync_twice_different_values(string value, string key)
         {
-            var service = new AesEncryptionService();
-            var context = new EncryptionContext(Substitute.For<ICompositionContext>()) { Key = this.GetKey(key) };
-            var encrypted1 = await service.EncryptAsync(value, context);
-            var encrypted2 = await service.EncryptAsync(value, context);
+            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<ICompositionContext>()));
+            var service = new AesEncryptionService(ctxFactory);
+            var encrypted1 = await service.EncryptAsync(value, ctx => ctx.Key(this.GetKey(key)));
+            var encrypted2 = await service.EncryptAsync(value, ctx => ctx.Key(this.GetKey(key)));
 
             Assert.AreNotEqual(encrypted1, encrypted2);
         }
@@ -52,10 +52,10 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("some text to encrypt", "/gPFNSFpnBLe1jOr7rqEpUPlJ1iM9ZhBCt9hE9DgYlk=")]
         public void Encrypt(string value, string key)
         {
-            var service = new AesEncryptionService();
-            var context = new EncryptionContext(Substitute.For<ICompositionContext>()) { Key = this.GetKey(key) };
-            var encrypted = service.Encrypt(value, context);
-            var decrypted = service.Decrypt(encrypted, context);
+            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<ICompositionContext>()));
+            var service = new AesEncryptionService(ctxFactory);
+            var encrypted = service.Encrypt(value, ctx => ctx.Key(this.GetKey(key)));
+            var decrypted = service.Decrypt(encrypted, ctx => ctx.Key(this.GetKey(key)));
 
             Assert.AreEqual(value, decrypted);
         }
@@ -64,10 +64,10 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase("some text to encrypt", "/gPFNSFpnBLe1jOr7rqEpUPlJ1iM9ZhBCt9hE9DgYlk=")]
         public void Encrypt_twice_different_values(string value, string key)
         {
-            var service = new AesEncryptionService();
-            var context = new EncryptionContext(Substitute.For<ICompositionContext>()) { Key = this.GetKey(key) };
-            var encrypted1 = service.Encrypt(value, context);
-            var encrypted2 = service.Encrypt(value, context);
+            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<ICompositionContext>()));
+            var service = new AesEncryptionService(ctxFactory);
+            var encrypted1 = service.Encrypt(value, ctx => ctx.Key(this.GetKey(key)));
+            var encrypted2 = service.Encrypt(value, ctx => ctx.Key(this.GetKey(key)));
 
             Assert.AreNotEqual(encrypted1, encrypted2);
         }
@@ -77,9 +77,9 @@ namespace Kephas.Core.Tests.Cryptography
         [TestCase(192, 24)]
         public void GenerateKey(int keySize, int expectedLength)
         {
-            var service = new AesEncryptionService();
-            var context = new EncryptionContext(Substitute.For<ICompositionContext>()) { KeySize = keySize };
-            var key = service.GenerateKey(context);
+            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<ICompositionContext>()));
+            var service = new AesEncryptionService(ctxFactory);
+            var key = service.GenerateKey(ctx => ctx.KeySize(keySize));
 
             Assert.AreEqual(expectedLength, key.Length);
         }

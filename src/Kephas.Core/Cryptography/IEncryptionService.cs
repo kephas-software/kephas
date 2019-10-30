@@ -10,6 +10,7 @@
 
 namespace Kephas.Cryptography
 {
+    using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -25,26 +26,26 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Generates a key.
         /// </summary>
-        /// <param name="encryptionContext">Optional. Context for the encryption.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// An array of byte.
         /// </returns>
-        byte[] GenerateKey(IEncryptionContext encryptionContext = null);
+        byte[] GenerateKey(Action<IEncryptionContext> optionsConfig = null);
 
         /// <summary>
         /// Encrypts the input stream and writes the encrypted content into the output stream.
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         Task EncryptAsync(
             Stream input,
             Stream output,
-            IEncryptionContext context = null,
+            Action<IEncryptionContext> optionsConfig = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -52,15 +53,15 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         Task DecryptAsync(
             Stream input,
             Stream output,
-            IEncryptionContext context = null,
+            Action<IEncryptionContext> optionsConfig = null,
             CancellationToken cancellationToken = default);
     }
 }

@@ -16,21 +16,22 @@ namespace Kephas.Core.Tests.Cryptography
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Composition;
     using Kephas.Cryptography;
-
+    using Kephas.Services;
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class SymmetricEncryptionServiceBaseTest
+    public class SymmetricEncryptionServiceBaseTest : TestBase
     {
         [Test]
         public void GenerateKey_ensure_disposed()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<ICompositionContext>()));
             var alg = Substitute.For<SymmetricAlgorithm>();
-            var service = new TestEncryptionService(ctx => alg);
+            var service = new TestEncryptionService(ctxFactory, ctx => alg);
 
             var key = service.GenerateKey();
             alg.Received(1).Dispose();
@@ -39,8 +40,9 @@ namespace Kephas.Core.Tests.Cryptography
         [Test]
         public void Encrypt_ensure_disposed()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<ICompositionContext>()));
             var alg = Substitute.For<SymmetricAlgorithm>();
-            var service = new TestEncryptionService(ctx => alg);
+            var service = new TestEncryptionService(ctxFactory, ctx => alg);
 
             var encrypted = service.Encrypt("gigi");
             alg.Received(1).Dispose();
@@ -49,8 +51,9 @@ namespace Kephas.Core.Tests.Cryptography
         [Test]
         public async Task EncryptAsync_ensure_disposed()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<ICompositionContext>()));
             var alg = Substitute.For<SymmetricAlgorithm>();
-            var service = new TestEncryptionService(ctx => alg);
+            var service = new TestEncryptionService(ctxFactory, ctx => alg);
 
             var encrypted = await service.EncryptAsync("gigi");
             alg.Received(1).Dispose();
@@ -59,8 +62,9 @@ namespace Kephas.Core.Tests.Cryptography
         [Test]
         public void Decrypt_ensure_disposed()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<ICompositionContext>()));
             var alg = Substitute.For<SymmetricAlgorithm>();
-            var service = new TestEncryptionService(ctx => alg);
+            var service = new TestEncryptionService(ctxFactory, ctx => alg);
 
             var decrypted = service.Decrypt("EDiOnvVKLypF2p0Fw+gb97AVttPLWpBOXvG9gpk61f76");
             alg.Received(1).Dispose();
@@ -69,8 +73,9 @@ namespace Kephas.Core.Tests.Cryptography
         [Test]
         public async Task DecryptAsync_ensure_disposed()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new EncryptionContext(Substitute.For<ICompositionContext>()));
             var alg = Substitute.For<SymmetricAlgorithm>();
-            var service = new TestEncryptionService(ctx => alg);
+            var service = new TestEncryptionService(ctxFactory, ctx => alg);
 
             var decrypted = await service.DecryptAsync("EDiOnvVKLypF2p0Fw+gb97AVttPLWpBOXvG9gpk61f76");
             alg.Received(1).Dispose();
@@ -80,8 +85,8 @@ namespace Kephas.Core.Tests.Cryptography
         {
             private readonly Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor;
 
-            public TestEncryptionService(Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor)
-                : base(algorithmCtor)
+            public TestEncryptionService(IContextFactory contextFactory, Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor)
+                : base(contextFactory, algorithmCtor)
             {
                 this.algorithmCtor = algorithmCtor;
             }

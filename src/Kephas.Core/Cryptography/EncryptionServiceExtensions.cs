@@ -29,18 +29,21 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="encryptionService">The encryption service to act on.</param>
         /// <param name="input">The input string.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of the encrypted bytes (Base64 encoded).
         /// </returns>
+        /// <example>
+        /// .
+        /// </example>
         public static async Task<string> EncryptAsync(
             this IEncryptionService encryptionService,
             string input,
-            IEncryptionContext context = null,
+            Action<IEncryptionContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            var bytes = await EncryptAsync(encryptionService, Encoding.UTF8.GetBytes(input), context, cancellationToken)
+            var bytes = await EncryptAsync(encryptionService, Encoding.UTF8.GetBytes(input), optionsConfig, cancellationToken)
                             .PreserveThreadContext();
             return Convert.ToBase64String(bytes);
         }
@@ -50,15 +53,15 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="encryptionService">The encryption service to act on.</param>
         /// <param name="input">The input bytes.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of the encrypted bytes.
         /// </returns>
         public static async Task<byte[]> EncryptAsync(
             this IEncryptionService encryptionService,
             byte[] input,
-            IEncryptionContext context = null,
+            Action<IEncryptionContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(encryptionService, nameof(encryptionService));
@@ -66,7 +69,7 @@ namespace Kephas.Cryptography
             using (var inputStream = new MemoryStream(input))
             using (var outputStream = new MemoryStream())
             {
-                await encryptionService.EncryptAsync(inputStream, outputStream, context, cancellationToken).PreserveThreadContext();
+                await encryptionService.EncryptAsync(inputStream, outputStream, optionsConfig, cancellationToken).PreserveThreadContext();
                 var outputBytes = outputStream.ToArray();
                 return outputBytes;
             }
@@ -77,16 +80,16 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="encryptionService">The encryption service to act on.</param>
         /// <param name="input">The input string.</param>
-        /// <param name="context">The encryption context (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The Base64 encoded encrypted bytes.
         /// </returns>
         public static string Encrypt(
             this IEncryptionService encryptionService,
             string input,
-            IEncryptionContext context = null)
+            Action<IEncryptionContext> optionsConfig = null)
         {
-            var bytes = Encrypt(encryptionService, Encoding.UTF8.GetBytes(input), context);
+            var bytes = Encrypt(encryptionService, Encoding.UTF8.GetBytes(input), optionsConfig);
             return Convert.ToBase64String(bytes);
         }
 
@@ -95,14 +98,14 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="encryptionService">The encryption service to act on.</param>
         /// <param name="input">The input bytes.</param>
-        /// <param name="context">The encryption context (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The encrypted bytes.
         /// </returns>
         public static byte[] Encrypt(
             this IEncryptionService encryptionService,
             byte[] input,
-            IEncryptionContext context = null)
+            Action<IEncryptionContext> optionsConfig = null)
         {
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
@@ -111,13 +114,13 @@ namespace Kephas.Cryptography
                 using (var inputStream = new MemoryStream(input))
                 using (var outputStream = new MemoryStream())
                 {
-                    syncEncryptionService.Encrypt(inputStream, outputStream, context);
+                    syncEncryptionService.Encrypt(inputStream, outputStream, optionsConfig);
                     var outputBytes = outputStream.ToArray();
                     return outputBytes;
                 }
             }
 
-            return EncryptAsync(encryptionService, input, context).GetResultNonLocking();
+            return EncryptAsync(encryptionService, input, optionsConfig).GetResultNonLocking();
         }
 
         /// <summary>
@@ -125,21 +128,21 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="encryptionService">The encryption service to act on.</param>
         /// <param name="input">The Base64 encoded input string.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of a decrypted string.
         /// </returns>
         public static async Task<string> DecryptAsync(
             this IEncryptionService encryptionService,
             string input,
-            IEncryptionContext context = null,
+            Action<IEncryptionContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             var bytes = await DecryptAsync(
                             encryptionService,
                             Convert.FromBase64String(input),
-                            context,
+                            optionsConfig,
                             cancellationToken).PreserveThreadContext();
 
             return Encoding.UTF8.GetString(bytes);
@@ -150,15 +153,15 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="encryptionService">The encryption service to act on.</param>
         /// <param name="input">The input bytes.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of a decrypted bytes.
         /// </returns>
         public static async Task<byte[]> DecryptAsync(
             this IEncryptionService encryptionService,
             byte[] input,
-            IEncryptionContext context = null,
+            Action<IEncryptionContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(encryptionService, nameof(encryptionService));
@@ -166,7 +169,7 @@ namespace Kephas.Cryptography
             using (var inputStream = new MemoryStream(input))
             using (var outputStream = new MemoryStream())
             {
-                await encryptionService.DecryptAsync(inputStream, outputStream, context, cancellationToken).PreserveThreadContext();
+                await encryptionService.DecryptAsync(inputStream, outputStream, optionsConfig, cancellationToken).PreserveThreadContext();
                 var outputBytes = outputStream.ToArray();
                 return outputBytes;
             }
@@ -177,16 +180,16 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="encryptionService">The encryption service to act on.</param>
         /// <param name="input">The Base64 encoded input string.</param>
-        /// <param name="context">The encryption context (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// A promise of the decrypted string.
         /// </returns>
         public static string Decrypt(
             this IEncryptionService encryptionService,
             string input,
-            IEncryptionContext context = null)
+            Action<IEncryptionContext> optionsConfig = null)
         {
-            var bytes = Decrypt(encryptionService, Convert.FromBase64String(input), context);
+            var bytes = Decrypt(encryptionService, Convert.FromBase64String(input), optionsConfig);
             return Encoding.UTF8.GetString(bytes);
         }
 
@@ -195,14 +198,14 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="encryptionService">The encryption service to act on.</param>
         /// <param name="input">The input bytes.</param>
-        /// <param name="context">The encryption context (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The decrypted bytes.
         /// </returns>
         public static byte[] Decrypt(
             this IEncryptionService encryptionService,
             byte[] input,
-            IEncryptionContext context = null)
+            Action<IEncryptionContext> optionsConfig = null)
         {
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
@@ -211,13 +214,13 @@ namespace Kephas.Cryptography
                 using (var inputStream = new MemoryStream(input))
                 using (var outputStream = new MemoryStream())
                 {
-                    syncEncryptionService.Decrypt(inputStream, outputStream, context);
+                    syncEncryptionService.Decrypt(inputStream, outputStream, optionsConfig);
                     var outputBytes = outputStream.ToArray();
                     return outputBytes;
                 }
             }
 
-            return DecryptAsync(encryptionService, input, context).GetResultNonLocking();
+            return DecryptAsync(encryptionService, input, optionsConfig).GetResultNonLocking();
         }
     }
 }

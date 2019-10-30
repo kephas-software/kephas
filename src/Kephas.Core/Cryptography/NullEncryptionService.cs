@@ -10,6 +10,7 @@
 
 namespace Kephas.Cryptography
 {
+    using System;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -27,11 +28,11 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Generates a key.
         /// </summary>
-        /// <param name="encryptionContext">Optional. Context for the encryption.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
-        /// An array of byte.
+        /// An array of bytes.
         /// </returns>
-        public byte[] GenerateKey(IEncryptionContext encryptionContext = null)
+        public byte[] GenerateKey(Action<IEncryptionContext> optionsConfig = null)
         {
             return null;
         }
@@ -41,12 +42,12 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task EncryptAsync(Stream input, Stream output, IEncryptionContext context = null, CancellationToken cancellationToken = default)
+        public Task EncryptAsync(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
@@ -59,12 +60,12 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task DecryptAsync(Stream input, Stream output, IEncryptionContext context = null, CancellationToken cancellationToken = default)
+        public Task DecryptAsync(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
@@ -77,8 +78,8 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        public void Encrypt(Stream input, Stream output, IEncryptionContext context = null)
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        public void Encrypt(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
@@ -91,8 +92,8 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        public void Decrypt(Stream input, Stream output, IEncryptionContext context = null)
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        public void Decrypt(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));

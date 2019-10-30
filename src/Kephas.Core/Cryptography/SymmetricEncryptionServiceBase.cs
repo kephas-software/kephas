@@ -19,6 +19,7 @@ namespace Kephas.Cryptography
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.IO;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -28,31 +29,36 @@ namespace Kephas.Cryptography
     public abstract class SymmetricEncryptionServiceBase<TAlgorithm> : IEncryptionService, ISyncEncryptionService
        where TAlgorithm : SymmetricAlgorithm
     {
-        /// <summary>
-        /// The algorithm constructor.
-        /// </summary>
+        private readonly IContextFactory contextFactory;
         private readonly Func<IEncryptionContext, TAlgorithm> algorithmCtor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SymmetricEncryptionServiceBase{TAlgorithm}"/> class.
+        /// Initializes a new instance of the <see cref="SymmetricEncryptionServiceBase{TAlgorithm}"/>
+        /// class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="algorithmCtor">The algorithm constructor.</param>
-        protected SymmetricEncryptionServiceBase(Func<IEncryptionContext, TAlgorithm> algorithmCtor)
+        protected SymmetricEncryptionServiceBase(
+            IContextFactory contextFactory,
+            Func<IEncryptionContext, TAlgorithm> algorithmCtor)
         {
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(algorithmCtor, nameof(algorithmCtor));
 
+            this.contextFactory = contextFactory;
             this.algorithmCtor = algorithmCtor;
         }
 
         /// <summary>
         /// Generates a key.
         /// </summary>
-        /// <param name="encryptionContext">Optional. Context for the encryption.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// An array of byte.
         /// </returns>
-        public virtual byte[] GenerateKey(IEncryptionContext encryptionContext = null)
+        public virtual byte[] GenerateKey(Action<IEncryptionContext> optionsConfig = null)
         {
+            using (var encryptionContext = this.CreateEncryptionContext(optionsConfig))
             using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
             {
                 var keySize = encryptionContext?.KeySize;
@@ -71,23 +77,24 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         public Task EncryptAsync(
             Stream input,
             Stream output,
-            IEncryptionContext context = null,
+            Action<IEncryptionContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            using (var algorithm = this.CreateSymmetricAlgorithm(context))
+            using (var encryptionContext = this.CreateEncryptionContext(optionsConfig))
+            using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
             {
-                return this.EncryptAsync(input, output, algorithm, context, cancellationToken);
+                return this.EncryptAsync(input, output, algorithm, encryptionContext, cancellationToken);
             }
         }
 
@@ -96,23 +103,24 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
         public Task DecryptAsync(
             Stream input,
             Stream output,
-            IEncryptionContext context = null,
+            Action<IEncryptionContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            using (var algorithm = this.CreateSymmetricAlgorithm(context))
+            using (var encryptionContext = this.CreateEncryptionContext(optionsConfig))
+            using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
             {
-                return this.DecryptAsync(input, output, algorithm, context, cancellationToken);
+                return this.DecryptAsync(input, output, algorithm, encryptionContext, cancellationToken);
             }
         }
 
@@ -121,15 +129,16 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        public void Encrypt(Stream input, Stream output, IEncryptionContext context = null)
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        public void Encrypt(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            using (var algorithm = this.CreateSymmetricAlgorithm(context))
+            using (var encryptionContext = this.CreateEncryptionContext(optionsConfig))
+            using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
             {
-                this.Encrypt(input, output, algorithm, context);
+                this.Encrypt(input, output, algorithm, encryptionContext);
             }
         }
 
@@ -138,16 +147,31 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
-        public void Decrypt(Stream input, Stream output, IEncryptionContext context = null)
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        public void Decrypt(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            using (var algorithm = this.CreateSymmetricAlgorithm(context))
+            using (var encryptionContext = this.CreateEncryptionContext(optionsConfig))
+            using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
             {
-                this.Decrypt(input, output, algorithm, context);
+                this.Decrypt(input, output, algorithm, encryptionContext);
             }
+        }
+
+        /// <summary>
+        /// Creates an encryption context.
+        /// </summary>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The new encryption context.
+        /// </returns>
+        protected virtual IEncryptionContext CreateEncryptionContext(Action<IEncryptionContext> optionsConfig = null)
+        {
+            var context = this.contextFactory.CreateContext<EncryptionContext>();
+            optionsConfig?.Invoke(context);
+            return context;
         }
 
         /// <summary>

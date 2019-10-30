@@ -10,6 +10,7 @@
 
 namespace Kephas.Cryptography
 {
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -32,5 +33,49 @@ namespace Kephas.Cryptography
         /// The size of the key.
         /// </value>
         int? KeySize { get; set; }
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IEncryptionContext"/>.
+    /// </summary>
+    public static class EncryptionContextExtensions
+    {
+        /// <summary>
+        /// Sets the key.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The encryption context.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext Key<TContext>(this TContext context, byte[] key)
+            where TContext : class, IEncryptionContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.Key = key;
+
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the key size.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The encryption context.</param>
+        /// <param name="keySize">Size of the key.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext KeySize<TContext>(this TContext context, int? keySize)
+            where TContext : class, IEncryptionContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.KeySize = keySize;
+
+            return context;
+        }
     }
 }

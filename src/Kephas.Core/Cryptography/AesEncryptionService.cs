@@ -23,8 +23,9 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Initializes a new instance of the <see cref="AesEncryptionService"/> class.
         /// </summary>
-        public AesEncryptionService()
-            : base(ctx => new AesManaged())
+        /// <param name="contextFactory">The context factory.</param>
+        public AesEncryptionService(IContextFactory contextFactory)
+            : base(contextFactory, ctx => new AesManaged())
         {
         }
     }

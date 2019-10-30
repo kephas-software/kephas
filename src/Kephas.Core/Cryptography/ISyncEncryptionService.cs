@@ -10,6 +10,7 @@
 
 namespace Kephas.Cryptography
 {
+    using System;
     using System.IO;
 
     /// <summary>
@@ -22,21 +23,21 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         void Encrypt(
             Stream input,
             Stream output,
-            IEncryptionContext context = null);
+            Action<IEncryptionContext> optionsConfig = null);
 
         /// <summary>
         /// Decrypts the input stream and writes the decrypted content into the output stream.
         /// </summary>
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
-        /// <param name="context">The encryption context (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         void Decrypt(
             Stream input,
             Stream output,
-            IEncryptionContext context = null);
+            Action<IEncryptionContext> optionsConfig = null);
     }
 }
