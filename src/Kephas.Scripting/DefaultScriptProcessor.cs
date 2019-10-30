@@ -76,20 +76,23 @@ namespace Kephas.Scripting
                     });
 
             scriptingBehaviorFactories
+                .Where(f => f.Metadata.Language != null)
+                .SelectMany(f => f.Metadata.Language)
+                .Distinct()
+                .ForEach(l => this.scriptingBehaviorFactories.Add(l, new List<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>()));
+
+            scriptingBehaviorFactories
                 .Order()
                 .ForEach(f =>
                     {
-                        f.Metadata.Language.ForEach(l =>
+                        if (f.Metadata.Language == null || f.Metadata.Language.Length == 0)
                         {
-                            var list = this.scriptingBehaviorFactories.TryGetValue(l);
-                            if (list == null)
-                            {
-                                list = new List<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>();
-                                this.scriptingBehaviorFactories.Add(l, list);
-                            }
-
-                            list.Add(f);
-                        });
+                            this.scriptingBehaviorFactories.Values.ForEach(list => list.Add(f));
+                        }
+                        else
+                        {
+                            f.Metadata.Language.ForEach(l => this.scriptingBehaviorFactories[l].Add(f));
+                        }
                     });
         }
 
