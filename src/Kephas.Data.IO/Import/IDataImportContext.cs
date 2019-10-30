@@ -25,28 +25,28 @@ namespace Kephas.Data.IO.Import
     public interface IDataImportContext : IDataIOContext
     {
         /// <summary>
-        /// Gets the data space.
+        /// Gets or sets the data space.
         /// </summary>
         /// <value>
         /// The data space.
         /// </value>
-        IDataSpace DataSpace { get; }
+        IDataSpace DataSpace { get; set; }
 
         /// <summary>
-        /// Gets or sets the data conversion context configuration.
+        /// Gets or sets the data conversion options configuration.
         /// </summary>
         /// <value>
-        /// The data conversion context configuration.
+        /// The data conversion options configuration.
         /// </value>
-        Action<object, IDataConversionContext> DataConversionContextConfig { get; set; }
+        Action<object, IDataConversionContext> DataConversionConfig { get; set; }
 
         /// <summary>
-        /// Gets or sets the persist changes context configuration.
+        /// Gets or sets the persist changes options configuration.
         /// </summary>
         /// <value>
-        /// The persist changes context configuration.
+        /// The persist changes options configuration.
         /// </value>
-        Action<IPersistChangesContext> PersistChangesContextConfig { get; set; }
+        Action<IPersistChangesContext> PersistChangesConfig { get; set; }
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// The result key.
         /// </summary>
-        private const string ResultKey = "SYSTEM_Result";
+        private const string ResultKey = "Result";
 
         /// <summary>
         /// Ensures that a result is set in the options.
@@ -91,39 +91,58 @@ namespace Kephas.Data.IO.Import
         }
 
         /// <summary>
-        /// Sets the data conversion context configuration.
+        /// Sets the data context.
         /// </summary>
-        /// <param name="dataImportContext">The data import context to act on.</param>
-        /// <param name="dataConversionContextConfig">The data conversion context configuration.</param>
+        /// <param name="dataImportContext">The data import context.</param>
+        /// <param name="dataSpace">The data space.</param>
         /// <returns>
-        /// The data import context.
+        /// This <paramref name="dataImportContext"/>.
         /// </returns>
-        public static IDataImportContext WithDataConversionContextConfig(
+        public static IDataImportContext DataSpace(
             this IDataImportContext dataImportContext,
-            Action<object, IDataConversionContext> dataConversionContextConfig)
+            IDataSpace dataSpace)
         {
             Requires.NotNull(dataImportContext, nameof(dataImportContext));
 
-            dataImportContext.DataConversionContextConfig = dataConversionContextConfig;
+            dataImportContext.DataSpace = dataSpace;
 
             return dataImportContext;
         }
 
         /// <summary>
-        /// Sets the persist changes context configuration.
+        /// Sets the data conversion options configuration.
         /// </summary>
-        /// <param name="dataImportContext">The data import context to act on.</param>
-        /// <param name="persistChangesContextConfig">The persist changes context configuration.</param>
+        /// <param name="dataImportContext">The data import context.</param>
+        /// <param name="optionsConfig">The data conversion options configuration.</param>
         /// <returns>
-        /// The data import context.
+        /// This <paramref name="dataImportContext"/>.
         /// </returns>
-        public static IDataImportContext WithPersistChangesContextConfig(
+        public static IDataImportContext DataConversionConfig(
             this IDataImportContext dataImportContext,
-            Action<IPersistChangesContext> persistChangesContextConfig)
+            Action<object, IDataConversionContext> optionsConfig)
         {
             Requires.NotNull(dataImportContext, nameof(dataImportContext));
 
-            dataImportContext.PersistChangesContextConfig = persistChangesContextConfig;
+            dataImportContext.DataConversionConfig = optionsConfig;
+
+            return dataImportContext;
+        }
+
+        /// <summary>
+        /// Sets the persist changes options configuration.
+        /// </summary>
+        /// <param name="dataImportContext">The data import context to act on.</param>
+        /// <param name="optionsConfig">The persist changes options configuration.</param>
+        /// <returns>
+        /// This <paramref name="dataImportContext"/>.
+        /// </returns>
+        public static IDataImportContext PersistChangesConfig(
+            this IDataImportContext dataImportContext,
+            Action<IPersistChangesContext> optionsConfig)
+        {
+            Requires.NotNull(dataImportContext, nameof(dataImportContext));
+
+            dataImportContext.PersistChangesConfig = optionsConfig;
 
             return dataImportContext;
         }

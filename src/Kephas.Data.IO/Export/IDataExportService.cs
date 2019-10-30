@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.IO.Export
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -25,11 +26,11 @@ namespace Kephas.Data.IO.Export
         /// <summary>
         /// Exports data asynchronously.
         /// </summary>
-        /// <param name="context">The export context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A data export result.
+        /// An asynchronous result that yields the export result.
         /// </returns>
-        Task<IOperationResult> ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default);
+        Task<IOperationResult> ExportDataAsync(Action<IDataExportContext> optionsConfig = null, CancellationToken cancellationToken = default);
     }
 }

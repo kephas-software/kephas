@@ -12,12 +12,12 @@ namespace Kephas.Data.IO.Import
 {
     using System;
 
+    using Kephas.Composition;
     using Kephas.Data;
     using Kephas.Data.Commands;
     using Kephas.Data.Conversion;
     using Kephas.Data.IO;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Services;
 
     /// <summary>
     /// A data import context.
@@ -27,10 +27,18 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// Initializes a new instance of the <see cref="DataImportContext"/> class.
         /// </summary>
+        /// <param name="compositionContext">The composition context.</param>
+        public DataImportContext(ICompositionContext compositionContext)
+            : base(compositionContext)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataImportContext"/> class.
+        /// </summary>
         /// <param name="dataSpace">The data space.</param>
-        /// <param name="operationContext">Optional. Context for the operation.</param>
-        public DataImportContext(IDataSpace dataSpace, IContext operationContext = null)
-            : base(operationContext ?? dataSpace)
+        public DataImportContext(IDataSpace dataSpace)
+            : base(dataSpace)
         {
             Requires.NotNull(dataSpace, nameof(dataSpace));
 
@@ -38,27 +46,27 @@ namespace Kephas.Data.IO.Import
         }
 
         /// <summary>
-        /// Gets the data space.
+        /// Gets or sets the data space.
         /// </summary>
         /// <value>
         /// The data space.
         /// </value>
-        public IDataSpace DataSpace { get; }
+        public IDataSpace DataSpace { get; set; }
 
         /// <summary>
-        /// Gets or sets the data conversion context configuration.
+        /// Gets or sets the data conversion options configuration.
         /// </summary>
         /// <value>
-        /// The data conversion context configuration.
+        /// The data conversion options configuration.
         /// </value>
-        public Action<object, IDataConversionContext> DataConversionContextConfig { get; set; }
+        public Action<object, IDataConversionContext> DataConversionConfig { get; set; }
 
         /// <summary>
-        /// Gets or sets the persist changes context configuration.
+        /// Gets or sets the persist changes options configuration.
         /// </summary>
         /// <value>
-        /// The persist changes context configuration.
+        /// The persist changes options configuration.
         /// </value>
-        public Action<IPersistChangesContext> PersistChangesContextConfig { get; set; }
+        public Action<IPersistChangesContext> PersistChangesConfig { get; set; }
     }
 }

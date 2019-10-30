@@ -40,36 +40,32 @@ namespace Kephas.Data.IO.Import
     [OverridePriority(Priority.Low)]
     public class DefaultDataImportService : Loggable, IDataImportService
     {
-        /// <summary>
-        /// The projected type resolver.
-        /// </summary>
         private readonly IProjectedTypeResolver projectedTypeResolver;
-
-        /// <summary>
-        /// The behavior behaviorFactories.
-        /// </summary>
         private readonly ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories;
-
-        /// <summary>
-        /// The data source reader provider.
-        /// </summary>
+        private readonly IContextFactory contextFactory;
         private readonly IDataStreamReadService dataStreamReadService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataImportService"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="dataStreamReadService">The data source read service.</param>
         /// <param name="conversionService">The conversion service.</param>
         /// <param name="projectedTypeResolver">The projected type resolver.</param>
-        /// <param name="behaviorFactories">The behavior factories (optional).</param>
+        /// <param name="behaviorFactories">Optional. The behavior factories (optional).</param>
         public DefaultDataImportService(
+            IContextFactory contextFactory,
             IDataStreamReadService dataStreamReadService,
             IDataConversionService conversionService,
             IProjectedTypeResolver projectedTypeResolver,
             ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories = null)
         {
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(dataStreamReadService, nameof(dataStreamReadService));
+            Requires.NotNull(conversionService, nameof(conversionService));
+            Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
 
+            this.contextFactory = contextFactory;
             this.dataStreamReadService = dataStreamReadService;
             this.projectedTypeResolver = projectedTypeResolver;
             this.behaviorFactories = (behaviorFactories ?? new List<IExportFactory<IDataImportBehavior, AppServiceMetadata>>())
@@ -90,33 +86,50 @@ namespace Kephas.Data.IO.Import
         /// Imports the data asynchronously.
         /// </summary>
         /// <param name="dataSource">The data source.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token (optional).</param>
         /// <returns>
         /// A data import result.
         /// </returns>
         public async Task<IOperationResult> ImportDataAsync(
             DataStream dataSource,
-            IDataImportContext context,
+            Action<IDataImportContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(context.DataSpace, nameof(context.DataSpace));
+            using (var context = this.CreateDataImportContext())
+            {
+                Requires.NotNull(context.DataSpace, nameof(context.DataSpace));
 
-            var result = context.EnsureResult();
-            result.OperationState = OperationState.InProgress;
+                var result = context.EnsureResult();
+                result.OperationState = OperationState.InProgress;
 
-            IOperationResult jobResult = null;
-            var elapsed = await Profiler.WithStopwatchAsync(
-                async () =>
+                IOperationResult jobResult = null;
+                var elapsed = await Profiler.WithStopwatchAsync(
+                    async () =>
                     {
                         var job = this.CreateImportJob(dataSource, context, result);
                         jobResult = await job.ExecuteAsync(cancellationToken).PreserveThreadContext();
                     }).PreserveThreadContext();
 
-            result.MergeResult(jobResult);
-            result.Elapsed = elapsed;
-            result.OperationState = OperationState.Completed;
-            return result;
+                result.MergeResult(jobResult);
+                result.Elapsed = elapsed;
+                result.OperationState = OperationState.Completed;
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Creates data import context.
+        /// </summary>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The new data import context.
+        /// </returns>
+        protected virtual IDataImportContext CreateDataImportContext(Action<IDataImportContext> optionsConfig = null)
+        {
+            var context = this.contextFactory.CreateContext<DataImportContext>();
+            optionsConfig?.Invoke(context);
+            return context;
         }
 
         /// <summary>
@@ -344,7 +357,7 @@ namespace Kephas.Data.IO.Import
 
                         cancellationToken.ThrowIfCancellationRequested();
                         var persistContext = new PersistChangesContext(targetDataContext);
-                        this.context.PersistChangesContextConfig?.Invoke(persistContext);
+                        this.context.PersistChangesConfig?.Invoke(persistContext);
                         await targetDataContext.PersistChangesAsync(persistContext, cancellationToken).PreserveThreadContext();
 
                         importEntityEntry.AcceptChanges();
@@ -421,7 +434,7 @@ namespace Kephas.Data.IO.Import
                     .WithRootTargetType(this.projectedTypeResolver.ResolveProjectedType(sourceEntity.GetType(), this.context))
                     .ConversionContext;
 
-                this.context.DataConversionContextConfig?.Invoke(sourceEntity, conversionContext);
+                this.context.DataConversionConfig?.Invoke(sourceEntity, conversionContext);
 
                 cancellationToken.ThrowIfCancellationRequested();
 

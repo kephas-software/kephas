@@ -33,20 +33,20 @@ namespace Kephas.Data.IO.Export
         Type DefaultRootTargetType { get; set; }
 
         /// <summary>
-        /// Gets the query used to retrieve the data to be exported.
+        /// Gets or sets the query used to retrieve the data to be exported.
         /// </summary>
         /// <value>
         /// The query to retrieve data.
         /// </value>
-        ClientQuery Query { get; }
+        ClientQuery Query { get; set; }
 
         /// <summary>
-        /// Gets the data to be exported.
+        /// Gets or sets the data to be exported.
         /// </summary>
         /// <value>
         /// The data to be exported.
         /// </value>
-        IEnumerable<object> Data { get; }
+        IEnumerable<object> Data { get; set; }
 
         /// <summary>
         /// Gets or sets the export output.
@@ -57,12 +57,12 @@ namespace Kephas.Data.IO.Export
         DataStream Output { get; set; }
 
         /// <summary>
-        /// Gets or sets the client query execution context configuration.
+        /// Gets or sets the client query execution options configuration.
         /// </summary>
         /// <value>
-        /// The client query execution context configuration.
+        /// The client query execution options configuration.
         /// </value>
-        Action<IClientQueryExecutionContext> ClientQueryExecutionContextConfig { get; set; }
+        Action<IClientQueryExecutionContext> QueryExecutionConfig { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to throw an exception if no data is found to export.
@@ -117,20 +117,127 @@ namespace Kephas.Data.IO.Export
         }
 
         /// <summary>
-        /// Sets the client query execution context configuration.
+        /// Sets the client query execution options configuration.
         /// </summary>
-        /// <param name="dataExportContext">The data export context to act on.</param>
-        /// <param name="clientQueryExecutionContextConfig">The client query execution context configuration.</param>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="dataExportContext">The data export context.</param>
+        /// <param name="optionsConfig">The query execution options configuration.</param>
         /// <returns>
-        /// The data export context.
+        /// This <paramref name="dataExportContext"/>.
         /// </returns>
-        public static IDataExportContext WithClientQueryExecutionContextConfig(
-            this IDataExportContext dataExportContext,
-            Action<IClientQueryExecutionContext> clientQueryExecutionContextConfig)
+        public static TContext QueryExecutionConfig<TContext>(
+            this TContext dataExportContext,
+            Action<IClientQueryExecutionContext> optionsConfig)
+            where TContext : class, IDataExportContext
         {
             Requires.NotNull(dataExportContext, nameof(dataExportContext));
 
-            dataExportContext.ClientQueryExecutionContextConfig = clientQueryExecutionContextConfig;
+            dataExportContext.QueryExecutionConfig = optionsConfig;
+
+            return dataExportContext;
+        }
+
+        /// <summary>
+        /// Sets the output.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="dataExportContext">The data export context.</param>
+        /// <param name="output">The export output.</param>
+        /// <returns>
+        /// This <paramref name="dataExportContext"/>.
+        /// </returns>
+        public static TContext Output<TContext>(
+            this TContext dataExportContext,
+            DataStream output)
+            where TContext : class, IDataExportContext
+        {
+            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+
+            dataExportContext.Output = output;
+
+            return dataExportContext;
+        }
+
+        /// <summary>
+        /// Sets the data to export.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="dataExportContext">The data export context.</param>
+        /// <param name="data">The data to export.</param>
+        /// <returns>
+        /// This <paramref name="dataExportContext"/>.
+        /// </returns>
+        public static TContext Data<TContext>(
+            this TContext dataExportContext,
+            IEnumerable<object> data)
+            where TContext : class, IDataExportContext
+        {
+            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+
+            dataExportContext.Data = data;
+
+            return dataExportContext;
+        }
+
+        /// <summary>
+        /// Sets the query used to retrieve the data to export.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="dataExportContext">The data export context.</param>
+        /// <param name="query">The query used to retrieve the data to export.</param>
+        /// <returns>
+        /// This <paramref name="dataExportContext"/>.
+        /// </returns>
+        public static TContext Query<TContext>(
+            this TContext dataExportContext,
+            ClientQuery query)
+            where TContext : class, IDataExportContext
+        {
+            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+
+            dataExportContext.Query = query;
+
+            return dataExportContext;
+        }
+
+        /// <summary>
+        /// Sets the default root target type.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="dataExportContext">The data export context.</param>
+        /// <param name="targetType">Type of the target.</param>
+        /// <returns>
+        /// This <paramref name="dataExportContext"/>.
+        /// </returns>
+        public static TContext DefaultRootTargetType<TContext>(
+            this TContext dataExportContext,
+            Type targetType)
+            where TContext : class, IDataExportContext
+        {
+            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+
+            dataExportContext.DefaultRootTargetType = targetType;
+
+            return dataExportContext;
+        }
+
+        /// <summary>
+        /// Sets a value indicating whether to throw an exception if no data is found to export.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="dataExportContext">The data export context.</param>
+        /// <param name="throwOnNotFound">True to throw on not found, false otherwise.</param>
+        /// <returns>
+        /// This <paramref name="dataExportContext"/>.
+        /// </returns>
+        public static TContext ThrowOnNotFound<TContext>(
+            this TContext dataExportContext,
+            bool throwOnNotFound)
+            where TContext : class, IDataExportContext
+        {
+            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+
+            dataExportContext.ThrowOnNotFound = throwOnNotFound;
 
             return dataExportContext;
         }

@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.IO.DataStreams
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -48,10 +49,10 @@ namespace Kephas.Data.IO.DataStreams
         /// </summary>
         /// <param name="data">The entity or entities to be written.</param>
         /// <param name="dataStream">The <see cref="DataStream"/> where the entities should be written.</param>
-        /// <param name="context">The data I/O context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="context">Optional. The data I/O context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A task to await.
+        /// An asynchronous result.
         /// </returns>
         public Task WriteAsync(object data, DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default)
         {

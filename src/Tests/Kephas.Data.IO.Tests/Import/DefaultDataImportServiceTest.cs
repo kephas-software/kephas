@@ -28,13 +28,13 @@ namespace Kephas.Data.IO.Tests.Import
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Services.Composition;
-
+    using Kephas.Testing;
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultDataImportServiceTest
+    public class DefaultDataImportServiceTest : TestBase
     {
         [Test]
         public async Task ImportDataAsync()
@@ -42,6 +42,7 @@ namespace Kephas.Data.IO.Tests.Import
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
+            var ctxFactory = this.CreateContextFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<ICompositionContext>()));
 
             var changedTargetEntities = new List<IEntityEntry>();
 
@@ -49,7 +50,7 @@ namespace Kephas.Data.IO.Tests.Import
             var targetDataContext = this.CreateTargetDataContext(ei => changedTargetEntities.Add(ei));
             var dataSpace = this.CreateDataSpace<string, StringBuilder>(sourceDataContext, targetDataContext);
 
-            var service = new DefaultDataImportService(reader, conversionService, resolver);
+            var service = new DefaultDataImportService(ctxFactory, reader, conversionService, resolver);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
                 reader.ReadAsync(dataStream, Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
@@ -58,8 +59,7 @@ namespace Kephas.Data.IO.Tests.Import
                 conversionService.ConvertAsync("hello", Arg.Any<StringBuilder>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
                     .Returns(Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget(new StringBuilder("kitty"))));
 
-                var context = new DataImportContext(dataSpace);
-                var result = await service.ImportDataAsync(dataStream, context);
+                var result = await service.ImportDataAsync(dataStream, ctx => ctx.DataSpace(dataSpace));
 
                 Assert.AreEqual(OperationState.Completed, result.OperationState);
                 Assert.AreEqual(0, result.Exceptions.Count);
@@ -77,6 +77,7 @@ namespace Kephas.Data.IO.Tests.Import
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
+            var ctxFactory = this.CreateContextFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<ICompositionContext>()));
 
             var changedTargetEntities = new List<IEntityEntry>();
 
@@ -84,7 +85,7 @@ namespace Kephas.Data.IO.Tests.Import
             var targetDataContext = this.CreateTargetDataContext(ei => changedTargetEntities.Add(ei));
             var dataSpace = this.CreateDataSpace<string, StringBuilder>(sourceDataContext, targetDataContext);
 
-            var service = new DefaultDataImportService(reader, conversionService, resolver);
+            var service = new DefaultDataImportService(ctxFactory, reader, conversionService, resolver);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
                 reader.ReadAsync(dataStream, Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
@@ -93,11 +94,7 @@ namespace Kephas.Data.IO.Tests.Import
                 conversionService.ConvertAsync("hello", Arg.Any<string>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
                     .Returns(ci => Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget((string)ci.Arg<IDataConversionContext>()["entity"] == "hello" ? new StringBuilder("mimi") : new StringBuilder("kitty"))));
 
-                var context = new DataImportContext(dataSpace)
-                                  {
-                                      DataConversionContextConfig = (e, ctx) => ctx["entity"] = e
-                                  };
-                var result = await service.ImportDataAsync(dataStream, context);
+                var result = await service.ImportDataAsync(dataStream, ctx => ctx.DataConversionConfig = (e, ctx) => ctx["entity"] = e);
 
                 Assert.AreEqual(OperationState.Completed, result.OperationState);
                 Assert.AreEqual(0, result.Exceptions.Count);
@@ -115,6 +112,7 @@ namespace Kephas.Data.IO.Tests.Import
             var reader = this.CreateDataStreamReadService();
             var conversionService = Substitute.For<IDataConversionService>();
             var resolver = this.CreateProjectedTypeResolver();
+            var ctxFactory = this.CreateContextFactoryMock<DataImportContext>(() => new DataImportContext(Substitute.For<ICompositionContext>()));
 
             var sourceDataContext = this.CreateSourceDataContext();
             var targetDataContext = this.CreateTargetDataContext();
@@ -124,7 +122,7 @@ namespace Kephas.Data.IO.Tests.Import
             var b1 = this.CreateBehaviorFactory(sb, "b1", Priority.Low);
             var b2 = this.CreateBehaviorFactory(sb, "b2", Priority.High);
 
-            var service = new DefaultDataImportService(reader, conversionService, resolver, new List<IExportFactory<IDataImportBehavior, AppServiceMetadata>> { b1, b2});
+            var service = new DefaultDataImportService(ctxFactory, reader, conversionService, resolver, new List<IExportFactory<IDataImportBehavior, AppServiceMetadata>> { b1, b2});
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
                 reader.ReadAsync(dataStream, Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
@@ -133,8 +131,7 @@ namespace Kephas.Data.IO.Tests.Import
                 conversionService.ConvertAsync("hello", Arg.Any<string>(), Arg.Any<IDataConversionContext>(), Arg.Any<CancellationToken>())
                     .Returns(Task.FromResult<IDataConversionResult>(DataConversionResult.FromTarget(new StringBuilder("kitty"))));
 
-                var context = new DataImportContext(dataSpace);
-                var result = await service.ImportDataAsync(dataStream, context);
+                var result = await service.ImportDataAsync(dataStream, ctx => ctx.DataSpace(dataSpace));
             }
 
             var flowResult = sb.ToString();

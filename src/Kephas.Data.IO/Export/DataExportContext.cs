@@ -12,7 +12,7 @@ namespace Kephas.Data.IO.Export
 {
     using System;
     using System.Collections.Generic;
-
+    using Kephas.Composition;
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO;
     using Kephas.Data.IO.DataStreams;
@@ -27,31 +27,10 @@ namespace Kephas.Data.IO.Export
         /// <summary>
         /// Initializes a new instance of the <see cref="DataExportContext"/> class.
         /// </summary>
-        /// <param name="query">The query.</param>
-        /// <param name="output">The export output.</param>
-        /// <param name="operationContext">Optional. The parent operation context.</param>
-        public DataExportContext(ClientQuery query, DataStream output, IContext operationContext = null)
-            : base(operationContext)
+        /// <param name="compositionContext">Context for the composition.</param>
+        public DataExportContext(ICompositionContext compositionContext)
+            : base(compositionContext)
         {
-            Requires.NotNull(query, nameof(query));
-            Requires.NotNull(output, nameof(output));
-
-            this.Query = query;
-            this.Output = output;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataExportContext"/> class.
-        /// </summary>
-        /// <param name="data">The data to be exported.</param>
-        /// <param name="output">The export output.</param>
-        public DataExportContext(IEnumerable<object> data, DataStream output)
-        {
-            Requires.NotNull(data, nameof(data));
-            Requires.NotNull(output, nameof(output));
-
-            this.Data = data;
-            this.Output = output;
         }
 
         /// <summary>
@@ -63,20 +42,20 @@ namespace Kephas.Data.IO.Export
         public Type DefaultRootTargetType { get; set; }
 
         /// <summary>
-        /// Gets the query used to retrieve the data to be exported.
+        /// Gets or sets the query used to retrieve the data to be exported.
         /// </summary>
         /// <value>
         /// The query to retrieve data.
         /// </value>
-        public ClientQuery Query { get; }
+        public ClientQuery Query { get; set; }
 
         /// <summary>
-        /// Gets the data to be exported.
+        /// Gets or sets the data to be exported.
         /// </summary>
         /// <value>
         /// The data to be exported.
         /// </value>
-        public IEnumerable<object> Data { get; }
+        public IEnumerable<object> Data { get; set; }
 
         /// <summary>
         /// Gets or sets the export output.
@@ -92,7 +71,7 @@ namespace Kephas.Data.IO.Export
         /// <value>
         /// The client query execution context configuration.
         /// </value>
-        public Action<IClientQueryExecutionContext> ClientQueryExecutionContextConfig { get; set; }
+        public Action<IClientQueryExecutionContext> QueryExecutionConfig { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether to throw an exception if no data is found to export.

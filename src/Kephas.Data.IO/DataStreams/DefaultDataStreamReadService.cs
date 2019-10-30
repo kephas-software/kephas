@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.IO.DataStreams
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -30,7 +31,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <summary>
         /// The reader factories.
         /// </summary>
-        private readonly ICollection<IExportFactory<IDataStreamReader, DataStreamReaderMetadata>> readerFactories;
+        private readonly IOrderedServiceFactoryCollection<IDataStreamReader, DataStreamReaderMetadata> readerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataStreamReadService"/> class.
@@ -40,17 +41,17 @@ namespace Kephas.Data.IO.DataStreams
         {
             Requires.NotNull(readerFactories, nameof(readerFactories));
 
-            this.readerFactories = readerFactories.OrderBy(f => f.Metadata.ProcessingPriority).ToList();
+            this.readerFactories = readerFactories.Order();
         }
 
         /// <summary>
         /// Reads the data source and converts it to an enumeration of client entities.
         /// </summary>
         /// <param name="dataStream">The <see cref="DataStream"/> containing the entities.</param>
-        /// <param name="context">The data I/O context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="context">Optional. The data I/O context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of the deserialized entities.
+        /// An asynchronous result that yields the deserialized objects.
         /// </returns>
         public Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default)
         {

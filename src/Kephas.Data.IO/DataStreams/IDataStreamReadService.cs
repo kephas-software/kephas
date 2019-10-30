@@ -10,9 +10,10 @@
 
 namespace Kephas.Data.IO.DataStreams
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -26,10 +27,10 @@ namespace Kephas.Data.IO.DataStreams
         /// Reads the data source and converts it to an enumeration of entities.
         /// </summary>
         /// <param name="dataStream">The <see cref="DataStream"/> containing the entities.</param>
-        /// <param name="context">The data I/O context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="context">Optional. The data I/O context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of the deserialized entities.
+        /// An asynchronous result that yields the deserialized entities.
         /// </returns>
         Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default);
     }
@@ -45,7 +46,7 @@ namespace Kephas.Data.IO.DataStreams
         /// <typeparam name="TRootObject">Type of the root object.</typeparam>
         /// <param name="dataStreamReadService">The <see cref="IDataStreamReadService"/> to act on.</param>
         /// <param name="dataStream">The <see cref="DataStream"/> containing the entities.</param>
-        /// <param name="context">The data I/O context (optional).</param>
+        /// <param name="context">The data I/O context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
         /// A promise of the deserialized entities.
@@ -53,10 +54,12 @@ namespace Kephas.Data.IO.DataStreams
         public static async Task<TRootObject> ReadAsync<TRootObject>(
             this IDataStreamReadService dataStreamReadService,
             DataStream dataStream,
-            IDataIOContext context = null,
+            IDataIOContext context,
             CancellationToken cancellationToken = default)
         {
-            context = (context ?? new DataIOContext()).WithRootObjectType(typeof(TRootObject));
+            Requires.NotNull(context, nameof(context));
+
+            context.RootObjectType(typeof(TRootObject));
             var result = (TRootObject)await dataStreamReadService.ReadAsync(dataStream, context, cancellationToken).PreserveThreadContext();
             return result;
         }

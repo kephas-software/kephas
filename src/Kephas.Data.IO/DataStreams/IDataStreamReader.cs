@@ -10,7 +10,7 @@
 
 namespace Kephas.Data.IO.DataStreams
 {
-    using System.Collections.Generic;
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -36,10 +36,10 @@ namespace Kephas.Data.IO.DataStreams
         /// Reads the data source and converts it to an enumeration of entities.
         /// </summary>
         /// <param name="dataStream">The <see cref="DataStream"/> containing the entities.</param>
-        /// <param name="context">The data I/O context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="context">Optional. The data I/O context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of the deserialized entities.
+        /// An asynchronous result that yields the deserialized entities.
         /// </returns>
         Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default);
     }

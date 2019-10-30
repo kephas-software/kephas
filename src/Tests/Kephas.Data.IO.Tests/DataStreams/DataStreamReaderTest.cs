@@ -69,7 +69,7 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var reader = new DataStreamReader(serializationService, mediaTypeProvider);
             using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
             {
-                await reader.ReadAsync(dataStream, new DataIOContext().WithRootObjectType(typeof(bool)));
+                await reader.ReadAsync(dataStream, new DataIOContext(Substitute.For<ICompositionContext>()).RootObjectType(typeof(bool)));
                 Assert.IsNotNull(serializationContext);
                 Assert.AreEqual(typeof(bool), serializationContext.RootObjectType);
             }

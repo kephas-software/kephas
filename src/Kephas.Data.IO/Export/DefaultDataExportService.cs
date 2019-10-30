@@ -16,11 +16,11 @@ namespace Kephas.Data.IO.Export
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
     using Kephas.Data.Client.Queries;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
     using Kephas.Operations;
     using Kephas.Services;
@@ -32,37 +32,26 @@ namespace Kephas.Data.IO.Export
     [OverridePriority(Priority.Low)]
     public class DefaultDataExportService : IDataExportService
     {
-        /// <summary>
-        /// The client query executor.
-        /// </summary>
         private readonly IClientQueryExecutor clientQueryExecutor;
-
-        /// <summary>
-        /// The composition context.
-        /// </summary>
-        private readonly ICompositionContext compositionContext;
-
-        /// <summary>
-        /// The data source write service.
-        /// </summary>
+        private readonly IContextFactory contextFactory;
         private readonly IDataStreamWriteService dataStreamWriteService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataExportService"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context.</param>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="dataStreamWriteService">The data source write service.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
         public DefaultDataExportService(
-            ICompositionContext compositionContext,
+            IContextFactory contextFactory,
             IDataStreamWriteService dataStreamWriteService,
             IClientQueryExecutor clientQueryExecutor)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(dataStreamWriteService, nameof(dataStreamWriteService));
             Requires.NotNull(clientQueryExecutor, nameof(clientQueryExecutor));
 
-            this.compositionContext = compositionContext;
+            this.contextFactory = contextFactory;
             this.dataStreamWriteService = dataStreamWriteService;
             this.clientQueryExecutor = clientQueryExecutor;
         }
@@ -70,34 +59,49 @@ namespace Kephas.Data.IO.Export
         /// <summary>
         /// Exports data asynchronously.
         /// </summary>
-        /// <param name="context">The export context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A data export result.
+        /// An asynchronous result that yields the export result.
         /// </returns>
-        public async Task<IOperationResult> ExportDataAsync(IDataExportContext context, CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> ExportDataAsync(Action<IDataExportContext> optionsConfig = null, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(context, nameof(context));
-
-            var result = context.EnsureResult();
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var data = await this.GetDataAsync(context, cancellationToken).PreserveThreadContext();
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            try
+            using (var context = this.CreateDataExportContext(optionsConfig))
             {
-                await this.dataStreamWriteService.WriteAsync(data, context.Output, context, cancellationToken).PreserveThreadContext();
-                result.MergeMessage(string.Format(Strings.DefaultDataExportService_ExportDataAsync_SuccessMessage, context.Output.Name));
-            }
-            catch (Exception ex)
-            {
-                result.MergeException(ex);
-            }
+                var result = context.EnsureResult();
 
-            return result;
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var data = await this.GetDataAsync(context, cancellationToken).PreserveThreadContext();
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                try
+                {
+                    await this.dataStreamWriteService.WriteAsync(data, context.Output, context, cancellationToken).PreserveThreadContext();
+                    result.MergeMessage(string.Format(Strings.DefaultDataExportService_ExportDataAsync_SuccessMessage, context.Output.Name));
+                }
+                catch (Exception ex)
+                {
+                    result.MergeException(ex);
+                }
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Creates the data export context.
+        /// </summary>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The new data export context.
+        /// </returns>
+        protected virtual IDataExportContext CreateDataExportContext(Action<IDataExportContext> optionsConfig = null)
+        {
+            var context = this.contextFactory.CreateContext<DataExportContext>();
+            optionsConfig?.Invoke(context);
+            return context;
         }
 
         /// <summary>
@@ -110,20 +114,18 @@ namespace Kephas.Data.IO.Export
         /// </returns>
         protected virtual async Task<IEnumerable<object>> GetDataAsync(IDataExportContext context, CancellationToken cancellationToken)
         {
-            IEnumerable<object> data;
-
             if (context.Query != null)
             {
-                var queryExecutionContext = new ClientQueryExecutionContext(context);
-                context.ClientQueryExecutionContextConfig?.Invoke(queryExecutionContext);
-                data = await this.clientQueryExecutor.ExecuteQueryAsync(context.Query, queryExecutionContext, cancellationToken)
-                           .PreserveThreadContext();
-            }
-            else
-            {
-                data = context.Data;
+                using (var queryExecutionContext = this.contextFactory.CreateContext<ClientQueryExecutionContext>())
+                {
+                    queryExecutionContext.Merge(context);
+                    context.QueryExecutionConfig?.Invoke(queryExecutionContext);
+                    context.Data = await this.clientQueryExecutor.ExecuteQueryAsync(context.Query, queryExecutionContext, cancellationToken)
+                               .PreserveThreadContext();
+                }
             }
 
+            var data = context.Data;
             if (context.ThrowOnNotFound && (data == null || !data.Any()))
             {
                 throw new NotFoundDataException(Strings.DefaultDataExportService_ExportDataAsync_NoDataException) { Severity = SeverityLevel.Warning };

@@ -30,12 +30,12 @@ namespace Kephas.Data.IO
         Type RootObjectType { get; set; }
 
         /// <summary>
-        /// Gets or sets the serialization context configuration.
+        /// Gets or sets the serialization options configuration.
         /// </summary>
         /// <value>
-        /// The serialization context configuration.
+        /// The serialization options configuration.
         /// </value>
-        Action<ISerializationContext> SerializationContextConfig { get; set; }
+        Action<ISerializationContext> SerializationConfig { get; set; }
     }
 
     /// <summary>
@@ -44,41 +44,45 @@ namespace Kephas.Data.IO
     public static class DataIOContextExtensions
     {
         /// <summary>
-        /// Sets the serialization context configuration.
+        /// Sets the serialization options configuration.
         /// </summary>
-        /// <param name="dataExportContext">The data I/O context to act on.</param>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="dataIOContext">The data I/O context.</param>
         /// <param name="serializationContextConfig">The serialization context configuration.</param>
         /// <returns>
-        /// The data I/O context.
+        /// This <paramref name="dataIOContext"/>.
         /// </returns>
-        public static IDataIOContext WithSerializationContextConfig(
-            this IDataIOContext dataExportContext,
+        public static TContext SerializationConfig<TContext>(
+            this TContext dataIOContext,
             Action<ISerializationContext> serializationContextConfig)
+            where TContext : class, IDataIOContext
         {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+            Requires.NotNull(dataIOContext, nameof(dataIOContext));
 
-            dataExportContext.SerializationContextConfig = serializationContextConfig;
+            dataIOContext.SerializationConfig = serializationContextConfig;
 
-            return dataExportContext;
+            return dataIOContext;
         }
 
         /// <summary>
         /// Sets the root object type.
         /// </summary>
-        /// <param name="dataExportContext">The data I/O context to act on.</param>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="dataIOContext">The data I/O context.</param>
         /// <param name="rootObjectType">The root object type.</param>
         /// <returns>
-        /// The data I/O context.
+        /// This <paramref name="dataIOContext"/>.
         /// </returns>
-        public static IDataIOContext WithRootObjectType(
-            this IDataIOContext dataExportContext,
+        public static TContext RootObjectType<TContext>(
+            this TContext dataIOContext,
             Type rootObjectType)
+            where TContext : class, IDataIOContext
         {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
+            Requires.NotNull(dataIOContext, nameof(dataIOContext));
 
-            dataExportContext.RootObjectType = rootObjectType;
+            dataIOContext.RootObjectType = rootObjectType;
 
-            return dataExportContext;
+            return dataIOContext;
         }
     }
 }

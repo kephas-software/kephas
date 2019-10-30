@@ -20,19 +20,20 @@ namespace Kephas.Data.IO.Tests.Export
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Export;
     using Kephas.Services;
-
+    using Kephas.Testing;
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultDataExportServiceTest
+    public class DefaultDataExportServiceTest : TestBase
     {
         [Test]
         public async Task ExportDataAsync_query()
         {
             var writer = Substitute.For<IDataStreamWriteService>();
             var queryExecutor = Substitute.For<IClientQueryExecutor>();
+            var ctxFactory = this.CreateContextFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<ICompositionContext>()));
 
             var entities = new List<object> { "hello" };
             queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<IClientQueryExecutionContext>(), Arg.Any<CancellationToken>())
@@ -41,11 +42,10 @@ namespace Kephas.Data.IO.Tests.Export
             writer.WriteAsync(entities, Arg.Any<DataStream>(), Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(0));
 
-            var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
+            var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                var context = new DataExportContext(Substitute.For<ClientQuery>(), dataStream, this.GetOperationContext());
-                await service.ExportDataAsync(context);
+                await service.ExportDataAsync(ctx => ctx.Query(Substitute.For<ClientQuery>()).Output(dataStream));
             }
 
             writer.Received(1)
@@ -57,15 +57,15 @@ namespace Kephas.Data.IO.Tests.Export
         {
             var writer = Substitute.For<IDataStreamWriteService>();
             var queryExecutor = Substitute.For<IClientQueryExecutor>();
+            var ctxFactory = this.CreateContextFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<ICompositionContext>()));
 
             queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<IClientQueryExecutionContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult<IList<object>>(new object[0]));
 
-            var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
+            var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                var context = new DataExportContext(Substitute.For<ClientQuery>(), dataStream, this.GetOperationContext()) { ThrowOnNotFound = true };
-                Assert.ThrowsAsync<NotFoundDataException>(() => service.ExportDataAsync(context));
+                Assert.ThrowsAsync<NotFoundDataException>(() => service.ExportDataAsync(ctx => ctx.Query(Substitute.For<ClientQuery>()).Output(dataStream).ThrowOnNotFound(true)));
             }
         }
 
@@ -74,17 +74,17 @@ namespace Kephas.Data.IO.Tests.Export
         {
             var writer = Substitute.For<IDataStreamWriteService>();
             var queryExecutor = Substitute.For<IClientQueryExecutor>();
+            var ctxFactory = this.CreateContextFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<ICompositionContext>()));
 
             var entities = new List<object> { "hello" };
 
             writer.WriteAsync(entities, Arg.Any<DataStream>(), Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(0));
 
-            var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
+            var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                var context = new DataExportContext(entities, dataStream);
-                await service.ExportDataAsync(context);
+                await service.ExportDataAsync(ctx => ctx.Data(entities).Output(dataStream));
             }
 
             writer.Received(1)
@@ -96,17 +96,17 @@ namespace Kephas.Data.IO.Tests.Export
         {
             var writer = Substitute.For<IDataStreamWriteService>();
             var queryExecutor = Substitute.For<IClientQueryExecutor>();
+            var ctxFactory = this.CreateContextFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<ICompositionContext>()));
 
             var entities = new List<object>();
 
             writer.WriteAsync(entities, Arg.Any<DataStream>(), Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(0));
 
-            var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
+            var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                var context = new DataExportContext(entities, dataStream);
-                await service.ExportDataAsync(context);
+                await service.ExportDataAsync(ctx => ctx.Data(entities).Output(dataStream));
             }
 
             writer.Received(1)
@@ -118,19 +118,13 @@ namespace Kephas.Data.IO.Tests.Export
         {
             var writer = Substitute.For<IDataStreamWriteService>();
             var queryExecutor = Substitute.For<IClientQueryExecutor>();
+            var ctxFactory = this.CreateContextFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<ICompositionContext>()));
 
-            var service = new DefaultDataExportService(Substitute.For<ICompositionContext>(), writer, queryExecutor);
+            var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                var context = new DataExportContext(new object[0], dataStream) { ThrowOnNotFound = true };
-                Assert.ThrowsAsync<NotFoundDataException>(() => service.ExportDataAsync(context));
+                Assert.ThrowsAsync<NotFoundDataException>(() => service.ExportDataAsync(ctx => ctx.Data(new object[0]).Output(dataStream).ThrowOnNotFound(true)));
             }
-        }
-
-        public IContext GetOperationContext()
-        {
-            var context = Substitute.For<IContext>();
-            return context;
         }
     }
 }

@@ -29,7 +29,6 @@ namespace Kephas.Data.IO.DataStreams
     public class DataStreamWriter : IDataStreamWriter
     {
         private readonly ISerializationService serializationService;
-
         private readonly IMediaTypeProvider mediaTypeProvider;
 
         /// <summary>
@@ -37,7 +36,9 @@ namespace Kephas.Data.IO.DataStreams
         /// </summary>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="mediaTypeProvider">The media type provider.</param>
-        public DataStreamWriter(ISerializationService serializationService, IMediaTypeProvider mediaTypeProvider)
+        public DataStreamWriter(
+            ISerializationService serializationService,
+            IMediaTypeProvider mediaTypeProvider)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
             Requires.NotNull(mediaTypeProvider, nameof(mediaTypeProvider));
@@ -61,10 +62,10 @@ namespace Kephas.Data.IO.DataStreams
         /// </summary>
         /// <param name="data">The entity or entities to be written.</param>
         /// <param name="dataStream">The <see cref="DataStream"/> where the entities should be written.</param>
-        /// <param name="context">The data I/O context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="context">Optional. The data I/O context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A task to await.
+        /// An asynchronous result.
         /// </returns>
         public virtual async Task WriteAsync(object data, DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default)
         {
@@ -77,7 +78,7 @@ namespace Kephas.Data.IO.DataStreams
                 {
                     ctx.MediaType = this.GetMediaType(dataStream);
                     ctx.RootObjectType = context?.RootObjectType ?? data.GetType();
-                    context?.SerializationContextConfig?.Invoke(ctx);
+                    context?.SerializationConfig?.Invoke(ctx);
                 };
 
             using (var writer = this.CreateEncodedStreamWriter(dataStream))

@@ -158,13 +158,11 @@ namespace Kephas.Data.IO.Setup
             using (var dataSource = this.CreateDataSource(dataFilePath))
             using (var dataSpace = this.DataSpaceFactory.CreateInitializedValue(dataSetupContext))
             {
-                var importContext = this.CreateDataImportContext(dataSetupContext, dataSpace);
-
                 var result = new OperationResult();
                 try
                 {
                     var importResult = await this.DataImportService
-                                     .ImportDataAsync(dataSource, importContext, cancellationToken)
+                                     .ImportDataAsync(dataSource, ctx => ctx.DataSpace(dataSpace), cancellationToken)
                                      .PreserveThreadContext();
                     result.MergeResult(importResult);
                     result.Messages?.ForEach(m => this.Logger.Info($"{m.Timestamp}: {m.Message}"));
@@ -180,21 +178,6 @@ namespace Kephas.Data.IO.Setup
                     return result;
                 }
             }
-        }
-
-        /// <summary>
-        /// Creates the data import context.
-        /// </summary>
-        /// <param name="dataSetupContext">Context for the initial data.</param>
-        /// <param name="dataSpace">The data space.</param>
-        /// <returns>
-        /// The new data import context.
-        /// </returns>
-        protected virtual IDataImportContext CreateDataImportContext(
-            IDataSetupContext dataSetupContext,
-            IDataSpace dataSpace)
-        {
-            return new DataImportContext(dataSpace, dataSetupContext);
         }
 
         /// <summary>

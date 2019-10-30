@@ -29,7 +29,6 @@ namespace Kephas.Data.IO.DataStreams
     public class DataStreamReader : IDataStreamReader
     {
         private readonly ISerializationService serializationService;
-
         private readonly IMediaTypeProvider mediaTypeProvider;
 
         /// <summary>
@@ -37,7 +36,9 @@ namespace Kephas.Data.IO.DataStreams
         /// </summary>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="mediaTypeProvider">The media type provider.</param>
-        public DataStreamReader(ISerializationService serializationService, IMediaTypeProvider mediaTypeProvider)
+        public DataStreamReader(
+            ISerializationService serializationService,
+            IMediaTypeProvider mediaTypeProvider)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
             Requires.NotNull(mediaTypeProvider, nameof(mediaTypeProvider));
@@ -60,10 +61,10 @@ namespace Kephas.Data.IO.DataStreams
         /// Reads the data source and converts it to an enumeration of client entities.
         /// </summary>
         /// <param name="dataStream">The <see cref="DataStream"/> containing the entities.</param>
-        /// <param name="context">The data I/O context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="context">Optional. The data I/O context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of the deserialized entities.
+        /// An asynchronous result that yields the deserialized entities.
         /// </returns>
         public virtual async Task<object> ReadAsync(DataStream dataStream, IDataIOContext context = null, CancellationToken cancellationToken = default)
         {
@@ -75,13 +76,12 @@ namespace Kephas.Data.IO.DataStreams
             {
                 ctx.MediaType = this.GetMediaType(dataStream);
                 ctx.RootObjectType = context?.RootObjectType ?? typeof(List<object>);
-                context?.SerializationContextConfig?.Invoke(ctx);
+                context?.SerializationConfig?.Invoke(ctx);
             };
 
             using (var reader = this.CreateEncodedStreamReader(dataStream))
             {
                 cancellationToken.ThrowIfCancellationRequested();
-
                 var result = await this.serializationService.DeserializeAsync(reader, serializationConfig, cancellationToken).PreserveThreadContext();
 
                 return result;

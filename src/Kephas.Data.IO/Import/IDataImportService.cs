@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.IO.Import
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -27,11 +28,11 @@ namespace Kephas.Data.IO.Import
         /// Imports the data asynchronously.
         /// </summary>
         /// <param name="dataSource">The data source.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A data import result.
         /// </returns>
-        Task<IOperationResult> ImportDataAsync(DataStream dataSource, IDataImportContext context, CancellationToken cancellationToken = default);
+        Task<IOperationResult> ImportDataAsync(DataStream dataSource, Action<IDataImportContext> optionsConfig = null, CancellationToken cancellationToken = default);
     }
 }
