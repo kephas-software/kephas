@@ -29,7 +29,7 @@ namespace Kephas.Scripting.AttributedModel
         {
             Requires.NotNullOrEmpty(value, nameof(value));
 
-            this.Value = new []{ value };
+            this.Value = new[] { value };
         }
 
         /// <summary>

@@ -52,10 +52,10 @@ namespace Kephas.Scripting.Composition
         }
 
         /// <summary>
-        /// Gets the language.
+        /// Gets the language array.
         /// </summary>
         /// <value>
-        /// The language.
+        /// The language array.
         /// </value>
         public string[] Language { get; }
     }

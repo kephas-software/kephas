@@ -33,17 +33,17 @@ namespace Kephas.Scripting.Composition
                 return;
             }
 
-            this.Language = (string)metadata.TryGetValue(nameof(this.Language));
+            this.Language = (string[])metadata.TryGetValue(nameof(this.Language));
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptingBehaviorMetadata"/> class.
         /// </summary>
-        /// <param name="language">The language.</param>
+        /// <param name="language">The supported language set.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. Name of the service.</param>
-        public ScriptingBehaviorMetadata(string language, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        public ScriptingBehaviorMetadata(string[] language, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
             Requires.NotNullOrEmpty(language, nameof(language));
@@ -52,11 +52,11 @@ namespace Kephas.Scripting.Composition
         }
 
         /// <summary>
-        /// Gets the language.
+        /// Gets the language array.
         /// </summary>
         /// <value>
-        /// The language.
+        /// The language array.
         /// </value>
-        public string Language { get; }
+        public string[] Language { get; }
     }
 }

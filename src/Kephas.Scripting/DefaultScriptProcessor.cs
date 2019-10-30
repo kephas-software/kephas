@@ -79,14 +79,17 @@ namespace Kephas.Scripting
                 .Order()
                 .ForEach(f =>
                     {
-                        var list = this.scriptingBehaviorFactories.TryGetValue(f.Metadata.Language);
-                        if (list == null)
+                        f.Metadata.Language.ForEach(l =>
                         {
-                            list = new List<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>();
-                            this.scriptingBehaviorFactories.Add(f.Metadata.Language, list);
-                        }
+                            var list = this.scriptingBehaviorFactories.TryGetValue(l);
+                            if (list == null)
+                            {
+                                list = new List<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>();
+                                this.scriptingBehaviorFactories.Add(l, list);
+                            }
 
-                        list.Add(f);
+                            list.Add(f);
+                        });
                     });
         }
 
