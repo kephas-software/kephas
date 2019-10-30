@@ -96,7 +96,7 @@ namespace Kephas.Data.IO.Import
             Action<IDataImportContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            using (var context = this.CreateDataImportContext())
+            using (var context = this.CreateDataImportContext(optionsConfig))
             {
                 Requires.NotNull(context.DataSpace, nameof(context.DataSpace));
 
