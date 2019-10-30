@@ -45,22 +45,22 @@ namespace Kephas.Data.Client.Queries
         /// The options.
         /// </value>
         object Options { get; set; }
-        
-        /// <summary>
-        /// Gets or sets the client query conversion context configuration.
-        /// </summary>
-        /// <value>
-        /// The client query conversion context configuration.
-        /// </value>
-        Action<IClientQueryConversionContext> ClientQueryConversionContextConfig { get; set; }
 
         /// <summary>
-        /// Gets or sets the data conversion context configuration.
+        /// Gets or sets the query conversion options configuration.
         /// </summary>
         /// <value>
-        /// The data conversion context configuration.
+        /// The query conversion options configuration.
         /// </value>
-        Action<object, IDataConversionContext> DataConversionContextConfig { get; set; }
+        Action<IClientQueryConversionContext> QueryConversionConfig { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data conversion options configuration.
+        /// </summary>
+        /// <value>
+        /// The data conversion options configuration.
+        /// </value>
+        Action<object, IDataConversionContext> DataConversionConfig { get; set; }
     }
 
     /// <summary>
@@ -72,17 +72,17 @@ namespace Kephas.Data.Client.Queries
         /// Sets the client query conversion context configuration.
         /// </summary>
         /// <param name="clientQueryExecutionContext">The client query execution context to act on.</param>
-        /// <param name="clientQueryConversionContextConfig">The client query conversion context configuration.</param>
+        /// <param name="optionsConfig">The client query conversion context configuration.</param>
         /// <returns>
         /// The client query execution context.
         /// </returns>
-        public static IClientQueryExecutionContext WithClientQueryConversionContextConfig(
+        public static IClientQueryExecutionContext QueryConversionConfig(
             this IClientQueryExecutionContext clientQueryExecutionContext,
-            Action<IClientQueryConversionContext> clientQueryConversionContextConfig)
+            Action<IClientQueryConversionContext> optionsConfig)
         {
             Requires.NotNull(clientQueryExecutionContext, nameof(clientQueryExecutionContext));
 
-            clientQueryExecutionContext.ClientQueryConversionContextConfig = clientQueryConversionContextConfig;
+            clientQueryExecutionContext.QueryConversionConfig = optionsConfig;
 
             return clientQueryExecutionContext;
         }
@@ -91,17 +91,17 @@ namespace Kephas.Data.Client.Queries
         /// Sets the client query execution context configuration.
         /// </summary>
         /// <param name="clientQueryExecutionContext">The client query execution context to act on.</param>
-        /// <param name="dataConversionContextConfig">The data conversion context configuration.</param>
+        /// <param name="optionsConfig">The data conversion context configuration.</param>
         /// <returns>
         /// The client query execution context.
         /// </returns>
-        public static IClientQueryExecutionContext WithDataConversionContextConfig(
+        public static IClientQueryExecutionContext DataConversionConfig(
             this IClientQueryExecutionContext clientQueryExecutionContext,
-            Action<object, IDataConversionContext> dataConversionContextConfig)
+            Action<object, IDataConversionContext> optionsConfig)
         {
             Requires.NotNull(clientQueryExecutionContext, nameof(clientQueryExecutionContext));
 
-            clientQueryExecutionContext.DataConversionContextConfig = dataConversionContextConfig;
+            clientQueryExecutionContext.DataConversionConfig = optionsConfig;
 
             return clientQueryExecutionContext;
         }

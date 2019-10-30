@@ -61,7 +61,7 @@ namespace Kephas.Data.Client.Queries
         /// <value>
         /// The client query conversion context configuration.
         /// </value>
-        public Action<IClientQueryConversionContext> ClientQueryConversionContextConfig { get; set; }
+        public Action<IClientQueryConversionContext> QueryConversionConfig { get; set; }
 
         /// <summary>
         /// Gets or sets the data conversion context configuration.
@@ -69,6 +69,6 @@ namespace Kephas.Data.Client.Queries
         /// <value>
         /// The data conversion context configuration.
         /// </value>
-        public Action<object, IDataConversionContext> DataConversionContextConfig { get; set; }
+        public Action<object, IDataConversionContext> DataConversionConfig { get; set; }
     }
 }

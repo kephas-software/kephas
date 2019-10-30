@@ -146,8 +146,8 @@ namespace Kephas.Data.Client.Tests.Queries
 
             var executionContext = new ClientQueryExecutionContext
             {
-                ClientQueryConversionContextConfig = ctx => ctx["gigi"] = "belogea",
-                DataConversionContextConfig = (entity, ctx) => ctx["entity"] = entity,
+                QueryConversionConfig = ctx => ctx["gigi"] = "belogea",
+                DataConversionConfig = (entity, ctx) => ctx["entity"] = entity,
             };
             var executor = new TestDefaultClientQueryExecutor(queryConverter, conversionService, typeResolver);
 
