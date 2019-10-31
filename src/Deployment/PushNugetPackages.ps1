@@ -43,8 +43,6 @@ $packages = @(
     "Kephas.Scripting.Lua",
     "Kephas.Scripting.Python",
     "Kephas.Serialization.Json",
-    "Kephas.Serialization.ServiceStack.Text",
-    "Kephas.ServiceStack",
     "Kephas.Workflow",
     "Kephas.Workflow.Model",
     "Kephas.Testing",
