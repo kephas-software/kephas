@@ -33,31 +33,21 @@ namespace Kephas.Workflow
     [OverridePriority(Priority.Low)]
     public class DefaultWorkflowProcessor : Loggable, IWorkflowProcessor
     {
-        /// <summary>
-        /// The behavior factories.
-        /// </summary>
+        private readonly IContextFactory contextFactory;
         private readonly ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultWorkflowProcessor"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultWorkflowProcessor(
-            ICompositionContext compositionContext,
+            IContextFactory contextFactory,
             ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories)
         {
-            this.CompositionContext = compositionContext;
+            this.contextFactory = contextFactory;
             this.behaviorFactories = behaviorFactories;
         }
-
-        /// <summary>
-        /// Gets a context for the composition.
-        /// </summary>
-        /// <value>
-        /// The composition context.
-        /// </value>
-        public ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Executes the activity asynchronously, enabling the activity execution behaviors.
@@ -65,66 +55,82 @@ namespace Kephas.Workflow
         /// <param name="activity">The activity to execute.</param>
         /// <param name="target">The activity target.</param>
         /// <param name="arguments">The execution arguments.</param>
-        /// <param name="context">The execution context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of the execution result.
+        /// An asynchronous result that yields the execution result.
         /// </returns>
         public async Task<object> ExecuteAsync(
             IActivity activity,
             object target,
             IExpando arguments,
-            IActivityContext context,
+            Action<IActivityContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(activity, nameof(activity));
-            Requires.NotNull(context, nameof(context));
 
-            var logger = context.Logger.Merge(this.Logger);
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            // resolve the activity type which will execute the activity
-            var activityInfo = this.GetActivityInfo(activity, context);
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            // resolve the arguments
-            var executionArgs = await this.GetExecutionArgumentsAsync(activityInfo, arguments, context, cancellationToken)
-                               .PreserveThreadContext();
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            // get the behaviors for execution
-            var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(activityInfo, context);
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            //... TODO improve
-            await this.ApplyBeforeExecuteBehaviorsAsync(behaviors, context, cancellationToken).PreserveThreadContext();
-
-            //... TODO improve
-            try
+            using (var context = this.CreateActivityContext(optionsConfig))
             {
-                var result = await activityInfo
-                                 .ExecuteAsync(activity, target, executionArgs, context, cancellationToken)
-                                 .PreserveThreadContext();
-                context.Result = result;
-            }
-            catch (Exception ex)
-            {
-                context.Exception = ex;
-            }
+                var logger = context.Logger.Merge(this.Logger);
 
-            //... TODO improve
-            await this.ApplyAfterExecuteBehaviorsAsync(reversedBehaviors, context, cancellationToken).PreserveThreadContext();
+                cancellationToken.ThrowIfCancellationRequested();
 
-            if (context.Exception != null)
-            {
-                throw context.Exception;
+                // resolve the activity type which will execute the activity
+                var activityInfo = this.GetActivityInfo(activity, context);
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                // resolve the arguments
+                var executionArgs = await this.GetExecutionArgumentsAsync(activityInfo, arguments, context, cancellationToken)
+                                   .PreserveThreadContext();
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                // get the behaviors for execution
+                var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(activityInfo, context);
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                //... TODO improve
+                await this.ApplyBeforeExecuteBehaviorsAsync(behaviors, context, cancellationToken).PreserveThreadContext();
+
+                //... TODO improve
+                try
+                {
+                    var result = await activityInfo
+                                     .ExecuteAsync(activity, target, executionArgs, context, cancellationToken)
+                                     .PreserveThreadContext();
+                    context.Result = result;
+                }
+                catch (Exception ex)
+                {
+                    context.Exception = ex;
+                }
+
+                //... TODO improve
+                await this.ApplyAfterExecuteBehaviorsAsync(reversedBehaviors, context, cancellationToken).PreserveThreadContext();
+
+                if (context.Exception != null)
+                {
+                    throw context.Exception;
+                }
+
+                return context.Result;
             }
+        }
 
-            return context.Result;
+        /// <summary>
+        /// Creates an activity context for the current processing.
+        /// </summary>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The new activity context.
+        /// </returns>
+        protected virtual IActivityContext CreateActivityContext(Action<IActivityContext> optionsConfig = null)
+        {
+            var context = this.contextFactory.CreateContext<ActivityContext>();
+            optionsConfig?.Invoke(context);
+            return context;
         }
 
         /// <summary>

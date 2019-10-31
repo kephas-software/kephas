@@ -10,6 +10,7 @@
 
 namespace Kephas.Workflow
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Kephas.Workflow
     public interface IWorkflowProcessor
     {
         /// <summary>
-        /// Executes the activity asynchronously, enabling the activity execution behaviors.
+        /// Executes the activity asynchronously, enabling the activity behaviors.
         /// </summary>
         /// <remarks>
         /// The provided target and arguments may overwrite those set in the activity.
@@ -31,16 +32,16 @@ namespace Kephas.Workflow
         /// <param name="activity">The activity to execute.</param>
         /// <param name="target">The activity target.</param>
         /// <param name="arguments">The execution arguments.</param>
-        /// <param name="context">The execution context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of the execution result.
+        /// An asynchronous result that yields the execute.
         /// </returns>
         Task<object> ExecuteAsync(
             IActivity activity,
             object target,
             IExpando arguments,
-            IActivityContext context,
+            Action<IActivityContext> optionsConfig = null,
             CancellationToken cancellationToken = default);
     }
 }

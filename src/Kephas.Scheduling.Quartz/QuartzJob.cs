@@ -10,11 +10,11 @@
 
 namespace Kephas.Scheduling.Quartz
 {
+    using System;
     using System.Threading.Tasks;
 
     using global::Quartz;
 
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -27,21 +27,16 @@ namespace Kephas.Scheduling.Quartz
     [AppServiceContract]
     public class QuartzJob : IJob
     {
-        private readonly ICompositionContext compositionContext;
-
         private readonly IWorkflowProcessor workflowProcessor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuartzJob"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
-        public QuartzJob(ICompositionContext compositionContext, IWorkflowProcessor workflowProcessor)
+        public QuartzJob(IWorkflowProcessor workflowProcessor)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(workflowProcessor, nameof(workflowProcessor));
 
-            this.compositionContext = compositionContext;
             this.workflowProcessor = workflowProcessor;
         }
 
@@ -56,12 +51,12 @@ namespace Kephas.Scheduling.Quartz
         public async Task Execute(IJobExecutionContext context)
         {
             var activity = this.GetActivity(context);
-            var activityContext = this.GetActivityContext(context, activity);
+            var workflowConfig = this.GetWorkflowConfig(context, activity);
             var result = await this.workflowProcessor.ExecuteAsync(
                              activity,
                              activity.Target,
                              activity.Arguments,
-                             activityContext,
+                             workflowConfig,
                              context.CancellationToken).PreserveThreadContext();
             context.Result = result;
         }
@@ -72,10 +67,10 @@ namespace Kephas.Scheduling.Quartz
             throw new System.NotImplementedException();
         }
 
-        private IActivityContext GetActivityContext(IJobExecutionContext context, IActivity activity)
+        private Action<IActivityContext> GetWorkflowConfig(IJobExecutionContext context, IActivity activity)
         {
             // TODO
-            return new ActivityContext(this.compositionContext, this.workflowProcessor) { Activity = activity };
+            return ctx => ctx.Activity(activity);
         }
     }
 }

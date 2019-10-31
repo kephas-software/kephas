@@ -16,6 +16,7 @@ namespace Kephas.Workflow.Tests
 
     using Kephas.Composition;
     using Kephas.Dynamic;
+    using Kephas.Testing;
     using Kephas.Workflow.Behaviors;
     using Kephas.Workflow.Behaviors.Composition;
     using Kephas.Workflow.Reflection;
@@ -25,24 +26,24 @@ namespace Kephas.Workflow.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultWorkflowProcessorTest
+    public class DefaultWorkflowProcessorTest : TestBase
     {
         [Test]
         public async Task ExecuteAsync_basic_flow()
         {
-            var processor = new DefaultWorkflowProcessor(Substitute.For<ICompositionContext>(), new List<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>>());
+            var ctxFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), Substitute.For<IWorkflowProcessor>()));
+            var processor = new DefaultWorkflowProcessor(ctxFactory, new List<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>>());
 
             var activityInfo = Substitute.For<IActivityInfo>();
             var activity = Substitute.For<IActivity>();
             activity.GetTypeInfo().Returns(activityInfo);
 
             var target = new object();
-            var context = Substitute.For<IActivityContext>();
             var expected = new object();
-            activityInfo.ExecuteAsync(activity, target, Arg.Any<IExpando>(), context, Arg.Any<CancellationToken>())
+            activityInfo.ExecuteAsync(activity, target, Arg.Any<IExpando>(), Arg.Any<IActivityContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(expected));
 
-            var result = await processor.ExecuteAsync(activity, target, null, context);
+            var result = await processor.ExecuteAsync(activity, target, arguments: null, optionsConfig: null);
             Assert.AreSame(expected, result);
         }
     }

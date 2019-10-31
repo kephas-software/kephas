@@ -11,7 +11,7 @@
 namespace Kephas.Workflow
 {
     using System;
-
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -57,5 +57,69 @@ namespace Kephas.Workflow
         /// The execution exception.
         /// </value>
         Exception Exception { get; set; }
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IActivityContext"/>.
+    /// </summary>
+    public static class ActivityContextExtensions
+    {
+        /// <summary>
+        /// Sets the processing activity.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The activity context.</param>
+        /// <param name="activity">The activity.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext Activity<TContext>(this TContext context, IActivity activity)
+            where TContext : class, IActivityContext
+        {
+            Requires.NotNull(context, nameof(context));
+            Requires.NotNull(activity, nameof(activity));
+
+            context.Activity = activity;
+
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the processing result.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The activity context.</param>
+        /// <param name="result">The processing result.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext Result<TContext>(this TContext context, object result)
+            where TContext : class, IActivityContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.Result = result;
+
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the processing exception.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The activity context.</param>
+        /// <param name="exception">The processing exception.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext Result<TContext>(this TContext context, Exception exception)
+            where TContext : class, IActivityContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.Exception = exception;
+
+            return context;
+        }
     }
 }
