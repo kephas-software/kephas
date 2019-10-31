@@ -49,10 +49,10 @@ namespace Kephas.Application.Console.Tests.Application
                     return Substitute.For<IEventSubscription>();
                 });
 
-            shell.StartAsync(Arg.Any<CancellationToken>())
+            shell.StartAsync(Arg.Any<IContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.Delay(100));
 
-            var awaiter = new ConsoleAppShutdownAwaiter(shell, eventHub);
+            var awaiter = new ConsoleAppShutdownAwaiter(Substitute.For<IAppContext>(), shell, eventHub);
             var awaiterTask = awaiter.WaitForShutdownSignalAsync();
             await Task.WhenAll(
                 awaiterTask,
@@ -66,7 +66,7 @@ namespace Kephas.Application.Console.Tests.Application
         public async Task WaitForShutdownSignalAsync_quit_from_shell()
         {
             var shell = Substitute.For<ICommandShell>();
-            shell.StartAsync(Arg.Any<CancellationToken>())
+            shell.StartAsync(Arg.Any<IContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.Delay(10));
             var eventHub = Substitute.For<IEventHub>();
             Func<object, IContext, CancellationToken, Task> callback = null;
@@ -76,7 +76,7 @@ namespace Kephas.Application.Console.Tests.Application
                     callback = ci.Arg<Func<object, IContext, CancellationToken, Task>>();
                     return Substitute.For<IEventSubscription>();
                 });
-            var awaiter = new ConsoleAppShutdownAwaiter(shell, eventHub);
+            var awaiter = new ConsoleAppShutdownAwaiter(Substitute.For<IAppContext>(), shell, eventHub);
             var awaiterTask = awaiter.WaitForShutdownSignalAsync();
             await awaiterTask;
 

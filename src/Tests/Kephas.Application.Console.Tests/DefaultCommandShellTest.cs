@@ -12,14 +12,13 @@ namespace Kephas.Application.Console.Tests
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
     using Kephas.Net.Mime;
     using Kephas.Serialization;
-    using Kephas.Threading.Tasks;
+    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -44,7 +43,7 @@ namespace Kephas.Application.Console.Tests
             var shell = new DefaultCommandShell(console, processor, Substitute.For<ISerializationService>());
             using (var source = new CancellationTokenSource())
             {
-                var startTask = shell.StartAsync(source.Token);
+                var startTask = shell.StartAsync(Substitute.For<IContext>(), source.Token);
                 Assert.ThrowsAsync(Is.AssignableTo(typeof(OperationCanceledException)), () => Task.WhenAll(startTask, Task.Run(() => source.Cancel()), Task.Delay(100)));
                 Assert.AreEqual(TaskStatus.Canceled, startTask.Status);
             }
@@ -70,11 +69,11 @@ namespace Kephas.Application.Console.Tests
                 .Returns(ci => Task.FromResult(ci.Arg<object>().ToString()));
             var serialization = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
-            processor.ProcessAsync(Arg.Any<string>(), Arg.Any<IExpando>(), Arg.Any<CancellationToken>())
+            processor.ProcessAsync(Arg.Any<string>(), Arg.Any<IExpando>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => Task.FromResult<object>(ci.Arg<string>() + " processed"));
 
             var shell = new DefaultCommandShell(console, processor, serialization);
-            Assert.ThrowsAsync<OperationCanceledException>(() => shell.StartAsync(default));
+            Assert.ThrowsAsync<OperationCanceledException>(() => shell.StartAsync(Substitute.For<IContext>(), default));
 
             Assert.AreEqual(7, output.Count);
             Assert.AreEqual("Type 'quit' and hit <ENTER> to terminate the application." + Environment.NewLine, output[0]);

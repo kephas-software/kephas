@@ -71,7 +71,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             message.Content.Returns(content);
 
             var dispatchReply = Substitute.For<IMessage>();
-            messageProcessor.ProcessAsync(content, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
+            messageProcessor.ProcessAsync(content, Arg.Any<Action<IMessagingContext>>(), Arg.Any<CancellationToken>())
                 .Returns(dispatchReply);
 
             IBrokeredMessage receivedReply = null;

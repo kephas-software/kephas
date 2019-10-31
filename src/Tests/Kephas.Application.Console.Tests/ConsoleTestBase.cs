@@ -10,14 +10,29 @@
 
 namespace Kephas.Application.Console.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Kephas.Composition;
+    using Kephas.Composition.Lite.Hosting;
     using Kephas.Messaging;
     using Kephas.Testing.Composition;
 
     public abstract class ConsoleTestBase : CompositionTestBase
     {
+        public override ICompositionContext CreateContainer(IAmbientServices ambientServices = null, IEnumerable<Assembly> assemblies = null, IEnumerable<Type> parts = null, Action<LiteCompositionContainerBuilder> config = null)
+        {
+            ambientServices = ambientServices ?? new AmbientServices();
+            if (!ambientServices.IsRegistered(typeof(IAppContext)))
+            {
+                var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
+                ambientServices.Register<IAppContext>(() => lazyAppContext.Value);
+            }
+
+            return base.CreateContainer(ambientServices, assemblies, parts, config);
+        }
+
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {
             var assemblies = base.GetDefaultConventionAssemblies().ToList();

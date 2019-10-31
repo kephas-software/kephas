@@ -33,26 +33,23 @@ namespace Kephas.Application.Console
         private readonly ICommandRegistry registry;
         private readonly ICommandIdentityResolver identityResolver;
         private readonly IMessageProcessor messageProcessor;
-        private readonly IContextFactory contextFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingCommandProcessor"/> class.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="registry">The registry.</param>
         /// <param name="identityResolver">The identity resolver.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="contextFactory">The context factory.</param>
-        public MessagingCommandProcessor(ICommandRegistry registry, ICommandIdentityResolver identityResolver, IMessageProcessor messageProcessor, IContextFactory contextFactory)
+        public MessagingCommandProcessor(ICommandRegistry registry, ICommandIdentityResolver identityResolver, IMessageProcessor messageProcessor)
         {
             Requires.NotNull(registry, nameof(registry));
             Requires.NotNull(identityResolver, nameof(identityResolver));
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
-            Requires.NotNull(contextFactory, nameof(contextFactory));
 
             this.registry = registry;
             this.identityResolver = identityResolver;
             this.messageProcessor = messageProcessor;
-            this.contextFactory = contextFactory;
         }
 
         /// <summary>
@@ -60,14 +57,15 @@ namespace Kephas.Application.Console
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="args">Optional. The arguments.</param>
+        /// <param name="context">Optional. The context.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task<object> ProcessAsync(string command, IExpando args = null, CancellationToken cancellationToken = default)
+        public Task<object> ProcessAsync(string command, IExpando args = null, IContext context = null, CancellationToken cancellationToken = default)
         {
             var message = this.CreateMessage(command, args = args ?? new Expando());
-            return this.ProcessMessageAsync(message, args, cancellationToken);
+            return this.ProcessMessageAsync(message, args, context, cancellationToken);
         }
 
         /// <summary>
@@ -156,18 +154,16 @@ namespace Kephas.Application.Console
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="args">The arguments.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the process message.
         /// </returns>
-        protected virtual async Task<object> ProcessMessageAsync(IMessage message, IExpando args, CancellationToken cancellationToken)
+        protected virtual async Task<object> ProcessMessageAsync(IMessage message, IExpando args, IContext context, CancellationToken cancellationToken)
         {
-            using (var context = this.contextFactory.CreateContext<MessagingContext>(this.messageProcessor, message))
-            {
-                context.Identity = this.identityResolver.ResolveIdentity(context);
-                var result = await this.messageProcessor.ProcessAsync(message, context, cancellationToken).PreserveThreadContext();
-                return result.GetContent();
-            }
+            var identity = this.identityResolver.ResolveIdentity(context);
+            var result = await this.messageProcessor.ProcessAsync(message, ctx => ctx.Identity(identity), cancellationToken).PreserveThreadContext();
+            return result.GetContent();
         }
     }
 }

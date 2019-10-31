@@ -109,55 +109,6 @@ namespace Kephas.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_context_handler_and_message_preserved()
-        {
-            var handler = Substitute.For<IMessageHandler>();
-            var contextHandler = Substitute.For<IMessageHandler>();
-            var contextMessage = Substitute.For<IMessage>();
-
-            var expectedResponse = Substitute.For<IMessage>();
-
-            var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
-                .Returns(
-                    ci =>
-                        {
-                            var ctx = ci.Arg<IMessagingContext>();
-                            ctx.Message = Substitute.For<IMessage>();
-                            ctx.Handler = Substitute.For<IMessageHandler>();
-                            return Task.FromResult(expectedResponse);
-                        });
-            var processor = this.CreateMessageProcessor(handler, message);
-
-            var context = new MessagingContext(Substitute.For<ICompositionContext>(), processor, contextMessage)
-                              {
-                                  Handler = contextHandler,
-                              };
-
-            var result = await processor.ProcessAsync(message, context);
-
-            Assert.AreSame(contextMessage, context.Message);
-            Assert.AreSame(contextHandler, context.Handler);
-        }
-
-        [Test]
-        public async Task ProcessAsync_do_not_dispose_received_contexts()
-        {
-            var handler = Substitute.For<IMessageHandler>();
-            var message = Substitute.For<IMessage>();
-            handler.ProcessAsync(message, Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => Substitute.For<IMessage>());
-            var processor = this.CreateMessageProcessor(handler, message);
-
-            var context = Substitute.For<IMessagingContext>();
-            context.MessageProcessor.Returns(processor);
-
-            var result = await processor.ProcessAsync(message, context);
-
-            context.Received(0).Dispose();
-        }
-
-        [Test]
         public async Task ProcessAsync_dispose_created_contexts()
         {
             var handler = Substitute.For<IMessageHandler>();
@@ -696,20 +647,18 @@ namespace Kephas.Messaging.Tests
 
     public class TestMessageProcessor : DefaultMessageProcessor
     {
-        public Func<IMessage, IMessagingContext, IMessagingContext> CreateProcessingContextFunc { get; set; }
+        public Func<IMessage, Action<IMessagingContext>, IMessagingContext> CreateProcessingContextFunc { get; set; }
 
         public TestMessageProcessor(IContextFactory contextFactory, IMessageMatchService messageMatchService, IMessageHandlerRegistry handlerRegistry, IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
             : base(contextFactory, handlerRegistry, messageMatchService, behaviorFactories)
         {
         }
 
-        protected override sealed IMessagingContext CreateProcessingContext(
-            IMessage message,
-            IMessagingContext context)
+        protected override IMessagingContext CreateProcessingContext(IMessage message, Action<IMessagingContext> optionsConfig)
         {
-            return 
-                this.CreateProcessingContextFunc?.Invoke(message, context)
-                ?? base.CreateProcessingContext(message, context);
+            return
+                this.CreateProcessingContextFunc?.Invoke(message, optionsConfig)
+                ?? base.CreateProcessingContext(message, optionsConfig);
         }
     }
 }

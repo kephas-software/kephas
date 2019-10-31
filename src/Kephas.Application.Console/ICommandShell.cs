@@ -24,10 +24,11 @@ namespace Kephas.Application.Console
         /// <summary>
         /// Starts processing commands asynchronously.
         /// </summary>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task StartAsync(CancellationToken cancellationToken);
+        Task StartAsync(IContext context, CancellationToken cancellationToken);
     }
 }

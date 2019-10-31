@@ -10,8 +10,10 @@
 
 namespace Kephas.Messaging
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
@@ -28,13 +30,13 @@ namespace Kephas.Messaging
         /// <summary>
         /// Processes the specified message asynchronously.
         /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="context">Context for the message processing.</param>
-        /// <param name="token">  The cancellation token.</param>
+        /// <param name="message">The message to process.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="token">Optional. The cancellation token.</param>
         /// <returns>
-        /// The response promise.
+        /// An asynchronous result that yields the response message.
         /// </returns>
-        Task<IMessage> ProcessAsync(IMessage message, IMessagingContext context = null, CancellationToken token = default);
+        Task<IMessage> ProcessAsync(IMessage message, Action<IMessagingContext> optionsConfig = null, CancellationToken token = default);
     }
 
     /// <summary>
@@ -47,17 +49,17 @@ namespace Kephas.Messaging
         /// </summary>
         /// <param name="this">The message processor to act on.</param>
         /// <param name="message">The message.</param>
-        /// <param name="context">Optional. Context for the message processing.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="token">Optional. The cancellation token.</param>
         /// <returns>
-        /// The response promise.
+        /// An asynchronous result that yields the response message.
         /// </returns>
-        public static Task<IMessage> ProcessAsync(this IMessageProcessor @this, object message, IMessagingContext context = null, CancellationToken token = default)
+        public static Task<IMessage> ProcessAsync(this IMessageProcessor @this, object message, Action<IMessagingContext> optionsConfig = null, CancellationToken token = default)
         {
             Requires.NotNull(@this, nameof(@this));
             Requires.NotNull(message, nameof(message));
 
-            return @this.ProcessAsync(message as IMessage ?? new MessageEnvelope { Message = message }, context, token);
+            return @this.ProcessAsync(message as IMessage ?? new MessageEnvelope { Message = message }, optionsConfig, token);
         }
     }
 }

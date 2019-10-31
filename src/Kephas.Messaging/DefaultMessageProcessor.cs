@@ -85,18 +85,19 @@ namespace Kephas.Messaging
         /// <summary>
         /// Processes the specified message asynchronously.
         /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="context">Context for the message processing.</param>
-        /// <param name="token">  The cancellation token.</param>
+        /// <exception cref="Exception">Thrown when an exception error condition occurs.</exception>
+        /// <param name="message">The message to process.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="token">Optional. The cancellation token.</param>
         /// <returns>
-        /// The response promise.
+        /// An asynchronous result that yields the response message.
         /// </returns>
-        public async Task<IMessage> ProcessAsync(IMessage message, IMessagingContext context = null, CancellationToken token = default)
+        public async Task<IMessage> ProcessAsync(IMessage message, Action<IMessagingContext> optionsConfig = null, CancellationToken token = default)
         {
             Requires.NotNull(message, nameof(message));
 
             var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(message);
-            var localContext = this.CreateProcessingContext(message, context);
+            var localContext = this.CreateProcessingContext(message, optionsConfig);
 
             try
             {
@@ -183,23 +184,22 @@ namespace Kephas.Messaging
             }
         }
 
-
-
         /// <summary>
         /// Creates the processing context.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="parentContext">The parent context.</param>
+        /// <param name="optionsConfig">The options configuration.</param>
         /// <returns>
         /// The processing context.
         /// </returns>
         protected virtual IMessagingContext CreateProcessingContext(
             IMessage message,
-            IMessagingContext parentContext)
+            Action<IMessagingContext> optionsConfig)
         {
-            return parentContext == null
-                       ? this.ContextFactory.CreateContext<MessagingContext>(this, message)
-                       : this.ContextFactory.CreateContext<MessagingContext>(parentContext, this, message);
+            var context = this.ContextFactory.CreateContext<MessagingContext>(this);
+            optionsConfig?.Invoke(context);
+            context.Message = message;
+            return context;
         }
 
         /// <summary>

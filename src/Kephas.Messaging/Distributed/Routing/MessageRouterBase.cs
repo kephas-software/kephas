@@ -16,6 +16,7 @@ namespace Kephas.Messaging.Distributed.Routing
     using Kephas;
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
     using Kephas.Logging;
     using Kephas.Messaging.Messages;
@@ -210,12 +211,11 @@ namespace Kephas.Messaging.Distributed.Routing
         /// </returns>
         protected virtual async Task<IMessage> ProcessAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
-            using (var messagingContext = new MessagingContext(context, this.MessageProcessor))
-            {
-                messagingContext.SetBrokeredMessage(brokeredMessage);
-                var response = await this.MessageProcessor.ProcessAsync(brokeredMessage.Content, messagingContext, cancellationToken).PreserveThreadContext();
-                return response;
-            }
+            var response = await this.MessageProcessor.ProcessAsync(
+                brokeredMessage.Content,
+                ctx => ctx.Merge(context).SetBrokeredMessage(brokeredMessage),
+                cancellationToken).PreserveThreadContext();
+            return response;
         }
 
         /// <summary>

@@ -27,10 +27,11 @@ namespace Kephas.Application.Console
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="args">Optional. The arguments.</param>
+        /// <param name="context">Optional. The context.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        Task<object> ProcessAsync(string command, IExpando args = null, CancellationToken cancellationToken = default);
+        Task<object> ProcessAsync(string command, IExpando args = null, IContext context = null, CancellationToken cancellationToken = default);
     }
 }

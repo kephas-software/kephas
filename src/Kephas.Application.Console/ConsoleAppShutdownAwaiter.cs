@@ -22,16 +22,19 @@ namespace Kephas.Application.Console.Application
     [OverridePriority(Priority.BelowNormal)]
     public class ConsoleAppShutdownAwaiter : DefaultAppShutdownAwaiter
     {
+        private readonly IAppContext appContext;
         private readonly ICommandShell shell;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleAppShutdownAwaiter"/> class.
         /// </summary>
+        /// <param name="appContext">Context for the application.</param>
         /// <param name="shell">The shell.</param>
         /// <param name="eventHub">The event hub.</param>
-        public ConsoleAppShutdownAwaiter(ICommandShell shell, IEventHub eventHub)
+        public ConsoleAppShutdownAwaiter(IAppContext appContext, ICommandShell shell, IEventHub eventHub)
             : base(eventHub)
         {
+            this.appContext = appContext;
             this.shell = shell;
         }
 
@@ -44,7 +47,7 @@ namespace Kephas.Application.Console.Application
         /// </returns>
         protected override Task RunAttendedAsync(CancellationToken cancellationToken)
         {
-            return this.shell.StartAsync(cancellationToken);
+            return this.shell.StartAsync(this.appContext, cancellationToken);
         }
     }
 }

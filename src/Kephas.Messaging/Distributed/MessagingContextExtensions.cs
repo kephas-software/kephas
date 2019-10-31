@@ -15,6 +15,8 @@ namespace Kephas.Messaging.Distributed
     /// </summary>
     public static class MessagingContextExtensions
     {
+        private const string BrokeredMessageKey = "BrokeredMessage";
+
         /// <summary>
         /// Gets the brokered message.
         /// </summary>
@@ -24,17 +26,23 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public static IBrokeredMessage GetBrokeredMessage(this IMessagingContext processingContext)
         {
-            return processingContext["BrokeredMessage"] as IBrokeredMessage;
+            return processingContext[BrokeredMessageKey] as IBrokeredMessage;
         }
 
         /// <summary>
         /// Sets the brokered message.
         /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="processingContext">The processing context to act on.</param>
         /// <param name="value">The value.</param>
-        public static void SetBrokeredMessage(this IMessagingContext processingContext, IBrokeredMessage value)
+        /// <returns>
+        /// This <paramref name="processingContext"/>.
+        /// </returns>
+        public static TContext SetBrokeredMessage<TContext>(this TContext processingContext, IBrokeredMessage value)
+            where TContext : class, IMessagingContext
         {
-            processingContext["BrokeredMessage"] = value;
+            processingContext[BrokeredMessageKey] = value;
+            return processingContext;
         }
     }
 }

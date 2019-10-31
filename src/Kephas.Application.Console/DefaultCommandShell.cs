@@ -69,11 +69,12 @@ namespace Kephas.Application.Console
         /// <summary>
         /// Starts processing commands asynchronously.
         /// </summary>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public virtual async Task StartAsync(CancellationToken cancellationToken)
+        public virtual async Task StartAsync(IContext context, CancellationToken cancellationToken)
         {
             this.WriteWelcomeScreen();
 
@@ -110,7 +111,7 @@ namespace Kephas.Application.Console
                     cancellationToken.ThrowIfCancellationRequested();
 
                     var (command, args) = this.ParseCommandLine(commandLine);
-                    var result = await this.commandProcessor.ProcessAsync(command, args, cancellationToken).PreserveThreadContext();
+                    var result = await this.commandProcessor.ProcessAsync(command, args, context, cancellationToken).PreserveThreadContext();
                     await this.WriteCommandOutputAsync(result, cancellationToken).PreserveThreadContext();
 
                     cancellationToken.ThrowIfCancellationRequested();
