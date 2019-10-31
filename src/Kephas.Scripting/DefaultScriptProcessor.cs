@@ -35,14 +35,14 @@ namespace Kephas.Scripting
         /// <summary>
         /// The language service factories.
         /// </summary>
-        private readonly IDictionary<string, IExportFactory<ILanguageService, LanguageServiceMetadata>> languageServiceFactories =
-            new Dictionary<string, IExportFactory<ILanguageService, LanguageServiceMetadata>>(StringComparer.OrdinalIgnoreCase);
+        private readonly IDictionary<string, Lazy<ILanguageService, LanguageServiceMetadata>> languageServiceFactories =
+            new Dictionary<string, Lazy<ILanguageService, LanguageServiceMetadata>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// The scripting behavior factories.
         /// </summary>
-        private readonly IDictionary<string, IList<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>> scriptingBehaviorFactories =
-            new Dictionary<string, IList<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>>(StringComparer.OrdinalIgnoreCase);
+        private readonly IDictionary<string, IList<Lazy<IScriptingBehavior, ScriptingBehaviorMetadata>>> scriptingBehaviorFactories =
+            new Dictionary<string, IList<Lazy<IScriptingBehavior, ScriptingBehaviorMetadata>>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultScriptProcessor"/> class.
@@ -52,8 +52,8 @@ namespace Kephas.Scripting
         /// <param name="scriptingBehaviorFactories">The scripting behavior factories.</param>
         public DefaultScriptProcessor(
             IContextFactory contextFactory,
-            ICollection<IExportFactory<ILanguageService, LanguageServiceMetadata>> languageServiceFactories,
-            ICollection<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>> scriptingBehaviorFactories)
+            ICollection<Lazy<ILanguageService, LanguageServiceMetadata>> languageServiceFactories,
+            ICollection<Lazy<IScriptingBehavior, ScriptingBehaviorMetadata>> scriptingBehaviorFactories)
         {
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(languageServiceFactories, nameof(languageServiceFactories));
@@ -79,7 +79,7 @@ namespace Kephas.Scripting
                 .Where(f => f.Metadata.Language != null)
                 .SelectMany(f => f.Metadata.Language)
                 .Distinct()
-                .ForEach(l => this.scriptingBehaviorFactories.Add(l, new List<IExportFactory<IScriptingBehavior, ScriptingBehaviorMetadata>>()));
+                .ForEach(l => this.scriptingBehaviorFactories.Add(l, new List<Lazy<IScriptingBehavior, ScriptingBehaviorMetadata>>()));
 
             scriptingBehaviorFactories
                 .Order()
@@ -130,7 +130,7 @@ namespace Kephas.Scripting
             }
 
             var scriptingContext = this.CreateScriptingContext(script, args, executionContext);
-            var behaviors = this.scriptingBehaviorFactories.TryGetValue(script.Language)?.Select(f => f.CreateExportedValue()).ToList() ?? new List<IScriptingBehavior>();
+            var behaviors = this.scriptingBehaviorFactories.TryGetValue(script.Language)?.Select(f => f.Value).ToList() ?? new List<IScriptingBehavior>();
 
             foreach (var behavior in behaviors)
             {
@@ -139,7 +139,7 @@ namespace Kephas.Scripting
 
             try
             {
-                var result = await languageServiceFactory.CreateExportedValue()
+                var result = await languageServiceFactory.Value
                                  .ExecuteAsync(script, scriptingContext.ScriptGlobals, args, executionContext, cancellationToken)
                                  .PreserveThreadContext();
                 scriptingContext.Result = result;
