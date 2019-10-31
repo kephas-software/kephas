@@ -75,7 +75,7 @@ namespace Kephas.Scripting
                                 });
                     });
 
-            scriptingBehaviorFactories
+            languageServiceFactories
                 .Where(f => f.Metadata.Language != null)
                 .SelectMany(f => f.Metadata.Language)
                 .Distinct()
@@ -91,7 +91,7 @@ namespace Kephas.Scripting
                         }
                         else
                         {
-                            f.Metadata.Language.ForEach(l => this.scriptingBehaviorFactories[l].Add(f));
+                            f.Metadata.Language.ForEach(l => this.scriptingBehaviorFactories.TryGetValue(l)?.Add(f));
                         }
                     });
         }
