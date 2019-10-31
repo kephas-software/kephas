@@ -1,15 +1,16 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IClientQueryExecutor.cs" company="Kephas Software SRL">
+// <copyright file="NullClientQueryExecutor.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IClientQueryExecutor interface.
+//   Implements the null client query executor class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data.Client.Queries
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
@@ -17,23 +18,26 @@ namespace Kephas.Data.Client.Queries
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for client query executor.
+    /// A null client query processor.
     /// </summary>
-    [SingletonAppServiceContract]
-    public interface IClientQueryExecutor
+    [OverridePriority(Priority.Lowest)]
+    public class NullClientQueryProcessor : IClientQueryProcessor
     {
         /// <summary>
         /// Executes the query asynchronously.
         /// </summary>
         /// <param name="query">The query.</param>
-        /// <param name="executionContext">Context for the execution (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The configuration options.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A list of client entities.
+        /// An asynchronous result that yields the list of client entities.
         /// </returns>
-        Task<IList<object>> ExecuteQueryAsync(
+        public Task<IList<object>> ExecuteQueryAsync(
             ClientQuery query,
-            IClientQueryExecutionContext executionContext = null,
-            CancellationToken cancellationToken = default);
+            Action<IClientQueryExecutionContext> optionsConfig = null,
+            CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IList<object>>(null);
+        }
     }
 }

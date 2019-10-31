@@ -28,33 +28,36 @@ namespace Kephas.Data.Client.Queries
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Base class for client query executors.
+    /// Base class for client query processors.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultClientQueryExecutor : IClientQueryExecutor
+    public class DefaultClientQueryProcessor : IClientQueryProcessor
     {
         /// <summary>
         /// Gets the generic method of <see cref="ExecuteQueryAsync{TClientEntity,TEntity}"/>.
         /// </summary>
         private static readonly MethodInfo ExecuteQueryAsyncMethod =
             ReflectionHelper.GetGenericMethodOf(
-                _ => ((DefaultClientQueryExecutor)null).ExecuteQueryAsync<string, string>(null, null, CancellationToken.None));
+                _ => ((DefaultClientQueryProcessor)null).ExecuteQueryAsync<string, string>(null, null, CancellationToken.None));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultClientQueryExecutor"/> class.
+        /// Initializes a new instance of the <see cref="DefaultClientQueryProcessor"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="clientQueryConverter">The client query converter.</param>
         /// <param name="conversionService">The conversion service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="projectedTypeResolver">The projected type resolver.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
-        public DefaultClientQueryExecutor(
+        public DefaultClientQueryProcessor(
+            IContextFactory contextFactory,
             IClientQueryConverter clientQueryConverter,
             IDataConversionService conversionService,
             ITypeResolver typeResolver,
             IProjectedTypeResolver projectedTypeResolver,
             IExportFactory<IDataSpace> dataSpaceFactory)
         {
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(clientQueryConverter, nameof(clientQueryConverter));
             Requires.NotNull(conversionService, nameof(conversionService));
             Requires.NotNull(typeResolver, nameof(typeResolver));
@@ -62,6 +65,7 @@ namespace Kephas.Data.Client.Queries
             Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
 
             this.DataSpaceFactory = dataSpaceFactory;
+            this.ContextFactory = contextFactory;
             this.ClientQueryConverter = clientQueryConverter;
             this.ConversionService = conversionService;
             this.TypeResolver = typeResolver;
@@ -72,6 +76,14 @@ namespace Kephas.Data.Client.Queries
         /// Gets the data space factory.
         /// </summary>
         public IExportFactory<IDataSpace> DataSpaceFactory { get; }
+
+        /// <summary>
+        /// Gets the context factory.
+        /// </summary>
+        /// <value>
+        /// The context factory.
+        /// </value>
+        public IContextFactory ContextFactory { get; }
 
         /// <summary>
         /// Gets the client query converter.
@@ -109,26 +121,42 @@ namespace Kephas.Data.Client.Queries
         /// Executes the query asynchronously.
         /// </summary>
         /// <param name="query">The query.</param>
-        /// <param name="executionContext">Context for the execution (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The configuration options.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A list of client entities.
+        /// An asynchronous result that yields the list of client entities.
         /// </returns>
         public async Task<IList<object>> ExecuteQueryAsync(
             ClientQuery query,
-            IClientQueryExecutionContext executionContext = null,
+            Action<IClientQueryExecutionContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             var clientEntityType = this.TypeResolver.ResolveType(query.EntityType, throwOnNotFound: false);
             var entityType = this.ResolveEntityType(clientEntityType);
-            executionContext = executionContext ?? new ClientQueryExecutionContext();
-            executionContext.EntityType = entityType;
-            executionContext.ClientEntityType = clientEntityType;
+            using (var executionContext = this.CreateExecutionContext(optionsConfig))
+            {
+                executionContext.EntityType = entityType;
+                executionContext.ClientEntityType = clientEntityType;
 
-            var executeQueryMethod = ExecuteQueryAsyncMethod.MakeGenericMethod(clientEntityType, entityType);
-            var asyncResult = (Task<IList<object>>)executeQueryMethod.Call(this, query, executionContext, cancellationToken);
-            var clientEntities = await asyncResult.PreserveThreadContext();
-            return clientEntities;
+                var executeQueryMethod = ExecuteQueryAsyncMethod.MakeGenericMethod(clientEntityType, entityType);
+                var asyncResult = (Task<IList<object>>)executeQueryMethod.Call(this, query, executionContext, cancellationToken);
+                var clientEntities = await asyncResult.PreserveThreadContext();
+                return clientEntities;
+            }
+        }
+
+        /// <summary>
+        /// Creates the execution context.
+        /// </summary>
+        /// <param name="optionsConfig">Optional. The configuration options.</param>
+        /// <returns>
+        /// The new execution context.
+        /// </returns>
+        protected virtual IClientQueryExecutionContext CreateExecutionContext(Action<IClientQueryExecutionContext> optionsConfig = null)
+        {
+            var context = this.ContextFactory.CreateContext<ClientQueryExecutionContext>();
+            optionsConfig?.Invoke(context);
+            return context;
         }
 
         /// <summary>
@@ -167,9 +195,9 @@ namespace Kephas.Data.Client.Queries
             {
                 var dataContext = dataSpace[executionContext.EntityType, executionContext];
                 var queryConversionContext = new ClientQueryConversionContext(dataContext)
-                                                {
-                                                    Options = executionContext.Options
-                                                };
+                {
+                    Options = executionContext.Options,
+                };
                 executionContext.QueryConversionConfig?.Invoke(queryConversionContext);
                 var query = (IQueryable<TEntity>)this.ClientQueryConverter.ConvertQuery(clientQuery, queryConversionContext);
                 var entities = await query.ToListAsync(token).PreserveThreadContext();

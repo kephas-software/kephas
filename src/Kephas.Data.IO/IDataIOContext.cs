@@ -52,7 +52,7 @@ namespace Kephas.Data.IO
         /// <returns>
         /// This <paramref name="dataIOContext"/>.
         /// </returns>
-        public static TContext SerializationConfig<TContext>(
+        public static TContext SetSerializationConfig<TContext>(
             this TContext dataIOContext,
             Action<ISerializationContext> serializationContextConfig)
             where TContext : class, IDataIOContext

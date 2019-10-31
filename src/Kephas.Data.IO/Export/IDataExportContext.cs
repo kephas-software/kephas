@@ -125,7 +125,7 @@ namespace Kephas.Data.IO.Export
         /// <returns>
         /// This <paramref name="dataExportContext"/>.
         /// </returns>
-        public static TContext QueryExecutionConfig<TContext>(
+        public static TContext SetQueryExecutionConfig<TContext>(
             this TContext dataExportContext,
             Action<IClientQueryExecutionContext> optionsConfig)
             where TContext : class, IDataExportContext

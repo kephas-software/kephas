@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.IO.Tests.Export
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
@@ -32,11 +33,11 @@ namespace Kephas.Data.IO.Tests.Export
         public async Task ExportDataAsync_query()
         {
             var writer = Substitute.For<IDataStreamWriteService>();
-            var queryExecutor = Substitute.For<IClientQueryExecutor>();
+            var queryExecutor = Substitute.For<IClientQueryProcessor>();
             var ctxFactory = this.CreateContextFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<ICompositionContext>()));
 
             var entities = new List<object> { "hello" };
-            queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<IClientQueryExecutionContext>(), Arg.Any<CancellationToken>())
+            queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<Action<IClientQueryExecutionContext>>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult<IList<object>>(entities));
 
             writer.WriteAsync(entities, Arg.Any<DataStream>(), Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
@@ -56,10 +57,10 @@ namespace Kephas.Data.IO.Tests.Export
         public async Task ExportDataAsync_query_no_data()
         {
             var writer = Substitute.For<IDataStreamWriteService>();
-            var queryExecutor = Substitute.For<IClientQueryExecutor>();
+            var queryExecutor = Substitute.For<IClientQueryProcessor>();
             var ctxFactory = this.CreateContextFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<ICompositionContext>()));
 
-            queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<IClientQueryExecutionContext>(), Arg.Any<CancellationToken>())
+            queryExecutor.ExecuteQueryAsync(Arg.Any<ClientQuery>(), Arg.Any<Action<IClientQueryExecutionContext>>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult<IList<object>>(new object[0]));
 
             var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
@@ -73,7 +74,7 @@ namespace Kephas.Data.IO.Tests.Export
         public async Task ExportDataAsync_data()
         {
             var writer = Substitute.For<IDataStreamWriteService>();
-            var queryExecutor = Substitute.For<IClientQueryExecutor>();
+            var queryExecutor = Substitute.For<IClientQueryProcessor>();
             var ctxFactory = this.CreateContextFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<ICompositionContext>()));
 
             var entities = new List<object> { "hello" };
@@ -95,7 +96,7 @@ namespace Kephas.Data.IO.Tests.Export
         public async Task ExportDataAsync_no_data_no_throw()
         {
             var writer = Substitute.For<IDataStreamWriteService>();
-            var queryExecutor = Substitute.For<IClientQueryExecutor>();
+            var queryExecutor = Substitute.For<IClientQueryProcessor>();
             var ctxFactory = this.CreateContextFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<ICompositionContext>()));
 
             var entities = new List<object>();
@@ -117,7 +118,7 @@ namespace Kephas.Data.IO.Tests.Export
         public async Task ExportDataAsync_data_no_data()
         {
             var writer = Substitute.For<IDataStreamWriteService>();
-            var queryExecutor = Substitute.For<IClientQueryExecutor>();
+            var queryExecutor = Substitute.For<IClientQueryProcessor>();
             var ctxFactory = this.CreateContextFactoryMock<DataExportContext>(() => new DataExportContext(Substitute.For<ICompositionContext>()));
 
             var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);

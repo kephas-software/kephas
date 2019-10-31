@@ -69,41 +69,108 @@ namespace Kephas.Data.Client.Queries
     public static class ClientQueryExecutionContextExtensions
     {
         /// <summary>
-        /// Sets the client query conversion context configuration.
+        /// Sets the domain entity type.
         /// </summary>
-        /// <param name="clientQueryExecutionContext">The client query execution context to act on.</param>
-        /// <param name="optionsConfig">The client query conversion context configuration.</param>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The client query execution context.</param>
+        /// <param name="entityType">The domain entity type.</param>
         /// <returns>
-        /// The client query execution context.
+        /// This <paramref name="context"/>.
         /// </returns>
-        public static IClientQueryExecutionContext QueryConversionConfig(
-            this IClientQueryExecutionContext clientQueryExecutionContext,
-            Action<IClientQueryConversionContext> optionsConfig)
+        public static TContext EntityType<TContext>(
+            this TContext context,
+            Type entityType)
+            where TContext : class, IClientQueryExecutionContext
         {
-            Requires.NotNull(clientQueryExecutionContext, nameof(clientQueryExecutionContext));
+            Requires.NotNull(context, nameof(context));
 
-            clientQueryExecutionContext.QueryConversionConfig = optionsConfig;
+            context.EntityType = entityType;
 
-            return clientQueryExecutionContext;
+            return context;
         }
 
         /// <summary>
-        /// Sets the client query execution context configuration.
+        /// Sets the client entity type.
         /// </summary>
-        /// <param name="clientQueryExecutionContext">The client query execution context to act on.</param>
-        /// <param name="optionsConfig">The data conversion context configuration.</param>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The client query execution context.</param>
+        /// <param name="clientEntityType">The client entity type.</param>
         /// <returns>
-        /// The client query execution context.
+        /// This <paramref name="context"/>.
         /// </returns>
-        public static IClientQueryExecutionContext DataConversionConfig(
-            this IClientQueryExecutionContext clientQueryExecutionContext,
-            Action<object, IDataConversionContext> optionsConfig)
+        public static TContext ClientEntityType<TContext>(
+            this TContext context,
+            Type clientEntityType)
+            where TContext : class, IClientQueryExecutionContext
         {
-            Requires.NotNull(clientQueryExecutionContext, nameof(clientQueryExecutionContext));
+            Requires.NotNull(context, nameof(context));
 
-            clientQueryExecutionContext.DataConversionConfig = optionsConfig;
+            context.ClientEntityType = clientEntityType;
 
-            return clientQueryExecutionContext;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the custom options.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The client query execution context.</param>
+        /// <param name="options">The custom options.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext Options<TContext>(
+            this TContext context,
+            object options)
+            where TContext : class, IClientQueryExecutionContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.Options = options;
+
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the client query conversion options.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The client query execution context.</param>
+        /// <param name="optionsConfig">The client query conversion options.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext SetQueryConversionConfig<TContext>(
+            this TContext context,
+            Action<IClientQueryConversionContext> optionsConfig)
+            where TContext : class, IClientQueryExecutionContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.QueryConversionConfig = optionsConfig;
+
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the data conversion options.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The client query execution context.</param>
+        /// <param name="optionsConfig">The data conversion options.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext SetDataConversionConfig<TContext>(
+            this TContext context,
+            Action<object, IDataConversionContext> optionsConfig)
+            where TContext : class, IClientQueryExecutionContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.DataConversionConfig = optionsConfig;
+
+            return context;
         }
     }
 }

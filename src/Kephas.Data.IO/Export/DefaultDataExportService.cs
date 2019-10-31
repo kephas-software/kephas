@@ -32,7 +32,7 @@ namespace Kephas.Data.IO.Export
     [OverridePriority(Priority.Low)]
     public class DefaultDataExportService : IDataExportService
     {
-        private readonly IClientQueryExecutor clientQueryExecutor;
+        private readonly IClientQueryProcessor clientQueryExecutor;
         private readonly IContextFactory contextFactory;
         private readonly IDataStreamWriteService dataStreamWriteService;
 
@@ -45,7 +45,7 @@ namespace Kephas.Data.IO.Export
         public DefaultDataExportService(
             IContextFactory contextFactory,
             IDataStreamWriteService dataStreamWriteService,
-            IClientQueryExecutor clientQueryExecutor)
+            IClientQueryProcessor clientQueryExecutor)
         {
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(dataStreamWriteService, nameof(dataStreamWriteService));
@@ -116,13 +116,14 @@ namespace Kephas.Data.IO.Export
         {
             if (context.Query != null)
             {
-                using (var queryExecutionContext = this.contextFactory.CreateContext<ClientQueryExecutionContext>())
-                {
-                    queryExecutionContext.Merge(context);
-                    context.QueryExecutionConfig?.Invoke(queryExecutionContext);
-                    context.Data = await this.clientQueryExecutor.ExecuteQueryAsync(context.Query, queryExecutionContext, cancellationToken)
-                               .PreserveThreadContext();
-                }
+                context.Data = await this.clientQueryExecutor.ExecuteQueryAsync(
+                    context.Query,
+                    ctx =>
+                    {
+                        ctx.Merge(context);
+                        context.QueryExecutionConfig?.Invoke(ctx);
+                    },
+                    cancellationToken).PreserveThreadContext();
             }
 
             var data = context.Data;

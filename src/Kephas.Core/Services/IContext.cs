@@ -61,15 +61,52 @@ namespace Kephas.Services
         private const string DisposableResourcesKey = "__DisposableResources";
 
         /// <summary>
+        /// Sets the provided value.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext Set<TContext>(this TContext context, string key, object value)
+            where TContext : class, IContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context[key] = value;
+
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the context identity.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The context to act on.</param>
+        /// <param name="parentContext">The parent context.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext ChildOf<TContext>(this TContext context, IContext parentContext)
+            where TContext : class, IContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.Identity(parentContext.Identity);
+
+            return context;
+        }
+
+        /// <summary>
         /// Sets the context identity.
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context to act on.</param>
         /// <param name="identity">The identity.</param>
         /// <returns>
-        /// This context.
+        /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext WithIdentity<TContext>(this TContext context, IIdentity identity)
+        public static TContext Identity<TContext>(this TContext context, IIdentity identity)
             where TContext : class, IContext
         {
             Requires.NotNull(context, nameof(context));
@@ -85,9 +122,9 @@ namespace Kephas.Services
         /// <param name="context">The context to act on.</param>
         /// <param name="contextLogger">The context logger.</param>
         /// <returns>
-        /// This context.
+        /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext WithLogger<TContext>(this TContext context, ILogger contextLogger)
+        public static TContext Logger<TContext>(this TContext context, ILogger contextLogger)
             where TContext : class, IContext
         {
             Requires.NotNull(context, nameof(context));
@@ -111,7 +148,7 @@ namespace Kephas.Services
         /// <param name="context">The context to act on.</param>
         /// <param name="resources">The resources to add.</param>
         /// <returns>
-        /// The provided context.
+        /// This <paramref name="context"/>.
         /// </returns>
         public static TContext AddResource<TContext>(this TContext context, params IDisposable[] resources)
             where TContext : class, IContext
@@ -138,7 +175,7 @@ namespace Kephas.Services
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context to act on.</param>
         /// <returns>
-        /// The provided context.
+        /// This <paramref name="context"/>.
         /// </returns>
         internal static TContext DisposeResources<TContext>(this TContext context)
             where TContext : class, IContext

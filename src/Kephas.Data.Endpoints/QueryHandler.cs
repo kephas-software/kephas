@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.Endpoints
 {
+    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace Kephas.Data.Endpoints
     using Kephas.Data.Client.Queries;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -25,27 +27,20 @@ namespace Kephas.Data.Endpoints
     /// </summary>
     public class QueryHandler : MessageHandlerBase<QueryMessage, QueryResponseMessage>
     {
-        /// <summary>
-        /// The composition context.
-        /// </summary>
-        private readonly ICompositionContext compositionContext;
-
-        /// <summary>
-        /// The client query executor.
-        /// </summary>
-        private readonly IClientQueryExecutor clientQueryExecutor;
+        private readonly IContextFactory contextFactory;
+        private readonly IClientQueryProcessor clientQueryExecutor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QueryHandler"/> class.
         /// </summary>
-        /// <param name="compositionContext">The dependency injection/composition context.</param>
+        /// <param name="contextFactory">The dependency injection/composition context.</param>
         /// <param name="clientQueryExecutor">The client query executor.</param>
-        public QueryHandler(ICompositionContext compositionContext, IClientQueryExecutor clientQueryExecutor)
+        public QueryHandler(IContextFactory contextFactory, IClientQueryProcessor clientQueryExecutor)
         {
-            Requires.NotNull(compositionContext, nameof(compositionContext));
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(clientQueryExecutor, nameof(clientQueryExecutor));
 
-            this.compositionContext = compositionContext;
+            this.contextFactory = contextFactory;
             this.clientQueryExecutor = clientQueryExecutor;
         }
 
@@ -63,31 +58,26 @@ namespace Kephas.Data.Endpoints
             IMessagingContext context,
             CancellationToken token)
         {
-            var executionContext = this.CreateClientQueryExecutionContext(message, context);
-
-            var clientEntities = await this.clientQueryExecutor.ExecuteQueryAsync(message.Query, executionContext, token)
+            var optionsConfig = this.GetQueryExecutionConfig(message, context);
+            var clientEntities = await this.clientQueryExecutor.ExecuteQueryAsync(message.Query, optionsConfig, token)
                                      .PreserveThreadContext();
 
             return new QueryResponseMessage { Entities = clientEntities.ToArray() };
         }
 
         /// <summary>
-        /// Creates client query execution context.
+        /// Gets the query execution configuration options.
         /// </summary>
         /// <param name="message">The message to be handled.</param>
         /// <param name="context">The processing context.</param>
         /// <returns>
-        /// The new client query execution context.
+        /// The query execution configuration options.
         /// </returns>
-        protected virtual IClientQueryExecutionContext CreateClientQueryExecutionContext(
+        protected virtual Action<IClientQueryExecutionContext> GetQueryExecutionConfig(
             QueryMessage message,
             IMessagingContext context)
         {
-            var executionContext = new ClientQueryExecutionContext(context)
-                                        {
-                                            Options = message.Options,
-                                        };
-            return executionContext;
+            return ctx => ctx.ChildOf(context).Options(message.Options);
         }
     }
 }

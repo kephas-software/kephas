@@ -30,24 +30,21 @@ namespace Kephas.Data.Client.Tests.Queries
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultClientQueryExecutorTest
+    public class DefaultClientQueryProcessorTest : ClientDataTestBase
     {
         [Test]
-        public void Constructor()
+        public void Composition()
         {
-            var executor = new DefaultClientQueryExecutor(
-                Substitute.For<IClientQueryConverter>(),
-                Substitute.For<IDataConversionService>(),
-                Substitute.For<ITypeResolver>(),
-                Substitute.For<IProjectedTypeResolver>(),
-                Substitute.For<IExportFactory<IDataSpace>>());
+            var container = this.CreateContainer();
+            var processor = container.GetExport<IClientQueryProcessor>();
 
-            Assert.IsInstanceOf<DefaultClientQueryExecutor>(executor);
+            Assert.IsInstanceOf<DefaultClientQueryProcessor>(processor);
         }
 
         [Test]
         public async Task ExecuteQueryAsync()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<ICompositionContext>()));
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
             var query = entities.AsQueryable();
 
@@ -71,7 +68,7 @@ namespace Kephas.Data.Client.Tests.Queries
                         return Task.FromResult(result);
                     });
 
-            var executor = new TestDefaultClientQueryExecutor(queryConverter, conversionService, typeResolver);
+            var executor = new TestDefaultClientQueryExecutor(ctxFactory, queryConverter, conversionService, typeResolver);
             var results = (await executor.ExecuteQueryAsync(clientQuery)).Cast<TestClientEntity>().ToList();
 
             Assert.AreEqual(3, results.Count);
@@ -83,6 +80,7 @@ namespace Kephas.Data.Client.Tests.Queries
         [Test]
         public async Task ExecuteQueryAsync_skip_conversion_for_same_type()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<ICompositionContext>()));
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
             var query = entities.AsQueryable();
 
@@ -105,6 +103,7 @@ namespace Kephas.Data.Client.Tests.Queries
                     });
 
             var executor = new TestDefaultClientQueryExecutor(
+                ctxFactory,
                 queryConverter,
                 conversionService,
                 typeResolver,
@@ -120,6 +119,7 @@ namespace Kephas.Data.Client.Tests.Queries
         [Test]
         public async Task ExecuteQueryAsync_context_config()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new ClientQueryExecutionContext(Substitute.For<ICompositionContext>()));
             var entities = new List<TestEntity> { new TestEntity { Name = "1" }, new TestEntity { Name = "2" }, new TestEntity { Name = "3" }, };
             var query = entities.AsQueryable();
 
@@ -144,14 +144,14 @@ namespace Kephas.Data.Client.Tests.Queries
                         return Task.FromResult(result);
                     });
 
-            var executionContext = new ClientQueryExecutionContext
-            {
-                QueryConversionConfig = ctx => ctx["gigi"] = "belogea",
-                DataConversionConfig = (entity, ctx) => ctx["entity"] = entity,
-            };
-            var executor = new TestDefaultClientQueryExecutor(queryConverter, conversionService, typeResolver);
+            var executor = new TestDefaultClientQueryExecutor(ctxFactory, queryConverter, conversionService, typeResolver);
 
-            var results = (await executor.ExecuteQueryAsync(clientQuery, executionContext)).Cast<TestClientEntity>().ToList();
+            var results = (await executor.ExecuteQueryAsync(
+                clientQuery,
+                exctx =>
+                    exctx.SetQueryConversionConfig(ctx => ctx.Set("gigi", "belogea"))
+                         .SetDataConversionConfig((entity, ctx) => ctx.Set("entity", entity))))
+                .Cast<TestClientEntity>().ToList();
 
             Assert.AreEqual(3, results.Count);
             Assert.AreEqual("C-1", results[0].Name);
@@ -169,16 +169,17 @@ namespace Kephas.Data.Client.Tests.Queries
             public string Name { get; set; }
         }
 
-        public class TestDefaultClientQueryExecutor : DefaultClientQueryExecutor
+        public class TestDefaultClientQueryExecutor : DefaultClientQueryProcessor
         {
             public TestDefaultClientQueryExecutor(
+                IContextFactory contextFactory,
                 IClientQueryConverter clientQueryConverter,
                 IDataConversionService conversionService,
                 ITypeResolver typeResolver,
                 IProjectedTypeResolver projectedTypeResolver = null,
                 Func<IDataContext> dataContextCreator = null,
                 Func<IDataContext> clientDataContextCreator = null)
-                : base(clientQueryConverter, conversionService, typeResolver, projectedTypeResolver ?? GetProjectedTypeResolver(), GetDataSpaceFactory(dataContextCreator, clientDataContextCreator))
+                : base(contextFactory, clientQueryConverter, conversionService, typeResolver, projectedTypeResolver ?? GetProjectedTypeResolver(), GetDataSpaceFactory(dataContextCreator, clientDataContextCreator))
             {
             }
 
