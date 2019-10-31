@@ -162,7 +162,7 @@ namespace Kephas.Data.IO.Setup
                 try
                 {
                     var importResult = await this.DataImportService
-                                     .ImportDataAsync(dataSource, ctx => ctx.DataSpace(dataSpace), cancellationToken)
+                                     .ImportDataAsync(dataSource, this.GetDataImportConfig(dataSetupContext, dataSpace), cancellationToken)
                                      .PreserveThreadContext();
                     result.MergeResult(importResult);
                     result.Messages?.ForEach(m => this.Logger.Info($"{m.Timestamp}: {m.Message}"));
@@ -178,6 +178,19 @@ namespace Kephas.Data.IO.Setup
                     return result;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the data import configuration.
+        /// </summary>
+        /// <param name="dataSetupContext">Context for the data setup.</param>
+        /// <param name="dataSpace">The data space.</param>
+        /// <returns>
+        /// The data import configuration.
+        /// </returns>
+        protected virtual Action<IDataImportContext> GetDataImportConfig(IDataSetupContext dataSetupContext, IDataSpace dataSpace)
+        {
+            return ctx => ctx.DataSpace(dataSpace);
         }
 
         /// <summary>

@@ -93,14 +93,16 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// Sets the data context.
         /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="dataImportContext">The data import context.</param>
         /// <param name="dataSpace">The data space.</param>
         /// <returns>
         /// This <paramref name="dataImportContext"/>.
         /// </returns>
-        public static IDataImportContext DataSpace(
-            this IDataImportContext dataImportContext,
+        public static TContext DataSpace<TContext>(
+            this TContext dataImportContext,
             IDataSpace dataSpace)
+            where TContext : class, IDataImportContext
         {
             Requires.NotNull(dataImportContext, nameof(dataImportContext));
 
@@ -112,14 +114,16 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// Sets the data conversion options configuration.
         /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="dataImportContext">The data import context.</param>
         /// <param name="optionsConfig">The data conversion options configuration.</param>
         /// <returns>
         /// This <paramref name="dataImportContext"/>.
         /// </returns>
-        public static IDataImportContext DataConversionConfig(
-            this IDataImportContext dataImportContext,
+        public static TContext SetDataConversionConfig<TContext>(
+            this TContext dataImportContext,
             Action<object, IDataConversionContext> optionsConfig)
+            where TContext : class, IDataImportContext
         {
             Requires.NotNull(dataImportContext, nameof(dataImportContext));
 
@@ -131,14 +135,16 @@ namespace Kephas.Data.IO.Import
         /// <summary>
         /// Sets the persist changes options configuration.
         /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="dataImportContext">The data import context to act on.</param>
         /// <param name="optionsConfig">The persist changes options configuration.</param>
         /// <returns>
         /// This <paramref name="dataImportContext"/>.
         /// </returns>
-        public static IDataImportContext PersistChangesConfig(
-            this IDataImportContext dataImportContext,
+        public static TContext SetPersistChangesConfig<TContext>(
+            this TContext dataImportContext,
             Action<IPersistChangesContext> optionsConfig)
+            where TContext : class, IDataImportContext
         {
             Requires.NotNull(dataImportContext, nameof(dataImportContext));
 
