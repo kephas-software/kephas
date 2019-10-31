@@ -5,7 +5,7 @@
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Description>Adds support for an extensible application architecture at runtime.</Description>
-        <Version>7.1.0-preview.5.1</Version>
+        <Version>7.1.0-preview.6</Version>
         <AssemblyVersion>7.1.0.0</AssemblyVersion>
         <FileVersion>7.1.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
