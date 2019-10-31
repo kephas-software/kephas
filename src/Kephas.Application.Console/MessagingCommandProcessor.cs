@@ -37,7 +37,6 @@ namespace Kephas.Application.Console
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingCommandProcessor"/> class.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="registry">The registry.</param>
         /// <param name="identityResolver">The identity resolver.</param>
         /// <param name="messageProcessor">The message processor.</param>

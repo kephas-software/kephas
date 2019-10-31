@@ -73,8 +73,8 @@ namespace Kephas.Serialization
     /// <summary>
     /// Extension methods for <see cref="ISerializationContext"/>.
     /// </summary>
-    public static class SerializationContextExtensions {
-
+    public static class SerializationContextExtensions
+    {
         /// <summary>
         /// Sets a value indicating whether to indent the serialized value.
         /// </summary>
