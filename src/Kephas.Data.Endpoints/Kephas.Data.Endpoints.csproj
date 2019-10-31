@@ -13,7 +13,7 @@
         <FileVersion>7.1.0.0</FileVersion>
         <Copyright>Copyright © Kephas Software SRL 2010-2019</Copyright>
         <Description>Provides the endpoints for the data flow.</Description>
-        <Version>7.1.0-preview.4.1</Version>
+        <Version>7.1.0-preview.5</Version>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
