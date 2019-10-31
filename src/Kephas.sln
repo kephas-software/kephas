@@ -68,17 +68,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Endpoints", "Ke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Application.AspNetCore", "Kephas.Application.AspNetCore\Kephas.Application.AspNetCore.csproj", "{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.ServiceStack.Text", "Kephas.Serialization.ServiceStack.Text\Kephas.Serialization.ServiceStack.Text.csproj", "{BD80DBE0-627B-44D7-9506-29E73877B40D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Testing.Model", "TestingFramework\Kephas.Testing.Model\Kephas.Testing.Model.csproj", "{28582FCC-D98C-44D0-AA62-1BBCDE97F25E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Model.Abstractions", "Kephas.Data.Model.Abstractions\Kephas.Data.Model.Abstractions.csproj", "{76596D38-4194-4CCE-980B-29998E2C5B79}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.ServiceStack", "Kephas.ServiceStack\Kephas.ServiceStack.csproj", "{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.ServiceStack.Tests", "Tests\Kephas.ServiceStack.Tests\Kephas.ServiceStack.Tests.csproj", "{7AFE065F-FEB1-414E-B04B-2878DFCDB65B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.ServiceStack.Text.Tests", "Tests\Kephas.Serialization.ServiceStack.Text.Tests\Kephas.Serialization.ServiceStack.Text.Tests.csproj", "{3B04074E-6F2F-4640-9085-1A420E44D5AF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core.Tests", "Tests\Kephas.Core.Tests\Kephas.Core.Tests.csproj", "{20B57C5A-7B64-4D30-A799-B06561007640}"
 EndProject
@@ -182,9 +174,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.Lua", "Kep
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Scripting.Lua.Tests", "Tests\Kephas.Scripting.Lua.Tests\Kephas.Scripting.Lua.Tests.csproj", "{060279F8-A987-485A-96E0-6DBB96C3AD59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Redis", "Kephas.Messaging.Redis\Kephas.Messaging.Redis.csproj", "{78363C10-A2E4-45A3-8574-22A392980529}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Redis", "Kephas.Messaging.Redis\Kephas.Messaging.Redis.csproj", "{78363C10-A2E4-45A3-8574-22A392980529}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Redis", "Kephas.Redis\Kephas.Redis.csproj", "{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Redis", "Kephas.Redis\Kephas.Redis.csproj", "{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -268,10 +260,6 @@ Global
 		{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF1C9FF8-CA28-4A9F-89A1-2B9359838A69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD80DBE0-627B-44D7-9506-29E73877B40D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD80DBE0-627B-44D7-9506-29E73877B40D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD80DBE0-627B-44D7-9506-29E73877B40D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD80DBE0-627B-44D7-9506-29E73877B40D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28582FCC-D98C-44D0-AA62-1BBCDE97F25E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28582FCC-D98C-44D0-AA62-1BBCDE97F25E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28582FCC-D98C-44D0-AA62-1BBCDE97F25E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -280,18 +268,6 @@ Global
 		{76596D38-4194-4CCE-980B-29998E2C5B79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76596D38-4194-4CCE-980B-29998E2C5B79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76596D38-4194-4CCE-980B-29998E2C5B79}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E481AF0-8FC9-4796-BF37-723EA3F64D1B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7AFE065F-FEB1-414E-B04B-2878DFCDB65B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7AFE065F-FEB1-414E-B04B-2878DFCDB65B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7AFE065F-FEB1-414E-B04B-2878DFCDB65B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7AFE065F-FEB1-414E-B04B-2878DFCDB65B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B04074E-6F2F-4640-9085-1A420E44D5AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B04074E-6F2F-4640-9085-1A420E44D5AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B04074E-6F2F-4640-9085-1A420E44D5AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B04074E-6F2F-4640-9085-1A420E44D5AF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{20B57C5A-7B64-4D30-A799-B06561007640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{20B57C5A-7B64-4D30-A799-B06561007640}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20B57C5A-7B64-4D30-A799-B06561007640}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -511,8 +487,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{00BE907B-3852-480F-9ABC-5B4C5D4595B6} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
 		{28582FCC-D98C-44D0-AA62-1BBCDE97F25E} = {EEE1C452-EDDF-47E2-842B-970E33C42FA5}
-		{7AFE065F-FEB1-414E-B04B-2878DFCDB65B} = {816692E7-24DC-46B5-97FB-D314B52D815D}
-		{3B04074E-6F2F-4640-9085-1A420E44D5AF} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{20B57C5A-7B64-4D30-A799-B06561007640} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{06C1648B-996A-484E-906A-3CF31EC19B6E} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{47D24365-AA91-4E10-8C63-6C3263F5E3D7} = {816692E7-24DC-46B5-97FB-D314B52D815D}
