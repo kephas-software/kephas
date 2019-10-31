@@ -6,7 +6,7 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Description>Provides data access implementation using the LLBLGen ORM.</Description>
-        <Version>7.1.0-preview.5</Version>
+        <Version>7.1.0-preview.5.1</Version>
         <AssemblyVersion>7.1.0.0</AssemblyVersion>
         <FileVersion>7.1.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
