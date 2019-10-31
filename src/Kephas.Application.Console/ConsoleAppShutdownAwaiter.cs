@@ -20,9 +20,8 @@ namespace Kephas.Application.Console.Application
     /// A console application shutdown awaiter.
     /// </summary>
     [OverridePriority(Priority.BelowNormal)]
-    public class ConsoleAppShutdownAwaiter : DefaultAppShutdownAwaiter
+    public class ConsoleAppShutdownAwaiter : DefaultAppShutdownAwaiter, IInitializable
     {
-        private readonly IAppContext appContext;
         private readonly ICommandShell shell;
 
         /// <summary>
@@ -31,11 +30,27 @@ namespace Kephas.Application.Console.Application
         /// <param name="appContext">Context for the application.</param>
         /// <param name="shell">The shell.</param>
         /// <param name="eventHub">The event hub.</param>
-        public ConsoleAppShutdownAwaiter(IAppContext appContext, ICommandShell shell, IEventHub eventHub)
+        public ConsoleAppShutdownAwaiter(ICommandShell shell, IEventHub eventHub)
             : base(eventHub)
         {
-            this.appContext = appContext;
             this.shell = shell;
+        }
+
+        /// <summary>
+        /// Gets a context for the application.
+        /// </summary>
+        /// <value>
+        /// The application context.
+        /// </value>
+        public IContext AppContext { get; private set; }
+
+        /// <summary>
+        /// Initializes the service.
+        /// </summary>
+        /// <param name="context">Optional. An optional context for initialization.</param>
+        public virtual void Initialize(IContext context = null)
+        {
+            this.AppContext = context;
         }
 
         /// <summary>
@@ -47,7 +62,7 @@ namespace Kephas.Application.Console.Application
         /// </returns>
         protected override Task RunAttendedAsync(CancellationToken cancellationToken)
         {
-            return this.shell.StartAsync(this.appContext, cancellationToken);
+            return this.shell.StartAsync(this.AppContext, cancellationToken);
         }
     }
 }

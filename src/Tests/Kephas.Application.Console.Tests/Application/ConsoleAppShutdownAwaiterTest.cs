@@ -52,7 +52,7 @@ namespace Kephas.Application.Console.Tests.Application
             shell.StartAsync(Arg.Any<IContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.Delay(100));
 
-            var awaiter = new ConsoleAppShutdownAwaiter(Substitute.For<IAppContext>(), shell, eventHub);
+            var awaiter = new ConsoleAppShutdownAwaiter(shell, eventHub);
             var awaiterTask = awaiter.WaitForShutdownSignalAsync();
             await Task.WhenAll(
                 awaiterTask,
@@ -76,7 +76,7 @@ namespace Kephas.Application.Console.Tests.Application
                     callback = ci.Arg<Func<object, IContext, CancellationToken, Task>>();
                     return Substitute.For<IEventSubscription>();
                 });
-            var awaiter = new ConsoleAppShutdownAwaiter(Substitute.For<IAppContext>(), shell, eventHub);
+            var awaiter = new ConsoleAppShutdownAwaiter(shell, eventHub);
             var awaiterTask = awaiter.WaitForShutdownSignalAsync();
             await awaiterTask;
 
