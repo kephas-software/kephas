@@ -33,7 +33,7 @@ namespace Kephas.Messaging.Tests.Distributed
                                           }
                               };
 
-            var resultFormat = "BrokeredMessage (#{0}) {{PingMessage/app://.//app-instance/ > app://.///endpoint1,app://./app1//}}";
+            var resultFormat = "BrokeredMessage (#{0}) {{PingMessage/app://.//app-instance/ > app://.///endpoint1,app://./app1//}}, Normal priority";
             var result = message.ToString();
 
             Assert.AreEqual(string.Format(resultFormat, message.Id), result);
