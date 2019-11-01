@@ -10,15 +10,15 @@
 
 namespace Kephas.Messaging.Distributed
 {
+    using System;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Messaging.Events;
-    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -27,15 +27,34 @@ namespace Kephas.Messaging.Distributed
     public static class MessageBrokerExtensions
     {
         /// <summary>
+        /// Dispatches the message asynchronously.
+        /// </summary>
+        /// <param name="messageBroker">The message broker.</param>
+        /// <param name="optionsConfig">The options configuration.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the dispatch.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<IMessage> DispatchAsync(
+            this IMessageBroker messageBroker,
+            Action<IDispatchingContext> optionsConfig,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(messageBroker, nameof(messageBroker));
+
+            return messageBroker.DispatchAsync(null, optionsConfig, cancellationToken);
+        }
+
+        /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
         /// <remarks>
-        /// It does not wait for an answer from the subscribers,
-        /// just for the acknowledgement of the message being sent.
+        /// It does not wait for an answer from the subscribers, just for the acknowledgement of the
+        /// message being sent.
         /// </remarks>
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="event">The event message.</param>
-        /// <param name="context">The publishing context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
@@ -43,23 +62,11 @@ namespace Kephas.Messaging.Distributed
         public static Task PublishAsync(
             this IMessageBroker messageBroker,
             object @event,
-            IContext context,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(@event, nameof(@event));
-            Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMessageBuilder();
-            var brokeredMessageBuilder = @event is IBrokeredMessage brokeredMessage
-                ? builder.Of(brokeredMessage)
-                : builder.WithEventContent(@event);
-
-            brokeredMessage = brokeredMessageBuilder
-                .OneWay()
-                .BrokeredMessage;
-
-            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event), cancellationToken);
         }
 
         /// <summary>
@@ -72,7 +79,6 @@ namespace Kephas.Messaging.Distributed
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="event">The event message.</param>
         /// <param name="recipient">The recipient.</param>
-        /// <param name="context">The publishing context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
@@ -81,25 +87,12 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object @event,
             IEndpoint recipient,
-            IContext context,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(recipient, nameof(recipient));
-            Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMessageBuilder();
-            var brokeredMessageBuilder = @event is IBrokeredMessage brokeredMessage
-                ? builder.Of(brokeredMessage)
-                : builder.WithEventContent(@event);
-
-            brokeredMessage = brokeredMessageBuilder
-                .WithRecipients(recipient)
-                .OneWay()
-                .BrokeredMessage;
-
-            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event).To(recipient), cancellationToken);
         }
 
         /// <summary>
@@ -112,7 +105,6 @@ namespace Kephas.Messaging.Distributed
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="event">The event message.</param>
         /// <param name="recipients">The recipients.</param>
-        /// <param name="context">The publishing context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
@@ -121,25 +113,12 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object @event,
             IEnumerable<IEndpoint> recipients,
-            IContext context,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(recipients, nameof(recipients));
-            Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMessageBuilder();
-            var brokeredMessageBuilder = @event is IBrokeredMessage brokeredMessage
-                ? builder.Of(brokeredMessage)
-                : builder.WithEventContent(@event);
-
-            brokeredMessage = brokeredMessageBuilder
-                .WithRecipients(recipients)
-                .OneWay()
-                .BrokeredMessage;
-
-            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event).To(recipients), cancellationToken);
         }
 
         /// <summary>
@@ -147,21 +126,17 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <typeparam name="TEvent">Type of the event.</typeparam>
         /// <param name="messageBroker">The message broker.</param>
-        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task PublishAsync<TEvent>(
             this IMessageBroker messageBroker,
-            IContext context,
             CancellationToken cancellationToken = default)
             where TEvent : class, new()
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(context, nameof(context));
-
-            return messageBroker.PublishAsync(new TEvent(), context, cancellationToken);
+            return messageBroker.PublishAsync(new TEvent(), cancellationToken);
         }
 
         /// <summary>
@@ -169,13 +144,10 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="event">The event.</param>
-        /// <param name="context">The context.</param>
-        public static void Publish(this IMessageBroker messageBroker, object @event, IContext context)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Publish(this IMessageBroker messageBroker, object @event)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(context, nameof(context));
-
-            messageBroker.PublishAsync(@event, context).WaitNonLocking();
+            messageBroker.PublishAsync(@event).WaitNonLocking();
         }
 
         /// <summary>
@@ -183,15 +155,11 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <typeparam name="TEvent">Type of the event.</typeparam>
         /// <param name="messageBroker">The message broker.</param>
-        /// <param name="context">The context.</param>
-        public static void Publish<TEvent>(this IMessageBroker messageBroker, IContext context)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Publish<TEvent>(this IMessageBroker messageBroker)
             where TEvent : class, new()
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(context, nameof(context));
-
-            var @event = new TEvent();
-            messageBroker.PublishAsync(@event, context).WaitNonLocking();
+            messageBroker.PublishAsync(new TEvent()).WaitNonLocking();
         }
 
         /// <summary>
@@ -200,23 +168,18 @@ namespace Kephas.Messaging.Distributed
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="eventId">Identifier for the event.</param>
         /// <param name="eventArgs">The application event arguments.</param>
-        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task PublishAsync(
             this IMessageBroker messageBroker,
             object eventId,
             IExpando eventArgs,
-            IContext context,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(context, nameof(context));
-
-            var appEvent = new IdentifiableEvent { Id = eventId, EventArgs = eventArgs };
-            return messageBroker.PublishAsync(appEvent, context, cancellationToken);
+            return messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }, cancellationToken);
         }
 
         /// <summary>
@@ -225,51 +188,13 @@ namespace Kephas.Messaging.Distributed
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="eventId">Identifier for the application event.</param>
         /// <param name="eventArgs">The application event arguments.</param>
-        /// <param name="context">Optional. the context.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Publish(
             this IMessageBroker messageBroker,
             object eventId,
-            IExpando eventArgs,
-            IContext context)
+            IExpando eventArgs)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(context, nameof(context));
-
-            var @event = new IdentifiableEvent { Id = eventId, EventArgs = eventArgs };
-            messageBroker.PublishAsync(@event, context).WaitNonLocking();
-        }
-
-        /// <summary>
-        /// Processes a message asynchronously, waiting for a response from the handler.
-        /// </summary>
-        /// <param name="messageBroker">The message broker to act on.</param>
-        /// <param name="message">The message to be processed.</param>
-        /// <param name="context">The processing context.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result yielding the response message.
-        /// </returns>
-        public static Task<IMessage> ProcessAsync(
-            this IMessageBroker messageBroker,
-            object message,
-            IContext context,
-            CancellationToken cancellationToken = default)
-        {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(message, nameof(message));
-            Requires.NotNull(context, nameof(context));
-
-            if (message is IBrokeredMessage brokeredMessage)
-            {
-                return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
-            }
-
-            var builder = context.CreateBrokeredMessageBuilder();
-            brokeredMessage = builder
-                .WithMessageContent(message)
-                .BrokeredMessage;
-
-            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+            messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }).WaitNonLocking();
         }
 
         /// <summary>
@@ -278,7 +203,7 @@ namespace Kephas.Messaging.Distributed
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="message">The message to be processed.</param>
         /// <param name="recipient">The recipient.</param>
-        /// <param name="context">The processing context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result yielding the response message.
@@ -287,24 +212,12 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object message,
             IEndpoint recipient,
-            IContext context,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(message, nameof(message));
             Requires.NotNull(recipient, nameof(recipient));
-            Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMessageBuilder();
-            var brokeredMessageBuilder = message is IBrokeredMessage brokeredMessage
-                ? builder.Of(brokeredMessage)
-                : builder.WithMessageContent(message);
-
-            brokeredMessage = brokeredMessageBuilder
-                .WithRecipients(recipient)
-                .BrokeredMessage;
-
-            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+            return messageBroker.DispatchAsync(message, ctx => ctx.To(recipient).Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
@@ -313,7 +226,7 @@ namespace Kephas.Messaging.Distributed
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="message">The message to be processed.</param>
         /// <param name="recipients">The recipients.</param>
-        /// <param name="context">The processing context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result yielding the response message.
@@ -322,24 +235,12 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object message,
             IEnumerable<IEndpoint> recipients,
-            IContext context,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(message, nameof(message));
             Requires.NotNull(recipients, nameof(recipients));
-            Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMessageBuilder();
-            var brokeredMessageBuilder = message is IBrokeredMessage brokeredMessage
-                ? builder.Of(brokeredMessage)
-                : builder.WithMessageContent(message);
-
-            brokeredMessage = brokeredMessageBuilder
-                .WithRecipients(recipients)
-                .BrokeredMessage;
-
-            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+            return messageBroker.DispatchAsync(message, ctx => ctx.To(recipients).Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
@@ -347,31 +248,19 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="message">The message to be processed.</param>
-        /// <param name="context">The processing context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<IMessage> ProcessOneWayAsync(
             this IMessageBroker messageBroker,
             object message,
-            IContext context,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(message, nameof(message));
-            Requires.NotNull(context, nameof(context));
-
-            var builder = context.CreateBrokeredMessageBuilder();
-            builder = message is IBrokeredMessage brokeredMessage
-                ? builder.Of(brokeredMessage)
-                : builder.WithMessageContent(message);
-
-            brokeredMessage = builder
-                .OneWay()
-                .BrokeredMessage;
-
-            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+            return messageBroker.DispatchAsync(message, ctx => ctx.OneWay().Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
@@ -380,34 +269,22 @@ namespace Kephas.Messaging.Distributed
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="message">The message to be processed.</param>
         /// <param name="recipient">The recipient.</param>
-        /// <param name="context">The processing context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<IMessage> ProcessOneWayAsync(
             this IMessageBroker messageBroker,
             object message,
             IEndpoint recipient,
-            IContext context,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(message, nameof(message));
             Requires.NotNull(recipient, nameof(recipient));
-            Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMessageBuilder();
-            builder = message is IBrokeredMessage brokeredMessage
-                ? builder.Of(brokeredMessage)
-                : builder.WithMessageContent(message);
-
-            brokeredMessage = builder
-                .WithRecipients(recipient)
-                .OneWay()
-                .BrokeredMessage;
-
-            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
+            return messageBroker.DispatchAsync(message, ctx => ctx.To(recipient).OneWay().Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
@@ -416,49 +293,22 @@ namespace Kephas.Messaging.Distributed
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="message">The message to be processed.</param>
         /// <param name="recipients">The recipients.</param>
-        /// <param name="context">The processing context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<IMessage> ProcessOneWayAsync(
             this IMessageBroker messageBroker,
             object message,
             IEnumerable<IEndpoint> recipients,
-            IContext context,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-            Requires.NotNull(message, nameof(message));
             Requires.NotNull(recipients, nameof(recipients));
-            Requires.NotNull(context, nameof(context));
 
-            var builder = context.CreateBrokeredMessageBuilder();
-            builder = message is IBrokeredMessage brokeredMessage
-                ? builder.Of(brokeredMessage)
-                : builder.WithMessageContent(message);
-
-            brokeredMessage = builder
-                .WithRecipients(recipients)
-                .OneWay()
-                .BrokeredMessage;
-
-            return messageBroker.DispatchAsync(brokeredMessage, context, cancellationToken);
-        }
-
-        /// <summary>
-        /// Creates an initialized brokered message builder.
-        /// </summary>
-        /// <param name="context">The publishing context.</param>
-        /// <returns>
-        /// The new brokered message builder.
-        /// </returns>
-        public static IBrokeredMessageBuilder CreateBrokeredMessageBuilder(this IContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            var builderFactory = context.CompositionContext.GetExportFactory<IBrokeredMessageBuilder>();
-            return builderFactory.CreateInitializedValue(context);
+            return messageBroker.DispatchAsync(message, ctx => ctx.To(recipients).OneWay().Merge(optionsConfig), cancellationToken);
         }
     }
 }

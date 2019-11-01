@@ -13,7 +13,7 @@ namespace Kephas.Messaging.Azure.ServiceBus.Routing
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Composition;
+
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Services;
@@ -27,11 +27,8 @@ namespace Kephas.Messaging.Azure.ServiceBus.Routing
         /// Initializes a new instance of the <see cref="ServiceBusMessageRouterBase"/> class.
         /// </summary>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="messageBuilderFactory">The message builder factory.</param>
-        protected ServiceBusMessageRouterBase(
-            IMessageProcessor messageProcessor,
-            IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory)
-            : base(messageProcessor, messageBuilderFactory)
+        protected ServiceBusMessageRouterBase(IContextFactory contextFactory, IMessageProcessor messageProcessor)
+            : base(contextFactory, messageProcessor)
         {
         }
 
@@ -53,12 +50,12 @@ namespace Kephas.Messaging.Azure.ServiceBus.Routing
         /// Routes the brokered message asynchronously, typically over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">The send context.</param>
+        /// <param name="context">The dispatching context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected override Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        protected override Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

@@ -28,7 +28,7 @@ namespace Kephas.Testing.Composition
     /// Base class for tests using composition.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class MefCompositionTestBase
+    public class MefCompositionTestBase : TestBase
     {
         public virtual ContainerConfiguration WithEmptyConfiguration()
         {

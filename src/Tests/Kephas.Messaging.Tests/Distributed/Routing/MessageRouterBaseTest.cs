@@ -31,11 +31,11 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         [Test]
         public async Task DispatchAsync_calls_RouteOutputAsync()
         {
-            var router = new TestMessageRouter(Substitute.For<IMessageProcessor>());
+            var router = new TestMessageRouter(this.CreateMessagingContextFactory(), Substitute.For<IMessageProcessor>());
             var message = Substitute.For<IBrokeredMessage>();
             IBrokeredMessage receivedReply = null;
             router.ReplyReceived += (s, e) => receivedReply = e.Message;
-            var (action, reply) = await router.DispatchAsync(message, Substitute.For<IContext>(), default);
+            var (action, reply) = await router.DispatchAsync(message, Substitute.For<IDispatchingContext>(), default);
 
             Assert.Contains(message, router.Out);
             Assert.AreEqual(RoutingInstruction.None, action);
@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         [Test]
         public async Task Receive_reply_raises_ReplyReceived_event()
         {
-            var router = new TestMessageRouter(Substitute.For<IMessageProcessor>());
+            var router = new TestMessageRouter(this.CreateMessagingContextFactory(), Substitute.For<IMessageProcessor>());
             var message = Substitute.For<IBrokeredMessage>();
             message.ReplyToMessageId.Returns("some-id");
 
@@ -61,7 +61,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         public async Task Receive_request_sends_response()
         {
             var messageProcessor = Substitute.For<IMessageProcessor>();
-            var router = new TestMessageRouter(messageProcessor);
+            var router = new TestMessageRouter(this.CreateMessagingContextFactory(), messageProcessor);
 
             var message = Substitute.For<IBrokeredMessage>();
             message.ReplyToMessageId.Returns((string)null);
@@ -76,7 +76,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
 
             IBrokeredMessage receivedReply = null;
             router.ReplyReceived += (s, e) => receivedReply = e.Message;
-            router.Receive(message, new Context(this.CreateSubstituteContainer()));
+            router.Receive(message, new Context(this.CreateMessagingContainerMock()));
 
             Assert.AreEqual(1, router.Out.Count);
             var brokeredReply = router.Out.Dequeue();
@@ -86,23 +86,21 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             Assert.IsNull(receivedReply);
         }
 
+        private IContextFactory CreateMessagingContextFactory()
+        {
+            return this.CreateContextFactoryMock(
+                () => new DispatchingContext(
+                    Substitute.For<ICompositionContext>(),
+                    Substitute.For<IAppRuntime>(),
+                    Substitute.For<IAuthenticationService>(),
+                    null));
+        }
+
         public class TestMessageRouter : MessageRouterBase
         {
-            public TestMessageRouter(IMessageProcessor messageProcessor)
-                : base(messageProcessor, CreateMessageBuilderFactory())
+            public TestMessageRouter(IContextFactory contextFactory, IMessageProcessor messageProcessor)
+                : base(contextFactory, messageProcessor)
             {
-            }
-
-            private static IExportFactory<IBrokeredMessageBuilder> CreateMessageBuilderFactory()
-            {
-                return new ExportFactory<IBrokeredMessageBuilder>(() =>
-                {
-                    var builder = new BrokeredMessageBuilder(
-                        Substitute.For<IAppRuntime>(),
-                        Substitute.For<IAuthenticationService>(),
-                        Substitute.For<IContext>());
-                    return builder;
-                });
             }
 
             public Queue<IBrokeredMessage> In { get; } = new Queue<IBrokeredMessage>();
@@ -114,7 +112,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
                 this.RouteInputAsync(message, context, default).WaitNonLocking();
             }
 
-            protected override async Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+            protected override async Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
             {
                 this.Out.Enqueue(brokeredMessage);
                 return (RoutingInstruction.None, null);

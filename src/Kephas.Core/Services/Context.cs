@@ -88,13 +88,9 @@ namespace Kephas.Services
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Context"/> class.
+        /// Occurs when the identity changes.
         /// </summary>
-        [Obsolete("In the near future it will be allowed only to pass a composition context to the context constructor.")]
-        protected Context()
-            : this((ICompositionContext)null)
-        {
-        }
+        public event EventHandler IdentityChanged;
 
         /// <summary>
         /// Gets the ambient services.
@@ -126,6 +122,7 @@ namespace Kephas.Services
                 if (this.ValidateIdentity(this.identity, value))
                 {
                     this.identity = value;
+                    this.OnIdentityChanged();
                 }
             }
         }
@@ -164,6 +161,14 @@ namespace Kephas.Services
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Issues the <see cref="IdentityChanged"/> event.
+        /// </summary>
+        protected virtual void OnIdentityChanged()
+        {
+            this.IdentityChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

@@ -26,17 +26,8 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <value>
         /// The receiver URL regular expression.
         /// </value>
-        [MetadataValue(nameof(MessageRouterMetadata.ReceiverUrlRegex))]
-        public string ReceiverUrlRegex { get; set; }
-
-        /// <summary>
-        /// Gets or sets the channel.
-        /// </summary>
-        /// <value>
-        /// The channel.
-        /// </value>
-        [MetadataValue(nameof(MessageRouterMetadata.Channel))]
-        public string Channel { get; set; }
+        [MetadataValue(nameof(MessageRouterMetadata.ReceiverMatch))]
+        public string ReceiverMatch { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this router is the fallback router.

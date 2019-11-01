@@ -82,12 +82,7 @@ namespace Kephas.Messaging.Tests.Distributed
                 return Substitute.For<IMessage>();
             });
 
-            var brokeredMessage = new BrokeredMessage
-            {
-                Content = new TimeoutMessage(),
-                Timeout = TimeSpan.FromMilliseconds(30),
-            };
-            Assert.That(() => messageBroker.DispatchAsync(brokeredMessage, Substitute.For<IContext>(), default), Throws.InstanceOf<TimeoutException>());
+            Assert.That(() => messageBroker.DispatchAsync(ctx => ctx.Content(new TimeoutMessage()).Timeout(TimeSpan.FromMilliseconds(30))), Throws.InstanceOf<TimeoutException>());
         }
 
         [Test]
@@ -115,7 +110,7 @@ namespace Kephas.Messaging.Tests.Distributed
 
             try
             {
-                await messageBroker.DispatchAsync(brokeredMessage, new Context(container)).PreserveThreadContext();
+                await messageBroker.DispatchAsync(brokeredMessage, null).PreserveThreadContext();
                 throw new InvalidOperationException("Should have timed out.");
             }
             catch (TimeoutException tex)
@@ -133,11 +128,12 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer();
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
-            var pingBack = await messageBroker.DispatchAsync(new BrokeredMessage
-            {
-                Content = new PingMessage(),
-                Timeout = TimeSpan.FromSeconds(100)
-            }, new Context(container));
+            var pingBack = await messageBroker.DispatchAsync(
+                new BrokeredMessage
+                {
+                    Content = new PingMessage(),
+                    Timeout = TimeSpan.FromSeconds(100),
+                });
 
             Assert.IsInstanceOf<PingBackMessage>(pingBack);
         }
@@ -165,8 +161,7 @@ namespace Kephas.Messaging.Tests.Distributed
                 {
                     Content = new PingMessage(),
                     Timeout = TimeSpan.FromSeconds(100),
-                },
-                new Context(container));
+                });
 
             disposable.Received(1).Dispose();
         }
@@ -177,7 +172,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer(assemblies: new[] { typeof(IJsonSerializerSettingsProvider).Assembly }, parts: new[] { typeof(RemoteMessageBroker) });
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
-            var pingBack = await messageBroker.ProcessAsync(new PingMessage(), new Context(container));
+            var pingBack = await messageBroker.DispatchAsync(new PingMessage());
 
             Assert.IsInstanceOf<PingBackMessage>(pingBack);
         }
@@ -188,7 +183,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer();
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
-            var pingBack = await messageBroker.ProcessAsync(new PingMessage(), new Context(container));
+            var pingBack = await messageBroker.DispatchAsync(new PingMessage());
 
             Assert.IsInstanceOf<PingBackMessage>(pingBack);
         }
@@ -199,7 +194,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer(parts: new[] { typeof(ExceptionEventHandler) });
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
-            Assert.That(() => messageBroker.ProcessAsync(new PingMessage(), new Context(container)), Throws.InstanceOf<MessagingException>());
+            Assert.That(() => messageBroker.DispatchAsync(new PingMessage()), Throws.InstanceOf<MessagingException>());
         }
 
         [Test]
@@ -208,7 +203,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var container = this.CreateContainer();
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
-            var nullResponse = await messageBroker.ProcessAsync(new TestEvent(), new Context(container));
+            var nullResponse = await messageBroker.DispatchAsync(new TestEvent());
 
             Assert.IsNull(nullResponse);
         }
@@ -233,7 +228,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
             var message = new TestEvent { TaskCompletionSource = new TaskCompletionSource<(string, IBrokeredMessage)>() };
-            await messageBroker.ProcessOneWayAsync(message, new Context(container));
+            await messageBroker.ProcessOneWayAsync(message);
 
             var response = await message.TaskCompletionSource.Task;
             Assert.AreEqual("ok", response.response);
@@ -283,17 +278,17 @@ namespace Kephas.Messaging.Tests.Distributed
             private readonly ISerializationService serializationService;
 
             public RemoteMessageBroker(
+                IContextFactory contextFactory,
                 ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
-                IExportFactory<IBrokeredMessageBuilder> builderFactory,
                 ISerializationService serializationService)
-                : base(routerFactories, builderFactory)
+                : base(contextFactory, routerFactories)
             {
                 this.serializationService = serializationService;
             }
 
             protected override async Task RouterDispatchAsync(
                 IBrokeredMessage brokeredMessage,
-                IContext context,
+                IDispatchingContext context,
                 CancellationToken cancellationToken)
             {
                 var serializedMessage = await this.serializationService.JsonSerializeAsync(
@@ -310,9 +305,9 @@ namespace Kephas.Messaging.Tests.Distributed
         public class LoggableMessageBroker : DefaultMessageBroker
         {
             public LoggableMessageBroker(
-                ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
-                IExportFactory<IBrokeredMessageBuilder> builderFactory)
-                : base(routerFactories, builderFactory)
+                IContextFactory contextFactory,
+                ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories)
+                : base(contextFactory, routerFactories)
             {
             }
 
@@ -352,7 +347,7 @@ namespace Kephas.Messaging.Tests.Distributed
                 throw new NotImplementedException();
             }
 
-            public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+            public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
@@ -368,7 +363,7 @@ namespace Kephas.Messaging.Tests.Distributed
                 throw new NotImplementedException();
             }
 
-            public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+            public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

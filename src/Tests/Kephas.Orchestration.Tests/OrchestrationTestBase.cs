@@ -13,16 +13,8 @@ namespace Kephas.Orchestration.Tests
     using System.Collections.Generic;
     using System.Reflection;
 
-    using Kephas.Application;
-    using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
-    using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Messaging;
-    using Kephas.Messaging.Distributed;
-    using Kephas.Security.Authentication;
     using Kephas.Testing.Application;
-
-    using NSubstitute;
 
     using NUnit.Framework;
 
@@ -37,22 +29,6 @@ namespace Kephas.Orchestration.Tests
                                     typeof(IOrchestrationManager).Assembly,
                                 };
             return assemblies;
-        }
-
-        protected virtual ICompositionContext CreateSubstituteContainer()
-        {
-            var container = Substitute.For<ICompositionContext>();
-
-            container.GetExport(typeof(IExportFactoryImporter<IBrokeredMessageBuilder>), Arg.Any<string>())
-                .Returns(ci =>
-                    new ExportFactoryImporter<IBrokeredMessageBuilder>(
-                        new ExportFactory<IBrokeredMessageBuilder>(
-                            () =>
-                            {
-                                return new BrokeredMessageBuilder(Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
-                            })));
-
-            return container;
         }
     }
 }

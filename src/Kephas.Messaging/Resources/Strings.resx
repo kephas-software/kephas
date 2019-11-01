@@ -195,4 +195,7 @@
   <data name="EventHubExtensions_MissingMessagingEventHubImplementation" xml:space="preserve">
     <value>The event hub '{0}' must implement the '{1}' interface to use the messaging extensions.</value>
   </data>
+  <data name="InProcessMessageRouter_UnexpectedMessageInOutputQueue" xml:space="preserve">
+    <value>Expected only replies in the output queue, instead received '{0}'.</value>
+  </data>
 </root>

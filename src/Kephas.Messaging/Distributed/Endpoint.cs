@@ -12,6 +12,7 @@ namespace Kephas.Messaging.Distributed
 {
     using System;
 
+    using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -57,7 +58,7 @@ namespace Kephas.Messaging.Distributed
         /// <param name="scheme">Optional. The scheme.</param>
         public Endpoint(string appId = null, string appInstanceId = null, string endpointId = null, string scheme = null)
         {
-            this.Scheme = scheme;
+            this.Scheme = scheme ?? AppScheme;
             this.AppId = appId;
             this.AppInstanceId = appInstanceId;
             this.EndpointId = endpointId;
@@ -115,6 +116,20 @@ namespace Kephas.Messaging.Distributed
         /// The scheme.
         /// </value>
         public string Scheme { get; private set; }
+
+        /// <summary>
+        /// Creates a new application instance endpoint.
+        /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="endpointId">Optional. The identifier of the endpoint.</param>
+        /// <param name="scheme">Optional. The scheme.</param>
+        /// <returns>
+        /// An endpoint.
+        /// </returns>
+        public static Endpoint CreateAppInstanceEndpoint(IAppRuntime appRuntime, string endpointId = null, string scheme = null)
+        {
+            return new Endpoint(appRuntime.GetAppId(), appRuntime.GetAppInstanceId(), endpointId, scheme: scheme);
+        }
 
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>

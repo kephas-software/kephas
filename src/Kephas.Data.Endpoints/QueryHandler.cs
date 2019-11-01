@@ -77,7 +77,7 @@ namespace Kephas.Data.Endpoints
             QueryMessage message,
             IMessagingContext context)
         {
-            return ctx => ctx.ChildOf(context).Options(message.Options);
+            return ctx => ctx.Impersonate(context).Options(message.Options);
         }
     }
 }

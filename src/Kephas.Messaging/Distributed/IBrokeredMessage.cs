@@ -15,6 +15,7 @@ namespace Kephas.Messaging.Distributed
 
     using Kephas.Data;
     using Kephas.Messaging.Messages;
+    using Kephas.Services;
 
     /// <summary>
     /// Contract interface for brokered messages.
@@ -30,73 +31,73 @@ namespace Kephas.Messaging.Distributed
         new string Id { get; }
 
         /// <summary>
-        /// Gets the sender of the message.
+        /// Gets or sets the sender of the message.
         /// </summary>
         /// <value>
         /// The message sender.
         /// </value>
-        IEndpoint Sender { get; }
+        IEndpoint Sender { get; set; }
 
         /// <summary>
-        /// Gets the message to send.
+        /// Gets or sets the message to send.
         /// </summary>
         /// <value>
         /// The message.
         /// </value>
-        IMessage Content { get; }
+        IMessage Content { get; set; }
 
         /// <summary>
-        /// Gets the recipients.
+        /// Gets or sets the recipients.
         /// </summary>
         /// <value>
         /// The recipients.
         /// </value>
-        IEnumerable<IEndpoint> Recipients { get; }
+        IEnumerable<IEndpoint> Recipients { get; set; }
 
         /// <summary>
-        /// Gets the channel.
-        /// </summary>
-        /// <value>
-        /// The channel.
-        /// </value>
-        string Channel { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this message is one way.
+        /// Gets or sets a value indicating whether this message is one way.
         /// </summary>
         /// <value>
         /// True if this message is one way, false if not.
         /// </value>
-        bool IsOneWay { get; }
+        bool IsOneWay { get; set; }
 
         /// <summary>
-        /// Gets the timeout when waiting for responses.
+        /// Gets or sets the timeout when waiting for responses.
         /// </summary>
         /// <remarks>
         /// A value of <c>null</c> means indefinitely waiting, but
         /// it is strongly discouraged to wait indefinitely for a response.
-        /// The default value <see cref="BrokeredMessageBuilder.DefaultTimeout"/> can be used.
+        /// The default value <see cref="DispatchingContext.DefaultTimeout"/> can be used.
         /// </remarks>
         /// <value>
         /// The response timeout.
         /// </value>
-        TimeSpan? Timeout { get; }
+        TimeSpan? Timeout { get; set; }
 
         /// <summary>
-        /// Gets the identifier of the message to reply to.
+        /// Gets or sets the identifier of the message to reply to.
         /// </summary>
         /// <value>
         /// The identifier of the reply to message.
         /// </value>
-        string ReplyToMessageId { get; }
+        string ReplyToMessageId { get; set; }
 
         /// <summary>
-        /// Gets the bearer token.
+        /// Gets or sets the bearer token.
         /// </summary>
         /// <value>
         /// The bearer token.
         /// </value>
-        string BearerToken { get; }
+        string BearerToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets the priority.
+        /// </summary>
+        /// <value>
+        /// The priority.
+        /// </value>
+        Priority Priority { get; set; }
 
         /// <summary>
         /// Makes a deep copy of this object, optionally replacing the existing recipients with the provided ones.

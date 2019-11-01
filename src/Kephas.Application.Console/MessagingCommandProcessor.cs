@@ -161,7 +161,7 @@ namespace Kephas.Application.Console
         protected virtual async Task<object> ProcessMessageAsync(IMessage message, IExpando args, IContext context, CancellationToken cancellationToken)
         {
             var identity = this.identityResolver.ResolveIdentity(context);
-            var result = await this.messageProcessor.ProcessAsync(message, ctx => ctx.Identity(identity), cancellationToken).PreserveThreadContext();
+            var result = await this.messageProcessor.ProcessAsync(message, ctx => ctx.Impersonate(identity), cancellationToken).PreserveThreadContext();
             return result.GetContent();
         }
     }

@@ -12,6 +12,7 @@ namespace Kephas.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
     using System.Security.Principal;
 
     using Kephas.Collections;
@@ -61,13 +62,37 @@ namespace Kephas.Services
         private const string DisposableResourcesKey = "__DisposableResources";
 
         /// <summary>
+        /// Merges the indicated options into the context.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <typeparam name="TContextContract">Type of the context contract.</typeparam>
+        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">The options configuration.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TContext Merge<TContext, TContextContract>(this TContext context, Action<TContextContract> optionsConfig)
+            where TContext : class, TContextContract
+        {
+            Requires.NotNull(context, nameof(context));
+
+            optionsConfig?.Invoke(context);
+
+            return context;
+        }
+
+        /// <summary>
         /// Sets the provided value.
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TContext Set<TContext>(this TContext context, string key, object value)
             where TContext : class, IContext
         {
@@ -87,12 +112,14 @@ namespace Kephas.Services
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext ChildOf<TContext>(this TContext context, IContext parentContext)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TContext Impersonate<TContext>(this TContext context, IContext parentContext)
             where TContext : class, IContext
         {
-            Requires.NotNull(context, nameof(context));
-
-            context.Identity(parentContext.Identity);
+            if (parentContext != null)
+            {
+                context.Impersonate(parentContext.Identity);
+            }
 
             return context;
         }
@@ -106,7 +133,7 @@ namespace Kephas.Services
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext Identity<TContext>(this TContext context, IIdentity identity)
+        public static TContext Impersonate<TContext>(this TContext context, IIdentity identity)
             where TContext : class, IContext
         {
             Requires.NotNull(context, nameof(context));

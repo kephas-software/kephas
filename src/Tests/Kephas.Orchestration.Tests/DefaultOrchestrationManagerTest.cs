@@ -81,7 +81,7 @@ namespace Kephas.Orchestration.Tests
 
             var eventHub = this.CreateEventHubMock();
 
-            var compositionContext = this.CreateSubstituteContainer();
+            var compositionContext = Substitute.For<ICompositionContext>();
             var appContext = new Context(compositionContext);
 
             var manager = new DefaultOrchestrationManager(appRuntime, eventHub, messageBroker, Substitute.For<IExportFactory<IProcessStarterFactory>>());
@@ -98,15 +98,8 @@ namespace Kephas.Orchestration.Tests
                 .Received()
                 .DispatchAsync(
                     Arg.Is<IBrokeredMessage>(e => e.GetContent() is AppHeartbeatEvent),
-                    Arg.Any<IContext>(),
+                    Arg.Any<Action<IDispatchingContext>>(),
                     Arg.Any<CancellationToken>());
-        }
-
-        private BrokeredMessageBuilder CreateMessageBuilder(IContext context)
-        {
-            var builder = new BrokeredMessageBuilder(Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
-            builder.Initialize(context);
-            return builder;
         }
     }
 }

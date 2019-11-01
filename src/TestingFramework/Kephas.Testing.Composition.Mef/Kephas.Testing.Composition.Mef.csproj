@@ -41,6 +41,7 @@
         <ProjectReference Include="..\..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
+        <ProjectReference Include="..\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -21,6 +21,7 @@ namespace Kephas.Orchestration.Endpoints
     using Kephas.Messaging.AttributedModel;
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.Distributed;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -79,7 +80,7 @@ namespace Kephas.Orchestration.Endpoints
                 await this.messageBroker.ProcessOneWayAsync(
                     message,
                     new Endpoint(appId: message.AppId, appInstanceId: message.AppInstanceId),
-                    context,
+                    ctx => ctx.Impersonate(context),
                     cancellationToken: token).PreserveThreadContext();
 
                 response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Termination request received, but it is addressed to another application instance(s). Delegated to {message.AppId}/{message.AppInstanceId}.";

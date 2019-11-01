@@ -234,7 +234,7 @@ namespace Kephas.Orchestration
                 var reply = await this.MessageBroker.ProcessAsync(
                     stopMessage,
                     new Endpoint(appId: runtimeAppInfo.AppId, appInstanceId: runtimeAppInfo.AppInstanceId),
-                    this.AppContext,
+                    ctx => ctx.Impersonate(this.AppContext),
                     cancellationToken).PreserveThreadContext();
                 var message = reply as StopAppResponseMessage;
                 return new OperationResult

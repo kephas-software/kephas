@@ -13,10 +13,8 @@ namespace Kephas.Messaging.Distributed.Routing
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas;
-    using Kephas.Composition;
+
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Resources;
@@ -33,35 +31,28 @@ namespace Kephas.Messaging.Distributed.Routing
     [MessageRouter(IsFallback = true)]
     public class InProcessMessageRouter : MessageRouterBase
     {
-        private readonly Lazy<IMessageBroker> lazyMessageBroker;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InProcessMessageRouter"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="messageBuilderFactory">The message builder factory.</param>
-        /// <param name="lazyMessageBroker">The lazy message broker.</param>
         public InProcessMessageRouter(
-            IMessageProcessor messageProcessor,
-            IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory,
-            Lazy<IMessageBroker> lazyMessageBroker)
-            : base(messageProcessor, messageBuilderFactory)
+            IContextFactory contextFactory,
+            IMessageProcessor messageProcessor)
+            : base(contextFactory, messageProcessor)
         {
-            Requires.NotNull(lazyMessageBroker, nameof(lazyMessageBroker));
-
-            this.lazyMessageBroker = lazyMessageBroker;
         }
 
         /// <summary>
         /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">The routing context.</param>
+        /// <param name="context">The dispatching context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        public override Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        public override Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
             Requires.NotNull(context, nameof(context));
@@ -110,7 +101,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected override Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        protected override Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             // replies should be returned back to the message broker, without further routing
             // because the processing takes place in-process, so the initiator of the dispatch
@@ -123,13 +114,7 @@ namespace Kephas.Messaging.Distributed.Routing
             // typically, this should not get here at all
             // because the only input expected is from DispatchAsync and, in this case,
             // the RouteOutputAsync is called only when a response is expected.
-            this.lazyMessageBroker.Value
-                .DispatchAsync(brokeredMessage, context, cancellationToken)
-                .ContinueWith(
-                    t => this.Logger.Error(t.Exception, Strings.MessageRouterBase_ErrorsOccurredWhileDispatching_Exception.FormatWith(brokeredMessage)),
-                    TaskContinuationOptions.OnlyOnFaulted);
-
-            return Task.FromResult<(RoutingInstruction action, IMessage reply)>((RoutingInstruction.None, null));
+            throw new MessagingException(Strings.InProcessMessageRouter_UnexpectedMessageInOutputQueue.FormatWith(brokeredMessage));
         }
     }
 }

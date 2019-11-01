@@ -15,7 +15,10 @@ namespace Kephas.Messaging.Distributed
 
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
+    using Kephas.Messaging.Resources;
+    using Kephas.Services;
 
     /// <summary>
     /// A message envelope.
@@ -26,6 +29,7 @@ namespace Kephas.Messaging.Distributed
         /// The identifier.
         /// </summary>
         private string id;
+        private IMessage content;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BrokeredMessage"/> class.
@@ -33,6 +37,18 @@ namespace Kephas.Messaging.Distributed
         public BrokeredMessage()
         {
             this.Id = Guid.NewGuid().ToString("N");
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BrokeredMessage"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public BrokeredMessage(object message)
+            : this()
+        {
+            Requires.NotNull(message, nameof(message));
+
+            this.Content = message.ToMessageContent();
         }
 
         /// <summary>
@@ -73,7 +89,23 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The message to send.
         /// </value>
-        public IMessage Content { get; set; }
+        public IMessage Content
+        {
+            get => this.content;
+            set
+            {
+                if (this.ReplyToMessageId == null && value == null)
+                {
+                    throw new ArgumentNullException(nameof(value), Strings.BrokeredMessageBuilder_ContentNullWhenNotReply_Exception);
+                }
+
+                this.content = value;
+                if (value is IEvent)
+                {
+                    this.IsOneWay = true;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets the recipients.
@@ -82,14 +114,6 @@ namespace Kephas.Messaging.Distributed
         /// The recipients.
         /// </value>
         public IEnumerable<IEndpoint> Recipients { get; set; }
-
-        /// <summary>
-        /// Gets or sets the channel.
-        /// </summary>
-        /// <value>
-        /// The channel.
-        /// </value>
-        public string Channel { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this message is one way.
@@ -105,7 +129,7 @@ namespace Kephas.Messaging.Distributed
         /// <remarks>
         /// A value of <c>null</c> means indefinitely waiting, but
         /// it is strongly discouraged to wait indefinitely for a response.
-        /// The default value <see cref="BrokeredMessageBuilder.DefaultTimeout"/> can be used.
+        /// The default value <see cref="DispatchingContext.DefaultTimeout"/> can be used.
         /// </remarks>
         /// <value>
         /// The response timeout.
@@ -137,6 +161,14 @@ namespace Kephas.Messaging.Distributed
         public IDictionary<string, object> Properties { get; set; }
 
         /// <summary>
+        /// Gets or sets the priority.
+        /// </summary>
+        /// <value>
+        /// The priority.
+        /// </value>
+        public Priority Priority { get; set; }
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>
@@ -146,9 +178,9 @@ namespace Kephas.Messaging.Distributed
         {
             var contentType = this.Content?.GetType().Name;
             var recipients = this.Recipients != null ? string.Join(",", this.Recipients) : string.Empty;
-            var channel = string.IsNullOrEmpty(this.Channel) ? string.Empty : $" over channel '{this.Channel}'";
-            var reply = string.IsNullOrEmpty(this.ReplyToMessageId) ? string.Empty : $" as reply to #{this.ReplyToMessageId}";
-            return $"{this.GetType().Name} (#{this.Id}) {{{contentType}/{this.Sender} > {recipients}}}{channel}{reply}";
+            var oneway = this.IsOneWay ? ", one way" : string.Empty;
+            var reply = string.IsNullOrEmpty(this.ReplyToMessageId) ? string.Empty : $", reply to #{this.ReplyToMessageId}";
+            return $"{this.GetType().Name} (#{this.Id}) {{{contentType}/{this.Sender} > {recipients}}}{oneway}{reply}, {this.Priority} priority";
         }
 
         /// <summary>
@@ -167,10 +199,10 @@ namespace Kephas.Messaging.Distributed
                 Sender = this.Sender,
                 Recipients = recipients ?? this.Recipients,
                 BearerToken = this.BearerToken,
-                Channel = this.Channel,
                 Content = this.Content,
                 IsOneWay = this.IsOneWay,
-                Properties = this.Properties,
+                Properties = new Dictionary<string, object>(this.Properties),
+                Priority = this.Priority,
                 ReplyToMessageId = this.ReplyToMessageId,
                 Timeout = this.Timeout,
             };

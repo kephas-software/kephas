@@ -31,14 +31,14 @@ namespace Kephas.Messaging.Distributed.Routing
         /// Dispatches the brokered message asynchronously, typically over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">The routing context.</param>
+        /// <param name="context">The dispatching context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
         Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(
             IBrokeredMessage brokeredMessage,
-            IContext context,
+            IDispatchingContext context,
             CancellationToken cancellationToken);
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessagingTestBase.cs" company="Kephas Software SRL">
+// <copyright file="AutofacMessagingTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -21,6 +21,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
+    using Kephas.Services;
     using Kephas.Testing.Application;
 
     using NSubstitute;
@@ -38,17 +39,22 @@ namespace Kephas.Messaging.Tests
             return base.CreateContainer(ambientServices, assemblyList, parts, config);
         }
 
-        protected virtual ICompositionContext CreateSubstituteContainer()
+        protected virtual ICompositionContext CreateMessagingContainerMock()
         {
             var container = Substitute.For<ICompositionContext>();
 
-            container.GetExport(typeof(IExportFactoryImporter<IBrokeredMessageBuilder>), Arg.Any<string>())
+            container.GetExport(typeof(IExportFactoryImporter<IContextFactory>), Arg.Any<string>())
                 .Returns(ci =>
-                    new ExportFactoryImporter<IBrokeredMessageBuilder>(
-                        new ExportFactory<IBrokeredMessageBuilder>(
+                    new ExportFactoryImporter<IContextFactory>(
+                        new ExportFactory<IContextFactory>(
                             () =>
                             {
-                                return new BrokeredMessageBuilder(Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
+                                return this.CreateContextFactoryMock(args =>
+                                    new DispatchingContext(
+                                        container,
+                                        Substitute.For<IAppRuntime>(),
+                                        Substitute.For<IAuthenticationService>(),
+                                        args.Length > 0 ? args[0] : null));
                             })));
 
             return container;

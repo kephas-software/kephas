@@ -187,6 +187,15 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected only replies in the output queue, instead received &apos;{0}&apos;..
+        /// </summary>
+        public static string InProcessMessageRouter_UnexpectedMessageInOutputQueue {
+            get {
+                return ResourceManager.GetString("InProcessMessageRouter_UnexpectedMessageInOutputQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The message is not set in the message adapter..
         /// </summary>
         public static string MessageAdapter_MessageNotSet_Exception {

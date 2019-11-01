@@ -43,64 +43,71 @@ namespace Kephas.Messaging.Distributed
                 TaskCompletionSource<IMessage> taskCompletionSource)> messageSyncDictionary =
                 new ConcurrentDictionary<string, (CancellationTokenSource, TaskCompletionSource<IMessage>)>();
 
+        private readonly IContextFactory contextFactory;
         private readonly ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories;
-        private readonly IExportFactory<IBrokeredMessageBuilder> builderFactory;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
-        private ICollection<(Regex regex, string channel, bool isFallback, IMessageRouter router)> routerMap;
+        private ICollection<(Regex regex, bool isFallback, IMessageRouter router)> routerMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageBroker"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="routerFactories">The router factories.</param>
-        /// <param name="builderFactory">The builder factory.</param>
         public DefaultMessageBroker(
-            ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
-            IExportFactory<IBrokeredMessageBuilder> builderFactory)
+            IContextFactory contextFactory,
+            ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories)
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());
+            this.contextFactory = contextFactory;
             this.routerFactories = routerFactories;
-            this.builderFactory = builderFactory;
         }
 
         /// <summary>
-        /// Dispatches the brokered message asynchronously.
+        /// Dispatches the message asynchronously.
         /// </summary>
-        /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">Optional. The dispatching context.</param>
+        /// <param name="message">The message to be dispatched.</param>
+        /// <param name="optionsConfig">Optional. The dispatching options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result that yields an IMessage.
+        /// The asynchronous result that yields the response message.
         /// </returns>
-        public virtual Task<IMessage> DispatchAsync(
-            IBrokeredMessage brokeredMessage,
-            IContext context,
+        public Task<IMessage> DispatchAsync(
+            object message,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
-            Requires.NotNull(context, nameof(context));
-
             this.initMonitor.AssertIsCompletedSuccessfully();
 
-            if (brokeredMessage.IsOneWay)
+            using (var context = this.CreateDispatchingContext(message, optionsConfig))
             {
+                var brokeredMessage = context.BrokeredMessage;
+
+                if (brokeredMessage.Content == null && string.IsNullOrEmpty(brokeredMessage.ReplyToMessageId))
+                {
+                    throw new ArgumentNullException(nameof(optionsConfig), Strings.BrokeredMessageBuilder_ContentNullWhenNotReply_Exception);
+                }
+
+                if (brokeredMessage.IsOneWay)
+                {
+                    this.LogBeforeSend(brokeredMessage);
+                    this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
+                        .ContinueWith(
+                            t => this.Logger.Error(string.Format(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage)),
+                            TaskContinuationOptions.OnlyOnFaulted);
+                    return Task.FromResult((IMessage)null);
+                }
+
+                var completionSource = this.GetTaskCompletionSource(brokeredMessage);
+
                 this.LogBeforeSend(brokeredMessage);
                 this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
                     .ContinueWith(
                         t => this.Logger.Error(string.Format(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage)),
                         TaskContinuationOptions.OnlyOnFaulted);
-                return Task.FromResult((IMessage)null);
+
+                // Returns an awaiter for the answer, must pair with the original message ID.
+                return completionSource.Task;
             }
-
-            var completionSource = this.GetTaskCompletionSource(brokeredMessage);
-
-            this.LogBeforeSend(brokeredMessage);
-            this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
-                .ContinueWith(
-                    t => this.Logger.Error(string.Format(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage)),
-                    TaskContinuationOptions.OnlyOnFaulted);
-
-            // Returns an awaiter for the answer, must pair with the original message ID.
-            return completionSource.Task;
         }
 
         /// <summary>
@@ -118,8 +125,7 @@ namespace Kephas.Messaging.Distributed
             var asyncRouterMap = this.routerFactories
                 .Order()
                 .Select(f => (
-                    regex: string.IsNullOrEmpty(f.Metadata.ReceiverUrlRegex) ? null : new Regex(f.Metadata.ReceiverUrlRegex, RegexOptions.IgnoreCase | RegexOptions.Compiled),
-                    channel: f.Metadata.Channel,
+                    regex: string.IsNullOrEmpty(f.Metadata.ReceiverMatch) ? null : new Regex(f.Metadata.ReceiverMatch, RegexOptions.IgnoreCase | RegexOptions.Compiled),
                     isFallback: f.Metadata.IsFallback,
                     asyncRouter: this.TryCreateRouterAsync(f, context, cancellationToken)))
                 .ToList();
@@ -128,7 +134,7 @@ namespace Kephas.Messaging.Distributed
 
             this.routerMap = asyncRouterMap
                                 .Where(m => m.asyncRouter.Result != null)
-                                .Select(m => (m.regex, m.channel, m.isFallback, m.asyncRouter.Result))
+                                .Select(m => (m.regex, m.isFallback, m.asyncRouter.Result))
                                 .ToList();
             foreach (var map in this.routerMap)
             {
@@ -136,6 +142,21 @@ namespace Kephas.Messaging.Distributed
             }
 
             this.initMonitor.Complete();
+        }
+
+        /// <summary>
+        /// Creates the dispatching context.
+        /// </summary>
+        /// <param name="message">The message to be dispatched.</param>
+        /// <param name="optionsConfig">Optional. The dispatching options configuration.</param>
+        /// <returns>
+        /// The new dispatching context.
+        /// </returns>
+        protected virtual IDispatchingContext CreateDispatchingContext(object message, Action<IDispatchingContext> optionsConfig = null)
+        {
+            var context = this.contextFactory.CreateContext<DispatchingContext>(message);
+            optionsConfig?.Invoke(context);
+            return context;
         }
 
         private async Task<IMessageRouter> TryCreateRouterAsync(Lazy<IMessageRouter, MessageRouterMetadata> f, IContext context, CancellationToken cancellationToken)
@@ -203,20 +224,6 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Creates a brokered messsage builder.
-        /// </summary>
-        /// <param name="context">The publishing context.</param>
-        /// <returns>
-        /// The new brokered messsage builder.
-        /// </returns>
-        protected virtual IBrokeredMessageBuilder CreateBrokeredMessageBuilder(IContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            return this.builderFactory.CreateInitializedValue(context);
-        }
-
-        /// <summary>
         /// Sends the brokered message asynchronously over the physical medium using registered routers.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
@@ -227,7 +234,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual async Task RouterDispatchAsync(
             IBrokeredMessage brokeredMessage,
-            IContext context,
+            IDispatchingContext context,
             CancellationToken cancellationToken)
         {
             var results = await this.CollectRouterDispatchResultsAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
@@ -237,15 +244,41 @@ namespace Kephas.Messaging.Distributed
                 .Distinct() // make from multiple nulls one.
                 .ToList();
 
-            if (replies.Count == 0)
+            if (replies.Count > 0)
             {
-                return;
+                // router results indicating that the broker should process replies
+                // will generate cascade router dispatches, even for 'null' replies.
+                var replyTasks = replies.Select(r => this.RouterDispatchReplyAsync(r, brokeredMessage, context, cancellationToken));
+                await Task.WhenAll(replyTasks).PreserveThreadContext();
             }
+        }
 
-            // router results indicating that the broker should process replies
-            // will generate cascade router dispatches, even for 'null' replies.
-            var replyTasks = replies.Select(r => this.RouterDispatchAsync(this.GetResponseMessage(r, brokeredMessage, context), context, cancellationToken));
-            await Task.WhenAll(replyTasks).PreserveThreadContext();
+        /// <summary>
+        /// Sends the brokered message asynchronously over the physical medium using registered routers.
+        /// </summary>
+        /// <param name="reply">The reply.</param>
+        /// <param name="message">The message to be dispatched.</param>
+        /// <param name="sendingContext">Context for the sending.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        protected virtual async Task RouterDispatchReplyAsync(
+            IMessage reply,
+            IBrokeredMessage message,
+            IDispatchingContext sendingContext,
+            CancellationToken cancellationToken)
+        {
+            using (var replyContext = this.contextFactory.CreateContext<DispatchingContext>())
+            {
+                var brokeredReply = replyContext
+                    .Impersonate(sendingContext)
+                    .ReplyTo(message)
+                    .Content(reply)
+                    .BrokeredMessage;
+
+                await this.RouterDispatchAsync(brokeredReply, replyContext, cancellationToken).PreserveThreadContext();
+            }
         }
 
         /// <summary>
@@ -299,14 +332,14 @@ namespace Kephas.Messaging.Distributed
         /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">The send context.</param>
+        /// <param name="context">The dispatching context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result that yields an action and a reply.
+        /// The asynchronous result that yields the action, reply, and router.
         /// </returns>
-        private async Task<ICollection<(RoutingInstruction action, IMessage reply)>> CollectRouterDispatchResultsAsync(
+        private async Task<ICollection<(RoutingInstruction action, IMessage reply, IMessageRouter router)>> CollectRouterDispatchResultsAsync(
             IBrokeredMessage brokeredMessage,
-            IContext context,
+            IDispatchingContext context,
             CancellationToken cancellationToken)
         {
             if (brokeredMessage.Recipients == null || !brokeredMessage.Recipients.Any())
@@ -319,14 +352,16 @@ namespace Kephas.Messaging.Distributed
                         this.Logger.Debug($"Message {brokeredMessage} does not have any recipients; using fallback router {router.GetType()}.");
                     }
 
-                    return new[] { await router.DispatchAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext() };
+                    var (action, reply) = await router.DispatchAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+
+                    return new[] { (action, reply, router) };
                 }
 
                 throw new MessagingException(Strings.DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception);
             }
 
             var recipientMappings = brokeredMessage.Recipients
-                .Select(r => (recipient: r, router: this.routerMap.FirstOrDefault(f => f.isFallback || (f.regex?.IsMatch(r.Url.ToString()) ?? false) || (f.channel != null && f.channel == brokeredMessage.Channel)).router))
+                .Select(r => (recipient: r, router: this.routerMap.FirstOrDefault(f => f.isFallback || (f.regex?.IsMatch(r.Url.ToString()) ?? false)).router))
                 .ToList();
             var unhandledRecipients = recipientMappings
                 .Where(c => c.router == null)
@@ -346,7 +381,8 @@ namespace Kephas.Messaging.Distributed
                     this.Logger.Debug($"Message {brokeredMessage} has recipient {recipientMappings[0].recipient}; using router {router.GetType()}.");
                 }
 
-                return new[] { await router.DispatchAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext() };
+                var (action, reply) = await router.DispatchAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
+                return new[] { (action, reply, router) };
             }
 
             // general case when there are more routers for the recipients
@@ -363,22 +399,9 @@ namespace Kephas.Messaging.Distributed
                 }
             }
 
-            var tasks = routerMappings.Select(m => m.router.DispatchAsync(brokeredMessage.Clone(m.recipients), context, cancellationToken)).ToList();
-            return await Task.WhenAll(tasks).PreserveThreadContext();
-        }
-
-        private Task<(RoutingInstruction action, IMessage reply)> SendAsync(IMessageRouter router, IBrokeredMessage message, IContext context, CancellationToken cancellationToken)
-        {
-            return router.DispatchAsync(message, context, cancellationToken);
-        }
-
-        private IBrokeredMessage GetResponseMessage(IMessage reply, IBrokeredMessage message, IContext context)
-        {
-            var builder = this.CreateBrokeredMessageBuilder(context);
-            return builder
-                .ReplyTo(message)
-                .WithContent(reply)
-                .BrokeredMessage;
+            var routerTasks = routerMappings.Select(m => (m.router, task: m.router.DispatchAsync(brokeredMessage.Clone(m.recipients), context, cancellationToken))).ToList();
+            await Task.WhenAll(routerTasks.Select(rt => rt.task)).PreserveThreadContext();
+            return routerTasks.Select(rt => (rt.task.Result.action, rt.task.Result.reply, rt.router)).ToArray();
         }
 
         /// <summary>

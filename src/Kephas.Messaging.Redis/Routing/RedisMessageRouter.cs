@@ -33,10 +33,10 @@ namespace Kephas.Messaging.Redis.Routing
     /// <summary>
     /// The Redis message router.
     /// </summary>
-    [MessageRouter(ReceiverUrlRegex = ChannelType + ":.*", IsFallback = true)]
+    [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
     public class RedisMessageRouter : MessageRouterBase, IAsyncInitializable
     {
-        private const string ChannelType = "app";
+        private const string ChannelType = Endpoint.AppScheme;
 
         private readonly InitializationMonitor<RedisMessageRouter, RedisMessageRouter> initializationMonitor = new InitializationMonitor<RedisMessageRouter, RedisMessageRouter>();
         private readonly FinalizationMonitor<RedisMessageRouter, RedisMessageRouter> finalizationMonitor = new FinalizationMonitor<RedisMessageRouter, RedisMessageRouter>();
@@ -53,20 +53,20 @@ namespace Kephas.Messaging.Redis.Routing
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisMessageRouter"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="messageProcessor">The message processor.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="redisClient">The redis client.</param>
-        /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="messageBuilderFactory">The message builder factory.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="redisConfiguration">The redis configuration.</param>
         public RedisMessageRouter(
+            IContextFactory contextFactory,
+            IMessageProcessor messageProcessor,
             IAppRuntime appRuntime,
             IRedisClient redisClient,
-            IMessageProcessor messageProcessor,
-            IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory,
             ISerializationService serializationService,
             IConfiguration<RedisClientSettings> redisConfiguration)
-            : base(messageProcessor, messageBuilderFactory)
+            : base(contextFactory, messageProcessor)
         {
             this.redisClient = redisClient;
             this.serializationService = serializationService;
@@ -183,12 +183,12 @@ namespace Kephas.Messaging.Redis.Routing
         /// Routes the brokered message asynchronously, typically over the physical medium.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">The send context.</param>
+        /// <param name="context">The dispatching context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected override async Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        protected override async Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             this.initializationMonitor.AssertIsCompletedSuccessfully();
 

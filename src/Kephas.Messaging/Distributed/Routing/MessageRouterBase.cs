@@ -29,18 +29,16 @@ namespace Kephas.Messaging.Distributed.Routing
     /// </summary>
     public abstract class MessageRouterBase : Loggable, IMessageRouter, IDisposable
     {
-        private readonly IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageRouterBase"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="messageBuilderFactory">The message builder factory.</param>
         protected MessageRouterBase(
-            IMessageProcessor messageProcessor,
-            IExportFactory<IBrokeredMessageBuilder> messageBuilderFactory)
+            IContextFactory contextFactory,
+            IMessageProcessor messageProcessor)
         {
-            this.messageBuilderFactory = messageBuilderFactory;
+            this.ContextFactory = contextFactory;
             this.MessageProcessor = messageProcessor;
         }
 
@@ -48,6 +46,14 @@ namespace Kephas.Messaging.Distributed.Routing
         /// Occurs when a reply for is received to match a request sent from the container message broker.
         /// </summary>
         public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
+
+        /// <summary>
+        /// Gets the context factory.
+        /// </summary>
+        /// <value>
+        /// The context factory.
+        /// </value>
+        public IContextFactory ContextFactory { get; }
 
         /// <summary>
         /// Gets the message processor.
@@ -66,12 +72,12 @@ namespace Kephas.Messaging.Distributed.Routing
         /// if necessary, prepare a response.
         /// </remarks>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">The routing context.</param>
+        /// <param name="context">The dispatching context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        public virtual async Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        public virtual async Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
             Requires.NotNull(context, nameof(context));
@@ -128,20 +134,6 @@ namespace Kephas.Messaging.Distributed.Routing
         }
 
         /// <summary>
-        /// Creates a brokered messsage builder.
-        /// </summary>
-        /// <param name="context">The publishing context.</param>
-        /// <returns>
-        /// The new brokered messsage builder.
-        /// </returns>
-        protected virtual IBrokeredMessageBuilder CreateBrokeredMessageBuilder(IContext context)
-        {
-            Requires.NotNull(context, nameof(context));
-
-            return this.messageBuilderFactory.CreateInitializedValue(context);
-        }
-
-        /// <summary>
         /// Routes the message received from the input queue asynchronously.
         /// </summary>
         /// <remarks>
@@ -151,7 +143,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// output queue.
         /// </remarks>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">The routing context.</param>
+        /// <param name="context">The input context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
@@ -186,12 +178,16 @@ namespace Kephas.Messaging.Distributed.Routing
                     reply = new ExceptionResponseMessage { Exception = new ExceptionData(ex) };
                 }
 
-                var replyMessage = this.CreateBrokeredMessageBuilder(context)
-                    .ReplyTo(brokeredMessage)
-                    .WithContent(reply)
-                    .BrokeredMessage;
+                using (var replyContext = this.ContextFactory.CreateContext<DispatchingContext>())
+                {
+                    var replyMessage = replyContext
+                        .Impersonate(context)
+                        .ReplyTo(brokeredMessage)
+                        .Content(reply)
+                        .BrokeredMessage;
 
-                return await this.RouteOutputAsync(replyMessage, context, cancellationToken).PreserveThreadContext();
+                    return await this.RouteOutputAsync(replyMessage, replyContext, cancellationToken).PreserveThreadContext();
+                }
             }
             catch (Exception ex)
             {
@@ -204,7 +200,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// Processes the brokered message locally, asynchronously.
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
-        /// <param name="context">The routing context.</param>
+        /// <param name="context">The processing context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the reply message.
@@ -222,7 +218,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// Routes the brokered message asynchronously, typically over the physical medium.
         /// </summary>
         /// <remarks>
-        /// The one-way handling is performed in the <see cref="DispatchAsync(IBrokeredMessage, IContext, CancellationToken)"/>
+        /// The one-way handling is performed in the <see cref="DispatchAsync(IBrokeredMessage, IDispatchingContext, CancellationToken)"/>
         /// method, here the message is purely routed through the transport medium.
         /// </remarks>
         /// <param name="brokeredMessage">The brokered message.</param>
@@ -231,7 +227,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected abstract Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken);
+        protected abstract Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken);
 
         /// <summary>
         /// Raises the reply received event.

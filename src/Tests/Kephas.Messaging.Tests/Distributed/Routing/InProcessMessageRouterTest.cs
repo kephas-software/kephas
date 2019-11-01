@@ -18,7 +18,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
-
+    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
@@ -43,7 +43,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             ReplyReceivedEventArgs eventArgs = null;
             inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
             var request = new BrokeredMessage { Content = new PingMessage() };
-            var result = await inProcessRouter.DispatchAsync(request, new Context(container), default);
+            var result = await inProcessRouter.DispatchAsync(request, Substitute.For<IDispatchingContext>(), default);
 
             Thread.Sleep(100);
             Assert.IsNull(eventArgs);
@@ -59,7 +59,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
 
             ReplyReceivedEventArgs eventArgs = null;
             inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
-            var context = new Context(container);
+            var context = Substitute.For<IDispatchingContext>();
             var reply = new BrokeredMessage { Content = new PingBackMessage(), ReplyToMessageId = "hello" };
             var result = await inProcessRouter.DispatchAsync(reply, context, default);
 

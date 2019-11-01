@@ -47,7 +47,7 @@ namespace Kephas.Messaging.Tests.Events
             var calls = 0;
             using (var s = hub.Subscribe<PingMessage>(async (e, c, t) => calls++))
             {
-                await broker.PublishAsync<PingMessage>(new Context(container));
+                await broker.PublishAsync<PingMessage>();
                 await Task.Delay(100);
                 Assert.AreEqual(1, calls);
             }

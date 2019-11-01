@@ -10,6 +10,7 @@
 
 namespace Kephas.Messaging.Tests.Distributed
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -22,40 +23,48 @@ namespace Kephas.Messaging.Tests.Distributed
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessageBrokerExtensionsTest : MefMessagingTestBase
+    public class MessageBrokerExtensionsTest : MessagingTestBase
     {
         [Test]
         public async Task PublishAsync_anonymous_event()
         {
             var broker = Substitute.For<IMessageBroker>();
-            var container = this.CreateSubstituteContainer();
-            var context = new Context(container);
+            var container = this.CreateMessagingContainerMock();
+            var context = container.GetExport<IContextFactory>().CreateContext<DispatchingContext>();
 
             IMessage content = null;
-            broker.DispatchAsync(Arg.Any<IBrokeredMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => Task.FromResult(content = ci.Arg<IBrokeredMessage>().Content));
+            broker.DispatchAsync(Arg.Any<IBrokeredMessage>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>())
+                .Returns(ci =>
+                {
+                    ci.Arg<Action<IDispatchingContext>>()?.Invoke(context);
+                    return Task.FromResult(content = context.BrokeredMessage.Content);
+                });
 
-            await broker.PublishAsync("hello", context);
+            await broker.PublishAsync("hello");
 
             Assert.IsInstanceOf<EventEnvelope>(content);
             Assert.AreEqual("hello", ((EventEnvelope)content).Event);
         }
 
         [Test]
-        public async Task ProcessAsync_anonymous_message()
+        public async Task PublishAsync_anonymous_event_endpoint()
         {
             var broker = Substitute.For<IMessageBroker>();
-            var container = this.CreateSubstituteContainer();
-            var context = new Context(container);
+            var container = this.CreateMessagingContainerMock();
+            var context = container.GetExport<IContextFactory>().CreateContext<DispatchingContext>();
 
             IMessage content = null;
-            broker.DispatchAsync(Arg.Any<IBrokeredMessage>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => Task.FromResult(content = ci.Arg<IBrokeredMessage>().Content));
+            broker.DispatchAsync(Arg.Any<IBrokeredMessage>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>())
+                .Returns(ci =>
+                {
+                    ci.Arg<Action<IDispatchingContext>>()?.Invoke(context);
+                    return Task.FromResult(content = context.BrokeredMessage.Content);
+                });
 
-            await broker.ProcessAsync("hello", context);
+            await broker.PublishAsync("hello", new Endpoint());
 
-            Assert.IsInstanceOf<MessageEnvelope>(content);
-            Assert.AreEqual("hello", ((MessageEnvelope)content).Message);
+            Assert.IsInstanceOf<EventEnvelope>(content);
+            Assert.AreEqual("hello", ((EventEnvelope)content).Event);
         }
     }
 }

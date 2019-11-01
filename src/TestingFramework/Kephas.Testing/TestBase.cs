@@ -52,6 +52,23 @@ namespace Kephas.Testing
         }
 
         /// <summary>
+        /// Creates a context factory mock.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="ctor">The constructor for the created context.</param>
+        /// <returns>
+        /// The new context factory.
+        /// </returns>
+        protected IContextFactory CreateContextFactoryMock<TContext>(Func<object[], TContext> ctor)
+            where TContext : IContext
+        {
+            var contextFactory = Substitute.For<IContextFactory>();
+            contextFactory.CreateContext<TContext>(Arg.Any<object[]>())
+                .Returns(ci => ctor(ci.Arg<object[]>()));
+            return contextFactory;
+        }
+
+        /// <summary>
         /// Creates a serialization service mock, aware of <see cref="IContextFactory"/>.
         /// </summary>
         /// <returns>
