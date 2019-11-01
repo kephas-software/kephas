@@ -24,7 +24,7 @@ namespace Kephas
     /// <summary>
     /// Contract interface for ambient services.
     /// </summary>
-    public interface IAmbientServices : IExpando, IServiceProvider, IAppServiceInfoProvider
+    public interface IAmbientServices : IExpando, IServiceProvider
     {
         /// <summary>
         /// Gets the configuration store.

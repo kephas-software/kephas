@@ -43,7 +43,7 @@ namespace Kephas
     /// <see cref="AmbientServices"/> can be safely used.
     /// </remarks>
     [ExcludeFromComposition]
-    public class AmbientServices : Expando, IAmbientServices
+    public class AmbientServices : Expando, IAmbientServices, IAppServiceInfoProvider
     {
         /// <summary>
         /// The internal global instance.
@@ -215,7 +215,9 @@ namespace Kephas
         public IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> GetAppServiceInfos(IList<Type> candidateTypes, ICompositionRegistrationContext registrationContext)
         {
             // Lite composition container does not need to add to ambient services again its services
-            if ((bool?)this[LiteConventionsBuilder.LiteCompositionKey] ?? false)
+            // However, when the registration context and the candidate types are both null,
+            // this is a message that ALL registration infos should be returned.
+            if (registrationContext != null && candidateTypes != null && ((bool?)this[LiteConventionsBuilder.LiteCompositionKey] ?? false))
             {
                 return new (Type contractType, IAppServiceInfo appServiceInfo)[0];
             }
