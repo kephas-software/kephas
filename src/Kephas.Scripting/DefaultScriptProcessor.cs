@@ -111,6 +111,7 @@ namespace Kephas.Scripting
         /// <param name="script">The script to be interpreted/executed.</param>
         /// <param name="args">Optional. The arguments.</param>
         /// <param name="executionContext">Optional. The execution context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of the execution result.
@@ -119,6 +120,7 @@ namespace Kephas.Scripting
             IScript script,
             IExpando args = null,
             IContext executionContext = null,
+            Action<IScriptingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(script, nameof(script));
@@ -129,7 +131,7 @@ namespace Kephas.Scripting
                 throw new ScriptingException(Strings.DefaultScriptProcessor_ExecuteAsync_MissingLanguageService.FormatWith(script.Language));
             }
 
-            var scriptingContext = this.CreateScriptingContext(script, args, executionContext);
+            var scriptingContext = this.CreateScriptingContext(script, args, executionContext, optionsConfig);
             var behaviors = this.scriptingBehaviorFactories.TryGetValue(script.Language)?.Select(f => f.Value).ToList() ?? new List<IScriptingBehavior>();
 
             foreach (var behavior in behaviors)
@@ -170,17 +172,24 @@ namespace Kephas.Scripting
         /// <param name="script">The script to be interpreted/executed.</param>
         /// <param name="args">The arguments.</param>
         /// <param name="executionContext">The execution context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The new scripting context.
         /// </returns>
-        protected virtual IScriptingContext CreateScriptingContext(IScript script, IExpando args, IContext executionContext)
+        protected virtual IScriptingContext CreateScriptingContext(
+            IScript script,
+            IExpando args,
+            IContext executionContext,
+            Action<IScriptingContext> optionsConfig = null)
         {
             var scriptingContext = this.ContextFactory.CreateContext<ScriptingContext>();
-            scriptingContext.Identity = executionContext?.Identity;
+            scriptingContext.Impersonate(executionContext);
             scriptingContext.Script = script;
             scriptingContext.Args = args;
             scriptingContext.ExecutionContext = executionContext;
             scriptingContext.ScriptGlobals = new ScriptGlobals { Args = args };
+
+            optionsConfig?.Invoke(scriptingContext);
             return scriptingContext;
         }
     }

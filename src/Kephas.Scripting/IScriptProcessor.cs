@@ -10,6 +10,7 @@
 
 namespace Kephas.Scripting
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -28,6 +29,7 @@ namespace Kephas.Scripting
         /// <param name="script">The script to be interpreted/executed.</param>
         /// <param name="args">Optional. The execution arguments.</param>
         /// <param name="executionContext">Optional. The execution context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of the execution result.
@@ -36,6 +38,7 @@ namespace Kephas.Scripting
             IScript script,
             IExpando args = null,
             IContext executionContext = null,
+            Action<IScriptingContext> optionsConfig = null,
             CancellationToken cancellationToken = default);
     }
 }
