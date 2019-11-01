@@ -332,15 +332,18 @@ namespace Kephas.Messaging.Distributed
         /// This <paramref name="context"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TContext ReplyTo<TContext>(this TContext context, string messageId, IEndpoint sender)
+        public static TContext ReplyTo<TContext>(this TContext context, string messageId, IEndpoint sender = null)
             where TContext : class, IDispatchingContext
         {
             Requires.NotNull(context, nameof(context));
             Requires.NotNullOrEmpty(messageId, nameof(messageId));
-            Requires.NotNull(sender, nameof(sender));
 
             context.BrokeredMessage.ReplyToMessageId = messageId;
-            context.BrokeredMessage.Recipients = new[] { sender };
+            if (sender != null)
+            {
+                context.BrokeredMessage.Recipients = new[] { sender };
+            }
+
             context.BrokeredMessage.IsOneWay = true;
 
             return context;

@@ -272,7 +272,7 @@ namespace Kephas.Orchestration
             try
             {
                 var heartbeatEvent = this.CreateAppHeartbeatEvent();
-                await this.MessageBroker.PublishAsync(heartbeatEvent, (IContext)state).PreserveThreadContext();
+                await this.MessageBroker.PublishAsync(heartbeatEvent, ctx => ctx.Impersonate((IContext)state)).PreserveThreadContext();
             }
             catch (Exception ex)
             {

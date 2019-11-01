@@ -19,6 +19,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Orchestration.Interaction;
+    using Kephas.Orchestration.Resources;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -61,13 +62,13 @@ namespace Kephas.Orchestration.Application
                 var appStartedEvent = this.CreateAppStartedEvent();
                 await this.messageBroker.PublishAsync(
                     appStartedEvent,
-                    appContext,
+                    ctx => ctx.Impersonate(appContext),
                     cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {
                 // TODO localization
-                this.Logger.Error(ex, "Exception when publishing the application started event.");
+                this.Logger.Error(ex, Strings.ApplicationStartedEvent_Exception);
             }
         }
 
@@ -88,11 +89,11 @@ namespace Kephas.Orchestration.Application
             var appStoppedEvent = this.CreateAppStoppedEvent();
             try
             {
-                await this.messageBroker.PublishAsync(appStoppedEvent, appContext, cancellationToken).PreserveThreadContext();
+                await this.messageBroker.PublishAsync(appStoppedEvent, ctx => ctx.Impersonate(appContext), cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Exception when publishing the application stopped event.");
+                this.Logger.Error(ex, Strings.ApplicationStoppedEvent_Exception);
             }
         }
 

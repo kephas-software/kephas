@@ -215,7 +215,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var messageBroker = await this.GetMessageBrokerAsync(container);
 
             var message = new TestEvent { TaskCompletionSource = new TaskCompletionSource<(string, IBrokeredMessage)>() };
-            await messageBroker.PublishAsync(message, new Context(container));
+            await messageBroker.PublishAsync(message);
 
             var response = await message.TaskCompletionSource.Task;
             Assert.AreEqual("ok", response.response);

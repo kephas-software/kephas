@@ -103,4 +103,10 @@
   <data name="OrchestrationManager_StartAppAsync_NotSupported" xml:space="preserve">
     <value>Please provide a proper implementation for starting an application.</value>
   </data>
+  <data name="ApplicationStartedEvent_Exception" xml:space="preserve">
+    <value>Exception when publishing the application started event.</value>
+  </data>
+  <data name="ApplicationStoppedEvent_Exception" xml:space="preserve">
+    <value>Exception when publishing the application stopped event.</value>
+  </data>
 </root>

@@ -61,6 +61,24 @@ namespace Kephas.Orchestration.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exception when publishing the application started event..
+        /// </summary>
+        internal static string ApplicationStartedEvent_Exception {
+            get {
+                return ResourceManager.GetString("ApplicationStartedEvent_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exception when publishing the application stopped event..
+        /// </summary>
+        internal static string ApplicationStoppedEvent_Exception {
+            get {
+                return ResourceManager.GetString("ApplicationStoppedEvent_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please provide a proper implementation for starting an application..
         /// </summary>
         internal static string OrchestrationManager_StartAppAsync_NotSupported {

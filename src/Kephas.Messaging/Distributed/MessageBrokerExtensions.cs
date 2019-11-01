@@ -49,76 +49,82 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
-        /// <remarks>
-        /// It does not wait for an answer from the subscribers, just for the acknowledgement of the
-        /// message being sent.
-        /// </remarks>
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="event">The event message.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
+        /// <remarks>
+        /// It does not wait for an answer from the subscribers, just for the acknowledgement of the
+        /// message being sent.
+        /// </remarks>
         public static Task PublishAsync(
             this IMessageBroker messageBroker,
             object @event,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
 
-            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event), cancellationToken);
+            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event).Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
-        /// <remarks>
-        /// It does not wait for an answer from the subscribers,
-        /// just for the acknowledgement of the message being sent.
-        /// </remarks>
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="event">The event message.</param>
         /// <param name="recipient">The recipient.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
+        /// <remarks>
+        /// It does not wait for an answer from the subscribers, just for the acknowledgement of the
+        /// message being sent.
+        /// </remarks>
         public static Task PublishAsync(
             this IMessageBroker messageBroker,
             object @event,
             IEndpoint recipient,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(recipient, nameof(recipient));
 
-            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event).To(recipient), cancellationToken);
+            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event).To(recipient).Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
-        /// <remarks>
-        /// It does not wait for an answer from the subscribers,
-        /// just for the acknowledgement of the message being sent.
-        /// </remarks>
         /// <param name="messageBroker">The message broker to act on.</param>
         /// <param name="event">The event message.</param>
         /// <param name="recipients">The recipients.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>
+        /// <remarks>
+        /// It does not wait for an answer from the subscribers, just for the acknowledgement of the
+        /// message being sent.
+        /// </remarks>
         public static Task PublishAsync(
             this IMessageBroker messageBroker,
             object @event,
             IEnumerable<IEndpoint> recipients,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(recipients, nameof(recipients));
 
-            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event).To(recipients), cancellationToken);
+            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event).To(recipients).Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
@@ -126,6 +132,7 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <typeparam name="TEvent">Type of the event.</typeparam>
         /// <param name="messageBroker">The message broker.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
@@ -133,10 +140,11 @@ namespace Kephas.Messaging.Distributed
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task PublishAsync<TEvent>(
             this IMessageBroker messageBroker,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
             where TEvent : class, new()
         {
-            return messageBroker.PublishAsync(new TEvent(), cancellationToken);
+            return messageBroker.PublishAsync(new TEvent(), optionsConfig, cancellationToken);
         }
 
         /// <summary>
@@ -144,10 +152,14 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="event">The event.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Publish(this IMessageBroker messageBroker, object @event)
+        public static void Publish(
+            this IMessageBroker messageBroker,
+            object @event,
+            Action<IDispatchingContext> optionsConfig = null)
         {
-            messageBroker.PublishAsync(@event).WaitNonLocking();
+            messageBroker.PublishAsync(@event, optionsConfig).WaitNonLocking();
         }
 
         /// <summary>
@@ -155,11 +167,14 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <typeparam name="TEvent">Type of the event.</typeparam>
         /// <param name="messageBroker">The message broker.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Publish<TEvent>(this IMessageBroker messageBroker)
+        public static void Publish<TEvent>(
+            this IMessageBroker messageBroker,
+            Action<IDispatchingContext> optionsConfig = null)
             where TEvent : class, new()
         {
-            messageBroker.PublishAsync(new TEvent()).WaitNonLocking();
+            messageBroker.PublishAsync(new TEvent(), optionsConfig).WaitNonLocking();
         }
 
         /// <summary>
@@ -168,6 +183,7 @@ namespace Kephas.Messaging.Distributed
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="eventId">Identifier for the event.</param>
         /// <param name="eventArgs">The application event arguments.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
@@ -175,11 +191,12 @@ namespace Kephas.Messaging.Distributed
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task PublishAsync(
             this IMessageBroker messageBroker,
-            object eventId,
+            string eventId,
             IExpando eventArgs,
+            Action<IDispatchingContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            return messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }, cancellationToken);
+            return messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }, optionsConfig, cancellationToken);
         }
 
         /// <summary>
@@ -188,13 +205,15 @@ namespace Kephas.Messaging.Distributed
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="eventId">Identifier for the application event.</param>
         /// <param name="eventArgs">The application event arguments.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Publish(
             this IMessageBroker messageBroker,
             object eventId,
-            IExpando eventArgs)
+            IExpando eventArgs,
+            Action<IDispatchingContext> optionsConfig = null)
         {
-            messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }).WaitNonLocking();
+            messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }, optionsConfig).WaitNonLocking();
         }
 
         /// <summary>
