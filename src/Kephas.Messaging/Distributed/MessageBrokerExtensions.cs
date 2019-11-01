@@ -209,7 +209,7 @@ namespace Kephas.Messaging.Distributed
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Publish(
             this IMessageBroker messageBroker,
-            object eventId,
+            string eventId,
             IExpando eventArgs,
             Action<IDispatchingContext> optionsConfig = null)
         {
