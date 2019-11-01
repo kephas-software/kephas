@@ -88,18 +88,33 @@ namespace Kephas.Orchestration.Tests
             manager.TimerDueTime = TimeSpan.FromMilliseconds(100);
             manager.TimerPeriod = TimeSpan.FromMilliseconds(100);
 
+            var messages = new List<object>();
+
+            // ensure that the heartbeat is sent
+            messageBroker
+                .DispatchAsync(
+                    Arg.Any<IBrokeredMessage>(),
+                    Arg.Any<Action<IDispatchingContext>>(),
+                    Arg.Any<CancellationToken>())
+                .Returns(ci =>
+                {
+                    var message = new BrokeredMessage();
+                    var context = Substitute.For<IDispatchingContext>();
+                    context.BrokeredMessage.Returns(message);
+                    ci.Arg<Action<IDispatchingContext>>()(context);
+
+                    messages.Add(message.Content);
+
+                    return (IMessage)null;
+                });
+
             await manager.InitializeAsync(appContext);
             await eventHub.PublishAsync(new AppStartedEvent { AppInfo = new RuntimeAppInfo { AppId = "hi", AppInstanceId = "there" } }, new Context(compositionContext));
             await Task.Delay(TimeSpan.FromMilliseconds(400));
             await manager.FinalizeAsync(appContext);
 
-            // ensure that the heartbeat is sent
-            messageBroker
-                .Received()
-                .DispatchAsync(
-                    Arg.Is<IBrokeredMessage>(e => e.GetContent() is AppHeartbeatEvent),
-                    Arg.Any<Action<IDispatchingContext>>(),
-                    Arg.Any<CancellationToken>());
+            CollectionAssert.IsNotEmpty(messages);
+            CollectionAssert.AllItemsAreInstancesOfType(messages, typeof(AppHeartbeatEvent));
         }
     }
 }
