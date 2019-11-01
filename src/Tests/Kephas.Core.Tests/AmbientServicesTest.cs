@@ -469,6 +469,19 @@ namespace Kephas.Core.Tests
             Assert.IsFalse(appServiceInfos.Any());
         }
 
+        [Test]
+        public void GetAppServiceInfos_all_services_for_lite_composition_when_null_registration_context()
+        {
+            var ambientServices = new AmbientServices();
+            ambientServices[LiteConventionsBuilder.LiteCompositionKey] = true;
+            var appServiceInfos = ambientServices.GetAppServiceInfos(null, null);
+
+            var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IAppRuntime));
+            Assert.IsNotNull(info);
+            Assert.IsNotNull(info.InstanceFactory);
+            Assert.AreSame(ambientServices.AppRuntime, info.InstanceFactory(null));
+        }
+
         public interface IService { }
         public interface IDependency { }
         public interface IAnotherDependency { }
