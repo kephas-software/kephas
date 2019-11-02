@@ -96,7 +96,12 @@ namespace Kephas.Messaging.Distributed
             {
                 if (this.ReplyToMessageId == null && value == null)
                 {
-                    throw new ArgumentNullException(nameof(value), Strings.BrokeredMessageBuilder_ContentNullWhenNotReply_Exception);
+                    throw new ArgumentNullException(nameof(value), Strings.BrokeredMessage_ContentNullWhenNotReply_Exception);
+                }
+
+                if (value is IMessageEnvelope envelope && envelope.GetContent() is Delegate)
+                {
+                    throw new ArgumentException(nameof(value), Strings.BrokeredMessage_ContentCannotBeDelegate_Exception.FormatWith(value));
                 }
 
                 this.content = value;

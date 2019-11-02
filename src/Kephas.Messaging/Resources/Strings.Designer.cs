@@ -61,20 +61,20 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The content message may be null only for replies. Use ReplyTo() before setting the content if you intend to create a reply..
+        ///   Looks up a localized string similar to The content message may not be a Delegate type: &apos;{0}&apos;..
         /// </summary>
-        public static string BrokeredMessageBuilder_ContentNullWhenNotReply_Exception {
+        public static string BrokeredMessage_ContentCannotBeDelegate_Exception {
             get {
-                return ResourceManager.GetString("BrokeredMessageBuilder_ContentNullWhenNotReply_Exception", resourceCulture);
+                return ResourceManager.GetString("BrokeredMessage_ContentCannotBeDelegate_Exception", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot specify a negative timeout value..
+        ///   Looks up a localized string similar to The content message may be null only for replies. Use ReplyTo() before setting the content if you intend to create a reply..
         /// </summary>
-        public static string BrokeredMessageBuilder_NonNegativeTimeout_Exception {
+        public static string BrokeredMessage_ContentNullWhenNotReply_Exception {
             get {
-                return ResourceManager.GetString("BrokeredMessageBuilder_NonNegativeTimeout_Exception", resourceCulture);
+                return ResourceManager.GetString("BrokeredMessage_ContentNullWhenNotReply_Exception", resourceCulture);
             }
         }
         
@@ -174,6 +174,15 @@ namespace Kephas.Messaging.Resources {
         public static string DefaultMessageProcessor_MissingHandler_Exception {
             get {
                 return ResourceManager.GetString("DefaultMessageProcessor_MissingHandler_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot specify a negative timeout value..
+        /// </summary>
+        public static string DispatchingContext_NonNegativeTimeout_Exception {
+            get {
+                return ResourceManager.GetString("DispatchingContext_NonNegativeTimeout_Exception", resourceCulture);
             }
         }
         

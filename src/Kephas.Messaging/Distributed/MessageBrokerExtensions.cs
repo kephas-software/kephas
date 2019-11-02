@@ -27,26 +27,6 @@ namespace Kephas.Messaging.Distributed
     public static class MessageBrokerExtensions
     {
         /// <summary>
-        /// Dispatches the message asynchronously.
-        /// </summary>
-        /// <param name="messageBroker">The message broker.</param>
-        /// <param name="optionsConfig">The options configuration.</param>
-        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result that yields the dispatch.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task<IMessage> DispatchAsync(
-            this IMessageBroker messageBroker,
-            Action<IDispatchingContext> optionsConfig,
-            CancellationToken cancellationToken = default)
-        {
-            Requires.NotNull(messageBroker, nameof(messageBroker));
-
-            return messageBroker.DispatchAsync(null, optionsConfig, cancellationToken);
-        }
-
-        /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
         /// <param name="messageBroker">The message broker to act on.</param>
@@ -68,7 +48,7 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(@event, nameof(@event));
 
-            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event).Merge(optionsConfig), cancellationToken);
+            return messageBroker.DispatchAsync(@event.ToEventContent(), ctx => ctx.Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
@@ -96,7 +76,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(recipient, nameof(recipient));
 
-            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event).To(recipient).Merge(optionsConfig), cancellationToken);
+            return messageBroker.DispatchAsync(@event.ToEventContent(), ctx => ctx.To(recipient).Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
@@ -124,7 +104,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(recipients, nameof(recipients));
 
-            return messageBroker.DispatchAsync(ctx => ctx.ContentEvent(@event).To(recipients).Merge(optionsConfig), cancellationToken);
+            return messageBroker.DispatchAsync(@event.ToEventContent(), ctx => ctx.To(recipients).Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>

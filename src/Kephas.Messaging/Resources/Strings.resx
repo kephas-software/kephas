@@ -132,10 +132,10 @@
   <data name="MessageBrokerBase_ReplyToMessageNotFound_Exception" xml:space="preserve">
     <value>Received a reply to '{0}' for which the corresponding original message was not found. Possible cause: a timeout may have had interrupted the communication. Content: {1}.</value>
   </data>
-  <data name="BrokeredMessageBuilder_ContentNullWhenNotReply_Exception" xml:space="preserve">
+  <data name="BrokeredMessage_ContentNullWhenNotReply_Exception" xml:space="preserve">
     <value>The content message may be null only for replies. Use ReplyTo() before setting the content if you intend to create a reply.</value>
   </data>
-  <data name="BrokeredMessageBuilder_NonNegativeTimeout_Exception" xml:space="preserve">
+  <data name="DispatchingContext_NonNegativeTimeout_Exception" xml:space="preserve">
     <value>Cannot specify a negative timeout value.</value>
   </data>
   <data name="MessageBrokerBase_Timeout_Exception" xml:space="preserve">
@@ -197,5 +197,8 @@
   </data>
   <data name="InProcessMessageRouter_UnexpectedMessageInOutputQueue" xml:space="preserve">
     <value>Expected only replies in the output queue, instead received '{0}'.</value>
+  </data>
+  <data name="BrokeredMessage_ContentCannotBeDelegate_Exception" xml:space="preserve">
+    <value>The content message may not be a Delegate type: '{0}'.</value>
   </data>
 </root>

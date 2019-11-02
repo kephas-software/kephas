@@ -13,7 +13,7 @@ namespace Kephas.Messaging.Distributed
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Diagnostics.Contracts;
+
     using Kephas.Services;
 
     /// <summary>

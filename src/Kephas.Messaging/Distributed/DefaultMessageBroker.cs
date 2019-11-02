@@ -84,7 +84,7 @@ namespace Kephas.Messaging.Distributed
 
                 if (brokeredMessage.Content == null && string.IsNullOrEmpty(brokeredMessage.ReplyToMessageId))
                 {
-                    throw new ArgumentNullException(nameof(optionsConfig), Strings.BrokeredMessageBuilder_ContentNullWhenNotReply_Exception);
+                    throw new ArgumentNullException(nameof(optionsConfig), Strings.BrokeredMessage_ContentNullWhenNotReply_Exception);
                 }
 
                 if (brokeredMessage.IsOneWay)

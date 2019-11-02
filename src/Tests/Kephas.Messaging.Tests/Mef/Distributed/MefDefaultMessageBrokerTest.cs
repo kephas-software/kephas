@@ -82,7 +82,7 @@ namespace Kephas.Messaging.Tests.Mef.Distributed
                 return Substitute.For<IMessage>();
             });
 
-            Assert.That(() => messageBroker.DispatchAsync(ctx => ctx.Content(new TimeoutMessage()).Timeout(TimeSpan.FromMilliseconds(30))), Throws.InstanceOf<TimeoutException>());
+            Assert.That(() => messageBroker.DispatchAsync(new TimeoutMessage(), ctx => ctx.Timeout(TimeSpan.FromMilliseconds(30))), Throws.InstanceOf<TimeoutException>());
         }
 
         [Test]

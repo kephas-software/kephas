@@ -270,7 +270,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(context, nameof(context));
             if (timeout < TimeSpan.Zero)
             {
-                throw new ArgumentException(Strings.BrokeredMessageBuilder_NonNegativeTimeout_Exception, nameof(timeout));
+                throw new ArgumentException(Strings.DispatchingContext_NonNegativeTimeout_Exception, nameof(timeout));
             }
 
             context.BrokeredMessage.Timeout = timeout;

@@ -33,7 +33,7 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
-        public void WithContent()
+        public void Content()
         {
             var builder = new DispatchingContext(Substitute.For<ICompositionContext>(), Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
             var content = Substitute.For<IMessage>();
@@ -43,7 +43,7 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
-        public void WithSender_sender_id()
+        public void From_sender_id()
         {
             var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime[AppRuntimeBase.AppIdKey].Returns("app-id");
