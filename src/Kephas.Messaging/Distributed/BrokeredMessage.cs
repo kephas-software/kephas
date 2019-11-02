@@ -12,7 +12,7 @@ namespace Kephas.Messaging.Distributed
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Events;
@@ -202,11 +202,11 @@ namespace Kephas.Messaging.Distributed
             {
                 Id = this.Id,
                 Sender = this.Sender,
-                Recipients = recipients ?? this.Recipients,
+                Recipients = recipients ?? this.Recipients?.ToArray(),
                 BearerToken = this.BearerToken,
-                Content = this.Content,
+                content = this.Content,             // write directly into the content field, to avoid validations
                 IsOneWay = this.IsOneWay,
-                Properties = new Dictionary<string, object>(this.Properties),
+                Properties = this.Properties == null ? null : new Dictionary<string, object>(this.Properties),
                 Priority = this.Priority,
                 ReplyToMessageId = this.ReplyToMessageId,
                 Timeout = this.Timeout,

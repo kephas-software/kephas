@@ -13,9 +13,11 @@ namespace Kephas.Messaging.Tests.Distributed
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
+    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
 
     [TestFixture]
     public class BrokeredMessageTest
@@ -77,6 +79,41 @@ namespace Kephas.Messaging.Tests.Distributed
             message.Content = null;
 
             Assert.IsNull(message.Content);
+        }
+
+        [Test]
+        public void Clone_empty()
+        {
+            var message = new BrokeredMessage();
+            var clone = message.Clone();
+
+            Assert.AreEqual(message.Id, clone.Id);
+        }
+
+        [Test]
+        public void Clone_values()
+        {
+            var message = new BrokeredMessage
+            {
+                BearerToken = "123",
+                Content = Substitute.For<IMessage>(),
+                IsOneWay = true,
+                Priority = Priority.High,
+                Recipients = new List<IEndpoint> { Substitute.For<IEndpoint>() },
+                ReplyToMessageId = "345",
+                Sender = Substitute.For<IEndpoint>(),
+            };
+            var clone = message.Clone();
+
+            Assert.AreEqual(message.Id, clone.Id);
+            Assert.AreEqual(message.BearerToken, clone.BearerToken);
+            Assert.AreSame(message.Content, clone.Content);
+            Assert.AreEqual(message.IsOneWay, clone.IsOneWay);
+            Assert.AreEqual(message.Priority, clone.Priority);
+            Assert.AreNotSame(message.Recipients, clone.Recipients);
+            CollectionAssert.AreEqual(message.Recipients, clone.Recipients);
+            Assert.AreEqual(message.ReplyToMessageId, clone.ReplyToMessageId);
+            Assert.AreSame(message.Sender, clone.Sender);
         }
     }
 }
