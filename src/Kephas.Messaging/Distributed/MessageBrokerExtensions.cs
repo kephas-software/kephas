@@ -128,6 +128,28 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Asynchronously publishes the event with the provided ID and arguments.
+        /// </summary>
+        /// <param name="messageBroker">The message broker.</param>
+        /// <param name="eventId">Identifier for the event.</param>
+        /// <param name="eventArgs">The application event arguments.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task PublishAsync(
+            this IMessageBroker messageBroker,
+            string eventId,
+            IExpando eventArgs,
+            Action<IDispatchingContext> optionsConfig = null,
+            CancellationToken cancellationToken = default)
+        {
+            return messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }, optionsConfig, cancellationToken);
+        }
+
+        /// <summary>
         /// Publishes the provided event.
         /// </summary>
         /// <param name="messageBroker">The message broker.</param>
@@ -158,25 +180,26 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
-        /// Asynchronously publishes the event with the provided ID and arguments.
+        /// Publishes an event asynchronously.
         /// </summary>
         /// <param name="messageBroker">The message broker.</param>
-        /// <param name="eventId">Identifier for the event.</param>
-        /// <param name="eventArgs">The application event arguments.</param>
+        /// <param name="event">The event message.</param>
+        /// <param name="recipient">The recipient.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Task PublishAsync(
+        /// <remarks>
+        /// It does not wait for an answer from the subscribers, just for the acknowledgement of the
+        /// message being sent.
+        /// </remarks>
+        public static void Publish(
             this IMessageBroker messageBroker,
-            string eventId,
-            IExpando eventArgs,
-            Action<IDispatchingContext> optionsConfig = null,
-            CancellationToken cancellationToken = default)
+            object @event,
+            IEndpoint recipient,
+            Action<IDispatchingContext> optionsConfig = null)
         {
-            return messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }, optionsConfig, cancellationToken);
+            Requires.NotNull(@event, nameof(@event));
+            Requires.NotNull(recipient, nameof(recipient));
+
+            messageBroker.DispatchAsync(@event.ToEventContent(), ctx => ctx.To(recipient).Merge(optionsConfig)).WaitNonLocking();
         }
 
         /// <summary>
