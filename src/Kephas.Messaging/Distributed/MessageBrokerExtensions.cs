@@ -29,7 +29,7 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
-        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="messageBroker">The message broker.</param>
         /// <param name="event">The event message.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
@@ -54,7 +54,7 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
-        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="messageBroker">The message broker.</param>
         /// <param name="event">The event message.</param>
         /// <param name="recipient">The recipient.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
@@ -82,7 +82,7 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Publishes an event asynchronously.
         /// </summary>
-        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="messageBroker">The message broker.</param>
         /// <param name="event">The event message.</param>
         /// <param name="recipients">The recipients.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
@@ -199,7 +199,27 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Processes a message asynchronously, waiting for a response from the handler.
         /// </summary>
-        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="messageBroker">The message broker.</param>
+        /// <param name="message">The message to be processed.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result yielding the response message.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Task<IMessage> ProcessAsync(
+            this IMessageBroker messageBroker,
+            object message,
+            Action<IDispatchingContext> optionsConfig = null,
+            CancellationToken cancellationToken = default)
+        {
+            return messageBroker.DispatchAsync(message, optionsConfig, cancellationToken);
+        }
+
+        /// <summary>
+        /// Processes a message asynchronously, waiting for a response from the handler.
+        /// </summary>
+        /// <param name="messageBroker">The message broker.</param>
         /// <param name="message">The message to be processed.</param>
         /// <param name="recipient">The recipient.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
@@ -222,7 +242,7 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Processes a message asynchronously, waiting for a response from the handler.
         /// </summary>
-        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="messageBroker">The message broker.</param>
         /// <param name="message">The message to be processed.</param>
         /// <param name="recipients">The recipients.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
@@ -245,7 +265,7 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Processes a message asynchronously without waiting for a response from the handler.
         /// </summary>
-        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="messageBroker">The message broker.</param>
         /// <param name="message">The message to be processed.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
@@ -265,7 +285,7 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Processes a message asynchronously without waiting for a response from the handler.
         /// </summary>
-        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="messageBroker">The message broker.</param>
         /// <param name="message">The message to be processed.</param>
         /// <param name="recipient">The recipient.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
@@ -289,7 +309,7 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// Processes a message asynchronously without waiting for a response from the handler.
         /// </summary>
-        /// <param name="messageBroker">The message broker to act on.</param>
+        /// <param name="messageBroker">The message broker.</param>
         /// <param name="message">The message to be processed.</param>
         /// <param name="recipients">The recipients.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
