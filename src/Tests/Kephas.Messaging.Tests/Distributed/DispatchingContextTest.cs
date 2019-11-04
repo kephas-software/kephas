@@ -26,7 +26,11 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void OneWay()
         {
-            var builder = new DispatchingContext(Substitute.For<ICompositionContext>(), Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
+            var builder = new DispatchingContext(
+                Substitute.For<ICompositionContext>(),
+                Substitute.For<IMessageBroker>(),
+                Substitute.For<IAppRuntime>(),
+                Substitute.For<IAuthenticationService>());
             var message = builder.OneWay().BrokeredMessage;
 
             Assert.IsTrue(message.IsOneWay);
@@ -35,7 +39,11 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void Content()
         {
-            var builder = new DispatchingContext(Substitute.For<ICompositionContext>(), Substitute.For<IAppRuntime>(), Substitute.For<IAuthenticationService>());
+            var builder = new DispatchingContext(
+                Substitute.For<ICompositionContext>(),
+                Substitute.For<IMessageBroker>(),
+                Substitute.For<IAppRuntime>(),
+                Substitute.For<IAuthenticationService>());
             var content = Substitute.For<IMessage>();
             var message = builder.Content(content).BrokeredMessage;
 
@@ -49,7 +57,11 @@ namespace Kephas.Messaging.Tests.Distributed
             appRuntime[AppRuntimeBase.AppIdKey].Returns("app-id");
             appRuntime[AppRuntimeBase.AppInstanceIdKey].Returns("app-instance-id");
 
-            var builder = new DispatchingContext(Substitute.For<ICompositionContext>(), appRuntime, Substitute.For<IAuthenticationService>());
+            var builder = new DispatchingContext(
+                Substitute.For<ICompositionContext>(),
+                Substitute.For<IMessageBroker>(),
+                Substitute.For<IAppRuntime>(),
+                Substitute.For<IAuthenticationService>());
             var message = builder.From("123").BrokeredMessage;
 
             Assert.AreEqual("123", message.Sender.EndpointId);

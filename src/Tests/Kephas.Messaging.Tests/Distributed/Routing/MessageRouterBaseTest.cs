@@ -91,6 +91,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             return this.CreateContextFactoryMock(
                 () => new DispatchingContext(
                     Substitute.For<ICompositionContext>(),
+                    Substitute.For<IMessageBroker>(),
                     Substitute.For<IAppRuntime>(),
                     Substitute.For<IAuthenticationService>(),
                     null));

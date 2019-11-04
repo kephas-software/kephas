@@ -52,6 +52,7 @@ namespace Kephas.Messaging.Tests
                                 return this.CreateContextFactoryMock(args =>
                                     new DispatchingContext(
                                         container,
+                                        Substitute.For<IMessageBroker>(),
                                         Substitute.For<IAppRuntime>(),
                                         Substitute.For<IAuthenticationService>(),
                                         args.Length > 0 ? args[0] : null));

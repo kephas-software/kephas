@@ -154,7 +154,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual IDispatchingContext CreateDispatchingContext(object message, Action<IDispatchingContext> optionsConfig = null)
         {
-            var context = this.contextFactory.CreateContext<DispatchingContext>(message);
+            var context = this.contextFactory.CreateContext<DispatchingContext>(this, message);
             optionsConfig?.Invoke(context);
             return context;
         }
@@ -269,15 +269,11 @@ namespace Kephas.Messaging.Distributed
             IDispatchingContext sendingContext,
             CancellationToken cancellationToken)
         {
-            using (var replyContext = this.contextFactory.CreateContext<DispatchingContext>())
+            using (var replyContext = this.CreateDispatchingContext(
+                reply,
+                ctx => ctx.Impersonate(sendingContext).ReplyTo(message)))
             {
-                var brokeredReply = replyContext
-                    .Impersonate(sendingContext)
-                    .ReplyTo(message)
-                    .Content(reply)
-                    .BrokeredMessage;
-
-                await this.RouterDispatchAsync(brokeredReply, replyContext, cancellationToken).PreserveThreadContext();
+                await this.RouterDispatchAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
             }
         }
 

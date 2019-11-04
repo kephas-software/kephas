@@ -27,6 +27,14 @@ namespace Kephas.Messaging.Distributed
     public interface IDispatchingContext : IContext
     {
         /// <summary>
+        /// Gets the message broker.
+        /// </summary>
+        /// <value>
+        /// The message broker.
+        /// </value>
+        IMessageBroker MessageBroker { get; }
+
+        /// <summary>
         /// Gets the brokered message.
         /// </summary>
         /// <value>

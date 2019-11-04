@@ -26,12 +26,14 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="DispatchingContext"/> class.
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="messageBroker">The message broker.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="authenticationService">The authentication service.</param>
         /// <param name="message">Optional. The message to be dispatched.</param>
-        public DispatchingContext(ICompositionContext compositionContext, IAppRuntime appRuntime, IAuthenticationService authenticationService, object message = null)
+        public DispatchingContext(ICompositionContext compositionContext, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object message = null)
             : base(compositionContext)
         {
+            this.MessageBroker = messageBroker;
             this.AppRuntime = appRuntime;
             this.AuthenticationService = authenticationService;
             if (message is IBrokeredMessage brokeredMessage)
@@ -52,6 +54,14 @@ namespace Kephas.Messaging.Distributed
         /// Gets the default timeout.
         /// </summary>
         public static TimeSpan DefaultTimeout => TimeSpan.FromSeconds(30);
+
+        /// <summary>
+        /// Gets the message broker.
+        /// </summary>
+        /// <value>
+        /// The message broker.
+        /// </value>
+        public IMessageBroker MessageBroker { get; }
 
         /// <summary>
         /// Gets the application runtime.
