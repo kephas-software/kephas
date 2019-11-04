@@ -40,7 +40,7 @@ namespace Kephas.Services
         ///                            <c>false</c>.</param>
         /// <param name="merge">Optional. True to merge the parent context into the new context.</param>
         public Context(IContext parentContext, bool isThreadSafe = false, bool merge = false)
-            : this(parentContext?.CompositionContext, isThreadSafe)
+            : this(GetParentCompositionContext(parentContext), isThreadSafe)
         {
             if (merge)
             {
@@ -180,9 +180,6 @@ namespace Kephas.Services
         /// </param>
         protected virtual void SetCompositionContext(ICompositionContext compositionContext)
         {
-            // obsolete: remove the assignment
-            compositionContext = compositionContext ?? Kephas.AmbientServices.Instance.CompositionContainer;
-
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
             this.AmbientServices = compositionContext.GetExport<IAmbientServices>();
@@ -216,6 +213,14 @@ namespace Kephas.Services
         protected virtual void Dispose(bool disposing)
         {
             this.DisposeResources();
+        }
+
+        private static ICompositionContext GetParentCompositionContext(IContext parentContext)
+        {
+            Requires.NotNull(parentContext, nameof(parentContext));
+            Requires.NotNull(parentContext.CompositionContext, nameof(parentContext.CompositionContext));
+
+            return parentContext.CompositionContext;
         }
     }
 }
