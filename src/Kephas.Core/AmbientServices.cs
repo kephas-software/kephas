@@ -93,33 +93,6 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Gets or sets the static instance of the ambient services.
-        /// </summary>
-        /// <remarks>
-        /// Setting the globally available instance must be executed
-        /// before getting its value for the first time, otherwise
-        /// it will be initialized with the default instance.
-        /// </remarks>
-        /// <value>
-        /// The instance.
-        /// </value>
-        public static IAmbientServices Instance
-        {
-            get => instance ?? (instance = new AmbientServices());
-            set
-            {
-                Requires.NotNull(value, nameof(value));
-
-                if (instance != null)
-                {
-                    throw new InvalidOperationException(Strings.AmbientServices_Instance_MayBeSetOnlyOnce_Exception);
-                }
-
-                instance = value;
-            }
-        }
-
-        /// <summary>
         /// Gets the configuration store.
         /// </summary>
         /// <value>

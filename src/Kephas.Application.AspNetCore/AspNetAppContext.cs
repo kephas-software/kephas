@@ -27,8 +27,8 @@ namespace Kephas.Application.AspNetCore
         /// </summary>
         /// <param name="hostingEnvironment">The hosting environment.</param>
         /// <param name="configuration">The ASP.NET configuration.</param>
-        /// <param name="ambientServices">Optional. The ambient services. If not provided,
-        ///                               <see cref="AmbientServices.Instance"/> will be considered.</param>
+        /// <param name="ambientServices">Optional. The ambient services. If not provided then
+        ///                               a new instance of <see cref="AmbientServices"/> will be created and used.</param>
         /// <param name="appRuntime">Optional. The application runtime.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public AspNetAppContext(

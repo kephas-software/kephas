@@ -32,10 +32,10 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="AppBase"/> class.
         /// </summary>
         /// <param name="ambientServices">Optional. The ambient services. If not provided then
-        ///                               <see cref="AmbientServices.Instance"/> is considered.</param>
+        ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
         protected AppBase(IAmbientServices ambientServices = null)
         {
-            this.AmbientServices = ambientServices ?? Kephas.AmbientServices.Instance;
+            this.AmbientServices = ambientServices ?? new AmbientServices();
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
         }
 

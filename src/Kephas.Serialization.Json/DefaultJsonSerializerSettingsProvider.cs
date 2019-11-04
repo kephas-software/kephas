@@ -163,9 +163,8 @@ namespace Kephas.Serialization.Json
         /// </returns>
         private static DefaultJsonSerializerSettingsProvider CreateDefaultInstance()
         {
-            var ambientServices = AmbientServices.Instance;
             var defaultInstance =
-                new DefaultJsonSerializerSettingsProvider(ambientServices.GetService<ITypeResolver>(), ambientServices.LogManager);
+                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Loggable.LogManager);
 
             return defaultInstance;
         }
