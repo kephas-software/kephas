@@ -12,11 +12,15 @@ namespace Kephas.Logging
 {
     using System;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// A loggable mixin class.
     /// </summary>
     public class Loggable : ILoggable
     {
+        private static ILogManager logManager = new NullLogManager();
+
         /// <summary>
         /// The logger.
         /// </summary>
@@ -57,7 +61,15 @@ namespace Kephas.Logging
         /// <value>
         /// The log manager.
         /// </value>
-        public static ILogManager LogManager { get; set; }
+        public static ILogManager LogManager
+        {
+            get => logManager;
+            set
+            {
+                Requires.NotNull(value, nameof(value));
+                logManager = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the logger.
