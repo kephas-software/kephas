@@ -118,6 +118,42 @@ namespace Kephas.Messaging.Distributed
         public string Scheme { get; private set; }
 
         /// <summary>
+        /// Implicit cast that converts the given Endpoint to a string.
+        /// </summary>
+        /// <param name="endpoint">The endpoint.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator string(Endpoint endpoint) => endpoint?.ToString();
+
+        /// <summary>
+        /// Implicit cast that converts the given string to an Endpoint.
+        /// </summary>
+        /// <param name="endpoint">The endpoint.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator Endpoint(string endpoint) => endpoint == null ? null : new Endpoint(new Uri(endpoint));
+
+        /// <summary>
+        /// Implicit cast that converts the given Endpoint to an URI.
+        /// </summary>
+        /// <param name="endpoint">The endpoint.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator Uri(Endpoint endpoint) => endpoint?.Url;
+
+        /// <summary>
+        /// Implicit cast that converts the given URI to an Endpoint.
+        /// </summary>
+        /// <param name="endpoint">The endpoint.</param>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
+        public static implicit operator Endpoint(Uri endpoint) => endpoint == null ? null : new Endpoint(endpoint);
+
+        /// <summary>
         /// Creates a new application instance endpoint.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
