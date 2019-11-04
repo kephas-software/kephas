@@ -32,7 +32,6 @@ namespace Kephas.Orchestration
     using Kephas.Orchestration.Application;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Orchestration.Interaction;
-    using Kephas.Orchestration.Resources;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -178,12 +177,12 @@ namespace Kephas.Orchestration
         /// <summary>
         /// Gets the live apps asynchronously.
         /// </summary>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the live apps.
         /// </returns>
-        public virtual Task<IEnumerable<IRuntimeAppInfo>> GetLiveAppsAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public virtual Task<IEnumerable<IRuntimeAppInfo>> GetLiveAppsAsync(Action<IContext> optionsConfig = null, CancellationToken cancellationToken = default)
         {
             var apps = this.LiveApps.Values.Select(v => v.AppInfo).ToArray();
             return Task.FromResult<IEnumerable<IRuntimeAppInfo>>(apps);
@@ -194,23 +193,23 @@ namespace Kephas.Orchestration
         /// </summary>
         /// <param name="appInfo">Information describing the application.</param>
         /// <param name="arguments">The arguments.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        public virtual async Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, IContext context = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, Action<IContext> optionsConfig = null, CancellationToken cancellationToken = default)
         {
             var processedArguments = this.GetAppExecutableArgs(appInfo);
             var executablePath = this.GetAppExecutablePath(appInfo);
 
-            var processStarterFactory = this.CreateProcessStarterFactory(appInfo, arguments, context)
+            var processStarter = this.CreateProcessStarterFactory(appInfo, arguments, optionsConfig)
                 .WithManagedExecutable(executablePath)
                 .WithArguments(processedArguments.ToArray())
                 .WithWorkingDirectory(this.AppRuntime.GetAppLocation())
                 .CreateProcessStarter();
 
-            var processStartResult = await processStarterFactory.StartAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            var processStartResult = await processStarter.StartAsync(cancellationToken: cancellationToken).PreserveThreadContext();
             return processStartResult;
         }
 
@@ -218,16 +217,16 @@ namespace Kephas.Orchestration
         /// Stops a running application asynchronously.
         /// </summary>
         /// <param name="runtimeAppInfo">Information describing the runtime application.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        public virtual async Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, IContext context = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, Action<IContext> optionsConfig = null, CancellationToken cancellationToken = default)
         {
             this.Logger.Info($"Stopping application {runtimeAppInfo.AppInstanceId}...");
 
-            var stopMessage = this.CreateStopAppMessage(runtimeAppInfo, context);
+            var stopMessage = this.CreateStopAppMessage(runtimeAppInfo);
 
             try
             {
@@ -399,11 +398,11 @@ namespace Kephas.Orchestration
         /// </summary>
         /// <param name="appInfo">Information describing the application.</param>
         /// <param name="arguments">The arguments.</param>
-        /// <param name="context">Optional. A context for initialization.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The new process starter factory.
         /// </returns>
-        protected virtual IProcessStarterFactory CreateProcessStarterFactory(IAppInfo appInfo, IExpando arguments, IContext context = null)
+        protected virtual IProcessStarterFactory CreateProcessStarterFactory(IAppInfo appInfo, IExpando arguments, Action<IContext> optionsConfig = null)
             => this.processStarterFactoryFactory.CreateExportedValue();
 
         /// <summary>
@@ -425,11 +424,10 @@ namespace Kephas.Orchestration
         /// Creates stop application message.
         /// </summary>
         /// <param name="runtimeAppInfo">Information describing the runtime application.</param>
-        /// <param name="context">Optional. A context for initialization.</param>
         /// <returns>
         /// The new stop application message.
         /// </returns>
-        protected virtual StopAppMessage CreateStopAppMessage(IRuntimeAppInfo runtimeAppInfo, IContext context = null)
+        protected virtual StopAppMessage CreateStopAppMessage(IRuntimeAppInfo runtimeAppInfo)
         {
             return new StopAppMessage
             {
