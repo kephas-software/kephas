@@ -10,6 +10,8 @@
 
 namespace Kephas.Logging
 {
+    using System;
+
     /// <summary>
     /// A loggable mixin class.
     /// </summary>
@@ -21,6 +23,43 @@ namespace Kephas.Logging
         private ILogger logger;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Loggable"/> class.
+        /// </summary>
+        public Loggable()
+            : this(LogManager)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Loggable"/> class.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        public Loggable(IAmbientServices ambientServices)
+            : this(ambientServices.LogManager)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Loggable"/> class.
+        /// </summary>
+        /// <param name="logManager">The log manager.</param>
+        public Loggable(ILogManager logManager)
+        {
+            if (logManager != null)
+            {
+                this.GetLogger = () => logManager.GetLogger(this.GetType());
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the manager for log.
+        /// </summary>
+        /// <value>
+        /// The log manager.
+        /// </value>
+        public static ILogManager LogManager { get; set; }
+
+        /// <summary>
         /// Gets or sets the logger.
         /// </summary>
         /// <value>
@@ -28,16 +67,16 @@ namespace Kephas.Logging
         /// </value>
         public ILogger Logger
         {
-            get => this.logger ?? (this.logger = this.GetLogger());
+            get => this.logger ?? (this.logger = this.GetLogger?.Invoke() ?? LoggingExtensions.GetLogger(this, null));
             protected internal set => this.logger = value;
         }
 
         /// <summary>
-        /// Gets the logger.
+        /// Gets or sets the logger factory.
         /// </summary>
         /// <returns>
-        /// The logger.
+        /// The logger factory.
         /// </returns>
-        protected virtual ILogger GetLogger() => this.GetLogger(null);
+        protected virtual Func<ILogger> GetLogger { get; set; }
     }
 }

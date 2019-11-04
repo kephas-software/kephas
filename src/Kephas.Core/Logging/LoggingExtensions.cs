@@ -25,7 +25,7 @@ namespace Kephas.Logging
         /// A Type extension method that gets a logger.
         /// </summary>
         /// <param name="type">The type to act on.</param>
-        /// <param name="context">The context used to get the log manager (optional).</param>
+        /// <param name="context">Optional. The context used to get the log manager.</param>
         /// <returns>
         /// The logger.
         /// </returns>
@@ -33,7 +33,7 @@ namespace Kephas.Logging
         {
             Requires.NotNull(type, nameof(type));
 
-            var logManager = context?.AmbientServices?.LogManager ?? AmbientServices.Instance.LogManager;
+            var logManager = context?.AmbientServices?.LogManager ?? Loggable.LogManager;
             return logManager.GetLogger(type);
         }
 
@@ -77,7 +77,7 @@ namespace Kephas.Logging
                 }
             }
 
-            var logManager = context?.AmbientServices?.LogManager ?? AmbientServices.Instance.LogManager;
+            var logManager = context?.AmbientServices?.LogManager ?? Loggable.LogManager;
             return logManager.GetLogger(obj.GetType());
         }
     }

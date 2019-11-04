@@ -405,6 +405,7 @@ namespace Kephas
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(logManager, nameof(logManager));
 
+            Loggable.LogManager = logManager;
             ambientServices.Register(logManager);
 
             return ambientServices;

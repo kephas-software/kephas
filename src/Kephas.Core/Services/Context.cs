@@ -175,7 +175,7 @@ namespace Kephas.Services
         /// Sets composition context.
         /// </summary>
         /// <param name="compositionContext">
-        /// The context for the composition (optional). If not provided,
+        /// The context for the composition. If not provided,
         /// <see cref="M:AmbientServices.Instance.CompositionContainer"/> will be considered.
         /// </param>
         protected virtual void SetCompositionContext(ICompositionContext compositionContext)
