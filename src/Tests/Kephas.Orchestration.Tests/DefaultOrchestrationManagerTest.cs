@@ -93,18 +93,12 @@ namespace Kephas.Orchestration.Tests
             // ensure that the heartbeat is sent
             messageBroker
                 .DispatchAsync(
-                    Arg.Any<IBrokeredMessage>(),
+                    Arg.Any<object>(),
                     Arg.Any<Action<IDispatchingContext>>(),
                     Arg.Any<CancellationToken>())
                 .Returns(ci =>
                 {
-                    var message = new BrokeredMessage();
-                    var context = Substitute.For<IDispatchingContext>();
-                    context.BrokeredMessage.Returns(message);
-                    ci.Arg<Action<IDispatchingContext>>()(context);
-
-                    messages.Add(message.Content);
-
+                    messages.Add(ci.Arg<object>());
                     return (IMessage)null;
                 });
 

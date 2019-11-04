@@ -89,12 +89,12 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         private IContextFactory CreateMessagingContextFactory()
         {
             return this.CreateContextFactoryMock(
-                () => new DispatchingContext(
+                args => new DispatchingContext(
                     Substitute.For<ICompositionContext>(),
                     Substitute.For<IMessageBroker>(),
                     Substitute.For<IAppRuntime>(),
                     Substitute.For<IAuthenticationService>(),
-                    null));
+                    args.Length == 0 ? null : args[0]));
         }
 
         public class TestMessageRouter : MessageRouterBase

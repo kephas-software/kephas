@@ -60,7 +60,7 @@ namespace Kephas.Messaging.Tests.Distributed
             var builder = new DispatchingContext(
                 Substitute.For<ICompositionContext>(),
                 Substitute.For<IMessageBroker>(),
-                Substitute.For<IAppRuntime>(),
+                appRuntime,
                 Substitute.For<IAuthenticationService>());
             var message = builder.From("123").BrokeredMessage;
 
