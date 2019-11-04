@@ -154,7 +154,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual IDispatchingContext CreateDispatchingContext(object message, Action<IDispatchingContext> optionsConfig = null)
         {
-            var context = this.contextFactory.CreateContext<DispatchingContext>(this, message);
+            var context = this.contextFactory.CreateContext<DispatchingContext>(message);
             optionsConfig?.Invoke(context);
             return context;
         }
