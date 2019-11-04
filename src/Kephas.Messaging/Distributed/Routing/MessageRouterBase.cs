@@ -13,8 +13,8 @@ namespace Kephas.Messaging.Distributed.Routing
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas;
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
@@ -152,6 +152,7 @@ namespace Kephas.Messaging.Distributed.Routing
         {
             try
             {
+                // if the input queue notifies a reply, notify it further to the message broker.
                 if (brokeredMessage.ReplyToMessageId != null)
                 {
                     this.OnReplyReceived(new ReplyReceivedEventArgs { Message = brokeredMessage, Context = context });
@@ -178,15 +179,13 @@ namespace Kephas.Messaging.Distributed.Routing
                     reply = new ExceptionResponseMessage { Exception = new ExceptionData(ex) };
                 }
 
-                using (var replyContext = this.ContextFactory.CreateContext<DispatchingContext>())
+                // after processing requests expecting an answer, redirect the reply
+                // through the same infrastructure back to caller.
+                using (var replyContext = this.ContextFactory.CreateContext<DispatchingContext>(reply))
                 {
-                    var replyMessage = replyContext
-                        .Impersonate(context)
-                        .ReplyTo(brokeredMessage)
-                        .Content(reply)
-                        .BrokeredMessage;
+                    replyContext.Impersonate(context).ReplyTo(brokeredMessage);
 
-                    return await this.RouteOutputAsync(replyMessage, replyContext, cancellationToken).PreserveThreadContext();
+                    return await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
                 }
             }
             catch (Exception ex)
