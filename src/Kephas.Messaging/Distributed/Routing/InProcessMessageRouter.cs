@@ -85,6 +85,8 @@ namespace Kephas.Messaging.Distributed.Routing
             var messageRouterName = this.GetType().Name;
             this.Logger.Info($"Starting the {messageRouterName} message router...");
 
+            this.initializationMonitor.Start();
+
             this.rootChannelName = ChannelType;
             this.messageQueue = Channels.GetOrAdd(this.rootChannelName, _ => new MessageQueue(this.rootChannelName));
             this.messageQueue.MessageArrived += this.HandleMessageArrivedAsync;
