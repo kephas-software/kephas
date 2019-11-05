@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Distributed
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Events;
@@ -25,9 +26,6 @@ namespace Kephas.Messaging.Distributed
     /// </summary>
     public class BrokeredMessage : IBrokeredMessage
     {
-        /// <summary>
-        /// The identifier.
-        /// </summary>
         private string id;
         private IMessage content;
 
@@ -37,6 +35,7 @@ namespace Kephas.Messaging.Distributed
         public BrokeredMessage()
         {
             this.Id = Guid.NewGuid().ToString("N");
+            this.Timeout = DefaultTimeout;
         }
 
         /// <summary>
@@ -50,6 +49,12 @@ namespace Kephas.Messaging.Distributed
 
             this.Content = message.ToMessageContent();
         }
+
+        /// <summary>
+        /// Gets or sets the default timeout when waiting for a response.
+        /// The default value is 30 seconds, but it can be changed to accomodate application needs.
+        /// </summary>
+        public static TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromSeconds(30);
 
         /// <summary>
         /// Gets or sets the identifier for this instance.
@@ -134,7 +139,7 @@ namespace Kephas.Messaging.Distributed
         /// <remarks>
         /// A value of <c>null</c> means indefinitely waiting, but
         /// it is strongly discouraged to wait indefinitely for a response.
-        /// The default value <see cref="DispatchingContext.DefaultTimeout"/> can be used.
+        /// The value <see cref="DefaultTimeout"/> is used by default.
         /// </remarks>
         /// <value>
         /// The response timeout.

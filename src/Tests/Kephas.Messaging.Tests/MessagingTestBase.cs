@@ -19,6 +19,7 @@ namespace Kephas.Messaging.Tests
     using Kephas.Composition.ExportFactories;
     using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Composition.Lite.Hosting;
+    using Kephas.Configuration;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
     using Kephas.Services;
@@ -46,6 +47,7 @@ namespace Kephas.Messaging.Tests
             Func<object[], DispatchingContext> ctxCreator = args =>
                                     new DispatchingContext(
                                         container,
+                                        Substitute.For<IConfiguration<MessagingSettings>>(),
                                         Substitute.For<IMessageBroker>(),
                                         Substitute.For<IAppRuntime>(),
                                         Substitute.For<IAuthenticationService>(),

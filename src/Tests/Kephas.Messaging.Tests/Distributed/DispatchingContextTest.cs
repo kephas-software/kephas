@@ -12,6 +12,7 @@ namespace Kephas.Messaging.Tests.Distributed
 {
     using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Configuration;
     using Kephas.Messaging.Distributed;
     using Kephas.Security;
     using Kephas.Security.Authentication;
@@ -19,6 +20,7 @@ namespace Kephas.Messaging.Tests.Distributed
     using NSubstitute;
 
     using NUnit.Framework;
+    using System;
 
     [TestFixture]
     public class DispatchingContextTest
@@ -28,6 +30,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var builder = new DispatchingContext(
                 Substitute.For<ICompositionContext>(),
+                Substitute.For<IConfiguration<MessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
                 Substitute.For<IAuthenticationService>());
@@ -41,6 +44,7 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var builder = new DispatchingContext(
                 Substitute.For<ICompositionContext>(),
+                Substitute.For<IConfiguration<MessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 Substitute.For<IAppRuntime>(),
                 Substitute.For<IAuthenticationService>());
@@ -59,6 +63,7 @@ namespace Kephas.Messaging.Tests.Distributed
 
             var builder = new DispatchingContext(
                 Substitute.For<ICompositionContext>(),
+                Substitute.For<IConfiguration<MessagingSettings>>(),
                 Substitute.For<IMessageBroker>(),
                 appRuntime,
                 Substitute.For<IAuthenticationService>());
@@ -67,6 +72,40 @@ namespace Kephas.Messaging.Tests.Distributed
             Assert.AreEqual("123", message.Sender.EndpointId);
             Assert.AreEqual("app-id", message.Sender.AppId);
             Assert.AreEqual("app-instance-id", message.Sender.AppInstanceId);
+        }
+
+        [Test]
+        public void Timeout_from_config()
+        {
+            var config = Substitute.For<IConfiguration<MessagingSettings>>();
+            config.Settings.Returns(ci => new MessagingSettings { Distributed = new DistributedMessagingSettings { DefaultTimeout = TimeSpan.FromMinutes(10) } });
+
+            var builder = new DispatchingContext(
+                Substitute.For<ICompositionContext>(),
+                config,
+                Substitute.For<IMessageBroker>(),
+                Substitute.For<IAppRuntime>(),
+                Substitute.For<IAuthenticationService>());
+            var message = builder.BrokeredMessage;
+
+            Assert.AreEqual(TimeSpan.FromMinutes(10), message.Timeout);
+        }
+
+        [Test]
+        public void Timeout_from_default()
+        {
+            var config = Substitute.For<IConfiguration<MessagingSettings>>();
+            config.Settings.Returns(ci => null);
+
+            var builder = new DispatchingContext(
+                Substitute.For<ICompositionContext>(),
+                config,
+                Substitute.For<IMessageBroker>(),
+                Substitute.For<IAppRuntime>(),
+                Substitute.For<IAuthenticationService>());
+            var message = builder.BrokeredMessage;
+
+            Assert.AreEqual(BrokeredMessage.DefaultTimeout, message.Timeout);
         }
     }
 }

@@ -68,7 +68,7 @@ namespace Kephas.Messaging.Distributed
         /// <remarks>
         /// A value of <c>null</c> means indefinitely waiting, but
         /// it is strongly discouraged to wait indefinitely for a response.
-        /// The default value <see cref="DispatchingContext.DefaultTimeout"/> can be used.
+        /// The value <see cref="BrokeredMessage.DefaultTimeout"/> is used by default.
         /// </remarks>
         /// <value>
         /// The response timeout.

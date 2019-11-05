@@ -14,6 +14,7 @@ namespace Kephas.Messaging.Distributed
 
     using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Configuration;
     using Kephas.Security.Authentication;
     using Kephas.Services;
 
@@ -26,11 +27,15 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="DispatchingContext"/> class.
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
+        /// <param name="messagingConfig">The messaging configuration.</param>
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="authenticationService">The authentication service.</param>
         /// <param name="message">Optional. The message to be dispatched.</param>
-        public DispatchingContext(ICompositionContext compositionContext, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object message = null)
+        /// <example>
+        /// .
+        /// </example>
+        public DispatchingContext(ICompositionContext compositionContext, IConfiguration<MessagingSettings> messagingConfig, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object message = null)
             : base(compositionContext)
         {
             this.MessageBroker = messageBroker;
@@ -45,15 +50,10 @@ namespace Kephas.Messaging.Distributed
                 this.BrokeredMessage = message == null
                     ? new BrokeredMessage()
                     : new BrokeredMessage(message);
-                this.BrokeredMessage.Timeout = DefaultTimeout;
+                this.BrokeredMessage.Timeout = messagingConfig.Settings?.Distributed?.DefaultTimeout ?? Distributed.BrokeredMessage.DefaultTimeout;
                 this.BrokeredMessage.Sender = this.CreateAppInstanceEndpoint();
             }
         }
-
-        /// <summary>
-        /// Gets the default timeout.
-        /// </summary>
-        public static TimeSpan DefaultTimeout => TimeSpan.FromSeconds(30);
 
         /// <summary>
         /// Gets the message broker.
