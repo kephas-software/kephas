@@ -84,14 +84,16 @@ namespace Kephas.Messaging.Distributed
                 if (brokeredMessage.Content == null && string.IsNullOrEmpty(brokeredMessage.ReplyToMessageId))
                 {
                     throw new ArgumentNullException(
-                        nameof(optionsConfig),
+                        nameof(brokeredMessage),
                         Strings.BrokeredMessage_ContentNullWhenNotReply_Exception
                             .FormatWith(brokeredMessage, nameof(DispatchingContextExtensions.ReplyTo)));
                 }
 
-                if ((brokeredMessage.Recipients?.Any() ?? false) && !(brokeredMessage.Content is IEvent))
+                if (!(brokeredMessage.Recipients?.Any() ?? false) && !(brokeredMessage.Content is IEvent))
                 {
-                    throw new MessagingException(Strings.BrokeredMessage_RecipientRequired_Exception.FormatWith(brokeredMessage));
+                    throw new ArgumentException(
+                        Strings.BrokeredMessage_RecipientRequired_Exception.FormatWith(brokeredMessage),
+                        nameof(brokeredMessage));
                 }
 
                 if (brokeredMessage.IsOneWay)

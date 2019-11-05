@@ -162,7 +162,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// An endpoint.
         /// </returns>
-        public static Endpoint CreateAppInstanceEndpoint(IAppRuntime appRuntime, string endpointId = null, string scheme = null)
+        public static IEndpoint CreateAppInstanceEndpoint(IAppRuntime appRuntime, string endpointId = null, string scheme = null)
         {
             return new Endpoint(appRuntime.GetAppId(), appRuntime.GetAppInstanceId(), endpointId, scheme: scheme);
         }
