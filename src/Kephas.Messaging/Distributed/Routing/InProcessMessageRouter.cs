@@ -15,12 +15,11 @@ namespace Kephas.Messaging.Distributed.Routing
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
-    using Kephas.Messaging.Resources;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
     using Kephas.Threading.Tasks;
@@ -28,9 +27,6 @@ namespace Kephas.Messaging.Distributed.Routing
     /// <summary>
     /// An in process message router invoking the message processor.
     /// </summary>
-    /// <remarks>
-    /// For the in-process message router, the <see cref="DispatchAsync"/> method represents the input queue.
-    /// </remarks>
     [ProcessingPriority(Priority.Lowest)]
     [MessageRouter(IsFallback = true)]
     public class InProcessMessageRouter : MessageRouterBase, IInitializable
@@ -86,6 +82,8 @@ namespace Kephas.Messaging.Distributed.Routing
             this.Logger.Info($"Starting the {messageRouterName} message router...");
 
             this.initializationMonitor.Start();
+
+            this.appContext = context;
 
             this.rootChannelName = ChannelType;
             this.messageQueue = Channels.GetOrAdd(this.rootChannelName, _ => new MessageQueue(this.rootChannelName));

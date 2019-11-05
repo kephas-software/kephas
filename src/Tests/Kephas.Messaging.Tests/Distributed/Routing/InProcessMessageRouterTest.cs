@@ -38,9 +38,8 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             var container = this.CreateContainer();
             using (var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single())
             {
-                inProcessRouter.Initialize(new Context(container));
-                var messageBroker = container.GetExport<IMessageBroker>();
-                await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
+                var appContext = new Context(container);
+                inProcessRouter.Initialize(appContext);
 
                 ReplyReceivedEventArgs eventArgs = null;
                 inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
@@ -48,9 +47,9 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
                 var result = await inProcessRouter.DispatchAsync(request, Substitute.For<IDispatchingContext>(), default);
 
                 Thread.Sleep(100);
-                Assert.IsNull(eventArgs);
-                Assert.AreEqual(RoutingInstruction.Reply, result.action);
-                Assert.IsInstanceOf<PingBackMessage>(result.reply);
+                Assert.IsNotNull(eventArgs);
+                Assert.AreEqual(RoutingInstruction.None, result.action);
+                Assert.IsInstanceOf<PingBackMessage>(eventArgs.Message.Content);
             }
         }
 
@@ -60,7 +59,8 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             var container = this.CreateContainer();
             using (var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single())
             {
-                inProcessRouter.Initialize(new Context(container));
+                var appContext = new Context(container);
+                inProcessRouter.Initialize(appContext);
 
                 ReplyReceivedEventArgs eventArgs = null;
                 inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
@@ -70,7 +70,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
 
                 Thread.Sleep(100);
                 Assert.AreSame(reply, eventArgs.Message);
-                Assert.AreSame(context, eventArgs.Context);
+                Assert.AreSame(appContext, eventArgs.Context);
                 Assert.AreEqual(RoutingInstruction.None, result.action);
                 Assert.IsNull(result.reply);
             }
