@@ -19,6 +19,7 @@ namespace Kephas.Configuration
     using Kephas.Configuration.Providers.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -53,16 +54,15 @@ namespace Kephas.Configuration
         /// </value>
         public TSettings Settings => this.settings ?? (this.settings = this.ComputeSettings());
 
-        /// <summary>
-        /// Calculates the settings.
-        /// </summary>
-        /// <returns>
-        /// The calculated settings.
-        /// </returns>
         private TSettings ComputeSettings()
         {
-            return (TSettings)this.settingsProviderSelector.GetProvider(typeof(TSettings)).GetSettings(typeof(TSettings));
-        }
+            var settingsProvider = this.settingsProviderSelector.TryGetProvider(typeof(TSettings));
+            if (settingsProvider != null)
+            {
+                return (TSettings)settingsProvider.GetSettings(typeof(TSettings));
+            }
 
+            return new TSettings();
+        }
     }
 }

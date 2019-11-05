@@ -14,10 +14,12 @@ namespace Kephas.Configuration.Providers
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas;
     using Kephas.Composition;
     using Kephas.Configuration.Providers.Composition;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Services;
 
@@ -25,7 +27,7 @@ namespace Kephas.Configuration.Providers
     /// A default settings provider selector.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultSettingsProviderSelector : ISettingsProviderSelector
+    public class DefaultSettingsProviderSelector : Loggable, ISettingsProviderSelector
     {
         private readonly IOrderedServiceFactoryCollection<ISettingsProvider, SettingsProviderMetadata> providerFactories;
         private readonly ConcurrentDictionary<Type, ISettingsProvider> providersMap = new ConcurrentDictionary<Type, ISettingsProvider>();
@@ -48,7 +50,7 @@ namespace Kephas.Configuration.Providers
         /// <returns>
         /// The provider.
         /// </returns>
-        public ISettingsProvider GetProvider(Type settingsType)
+        public ISettingsProvider TryGetProvider(Type settingsType)
         {
             return this.providersMap.GetOrAdd(settingsType, _ => this.ComputeConfigurationProvider(settingsType));
         }
@@ -77,8 +79,8 @@ namespace Kephas.Configuration.Providers
 
             if (factory == null)
             {
-                // TODO provide a more explicit exception information.
-                throw new NotSupportedException(Strings.SettingsProviderSelector_NoProviderFoundForSettingsType.FormatWith(settingsType));
+                this.Logger.Warn(Strings.SettingsProviderSelector_NoProviderFoundForSettingsType.FormatWith(settingsType));
+                return null;
             }
 
             return factory.CreateExportedValue();

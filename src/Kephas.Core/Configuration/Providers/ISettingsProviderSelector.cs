@@ -21,12 +21,12 @@ namespace Kephas.Configuration.Providers
     public interface ISettingsProviderSelector
     {
         /// <summary>
-        /// Gets the provider handling a specific settings type.
+        /// Tries to get the provider handling a specific settings type.
         /// </summary>
         /// <param name="settingsType">Type of the settings.</param>
         /// <returns>
-        /// The provider.
+        /// The provider or <c>null</c>.
         /// </returns>
-        ISettingsProvider GetProvider(Type settingsType);
+        ISettingsProvider TryGetProvider(Type settingsType);
     }
 }
