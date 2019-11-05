@@ -91,7 +91,7 @@ namespace Kephas.Data.IO.Setup
         {
             using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
             {
-                return await this.ImportDataAsync(dataSetupContext, this.GetInstallDataFilePaths(), cancellationToken).PreserveThreadContext();
+                return await this.InstallDataCoreAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
             }
         }
 
@@ -109,8 +109,38 @@ namespace Kephas.Data.IO.Setup
         {
             using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
             {
-                return await this.ImportDataAsync(dataSetupContext, this.GetUninstallDataFilePaths(), cancellationToken).PreserveThreadContext();
+                return await this.UninstallDataCoreAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
             }
+        }
+
+        /// <summary>
+        /// Installs the data asynchronously (core implementation).
+        /// </summary>
+        /// <param name="dataSetupContext">Context for the initial data.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result returning the data creation result.
+        /// </returns>
+        protected virtual Task<IOperationResult> InstallDataCoreAsync(
+            IDataSetupContext dataSetupContext,
+            CancellationToken cancellationToken)
+        {
+            return this.ImportDataAsync(dataSetupContext, this.GetInstallDataFilePaths(), cancellationToken);
+        }
+
+        /// <summary>
+        /// Uninstalls the data asynchronously (core implementation).
+        /// </summary>
+        /// <param name="dataSetupContext">Optional. Context for the initial data.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result returning the data creation result.
+        /// </returns>
+        protected virtual Task<IOperationResult> UninstallDataCoreAsync(
+            IDataSetupContext dataSetupContext = null,
+            CancellationToken cancellationToken = default)
+        {
+            return this.ImportDataAsync(dataSetupContext, this.GetUninstallDataFilePaths(), cancellationToken);
         }
 
         /// <summary>
