@@ -11,7 +11,7 @@
 namespace Kephas.Logging
 {
     using System;
-
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -39,7 +39,16 @@ namespace Kephas.Logging
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         public Loggable(IAmbientServices ambientServices)
-            : this(ambientServices.LogManager)
+            : this(ambientServices?.LogManager)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Loggable"/> class.
+        /// </summary>
+        /// <param name="compositionContext">Context for the composition.</param>
+        public Loggable(ICompositionContext compositionContext)
+            : this(compositionContext?.GetExport<ILogManager>())
         {
         }
 
