@@ -120,6 +120,12 @@ namespace Kephas.Services
                 else
                 {
                     var appServiceInfo = this.appServiceInfos?.FirstOrDefault(i => i.contractType == paramType);
+                    if (appServiceInfo != null && appServiceInfo.Value.appServiceInfo == null && paramType.IsGenericType)
+                    {
+                        var genericDefParamType = paramType.GetGenericTypeDefinition();
+                        appServiceInfo = this.appServiceInfos?.FirstOrDefault(i => i.contractType == genericDefParamType);
+                    }
+
                     if (appServiceInfo != null && appServiceInfo.Value.appServiceInfo != null && !appServiceInfo.Value.appServiceInfo.AllowMultiple)
                     {
                         argIndexMap.Add(-argResolverMap.Count);
