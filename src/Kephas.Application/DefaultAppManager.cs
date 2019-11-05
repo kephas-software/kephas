@@ -52,6 +52,7 @@ namespace Kephas.Application
             ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories = null,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories = null,
             ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> featureLifecycleBehaviorFactories = null)
+            : base(compositionContext)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(compositionContext, nameof(compositionContext));
