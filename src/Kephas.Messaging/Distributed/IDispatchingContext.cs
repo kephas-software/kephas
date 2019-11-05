@@ -89,6 +89,27 @@ namespace Kephas.Messaging.Distributed
         /// This <paramref name="context"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TContext From<TContext>(this TContext context, Endpoint sender)
+            where TContext : class, IDispatchingContext
+        {
+            Requires.NotNull(context, nameof(context));
+            Requires.NotNull(sender, nameof(sender));
+
+            context.BrokeredMessage.Sender = sender;
+
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the brokered message sender.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The dispatching context.</param>
+        /// <param name="sender">The sender.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TContext From<TContext>(this TContext context, Uri sender)
             where TContext : class, IDispatchingContext
         {
@@ -133,6 +154,26 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TContext To<TContext>(this TContext context, params IEndpoint[] recipients)
+            where TContext : class, IDispatchingContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.BrokeredMessage.Recipients = recipients;
+
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the brokered message recipients.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The dispatching context.</param>
+        /// <param name="recipients">The recipients.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TContext To<TContext>(this TContext context, params Endpoint[] recipients)
             where TContext : class, IDispatchingContext
         {
             Requires.NotNull(context, nameof(context));
