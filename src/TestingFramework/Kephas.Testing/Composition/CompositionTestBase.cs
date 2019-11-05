@@ -13,11 +13,12 @@ namespace Kephas.Testing.Composition
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-
+    using System.Text;
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Hosting;
     using Kephas.Composition.Lite.Hosting;
+    using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Testing;
@@ -43,7 +44,8 @@ namespace Kephas.Testing.Composition
         /// </returns>
         public virtual LiteCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
         {
-            logManager = logManager ?? new NullLogManager();
+            var log = new StringBuilder();
+            logManager = logManager ?? new DebugLogManager((logger, level, message, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
             appRuntime = appRuntime ?? new StaticAppRuntime(
                              logManager: logManager,
                              defaultAssemblyFilter: a => !a.IsSystemAssembly() && !a.FullName.StartsWith("NUnit") && !a.FullName.StartsWith("xunit") && !a.FullName.StartsWith("JetBrains"));
@@ -51,7 +53,8 @@ namespace Kephas.Testing.Composition
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices
                 .Register(logManager)
-                .Register(appRuntime);
+                .Register(appRuntime)
+                .Register(log);
             return new LiteCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }
 

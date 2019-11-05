@@ -14,7 +14,7 @@ namespace Kephas.Testing.Composition
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
-
+    using System.Text;
     using global::Autofac;
 
     using Kephas.Application;
@@ -22,6 +22,7 @@ namespace Kephas.Testing.Composition
     using Kephas.Composition.Autofac.Hosting;
     using Kephas.Composition.Autofac.Metadata;
     using Kephas.Composition.Hosting;
+    using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
     using Kephas.Reflection;
 
@@ -46,7 +47,8 @@ namespace Kephas.Testing.Composition
 
         public virtual AutofacCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
         {
-            logManager = logManager ?? new NullLogManager();
+            var log = new StringBuilder();
+            logManager = logManager ?? new DebugLogManager((logger, level, message, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
             appRuntime = appRuntime ?? new StaticAppRuntime(
                              logManager: logManager,
                              defaultAssemblyFilter: a => !a.IsSystemAssembly() && !a.FullName.StartsWith("NUnit") && !a.FullName.StartsWith("xunit") && !a.FullName.StartsWith("JetBrains"));
@@ -54,7 +56,8 @@ namespace Kephas.Testing.Composition
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices
                 .Register(logManager)
-                .Register(appRuntime);
+                .Register(appRuntime)
+                .Register(log);
             return new AutofacCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }
 
