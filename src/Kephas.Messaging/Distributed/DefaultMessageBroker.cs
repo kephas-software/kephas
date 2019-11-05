@@ -21,6 +21,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Logging;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Distributed.Routing.Composition;
+    using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
@@ -82,7 +83,15 @@ namespace Kephas.Messaging.Distributed
 
                 if (brokeredMessage.Content == null && string.IsNullOrEmpty(brokeredMessage.ReplyToMessageId))
                 {
-                    throw new ArgumentNullException(nameof(optionsConfig), Strings.BrokeredMessage_ContentNullWhenNotReply_Exception);
+                    throw new ArgumentNullException(
+                        nameof(optionsConfig),
+                        Strings.BrokeredMessage_ContentNullWhenNotReply_Exception
+                            .FormatWith(brokeredMessage, nameof(DispatchingContextExtensions.ReplyTo)));
+                }
+
+                if ((brokeredMessage.Recipients?.Any() ?? false) && !(brokeredMessage.Content is IEvent))
+                {
+                    throw new MessagingException(Strings.BrokeredMessage_RecipientRequired_Exception.FormatWith(brokeredMessage));
                 }
 
                 if (brokeredMessage.IsOneWay)

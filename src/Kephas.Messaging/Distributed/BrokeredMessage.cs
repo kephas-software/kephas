@@ -101,7 +101,10 @@ namespace Kephas.Messaging.Distributed
             {
                 if (this.ReplyToMessageId == null && value == null)
                 {
-                    throw new ArgumentNullException(nameof(value), Strings.BrokeredMessage_ContentNullWhenNotReply_Exception);
+                    throw new ArgumentNullException(
+                        nameof(value),
+                        Strings.BrokeredMessage_ContentNullWhenNotReply_Exception
+                            .FormatWith(this, nameof(DispatchingContextExtensions.ReplyTo)));
                 }
 
                 if (value is IMessageEnvelope envelope && envelope.GetContent() is Delegate)

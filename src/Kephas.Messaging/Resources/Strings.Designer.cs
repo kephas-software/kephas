@@ -70,11 +70,20 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The content message may be null only for replies. Use ReplyTo() before setting the content if you intend to create a reply..
+        ///   Looks up a localized string similar to The content message may be null only for replies: &apos;{0}&apos;. Use {1}() before setting the content if you intend to create a reply..
         /// </summary>
         public static string BrokeredMessage_ContentNullWhenNotReply_Exception {
             get {
                 return ResourceManager.GetString("BrokeredMessage_ContentNullWhenNotReply_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must provide at least one recipient if the message is not an event: &apos;{0}&apos;..
+        /// </summary>
+        public static string BrokeredMessage_RecipientRequired_Exception {
+            get {
+                return ResourceManager.GetString("BrokeredMessage_RecipientRequired_Exception", resourceCulture);
             }
         }
         
