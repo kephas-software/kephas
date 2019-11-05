@@ -10,6 +10,8 @@
 
 namespace Kephas.Logging.NLog
 {
+    using global::NLog;
+    using global::NLog.Config;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -21,14 +23,21 @@ namespace Kephas.Logging.NLog
         /// Sets the NLog log manager to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services builder.</param>
+        /// <param name="configuration">Optional. The logging configuration.</param>
+        /// <param name="replaceDefault">Optional. True to replace <see cref="Loggable.DefaultLogManager"/>.</param>
         /// <returns>
-        /// The provided ambient services builder.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithNLogManager(this IAmbientServices ambientServices)
+        public static IAmbientServices WithNLogManager(this IAmbientServices ambientServices, LoggingConfiguration configuration = null, bool replaceDefault = true)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices.WithLogManager(new NLogManager());
+            if (configuration != null)
+            {
+                LogManager.Configuration = configuration;
+            }
+
+            return ambientServices.WithLogManager(new NLogManager(), replaceDefault);
         }
     }
 }

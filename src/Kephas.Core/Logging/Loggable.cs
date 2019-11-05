@@ -30,7 +30,7 @@ namespace Kephas.Logging
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
         public Loggable()
-            : this(LogManager)
+            : this(DefaultLogManager)
         {
         }
 
@@ -56,12 +56,12 @@ namespace Kephas.Logging
         }
 
         /// <summary>
-        /// Gets or sets the manager for log.
+        /// Gets or sets the default manager for log.
         /// </summary>
         /// <value>
-        /// The log manager.
+        /// The default log manager.
         /// </value>
-        public static ILogManager LogManager
+        public static ILogManager DefaultLogManager
         {
             get => logManager;
             set

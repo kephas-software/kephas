@@ -83,7 +83,7 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services to act on.</param>
         /// <param name="builder">The registration builder.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register<TService>(this IAmbientServices ambientServices, Action<IServiceRegistrationBuilder> builder)
             where TService : class
@@ -101,7 +101,7 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services to act on.</param>
         /// <param name="service">The service.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register<TService>(this IAmbientServices ambientServices, TService service)
             where TService : class
@@ -119,7 +119,7 @@ namespace Kephas
         /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
         /// <param name="ambientServices">The ambient services to act on.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register<TService, TServiceImplementation>(this IAmbientServices ambientServices)
             where TService : class
@@ -139,7 +139,7 @@ namespace Kephas
         /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
         /// <param name="ambientServices">The ambient services to act on.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices RegisterTransient<TService, TServiceImplementation>(this IAmbientServices ambientServices)
             where TService : class
@@ -159,7 +159,7 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services to act on.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register<TService>(
             this IAmbientServices ambientServices,
@@ -182,7 +182,7 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services to act on.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices RegisterTransient<TService>(
             this IAmbientServices ambientServices,
@@ -205,7 +205,7 @@ namespace Kephas
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register(
             this IAmbientServices ambientServices,
@@ -229,7 +229,7 @@ namespace Kephas
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices RegisterTransient(
             this IAmbientServices ambientServices,
@@ -254,7 +254,7 @@ namespace Kephas
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="service">The service.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register(
             this IAmbientServices ambientServices,
@@ -276,7 +276,7 @@ namespace Kephas
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="serviceImplementationType">The service implementation type.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices Register(
             this IAmbientServices ambientServices,
@@ -300,7 +300,7 @@ namespace Kephas
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="serviceImplementationType">The service implementation type.</param>
         /// <returns>
-        /// The IAmbientServices.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices RegisterTransient(
             this IAmbientServices ambientServices,
@@ -380,7 +380,7 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services to act on.</param>
         /// <param name="configurationStore">The configuration store.</param>
         /// <returns>
-        /// The provided ambient services.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices WithConfigurationStore(this IAmbientServices ambientServices, IConfigurationStore configurationStore)
         {
@@ -397,15 +397,20 @@ namespace Kephas
         /// </summary>
         /// <param name="ambientServices">The ambient services to act on.</param>
         /// <param name="logManager">The log manager.</param>
+        /// <param name="replaceDefault">Optional. True to replace the <see cref="Loggable.DefaultLogManager"/>.</param>
         /// <returns>
-        /// This ambient services builder.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithLogManager(this IAmbientServices ambientServices, ILogManager logManager)
+        public static IAmbientServices WithLogManager(this IAmbientServices ambientServices, ILogManager logManager, bool replaceDefault = true)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(logManager, nameof(logManager));
 
-            Loggable.LogManager = logManager;
+            if (replaceDefault)
+            {
+                Loggable.DefaultLogManager = logManager;
+            }
+
             ambientServices.Register(logManager);
 
             return ambientServices;
@@ -417,7 +422,7 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services to act on.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <returns>
-        /// This ambient services builder.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices WithAppRuntime(this IAmbientServices ambientServices, IAppRuntime appRuntime)
         {
@@ -435,7 +440,7 @@ namespace Kephas
         /// <param name="ambientServices">The ambient services to act on.</param>
         /// <param name="compositionContainer">The composition container.</param>
         /// <returns>
-        /// This ambient services builder.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices WithCompositionContainer(this IAmbientServices ambientServices, ICompositionContext compositionContainer)
         {
@@ -455,7 +460,7 @@ namespace Kephas
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
         /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="IContext" />.</remarks>
         /// <returns>
-        /// This ambient services builder.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
         public static IAmbientServices WithCompositionContainer<TContainerBuilder>(this IAmbientServices ambientServices, Action<TContainerBuilder> containerBuilderConfig = null)
             where TContainerBuilder : ICompositionContainerBuilder
@@ -477,7 +482,7 @@ namespace Kephas
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
-        /// <returns>The provided ambient services builder.</returns>
+        /// This <paramref name="ambientServices"/>.
         public static IAmbientServices WithLiteCompositionContainer(this IAmbientServices ambientServices, Action<LiteCompositionContainerBuilder> containerBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));

@@ -24,14 +24,15 @@ namespace Kephas.Logging.Serilog
         /// </summary>
         /// <param name="ambientServices">The ambient services builder.</param>
         /// <param name="configuration">Optional. The logger configuration.</param>
+        /// <param name="replaceDefault">Optional. True to replace <see cref="Loggable.DefaultLogManager"/>.</param>
         /// <returns>
-        /// The provided ambient services builder.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, LoggerConfiguration configuration = null)
+        public static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, LoggerConfiguration configuration = null, bool replaceDefault = true)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices.WithLogManager(new SerilogManager(configuration));
+            return ambientServices.WithLogManager(new SerilogManager(configuration), replaceDefault);
         }
     }
 }

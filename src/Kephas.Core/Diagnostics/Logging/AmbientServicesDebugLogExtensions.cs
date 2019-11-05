@@ -13,6 +13,7 @@ namespace Kephas.Diagnostics.Logging
     using System;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
 
     /// <summary>
     /// Extension methods for the <see cref="IAmbientServices"/>.
@@ -24,14 +25,15 @@ namespace Kephas.Diagnostics.Logging
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="logCallback">Optional. The log callback.</param>
+        /// <param name="replaceDefault">Optional. True to replace <see cref="Loggable.DefaultLogManager"/>.</param>
         /// <returns>
-        /// The provided ambient services builder.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithDebugLogManager(this IAmbientServices ambientServices, Action<string, string, object, Exception> logCallback = null)
+        public static IAmbientServices WithDebugLogManager(this IAmbientServices ambientServices, Action<string, string, object, Exception> logCallback = null, bool replaceDefault = true)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices.WithLogManager(new DebugLogManager(logCallback));
+            return ambientServices.WithLogManager(new DebugLogManager(logCallback), replaceDefault);
         }
     }
 }

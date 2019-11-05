@@ -33,7 +33,7 @@ namespace Kephas.Logging
         {
             Requires.NotNull(type, nameof(type));
 
-            var logManager = context?.AmbientServices?.LogManager ?? Loggable.LogManager;
+            var logManager = context?.AmbientServices?.LogManager ?? Loggable.DefaultLogManager;
             return logManager.GetLogger(type);
         }
 
@@ -77,7 +77,7 @@ namespace Kephas.Logging
                 }
             }
 
-            var logManager = context?.AmbientServices?.LogManager ?? Loggable.LogManager;
+            var logManager = context?.AmbientServices?.LogManager ?? Loggable.DefaultLogManager;
             return logManager.GetLogger(obj.GetType());
         }
     }
