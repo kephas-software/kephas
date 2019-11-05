@@ -24,30 +24,16 @@ namespace Kephas.Threading.Tasks
     public static class TaskHelper
     {
         /// <summary>
-        /// Initializes static members of the <see cref="TaskHelper"/> class.
-        /// </summary>
-        static TaskHelper()
-        {
-#if NET45
-            CompletedTask = Task.FromResult(0);
-#else
-            CompletedTask = Task.CompletedTask;
-#endif
-            DefaultWaitMilliseconds = 20;
-            DefaultTimeout = TimeSpan.FromSeconds(30);
-        }
-
-        /// <summary>
         /// Gets or sets the default value of milliseconds to wait a task in a completion check cycle when simulating synchronous calls.
         /// The default value is 20 milliseconds, but it can be changed to accomodate application needs.
         /// </summary>
-        public static int DefaultWaitMilliseconds { get; set; }
+        public static int DefaultWaitMilliseconds { get; set; } = 20;
 
         /// <summary>
         /// Gets or sets the default timeout when waiting for task completion in simulating synchronous calls.
         /// The default value is 30 seconds, but it can be changed to accomodate application needs.
         /// </summary>
-        public static TimeSpan DefaultTimeout { get; set; }
+        public static TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromSeconds(30);
 
         /// <summary>
         /// Gets a task that has already completed successfully.
@@ -55,7 +41,12 @@ namespace Kephas.Threading.Tasks
         /// <value>
         /// A successfully completed task.
         /// </value>
-        public static Task CompletedTask { get; }
+        public static Task CompletedTask { get; } =
+#if NET45
+            Task.FromResult(0);
+#else
+            Task.CompletedTask;
+#endif
 
         /// <summary>
         /// Waits the task avoiding the current thread to be locked.
