@@ -36,38 +36,44 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         public async Task DispatchAsync_with_request()
         {
             var container = this.CreateContainer();
-            var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single();
-            var messageBroker = container.GetExport<IMessageBroker>();
-            await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
+            using (var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single())
+            {
+                inProcessRouter.Initialize(new Context(container));
+                var messageBroker = container.GetExport<IMessageBroker>();
+                await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
 
-            ReplyReceivedEventArgs eventArgs = null;
-            inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
-            var request = new BrokeredMessage { Content = new PingMessage() };
-            var result = await inProcessRouter.DispatchAsync(request, Substitute.For<IDispatchingContext>(), default);
+                ReplyReceivedEventArgs eventArgs = null;
+                inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
+                var request = new BrokeredMessage { Content = new PingMessage() };
+                var result = await inProcessRouter.DispatchAsync(request, Substitute.For<IDispatchingContext>(), default);
 
-            Thread.Sleep(100);
-            Assert.IsNull(eventArgs);
-            Assert.AreEqual(RoutingInstruction.Reply, result.action);
-            Assert.IsInstanceOf<PingBackMessage>(result.reply);
+                Thread.Sleep(100);
+                Assert.IsNull(eventArgs);
+                Assert.AreEqual(RoutingInstruction.Reply, result.action);
+                Assert.IsInstanceOf<PingBackMessage>(result.reply);
+            }
         }
 
         [Test]
         public async Task DispatchAsync_with_reply()
         {
             var container = this.CreateContainer();
-            var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single();
+            using (var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single())
+            {
+                inProcessRouter.Initialize(new Context(container));
 
-            ReplyReceivedEventArgs eventArgs = null;
-            inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
-            var context = Substitute.For<IDispatchingContext>();
-            var reply = new BrokeredMessage { Content = new PingBackMessage(), ReplyToMessageId = "hello" };
-            var result = await inProcessRouter.DispatchAsync(reply, context, default);
+                ReplyReceivedEventArgs eventArgs = null;
+                inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
+                var context = Substitute.For<IDispatchingContext>();
+                var reply = new BrokeredMessage { Content = new PingBackMessage(), ReplyToMessageId = "hello" };
+                var result = await inProcessRouter.DispatchAsync(reply, context, default);
 
-            Thread.Sleep(100);
-            Assert.AreSame(reply, eventArgs.Message);
-            Assert.AreSame(context, eventArgs.Context);
-            Assert.AreEqual(RoutingInstruction.None, result.action);
-            Assert.IsNull(result.reply);
+                Thread.Sleep(100);
+                Assert.AreSame(reply, eventArgs.Message);
+                Assert.AreSame(context, eventArgs.Context);
+                Assert.AreEqual(RoutingInstruction.None, result.action);
+                Assert.IsNull(result.reply);
+            }
         }
     }
 }

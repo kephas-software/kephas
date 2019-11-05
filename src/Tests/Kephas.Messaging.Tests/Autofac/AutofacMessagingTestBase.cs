@@ -37,6 +37,7 @@ namespace Kephas.Messaging.Tests
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */
+
             return base.CreateContainer(ambientServices, assemblyList, parts, config);
         }
 

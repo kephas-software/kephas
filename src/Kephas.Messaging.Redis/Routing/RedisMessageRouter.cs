@@ -38,8 +38,8 @@ namespace Kephas.Messaging.Redis.Routing
     {
         private const string ChannelType = Endpoint.AppScheme;
 
-        private readonly InitializationMonitor<RedisMessageRouter, RedisMessageRouter> initializationMonitor = new InitializationMonitor<RedisMessageRouter, RedisMessageRouter>();
-        private readonly FinalizationMonitor<RedisMessageRouter, RedisMessageRouter> finalizationMonitor = new FinalizationMonitor<RedisMessageRouter, RedisMessageRouter>();
+        private readonly InitializationMonitor<RedisMessageRouter> initializationMonitor;
+        private readonly FinalizationMonitor<RedisMessageRouter> finalizationMonitor;
         private readonly IRedisClient redisClient;
         private readonly ISerializationService serializationService;
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
@@ -72,6 +72,9 @@ namespace Kephas.Messaging.Redis.Routing
             this.serializationService = serializationService;
             this.redisConfiguration = redisConfiguration;
             this.AppRuntime = appRuntime;
+
+            this.initializationMonitor = new InitializationMonitor<RedisMessageRouter>(this.GetType());
+            this.finalizationMonitor = new FinalizationMonitor<RedisMessageRouter>(this.GetType());
         }
 
         /// <summary>
@@ -95,9 +98,9 @@ namespace Kephas.Messaging.Redis.Routing
 
             this.initializationMonitor.AssertIsNotStarted();
 
-            this.Logger.Info("Redis initialized, starting the Redis message router...");
-
             var messageRouterName = this.GetType().Name;
+
+            this.Logger.Info($"Redis initialized, starting the {messageRouterName} message router...");
 
             try
             {
@@ -239,11 +242,10 @@ namespace Kephas.Messaging.Redis.Routing
 
             this.initializationMonitor.AssertIsCompletedSuccessfully();
 
-            this.Logger.Info("Redis client is finalizing, stopping the Redis message router...");
+            var messageRouterName = this.GetType().Name;
+            this.Logger.Info($"Redis client is finalizing, stopping the {messageRouterName} message router...");
 
             this.finalizationMonitor.Start();
-
-            var messageRouterName = this.GetType().Name;
             try
             {
                 this.messageQueue.Unsubscribe();
@@ -251,10 +253,11 @@ namespace Kephas.Messaging.Redis.Routing
                 this.appInstanceMessageQueue.Unsubscribe();
 
                 this.finalizationMonitor.Complete();
+                this.Logger.Info($"{messageRouterName} message router stopped.");
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, $"{messageRouterName} failed to finalize.");
+                this.Logger.Warn(ex, $"{messageRouterName} failed to stop.");
                 this.finalizationMonitor.Fault(ex);
                 throw;
             }
