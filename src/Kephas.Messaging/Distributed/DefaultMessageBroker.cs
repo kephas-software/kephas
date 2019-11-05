@@ -89,7 +89,7 @@ namespace Kephas.Messaging.Distributed
                             .FormatWith(brokeredMessage, nameof(DispatchingContextExtensions.ReplyTo)));
                 }
 
-                if (!(brokeredMessage.Recipients?.Any() ?? false) && !(brokeredMessage.Content is IEvent))
+                if (!(brokeredMessage.Recipients?.Any() ?? false) && !(brokeredMessage.Content is IEvent || brokeredMessage.IsOneWay))
                 {
                     throw new ArgumentException(
                         Strings.BrokeredMessage_RecipientRequired_Exception.FormatWith(brokeredMessage),
