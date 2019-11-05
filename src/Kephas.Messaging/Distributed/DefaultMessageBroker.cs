@@ -18,8 +18,6 @@ namespace Kephas.Messaging.Distributed
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Composition;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Distributed.Routing.Composition;
