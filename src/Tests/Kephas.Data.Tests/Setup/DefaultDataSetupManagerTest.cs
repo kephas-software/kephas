@@ -25,16 +25,16 @@ namespace Kephas.Data.Tests.Setup
     using NUnit.Framework;
 
     [TestFixture]
-    public class DefaultDataSetupManagerTest
+    public class DefaultDataSetupManagerTest : DataTestBase
     {
         [Test]
         public async Task InstallDataAsync_proper_order()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new DataSetupContext(Substitute.For<ICompositionContext>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
-            var manager = new DefaultDataSetupManager(installerFactories);
-            var context = new DataSetupContext();
-            var result = await manager.InstallDataAsync(context);
+            var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
+            var result = await manager.InstallDataAsync();
 
             Assert.AreEqual(2, list.Count);
             Assert.AreEqual("2", list[0]);
@@ -44,11 +44,11 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task InstallDataAsync_filtered()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new DataSetupContext(Substitute.For<ICompositionContext>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
-            var manager = new DefaultDataSetupManager(installerFactories);
-            var context = new DataSetupContext { Targets = new[] { "1" } };
-            var result = await manager.InstallDataAsync(context);
+            var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
+            var result = await manager.InstallDataAsync(ctx => ctx.Targets(new[] { "1" }));
 
             Assert.AreEqual(1, list.Count);
             Assert.AreEqual("1", list[0]);
@@ -57,11 +57,11 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task UninstallDataAsync_proper_order()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new DataSetupContext(Substitute.For<ICompositionContext>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
-            var manager = new DefaultDataSetupManager(installerFactories);
-            var context = new DataSetupContext();
-            var result = await manager.UninstallDataAsync(context);
+            var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
+            var result = await manager.UninstallDataAsync();
 
             Assert.AreEqual(2, list.Count);
             Assert.AreEqual("u-1", list[0]);
@@ -71,11 +71,11 @@ namespace Kephas.Data.Tests.Setup
         [Test]
         public async Task UninstallDataAsync_filtered()
         {
+            var ctxFactory = this.CreateContextFactoryMock(() => new DataSetupContext(Substitute.For<ICompositionContext>()));
             var list = new List<string>();
             var installerFactories = this.GetInstallerFactories(list);
-            var manager = new DefaultDataSetupManager(installerFactories);
-            var context = new DataSetupContext { Targets = new[] { "2" } };
-            var result = await manager.UninstallDataAsync(context);
+            var manager = new DefaultDataSetupManager(ctxFactory, installerFactories);
+            var result = await manager.UninstallDataAsync(ctx => ctx.Targets(new[] { "2" }));
 
             Assert.AreEqual(1, list.Count);
             Assert.AreEqual("u-2", list[0]);

@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.Setup
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -28,75 +29,97 @@ namespace Kephas.Data.Setup
     [OverridePriority(Priority.Low)]
     public class DefaultDataSetupManager : IDataSetupManager
     {
-        /// <summary>
-        /// The data installer factories.
-        /// </summary>
+        private readonly IContextFactory contextFactory;
         private readonly ICollection<IExportFactory<IDataInstaller, DataInstallerMetadata>> dataInstallerFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataSetupManager"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="dataInstallerFactories">The data installer factories.</param>
-        public DefaultDataSetupManager(ICollection<IExportFactory<IDataInstaller, DataInstallerMetadata>> dataInstallerFactories)
+        public DefaultDataSetupManager(IContextFactory contextFactory, ICollection<IExportFactory<IDataInstaller, DataInstallerMetadata>> dataInstallerFactories)
         {
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(dataInstallerFactories, nameof(dataInstallerFactories));
 
+            this.contextFactory = contextFactory;
             this.dataInstallerFactories = dataInstallerFactories;
         }
 
         /// <summary>
         /// Installs data asynchronously.
         /// </summary>
-        /// <param name="dataSetupContext">Context for the data setup.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result returning the data setup result.
         /// </returns>
+        /// <example>
+        /// .
+        /// </example>
         public async Task<IOperationResult> InstallDataAsync(
-            IDataSetupContext dataSetupContext,
+            Action<IDataSetupContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            var dataInstallers = this.GetOrderedDataInstallers(dataSetupContext);
-
-            var result = new OperationResult();
-            foreach (var dataInstaller in dataInstallers)
+            using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
             {
-                var handlerResult = await dataInstaller.InstallDataAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
-                if (handlerResult != null)
-                {
-                    result.MergeResult(handlerResult);
-                }
-            }
+                var dataInstallers = this.GetOrderedDataInstallers(dataSetupContext);
 
-            return result;
+                var result = new OperationResult();
+                foreach (var dataInstaller in dataInstallers)
+                {
+                    var handlerResult = await dataInstaller.InstallDataAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
+                    if (handlerResult != null)
+                    {
+                        result.MergeResult(handlerResult);
+                    }
+                }
+
+                return result;
+            }
         }
 
         /// <summary>
         /// Uninstalls data asynchronously.
         /// </summary>
-        /// <param name="dataSetupContext">Context for the data setup.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result returning the data setup result.
         /// </returns>
         public async Task<IOperationResult> UninstallDataAsync(
-            IDataSetupContext dataSetupContext,
+            Action<IDataSetupContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            var dataInstallers = this.GetOrderedDataInstallers(dataSetupContext);
-            dataInstallers.Reverse();
-
-            var result = new OperationResult();
-            foreach (var dataInstaller in dataInstallers)
+            using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
             {
-                var handlerResult = await dataInstaller.UninstallDataAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
-                if (handlerResult != null)
-                {
-                    result.MergeResult(handlerResult);
-                }
-            }
+                var dataInstallers = this.GetOrderedDataInstallers(dataSetupContext);
+                dataInstallers.Reverse();
 
-            return result;
+                var result = new OperationResult();
+                foreach (var dataInstaller in dataInstallers)
+                {
+                    var handlerResult = await dataInstaller.UninstallDataAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
+                    if (handlerResult != null)
+                    {
+                        result.MergeResult(handlerResult);
+                    }
+                }
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Creates data setup context.
+        /// </summary>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The new data setup context.
+        /// </returns>
+        protected virtual IDataSetupContext CreateDataSetupContext(Action<IDataSetupContext> optionsConfig = null)
+        {
+            return this.contextFactory.CreateContext<DataSetupContext>().Merge(optionsConfig);
         }
 
         /// <summary>

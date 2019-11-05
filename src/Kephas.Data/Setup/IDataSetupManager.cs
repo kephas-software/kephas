@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.Setup
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -29,25 +30,25 @@ namespace Kephas.Data.Setup
         /// <summary>
         /// Installs data asynchronously.
         /// </summary>
-        /// <param name="dataSetupContext">Context for the data setup.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result returning the data setup result.
         /// </returns>
         Task<IOperationResult> InstallDataAsync(
-            IDataSetupContext dataSetupContext,
+            Action<IDataSetupContext> optionsConfig = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Uninstalls data asynchronously.
         /// </summary>
-        /// <param name="dataSetupContext">Context for the data setup.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result returning the data setup result.
         /// </returns>
         Task<IOperationResult> UninstallDataAsync(
-            IDataSetupContext dataSetupContext,
+            Action<IDataSetupContext> optionsConfig = null,
             CancellationToken cancellationToken = default);
     }
 }

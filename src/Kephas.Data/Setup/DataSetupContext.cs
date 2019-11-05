@@ -23,9 +23,9 @@ namespace Kephas.Data.Setup
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSetupContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Optional. The composition context.</param>
+        /// <param name="compositionContext">The composition context.</param>
         /// <param name="isThreadSafe">Optional. True if is thread safe, false if not.</param>
-        public DataSetupContext(ICompositionContext compositionContext = null, bool isThreadSafe = false)
+        public DataSetupContext(ICompositionContext compositionContext, bool isThreadSafe = false)
             : base(compositionContext, isThreadSafe)
         {
         }
