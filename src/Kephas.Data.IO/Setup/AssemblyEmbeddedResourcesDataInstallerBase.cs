@@ -21,6 +21,7 @@ namespace Kephas.Data.IO.Setup
     using Kephas.Data.IO.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
+    using Kephas.Services;
 
     /// <summary>
     /// An initial data handler base using the assembly embedded resources.
@@ -31,15 +32,18 @@ namespace Kephas.Data.IO.Setup
         /// Initializes a new instance of the
         /// <see cref="AssemblyEmbeddedResourcesDataInstallerBase"/> class.
         /// </summary>
-        /// <remarks>
-        /// The assembly containing the resources is the assembly where the data installer class is declared.
-        /// </remarks>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
+        /// <remarks>
+        /// The assembly containing the resources is the assembly where the data installer class is
+        /// declared.
+        /// </remarks>
         protected AssemblyEmbeddedResourcesDataInstallerBase(
+            IContextFactory contextFactory,
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory)
-            : base(dataImportService, dataSpaceFactory)
+            : base(contextFactory, dataImportService, dataSpaceFactory)
         {
             this.ResourcesAssembly = this.GetType().Assembly;
         }
@@ -48,14 +52,16 @@ namespace Kephas.Data.IO.Setup
         /// Initializes a new instance of the
         /// <see cref="AssemblyEmbeddedResourcesDataInstallerBase"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
         /// <param name="assembly">The assembly containing the resources.</param>
         protected AssemblyEmbeddedResourcesDataInstallerBase(
+            IContextFactory contextFactory,
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory,
             Assembly assembly)
-            : base(dataImportService, dataSpaceFactory)
+            : base(contextFactory, dataImportService, dataSpaceFactory)
         {
             Requires.NotNull(assembly, nameof(assembly));
 

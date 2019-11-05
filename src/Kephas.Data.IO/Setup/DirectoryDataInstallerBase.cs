@@ -16,6 +16,7 @@ namespace Kephas.Data.IO.Setup
 
     using Kephas.Composition;
     using Kephas.Data.IO.Import;
+    using Kephas.Services;
 
     /// <summary>
     /// Base class for directory-based data installers.
@@ -26,11 +27,16 @@ namespace Kephas.Data.IO.Setup
         /// Initializes a new instance of the <see cref="DirectoryDataInstallerBase" />
         /// class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
         /// <param name="dataPath">The full pathname of the location containing the data files.</param>
-        protected DirectoryDataInstallerBase(IDataImportService dataImportService, IExportFactory<IDataSpace> dataSpaceFactory, string dataPath)
-            : base(dataImportService, dataSpaceFactory)
+        protected DirectoryDataInstallerBase(
+            IContextFactory contextFactory,
+            IDataImportService dataImportService,
+            IExportFactory<IDataSpace> dataSpaceFactory,
+            string dataPath)
+            : base(contextFactory, dataImportService, dataSpaceFactory)
         {
             this.DataPath = dataPath;
         }

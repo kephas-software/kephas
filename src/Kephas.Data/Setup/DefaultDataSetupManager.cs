@@ -68,7 +68,7 @@ namespace Kephas.Data.Setup
                 var result = new OperationResult();
                 foreach (var dataInstaller in dataInstallers)
                 {
-                    var handlerResult = await dataInstaller.InstallDataAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
+                    var handlerResult = await dataInstaller.InstallDataAsync(optionsConfig, cancellationToken).PreserveThreadContext();
                     if (handlerResult != null)
                     {
                         result.MergeResult(handlerResult);
@@ -99,7 +99,7 @@ namespace Kephas.Data.Setup
                 var result = new OperationResult();
                 foreach (var dataInstaller in dataInstallers)
                 {
-                    var handlerResult = await dataInstaller.UninstallDataAsync(dataSetupContext, cancellationToken).PreserveThreadContext();
+                    var handlerResult = await dataInstaller.UninstallDataAsync(optionsConfig, cancellationToken).PreserveThreadContext();
                     if (handlerResult != null)
                     {
                         result.MergeResult(handlerResult);

@@ -25,6 +25,7 @@ namespace Kephas.Data.IO.Setup
     using Kephas.Logging;
     using Kephas.Net.Mime;
     using Kephas.Operations;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -35,18 +36,30 @@ namespace Kephas.Data.IO.Setup
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOInstallerBase"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="dataImportService">The data import service.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
         protected DataIOInstallerBase(
+            IContextFactory contextFactory,
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory)
         {
+            Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(dataImportService, nameof(dataImportService));
             Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
 
+            this.ContextFactory = contextFactory;
             this.DataImportService = dataImportService;
             this.DataSpaceFactory = dataSpaceFactory;
         }
+
+        /// <summary>
+        /// Gets the context factory.
+        /// </summary>
+        /// <value>
+        /// The context factory.
+        /// </value>
+        public IContextFactory ContextFactory { get; }
 
         /// <summary>
         /// Gets the data import service.
@@ -67,31 +80,49 @@ namespace Kephas.Data.IO.Setup
         /// <summary>
         /// Installs the data asynchronously.
         /// </summary>
-        /// <param name="dataSetupContext">Context for the data setup.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result returning the data creation result.
         /// </returns>
-        public virtual Task<IOperationResult> InstallDataAsync(
-            IDataSetupContext dataSetupContext,
+        public virtual async Task<IOperationResult> InstallDataAsync(
+            Action<IDataSetupContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            return this.ImportDataAsync(dataSetupContext, this.GetInstallDataFilePaths(), cancellationToken);
+            using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
+            {
+                return await this.ImportDataAsync(dataSetupContext, this.GetInstallDataFilePaths(), cancellationToken).PreserveThreadContext();
+            }
         }
 
         /// <summary>
         /// Uninstalls the data asynchronously.
         /// </summary>
-        /// <param name="dataSetupContext">Context for the data setup.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result returning the data creation result.
         /// </returns>
-        public virtual Task<IOperationResult> UninstallDataAsync(
-            IDataSetupContext dataSetupContext,
+        public virtual async Task<IOperationResult> UninstallDataAsync(
+            Action<IDataSetupContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            return this.ImportDataAsync(dataSetupContext, this.GetUninstallDataFilePaths(), cancellationToken);
+            using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
+            {
+                return await this.ImportDataAsync(dataSetupContext, this.GetUninstallDataFilePaths(), cancellationToken).PreserveThreadContext();
+            }
+        }
+
+        /// <summary>
+        /// Creates the data setup context.
+        /// </summary>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The new data setup context.
+        /// </returns>
+        protected virtual IDataSetupContext CreateDataSetupContext(Action<IDataSetupContext> optionsConfig = null)
+        {
+            return this.ContextFactory.CreateContext<DataSetupContext>().Merge(optionsConfig);
         }
 
         /// <summary>

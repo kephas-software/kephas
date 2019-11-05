@@ -10,6 +10,7 @@
 
 namespace Kephas.Data.Tests.Setup
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
@@ -84,13 +85,13 @@ namespace Kephas.Data.Tests.Setup
         private List<IExportFactory<IDataInstaller, DataInstallerMetadata>> GetInstallerFactories(List<string> list)
         {
             var installer1 = Substitute.For<IDataInstaller>();
-            installer1.InstallDataAsync(Arg.Any<IDataSetupContext>(), Arg.Any<CancellationToken>()).Returns(
+            installer1.InstallDataAsync(Arg.Any<Action<IDataSetupContext>>(), Arg.Any<CancellationToken>()).Returns(
                 ci =>
                     {
                         list.Add("1");
                         return Task.FromResult(Substitute.For<IOperationResult>());
                     });
-            installer1.UninstallDataAsync(Arg.Any<IDataSetupContext>(), Arg.Any<CancellationToken>()).Returns(
+            installer1.UninstallDataAsync(Arg.Any<Action<IDataSetupContext>>(), Arg.Any<CancellationToken>()).Returns(
                 ci =>
                     {
                         list.Add("u-1");
@@ -98,13 +99,13 @@ namespace Kephas.Data.Tests.Setup
                     });
 
             var installer2 = Substitute.For<IDataInstaller>();
-            installer2.InstallDataAsync(Arg.Any<IDataSetupContext>(), Arg.Any<CancellationToken>()).Returns(
+            installer2.InstallDataAsync(Arg.Any<Action<IDataSetupContext>>(), Arg.Any<CancellationToken>()).Returns(
                 ci =>
                     {
                         list.Add("2");
                         return Task.FromResult(Substitute.For<IOperationResult>());
                     });
-            installer2.UninstallDataAsync(Arg.Any<IDataSetupContext>(), Arg.Any<CancellationToken>()).Returns(
+            installer2.UninstallDataAsync(Arg.Any<Action<IDataSetupContext>>(), Arg.Any<CancellationToken>()).Returns(
                 ci =>
                     {
                         list.Add("u-2");

@@ -12,23 +12,26 @@ namespace Kephas.Data.IO.Tests.Setup
 {
     using System.Collections.Generic;
     using System.IO;
-
+    using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Data.IO.DataStreams;
     using Kephas.Data.IO.Import;
     using Kephas.Data.IO.Setup;
-
+    using Kephas.Data.Setup;
+    using Kephas.Services;
+    using Kephas.Testing;
     using NSubstitute;
 
     using NUnit.Framework;
 
     [TestFixture]
-    public class DataIOInstallerBaseTest
+    public class DataIOInstallerBaseTest : TestBase
     {
         [Test]
         public void CreateDataSource_missing_file()
         {
-            var handler = new DataInstaller();
+            var contextFactory = this.CreateContextFactoryMock(() => new DataSetupContext(Substitute.For<ICompositionContext>()));
+            var handler = new DataInstaller(contextFactory);
             Assert.Throws<IOException>(() => handler.CreateDataSource("dummy file which does not exist"));
         }
 
@@ -39,11 +42,13 @@ namespace Kephas.Data.IO.Tests.Setup
             private readonly IEnumerable<string> uninstallFilePaths;
 
             public DataInstaller(
+                IContextFactory contextFactory,
                 IDataImportService dataImportService = null,
                 IDataSpace dataSpace = null,
                 IEnumerable<string> installFilePaths = null,
                 IEnumerable<string> uninstallFilePaths = null)
                 : base(
+                    contextFactory,
                     dataImportService ?? Substitute.For<IDataImportService>(),
                     new ExportFactory<IDataSpace>(() => dataSpace ?? Substitute.For<IDataSpace>()))
             {
