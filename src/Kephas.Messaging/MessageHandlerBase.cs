@@ -16,6 +16,7 @@ namespace Kephas.Messaging
     using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Threading.Tasks;
@@ -55,7 +56,7 @@ namespace Kephas.Messaging
             Requires.NotNull(context, nameof(context));
 
             var response = await this.ProcessAsync(message, context, token).PreserveThreadContext();
-            return response == null ? null : (response as IMessage ?? new MessageEnvelope { Message = response });
+            return response.ToMessageContent();
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace Kephas.Messaging
             }
 
             var response = await this.ProcessAsync(typedMessage, context, token).PreserveThreadContext();
-            return response == null ? null : (response as IMessage ?? new MessageEnvelope { Message = response });
+            return response.ToMessageContent();
         }
 
         /// <summary>

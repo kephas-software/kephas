@@ -15,6 +15,7 @@ namespace Kephas.Messaging
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
 
@@ -59,7 +60,7 @@ namespace Kephas.Messaging
             Requires.NotNull(@this, nameof(@this));
             Requires.NotNull(message, nameof(message));
 
-            return @this.ProcessAsync(message as IMessage ?? new MessageEnvelope { Message = message }, optionsConfig, token);
+            return @this.ProcessAsync(message.ToMessageContent(), optionsConfig, token);
         }
     }
 }
