@@ -8,7 +8,7 @@
         <RootNamespace>Kephas.Messaging</RootNamespace>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-        <Version>7.1.0</Version>
+        <Version>7.1.1</Version>
         <AssemblyVersion>7.1.0.0</AssemblyVersion>
         <FileVersion>7.1.0.0</FileVersion>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -57,10 +57,6 @@ Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for
 
     <ItemGroup>
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Properties\" />
     </ItemGroup>
 
     <ItemGroup>
