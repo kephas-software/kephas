@@ -29,32 +29,29 @@ namespace Kephas.Security.Authorization
     public class DefaultAuthorizationScopeService : IAuthorizationScopeService
     {
         private readonly IList<IAuthorizationScopeProvider> providers;
-        private readonly IContextFactory contextFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAuthorizationScopeService"/> class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
         /// <param name="providerFactories">The provider factories.</param>
         public DefaultAuthorizationScopeService(
-            IContextFactory contextFactory,
             ICollection<IExportFactory<IAuthorizationScopeProvider, AppServiceMetadata>> providerFactories)
         {
             this.providers = providerFactories.Order().GetServices().ToList();
-            this.contextFactory = contextFactory;
         }
 
         /// <summary>
         /// Gets the authorization scope asynchronously.
         /// </summary>
+        /// <param name="callingContext">The calling context.</param>
         /// <param name="optionsConfig">The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the authorization scope.
         /// </returns>
-        public async Task<object> GetAuthorizationScopeAsync(Action<IContext> optionsConfig, CancellationToken cancellationToken = default)
+        public async Task<object> GetAuthorizationScopeAsync(IContext callingContext, Action<IAuthorizationScopeContext> optionsConfig = null, CancellationToken cancellationToken = default)
         {
-            using (var context = this.CreateScopeContext(optionsConfig))
+            using (var context = this.CreateScopeContext(callingContext, optionsConfig))
             {
                 foreach (var provider in this.providers)
                 {
@@ -73,13 +70,14 @@ namespace Kephas.Security.Authorization
         /// <summary>
         /// Creates the scope context.
         /// </summary>
+        /// <param name="callingContext">The calling context.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The new scope context.
         /// </returns>
-        protected virtual IContext CreateScopeContext(Action<IContext> optionsConfig = null)
+        protected virtual IAuthorizationScopeContext CreateScopeContext(IContext callingContext, Action<IAuthorizationScopeContext> optionsConfig = null)
         {
-            return this.contextFactory.CreateContext<Context>().Merge(optionsConfig);
+            return new AuthorizationScopeContext(callingContext).Merge(optionsConfig);
         }
     }
 }

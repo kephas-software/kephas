@@ -83,7 +83,7 @@ namespace Kephas.Messaging.Authorization.Behaviors
             var permissions = this.GetRequiredPermissions(messageType);
             if ((permissions?.Count ?? 0) > 0)
             {
-                var authScope = await this.authorizationScopeService.GetAuthorizationScopeAsync(ctx => ctx.Merge(context), token).PreserveThreadContext();
+                var authScope = await this.authorizationScopeService.GetAuthorizationScopeAsync(context, cancellationToken: token).PreserveThreadContext();
                 await this.authorizationService.AuthorizeAsync(context, permissions, authScope, cancellationToken: token).PreserveThreadContext();
             }
         }

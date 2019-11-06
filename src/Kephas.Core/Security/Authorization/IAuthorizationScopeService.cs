@@ -25,11 +25,12 @@ namespace Kephas.Security.Authorization
         /// <summary>
         /// Gets the authorization scope asynchronously.
         /// </summary>
-        /// <param name="optionsConfig">The options configuration.</param>
+        /// <param name="callingContext">The calling context.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the authorization scope.
         /// </returns>
-        Task<object> GetAuthorizationScopeAsync(Action<IContext> optionsConfig, CancellationToken cancellationToken = default);
+        Task<object> GetAuthorizationScopeAsync(IContext callingContext, Action<IAuthorizationScopeContext> optionsConfig = null, CancellationToken cancellationToken = default);
     }
 }

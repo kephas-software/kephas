@@ -18,6 +18,7 @@ namespace Kephas.Messaging.Tests.Behaviors
 
     using Kephas.Composition;
     using Kephas.Messaging.Authorization.Behaviors;
+    using Kephas.Messaging.Distributed;
     using Kephas.Security.Authorization;
     using Kephas.Security.Authorization.AttributedModel;
     using Kephas.Services;
@@ -85,9 +86,32 @@ namespace Kephas.Messaging.Tests.Behaviors
                 default);
         }
 
+        [Test]
+        public async Task BeforeProcessAsync_auth_object_message_success()
+        {
+            var authService = Substitute.For<IAuthorizationService>();
+            authService.AuthorizeAsync(Arg.Any<IContext>(), Arg.Any<IEnumerable<object>>(), Arg.Any<object>(), Arg.Any<Action<IAuthorizationContext>>(), Arg.Any<CancellationToken>())
+                .Returns(ci =>
+                {
+                    var perms = ci.Arg<IEnumerable<object>>().ToList();
+                    Assert.AreEqual(1, perms.Count);
+                    Assert.AreEqual("gigi", perms[0]);
+                    return Task.FromResult(true);
+                });
+            var behavior = new EnsureAuthorizedMessageProcessingBehavior(authService, Substitute.For<IAuthorizationScopeService>());
+            var message = new NonFree();
+            await behavior.BeforeProcessAsync(
+                message.ToMessageContent(),
+                new MessagingContext(Substitute.For<ICompositionContext>(), Substitute.For<IMessageProcessor>()),
+                default);
+        }
+
         public class FreeMessage : IMessage { }
 
         [RequiresPermission("gigi")]
         public class NonFreeMessage : IMessage { }
+
+        [RequiresPermission("gigi")]
+        public class NonFree { }
     }
 }
