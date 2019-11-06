@@ -10,6 +10,8 @@
 
 namespace Kephas.Security.Authentication
 {
+    using System;
+
     using Kephas.Dynamic;
 
     /// <summary>
@@ -21,8 +23,19 @@ namespace Kephas.Security.Authentication
         /// Initializes a new instance of the <see cref="UserPasswordHashCredentials"/> class.
         /// </summary>
         /// <param name="userName">Name of the user.</param>
-        /// <param name="passwordHash">The hashed user password.</param>
+        /// <param name="passwordHash">The hashed user password, encoded as a Base64 string.</param>
         public UserPasswordHashCredentials(string userName, string passwordHash)
+        {
+            this.UserName = userName;
+            this.PasswordHash = Convert.FromBase64String(passwordHash);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserPasswordHashCredentials"/> class.
+        /// </summary>
+        /// <param name="userName">Name of the user.</param>
+        /// <param name="passwordHash">The hashed user password.</param>
+        public UserPasswordHashCredentials(string userName, byte[] passwordHash)
         {
             this.UserName = userName;
             this.PasswordHash = passwordHash;
@@ -42,6 +55,6 @@ namespace Kephas.Security.Authentication
         /// <value>
         /// The hashed password.
         /// </value>
-        public string PasswordHash { get; }
+        public byte[] PasswordHash { get; }
     }
 }
