@@ -54,7 +54,7 @@ namespace Kephas.Messaging.Tests.Behaviors
             authService.AuthorizeAsync(Arg.Any<IContext>(), Arg.Any<IEnumerable<object>>(), Arg.Any<object>(), Arg.Any<Action<IAuthorizationContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci =>
                     {
-                        throw new AuthorizationException($"Should be called with {string.Join(",", ci.Arg<IAuthorizationContext>().RequiredPermissions)}!");
+                        throw new AuthorizationException($"Should be called with {string.Join(",", ci.Arg<IEnumerable<object>>())}!");
                         return Task.FromResult(false);
                     });
             var behavior = new EnsureAuthorizedMessageProcessingBehavior(authService, Substitute.For<IAuthorizationScopeService>());
