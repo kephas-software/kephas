@@ -62,27 +62,6 @@ namespace Kephas.Services
         private const string DisposableResourcesKey = "__DisposableResources";
 
         /// <summary>
-        /// Merges the indicated options into the context.
-        /// </summary>
-        /// <typeparam name="TContext">Type of the context.</typeparam>
-        /// <typeparam name="TContextContract">Type of the context contract.</typeparam>
-        /// <param name="context">The context.</param>
-        /// <param name="optionsConfig">The options configuration.</param>
-        /// <returns>
-        /// This <paramref name="context"/>.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TContext Merge<TContext, TContextContract>(this TContext context, Action<TContextContract> optionsConfig)
-            where TContext : class, TContextContract
-        {
-            Requires.NotNull(context, nameof(context));
-
-            optionsConfig?.Invoke(context);
-
-            return context;
-        }
-
-        /// <summary>
         /// Sets the provided value.
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
