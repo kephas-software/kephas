@@ -16,7 +16,7 @@ namespace Kephas.Dynamic
     using System.Collections.Generic;
     using System.Dynamic;
     using System.Linq;
-
+    using System.Runtime.CompilerServices;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -70,13 +70,35 @@ namespace Kephas.Dynamic
         };
 
         /// <summary>
+        /// Merges the indicated options into the context.
+        /// </summary>
+        /// <typeparam name="T">Type of the context.</typeparam>
+        /// <typeparam name="TContract">Type of the expando contract.</typeparam>
+        /// <param name="expando">The expando.</param>
+        /// <param name="optionsConfig">The options configuration.</param>
+        /// <returns>
+        /// This <paramref name="expando"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Merge<T, TContract>(this T expando, Action<TContract> optionsConfig)
+            where T : class, TContract
+            where TContract : IExpando
+        {
+            Requires.NotNull(expando, nameof(expando));
+
+            optionsConfig?.Invoke(expando);
+
+            return expando;
+        }
+
+        /// <summary>
         /// Merges the source object properties into the expando.
         /// </summary>
         /// <remarks>
         /// Collections of key-value pairs (including dictionaries) are merged by their keys, provided the key has the type of string.
         /// </remarks>
         /// <typeparam name="T">The expando type.</typeparam>
-        /// <param name="expando">The expando to act on.</param>
+        /// <param name="expando">The expando.</param>
         /// <param name="source">Source object to be merged into the expando.</param>
         /// <returns>
         /// The target expando object.
