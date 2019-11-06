@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PasswordAuthenticationContext.cs" company="Kephas Software SRL">
+// <copyright file="UserPasswordHashCredentials.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,27 +10,22 @@
 
 namespace Kephas.Security.Authentication
 {
-    using Kephas.Composition;
+    using Kephas.Dynamic;
 
     /// <summary>
-    /// A password authentication context.
+    /// User and password hash based credentials.
     /// </summary>
-    public class PasswordAuthenticationContext : AuthenticationContext
+    public class UserPasswordHashCredentials : Expando, ICredentials
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordAuthenticationContext"/> class.
+        /// Initializes a new instance of the <see cref="UserPasswordHashCredentials"/> class.
         /// </summary>
         /// <param name="userName">Name of the user.</param>
-        /// <param name="password">The password.</param>
-        /// <param name="compositionContext">
-        /// Optional. The context for the composition. If not provided,
-        /// <see cref="M:AmbientServices.Instance.CompositionContainer"/> will be considered.
-        /// </param>
-        public PasswordAuthenticationContext(string userName, string password, ICompositionContext compositionContext = null)
-            : base(compositionContext)
+        /// <param name="passwordHash">The hashed user password.</param>
+        public UserPasswordHashCredentials(string userName, string passwordHash)
         {
             this.UserName = userName;
-            this.Password = password;
+            this.PasswordHash = passwordHash;
         }
 
         /// <summary>
@@ -42,11 +37,11 @@ namespace Kephas.Security.Authentication
         public string UserName { get; }
 
         /// <summary>
-        /// Gets the password.
+        /// Gets the hashed password.
         /// </summary>
         /// <value>
-        /// The password.
+        /// The hashed password.
         /// </value>
-        public string Password { get; }
+        public string PasswordHash { get; }
     }
 }

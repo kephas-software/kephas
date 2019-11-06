@@ -11,6 +11,7 @@
 namespace Kephas.Security.Authentication
 {
     using Kephas.Composition;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -21,12 +22,14 @@ namespace Kephas.Security.Authentication
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">Optional. The context for the composition. If not provided,
-        /// <see cref="M:AmbientServices.Instance.CompositionContainer"/> will be considered.
-        /// </param>
-        public AuthenticationContext(ICompositionContext compositionContext = null)
+        /// <param name="compositionContext">The context for the composition.</param>
+        /// <param name="credentials">The credentials.</param>
+        public AuthenticationContext(ICompositionContext compositionContext, ICredentials credentials)
             : base(compositionContext)
         {
+            Requires.NotNull(credentials, nameof(credentials));
+
+            this.Credentials = credentials;
         }
 
         /// <summary>
@@ -36,5 +39,13 @@ namespace Kephas.Security.Authentication
         /// True if throw on failure, false if not.
         /// </value>
         public bool ThrowOnFailure { get; set; } = true;
+
+        /// <summary>
+        /// Gets the credentials.
+        /// </summary>
+        /// <value>
+        /// The credentials.
+        /// </value>
+        public ICredentials Credentials { get; }
     }
 }

@@ -14,6 +14,7 @@ namespace Kephas.Messaging.Distributed.Behaviors
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.Messaging.Behaviors;
     using Kephas.Messaging.Behaviors.AttributedModel;
     using Kephas.Messaging.Composition;
@@ -62,7 +63,7 @@ namespace Kephas.Messaging.Distributed.Behaviors
                 return;
             }
 
-            var identity = await this.authenticationService.GetIdentityAsync(message.BearerToken, context, token)
+            var identity = await this.authenticationService.GetIdentityAsync(message.BearerToken, ctx => ctx.Merge(context), token)
                                .PreserveThreadContext();
             context.Identity = identity;
         }

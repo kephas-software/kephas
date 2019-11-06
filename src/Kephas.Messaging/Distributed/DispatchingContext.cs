@@ -10,8 +10,6 @@
 
 namespace Kephas.Messaging.Distributed
 {
-    using System;
-
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Configuration;
@@ -32,9 +30,6 @@ namespace Kephas.Messaging.Distributed
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="authenticationService">The authentication service.</param>
         /// <param name="message">Optional. The message to be dispatched.</param>
-        /// <example>
-        /// .
-        /// </example>
         public DispatchingContext(ICompositionContext compositionContext, IConfiguration<MessagingSettings> messagingConfig, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object message = null)
             : base(compositionContext)
         {
@@ -118,7 +113,7 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         protected virtual string GetBearerToken()
         {
-            return this.AuthenticationService.GetToken(this.Identity, this)?.ToString();
+            return this.AuthenticationService.GetToken(this.Identity, ctx => ctx.Impersonate(this))?.ToString();
         }
     }
 }

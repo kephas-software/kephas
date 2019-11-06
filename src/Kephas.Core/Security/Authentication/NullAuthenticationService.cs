@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullSecurityService.cs" company="Kephas Software SRL">
+// <copyright file="NullAuthenticationService.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,6 +10,7 @@
 
 namespace Kephas.Security.Authentication
 {
+    using System;
     using System.Security.Principal;
     using System.Threading;
     using System.Threading.Tasks;
@@ -25,12 +26,16 @@ namespace Kephas.Security.Authentication
         /// <summary>
         /// Authenticates the user asynchronously.
         /// </summary>
-        /// <param name="authContext">Context for the authentication.</param>
+        /// <param name="credentials">The credentials.</param>
+        /// <param name="authConfig">Optional. The authentication configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the identity.
         /// </returns>
-        public Task<IIdentity> AuthenticateAsync(IAuthenticationContext authContext, CancellationToken cancellationToken = default)
+        public Task<IIdentity> AuthenticateAsync(
+            ICredentials credentials,
+            Action<IAuthenticationContext> authConfig = null,
+            CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IIdentity>(null);
         }
@@ -39,14 +44,14 @@ namespace Kephas.Security.Authentication
         /// Gets asynchronously the identity for the provided token.
         /// </summary>
         /// <param name="token">The token.</param>
-        /// <param name="context">The requiring context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the identity.
         /// </returns>
         public Task<IIdentity> GetIdentityAsync(
             object token,
-            IContext context = null,
+            Action<IContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IIdentity>(null);
@@ -56,14 +61,14 @@ namespace Kephas.Security.Authentication
         /// Gets asynchronously a token for the provided identity.
         /// </summary>
         /// <param name="identity">The identity.</param>
-        /// <param name="context">The requiring context (optional).</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the token.
         /// </returns>
         public Task<object> GetTokenAsync(
             IIdentity identity,
-            IContext context = null,
+            Action<IContext> optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult<object>(null);
@@ -72,11 +77,12 @@ namespace Kephas.Security.Authentication
         /// <summary>
         /// Authenticates the user.
         /// </summary>
-        /// <param name="authContext">Context for the authentication.</param>
+        /// <param name="credentials">The credentials.</param>
+        /// <param name="authConfig">Optional. The authentication configuration.</param>
         /// <returns>
         /// The identity.
         /// </returns>
-        public IIdentity Authenticate(IAuthenticationContext authContext)
+        public IIdentity Authenticate(ICredentials credentials, Action<IAuthenticationContext> authConfig = null)
         {
             return null;
         }
@@ -85,11 +91,11 @@ namespace Kephas.Security.Authentication
         /// Gets the identity for the provided token.
         /// </summary>
         /// <param name="token">The token.</param>
-        /// <param name="context">The requiring context (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The identity.
         /// </returns>
-        public IIdentity GetIdentity(object token, IContext context = null)
+        public IIdentity GetIdentity(object token, Action<IContext> optionsConfig = null)
         {
             return null;
         }
@@ -98,11 +104,11 @@ namespace Kephas.Security.Authentication
         /// Gets a token for the provided identity.
         /// </summary>
         /// <param name="identity">The identity.</param>
-        /// <param name="context">The requiring context (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The token.
         /// </returns>
-        public object GetToken(IIdentity identity, IContext context = null)
+        public object GetToken(IIdentity identity, Action<IContext> optionsConfig = null)
         {
             return null;
         }

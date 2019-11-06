@@ -10,6 +10,7 @@
 
 namespace Kephas.Security.Authentication
 {
+    using System;
     using System.Security.Principal;
 
     using Kephas.Services;
@@ -22,30 +23,31 @@ namespace Kephas.Security.Authentication
         /// <summary>
         /// Authenticates the user.
         /// </summary>
-        /// <param name="authContext">Context for the authentication.</param>
+        /// <param name="credentials">The credentials.</param>
+        /// <param name="authConfig">Optional. The authentication configuration.</param>
         /// <returns>
         /// The identity.
         /// </returns>
-        IIdentity Authenticate(IAuthenticationContext authContext);
+        IIdentity Authenticate(ICredentials credentials, Action<IAuthenticationContext> authConfig = null);
 
         /// <summary>
         /// Gets the identity for the provided token.
         /// </summary>
         /// <param name="token">The token.</param>
-        /// <param name="context">The requiring context (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The identity.
         /// </returns>
-        IIdentity GetIdentity(object token, IContext context = null);
+        IIdentity GetIdentity(object token, Action<IContext> optionsConfig = null);
 
         /// <summary>
         /// Gets a token for the provided identity.
         /// </summary>
         /// <param name="identity">The identity.</param>
-        /// <param name="context">The requiring context (optional).</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The token.
         /// </returns>
-        object GetToken(IIdentity identity, IContext context = null);
+        object GetToken(IIdentity identity, Action<IContext> optionsConfig = null);
     }
 }
