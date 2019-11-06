@@ -10,18 +10,30 @@
 
 namespace Kephas.Security.Authorization
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Services;
+
     /// <summary>
     /// Interface providing synchronous methods for the authorization service.
     /// </summary>
     public interface ISyncAuthorizationService
     {
         /// <summary>
-        /// Query if the authorization context has the requested permission.
+        /// Query whether the authorization context has the requested permissions.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="executionContext">The context for the execution to be authorized.</param>
+        /// <param name="permissions">The permissions.</param>
+        /// <param name="scope">Optional. The authorization scope.</param>
+        /// <param name="authConfig">Optional. The authorization configuration.</param>
         /// <returns>
         /// True if permission is granted, false if not.
         /// </returns>
-        bool Authorize(IAuthorizationContext context);
+        bool Authorize(
+            IContext executionContext,
+            IEnumerable<object> permissions,
+            object scope = null,
+            Action<IAuthorizationContext> authConfig = null);
     }
 }

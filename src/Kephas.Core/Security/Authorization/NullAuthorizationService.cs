@@ -10,6 +10,8 @@
 
 namespace Kephas.Security.Authorization
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -22,26 +24,41 @@ namespace Kephas.Security.Authorization
     public class NullAuthorizationService : IAuthorizationService, ISyncAuthorizationService
     {
         /// <summary>
-        /// Authorizes the provided context asynchronously.
+        /// Query asynchronously whether the authorization context has the requested permissions.
         /// </summary>
-        /// <param name="authContext">Context for the authorization.</param>
+        /// <param name="executionContext">The context for the execution to be authorized.</param>
+        /// <param name="permissions">The permissions.</param>
+        /// <param name="scope">Optional. The autorization scope.</param>
+        /// <param name="authConfig">Optional. The authorization configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// An asynchronous result indicating whether the operation succeeded or not.
+        /// An asynchronous result returning true if permission is granted, false if not.
         /// </returns>
-        public Task<bool> AuthorizeAsync(IAuthorizationContext authContext, CancellationToken cancellationToken = default)
+        public Task<bool> AuthorizeAsync(
+            IContext executionContext,
+            IEnumerable<object> permissions,
+            object scope = null,
+            Action<IAuthorizationContext> authConfig = null,
+            CancellationToken cancellationToken = default)
         {
             return Task.FromResult(true);
         }
 
         /// <summary>
-        /// Query if the authorization context has the requested permission.
+        /// Query whether the authorization context has the requested permissions.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="executionContext">The context for the execution to be authorized.</param>
+        /// <param name="permissions">The permissions.</param>
+        /// <param name="scope">Optional. The authorization scope.</param>
+        /// <param name="authConfig">Optional. The authorization configuration.</param>
         /// <returns>
         /// True if permission is granted, false if not.
         /// </returns>
-        public bool Authorize(IAuthorizationContext context)
+        public bool Authorize(
+            IContext executionContext,
+            IEnumerable<object> permissions,
+            object scope = null,
+            Action<IAuthorizationContext> authConfig = null)
         {
             return true;
         }

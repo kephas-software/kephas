@@ -10,6 +10,8 @@
 
 namespace Kephas.Messaging.Tests.Behaviors
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -18,7 +20,7 @@ namespace Kephas.Messaging.Tests.Behaviors
     using Kephas.Messaging.Authorization.Behaviors;
     using Kephas.Security.Authorization;
     using Kephas.Security.Authorization.AttributedModel;
-
+    using Kephas.Services;
     using NSubstitute;
 
     using NUnit.Framework;
@@ -30,7 +32,7 @@ namespace Kephas.Messaging.Tests.Behaviors
         public async Task BeforeProcessAsync_free_message()
         {
             var authService = Substitute.For<IAuthorizationService>();
-            authService.AuthorizeAsync(Arg.Any<IAuthorizationContext>(), Arg.Any<CancellationToken>())
+            authService.AuthorizeAsync(Arg.Any<IContext>(), Arg.Any<IEnumerable<object>>(), Arg.Any<object>(), Arg.Any<Action<IAuthorizationContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci =>
                     {
                         throw new AuthorizationException("Should not be called!");
@@ -49,7 +51,7 @@ namespace Kephas.Messaging.Tests.Behaviors
         public async Task BeforeProcessAsync_auth_message_fail()
         {
             var authService = Substitute.For<IAuthorizationService>();
-            authService.AuthorizeAsync(Arg.Any<IAuthorizationContext>(), Arg.Any<CancellationToken>())
+            authService.AuthorizeAsync(Arg.Any<IContext>(), Arg.Any<IEnumerable<object>>(), Arg.Any<object>(), Arg.Any<Action<IAuthorizationContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci =>
                     {
                         throw new AuthorizationException($"Should be called with {string.Join(",", ci.Arg<IAuthorizationContext>().RequiredPermissions)}!");
@@ -67,10 +69,10 @@ namespace Kephas.Messaging.Tests.Behaviors
         public async Task BeforeProcessAsync_auth_message_success()
         {
             var authService = Substitute.For<IAuthorizationService>();
-            authService.AuthorizeAsync(Arg.Any<IAuthorizationContext>(), Arg.Any<CancellationToken>())
+            authService.AuthorizeAsync(Arg.Any<IContext>(), Arg.Any<IEnumerable<object>>(), Arg.Any<object>(), Arg.Any<Action<IAuthorizationContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci =>
                     {
-                        var perms = ci.Arg<IAuthorizationContext>().RequiredPermissions.ToList();
+                        var perms = ci.Arg<IEnumerable<object>>().ToList();
                         Assert.AreEqual(1, perms.Count);
                         Assert.AreEqual("gigi", perms[0]);
                         return Task.FromResult(true);

@@ -10,12 +10,14 @@
 
 namespace Kephas.Security.Authorization
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Composition;
+    using Kephas.Dynamic;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
@@ -26,41 +28,58 @@ namespace Kephas.Security.Authorization
     [OverridePriority(Priority.Low)]
     public class DefaultAuthorizationScopeService : IAuthorizationScopeService
     {
-        /// <summary>
-        /// The providers.
-        /// </summary>
         private readonly IList<IAuthorizationScopeProvider> providers;
+        private readonly IContextFactory contextFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAuthorizationScopeService"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="providerFactories">The provider factories.</param>
-        public DefaultAuthorizationScopeService(ICollection<IExportFactory<IAuthorizationScopeProvider, AppServiceMetadata>> providerFactories)
+        public DefaultAuthorizationScopeService(
+            IContextFactory contextFactory,
+            ICollection<IExportFactory<IAuthorizationScopeProvider, AppServiceMetadata>> providerFactories)
         {
             this.providers = providerFactories.Order().GetServices().ToList();
+            this.contextFactory = contextFactory;
         }
 
         /// <summary>
         /// Gets the authorization scope asynchronously.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="optionsConfig">The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the authorization scope.
         /// </returns>
-        public async Task<object> GetAuthorizationScopeAsync(IContext context, CancellationToken cancellationToken = default)
+        public async Task<object> GetAuthorizationScopeAsync(Action<IContext> optionsConfig, CancellationToken cancellationToken = default)
         {
-            foreach (var provider in this.providers)
+            using (var context = this.CreateScopeContext(optionsConfig))
             {
-                var (scope, canResolve) = await provider.GetAuthorizationScopeAsync(context, cancellationToken)
-                                     .PreserveThreadContext();
-                if (canResolve)
+                foreach (var provider in this.providers)
                 {
-                    return scope;
+                    var (scope, canResolve) = await provider.GetAuthorizationScopeAsync(context, cancellationToken)
+                                         .PreserveThreadContext();
+                    if (canResolve)
+                    {
+                        return scope;
+                    }
                 }
-            }
 
-            return null;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Creates the scope context.
+        /// </summary>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The new scope context.
+        /// </returns>
+        protected virtual IContext CreateScopeContext(Action<IContext> optionsConfig = null)
+        {
+            return this.contextFactory.CreateContext<Context>().Merge(optionsConfig);
         }
     }
 }

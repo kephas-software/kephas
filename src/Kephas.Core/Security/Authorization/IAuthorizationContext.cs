@@ -10,9 +10,10 @@
 
 namespace Kephas.Security.Authorization
 {
-    using System;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -26,15 +27,7 @@ namespace Kephas.Security.Authorization
         /// <value>
         /// The required permissions.
         /// </value>
-        IEnumerable<string> RequiredPermissions { get; }
-
-        /// <summary>
-        /// Gets the types of the required permissions.
-        /// </summary>
-        /// <value>
-        /// The types of the required permissions.
-        /// </value>
-        IEnumerable<Type> RequiredPermissionTypes { get; }
+        IEnumerable<object> RequiredPermissions { get; }
 
         /// <summary>
         /// Gets the authorization scope.
@@ -45,13 +38,38 @@ namespace Kephas.Security.Authorization
         object Scope { get; }
 
         /// <summary>
-        /// Gets a value indicating whether to throw on authorization failure.
+        /// Gets or sets a value indicating whether to throw on authorization failure.
         /// If <c>false</c> is indicated, the authorization check will return <c>false</c> upon failure,
         /// otherwise an exception will occur.
         /// </summary>
         /// <value>
         /// True to throw on authorization failure, false to not throw and return <c>false</c>.
         /// </value>
-        bool ThrowOnFailure { get; }
+        bool ThrowOnFailure { get; set; }
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IAuthorizationContext"/>.
+    /// </summary>
+    public static class AuthorizationContextExtensions
+    {
+        /// <summary>
+        /// Sets a value indicating whether to throw on failure.
+        /// </summary>
+        /// <typeparam name="TContext">Actual type of the authorization context.</typeparam>
+        /// <param name="context">The authorization context.</param>
+        /// <param name="value">True to throw on failure, false otherwise.</param>
+        /// <returns>
+        /// This <see cref="IAuthorizationContext"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TContext ThrowOnFailure<TContext>(this TContext context, bool value)
+            where TContext : class, IAuthorizationContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.ThrowOnFailure = value;
+            return context;
+        }
     }
 }

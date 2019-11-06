@@ -10,6 +10,8 @@
 
 namespace Kephas.Security.Authorization
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -24,15 +26,21 @@ namespace Kephas.Security.Authorization
     public interface IAuthorizationService
     {
         /// <summary>
-        /// Authorizes the provided context asynchronously.
+        /// Query asynchronously whether the authorization context has the requested permissions.
         /// </summary>
-        /// <param name="authContext">Context for the authorization.</param>
+        /// <param name="executionContext">The context for the execution to be authorized.</param>
+        /// <param name="permissions">The permissions.</param>
+        /// <param name="scope">Optional. The autorization scope.</param>
+        /// <param name="authConfig">Optional. The authorization configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result returning true if permission is granted, false if not.
         /// </returns>
         Task<bool> AuthorizeAsync(
-            IAuthorizationContext authContext,
+            IContext executionContext,
+            IEnumerable<object> permissions,
+            object scope = null,
+            Action<IAuthorizationContext> authConfig = null,
             CancellationToken cancellationToken = default);
     }
 
@@ -42,23 +50,31 @@ namespace Kephas.Security.Authorization
     public static class AuthorizationServiceExtensions
     {
         /// <summary>
-        /// Authorizes the provided context.
+        /// Query whether the authorization context has the requested permissions.
         /// </summary>
         /// <param name="authorizationService">The authorization service to act on.</param>
-        /// <param name="authContext">Context for the authorization.</param>
+        /// <param name="executionContext">The context for the execution to be authorized.</param>
+        /// <param name="permissions">The permissions.</param>
+        /// <param name="scope">Optional. The autorization scope.</param>
+        /// <param name="authConfig">Optional. The authorization configuration.</param>
         /// <returns>
         /// An asynchronous result returning true if permission is granted, false if not.
         /// </returns>
-        public static bool Authorize(this IAuthorizationService authorizationService, IAuthorizationContext authContext)
+        public static bool Authorize(
+            this IAuthorizationService authorizationService,
+            IContext executionContext,
+            IEnumerable<object> permissions,
+            object scope = null,
+            Action<IAuthorizationContext> authConfig = null)
         {
             Requires.NotNull(authorizationService, nameof(authorizationService));
 
             if (authorizationService is ISyncAuthorizationService syncAuthorizationService)
             {
-                return syncAuthorizationService.Authorize(authContext);
+                return syncAuthorizationService.Authorize(executionContext, permissions, scope, authConfig);
             }
 
-            return authorizationService.AuthorizeAsync(authContext).GetResultNonLocking();
+            return authorizationService.AuthorizeAsync(executionContext, permissions, scope, authConfig).GetResultNonLocking();
         }
     }
 }
