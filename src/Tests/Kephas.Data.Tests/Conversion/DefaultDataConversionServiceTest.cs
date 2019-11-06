@@ -47,7 +47,7 @@ namespace Kephas.Data.Tests.Conversion
                 },
                 this.GetDefaultTargetResolverFactories());
 
-            var result = await service.ConvertAsync<int, long>(1, 2L, new DataConversionContext(service, Substitute.For<IDataSpace>()), CancellationToken.None);
+            var result = await service.ConvertAsync<int, long>(1, 2L, new DataConversionContext(Substitute.For<IDataSpace>(), service), CancellationToken.None);
             Assert.AreEqual(5L, result.Target);
         }
 
@@ -72,7 +72,7 @@ namespace Kephas.Data.Tests.Conversion
                 },
                     this.GetDefaultTargetResolverFactories());
 
-            var result = await service.ConvertAsync<int, long>(1, 2L, new DataConversionContext(service, Substitute.For<IDataSpace>()), CancellationToken.None);
+            var result = await service.ConvertAsync<int, long>(1, 2L, new DataConversionContext(Substitute.For<IDataSpace>(), service), CancellationToken.None);
             Assert.AreEqual(6L, result.Target);
         }
 
@@ -97,7 +97,7 @@ namespace Kephas.Data.Tests.Conversion
                 },
                     this.GetDefaultTargetResolverFactories());
 
-            var result = await service.ConvertAsync<int, long>(1, 2L, new DataConversionContext(service, Substitute.For<IDataSpace>()), CancellationToken.None);
+            var result = await service.ConvertAsync<int, long>(1, 2L, new DataConversionContext(Substitute.For<IDataSpace>(), service), CancellationToken.None);
             Assert.AreEqual(5L, result.Target);
         }
 
@@ -133,7 +133,7 @@ namespace Kephas.Data.Tests.Conversion
 
             var targetDataContext = Substitute.For<IDataContext>();
             var dataSpace = this.CreateDataSpace<string, StringBuilder>(null, targetDataContext);
-            var result = await service.ConvertAsync<object, object>("sisi", null, new DataConversionContext(service, dataSpace, rootTargetType: typeof(StringBuilder)), CancellationToken.None);
+            var result = await service.ConvertAsync<object, object>("sisi", null, new DataConversionContext(dataSpace, service, rootTargetType: typeof(StringBuilder)), CancellationToken.None);
             Assert.AreEqual("hello", result.Target.ToString());
         }
 
@@ -152,7 +152,7 @@ namespace Kephas.Data.Tests.Conversion
                 },
                     this.GetDefaultTargetResolverFactories());
 
-            var result = await service.ConvertAsync<object, object>("sisi", new StringBuilder("queen"), new DataConversionContext(service, Substitute.For<IDataSpace>()), CancellationToken.None);
+            var result = await service.ConvertAsync<object, object>("sisi", new StringBuilder("queen"), new DataConversionContext(Substitute.For<IDataSpace>(), service), CancellationToken.None);
             Assert.AreEqual("hello", result.Target.ToString());
         }
 
@@ -173,7 +173,7 @@ namespace Kephas.Data.Tests.Conversion
                     },
                     this.GetDefaultTargetResolverFactories());
 
-            var result = await service.ConvertAsync<object, object>("sisi", 12, new DataConversionContext(service, Substitute.For<IDataSpace>(), rootTargetType: typeof(string)), CancellationToken.None);
+            var result = await service.ConvertAsync<object, object>("sisi", 12, new DataConversionContext(Substitute.For<IDataSpace>(), service, rootTargetType: typeof(string)), CancellationToken.None);
             Assert.AreEqual("hello", result.Target);
         }
 
@@ -213,7 +213,7 @@ namespace Kephas.Data.Tests.Conversion
                             return Task.FromResult<ICreateEntityResult>(new CreateEntityResult(target, null, null, null));
                         });
 
-            var result = await service.ConvertAsync<IEntity, IEntity>(new ClientEntity { Name = "sisi" }, null, new DataConversionContext(service, dataSpace, rootTargetType: typeof(Entity)), CancellationToken.None);
+            var result = await service.ConvertAsync<IEntity, IEntity>(new ClientEntity { Name = "sisi" }, null, new DataConversionContext(dataSpace, service, rootTargetType: typeof(Entity)), CancellationToken.None);
             Assert.IsInstanceOf<Entity>(result.Target);
             var entity = result.Target as Entity;
             Assert.AreEqual("hello", entity.Name);
@@ -227,7 +227,7 @@ namespace Kephas.Data.Tests.Conversion
                 new IExportFactory<IDataConverter, DataConverterMetadata>[0],
                 this.GetDefaultTargetResolverFactories());
 
-            Assert.Throws<DataConversionException>(() => service.ConvertAsync<object, object>("sisi", null, new DataConversionContext(service, Substitute.For<IDataSpace>()), CancellationToken.None));
+            Assert.Throws<DataConversionException>(() => service.ConvertAsync<object, object>("sisi", null, new DataConversionContext(Substitute.For<IDataSpace>(), service), CancellationToken.None));
         }
 
         private ICollection<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>> GetDefaultTargetResolverFactories()

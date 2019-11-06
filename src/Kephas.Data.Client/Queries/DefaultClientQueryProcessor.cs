@@ -211,10 +211,13 @@ namespace Kephas.Data.Client.Queries
                 var clientEntityTypeInfo = typeof(TClientEntity).AsRuntimeTypeInfo();
                 foreach (var entity in entities)
                 {
-                    var context = new DataConversionContext(this.ConversionService, dataSpace, rootTargetType: clientEntityTypeInfo.Type);
-                    executionContext?.DataConversionConfig?.Invoke(entity, context);
-                    var result = await this.ConversionService.ConvertAsync(entity, clientEntityTypeInfo.CreateInstance(), context, token).PreserveThreadContext();
-                    mappings.Add(((TClientEntity)result.Target, entity));
+                    using (var context = new DataConversionContext(dataSpace, this.ConversionService)
+                            .RootTargetType(clientEntityTypeInfo.Type))
+                    {
+                        executionContext?.DataConversionConfig?.Invoke(entity, context);
+                        var result = await this.ConversionService.ConvertAsync(entity, clientEntityTypeInfo.CreateInstance(), context, token).PreserveThreadContext();
+                        mappings.Add(((TClientEntity)result.Target, entity));
+                    }
                 }
             }
 

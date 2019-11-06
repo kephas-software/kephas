@@ -19,6 +19,7 @@ namespace Kephas.Data.Setup
     using Kephas.Composition;
     using Kephas.Data.Setup.Composition;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;

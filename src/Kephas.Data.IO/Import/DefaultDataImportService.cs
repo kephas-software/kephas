@@ -430,32 +430,32 @@ namespace Kephas.Data.IO.Import
             private async Task<IEntityEntry> ConvertEntityAsync(IEntityEntry sourceEntityEntry, CancellationToken cancellationToken = default)
             {
                 var sourceEntity = sourceEntityEntry.Entity;
-                var conversionContext = new DataConversionContextBuilder(this.dataSpace, this.conversionService)
-                    .WithRootTargetType(this.projectedTypeResolver.ResolveProjectedType(sourceEntity.GetType(), this.context))
-                    .ConversionContext;
-
-                this.context.DataConversionConfig?.Invoke(sourceEntity, conversionContext);
-
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var conversionResult = await this.conversionService.ConvertAsync(sourceEntity, (object)null, conversionContext, cancellationToken).PreserveThreadContext();
-
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var targetEntity = conversionResult.Target;
-                var targetDataContext = this.dataSpace[targetEntity.GetType(), this.context];
-                var targetEntityEntry = targetDataContext.Attach(targetEntity);
-
-                // force the change of the entity change state only if
-                // * the target entity is not changed - or -
-                // * the source entity indicated deletion.
-                if (targetEntityEntry.ChangeState == ChangeState.NotChanged
-                    || sourceEntityEntry.ChangeState == ChangeState.Deleted)
+                using (var conversionContext = new DataConversionContext(this.dataSpace, this.conversionService)
+                    .RootTargetType(this.projectedTypeResolver.ResolveProjectedType(sourceEntity.GetType(), this.context)))
                 {
-                    targetEntityEntry.ChangeState = sourceEntityEntry.ChangeState;
-                }
+                    this.context.DataConversionConfig?.Invoke(sourceEntity, conversionContext);
 
-                return targetEntityEntry;
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    var conversionResult = await this.conversionService.ConvertAsync(sourceEntity, (object)null, conversionContext, cancellationToken).PreserveThreadContext();
+
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    var targetEntity = conversionResult.Target;
+                    var targetDataContext = this.dataSpace[targetEntity.GetType(), this.context];
+                    var targetEntityEntry = targetDataContext.Attach(targetEntity);
+
+                    // force the change of the entity change state only if
+                    // * the target entity is not changed - or -
+                    // * the source entity indicated deletion.
+                    if (targetEntityEntry.ChangeState == ChangeState.NotChanged
+                        || sourceEntityEntry.ChangeState == ChangeState.Deleted)
+                    {
+                        targetEntityEntry.ChangeState = sourceEntityEntry.ChangeState;
+                    }
+
+                    return targetEntityEntry;
+                }
             }
         }
     }

@@ -24,7 +24,7 @@ namespace Kephas.Data.Tests.Conversion
         {
             var conversionSvc = Substitute.For<IDataConversionService>();
             var dataSpace = Substitute.For<IDataSpace>();
-            var context = new DataConversionContext(conversionSvc, dataSpace);
+            var context = new DataConversionContext(dataSpace, conversionSvc);
 
             Assert.AreSame(conversionSvc, context.DataConversionService);
             Assert.AreSame(dataSpace, context.DataSpace);

@@ -23,13 +23,13 @@ namespace Kephas.Data.Conversion
         /// <summary>
         /// Initializes a new instance of the <see cref="DataConversionContext"/> class.
         /// </summary>
-        /// <param name="conversionService">The conversion service.</param>
         /// <param name="dataSpace">The data space.</param>
+        /// <param name="conversionService">The conversion service.</param>
         /// <param name="rootSourceType">Optional. The type of the source root object.</param>
         /// <param name="rootTargetType">Optional. The type of the target root object.</param>
         public DataConversionContext(
-            IDataConversionService conversionService,
             IDataSpace dataSpace,
+            IDataConversionService conversionService,
             Type rootSourceType = null,
             Type rootTargetType = null)
             : base(dataSpace)

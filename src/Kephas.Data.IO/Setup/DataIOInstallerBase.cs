@@ -22,6 +22,7 @@ namespace Kephas.Data.IO.Setup
     using Kephas.Data.IO.Import;
     using Kephas.Data.Setup;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Net.Mime;
     using Kephas.Operations;

@@ -98,5 +98,62 @@ namespace Kephas.Data.Conversion
 
             return conversionContext.DataSpace[entity.GetType(), conversionContext];
         }
+
+        /// <summary>
+        /// Sets a value indicating whether to throw on failure.
+        /// </summary>
+        /// <typeparam name="TContext">Actual type of the data conversion context.</typeparam>
+        /// <param name="context">The data conversion context.</param>
+        /// <param name="value">True to throw on failure, false otherwise.</param>
+        /// <returns>
+        /// This <see cref="IDataConversionContext"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TContext ThrowOnError<TContext>(this TContext context, bool value)
+            where TContext : class, IDataConversionContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.ThrowOnError = value;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the root source type.
+        /// </summary>
+        /// <typeparam name="TContext">Actual type of the data conversion context.</typeparam>
+        /// <param name="context">The data conversion context.</param>
+        /// <param name="rootSourceType">The root source type.</param>
+        /// <returns>
+        /// This <see cref="IDataConversionContext"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TContext RootSourceType<TContext>(this TContext context, Type rootSourceType)
+            where TContext : class, IDataConversionContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.RootSourceType = rootSourceType;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the root target type.
+        /// </summary>
+        /// <typeparam name="TContext">Actual type of the data conversion context.</typeparam>
+        /// <param name="context">The data conversion context.</param>
+        /// <param name="rootTargetType">The root target type.</param>
+        /// <returns>
+        /// This <see cref="IDataConversionContext"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TContext RootTargetType<TContext>(this TContext context, Type rootTargetType)
+            where TContext : class, IDataConversionContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.RootTargetType = rootTargetType;
+            return context;
+        }
     }
 }

@@ -97,16 +97,19 @@ namespace Kephas.Data.Endpoints
 
                     if (dtoEntityType != domainEntityType)
                     {
-                        var conversionContext = new DataConversionContext(this.dataConversionService, dataSpace, rootTargetType: domainEntityType);
-                        var result = await this.dataConversionService.ConvertAsync(dtoEntity, (object)null, conversionContext, token).PreserveThreadContext();
-                        mappings.Add((dtoEntry: dtoEntityEntry, result.Target));
-
-                        // deleted entities are marked as deleted
-                        if (dtoEntityEntry.ChangeState == ChangeState.Deleted)
+                        using (var conversionContext = new DataConversionContext(dataSpace, this.dataConversionService)
+                                    .RootTargetType(domainEntityType))
                         {
-                            var domainDataContext = dataSpace[domainEntityType, context];
-                            var changeStateEntity = domainDataContext.GetEntityEntry(result.Target);
-                            changeStateEntity.ChangeState = ChangeState.Deleted;
+                            var result = await this.dataConversionService.ConvertAsync(dtoEntity, (object)null, conversionContext, token).PreserveThreadContext();
+                            mappings.Add((dtoEntry: dtoEntityEntry, result.Target));
+
+                            // deleted entities are marked as deleted
+                            if (dtoEntityEntry.ChangeState == ChangeState.Deleted)
+                            {
+                                var domainDataContext = dataSpace[domainEntityType, context];
+                                var changeStateEntity = domainDataContext.GetEntityEntry(result.Target);
+                                changeStateEntity.ChangeState = ChangeState.Deleted;
+                            }
                         }
                     }
                     else
@@ -210,7 +213,7 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         protected virtual IDataConversionContext CreateDataConversionContextForResponse(IDataSpace dataSpace)
         {
-            var conversionContext = new DataConversionContext(this.dataConversionService, dataSpace);
+            var conversionContext = new DataConversionContext(dataSpace, this.dataConversionService);
             return conversionContext;
         }
     }
