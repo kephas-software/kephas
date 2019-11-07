@@ -92,6 +92,14 @@ namespace Kephas.Messaging.Distributed
         string BearerToken { get; set; }
 
         /// <summary>
+        /// Gets or sets the custom properties of the brokered message.
+        /// </summary>
+        /// <value>
+        /// The custom properties.
+        /// </value>
+        IDictionary<string, object> Properties { get; set; }
+
+        /// <summary>
         /// Gets or sets the priority.
         /// </summary>
         /// <value>

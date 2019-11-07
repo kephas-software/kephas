@@ -302,6 +302,29 @@ namespace Kephas.Messaging.Distributed
         }
 
         /// <summary>
+        /// Sets the value of the indicated custom property.
+        /// </summary>
+        /// <exception cref="ArgumentException">Thrown when the timeout is negative.</exception>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The dispatching context.</param>
+        /// <param name="name">The property name.</param>
+        /// <param name="value">The property value.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext Property<TContext>(this TContext context, string name, object value)
+            where TContext : class, IDispatchingContext
+        {
+            Requires.NotNull(context, nameof(context));
+            Requires.NotNull(name, nameof(name));
+
+            var properties = context.BrokeredMessage.Properties ?? (context.BrokeredMessage.Properties = new Dictionary<string, object>());
+            properties[name] = value;
+
+            return context;
+        }
+
+        /// <summary>
         /// Sets the timeout when waiting for an answer.
         /// </summary>
         /// <exception cref="ArgumentException">Thrown when the timeout is negative.</exception>
