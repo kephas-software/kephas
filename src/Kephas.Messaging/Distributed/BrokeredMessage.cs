@@ -182,6 +182,20 @@ namespace Kephas.Messaging.Distributed
         public Priority Priority { get; set; }
 
         /// <summary>
+        /// Indexer to get or set items within this collection using array index syntax.
+        /// The values will be set or retrieved using the <see cref="Properties"/>.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>
+        /// The indexed item.
+        /// </returns>
+        public object this[string key]
+        {
+            get => (this.Properties ?? (this.Properties = new Dictionary<string, object>()))[key];
+            set => (this.Properties ?? (this.Properties = new Dictionary<string, object>()))[key] = value;
+        }
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>

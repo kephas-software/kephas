@@ -318,8 +318,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(context, nameof(context));
             Requires.NotNull(name, nameof(name));
 
-            var properties = context.BrokeredMessage.Properties ?? (context.BrokeredMessage.Properties = new Dictionary<string, object>());
-            properties[name] = value;
+            context.BrokeredMessage[name] = value;
 
             return context;
         }
@@ -334,7 +333,6 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TContext Timeout<TContext>(this TContext context, TimeSpan timeout)
             where TContext : class, IDispatchingContext
         {
