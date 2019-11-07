@@ -60,7 +60,7 @@ namespace Kephas.Messaging
             Requires.NotNull(@this, nameof(@this));
             Requires.NotNull(message, nameof(message));
 
-            return @this.ProcessAsync(message.ToMessageContent(), optionsConfig, token);
+            return @this.ProcessAsync(message.ToMessage(), optionsConfig, token);
         }
     }
 }

@@ -101,7 +101,7 @@ namespace Kephas.Messaging.Tests.Behaviors
             var behavior = new EnsureAuthorizedMessageProcessingBehavior(authService, Substitute.For<IAuthorizationScopeService>());
             var message = new NonFree();
             await behavior.BeforeProcessAsync(
-                message.ToMessageContent(),
+                message.ToMessage(),
                 new MessagingContext(Substitute.For<ICompositionContext>(), Substitute.For<IMessageProcessor>()),
                 default);
         }

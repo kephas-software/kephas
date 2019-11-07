@@ -10,6 +10,9 @@
 
 namespace Kephas.Messaging
 {
+    using System.Runtime.CompilerServices;
+
+    using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
 
     /// <summary>
@@ -52,6 +55,40 @@ namespace Kephas.Messaging
         internal static object GetContent(this object message)
         {
             return message is IMessageEnvelope envelope ? envelope.GetContent() : message;
+        }
+
+        /// <summary>
+        /// Converts the provided object to a message.
+        /// </summary>
+        /// <param name="data">The object to be converted.</param>
+        /// <returns>
+        /// The object as an <see cref="IMessage"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static IMessage ToMessage(this object data)
+        {
+            return data == null
+                ? null
+                : data is IMessage message
+                    ? message
+                    : new MessageEnvelope { Message = data };
+        }
+
+        /// <summary>
+        /// Converts the provided object to an event.
+        /// </summary>
+        /// <param name="data">The object to be converted.</param>
+        /// <returns>
+        /// The object as an <see cref="IEvent"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static IEvent ToEvent(this object data)
+        {
+            return data == null
+                ? null
+                : data is IEvent @event
+                    ? @event
+                    : new EventEnvelope { Event = data };
         }
     }
 }

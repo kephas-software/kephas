@@ -47,7 +47,7 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(message, nameof(message));
 
-            this.Content = message.ToMessageContent();
+            this.Content = message.ToMessage();
         }
 
         /// <summary>

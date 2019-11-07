@@ -56,7 +56,7 @@ namespace Kephas.Messaging
             Requires.NotNull(context, nameof(context));
 
             var response = await this.ProcessAsync(message, context, token).PreserveThreadContext();
-            return response.ToMessageContent();
+            return response.ToMessage();
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Kephas.Messaging
             }
 
             var response = await this.ProcessAsync(typedMessage, context, token).PreserveThreadContext();
-            return response.ToMessageContent();
+            return response.ToMessage();
         }
 
         /// <summary>

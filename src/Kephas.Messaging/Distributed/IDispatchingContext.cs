@@ -17,7 +17,6 @@ namespace Kephas.Messaging.Distributed
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Events;
-    using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
 
@@ -437,7 +436,7 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(context, nameof(context));
 
-            return context.Content(message.ToMessageContent());
+            return context.Content(message.ToMessage());
         }
 
         /// <summary>
@@ -455,41 +454,7 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(context, nameof(context));
 
-            return context.Content(@event.ToEventContent());
-        }
-
-        /// <summary>
-        /// Converts the data to a message content.
-        /// </summary>
-        /// <param name="data">The data to act on.</param>
-        /// <returns>
-        /// Data as an IMessage.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static IMessage ToMessageContent(this object data)
-        {
-            return data == null
-                ? null
-                : data is IMessage message
-                    ? message
-                    : new MessageEnvelope { Message = data };
-        }
-
-        /// <summary>
-        /// Converts the data to an event content.
-        /// </summary>
-        /// <param name="data">The data to act on.</param>
-        /// <returns>
-        /// Data as an IEvent.
-        /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static IEvent ToEventContent(this object data)
-        {
-            return data == null
-                ? null
-                : data is IEvent @event
-                    ? @event
-                    : new EventEnvelope { Event = data };
+            return context.Content(@event.ToEvent());
         }
     }
 }

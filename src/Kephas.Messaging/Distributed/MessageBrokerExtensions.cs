@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(@event, nameof(@event));
 
-            return messageBroker.DispatchAsync(@event.ToEventContent(), ctx => ctx.Merge(optionsConfig), cancellationToken);
+            return messageBroker.DispatchAsync(@event.ToEvent(), ctx => ctx.Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(recipient, nameof(recipient));
 
-            return messageBroker.DispatchAsync(@event.ToEventContent(), ctx => ctx.To(recipient).Merge(optionsConfig), cancellationToken);
+            return messageBroker.DispatchAsync(@event.ToEvent(), ctx => ctx.To(recipient).Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(recipients, nameof(recipients));
 
-            return messageBroker.DispatchAsync(@event.ToEventContent(), ctx => ctx.To(recipients).Merge(optionsConfig), cancellationToken);
+            return messageBroker.DispatchAsync(@event.ToEvent(), ctx => ctx.To(recipients).Merge(optionsConfig), cancellationToken);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(recipient, nameof(recipient));
 
-            messageBroker.DispatchAsync(@event.ToEventContent(), ctx => ctx.To(recipient).Merge(optionsConfig)).WaitNonLocking();
+            messageBroker.DispatchAsync(@event.ToEvent(), ctx => ctx.To(recipient).Merge(optionsConfig)).WaitNonLocking();
         }
 
         /// <summary>
