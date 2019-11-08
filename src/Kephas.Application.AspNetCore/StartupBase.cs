@@ -18,10 +18,10 @@ namespace Kephas.Application.AspNetCore
     using Kephas.Application;
     using Kephas.Application.AspNetCore.Configuration;
     using Kephas.Application.AspNetCore.Hosting;
-    using Kephas.Application.AspNetCore.Logging;
     using Kephas.Composition;
     using Kephas.Extensions.Configuration;
     using Kephas.Extensions.DependencyInjection;
+    using Kephas.Extensions.Logging;
     using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore.Logging
+namespace Kephas.Extensions.Logging
 {
     using System;
 
@@ -45,9 +45,9 @@ namespace Kephas.Application.AspNetCore.Logging
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             var kephasLogLevel = this.ToLogLevel(logLevel);
-            if (this.logger.IsEnabled(kephasLogLevel))
+            if (logger.IsEnabled(kephasLogLevel))
             {
-                this.logger.Log(kephasLogLevel, exception, formatter(state, exception));
+                logger.Log(kephasLogLevel, exception, formatter(state, exception));
             }
         }
 

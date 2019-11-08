@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore.Logging
+namespace Kephas.Extensions.Logging
 {
     using Kephas.Diagnostics.Contracts;
-
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Logging;

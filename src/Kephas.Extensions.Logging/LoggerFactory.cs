@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore.Logging
+namespace Kephas.Extensions.Logging
 {
     using Kephas.Logging;
 
@@ -57,6 +57,7 @@ namespace Kephas.Application.AspNetCore.Logging
         /// <param name="provider">The <see cref="T:Microsoft.Extensions.Logging.ILoggerProvider" />.</param>
         public void AddProvider(ILoggerProvider provider)
         {
+            // TODO check whether we don't need to add a composite logger.
         }
     }
 }

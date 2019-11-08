@@ -21,6 +21,7 @@ $packages = @(
     "Kephas.Data.MongoDB",
     "Kephas.Extensions.Configuration",
     "Kephas.Extensions.DependencyInjection",
+    "Kephas.Extensions.Logging",
     "Kephas.Logging.Log4Net",
     "Kephas.Logging.NLog",
     "Kephas.Logging.Serilog",

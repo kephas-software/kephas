@@ -178,6 +178,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Redis", "K
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Redis", "Kephas.Redis\Kephas.Redis.csproj", "{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Logging", "Kephas.Extensions.Logging\Kephas.Extensions.Logging.csproj", "{8D2A2D89-D925-4EEF-B111-723466A47320}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -480,6 +482,10 @@ Global
 		{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AE17D0B-3458-46CA-83B0-8D93920AEAE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D2A2D89-D925-4EEF-B111-723466A47320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D2A2D89-D925-4EEF-B111-723466A47320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D2A2D89-D925-4EEF-B111-723466A47320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D2A2D89-D925-4EEF-B111-723466A47320}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
