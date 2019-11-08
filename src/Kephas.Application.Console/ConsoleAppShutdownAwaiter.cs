@@ -27,7 +27,6 @@ namespace Kephas.Application.Console.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleAppShutdownAwaiter"/> class.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
         /// <param name="shell">The shell.</param>
         /// <param name="eventHub">The event hub.</param>
         public ConsoleAppShutdownAwaiter(ICommandShell shell, IEventHub eventHub)
