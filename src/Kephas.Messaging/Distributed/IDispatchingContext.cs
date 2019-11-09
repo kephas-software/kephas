@@ -16,6 +16,7 @@ namespace Kephas.Messaging.Distributed
     using System.Runtime.CompilerServices;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
@@ -42,6 +43,14 @@ namespace Kephas.Messaging.Distributed
         IBrokeredMessage BrokeredMessage { get; }
 
         /// <summary>
+        /// Gets or sets the message router which received the message to be dispatched.
+        /// </summary>
+        /// <value>
+        /// The message router.
+        /// </value>
+        IMessageRouter InputRouter { get; set; }
+
+        /// <summary>
         /// Creates an endpoint for the current application instance.
         /// </summary>
         /// <param name="endpointId">Optional. Identifier for the endpoint.</param>
@@ -57,6 +66,27 @@ namespace Kephas.Messaging.Distributed
     /// </summary>
     public static class DispatchingContextExtensions
     {
+        /// <summary>
+        /// Sets the router which received the message through the input queue.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The dispatching context.</param>
+        /// <param name="inputRouter">The router.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TContext From<TContext>(this TContext context, IMessageRouter inputRouter)
+            where TContext : class, IDispatchingContext
+        {
+            Requires.NotNull(context, nameof(context));
+            Requires.NotNull(inputRouter, nameof(inputRouter));
+
+            context.InputRouter = inputRouter;
+
+            return context;
+        }
+
         /// <summary>
         /// Sets the brokered message sender.
         /// </summary>

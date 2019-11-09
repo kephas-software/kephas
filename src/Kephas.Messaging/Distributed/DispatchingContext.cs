@@ -13,6 +13,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Configuration;
+    using Kephas.Messaging.Distributed.Routing;
     using Kephas.Security.Authentication;
     using Kephas.Services;
 
@@ -81,6 +82,14 @@ namespace Kephas.Messaging.Distributed
         /// The brokered message.
         /// </value>
         public IBrokeredMessage BrokeredMessage { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the message router which received the message to be dispatched.
+        /// </summary>
+        /// <value>
+        /// The message router.
+        /// </value>
+        public IMessageRouter InputRouter { get; set; }
 
         /// <summary>
         /// Creates an endpoint for the current application instance.
