@@ -27,6 +27,11 @@
                 <dependency id="Microsoft.CSharp" version="4.3.0" exclude="Build,Analyzers" />
                 <dependency id="System.ValueTuple" version="4.3.0" exclude="Build,Analyzers" />
             </group>
+            <group targetFramework=".NETFramework4.6.1">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.CSharp" version="4.3.0" exclude="Build,Analyzers" />
+                <dependency id="System.ValueTuple" version="4.3.0" exclude="Build,Analyzers" />
+            </group>
             <group targetFramework=".NETStandard2.0">
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.CSharp" version="4.3.0" exclude="Build,Analyzers" />
@@ -42,5 +47,8 @@
         <file src="bin\$configuration$\net45\Kephas.Messaging.dll" target="lib\net45" />
         <file src="bin\$configuration$\net45\Kephas.Messaging.pdb" target="lib\net45" />
         <file src="bin\$configuration$\net45\Kephas.Messaging.xml" target="lib\net45" />
+        <file src="bin\$configuration$\net461\Kephas.Messaging.dll" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Messaging.pdb" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Messaging.xml" target="lib\net461" />
     </files>
 </package>

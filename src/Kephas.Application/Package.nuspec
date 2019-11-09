@@ -35,5 +35,8 @@
         <file src="bin\$configuration$\net45\Kephas.Application.dll" target="lib\net45" />
         <file src="bin\$configuration$\net45\Kephas.Application.pdb" target="lib\net45" />
         <file src="bin\$configuration$\net45\Kephas.Application.xml" target="lib\net45" />
+        <file src="bin\$configuration$\net461\Kephas.Application.dll" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Application.pdb" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Application.xml" target="lib\net461" />
     </files>
 </package>
