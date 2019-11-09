@@ -43,7 +43,6 @@ namespace Kephas.Messaging.Redis.Routing
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
         private readonly IEventHub eventHub;
         private ISubscriber subscriber;
-        private IContext appContext;
         private ChannelMessageQueue messageQueue;
         private ChannelMessageQueue appMessageQueue;
         private ChannelMessageQueue appInstanceMessageQueue;
@@ -114,7 +113,6 @@ namespace Kephas.Messaging.Redis.Routing
                 var redisNS = this.redisConfiguration.Settings.Namespace;
                 this.redisRootChannelName = string.IsNullOrEmpty(redisNS) ? ChannelType : $"{redisNS}:{ChannelType}";
 
-                this.appContext = context;
                 var connection = this.redisClient.GetConnection();
 
                 this.subscriber = connection.GetSubscriber();
@@ -167,7 +165,7 @@ namespace Kephas.Messaging.Redis.Routing
                 var message = await this.serializationService.JsonDeserializeAsync(serializedMessage).PreserveThreadContext();
                 if (message is IBrokeredMessage brokeredMessage)
                 {
-                    await this.RouteInputAsync(brokeredMessage, this.appContext, default).PreserveThreadContext();
+                    await this.RouteInputAsync(brokeredMessage, this.AppContext, default).PreserveThreadContext();
                 }
                 else
                 {
