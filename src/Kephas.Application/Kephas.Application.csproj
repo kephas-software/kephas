@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+        <TargetFrameworks>netstandard2.0;net45;461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Description>Provides infrastructure for applications based on Kephas Framework.</Description>
         <Version>7.2.0</Version>
-        <AssemblyVersion>7.1.0.0</AssemblyVersion>
-        <FileVersion>7.1.0.0</FileVersion>
+        <AssemblyVersion>7.2.0.0</AssemblyVersion>
+        <FileVersion>7.2.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
@@ -45,6 +45,14 @@
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
         <DefineConstants>NET45</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NET461</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
+        <DefineConstants>NET461</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
