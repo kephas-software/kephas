@@ -16,11 +16,13 @@ namespace Kephas.Messaging.Redis.Tests.Routing
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Configuration.Providers;
+    using Kephas.Messaging.Composition;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Redis.Routing;
     using Kephas.Redis.Configuration;
+    using Kephas.Services;
     using NUnit.Framework;
     using AppContext = Kephas.Application.AppContext;
 
@@ -61,7 +63,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 var pingBack = await masterMessageBroker.DispatchAsync(
                     new PingMessage(),
                     ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
-                              .Timeout(TimeSpan.FromSeconds(500)));
+                              .Timeout(TimeSpan.FromSeconds(5)));
                 Assert.IsInstanceOf<PingBackMessage>(pingBack);
             }
             finally
@@ -127,7 +129,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                     return new RedisClientSettings
                     {
                         Namespace = "unit-test",
-                        ConnectionString = "kephas-test.redis.cache.windows.net:6380,password=9PuI+WoNAfRaVx4BgCzaAvTmZCGJN3AmM35kg13vdoY=,ssl=True,abortConnect=False",
+                        ConnectionString = "put-your-connection-string-here",
                     };
                 }
 
