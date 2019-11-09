@@ -14,6 +14,7 @@ namespace Kephas.Messaging.Endpoints
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Messaging.Messages;
 
     /// <summary>
@@ -21,6 +22,17 @@ namespace Kephas.Messaging.Endpoints
     /// </summary>
     public class PingMessageHandler : MessageHandlerBase<PingMessage, PingBackMessage>
     {
+        private readonly IAppRuntime appRuntime;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PingMessageHandler"/> class.
+        /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
+        public PingMessageHandler(IAppRuntime appRuntime)
+        {
+            this.appRuntime = appRuntime;
+        }
+
         /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.
         /// </summary>
@@ -34,6 +46,7 @@ namespace Kephas.Messaging.Endpoints
         {
             return Task.FromResult(new PingBackMessage
                                        {
+                                           Message = $"Hello from app {this.appRuntime.GetAppId()}, instance {this.appRuntime.GetAppInstanceId()}.",
                                            ServerTime = DateTimeOffset.Now,
                                        });
         }
