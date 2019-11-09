@@ -27,8 +27,6 @@
                 <dependency id="Kephas.Core" version="$refversion$" />
                 <dependency id="Kephas.Messaging" version="$refversion$" />
             </group>
-            <group targetFramework="net45">
-            </group>
             <group targetFramework="netstandard2.0">
                 <dependency id="System.ComponentModel.Annotations" version="4.3.0" />
             </group>
@@ -42,5 +40,8 @@
         <file src="bin\$configuration$\net45\Kephas.Application.Console.dll" target="lib\net45" />
         <file src="bin\$configuration$\net45\Kephas.Application.Console.pdb" target="lib\net45" />
         <file src="bin\$configuration$\net45\Kephas.Application.Console.xml" target="lib\net45" />
+        <file src="bin\$configuration$\net461\Kephas.Application.Console.dll" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Application.Console.pdb" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Application.Console.xml" target="lib\net461" />
     </files>
 </package>
