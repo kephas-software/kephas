@@ -37,4 +37,22 @@ namespace Kephas.ExceptionHandling
         /// </summary>
         Info = LogLevel.Info,
     }
+
+    /// <summary>
+    /// Extension methods for <see cref="SeverityLevel"/>.
+    /// </summary>
+    public static class SeverityLevelExtensions
+    {
+        /// <summary>
+        /// Gets a value indicating whether the severity level indicates an error.
+        /// </summary>
+        /// <param name="severity">The severity level.</param>
+        /// <returns>
+        /// True if error, false if not.
+        /// </returns>
+        public static bool IsError(this SeverityLevel severity)
+        {
+            return severity <= SeverityLevel.Error;
+        }
+    }
 }

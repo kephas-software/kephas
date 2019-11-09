@@ -17,7 +17,8 @@ namespace Kephas.Messaging.Distributed
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Application;
+    using Kephas.Data;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Distributed.Routing.Composition;
@@ -32,7 +33,7 @@ namespace Kephas.Messaging.Distributed
     /// Base implementation of a <see cref="IMessageBroker"/>.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultMessageBroker : Loggable, IMessageBroker, IAsyncInitializable, IAsyncFinalizable
+    public class DefaultMessageBroker : Loggable, IMessageBroker, IAsyncInitializable, IAsyncFinalizable, IIdentifiable
     {
         /// <summary>
         /// The dictionary for message synchronization.
@@ -43,6 +44,7 @@ namespace Kephas.Messaging.Distributed
                 new ConcurrentDictionary<string, (CancellationTokenSource, TaskCompletionSource<IMessage>)>();
 
         private readonly IContextFactory contextFactory;
+        private readonly IAppRuntime appRuntime;
         private readonly ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
         private ICollection<(Regex regex, bool isFallback, IMessageRouter router)> routerMap;
@@ -51,15 +53,27 @@ namespace Kephas.Messaging.Distributed
         /// Initializes a new instance of the <see cref="DefaultMessageBroker"/> class.
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="routerFactories">The router factories.</param>
         public DefaultMessageBroker(
             IContextFactory contextFactory,
+            IAppRuntime appRuntime,
             ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories)
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());
             this.contextFactory = contextFactory;
+            this.appRuntime = appRuntime;
             this.routerFactories = routerFactories;
+            this.Id = $"{this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}";
         }
+
+        /// <summary>
+        /// Gets the identifier for this instance.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public object Id { get; }
 
         /// <summary>
         /// Dispatches the message asynchronously.
@@ -181,6 +195,17 @@ namespace Kephas.Messaging.Distributed
             }
 
             this.initMonitor.Reset();
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{base.ToString()}: {this.Id}";
         }
 
         /// <summary>

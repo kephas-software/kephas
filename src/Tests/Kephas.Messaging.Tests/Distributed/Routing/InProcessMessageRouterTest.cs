@@ -29,17 +29,17 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         {
             var container = this.CreateContainer();
             var messageRouters = container.GetExports<IMessageRouter>();
-            Assert.IsTrue(messageRouters.OfType<InProcessMessageRouter>().Any());
+            Assert.IsTrue(messageRouters.OfType<InProcessAppMessageRouter>().Any());
         }
 
         [Test]
         public async Task DispatchAsync_with_request()
         {
             var container = this.CreateContainer();
-            using (var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single())
+            using (var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessAppMessageRouter>().Single())
             {
                 var appContext = new Context(container);
-                inProcessRouter.Initialize(appContext);
+                await ServiceHelper.InitializeAsync(inProcessRouter, appContext);
 
                 ReplyReceivedEventArgs eventArgs = null;
                 inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;
@@ -57,10 +57,10 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         public async Task DispatchAsync_with_reply()
         {
             var container = this.CreateContainer();
-            using (var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessMessageRouter>().Single())
+            using (var inProcessRouter = container.GetExports<IMessageRouter>().OfType<InProcessAppMessageRouter>().Single())
             {
                 var appContext = new Context(container);
-                inProcessRouter.Initialize(appContext);
+                await ServiceHelper.InitializeAsync(inProcessRouter, appContext);
 
                 ReplyReceivedEventArgs eventArgs = null;
                 inProcessRouter.ReplyReceived += (s, e) => eventArgs = e;

@@ -303,9 +303,10 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
 
             public RemoteMessageBroker(
                 IContextFactory contextFactory,
+                IAppRuntime appRuntime,
                 ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
                 ISerializationService serializationService)
-                : base(contextFactory, routerFactories)
+                : base(contextFactory, appRuntime, routerFactories)
             {
                 this.serializationService = serializationService;
             }
@@ -330,8 +331,9 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
         {
             public LoggableMessageBroker(
                 IContextFactory contextFactory,
+                IAppRuntime appRuntime,
                 ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories)
-                : base(contextFactory, routerFactories)
+                : base(contextFactory, appRuntime, routerFactories)
             {
             }
 

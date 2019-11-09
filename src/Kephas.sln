@@ -180,6 +180,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Redis", "Kephas.Redi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Logging", "Kephas.Extensions.Logging\Kephas.Extensions.Logging.csproj", "{8D2A2D89-D925-4EEF-B111-723466A47320}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Redis.Tests", "Tests\Kephas.Messaging.Redis.Tests\Kephas.Messaging.Redis.Tests.csproj", "{C26088F4-086E-4A7A-82D8-0EDF7F0095C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -486,6 +488,10 @@ Global
 		{8D2A2D89-D925-4EEF-B111-723466A47320}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D2A2D89-D925-4EEF-B111-723466A47320}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D2A2D89-D925-4EEF-B111-723466A47320}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C26088F4-086E-4A7A-82D8-0EDF7F0095C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C26088F4-086E-4A7A-82D8-0EDF7F0095C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C26088F4-086E-4A7A-82D8-0EDF7F0095C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C26088F4-086E-4A7A-82D8-0EDF7F0095C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -523,6 +529,7 @@ Global
 		{8FBCE11F-3B56-4166-B5C1-2B391A644127} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{0B937C85-0612-413E-B0C7-3DAAFFF62AFE} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{060279F8-A987-485A-96E0-6DBB96C3AD59} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{C26088F4-086E-4A7A-82D8-0EDF7F0095C0} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

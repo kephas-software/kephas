@@ -22,12 +22,13 @@ namespace Kephas.Messaging.Distributed.Routing
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
+    using Kephas.Services.Transitioning;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for message routers.
     /// </summary>
-    public abstract class MessageRouterBase : Loggable, IMessageRouter, IDisposable
+    public abstract class MessageRouterBase : Loggable, IMessageRouter, IAsyncInitializable, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageRouterBase"/> class.
@@ -40,6 +41,9 @@ namespace Kephas.Messaging.Distributed.Routing
         {
             this.ContextFactory = contextFactory;
             this.MessageProcessor = messageProcessor;
+
+            this.InitializationMonitor = new InitializationMonitor<InProcessAppMessageRouter>(this.GetType());
+            this.FinalizationMonitor = new FinalizationMonitor<InProcessAppMessageRouter>(this.GetType());
         }
 
         /// <summary>
@@ -62,6 +66,78 @@ namespace Kephas.Messaging.Distributed.Routing
         /// The message processor.
         /// </value>
         public IMessageProcessor MessageProcessor { get; }
+
+        /// <summary>
+        /// Gets the application context.
+        /// </summary>
+        /// <value>
+        /// The application context.
+        /// </value>
+        public IContext AppContext { get; private set; }
+
+        /// <summary>
+        /// Gets the initialization monitor.
+        /// </summary>
+        /// <value>
+        /// The initialization monitor.
+        /// </value>
+        protected InitializationMonitor<InProcessAppMessageRouter> InitializationMonitor { get; }
+
+        /// <summary>
+        /// Gets the finalization monitor.
+        /// </summary>
+        /// <value>
+        /// The finalization monitor.
+        /// </value>
+        protected FinalizationMonitor<InProcessAppMessageRouter> FinalizationMonitor { get; }
+
+        /// <summary>
+        /// Initializes the service asynchronously.
+        /// </summary>
+        /// <param name="context">Optional. An optional context for initialization.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public async Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        {
+            this.InitializationMonitor.AssertIsNotStarted();
+
+            var messageRouterName = this.GetType().Name;
+            this.Logger.Info($"Starting the {messageRouterName} message router...");
+
+            this.AppContext = context;
+
+            this.InitializationMonitor.Start();
+
+            try
+            {
+                await this.InitializeCoreAsync(context, cancellationToken).PreserveThreadContext();
+
+                this.InitializationMonitor.Complete();
+
+                this.Logger.Info($"{messageRouterName} started.");
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Warn(ex, $"{messageRouterName} failed to initialize.");
+                this.InitializationMonitor.Fault(ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Actual initialization of the router.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected virtual Task InitializeCoreAsync(IContext context, CancellationToken cancellationToken)
+        {
+            return TaskHelper.CompletedTask;
+        }
 
         /// <summary>
         /// Sends the brokered message asynchronously over the physical medium.
@@ -131,6 +207,40 @@ namespace Kephas.Messaging.Distributed.Routing
         ///                         release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
+            if (this.InitializationMonitor.IsNotStarted)
+            {
+                return;
+            }
+
+            if (this.FinalizationMonitor.IsCompleted)
+            {
+                return;
+            }
+
+            this.InitializationMonitor.AssertIsCompletedSuccessfully();
+
+            var messageRouterName = this.GetType().Name;
+            try
+            {
+                this.Logger.Info($"Stopping the {messageRouterName} message router...");
+
+                this.FinalizationMonitor.Start();
+
+                this.DisposeCore();
+
+                this.FinalizationMonitor.Complete();
+                this.Logger.Info($"{messageRouterName} message router stopped.");
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Warn(ex, $"{messageRouterName} failed to stop.");
+                this.FinalizationMonitor.Fault(ex);
+                throw;
+            }
+            finally
+            {
+                this.InitializationMonitor.Reset();
+            }
         }
 
         /// <summary>
@@ -235,6 +345,13 @@ namespace Kephas.Messaging.Distributed.Routing
         protected virtual void OnReplyReceived(ReplyReceivedEventArgs eventArgs)
         {
             this.ReplyReceived?.Invoke(this, eventArgs);
+        }
+
+        /// <summary>
+        /// Actual implementation of the router disposal.
+        /// </summary>
+        protected virtual void DisposeCore()
+        {
         }
     }
 }

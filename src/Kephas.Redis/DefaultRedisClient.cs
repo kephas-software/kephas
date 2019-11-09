@@ -15,8 +15,11 @@ namespace Kephas.Redis
     using System.Threading.Tasks;
 
     using Kephas.Configuration;
+    using Kephas.ExceptionHandling;
+    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Redis.Configuration;
+    using Kephas.Redis.Interaction;
     using Kephas.Redis.Logging;
     using Kephas.Services;
     using Kephas.Services.Transitioning;
@@ -32,6 +35,7 @@ namespace Kephas.Redis
         private readonly InitializationMonitor<IRedisClient> initMonitor;
         private readonly ILogManager logManager;
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
+        private readonly IEventHub eventHub;
         private ConnectionMultiplexer connection;
 
         /// <summary>
@@ -39,12 +43,15 @@ namespace Kephas.Redis
         /// </summary>
         /// <param name="logManager">Manager for log.</param>
         /// <param name="redisConfiguration">The redis configuration.</param>
+        /// <param name="eventHub">The event hub.</param>
         public DefaultRedisClient(
             ILogManager logManager,
-            IConfiguration<RedisClientSettings> redisConfiguration)
+            IConfiguration<RedisClientSettings> redisConfiguration,
+            IEventHub eventHub)
         {
             this.logManager = logManager;
             this.redisConfiguration = redisConfiguration;
+            this.eventHub = eventHub;
             this.initMonitor = new InitializationMonitor<IRedisClient>(this.GetType());
         }
 
@@ -76,7 +83,7 @@ namespace Kephas.Redis
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public async Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
         {
             this.initMonitor.AssertIsNotStarted();
 
@@ -87,16 +94,16 @@ namespace Kephas.Redis
                 var settings = this.redisConfiguration.Settings;
                 this.connection = ConnectionMultiplexer.Connect(settings.ConnectionString, new RedisLogger(this.logManager));
                 this.initMonitor.Complete();
+
+                await this.eventHub.PublishAsync(new RedisClientInitializedSignal(), context, cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Error while connecting to Redis server.");
+                this.Logger.Fatal(ex, "Error while connecting to Redis server.");
                 this.initMonitor.Fault(ex);
 
-                throw;
+                await this.eventHub.PublishAsync(new RedisClientInitializedSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
             }
-
-            return Task.CompletedTask;
         }
 
         /// <summary>

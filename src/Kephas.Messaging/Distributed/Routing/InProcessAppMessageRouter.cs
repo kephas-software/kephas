@@ -21,45 +21,39 @@ namespace Kephas.Messaging.Distributed.Routing
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Services;
-    using Kephas.Services.Transitioning;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// An in process message router invoking the message processor.
     /// </summary>
     [ProcessingPriority(Priority.Lowest)]
-    [MessageRouter(IsFallback = true)]
-    public class InProcessMessageRouter : MessageRouterBase, IInitializable
+    [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
+    public class InProcessAppMessageRouter : MessageRouterBase, IAsyncInitializable
     {
-        private const string ChannelType = Endpoint.AppScheme;
+        /// <summary>
+        /// The channel type handled by the <see cref="InProcessAppMessageRouter"/>.
+        /// </summary>
+        public const string ChannelType = Endpoint.AppScheme;
 
         private static readonly ConcurrentDictionary<string, MessageQueue> Channels = new ConcurrentDictionary<string, MessageQueue>();
 
-        private readonly InitializationMonitor<InProcessMessageRouter> initializationMonitor;
-        private readonly FinalizationMonitor<InProcessMessageRouter> finalizationMonitor;
-
-        private IContext appContext;
         private MessageQueue messageQueue;
         private MessageQueue appMessageQueue;
         private MessageQueue appInstanceMessageQueue;
-        private string rootChannelName;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InProcessMessageRouter"/> class.
+        /// Initializes a new instance of the <see cref="InProcessAppMessageRouter"/> class.
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        public InProcessMessageRouter(
+        public InProcessAppMessageRouter(
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor)
             : base(contextFactory, messageProcessor)
         {
             this.AppRuntime = appRuntime;
-
-            this.initializationMonitor = new InitializationMonitor<InProcessMessageRouter>(this.GetType());
-            this.finalizationMonitor = new FinalizationMonitor<InProcessMessageRouter>(this.GetType());
         }
 
         /// <summary>
@@ -71,36 +65,43 @@ namespace Kephas.Messaging.Distributed.Routing
         public IAppRuntime AppRuntime { get; }
 
         /// <summary>
-        /// Initializes the service.
+        /// Gets the name of the root channel.
         /// </summary>
-        /// <param name="context">Optional. An optional context for initialization.</param>
-        public virtual void Initialize(IContext context = null)
+        /// <value>
+        /// The name of the root channel.
+        /// </value>
+        protected string RootChannelName { get; private set; }
+
+        /// <summary>
+        /// Actual initialization of the router.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected override async Task InitializeCoreAsync(IContext context, CancellationToken cancellationToken)
         {
-            this.initializationMonitor.AssertIsNotStarted();
-
-            var messageRouterName = this.GetType().Name;
-            this.Logger.Info($"Starting the {messageRouterName} message router...");
-
-            this.initializationMonitor.Start();
-
-            this.appContext = context;
-
-            this.rootChannelName = ChannelType;
-            this.messageQueue = Channels.GetOrAdd(this.rootChannelName, _ => new MessageQueue(this.rootChannelName));
+            this.RootChannelName = this.ComputeRootChannelName();
+            this.messageQueue = Channels.GetOrAdd(this.RootChannelName, _ => new MessageQueue(this.RootChannelName));
             this.messageQueue.MessageArrived += this.HandleMessageArrivedAsync;
 
-            var appChannelName = $"{this.rootChannelName}:{this.AppRuntime.GetAppId()}";
+            var appChannelName = $"{this.RootChannelName}:{this.AppRuntime.GetAppId()}";
             this.appMessageQueue = Channels.GetOrAdd(appChannelName, _ => new MessageQueue(appChannelName));
             this.appMessageQueue.MessageArrived += this.HandleMessageArrivedAsync;
 
-            var appInstanceChannelName = $"{this.rootChannelName}:{this.AppRuntime.GetAppInstanceId()}";
+            var appInstanceChannelName = $"{this.RootChannelName}:{this.AppRuntime.GetAppInstanceId()}";
             this.appInstanceMessageQueue = Channels.GetOrAdd(appInstanceChannelName, _ => new MessageQueue(appInstanceChannelName));
             this.appInstanceMessageQueue.MessageArrived += this.HandleMessageArrivedAsync;
-
-            this.Logger.Info($"{messageRouterName} started.");
-
-            this.initializationMonitor.Complete();
         }
+
+        /// <summary>
+        /// Calculates the root channel name.
+        /// </summary>
+        /// <returns>
+        /// The calculated root channel name.
+        /// </returns>
+        protected virtual string ComputeRootChannelName() => ChannelType;
 
         /// <summary>
         /// Handles the message arrived event.
@@ -115,28 +116,12 @@ namespace Kephas.Messaging.Distributed.Routing
             try
             {
                 var brokeredMessage = e.Message;
-                await this.RouteInputAsync(brokeredMessage, this.appContext, default).PreserveThreadContext();
+                await this.RouteInputAsync(brokeredMessage, this.AppContext, default).PreserveThreadContext();
             }
             catch (Exception ex)
             {
                 this.Logger.Error(ex, $"Error while handling message '{e.Message}'.");
             }
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
-        /// resources.
-        /// </summary>
-        /// <param name="disposing">True to release both managed and unmanaged resources; false to
-        ///                         release only unmanaged resources.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (this.initializationMonitor.IsNotStarted)
-            {
-                return;
-            }
-
-            this.FinalizeCore();
         }
 
         /// <summary>
@@ -182,66 +167,54 @@ namespace Kephas.Messaging.Distributed.Routing
         /// </returns>
         protected override async Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
-            this.initializationMonitor.AssertIsCompletedSuccessfully();
+            this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
             if (brokeredMessage.Recipients?.Any() ?? false)
             {
                 foreach (var recipient in brokeredMessage.Recipients)
                 {
-                    var channelName = string.IsNullOrEmpty(recipient.AppInstanceId)
-                                        ? string.IsNullOrEmpty(recipient.AppId)
-                                            ? this.rootChannelName
-                                            : $"{this.rootChannelName}:{recipient.AppId}"
-                                        : $"{this.rootChannelName}:{recipient.AppInstanceId}";
+                    var channelName = this.GetChannelName(recipient);
                     await this.PublishAsync(brokeredMessage, channelName).PreserveThreadContext();
                 }
             }
             else
             {
-                await this.PublishAsync(brokeredMessage, this.rootChannelName).PreserveThreadContext();
+                await this.PublishAsync(brokeredMessage, this.RootChannelName).PreserveThreadContext();
             }
 
             return (RoutingInstruction.None, null);
+        }
+
+        /// <summary>
+        /// Gets the channel name for the provided recipient.
+        /// </summary>
+        /// <param name="recipient">The recipient.</param>
+        /// <returns>
+        /// The channel name.
+        /// </returns>
+        protected virtual string GetChannelName(IEndpoint recipient)
+        {
+            return string.IsNullOrEmpty(recipient.AppInstanceId)
+                        ? string.IsNullOrEmpty(recipient.AppId)
+                            ? this.RootChannelName
+                            : $"{this.RootChannelName}:{recipient.AppId}"
+                        : $"{this.RootChannelName}:{recipient.AppInstanceId}";
+        }
+
+        /// <summary>
+        /// Actual implementation of the router disposal.
+        /// </summary>
+        protected override void DisposeCore()
+        {
+            this.messageQueue.MessageArrived -= this.HandleMessageArrivedAsync;
+            this.appMessageQueue.MessageArrived -= this.HandleMessageArrivedAsync;
+            this.appInstanceMessageQueue.MessageArrived -= this.HandleMessageArrivedAsync;
         }
 
         private async Task PublishAsync(IBrokeredMessage message, string channelName)
         {
             var queue = Channels.GetOrAdd(channelName, _ => new MessageQueue(channelName));
             await queue.PublishAsync(message).PreserveThreadContext();
-        }
-
-        private void FinalizeCore()
-        {
-            if (this.finalizationMonitor.IsCompleted)
-            {
-                return;
-            }
-
-            this.initializationMonitor.AssertIsCompletedSuccessfully();
-
-            var messageRouterName = this.GetType().Name;
-            this.Logger.Info($"Stopping the {messageRouterName} message router...");
-
-            this.finalizationMonitor.Start();
-            try
-            {
-                this.messageQueue.MessageArrived -= this.HandleMessageArrivedAsync;
-                this.appMessageQueue.MessageArrived -= this.HandleMessageArrivedAsync;
-                this.appInstanceMessageQueue.MessageArrived -= this.HandleMessageArrivedAsync;
-
-                this.finalizationMonitor.Complete();
-                this.Logger.Info($"{messageRouterName} message router stopped.");
-            }
-            catch (Exception ex)
-            {
-                this.Logger.Warn(ex, $"{messageRouterName} failed to stop.");
-                this.finalizationMonitor.Fault(ex);
-                throw;
-            }
-            finally
-            {
-                this.initializationMonitor.Reset();
-            }
         }
 
         /// <summary>
@@ -295,7 +268,7 @@ namespace Kephas.Messaging.Distributed.Routing
 
                     try
                     {
-                        this.MessageArrived.Invoke(this, new MessageEventArgs(msg));
+                        this.MessageArrived?.Invoke(this, new MessageEventArgs(msg));
                     }
                     catch (Exception ex)
                     {
