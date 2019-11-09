@@ -120,7 +120,7 @@ namespace Kephas.Application
         /// Initializes the application asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -171,9 +171,9 @@ namespace Kephas.Application
         /// Finalizes the application asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// An asynchronous result.
         /// </returns>
         public virtual async Task FinalizeAppAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
