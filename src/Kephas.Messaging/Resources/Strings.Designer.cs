@@ -151,6 +151,15 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors occurred while redirecting reply &apos;{0}&apos;..
+        /// </summary>
+        public static string DefaultMessageBroker_ErrorsOccurredWhileRedirecting_Exception {
+            get {
+                return ResourceManager.GetString("DefaultMessageBroker_ErrorsOccurredWhileRedirecting_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errors occurred while sending message &apos;{0}&apos;..
         /// </summary>
         public static string DefaultMessageBroker_ErrorsOccurredWhileSending_Exception {
@@ -160,11 +169,56 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not enqueue brokered message (#{0}, {1}) timeout: {2}..
+        /// </summary>
+        public static string DefaultMessageBroker_LogOnEnqueue_NotAddedError {
+            get {
+                return ResourceManager.GetString("DefaultMessageBroker_LogOnEnqueue_NotAddedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enqueue brokered message (#{0}, {1}) timeout: {2}..
+        /// </summary>
+        public static string DefaultMessageBroker_LogOnEnqueue_Success {
+            get {
+                return ResourceManager.GetString("DefaultMessageBroker_LogOnEnqueue_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Received a reply message without the {0} being set (&apos;{0}&apos;)..
+        /// </summary>
+        public static string DefaultMessageBroker_MissingReplyToMessageId_Exception {
+            get {
+                return ResourceManager.GetString("DefaultMessageBroker_MissingReplyToMessageId_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot send message to the following recipients: {0}. There is no message router to handle them..
         /// </summary>
         public static string DefaultMessageBroker_NoMessageRoutersCanHandleRecipients_Exception {
             get {
                 return ResourceManager.GetString("DefaultMessageBroker_NoMessageRoutersCanHandleRecipients_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Received reply &apos;{0}&apos;, which has no corresponding request. Possible cause: a timeout may have had interrupted the communication..
+        /// </summary>
+        public static string DefaultMessageBroker_ReplyToMessageNotFound_Exception {
+            get {
+                return ResourceManager.GetString("DefaultMessageBroker_ReplyToMessageNotFound_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum allotted time of {0} expired for {1}..
+        /// </summary>
+        public static string DefaultMessageBroker_Timeout_Exception {
+            get {
+                return ResourceManager.GetString("DefaultMessageBroker_Timeout_Exception", resourceCulture);
             }
         }
         
@@ -219,51 +273,6 @@ namespace Kephas.Messaging.Resources {
         public static string MessageAdapter_MessageNotSet_Exception {
             get {
                 return ResourceManager.GetString("MessageAdapter_MessageNotSet_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not enqueue brokered message (#{0}, {1}) timeout: {2}..
-        /// </summary>
-        public static string MessageBrokerBase_LogOnEnqueue_NotAddedError {
-            get {
-                return ResourceManager.GetString("MessageBrokerBase_LogOnEnqueue_NotAddedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enqueue brokered message (#{0}, {1}) timeout: {2}..
-        /// </summary>
-        public static string MessageBrokerBase_LogOnEnqueue_Success {
-            get {
-                return ResourceManager.GetString("MessageBrokerBase_LogOnEnqueue_Success", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Received a reply message without the {0} being set. Content: {1}..
-        /// </summary>
-        public static string MessageBrokerBase_MissingReplyToMessageId_Exception {
-            get {
-                return ResourceManager.GetString("MessageBrokerBase_MissingReplyToMessageId_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Received a reply to &apos;{0}&apos; for which the corresponding original message was not found. Possible cause: a timeout may have had interrupted the communication. Content: {1}..
-        /// </summary>
-        public static string MessageBrokerBase_ReplyToMessageNotFound_Exception {
-            get {
-                return ResourceManager.GetString("MessageBrokerBase_ReplyToMessageNotFound_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The maximum alloted time of {0} expired for {1}..
-        /// </summary>
-        public static string MessageBrokerBase_Timeout_Exception {
-            get {
-                return ResourceManager.GetString("MessageBrokerBase_Timeout_Exception", resourceCulture);
             }
         }
         

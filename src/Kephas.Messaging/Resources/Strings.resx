@@ -126,11 +126,8 @@
   <data name="MessageHandler_BadMessageType_Exception" xml:space="preserve">
     <value>The message to process must be of type '{0}', received '{1}'.</value>
   </data>
-  <data name="MessageBrokerBase_MissingReplyToMessageId_Exception" xml:space="preserve">
-    <value>Received a reply message without the {0} being set. Content: {1}.</value>
-  </data>
-  <data name="MessageBrokerBase_ReplyToMessageNotFound_Exception" xml:space="preserve">
-    <value>Received a reply to '{0}' for which the corresponding original message was not found. Possible cause: a timeout may have had interrupted the communication. Content: {1}.</value>
+  <data name="DefaultMessageBroker_ReplyToMessageNotFound_Exception" xml:space="preserve">
+    <value>Received reply '{0}', which has no corresponding request. Possible cause: a timeout may have had interrupted the communication.</value>
   </data>
   <data name="BrokeredMessage_ContentNullWhenNotReply_Exception" xml:space="preserve">
     <value>The content message may be null only for replies: '{0}'. Use {1}() before setting the content if you intend to create a reply.</value>
@@ -138,8 +135,8 @@
   <data name="DispatchingContext_NonNegativeTimeout_Exception" xml:space="preserve">
     <value>Cannot specify a negative timeout value.</value>
   </data>
-  <data name="MessageBrokerBase_Timeout_Exception" xml:space="preserve">
-    <value>The maximum alloted time of {0} expired for {1}.</value>
+  <data name="DefaultMessageBroker_Timeout_Exception" xml:space="preserve">
+    <value>The maximum allotted time of {0} expired for {1}.</value>
   </data>
   <data name="MessageRouterBase_Reply_Exception" xml:space="preserve">
     <value>An error occurred while sending the reply to '{0}'. Please check the exception details for more information.</value>
@@ -162,10 +159,10 @@
   <data name="BrokeredMessageHandler_ProcessOneWay_Canceled" xml:space="preserve">
     <value>The one-way processing was canceled.</value>
   </data>
-  <data name="MessageBrokerBase_LogOnEnqueue_NotAddedError" xml:space="preserve">
+  <data name="DefaultMessageBroker_LogOnEnqueue_NotAddedError" xml:space="preserve">
     <value>Could not enqueue brokered message (#{0}, {1}) timeout: {2}.</value>
   </data>
-  <data name="MessageBrokerBase_LogOnEnqueue_Success" xml:space="preserve">
+  <data name="DefaultMessageBroker_LogOnEnqueue_Success" xml:space="preserve">
     <value>Enqueue brokered message (#{0}, {1}) timeout: {2}.</value>
   </data>
   <data name="MessageAdapter_MessageNotSet_Exception" xml:space="preserve">
@@ -203,5 +200,11 @@
   </data>
   <data name="BrokeredMessage_RecipientRequired_Exception" xml:space="preserve">
     <value>Must provide at least one recipient if the message is not an event: '{0}'.</value>
+  </data>
+  <data name="DefaultMessageBroker_ErrorsOccurredWhileRedirecting_Exception" xml:space="preserve">
+    <value>Errors occurred while redirecting reply '{0}'.</value>
+  </data>
+  <data name="DefaultMessageBroker_MissingReplyToMessageId_Exception" xml:space="preserve">
+    <value>Received a reply message without the {0} being set ('{0}').</value>
   </data>
 </root>

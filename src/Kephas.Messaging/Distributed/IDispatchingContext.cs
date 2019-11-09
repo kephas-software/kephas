@@ -76,7 +76,7 @@ namespace Kephas.Messaging.Distributed
         /// This <paramref name="context"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TContext From<TContext>(this TContext context, IMessageRouter inputRouter)
+        public static TContext InputRouter<TContext>(this TContext context, IMessageRouter inputRouter)
             where TContext : class, IDispatchingContext
         {
             Requires.NotNull(context, nameof(context));
