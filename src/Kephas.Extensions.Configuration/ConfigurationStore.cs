@@ -10,6 +10,10 @@
 
 namespace Kephas.Extensions.Configuration
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Kephas.Collections;
     using Kephas.Configuration;
     using Kephas.Dynamic;
 
@@ -20,10 +24,9 @@ namespace Kephas.Extensions.Configuration
     /// </summary>
     public class ConfigurationStore : IConfigurationStore
     {
-        /// <summary>
-        /// The configuration.
-        /// </summary>
         private readonly IConfiguration configuration;
+        private IDictionary<string, object> settingsMap = new Dictionary<string, object>();
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationStore"/> class.
@@ -51,7 +54,49 @@ namespace Kephas.Extensions.Configuration
         public object this[string key]
         {
             get => this.configuration[key];
-            set => this.SetValue(key, value);
+            set => this.SetTypedValue(key, value, syncSettings: true);
+        }
+
+        /// <summary>
+        /// Configures the settings.
+        /// </summary>
+        /// <typeparam name="TSettings">Type of the settings.</typeparam>
+        /// <param name="optionsConfig">The options configuration.</param>
+        public void Configure<TSettings>(Action<TSettings> optionsConfig)
+            where TSettings : class, new()
+        {
+            if (!this.settingsMap.TryGetValue(typeof(TSettings).FullName, out var settings))
+            {
+                settings = new TSettings();
+                this.settingsMap.Add(typeof(TSettings).FullName, settings);
+            }
+
+            optionsConfig?.Invoke((TSettings)settings);
+
+            this.SetTypedValue(typeof(TSettings).FullName, settings, syncSettings: false);
+        }
+
+        /// <summary>
+        /// Tries to get the indicated settings.
+        /// </summary>
+        /// <param name="settingsType">Type of the settings.</param>
+        /// <returns>
+        /// The required settings or <c>null</c>.
+        /// </returns>
+        public object TryGetSettings(Type settingsType)
+        {
+            if (settingsType == null)
+            {
+                return null;
+            }
+
+            return this.settingsMap.TryGetValue(settingsType.FullName);
+        }
+
+        private void SetTypedValue(string key, object value, bool syncSettings)
+        {
+            // TODO synchronize with the settingsMap dictionary
+            this.SetValue(key, value);
         }
 
         private void SetValue(string key, object value)

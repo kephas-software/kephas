@@ -32,7 +32,7 @@ namespace Kephas
         /// <summary>
         /// Gets the logger with the provided name.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="loggerName">Name of the logger.</param>
         /// <returns>
         /// A logger for the provided name.
@@ -48,7 +48,7 @@ namespace Kephas
         /// <summary>
         /// Gets the logger for the provided type.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="type">The type.</param>
         /// <returns>
         /// A logger for the provided type.
@@ -65,7 +65,7 @@ namespace Kephas
         /// Gets the logger for the provided type.
         /// </summary>
         /// <typeparam name="T">The type for which a logger should be created.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// A logger for the provided type.
         /// </returns>
@@ -77,10 +77,28 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Configures the settings.
+        /// </summary>
+        /// <typeparam name="TSettings">Type of the settings.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="optionsConfig">The options configuration.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices Configure<TSettings>(this IAmbientServices ambientServices, Action<TSettings> optionsConfig)
+            where TSettings : class, new()
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            ambientServices.ConfigurationStore.Configure(optionsConfig);
+            return ambientServices;
+        }
+
+        /// <summary>
         /// Registers the provided service.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="builder">The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
@@ -95,10 +113,10 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service as allowing multiple registrations.
+        /// Registers the provided service, allowing also multiple registrations.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="builder">The registration builder.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
@@ -122,7 +140,7 @@ namespace Kephas
         /// Registers the provided service instance.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="service">The service.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
@@ -137,11 +155,29 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Registers the provided service instance, allowing also multiple registrations.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="service">The service.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterMultiple<TService>(this IAmbientServices ambientServices, TService service)
+            where TService : class
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(service, nameof(service));
+
+            return ambientServices.Register(typeof(TService), b => b.WithInstance(service).AllowMultiple());
+        }
+
+        /// <summary>
         /// Registers the provided service with implementation type as singleton.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
         /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
@@ -157,11 +193,32 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Registers the provided service with implementation type as singleton.
+        /// Registers the provided service with implementation type as singleton, allowing also multiple registrations.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
         /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterMultiple<TService, TServiceImplementation>(this IAmbientServices ambientServices)
+            where TService : class
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            return ambientServices.Register(
+                typeof(TService),
+                b => b.WithType(typeof(TServiceImplementation))
+                      .AsSingleton()
+                      .AllowMultiple());
+        }
+
+        /// <summary>
+        /// Registers the provided service with implementation type as transient.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
@@ -177,10 +234,31 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Registers the provided service with implementation type as transient, allowing also multiple registrations.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterTransientMultiple<TService, TServiceImplementation>(this IAmbientServices ambientServices)
+            where TService : class
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            return ambientServices.Register(
+                typeof(TService),
+                b => b.WithType(typeof(TServiceImplementation))
+                      .AsTransient()
+                      .AllowMultiple());
+        }
+
+        /// <summary>
         /// Registers the provided service as singleton factory.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
@@ -196,14 +274,38 @@ namespace Kephas
             return ambientServices.Register(
                 typeof(TService),
                 b => b.WithFactory(ctx => serviceFactory())
-                            .AsSingleton());
+                      .AsSingleton());
+        }
+
+        /// <summary>
+        /// Registers the provided service as singleton factory, allowing also multiple registrations.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterMultiple<TService>(
+            this IAmbientServices ambientServices,
+            Func<TService> serviceFactory)
+            where TService : class
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+
+            return ambientServices.Register(
+                typeof(TService),
+                b => b.WithFactory(ctx => serviceFactory())
+                      .AsSingleton()
+                      .AllowMultiple());
         }
 
         /// <summary>
         /// Registers the provided service as transient factory.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
@@ -219,13 +321,37 @@ namespace Kephas
             return ambientServices.Register(
                 typeof(TService),
                 b => b.WithFactory(ctx => serviceFactory())
-                            .AsTransient());
+                      .AsTransient());
+        }
+
+        /// <summary>
+        /// Registers the provided service as transient factory, allowing also multiple registrations.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterTransientMultiple<TService>(
+            this IAmbientServices ambientServices,
+            Func<TService> serviceFactory)
+            where TService : class
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+
+            return ambientServices.Register(
+                typeof(TService),
+                b => b.WithFactory(ctx => serviceFactory())
+                      .AsTransient()
+                      .AllowMultiple());
         }
 
         /// <summary>
         /// Registers the provided service as singleton factory.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <returns>
@@ -243,13 +369,38 @@ namespace Kephas
             return ambientServices.Register(
                 serviceType,
                 b => b.WithFactory(ctx => serviceFactory())
-                            .AsSingleton());
+                      .AsSingleton());
+        }
+
+        /// <summary>
+        /// Registers the provided service as singleton factory, allowing also multiple registrations.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterMultiple(
+            this IAmbientServices ambientServices,
+            Type serviceType,
+            Func<object> serviceFactory)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+
+            return ambientServices.Register(
+                serviceType,
+                b => b.WithFactory(ctx => serviceFactory())
+                      .AsSingleton()
+                      .AllowMultiple());
         }
 
         /// <summary>
         /// Registers the provided service as transient factory.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="serviceFactory">The service factory.</param>
         /// <returns>
@@ -267,14 +418,39 @@ namespace Kephas
             return ambientServices.Register(
                 serviceType,
                 b => b.WithFactory(ctx => serviceFactory())
-                            .AsTransient());
+                      .AsTransient());
+        }
+
+        /// <summary>
+        /// Registers the provided service as transient factory, allowing also multiple registrations.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceFactory">The service factory.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterTransientMultiple(
+            this IAmbientServices ambientServices,
+            Type serviceType,
+            Func<object> serviceFactory)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(serviceFactory, nameof(serviceFactory));
+
+            return ambientServices.Register(
+                serviceType,
+                b => b.WithFactory(ctx => serviceFactory())
+                      .AsTransient()
+                      .AllowMultiple());
         }
 
         /// <summary>
         /// Registers the provided service.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="service">The service.</param>
         /// <returns>
@@ -289,14 +465,35 @@ namespace Kephas
             Requires.NotNull(serviceType, nameof(serviceType));
             Requires.NotNull(service, nameof(service));
 
-            ambientServices.Register(serviceType, b => b.WithInstance(service));
-            return ambientServices;
+            return ambientServices.Register(serviceType, b => b.WithInstance(service));
+        }
+
+        /// <summary>
+        /// Registers the provided service, allowing also multiple registrations.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="service">The service.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterMultiple(
+            this IAmbientServices ambientServices,
+            Type serviceType,
+            object service)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(service, nameof(service));
+
+            return ambientServices.Register(serviceType, b => b.WithInstance(service).AllowMultiple());
         }
 
         /// <summary>
         /// Registers the provided service as singleton.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="serviceImplementationType">The service implementation type.</param>
         /// <returns>
@@ -318,9 +515,33 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Registers the provided service as singleton, allowing also multiple registrations.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceImplementationType">The service implementation type.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterMultiple(
+            this IAmbientServices ambientServices,
+            Type serviceType,
+            Type serviceImplementationType)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
+
+            ambientServices.Register(
+                serviceType,
+                b => b.WithType(serviceImplementationType).AsSingleton().AllowMultiple());
+            return ambientServices;
+        }
+
+        /// <summary>
         /// Registers the provided service as transient.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="serviceImplementationType">The service implementation type.</param>
         /// <returns>
@@ -342,10 +563,34 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Registers the provided service as transient, allowing also multiple registrations.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serviceImplementationType">The service implementation type.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterTransientMultiple(
+            this IAmbientServices ambientServices,
+            Type serviceType,
+            Type serviceImplementationType)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(serviceType, nameof(serviceType));
+            Requires.NotNull(serviceImplementationType, nameof(serviceImplementationType));
+
+            ambientServices.Register(
+                serviceType,
+                b => b.WithType(serviceImplementationType).AsTransient().AllowMultiple());
+            return ambientServices;
+        }
+
+        /// <summary>
         /// Gets the service with the provided type.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// A service object of type <typeparamref name="TService"/>.-or- <c>null</c> if there is no
         /// service object of type <typeparamref name="TService"/>.
@@ -361,7 +606,7 @@ namespace Kephas
         /// <summary>
         /// Gets the service with the provided type.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="serviceType">Type of the service.</param>
         /// <returns>
         /// A service object of type <paramref name="serviceType"/>.
@@ -387,7 +632,7 @@ namespace Kephas
         /// Gets the service with the provided type.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
         /// A service object of type <typeparamref name="TService"/>.-or- <c>null</c> if there is no
         /// service object of type <typeparamref name="TService"/>.
@@ -401,7 +646,7 @@ namespace Kephas
         /// <summary>
         /// Sets the configuration store to the ambient services.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="configurationStore">The configuration store.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
@@ -419,7 +664,7 @@ namespace Kephas
         /// <summary>
         /// Sets the log manager to the ambient services.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="logManager">The log manager.</param>
         /// <param name="replaceDefault">Optional. True to replace the <see cref="Loggable.DefaultLogManager"/>.</param>
         /// <returns>
@@ -443,7 +688,7 @@ namespace Kephas
         /// <summary>
         /// Sets the application runtime to the ambient services.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
@@ -461,7 +706,7 @@ namespace Kephas
         /// <summary>
         /// Sets the composition container to the ambient services.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="compositionContainer">The composition container.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
@@ -480,7 +725,7 @@ namespace Kephas
         /// Sets the composition container to the ambient services.
         /// </summary>
         /// <typeparam name="TContainerBuilder">Type of the composition container builder.</typeparam>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
         /// <remarks>The container builder type must provide a constructor with one parameter of type <see cref="IContext" />.</remarks>
         /// <returns>
