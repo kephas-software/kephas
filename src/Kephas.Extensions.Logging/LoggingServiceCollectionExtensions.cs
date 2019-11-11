@@ -33,7 +33,7 @@ namespace Kephas.Extensions.Logging
 
             var serviceCollection = ambientServices.GetRequiredService<IServiceCollection>();
 
-            serviceCollection.Replace(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
+            serviceCollection.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, LoggerProvider>(_ => new LoggerProvider(ambientServices.LogManager)));
 
             return ambientServices;
         }

@@ -1,63 +1,54 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LoggerFactory.cs" company="Kephas Software SRL">
+// <copyright file="LoggerProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the logger factory class.
+//   Implements the logger provider class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Extensions.Logging
 {
     using Kephas.Logging;
-
     using Microsoft.Extensions.Logging;
 
     using ILogger = Microsoft.Extensions.Logging.ILogger;
 
     /// <summary>
-    /// A logger factory.
+    /// A logger provider.
     /// </summary>
-    public class LoggerFactory : ILoggerFactory
+    public class LoggerProvider : ILoggerProvider
     {
-        /// <summary>
-        /// The log manager.
-        /// </summary>
         private readonly ILogManager logManager;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoggerFactory"/> class.
+        /// Initializes a new instance of the <see cref="LoggerProvider"/> class.
         /// </summary>
-        /// <param name="logManager">The log manager.</param>
-        public LoggerFactory(ILogManager logManager)
+        /// <param name="logManager">Manager for log.</param>
+        public LoggerProvider(ILogManager logManager)
         {
             this.logManager = logManager;
-        }
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public void Dispose()
-        {
         }
 
         /// <summary>
         /// Creates a new <see cref="T:Microsoft.Extensions.Logging.ILogger" /> instance.
         /// </summary>
         /// <param name="categoryName">The category name for messages produced by the logger.</param>
-        /// <returns>The <see cref="T:Microsoft.Extensions.Logging.ILogger" />.</returns>
+        /// <returns>
+        /// The new logger.
+        /// </returns>
         public ILogger CreateLogger(string categoryName)
         {
-            var logger = this.logManager.GetLogger(categoryName);
-            return new Logger(logger);
+            return new Logger(this.logManager.GetLogger(categoryName));
         }
 
         /// <summary>
-        /// Adds an <see cref="T:Microsoft.Extensions.Logging.ILoggerProvider" /> to the logging system.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
         /// </summary>
-        /// <param name="provider">The <see cref="T:Microsoft.Extensions.Logging.ILoggerProvider" />.</param>
-        public void AddProvider(ILoggerProvider provider)
+        public void Dispose()
         {
-            // TODO check whether we don't need to add a composite logger.
         }
     }
 }

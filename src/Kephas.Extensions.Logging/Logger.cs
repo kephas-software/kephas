@@ -19,9 +19,6 @@ namespace Kephas.Extensions.Logging
     /// </summary>
     public class Logger : ILogger
     {
-        /// <summary>
-        /// The logger.
-        /// </summary>
         private readonly Kephas.Logging.ILogger logger;
 
         /// <summary>
@@ -45,9 +42,9 @@ namespace Kephas.Extensions.Logging
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             var kephasLogLevel = this.ToLogLevel(logLevel);
-            if (logger.IsEnabled(kephasLogLevel))
+            if (this.logger.IsEnabled(kephasLogLevel))
             {
-                logger.Log(kephasLogLevel, exception, formatter(state, exception));
+                this.logger.Log(kephasLogLevel, exception, formatter(state, exception));
             }
         }
 
