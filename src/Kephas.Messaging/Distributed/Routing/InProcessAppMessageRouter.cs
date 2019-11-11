@@ -171,10 +171,21 @@ namespace Kephas.Messaging.Distributed.Routing
 
             if (brokeredMessage.Recipients?.Any() ?? false)
             {
-                foreach (var recipient in brokeredMessage.Recipients)
+                var groups = brokeredMessage.Recipients
+                    .GroupBy(r => this.GetChannelName(r))
+                    .Select(g => (channelName: g.Key, recipients: g))
+                    .ToList();
+
+                if (groups.Count == 1)
                 {
-                    var channelName = this.GetChannelName(recipient);
-                    await this.PublishAsync(brokeredMessage, channelName).PreserveThreadContext();
+                    await this.PublishAsync(brokeredMessage, groups[0].channelName).PreserveThreadContext();
+                }
+                else
+                {
+                    foreach (var group in groups)
+                    {
+                        await this.PublishAsync(brokeredMessage.Clone(group.recipients.ToList()), group.channelName).PreserveThreadContext();
+                    }
                 }
             }
             else
