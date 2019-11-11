@@ -196,17 +196,30 @@ namespace Kephas.Messaging.Redis.Routing
                 return await base.RouteOutputAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
             }
 
-            var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true)).PreserveThreadContext();
             if (brokeredMessage.Recipients?.Any() ?? false)
             {
-                foreach (var recipient in brokeredMessage.Recipients)
+                var groups = brokeredMessage.Recipients
+                    .GroupBy(r => this.GetChannelName(r))
+                    .Select(g => (channelName: g.Key, recipients: g))
+                    .ToList();
+
+                if (groups.Count == 1)
                 {
-                    var channelName = this.GetChannelName(recipient);
-                    await this.PublishAsync(serializedMessage, channelName, brokeredMessage.IsOneWay).PreserveThreadContext();
+                    var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true)).PreserveThreadContext();
+                    await this.PublishAsync(serializedMessage, groups[0].channelName, brokeredMessage.IsOneWay).PreserveThreadContext();
+                }
+                else
+                {
+                    foreach (var group in groups)
+                    {
+                        var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage.Clone(group.recipients), ctx => ctx.IncludeTypeInfo(true)).PreserveThreadContext();
+                        await this.PublishAsync(serializedMessage, group.channelName, brokeredMessage.IsOneWay).PreserveThreadContext();
+                    }
                 }
             }
             else
             {
+                var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true)).PreserveThreadContext();
                 await this.PublishAsync(serializedMessage, this.redisRootChannelName, brokeredMessage.IsOneWay).PreserveThreadContext();
             }
 
