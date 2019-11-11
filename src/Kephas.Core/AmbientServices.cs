@@ -27,7 +27,6 @@ namespace Kephas
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
-    using Kephas.Resources;
     using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
 
@@ -45,11 +44,6 @@ namespace Kephas
     [ExcludeFromComposition]
     public class AmbientServices : Expando, IAmbientServices, IAppServiceInfoProvider
     {
-        /// <summary>
-        /// The internal global instance.
-        /// </summary>
-        private static IAmbientServices instance;
-
         private readonly IServiceRegistry registry = new ServiceRegistry();
 
         private readonly IResolverEngine resolver;
@@ -60,8 +54,6 @@ namespace Kephas
         /// <param name="registerDefaultServices">Optional. True to register default services.</param>
         public AmbientServices(bool registerDefaultServices = true)
         {
-            var logManager = new NullLogManager();
-
             this.Register<IAmbientServices>(this)
                 .Register<ICompositionContext>(this.AsCompositionContext());
 
@@ -69,15 +61,15 @@ namespace Kephas
             {
                 this
                     .Register<IConfigurationStore, DefaultConfigurationStore>()
-                    .Register<ILogManager>(logManager)
+                    .Register<ILogManager, NullLogManager>()
                     .Register<IAssemblyLoader, DefaultAssemblyLoader>()
                     .Register<ITypeLoader, DefaultTypeLoader>()
                     .Register<IAppRuntime, StaticAppRuntime>()
 
-                    .Register<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>().AllowMultiple())
+                    .RegisterMultiple<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>())
 
-                    .Register<IAppServiceInfoProvider>(b => b.WithInstance(this).AllowMultiple())
-                    .Register<IAppServiceInfoProvider>(b => b.WithType<AttributedAppServiceInfoProvider>().AllowMultiple());
+                    .RegisterMultiple<IAppServiceInfoProvider>(b => b.WithInstance(this))
+                    .RegisterMultiple<IAppServiceInfoProvider>(b => b.WithType<AttributedAppServiceInfoProvider>());
             }
 
             this.registry

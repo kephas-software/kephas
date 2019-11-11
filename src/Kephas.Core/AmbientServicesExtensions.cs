@@ -95,6 +95,30 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Registers the provided service as allowing multiple registrations.
+        /// </summary>
+        /// <typeparam name="TService">Type of the service.</typeparam>
+        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="builder">The registration builder.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices RegisterMultiple<TService>(this IAmbientServices ambientServices, Action<IServiceRegistrationBuilder> builder)
+            where TService : class
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(builder, nameof(builder));
+
+            return ambientServices.Register(
+                typeof(TService),
+                b =>
+                    {
+                        builder(b);
+                        b.AllowMultiple();
+                    });
+        }
+
+        /// <summary>
         /// Registers the provided service instance.
         /// </summary>
         /// <typeparam name="TService">Type of the service.</typeparam>
