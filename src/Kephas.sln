@@ -182,6 +182,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Logging",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Messaging.Redis.Tests", "Tests\Kephas.Messaging.Redis.Tests\Kephas.Messaging.Redis.Tests.csproj", "{C26088F4-086E-4A7A-82D8-0EDF7F0095C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Extensions.Hosting", "Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj", "{002A80E9-B604-464A-9E57-EE9191D0741F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -492,6 +494,10 @@ Global
 		{C26088F4-086E-4A7A-82D8-0EDF7F0095C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C26088F4-086E-4A7A-82D8-0EDF7F0095C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C26088F4-086E-4A7A-82D8-0EDF7F0095C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{002A80E9-B604-464A-9E57-EE9191D0741F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{002A80E9-B604-464A-9E57-EE9191D0741F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{002A80E9-B604-464A-9E57-EE9191D0741F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{002A80E9-B604-464A-9E57-EE9191D0741F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
