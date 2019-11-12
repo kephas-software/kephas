@@ -11,10 +11,8 @@
 namespace Kephas.Configuration.Providers
 {
     using System;
-    using Kephas;
+
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Reflection;
-    using Kephas.Resources;
     using Kephas.Services;
 
     /// <summary>
@@ -47,21 +45,7 @@ namespace Kephas.Configuration.Providers
         {
             Requires.NotNull(settingsType, nameof(settingsType));
 
-            var storeSettings = this.configurationStore[settingsType.FullName];
-            if (storeSettings != null)
-            {
-                if (storeSettings.GetType() == settingsType)
-                {
-                    return storeSettings;
-                }
-
-                throw new InvalidOperationException(Strings.ConfigurationStoreSettingsProvider_SettingsTypeMismatch_Exception.FormatWith(storeSettings.GetType(), settingsType));
-            }
-
-            var settingsTypeInfo = settingsType.AsRuntimeTypeInfo();
-            var settings = settingsTypeInfo.CreateInstance();
-
-            return settings;
+            return this.configurationStore.TryGetSettings(settingsType);
         }
     }
 }

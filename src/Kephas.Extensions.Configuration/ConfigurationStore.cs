@@ -10,10 +10,8 @@
 
 namespace Kephas.Extensions.Configuration
 {
-    using System;
-    using System.Collections.Generic;
+    using System.ComponentModel;
 
-    using Kephas.Collections;
     using Kephas.Configuration;
     using Kephas.Dynamic;
 
@@ -22,108 +20,59 @@ namespace Kephas.Extensions.Configuration
     /// <summary>
     /// A configuration store based on the extensions configuration.
     /// </summary>
-    public class ConfigurationStore : IConfigurationStore
+    public class ConfigurationStore : ConfigurationStoreBase
     {
-        private readonly IConfiguration configuration;
-        private IDictionary<string, object> settingsMap = new Dictionary<string, object>();
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationStore"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         public ConfigurationStore(IConfiguration configuration)
+            : base(new ConfigurationAdapter(configuration))
         {
-            this.configuration = configuration;
         }
 
-        /// <summary>
-        /// Convenience method that provides a string Indexer
-        /// to the Properties collection AND the strongly typed
-        /// properties of the object by name.
-        /// // dynamic
-        /// exp["Address"] = "112 nowhere lane";
-        /// // strong
-        /// var name = exp["StronglyTypedProperty"] as string;.
-        /// </summary>
-        /// <value>
-        /// The <see cref="object" /> identified by the key.
-        /// </value>
-        /// <param name="key">The key.</param>
-        /// <returns>The requested property value.</returns>
-        public object this[string key]
+        private class ConfigurationAdapter : IIndexable
         {
-            get => this.configuration[key];
-            set => this.SetTypedValue(key, value, syncSettings: true);
-        }
-
-        /// <summary>
-        /// Configures the settings.
-        /// </summary>
-        /// <typeparam name="TSettings">Type of the settings.</typeparam>
-        /// <param name="optionsConfig">The options configuration.</param>
-        public void Configure<TSettings>(Action<TSettings> optionsConfig)
-            where TSettings : class, new()
-        {
-            if (!this.settingsMap.TryGetValue(typeof(TSettings).FullName, out var settings))
+            public ConfigurationAdapter(IConfiguration configuration)
             {
-                settings = new TSettings();
-                this.settingsMap.Add(typeof(TSettings).FullName, settings);
+                this.Configuration = configuration;
             }
 
-            optionsConfig?.Invoke((TSettings)settings);
-
-            this.SetTypedValue(typeof(TSettings).FullName, settings, syncSettings: false);
-        }
-
-        /// <summary>
-        /// Tries to get the indicated settings.
-        /// </summary>
-        /// <param name="settingsType">Type of the settings.</param>
-        /// <returns>
-        /// The required settings or <c>null</c>.
-        /// </returns>
-        public object TryGetSettings(Type settingsType)
-        {
-            if (settingsType == null)
+            public object this[string key]
             {
-                return null;
+                get => this.Configuration[key];
+                set => this.SetFlattenedValue(key, value);
             }
 
-            return this.settingsMap.TryGetValue(settingsType.FullName);
-        }
+            public IConfiguration Configuration { get; }
 
-        private void SetTypedValue(string key, object value, bool syncSettings)
-        {
-            // TODO synchronize with the settingsMap dictionary
-            this.SetValue(key, value);
-        }
-
-        private void SetValue(string key, object value)
-        {
-            if (value == null)
+            private void SetFlattenedValue(string key, object value)
             {
-                this.configuration[key] = null;
-                return;
-            }
+                if (value == null)
+                {
+                    this.Configuration[key] = null;
+                    return;
+                }
 
-            if (value is string stringValue)
-            {
-                this.configuration[key] = stringValue;
-                return;
-            }
+                if (value is string stringValue)
+                {
+                    this.Configuration[key] = stringValue;
+                    return;
+                }
 
-            var valueType = value.GetType();
-            if (valueType.IsValueType)
-            {
-                this.configuration[key] = value.ToString();
-                return;
-            }
+                var valueType = value.GetType();
+                var typeConverter = TypeDescriptor.GetConverter(valueType);
+                if (typeConverter.CanConvertTo(typeof(string)))
+                {
+                    this.Configuration[key] = typeConverter.ConvertToString(value);
+                    return;
+                }
 
-            var flattenedValue = new Expando(value).ToDictionary();
-            foreach (var keyValue in flattenedValue)
-            {
-                this.SetValue($"{key}:{keyValue.Key}", keyValue.Value);
+                var flattenedValue = new Expando(value).ToDictionary();
+                foreach (var keyValue in flattenedValue)
+                {
+                    this.SetFlattenedValue($"{key}:{keyValue.Key}", keyValue.Value);
+                }
             }
         }
     }

@@ -12,58 +12,22 @@ namespace Kephas.Configuration
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
 
-    using Kephas.Collections;
     using Kephas.Dynamic;
+    using Kephas.Services;
 
     /// <summary>
     /// A default configuration store.
     /// </summary>
-    public class DefaultConfigurationStore : Expando, IConfigurationStore
+    [OverridePriority(Priority.Low)]
+    public class DefaultConfigurationStore : ConfigurationStoreBase
     {
-        private IDictionary<Type, object> settingsMap = new Dictionary<Type, object>();
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultConfigurationStore"/> class.
         /// </summary>
         public DefaultConfigurationStore()
-            : base(new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase))
+            : base(new Expando(new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase)))
         {
-        }
-
-        /// <summary>
-        /// Configures the settings.
-        /// </summary>
-        /// <typeparam name="TSettings">Type of the settings.</typeparam>
-        /// <param name="optionsConfig">The options configuration.</param>
-        public void Configure<TSettings>(Action<TSettings> optionsConfig)
-            where TSettings : class, new()
-        {
-            if (!this.settingsMap.TryGetValue(typeof(TSettings), out var settings))
-            {
-                settings = new TSettings();
-                this.settingsMap.Add(typeof(TSettings), settings);
-            }
-
-            optionsConfig?.Invoke((TSettings)settings);
-        }
-
-        /// <summary>
-        /// Tries to get the indicated settings.
-        /// </summary>
-        /// <param name="settingsType">Type of the settings.</param>
-        /// <returns>
-        /// The required settings or <c>null</c>.
-        /// </returns>
-        public object TryGetSettings(Type settingsType)
-        {
-            if (settingsType == null)
-            {
-                return null;
-            }
-
-            return this.settingsMap.TryGetValue(settingsType);
         }
     }
 }
