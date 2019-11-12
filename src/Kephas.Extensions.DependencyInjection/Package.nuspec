@@ -24,10 +24,6 @@
         <tags>kephas composition extensions dependencyinjection di</tags>
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group targetFramework=".NETFramework4.6.1">
-                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Extensions.DependencyInjection" version="2.2.0" exclude="Build,Analyzers" />
-            </group>
             <group targetFramework=".NETStandard2.0">
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Extensions.DependencyInjection" version="2.2.0" exclude="Build,Analyzers" />
@@ -39,8 +35,5 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Extensions.DependencyInjection.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Extensions.DependencyInjection.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Extensions.DependencyInjection.xml" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\net461\Kephas.Extensions.DependencyInjection.dll" target="lib\net461" />
-        <file src="bin\$configuration$\net461\Kephas.Extensions.DependencyInjection.pdb" target="lib\net461" />
-        <file src="bin\$configuration$\net461\Kephas.Extensions.DependencyInjection.xml" target="lib\net461" />
     </files>
 </package>

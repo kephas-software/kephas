@@ -24,11 +24,6 @@
         <tags>kephas extensions configuration</tags>
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group targetFramework=".NETFramework4.6.1">
-                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Extensions.Configuration" version="2.2.0" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Extensions.Options" version="2.2.0" exclude="Build,Analyzers" />
-            </group>
             <group targetFramework=".NETStandard2.0">
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Extensions.Configuration" version="2.2.0" exclude="Build,Analyzers" />
@@ -41,8 +36,5 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Extensions.Configuration.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Extensions.Configuration.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Extensions.Configuration.xml" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\net461\Kephas.Extensions.Configuration.dll" target="lib\net461" />
-        <file src="bin\$configuration$\net461\Kephas.Extensions.Configuration.pdb" target="lib\net461" />
-        <file src="bin\$configuration$\net461\Kephas.Extensions.Configuration.xml" target="lib\net461" />
     </files>
 </package>
