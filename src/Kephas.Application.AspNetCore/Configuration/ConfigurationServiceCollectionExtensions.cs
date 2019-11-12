@@ -25,11 +25,11 @@ namespace Kephas.Application.AspNetCore.Configuration
         /// <summary>
         /// Configures the options extensions.
         /// </summary>
-        /// <param name="ambientServices">The ambient services to act on.</param>
+        /// <param name="ambientServices">The ambient services.</param>
         /// <returns>
-        /// The provided ambient services.
+        /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices ConfigureOptionsExtensions(this IAmbientServices ambientServices)
+        public static IAmbientServices ConfigureExtensionsOptions(this IAmbientServices ambientServices)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 

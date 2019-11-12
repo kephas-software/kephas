@@ -89,8 +89,8 @@ namespace Kephas.Application.AspNetCore
             {
                 this.AmbientServices
                     .WithServiceCollection(serviceCollection)
-                    .ConfigureLoggingExtensions()
-                    .ConfigureOptionsExtensions()
+                    .ConfigureExtensionsLogging()
+                    .ConfigureExtensionsOptions()
                     .UseConfiguration(this.Configuration);
 
                 this.InitializePrerequisites(this.appArgs);
