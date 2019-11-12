@@ -22,7 +22,7 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Resources;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Services.Transitioning;
+    using Kephas.Services.Transitions;
 
     /// <summary>
     /// Base class for named elements.

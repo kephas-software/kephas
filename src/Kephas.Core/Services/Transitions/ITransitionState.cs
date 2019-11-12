@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services.Transitioning
+namespace Kephas.Services.Transitions
 {
     using System;
 

@@ -26,7 +26,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
-    using Kephas.Services.Transitioning;
+    using Kephas.Services.Transitions;
     using Kephas.Threading.Tasks;
 
     /// <summary>

@@ -52,7 +52,7 @@ namespace Kephas.Data.Tests
             dataCommandProvider.CreateCommand(Arg.Any<Type>(), typeof(IFindCommand)).Returns(findCmd);
 
             var dataContext = TestDataContext.CreateDataContext(dataCommandProvider: dataCommandProvider);
-            Assert.Throws<ServiceTransitioningException>(() => dataContext.CreateCommand<IFindCommand>());
+            Assert.Throws<ServiceTransitionException>(() => dataContext.CreateCommand<IFindCommand>());
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace Kephas.Data.Tests
             var localCache = new DataContextCache();
             var dataContext = TestDataContext.CreateDataContext(localCache: localCache);
 
-            Assert.Throws<ServiceTransitioningException>(() => dataContext.Query<string>());
+            Assert.Throws<ServiceTransitionException>(() => dataContext.Query<string>());
         }
 
         [Test]

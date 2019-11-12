@@ -24,7 +24,7 @@ namespace Kephas.Model
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Services;
-    using Kephas.Services.Transitioning;
+    using Kephas.Services.Transitions;
     using Kephas.Threading.Tasks;
 
     /// <summary>

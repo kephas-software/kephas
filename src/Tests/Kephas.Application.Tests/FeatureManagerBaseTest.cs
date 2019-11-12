@@ -16,8 +16,7 @@ namespace Kephas.Application.Tests
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Services.Transitioning;
-
+    using Kephas.Services.Transitions;
     using NSubstitute;
 
     using NUnit.Framework;

@@ -42,7 +42,7 @@ namespace Kephas.Data.Tests.InMemory
         {
             var dataContext = this.CreateInMemoryDataContext();
 
-            Assert.Throws<ServiceTransitioningException>(
+            Assert.Throws<ServiceTransitionException>(
                 () =>
                     {
                         var query = dataContext.Query<string>();

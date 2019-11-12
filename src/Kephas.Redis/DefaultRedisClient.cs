@@ -22,7 +22,7 @@ namespace Kephas.Redis
     using Kephas.Redis.Interaction;
     using Kephas.Redis.Logging;
     using Kephas.Services;
-    using Kephas.Services.Transitioning;
+    using Kephas.Services.Transitions;
     using Kephas.Threading.Tasks;
     using StackExchange.Redis;
 

@@ -28,7 +28,7 @@ namespace Kephas.Data
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
-    using Kephas.Services.Transitioning;
+    using Kephas.Services.Transitions;
 
     /// <summary>
     /// Base implementation of a <see cref="IDataContext"/>.

@@ -11,7 +11,7 @@
 namespace Kephas.Model.Construction.Internal
 {
     using Kephas.Model.Construction;
-    using Kephas.Services.Transitioning;
+    using Kephas.Services.Transitions;
 
     /// <summary>
     /// Interface for writable named elements used during construction.

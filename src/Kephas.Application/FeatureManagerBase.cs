@@ -18,7 +18,7 @@ namespace Kephas.Application
     using Kephas.Application.Resources;
     using Kephas.Logging;
     using Kephas.Services;
-    using Kephas.Services.Transitioning;
+    using Kephas.Services.Transitions;
     using Kephas.Threading.Tasks;
 
     /// <summary>
