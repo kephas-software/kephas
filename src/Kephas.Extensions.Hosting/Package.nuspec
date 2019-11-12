@@ -30,7 +30,7 @@
                 <dependency id="Kephas.Extensions.Configuration" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Extensions.DependencyInjection" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Extensions.Logging" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Extensions.Hosting" version="2.2.0" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.Extensions.Hosting" version="3.0.0" exclude="Build,Analyzers" />
             </group>
         </dependencies>
     </metadata>
