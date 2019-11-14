@@ -158,6 +158,8 @@ namespace Kephas.Messaging.Distributed.Routing
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
             Requires.NotNull(context, nameof(context));
 
+            brokeredMessage.TraceOutputRoute(this);
+
             if (brokeredMessage.IsOneWay)
             {
                 this.RouteOutputAsync(brokeredMessage, context, default)
@@ -274,6 +276,8 @@ namespace Kephas.Messaging.Distributed.Routing
         {
             try
             {
+                brokeredMessage.TraceInputRoute(this);
+
                 // if the input queue notifies a reply, notify it further to the message broker.
                 if (brokeredMessage.ReplyToMessageId != null)
                 {
@@ -305,7 +309,8 @@ namespace Kephas.Messaging.Distributed.Routing
                     {
                         redirectContext.Impersonate(context);
 
-                        (remoteInstruction, remoteReply) = await this.RouteOutputAsync(brokeredMessage.Clone(remoteRecipients), redirectContext, cancellationToken).PreserveThreadContext();
+                        remoteMessage.TraceOutputRoute(this);
+                        (remoteInstruction, remoteReply) = await this.RouteOutputAsync(remoteMessage, redirectContext, cancellationToken).PreserveThreadContext();
                     }
                 }
 
@@ -317,33 +322,35 @@ namespace Kephas.Messaging.Distributed.Routing
                     var localMessage = brokeredMessage.Recipients == null || !(remoteRecipients?.Any() ?? false)
                         ? brokeredMessage
                         : brokeredMessage.Clone(localRecipients);
-                    if (brokeredMessage.IsOneWay)
+                    if (localMessage.IsOneWay)
                     {
                         // for one way or replies do not wait for a response
                         this.ProcessAsync(localMessage, context, default)
                             .ContinueWith(
                                 t => this.Logger.Error(t.Exception, Strings.MessageRouterBase_ErrorsOccurredWhileProcessingOneWay_Exception.FormatWith(brokeredMessage)),
                                 TaskContinuationOptions.OnlyOnFaulted);
-                        return (RoutingInstruction.None, null);
                     }
-
-                    IMessage reply = null;
-                    try
+                    else
                     {
-                        reply = await this.ProcessAsync(localMessage, context, cancellationToken).PreserveThreadContext();
-                    }
-                    catch (Exception ex)
-                    {
-                        reply = new ExceptionResponseMessage { Exception = new ExceptionData(ex) };
-                    }
+                        IMessage reply = null;
+                        try
+                        {
+                            reply = await this.ProcessAsync(localMessage, context, cancellationToken).PreserveThreadContext();
+                        }
+                        catch (Exception ex)
+                        {
+                            reply = new ExceptionResponseMessage { Exception = new ExceptionData(ex) };
+                        }
 
-                    // after processing requests expecting an answer, redirect the reply
-                    // through the same infrastructure back to caller.
-                    using (var replyContext = this.ContextFactory.CreateContext<DispatchingContext>(reply))
-                    {
-                        replyContext.Impersonate(context).ReplyTo(brokeredMessage);
+                        // after processing requests expecting an answer, redirect the reply
+                        // through the same infrastructure back to caller.
+                        using (var replyContext = this.ContextFactory.CreateContext<DispatchingContext>(reply))
+                        {
+                            replyContext.Impersonate(context).ReplyTo(brokeredMessage);
 
-                        (localInstruction, localReply) = await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
+                            replyContext.BrokeredMessage.TraceOutputRoute(this);
+                            (localInstruction, localReply) = await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
+                        }
                     }
                 }
 

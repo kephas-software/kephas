@@ -182,6 +182,14 @@ namespace Kephas.Messaging.Distributed
         public Priority Priority { get; set; }
 
         /// <summary>
+        /// Gets or sets the trace.
+        /// </summary>
+        /// <value>
+        /// The trace.
+        /// </value>
+        public string Trace { get; set; }
+
+        /// <summary>
         /// Indexer to get or set items within this collection using array index syntax.
         /// The values will be set or retrieved using the <see cref="Properties"/>.
         /// </summary>
@@ -232,6 +240,7 @@ namespace Kephas.Messaging.Distributed
                 Priority = this.Priority,
                 ReplyToMessageId = this.ReplyToMessageId,
                 Timeout = this.Timeout,
+                Trace = this.Trace,
             };
         }
 

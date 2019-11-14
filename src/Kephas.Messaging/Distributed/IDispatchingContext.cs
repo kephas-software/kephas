@@ -413,7 +413,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNull(context, nameof(context));
             Requires.NotNull(message, nameof(message));
 
-            context.ReplyTo(message.Id, message.Sender);
+            context.ReplyTo(message.Id, message.Sender, message.Trace);
             context.BrokeredMessage.BearerToken = message.BearerToken;
             context.BrokeredMessage.Priority = message.Priority;
 
@@ -426,18 +426,20 @@ namespace Kephas.Messaging.Distributed
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The dispatching context.</param>
         /// <param name="messageId">Identifier for the message.</param>
-        /// <param name="sender">The sender.</param>
+        /// <param name="sender">Optional. The sender.</param>
+        /// <param name="trace">Optional. The trace.</param>
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TContext ReplyTo<TContext>(this TContext context, string messageId, IEndpoint sender = null)
+        public static TContext ReplyTo<TContext>(this TContext context, string messageId, IEndpoint sender = null, string trace = null)
             where TContext : class, IDispatchingContext
         {
             Requires.NotNull(context, nameof(context));
             Requires.NotNullOrEmpty(messageId, nameof(messageId));
 
             context.BrokeredMessage.ReplyToMessageId = messageId;
+            context.BrokeredMessage.TraceReply(trace);
             if (sender != null)
             {
                 context.BrokeredMessage.Recipients = new[] { sender };

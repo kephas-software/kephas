@@ -14,7 +14,9 @@ namespace Kephas.Messaging.Distributed
     using System.Collections.Generic;
 
     using Kephas.Data;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
     using Kephas.Services;
 
@@ -109,6 +111,14 @@ namespace Kephas.Messaging.Distributed
         Priority Priority { get; set; }
 
         /// <summary>
+        /// Gets or sets the trace.
+        /// </summary>
+        /// <value>
+        /// The trace.
+        /// </value>
+        string Trace { get; set; }
+
+        /// <summary>
         /// Makes a deep copy of this object, optionally replacing the existing recipients with the provided ones.
         /// </summary>
         /// <param name="recipients">Optional. The recipients.</param>
@@ -116,5 +126,62 @@ namespace Kephas.Messaging.Distributed
         /// A copy of this object.
         /// </returns>
         IBrokeredMessage Clone(IEnumerable<IEndpoint> recipients = null);
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IBrokeredMessage"/>.
+    /// </summary>
+    public static class BrokeredMessageExtensions
+    {
+        /// <summary>
+        /// Adds an input trace from the provided router.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="router">The router.</param>
+        /// <returns>
+        /// This <paramref name="brokeredMessage"/>.
+        /// </returns>
+        public static IBrokeredMessage TraceInputRoute(this IBrokeredMessage brokeredMessage, IMessageRouter router)
+        {
+            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
+
+            brokeredMessage.Trace = $"in:{router?.GetType().Name}:{DateTime.UtcNow:s}{Environment.NewLine}{brokeredMessage.Trace}";
+
+            return brokeredMessage;
+        }
+
+        /// <summary>
+        /// Adds an output trace from the provided router.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="router">The router.</param>
+        /// <returns>
+        /// This <paramref name="brokeredMessage"/>.
+        /// </returns>
+        public static IBrokeredMessage TraceOutputRoute(this IBrokeredMessage brokeredMessage, IMessageRouter router)
+        {
+            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
+
+            brokeredMessage.Trace = $"out:{router?.GetType().Name}:{DateTime.UtcNow:s}{Environment.NewLine}{brokeredMessage.Trace}";
+
+            return brokeredMessage;
+        }
+
+        /// <summary>
+        /// Adds a reply trace.
+        /// </summary>
+        /// <param name="brokeredMessage">The brokered message.</param>
+        /// <param name="requestTrace">The request trace.</param>
+        /// <returns>
+        /// This <paramref name="brokeredMessage"/>.
+        /// </returns>
+        public static IBrokeredMessage TraceReply(this IBrokeredMessage brokeredMessage, string requestTrace)
+        {
+            Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
+
+            brokeredMessage.Trace = $"reply:{DateTime.UtcNow:s}{Environment.NewLine}{requestTrace}";
+
+            return brokeredMessage;
+        }
     }
 }
