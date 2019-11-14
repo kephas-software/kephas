@@ -29,8 +29,10 @@ namespace Kephas.Composition.Lite.Conventions
         /// <summary>
         /// Initializes a new instance of the <see cref="LitePartConventionsBuilder"/> class.
         /// </summary>
+        /// <param name="logManager">Manager for log.</param>
         /// <param name="descriptorBuilder">The descriptor builder.</param>
-        internal LitePartConventionsBuilder(LiteRegistrationBuilder descriptorBuilder)
+        internal LitePartConventionsBuilder(ILogManager logManager, LiteRegistrationBuilder descriptorBuilder)
+            : base(logManager)
         {
             this.descriptorBuilder = descriptorBuilder;
         }

@@ -66,6 +66,7 @@ namespace Kephas.Data.Conversion
             ICompositionContext compositionContext,
             ICollection<IExportFactory<IDataConverter, DataConverterMetadata>> converterExportFactories,
             ICollection<IExportFactory<IDataConversionTargetResolver, DataConversionTargetResolverMetadata>> targetResolverFactories)
+            : base(compositionContext)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(converterExportFactories, nameof(converterExportFactories));

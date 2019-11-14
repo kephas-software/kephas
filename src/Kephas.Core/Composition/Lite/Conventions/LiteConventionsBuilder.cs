@@ -87,7 +87,7 @@ namespace Kephas.Composition.Lite.Conventions
                 ImplementationType = type,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new LitePartConventionsBuilder(descriptorBuilder);
+            return new LitePartConventionsBuilder(this.ambientServices.LogManager, descriptorBuilder);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Kephas.Composition.Lite.Conventions
                 ImplementationTypePredicate = typePredicate,
             };
             this.descriptorBuilders.Add(descriptorBuilder);
-            return new LitePartConventionsBuilder(descriptorBuilder);
+            return new LitePartConventionsBuilder(this.ambientServices.LogManager, descriptorBuilder);
         }
 
         /// <summary>

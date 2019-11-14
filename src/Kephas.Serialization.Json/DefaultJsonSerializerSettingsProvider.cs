@@ -39,7 +39,11 @@ namespace Kephas.Serialization.Json
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="logManager">Manager for log.</param>
         /// <param name="jsonConverters">Optional. The JSON converters (optional).</param>
-        public DefaultJsonSerializerSettingsProvider(ITypeResolver typeResolver, ILogManager logManager, ICollection<IJsonConverter> jsonConverters = null)
+        public DefaultJsonSerializerSettingsProvider(
+            ITypeResolver typeResolver,
+            ILogManager logManager,
+            ICollection<IJsonConverter> jsonConverters = null)
+            : base(logManager)
         {
             Requires.NotNull(typeResolver, nameof(typeResolver));
 

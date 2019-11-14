@@ -15,9 +15,9 @@ namespace Kephas.Scripting
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas;
     using Kephas.Collections;
-    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
