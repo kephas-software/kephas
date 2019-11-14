@@ -43,7 +43,7 @@ namespace Kephas.Testing
         /// The new context factory.
         /// </returns>
         protected IContextFactory CreateContextFactoryMock<TContext>(Func<TContext> ctor)
-            where TContext : IContext
+            where TContext : class
         {
             var contextFactory = Substitute.For<IContextFactory>();
             contextFactory.CreateContext<TContext>(Arg.Any<object[]>())
@@ -60,7 +60,7 @@ namespace Kephas.Testing
         /// The new context factory.
         /// </returns>
         protected IContextFactory CreateContextFactoryMock<TContext>(Func<object[], TContext> ctor)
-            where TContext : IContext
+            where TContext : class
         {
             var contextFactory = Substitute.For<IContextFactory>();
             contextFactory.CreateContext<TContext>(Arg.Any<object[]>())
