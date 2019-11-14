@@ -230,23 +230,24 @@ namespace Kephas.Orchestration
 
             try
             {
-                var reply = await this.MessageBroker.ProcessAsync(
+                await this.MessageBroker.ProcessOneWayAsync(
                     stopMessage,
                     new Endpoint(appId: runtimeAppInfo.AppId, appInstanceId: runtimeAppInfo.AppInstanceId),
                     ctx => ctx.Impersonate(this.AppContext),
                     cancellationToken).PreserveThreadContext();
-                var message = reply as StopAppResponseMessage;
                 return new OperationResult
                 {
-                    OperationState = OperationState.Completed,
-                    [nameof(StopAppResponseMessage)] = message,
+                    OperationState = OperationState.InProgress,
                 };
             }
             catch (Exception ex)
             {
                 // TODO localization
                 this.Logger.Error(ex, $"Error while trying to stop application {runtimeAppInfo}.");
-                return new OperationResult { OperationState = OperationState.Failed }.MergeException(ex);
+                return new OperationResult
+                {
+                    OperationState = OperationState.Failed,
+                }.MergeException(ex);
             }
         }
 
