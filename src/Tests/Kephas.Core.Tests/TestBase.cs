@@ -12,6 +12,7 @@ namespace Kephas.Core.Tests
 {
     using System;
     using System.Collections.Generic;
+
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Serialization;
@@ -30,7 +31,7 @@ namespace Kephas.Core.Tests
         /// The new context factory.
         /// </returns>
         protected IContextFactory CreateContextFactory<TContext>(Func<TContext> ctor)
-            where TContext : IContext
+            where TContext : class
         {
             var contextFactory = Substitute.For<IContextFactory>();
             contextFactory.CreateContext<TContext>(Arg.Any<object[]>())
@@ -47,7 +48,7 @@ namespace Kephas.Core.Tests
         /// The new context factory.
         /// </returns>
         protected IContextFactory CreateContextFactoryMock<TContext>(Func<TContext> ctor)
-            where TContext : IContext
+            where TContext : class
         {
             var contextFactory = Substitute.For<IContextFactory>();
             contextFactory.CreateContext<TContext>(Arg.Any<object[]>())

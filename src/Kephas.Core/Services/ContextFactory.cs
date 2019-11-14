@@ -15,6 +15,7 @@ namespace Kephas.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas;
     using Kephas.Composition;
     using Kephas.Reflection;
@@ -62,7 +63,7 @@ namespace Kephas.Services
         /// The new context.
         /// </returns>
         public TContext CreateContext<TContext>(params object[] args)
-            where TContext : IContext
+            where TContext : class
         {
             var contextType = typeof(TContext);
             if (!contextType.IsClass || contextType.IsAbstract)

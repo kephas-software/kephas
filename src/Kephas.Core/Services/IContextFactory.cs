@@ -10,6 +10,12 @@
 
 namespace Kephas.Services
 {
+    using System;
+    using System.Reflection;
+
+    using Kephas.Diagnostics.Contracts;
+    using Kephas.Reflection;
+
     /// <summary>
     /// Interface for context factory.
     /// </summary>
@@ -25,6 +31,33 @@ namespace Kephas.Services
         /// The new context.
         /// </returns>
         TContext CreateContext<TContext>(params object[] args)
-            where TContext : IContext;
+            where TContext : class;
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IContextFactory"/>.
+    /// </summary>
+    public static class ContextFactoryExtensions
+    {
+        private static readonly MethodInfo CreateContextMethod =
+            ReflectionHelper.GetGenericMethodOf(_ => ((IContextFactory)null).CreateContext<string>((object[])null));
+
+        /// <summary>
+        /// Creates a typed context.
+        /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="contextType">Type of the context.</param>
+        /// <param name="args">A variable-length parameters list containing arguments.</param>
+        /// <returns>
+        /// The new context.
+        /// </returns>
+        public static object CreateContext(this IContextFactory contextFactory, Type contextType, params object[] args)
+        {
+            Requires.NotNull(contextFactory, nameof(contextFactory));
+            Requires.NotNull(contextType, nameof(contextType));
+
+            var createContext = CreateContextMethod.MakeGenericMethod(contextType);
+            return createContext.Invoke(contextFactory, new object[] { args });
+        }
     }
 }
