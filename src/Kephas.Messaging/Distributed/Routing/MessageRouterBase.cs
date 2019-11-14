@@ -11,10 +11,12 @@
 namespace Kephas.Messaging.Distributed.Routing
 {
     using System;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas;
+    using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
@@ -34,12 +36,15 @@ namespace Kephas.Messaging.Distributed.Routing
         /// Initializes a new instance of the <see cref="MessageRouterBase"/> class.
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
         protected MessageRouterBase(
             IContextFactory contextFactory,
+            IAppRuntime appRuntime,
             IMessageProcessor messageProcessor)
         {
             this.ContextFactory = contextFactory;
+            this.AppRuntime = appRuntime;
             this.MessageProcessor = messageProcessor;
 
             this.InitializationMonitor = new InitializationMonitor<InProcessAppMessageRouter>(this.GetType());
@@ -58,6 +63,14 @@ namespace Kephas.Messaging.Distributed.Routing
         /// The context factory.
         /// </value>
         public IContextFactory ContextFactory { get; }
+
+        /// <summary>
+        /// Gets the application runtime.
+        /// </summary>
+        /// <value>
+        /// The application runtime.
+        /// </value>
+        public IAppRuntime AppRuntime { get; }
 
         /// <summary>
         /// Gets the message processor.
@@ -127,19 +140,6 @@ namespace Kephas.Messaging.Distributed.Routing
         }
 
         /// <summary>
-        /// Actual initialization of the router.
-        /// </summary>
-        /// <param name="context">An optional context for initialization.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        protected virtual Task InitializeCoreAsync(IContext context, CancellationToken cancellationToken)
-        {
-            return TaskHelper.CompletedTask;
-        }
-
-        /// <summary>
         /// Sends the brokered message asynchronously over the physical medium.
         /// </summary>
         /// <remarks>
@@ -194,19 +194,6 @@ namespace Kephas.Messaging.Distributed.Routing
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing).
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Releases the unmanaged resources used by the
-        /// MessageRouterBase and optionally releases the managed
-        /// resources.
-        /// </summary>
-        /// <param name="disposing">True to release both managed and unmanaged resources; false to
-        ///                         release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
-        {
             if (this.InitializationMonitor.IsNotStarted)
             {
                 return;
@@ -226,7 +213,7 @@ namespace Kephas.Messaging.Distributed.Routing
 
                 this.FinalizationMonitor.Start();
 
-                this.DisposeCore();
+                this.Dispose(true);
 
                 this.FinalizationMonitor.Complete();
                 this.Logger.Info($"{messageRouterName} message router stopped.");
@@ -240,7 +227,32 @@ namespace Kephas.Messaging.Distributed.Routing
             finally
             {
                 this.InitializationMonitor.Reset();
+                GC.SuppressFinalize(this);
             }
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the
+        /// MessageRouterBase and optionally releases the managed
+        /// resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+        }
+
+        /// <summary>
+        /// Actual initialization of the router.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected virtual Task InitializeCoreAsync(IContext context, CancellationToken cancellationToken)
+        {
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -269,39 +281,96 @@ namespace Kephas.Messaging.Distributed.Routing
                     return (RoutingInstruction.None, null);
                 }
 
-                if (brokeredMessage.IsOneWay)
+                // identify the local and the remote recipients
+                var appId = this.AppRuntime.GetAppId();
+                var appInstanceId = this.AppRuntime.GetAppInstanceId();
+                var localRecipients = brokeredMessage.Recipients?
+                    .Where(r => (r.AppInstanceId == null || r.AppInstanceId == appInstanceId)
+                                    && (r.AppId == null || r.AppId == appId))
+                    .ToList();
+                var remoteRecipients = brokeredMessage.Recipients?
+                    .Where(r => (r.AppInstanceId != null && r.AppInstanceId != appInstanceId)
+                                    || (r.AppId != null && r.AppId != appId))
+                    .ToList();
+
+                // for remote recipients redirect the message to the output.
+                RoutingInstruction remoteInstruction = RoutingInstruction.None;
+                IMessage remoteReply = null;
+                if (remoteRecipients?.Any() ?? false)
                 {
-                    // for one way or replies do not wait for a response
-                    this.ProcessAsync(brokeredMessage, context, default)
-                        .ContinueWith(
-                            t => this.Logger.Error(t.Exception, Strings.MessageRouterBase_ErrorsOccurredWhileProcessingOneWay_Exception.FormatWith(brokeredMessage)),
-                            TaskContinuationOptions.OnlyOnFaulted);
-                    return (RoutingInstruction.None, null);
+                    var remoteMessage = !localRecipients.Any()
+                        ? brokeredMessage
+                        : brokeredMessage.Clone(remoteRecipients);
+                    using (var redirectContext = this.ContextFactory.CreateContext<DispatchingContext>(remoteMessage))
+                    {
+                        redirectContext.Impersonate(context);
+
+                        (remoteInstruction, remoteReply) = await this.RouteOutputAsync(brokeredMessage.Clone(remoteRecipients), redirectContext, cancellationToken).PreserveThreadContext();
+                    }
                 }
 
-                IMessage reply = null;
-                try
+                // for local recipients, handle the request here
+                RoutingInstruction localInstruction = RoutingInstruction.None;
+                IMessage localReply = null;
+                if ((localRecipients?.Any() ?? false) || !(brokeredMessage.Recipients?.Any() ?? false))
                 {
-                    reply = await this.ProcessAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
-                }
-                catch (Exception ex)
-                {
-                    reply = new ExceptionResponseMessage { Exception = new ExceptionData(ex) };
+                    var localMessage = brokeredMessage.Recipients == null || !(remoteRecipients?.Any() ?? false)
+                        ? brokeredMessage
+                        : brokeredMessage.Clone(localRecipients);
+                    if (brokeredMessage.IsOneWay)
+                    {
+                        // for one way or replies do not wait for a response
+                        this.ProcessAsync(localMessage, context, default)
+                            .ContinueWith(
+                                t => this.Logger.Error(t.Exception, Strings.MessageRouterBase_ErrorsOccurredWhileProcessingOneWay_Exception.FormatWith(brokeredMessage)),
+                                TaskContinuationOptions.OnlyOnFaulted);
+                        return (RoutingInstruction.None, null);
+                    }
+
+                    IMessage reply = null;
+                    try
+                    {
+                        reply = await this.ProcessAsync(localMessage, context, cancellationToken).PreserveThreadContext();
+                    }
+                    catch (Exception ex)
+                    {
+                        reply = new ExceptionResponseMessage { Exception = new ExceptionData(ex) };
+                    }
+
+                    // after processing requests expecting an answer, redirect the reply
+                    // through the same infrastructure back to caller.
+                    using (var replyContext = this.ContextFactory.CreateContext<DispatchingContext>(reply))
+                    {
+                        replyContext.Impersonate(context).ReplyTo(brokeredMessage);
+
+                        (localInstruction, localReply) = await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
+                    }
                 }
 
-                // after processing requests expecting an answer, redirect the reply
-                // through the same infrastructure back to caller.
-                using (var replyContext = this.ContextFactory.CreateContext<DispatchingContext>(reply))
+                if (remoteInstruction == RoutingInstruction.Reply)
                 {
-                    replyContext.Impersonate(context).ReplyTo(brokeredMessage);
+                    if (localInstruction == RoutingInstruction.Reply)
+                    {
+                        throw new RoutingException(Strings.MessageRouterBase_RouteInputAsync_CannotHandleMultipleReplies.FormatWith(brokeredMessage));
+                    }
 
-                    return await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
+                    return (remoteInstruction, remoteReply);
                 }
+
+                return (localInstruction, localReply);
+            }
+            catch (RoutingException ex)
+            {
+                this.Logger.Error(ex, Strings.MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception.FormatWith(brokeredMessage));
+                throw;
             }
             catch (Exception ex)
             {
+                var routingException = new RoutingException(
+                    Strings.MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception.FormatWith(brokeredMessage),
+                    ex);
                 this.Logger.Error(ex, Strings.MessageRouterBase_ErrorsOccurredWhileRoutingMessage_Exception.FormatWith(brokeredMessage));
-                return (RoutingInstruction.None, null);
+                throw routingException;
             }
         }
 
@@ -345,13 +414,6 @@ namespace Kephas.Messaging.Distributed.Routing
         protected virtual void OnReplyReceived(ReplyReceivedEventArgs eventArgs)
         {
             this.ReplyReceived?.Invoke(this, eventArgs);
-        }
-
-        /// <summary>
-        /// Actual implementation of the router disposal.
-        /// </summary>
-        protected virtual void DisposeCore()
-        {
         }
     }
 }

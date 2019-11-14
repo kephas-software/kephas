@@ -210,4 +210,10 @@
   <data name="DefaultMessageBroker_BadReceiverMatchProviderType_Exception" xml:space="preserve">
     <value>The '{0}' receiver match provider does not implement '{1}'.</value>
   </data>
+  <data name="MessageRouterBase_RouteInputAsync_CannotHandleMultipleReplies" xml:space="preserve">
+    <value>Cannot handle multiple replies for {0}.</value>
+  </data>
+  <data name="BrokeredMessage_OneRecipient_Required_Exception" xml:space="preserve">
+    <value>One and only one recipient required for requests awaiting replies: '{0}'.</value>
+  </data>
 </root>

@@ -51,18 +51,9 @@ namespace Kephas.Messaging.Distributed.Routing
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor)
-            : base(contextFactory, messageProcessor)
+            : base(contextFactory, appRuntime, messageProcessor)
         {
-            this.AppRuntime = appRuntime;
         }
-
-        /// <summary>
-        /// Gets the application runtime.
-        /// </summary>
-        /// <value>
-        /// The application runtime.
-        /// </value>
-        public IAppRuntime AppRuntime { get; }
 
         /// <summary>
         /// Gets the name of the root channel.
@@ -213,13 +204,18 @@ namespace Kephas.Messaging.Distributed.Routing
         }
 
         /// <summary>
-        /// Actual implementation of the router disposal.
+        /// Releases the unmanaged resources used by the MessageRouterBase and optionally releases the
+        /// managed resources.
         /// </summary>
-        protected override void DisposeCore()
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
         {
             this.messageQueue.MessageArrived -= this.HandleMessageArrivedAsync;
             this.appMessageQueue.MessageArrived -= this.HandleMessageArrivedAsync;
             this.appInstanceMessageQueue.MessageArrived -= this.HandleMessageArrivedAsync;
+
+            base.Dispose(disposing);
         }
 
         private async Task PublishAsync(IBrokeredMessage message, string channelName)

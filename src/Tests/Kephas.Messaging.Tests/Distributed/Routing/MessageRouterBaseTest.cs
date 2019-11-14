@@ -12,14 +12,18 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Configuration;
+    using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
+    using Kephas.Reflection;
     using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -32,7 +36,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         [Test]
         public async Task DispatchAsync_calls_RouteOutputAsync()
         {
-            var router = new TestMessageRouter(this.CreateMessagingContextFactory(), Substitute.For<IMessageProcessor>());
+            var router = new TestMessageRouter(this.CreateMessagingContextFactory(), new TestAppRuntime(), Substitute.For<IMessageProcessor>());
             var message = Substitute.For<IBrokeredMessage>();
             IBrokeredMessage receivedReply = null;
             router.ReplyReceived += (s, e) => receivedReply = e.Message;
@@ -47,7 +51,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         [Test]
         public async Task Receive_reply_raises_ReplyReceived_event()
         {
-            var router = new TestMessageRouter(this.CreateMessagingContextFactory(), Substitute.For<IMessageProcessor>());
+            var router = new TestMessageRouter(this.CreateMessagingContextFactory(), new TestAppRuntime(), Substitute.For<IMessageProcessor>());
             var message = Substitute.For<IBrokeredMessage>();
             message.ReplyToMessageId.Returns("some-id");
 
@@ -62,7 +66,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
         public async Task Receive_request_sends_response()
         {
             var messageProcessor = Substitute.For<IMessageProcessor>();
-            var router = new TestMessageRouter(this.CreateMessagingContextFactory(), messageProcessor);
+            var router = new TestMessageRouter(this.CreateMessagingContextFactory(), new TestAppRuntime(), messageProcessor);
 
             var message = Substitute.For<IBrokeredMessage>();
             message.ReplyToMessageId.Returns((string)null);
@@ -101,8 +105,8 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
 
         public class TestMessageRouter : MessageRouterBase
         {
-            public TestMessageRouter(IContextFactory contextFactory, IMessageProcessor messageProcessor)
-                : base(contextFactory, messageProcessor)
+            public TestMessageRouter(IContextFactory contextFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
+                : base(contextFactory, appRuntime, messageProcessor)
             {
             }
 
@@ -119,6 +123,14 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
             {
                 this.Out.Enqueue(brokeredMessage);
                 return (RoutingInstruction.None, null);
+            }
+        }
+
+        public class TestAppRuntime : AppRuntimeBase
+        {
+            public TestAppRuntime(string appId = "test")
+                : base(appId: appId)
+            {
             }
         }
     }

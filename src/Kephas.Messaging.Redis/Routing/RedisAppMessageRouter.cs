@@ -248,33 +248,30 @@ namespace Kephas.Messaging.Redis.Routing
         }
 
         /// <summary>
-        /// Actual implementation of the router disposal.
+        /// Releases the unmanaged resources used by the MessageRouterBase and optionally releases the
+        /// managed resources.
         /// </summary>
-        protected override void DisposeCore()
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
         {
             try
             {
-                this.DisposeRedisCore();
+                this.redisInitializedSubscription?.Dispose();
+                this.redisInitializedSubscription = null;
+
+                if (this.isRedisChannelInitialized)
+                {
+                    this.messageQueue.Unsubscribe();
+                    this.appMessageQueue.Unsubscribe();
+                    this.appInstanceMessageQueue.Unsubscribe();
+
+                    this.isRedisChannelInitialized = false;
+                }
             }
             finally
             {
-                base.DisposeCore();
-            }
-        }
-
-        /// <summary>
-        /// Actual implementation of the Redis channel disposal.
-        /// </summary>
-        protected virtual void DisposeRedisCore()
-        {
-            this.redisInitializedSubscription?.Dispose();
-            this.redisInitializedSubscription = null;
-
-            if (this.isRedisChannelInitialized)
-            {
-                this.messageQueue.Unsubscribe();
-                this.appMessageQueue.Unsubscribe();
-                this.appInstanceMessageQueue.Unsubscribe();
+                base.Dispose(disposing);
             }
         }
 

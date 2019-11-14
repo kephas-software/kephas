@@ -79,6 +79,15 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One and only one recipient required for requests awaiting replies: &apos;{0}&apos;..
+        /// </summary>
+        public static string BrokeredMessage_OneRecipient_Required_Exception {
+            get {
+                return ResourceManager.GetString("BrokeredMessage_OneRecipient_Required_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Must provide at least one recipient if the message is not an event: &apos;{0}&apos;..
         /// </summary>
         public static string BrokeredMessage_RecipientRequired_Exception {
@@ -336,6 +345,15 @@ namespace Kephas.Messaging.Resources {
         public static string MessageRouterBase_Reply_Exception {
             get {
                 return ResourceManager.GetString("MessageRouterBase_Reply_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot handle multiple replies for {0}..
+        /// </summary>
+        public static string MessageRouterBase_RouteInputAsync_CannotHandleMultipleReplies {
+            get {
+                return ResourceManager.GetString("MessageRouterBase_RouteInputAsync_CannotHandleMultipleReplies", resourceCulture);
             }
         }
     }
