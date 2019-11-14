@@ -30,7 +30,7 @@
             <group targetFramework=".NETStandard2.0">
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="2.9.0" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="3.3.1" exclude="Build,Analyzers" />
             </group>
         </dependencies>
     </metadata>
