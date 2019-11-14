@@ -111,6 +111,13 @@ namespace Kephas.Messaging.Distributed
                         nameof(brokeredMessage));
                 }
 
+                if ((brokeredMessage.Recipients?.Count() ?? 2) > 1 && !brokeredMessage.IsOneWay)
+                {
+                    throw new ArgumentException(
+                        Strings.BrokeredMessage_RecipientRequired_Exception.FormatWith(brokeredMessage),
+                        nameof(brokeredMessage));
+                }
+
                 if (brokeredMessage.IsOneWay)
                 {
                     this.LogBeforeSend(brokeredMessage);
