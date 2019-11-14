@@ -81,7 +81,7 @@ namespace Kephas.Messaging.Tests.Distributed
         [Test]
         public void InitializeAsync_with_bad_match_provider()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(WithProviderMessageRouter) });
+            var container = this.CreateContainer(parts: new[] { typeof(WithBadProviderMessageRouter) });
             var messageBroker = container.GetExport<IMessageBroker>();
             Assert.ThrowsAsync<InvalidOperationException>(() => (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container)));
         }
