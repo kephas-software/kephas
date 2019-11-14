@@ -60,7 +60,7 @@ Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for
 
     <ItemGroup>
         <PackageReference Include="Quartz" Version="3.0.7" />
-        <PackageReference Include="MongoDB.Driver.signed" Version="2.9.2" />
+        <PackageReference Include="MongoDB.Driver.signed" Version="2.9.2.1" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
