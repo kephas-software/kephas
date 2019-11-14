@@ -12,7 +12,6 @@ namespace Kephas.Core.Tests.Services.Transitions
 {
     using System;
 
-    using Kephas.Services.Transitioning;
     using Kephas.Services.Transitions;
     using NUnit.Framework;
 

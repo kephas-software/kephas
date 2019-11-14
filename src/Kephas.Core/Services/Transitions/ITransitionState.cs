@@ -58,7 +58,7 @@ namespace Kephas.Services.Transitions
         bool IsFaulted { get; }
 
         /// <summary>
-        /// Gets the exception in the case the transitioning is faulted.
+        /// Gets the exception in the case the transition failed.
         /// </summary>
         /// <value>
         /// The exception.

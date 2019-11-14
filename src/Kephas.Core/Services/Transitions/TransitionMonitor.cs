@@ -12,8 +12,8 @@ namespace Kephas.Services.Transitions
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Services.Transitioning;
 
     /// <summary>
     /// Class monitoring the state of a service transition.
@@ -55,8 +55,7 @@ namespace Kephas.Services.Transitions
         public TransitionMonitor(string transitionName)
         {
             this.transitionName = transitionName;
-            // ReSharper disable once VirtualMemberCallInContructor
-            serviceName = GetServiceName();
+            this.serviceName = this.GetServiceName();
         }
 
         /// <summary>
@@ -67,8 +66,7 @@ namespace Kephas.Services.Transitions
         public TransitionMonitor(string transitionName, string serviceName)
         {
             this.transitionName = transitionName;
-            // ReSharper disable once VirtualMemberCallInContructor
-            this.serviceName = serviceName ?? GetServiceName();
+            this.serviceName = serviceName ?? this.GetServiceName();
         }
 
         /// <summary>
@@ -77,7 +75,7 @@ namespace Kephas.Services.Transitions
         /// <value>
         /// <c>true</c> if the transition is not started; otherwise, <c>false</c>.
         /// </value>
-        public bool IsNotStarted => inProgress == null;
+        public bool IsNotStarted => this.inProgress == null;
 
         /// <summary>
         /// Gets a value indicating whether the transition is in progress.
@@ -85,7 +83,7 @@ namespace Kephas.Services.Transitions
         /// <value>
         /// <c>true</c> if the transition is in progress; otherwise, <c>false</c>.
         /// </value>
-        public bool IsInProgress => inProgress.HasValue && inProgress.Value;
+        public bool IsInProgress => this.inProgress.HasValue && this.inProgress.Value;
 
         /// <summary>
         /// Gets a value indicating whether the transition is completed.
@@ -93,7 +91,7 @@ namespace Kephas.Services.Transitions
         /// <value>
         /// <c>true</c> if the transition is completed; otherwise, <c>false</c>.
         /// </value>
-        public bool IsCompleted => inProgress.HasValue && !inProgress.Value;
+        public bool IsCompleted => this.inProgress.HasValue && !this.inProgress.Value;
 
         /// <summary>
         /// Gets a value indicating whether the transition is completed succcessfully.
@@ -101,7 +99,7 @@ namespace Kephas.Services.Transitions
         /// <value>
         /// <c>true</c> if the transition  is completed succcessfully; otherwise, <c>false</c>.
         /// </value>
-        public bool IsCompletedSuccessfully => inProgress.HasValue && !inProgress.Value && !IsFaulted;
+        public bool IsCompletedSuccessfully => this.inProgress.HasValue && !this.inProgress.Value && !this.IsFaulted;
 
         /// <summary>
         /// Gets a value indicating whether the transition is faulted.
@@ -109,10 +107,10 @@ namespace Kephas.Services.Transitions
         /// <value>
         /// <c>true</c> if the transition is faulted; otherwise, <c>false</c>.
         /// </value>
-        public bool IsFaulted => isFaulted;
+        public bool IsFaulted => this.isFaulted;
 
         /// <summary>
-        /// Gets the exception in the case the transitioning is faulted.
+        /// Gets the exception in the case the transition failed.
         /// </summary>
         /// <value>
         /// The exception.
@@ -124,9 +122,9 @@ namespace Kephas.Services.Transitions
         /// </summary>
         public void AssertIsNotStarted()
         {
-            if (!IsNotStarted)
+            if (!this.IsNotStarted)
             {
-                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsNotStarted_Exception, transitionName, serviceName));
+                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsNotStarted_Exception, this.transitionName, this.serviceName));
             }
         }
 
@@ -135,9 +133,9 @@ namespace Kephas.Services.Transitions
         /// </summary>
         public void AssertIsInProgress()
         {
-            if (!IsInProgress)
+            if (!this.IsInProgress)
             {
-                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsInProgress_Exception, transitionName, serviceName));
+                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsInProgress_Exception, this.transitionName, this.serviceName));
             }
         }
 
@@ -146,9 +144,9 @@ namespace Kephas.Services.Transitions
         /// </summary>
         public void AssertIsCompleted()
         {
-            if (!IsCompleted)
+            if (!this.IsCompleted)
             {
-                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsCompleted_Exception, transitionName, serviceName));
+                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsCompleted_Exception, this.transitionName, this.serviceName));
             }
         }
 
@@ -157,9 +155,9 @@ namespace Kephas.Services.Transitions
         /// </summary>
         public void AssertIsCompletedSuccessfully()
         {
-            if (!IsCompleted || IsFaulted)
+            if (!this.IsCompleted || this.IsFaulted)
             {
-                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsCompletedSuccessfully_Exception, transitionName, serviceName));
+                throw new ServiceTransitionException(string.Format(Resources.Strings.TransitionMonitor_AssertIsCompletedSuccessfully_Exception, this.transitionName, this.serviceName));
             }
         }
 
@@ -168,12 +166,12 @@ namespace Kephas.Services.Transitions
         /// </summary>
         public void Start()
         {
-            AssertIsNotStarted();
+            this.AssertIsNotStarted();
 
-            lock (syncObject)
+            lock (this.syncObject)
             {
-                AssertIsNotStarted();
-                inProgress = true;
+                this.AssertIsNotStarted();
+                this.inProgress = true;
             }
         }
 
@@ -182,17 +180,17 @@ namespace Kephas.Services.Transitions
         /// </summary>
         public void Complete()
         {
-            if (IsCompletedSuccessfully)
+            if (this.IsCompletedSuccessfully)
             {
                 return;
             }
 
-            AssertIsInProgress();
+            this.AssertIsInProgress();
 
-            lock (syncObject)
+            lock (this.syncObject)
             {
-                AssertIsInProgress();
-                inProgress = false;
+                this.AssertIsInProgress();
+                this.inProgress = false;
             }
         }
 
@@ -204,19 +202,19 @@ namespace Kephas.Services.Transitions
         {
             Requires.NotNull(exception, nameof(exception));
 
-            if (IsFaulted)
+            if (this.IsFaulted)
             {
                 return;
             }
 
-            AssertIsInProgress();
+            this.AssertIsInProgress();
 
-            lock (syncObject)
+            lock (this.syncObject)
             {
-                AssertIsInProgress();
-                inProgress = false;
-                isFaulted = true;
-                Exception = exception;
+                this.AssertIsInProgress();
+                this.inProgress = false;
+                this.isFaulted = true;
+                this.Exception = exception;
             }
         }
 
@@ -225,10 +223,10 @@ namespace Kephas.Services.Transitions
         /// </summary>
         public void Reset()
         {
-            lock (syncObject)
+            lock (this.syncObject)
             {
-                inProgress = null;
-                isFaulted = false;
+                this.inProgress = null;
+                this.isFaulted = false;
             }
         }
 
@@ -240,7 +238,7 @@ namespace Kephas.Services.Transitions
         /// </returns>
         protected virtual string GetServiceName()
         {
-            return $"[{GetType().Name}]";
+            return $"[{this.GetType().Name}]";
         }
     }
 

@@ -4,11 +4,11 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   The service transitioning exception.
+//   The service transition exception.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Services.Transitioning
+namespace Kephas.Services.Transitions
 {
     using System;
 

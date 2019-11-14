@@ -10,7 +10,6 @@
 
 namespace Kephas.Data.Tests.InMemory
 {
-    using System.IO;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -28,8 +27,7 @@ namespace Kephas.Data.Tests.InMemory
     using Kephas.Runtime;
     using Kephas.Serialization;
     using Kephas.Services;
-    using Kephas.Services.Transitioning;
-
+    using Kephas.Services.Transitions;
     using NSubstitute;
 
     using NUnit.Framework;

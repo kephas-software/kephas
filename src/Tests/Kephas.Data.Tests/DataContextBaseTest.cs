@@ -23,8 +23,7 @@ namespace Kephas.Data.Tests
     using Kephas.Data.Store;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Services.Transitioning;
-
+    using Kephas.Services.Transitions;
     using NSubstitute;
 
     using NUnit.Framework;
