@@ -13,6 +13,7 @@ namespace Kephas.Orchestration
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
@@ -26,6 +27,7 @@ namespace Kephas.Orchestration
     using Kephas.Dynamic;
     using Kephas.Interaction;
     using Kephas.Logging;
+    using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
     using Kephas.Operations;
@@ -54,21 +56,25 @@ namespace Kephas.Orchestration
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="messageBroker">The message broker.</param>
+        /// <param name="messageProcessor">The message processor.</param>
         /// <param name="processStarterFactoryFactory">Factory for the process starter factory.</param>
         public DefaultOrchestrationManager(
             IAppRuntime appRuntime,
             IEventHub eventHub,
             IMessageBroker messageBroker,
+            IMessageProcessor messageProcessor,
             IExportFactory<IProcessStarterFactory> processStarterFactoryFactory)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(eventHub, nameof(eventHub));
             Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(messageProcessor, nameof(messageProcessor));
             Requires.NotNull(processStarterFactoryFactory, nameof(processStarterFactoryFactory));
 
             this.AppRuntime = appRuntime;
             this.EventHub = eventHub;
             this.MessageBroker = messageBroker;
+            this.MessageProcessor = messageProcessor;
             this.processStarterFactoryFactory = processStarterFactoryFactory;
         }
 
@@ -103,6 +109,14 @@ namespace Kephas.Orchestration
         /// The message broker.
         /// </value>
         public IMessageBroker MessageBroker { get; }
+
+        /// <summary>
+        /// Gets the message processor.
+        /// </summary>
+        /// <value>
+        /// The message processor.
+        /// </value>
+        public IMessageProcessor MessageProcessor { get; }
 
         /// <summary>
         /// Gets or sets the timer due time.
@@ -230,15 +244,49 @@ namespace Kephas.Orchestration
 
             try
             {
-                await this.MessageBroker.ProcessOneWayAsync(
-                    stopMessage,
-                    new Endpoint(appId: runtimeAppInfo.AppId, appInstanceId: runtimeAppInfo.AppInstanceId),
-                    ctx => ctx.Impersonate(this.AppContext),
-                    cancellationToken).PreserveThreadContext();
-                return new OperationResult
+                if (runtimeAppInfo.AppId == this.AppRuntime.GetAppId() && runtimeAppInfo.AppInstanceId == this.AppRuntime.GetAppInstanceId())
                 {
-                    OperationState = OperationState.InProgress,
-                };
+                    // terminate this instance
+                    var response = await this.MessageProcessor.ProcessAsync(
+                        stopMessage,
+                        ctx => ctx.Impersonate(this.AppContext),
+                        cancellationToken).PreserveThreadContext();
+                    return new OperationResult
+                    {
+                        OperationState = OperationState.Completed,
+                        [nameof(StopAppResponseMessage)] = response,
+                    };
+                }
+                else
+                {
+                    // terminate a remote application
+                    var stopped = false;
+                    using (var sub = this.EventHub.Subscribe<AppStoppedEvent>((e, ctx) => { if (e.AppInfo.AppInstanceId == runtimeAppInfo.AppInstanceId) stopped = true; }))
+                    {
+                        // initiate stop
+                        await this.MessageBroker.ProcessOneWayAsync(
+                            stopMessage,
+                            new Endpoint(appId: runtimeAppInfo.AppId, appInstanceId: runtimeAppInfo.AppInstanceId),
+                            ctx => ctx.Impersonate(this.AppContext),
+                            cancellationToken).PreserveThreadContext();
+
+                        // wait for the notification or process termination
+                        const int delayms = 100;
+                        var elapsed = TimeSpan.Zero;
+                        var timeout = TaskHelper.DefaultTimeout;
+                        var process = this.TryGetProcess(runtimeAppInfo);
+                        while (!stopped && elapsed < timeout && !(process?.HasExited ?? false))
+                        {
+                            await Task.Delay(delayms).PreserveThreadContext();
+                        }
+                    }
+
+                    return new OperationResult
+                    {
+                        OperationState = stopped ? OperationState.Completed : OperationState.InProgress,
+                        [nameof(StopAppResponseMessage)] = stopped ? new StopAppResponseMessage { ProcessId = runtimeAppInfo.ProcessId } : null,
+                    };
+                }
             }
             catch (Exception ex)
             {
@@ -248,6 +296,26 @@ namespace Kephas.Orchestration
                 {
                     OperationState = OperationState.Failed,
                 }.MergeException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tries to get the OS process.
+        /// </summary>
+        /// <param name="runtimeAppInfo">Information describing the runtime application.</param>
+        /// <returns>
+        /// The OS process.
+        /// </returns>
+        protected virtual Process TryGetProcess(IRuntimeAppInfo runtimeAppInfo)
+        {
+            try
+            {
+                return runtimeAppInfo.ProcessId != 0 ? Process.GetProcessById(runtimeAppInfo.ProcessId) : null;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Warn(ex, $"Could not get the process with ID: {runtimeAppInfo.ProcessId}.");
+                return null;
             }
         }
 
