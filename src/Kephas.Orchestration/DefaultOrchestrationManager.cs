@@ -249,7 +249,7 @@ namespace Kephas.Orchestration
                     // terminate this instance
                     var response = await this.MessageProcessor.ProcessAsync(
                         stopMessage,
-                        ctx => ctx.Impersonate(this.AppContext),
+                        ctx => ctx.Merge(optionsConfig),
                         cancellationToken).PreserveThreadContext();
                     return new OperationResult
                     {
@@ -267,7 +267,7 @@ namespace Kephas.Orchestration
                         await this.MessageBroker.ProcessOneWayAsync(
                             stopMessage,
                             new Endpoint(appId: runtimeAppInfo.AppId, appInstanceId: runtimeAppInfo.AppInstanceId),
-                            ctx => ctx.Impersonate(this.AppContext),
+                            ctx => ctx.Merge(optionsConfig),
                             cancellationToken).PreserveThreadContext();
 
                         // wait for the notification or process termination
