@@ -57,7 +57,7 @@ namespace Kephas.Services
             Requires.NotNull(contextType, nameof(contextType));
 
             var createContext = CreateContextMethod.MakeGenericMethod(contextType);
-            return createContext.Invoke(contextFactory, new object[] { args });
+            return createContext.Call(contextFactory, new object[] { args });
         }
     }
 }
