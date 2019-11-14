@@ -10,6 +10,7 @@
 
 namespace Kephas.Messaging.Distributed.Routing.Composition
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Collections;
@@ -33,6 +34,7 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
             }
 
             this.ReceiverMatch = (string)metadata.TryGetValue(nameof(this.ReceiverMatch));
+            this.ReceiverMatchProviderType = (Type)metadata.TryGetValue(nameof(this.ReceiverMatchProviderType));
             this.IsFallback = (bool)metadata.TryGetValue(nameof(this.IsFallback), false);
             this.IsOptional = (bool)metadata.TryGetValue(nameof(this.IsOptional), false);
         }
@@ -40,16 +42,34 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageRouterMetadata"/> class.
         /// </summary>
-        /// <param name="receiverUrlRegex">The receiver URL regular expression.</param>
+        /// <param name="receiverMatch">The receiver match expression.</param>
         /// <param name="isFallback">Optional. True if this router is fallback, false if not.</param>
         /// <param name="isOptional">Optional. True if the router is optional. Optional routers which cannot be initialized are simply ignored.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. Name of the service.</param>
-        public MessageRouterMetadata(string receiverUrlRegex, bool isFallback = false, bool isOptional = false, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        public MessageRouterMetadata(string receiverMatch, bool isFallback = false, bool isOptional = false, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
-            this.ReceiverMatch = receiverUrlRegex;
+            this.ReceiverMatch = receiverMatch;
+            this.IsFallback = isFallback;
+            this.IsOptional = isOptional;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageRouterMetadata"/> class.
+        /// </summary>
+        /// <param name="receiverMatchProviderType">The type of the receiver match provider.</param>
+        /// <param name="isFallback">Optional. True if this router is fallback, false if not.</param>
+        /// <param name="isOptional">Optional. True if the router is optional. Optional routers which
+        ///                          cannot be initialized are simply ignored.</param>
+        /// <param name="processingPriority">Optional. The processing priority.</param>
+        /// <param name="overridePriority">Optional. The override priority.</param>
+        /// <param name="serviceName">Optional. Name of the service.</param>
+        public MessageRouterMetadata(Type receiverMatchProviderType, bool isFallback = false, bool isOptional = false, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+            : base(processingPriority, overridePriority, serviceName)
+        {
+            this.ReceiverMatchProviderType = receiverMatchProviderType;
             this.IsFallback = isFallback;
             this.IsOptional = isOptional;
         }
@@ -61,6 +81,14 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
         /// The receiver URL regular expression.
         /// </value>
         public string ReceiverMatch { get; }
+
+        /// <summary>
+        /// Gets the type of the receiver match provider.
+        /// </summary>
+        /// <value>
+        /// The type of the receiver match provider.
+        /// </value>
+        public Type ReceiverMatchProviderType { get; }
 
         /// <summary>
         /// Gets a value indicating whether this router is the fallback router.

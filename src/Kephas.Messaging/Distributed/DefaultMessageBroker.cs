@@ -25,6 +25,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
+    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Transitions;
     using Kephas.Threading.Tasks;
@@ -148,7 +149,11 @@ namespace Kephas.Messaging.Distributed
             var asyncRouterMap = this.routerFactories
                 .Order()
                 .Select(f => (
-                    regex: string.IsNullOrEmpty(f.Metadata.ReceiverMatch) ? null : new Regex(f.Metadata.ReceiverMatch, RegexOptions.IgnoreCase | RegexOptions.Compiled),
+                    regex: string.IsNullOrEmpty(f.Metadata.ReceiverMatch)
+                        ? f.Metadata.ReceiverMatchProviderType == null
+                            ? null
+                            : this.GetReceiverMatch(f.Metadata.ReceiverMatchProviderType, context)
+                        : this.GetReceiverMatch(f.Metadata.ReceiverMatch, context),
                     isFallback: f.Metadata.IsFallback,
                     asyncRouter: this.TryCreateRouterAsync(f, context, cancellationToken)))
                 .ToList();
@@ -165,6 +170,25 @@ namespace Kephas.Messaging.Distributed
             }
 
             this.initMonitor.Complete();
+        }
+
+        private Regex GetReceiverMatch(Type receiverMatchProviderType, IContext context)
+        {
+            if (!typeof(IReceiverMatchProvider).IsAssignableFrom(receiverMatchProviderType))
+            {
+                throw new InvalidOperationException(Strings.DefaultMessageBroker_BadReceiverMatchProviderType_Exception.FormatWith(receiverMatchProviderType, typeof(IReceiverMatchProvider)));
+            }
+
+            var provider = (IReceiverMatchProvider)this.contextFactory.CreateContext(receiverMatchProviderType);
+            var receiverMatch = provider.GetReceiverMatch(context);
+            return this.GetReceiverMatch(receiverMatch, context);
+        }
+
+        private Regex GetReceiverMatch(string receiverMatch, IContext context)
+        {
+            return string.IsNullOrEmpty(receiverMatch)
+                ? null
+                : new Regex(receiverMatch, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         }
 
         /// <summary>

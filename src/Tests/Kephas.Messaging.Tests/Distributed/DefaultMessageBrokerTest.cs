@@ -71,6 +71,22 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
+        public async Task InitializeAsync_with_match_provider()
+        {
+            var container = this.CreateContainer(parts: new[] { typeof(WithProviderMessageRouter) });
+            var messageBroker = container.GetExport<IMessageBroker>();
+            await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
+        }
+
+        [Test]
+        public void InitializeAsync_with_bad_match_provider()
+        {
+            var container = this.CreateContainer(parts: new[] { typeof(WithProviderMessageRouter) });
+            var messageBroker = container.GetExport<IMessageBroker>();
+            Assert.ThrowsAsync<InvalidOperationException>(() => (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container)));
+        }
+
+        [Test]
         public async Task DispatchAsync_timeout()
         {
             var container = this.CreateContainer();
@@ -393,6 +409,37 @@ namespace Kephas.Messaging.Tests.Distributed
             {
                 throw new NotImplementedException();
             }
+        }
+
+        [MessageRouter(ReceiverMatchProviderType = typeof(string))]
+        public class WithBadProviderMessageRouter : IMessageRouter
+        {
+            public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
+
+            public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        [MessageRouter(ReceiverMatchProviderType = typeof(TestReceiverMatchProvider))]
+        public class WithProviderMessageRouter : IMessageRouter
+        {
+            public event EventHandler<ReplyReceivedEventArgs> ReplyReceived;
+
+            public Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class TestReceiverMatchProvider : IReceiverMatchProvider
+        {
+            public TestReceiverMatchProvider(IAppRuntime appRuntime)
+            {
+            }
+
+            public string GetReceiverMatch(IContext context = null) => "test";
         }
     }
 }

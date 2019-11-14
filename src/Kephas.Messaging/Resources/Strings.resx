@@ -207,4 +207,7 @@
   <data name="DefaultMessageBroker_MissingReplyToMessageId_Exception" xml:space="preserve">
     <value>Received a reply message without the {0} being set ('{0}').</value>
   </data>
+  <data name="DefaultMessageBroker_BadReceiverMatchProviderType_Exception" xml:space="preserve">
+    <value>The '{0}' receiver match provider does not implement '{1}'.</value>
+  </data>
 </root>

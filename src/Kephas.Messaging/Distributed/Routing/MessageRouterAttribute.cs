@@ -30,6 +30,15 @@ namespace Kephas.Messaging.Distributed.Routing
         public string ReceiverMatch { get; set; }
 
         /// <summary>
+        /// Gets or sets the type of the receiver match provider.
+        /// </summary>
+        /// <value>
+        /// The type of the receiver match provider.
+        /// </value>
+        [MetadataValue(nameof(MessageRouterMetadata.ReceiverMatchProviderType))]
+        public Type ReceiverMatchProviderType { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this router is the fallback router.
         /// </summary>
         /// <value>

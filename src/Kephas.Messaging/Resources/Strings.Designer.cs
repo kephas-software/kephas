@@ -142,6 +142,15 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The &apos;{0}&apos; receiver match provider does not implement &apos;{1}&apos;..
+        /// </summary>
+        public static string DefaultMessageBroker_BadReceiverMatchProviderType_Exception {
+            get {
+                return ResourceManager.GetString("DefaultMessageBroker_BadReceiverMatchProviderType_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no message router to handle messages without recipients..
         /// </summary>
         public static string DefaultMessageBroker_CannotHandleMessagesWithoutRecipients_Exception {
