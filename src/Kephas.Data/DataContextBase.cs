@@ -25,6 +25,7 @@ namespace Kephas.Data
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -131,37 +132,39 @@ namespace Kephas.Data
         /// Gets a query over the entity type for the given query operation context, if any is provided.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
-        /// <param name="queryOperationContext">Context for the query.</param>
+        /// <param name="queryConfig">Optional. The query configuration.</param>
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        public virtual IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
+        public virtual IQueryable<T> Query<T>(Action<IQueryOperationContext> queryConfig = null)
             where T : class
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
-            queryOperationContext = queryOperationContext ?? new QueryOperationContext(this);
-            var entityType = typeof(T);
-            var implementationTypeInfo = this.EntityActivator.GetImplementationType(
-                entityType.AsRuntimeTypeInfo(),
-                queryOperationContext);
-            var implementationType = ((IRuntimeTypeInfo)implementationTypeInfo).Type;
-            if (implementationType != entityType)
+            using (var queryOperationContext = CreateQueryOperationContext(queryConfig))
             {
-                var queryMethod = QueryMethod.MakeGenericMethod(implementationType);
-                var implementationQuery = queryMethod.Call(this, queryOperationContext);
-                return (IQueryable<T>)implementationQuery;
+                var entityType = typeof(T);
+                var implementationTypeInfo = this.EntityActivator.GetImplementationType(
+                    entityType.AsRuntimeTypeInfo(),
+                    queryOperationContext);
+                var implementationType = ((IRuntimeTypeInfo)implementationTypeInfo).Type;
+                if (implementationType != entityType)
+                {
+                    var queryMethod = QueryMethod.MakeGenericMethod(implementationType);
+                    var implementationQuery = queryMethod.Call(this, queryOperationContext);
+                    return (IQueryable<T>)implementationQuery;
+                }
+
+                var queryBehaviors = this.dataBehaviorProvider?.GetDataBehaviors<IOnQueryBehavior>(typeof(T));
+                queryBehaviors?.ForEach(b => b.BeforeQuery(typeof(T), queryOperationContext));
+
+                var query = this.QueryCore<T>(queryOperationContext);
+                queryOperationContext.Query = query;
+
+                queryBehaviors?.ForEach(b => b.AfterQuery(typeof(T), queryOperationContext));
+                query = (IQueryable<T>)queryOperationContext.Query;
+                return query;
             }
-
-            var queryBehaviors = this.dataBehaviorProvider?.GetDataBehaviors<IOnQueryBehavior>(typeof(T));
-            queryBehaviors?.ForEach(b => b.BeforeQuery(typeof(T), queryOperationContext));
-
-            var query = this.QueryCore<T>(queryOperationContext);
-            queryOperationContext.Query = query;
-
-            queryBehaviors?.ForEach(b => b.AfterQuery(typeof(T), queryOperationContext));
-            query = (IQueryable<T>)queryOperationContext.Query;
-            return query;
         }
 
         /// <summary>
@@ -391,6 +394,18 @@ namespace Kephas.Data
 
             entityEntry.Dispose();
             return entityEntry;
+        }
+
+        /// <summary>
+        /// Creates the query operation context.
+        /// </summary>
+        /// <param name="queryConfig">The query configuration.</param>
+        /// <returns>
+        /// The new query operation context.
+        /// </returns>
+        protected virtual QueryOperationContext CreateQueryOperationContext(Action<IQueryOperationContext> queryConfig)
+        {
+            return new QueryOperationContext(this).Merge(queryConfig);
         }
     }
 }

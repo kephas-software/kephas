@@ -32,16 +32,16 @@ namespace Kephas.Data
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
         /// <param name="dataSpace">The data space to act on.</param>
-        /// <param name="operationContext">Context for the query.</param>
+        /// <param name="queryConfig">Optional. The query configuration.</param>
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        public static IQueryable<T> Query<T>(this IDataSpace dataSpace, IQueryOperationContext operationContext = null)
+        public static IQueryable<T> Query<T>(this IDataSpace dataSpace, Action<IQueryOperationContext> queryConfig = null)
             where T : class
         {
             Requires.NotNull(dataSpace, nameof(dataSpace));
 
-            return dataSpace[typeof(T)].Query<T>(operationContext);
+            return dataSpace[typeof(T)].Query<T>(queryConfig);
         }
 
         /// <summary>

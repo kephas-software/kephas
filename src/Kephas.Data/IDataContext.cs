@@ -28,11 +28,11 @@ namespace Kephas.Data
         /// Gets a query over the entity type for the given query operation context, if any is provided.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
-        /// <param name="queryOperationContext">Context for the query.</param>
+        /// <param name="queryConfig">Optional. The query configuration.</param>
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        IQueryable<T> Query<T>(IQueryOperationContext queryOperationContext = null)
+        IQueryable<T> Query<T>(Action<IQueryOperationContext> queryConfig = null)
             where T : class;
 
         /// <summary>

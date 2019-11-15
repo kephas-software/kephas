@@ -99,8 +99,7 @@ namespace Kephas.Data.Commands
                 }
             }
 
-            var queryContext = new QueryOperationContext(dataContext);
-            var query = dataContext.Query<T>(queryContext).Where(criteria).Take(2);
+            var query = dataContext.Query<T>().Where(criteria).Take(2);
             result = await query.ToListAsync(cancellationToken).PreserveThreadContext();
             return this.GetFindResult(findContext, result, criteria);
         }

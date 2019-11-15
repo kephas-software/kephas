@@ -267,7 +267,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         private IDataContext GetDataContextMock<TValue>(TValue[] data) where TValue : class
         {
             var dataContext = Substitute.For<IDataContext>();
-            dataContext.Query<TValue>(Arg.Any<IQueryOperationContext>())
+            dataContext.Query<TValue>(Arg.Any<Action<IQueryOperationContext>>())
                 .Returns(data.AsQueryable());
             return dataContext;
         }
