@@ -36,6 +36,7 @@ namespace Kephas.Plugins.Application
         /// <param name="appLocation">Optional. The application location. If not specified, the current
         ///                           application location is considered.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
+        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
@@ -47,12 +48,13 @@ namespace Kephas.Plugins.Application
             Func<AssemblyName, bool> assemblyFilter = null,
             string appLocation = null,
             string appId = null,
+            string appInstanceId = null,
             string appVersion = null,
             IExpando appArgs = null,
             bool? enablePlugins = null,
             string pluginsFolder = null,
             string targetFramework = null)
-            : base(assemblyLoader, logManager, assemblyFilter, appLocation, appId, appVersion, appArgs)
+            : base(assemblyLoader, logManager, assemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsFolder = this.ComputePluginsFolder(pluginsFolder, appArgs);

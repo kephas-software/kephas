@@ -34,6 +34,7 @@ namespace Kephas.Application
         /// <param name="defaultAssemblyFilter">Optional. The default assembly filter.</param>
         /// <param name="appLocation">Optional. The application location.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
+        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public DynamicAppRuntime(
@@ -42,9 +43,10 @@ namespace Kephas.Application
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
             string appLocation = null,
             string appId = null,
+            string appInstanceId = null,
             string appVersion = null,
             IExpando appArgs = null)
-            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation, appId, appVersion, appArgs)
+            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
         {
         }
 

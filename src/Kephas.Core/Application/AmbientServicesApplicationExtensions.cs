@@ -34,6 +34,7 @@ namespace Kephas.Application
         /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
         /// <param name="appLocation">Optional. The application location.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
+        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="config">Optional. The application runtime configuration callback.</param>
         /// <returns>
@@ -44,12 +45,13 @@ namespace Kephas.Application
             Func<AssemblyName, bool> assemblyFilter = null,
             string appLocation = null,
             string appId = null,
+            string appInstanceId = null,
             string appVersion = null,
             Action<DynamicAppRuntime> config = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var appRuntime = new DynamicAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation, appId, appVersion);
+            var appRuntime = new DynamicAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation, appId, appInstanceId, appVersion);
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }
@@ -66,6 +68,7 @@ namespace Kephas.Application
         /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
         /// <param name="appLocation">Optional. The application location.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
+        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="config">Optional. The application runtime configuration callback.</param>
         /// <returns>
@@ -76,12 +79,13 @@ namespace Kephas.Application
             Func<AssemblyName, bool> assemblyFilter = null,
             string appLocation = null,
             string appId = null,
+            string appInstanceId = null,
             string appVersion = null,
             Action<StaticAppRuntime> config = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var appRuntime = new StaticAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation, appId, appVersion);
+            var appRuntime = new StaticAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation, appId, appInstanceId, appVersion);
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }

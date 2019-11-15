@@ -74,6 +74,7 @@ namespace Kephas.Application
         /// <param name="appLocation">Optional. The application location. If not specified, the current
         ///                           application location is considered.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
+        /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         protected AppRuntimeBase(
@@ -82,6 +83,7 @@ namespace Kephas.Application
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
             string appLocation = null,
             string appId = null,
+            string appInstanceId = null,
             string appVersion = null,
             IExpando appArgs = null)
             : base(isThreadSafe: true)
@@ -91,7 +93,7 @@ namespace Kephas.Application
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appLocation = appLocation;
 
-            this.InitializeAppProperties(Assembly.GetEntryAssembly(), appId, appVersion);
+            this.InitializeAppProperties(Assembly.GetEntryAssembly(), appId, appInstanceId, appVersion);
         }
 
         /// <summary>
@@ -207,11 +209,12 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="entryAssembly">The entry assembly.</param>
         /// <param name="appId">Identifier for the application.</param>
+        /// <param name="appInstanceId">Identifier for the application instance.</param>
         /// <param name="appVersion">The application version.</param>
-        protected virtual void InitializeAppProperties(Assembly entryAssembly, string appId, string appVersion)
+        protected virtual void InitializeAppProperties(Assembly entryAssembly, string appId, string appInstanceId, string appVersion)
         {
             this[AppIdKey] = appId = this.GetAppId(entryAssembly, appId);
-            this[AppInstanceIdKey] = $"{appId}-{Guid.NewGuid():N}";
+            this[AppInstanceIdKey] = string.IsNullOrEmpty(appInstanceId) ? $"{appId}-{Guid.NewGuid():N}" : appInstanceId;
             this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? (entryAssembly?.GetName().Version.ToString() ?? "0.0.0.0") : appVersion;
         }
 
