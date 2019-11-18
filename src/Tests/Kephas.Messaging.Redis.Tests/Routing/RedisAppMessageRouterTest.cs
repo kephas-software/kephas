@@ -41,17 +41,21 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         [Test]
         public async Task DispatchAsync_pair_request_response()
         {
-            var masterContainer = this.CreateContainer(parts: new[] { typeof(RedisSettingsProvider) });
-            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
             var masterId = $"Master-{Guid.NewGuid():N}";
-            masterRuntime[AppRuntimeBase.AppIdKey] = masterId;
-            masterRuntime[AppRuntimeBase.AppInstanceIdKey] = $"{masterId}-1";
+            var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
+            var masterContainer = this.CreateContainer(
+                new AmbientServices()
+                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
+                parts: new[] { typeof(RedisSettingsProvider) });
+            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
-            var slaveContainer = this.CreateContainer(parts: new[] { typeof(RedisSettingsProvider) });
-            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
             var slaveId = $"Slave-{Guid.NewGuid():N}";
-            slaveRuntime[AppRuntimeBase.AppIdKey] = slaveId;
-            slaveRuntime[AppRuntimeBase.AppInstanceIdKey] = $"{slaveId}-1";
+            var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
+            var slaveContainer = this.CreateContainer(
+                new AmbientServices()
+                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
+                parts: new[] { typeof(RedisSettingsProvider) });
+            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
             await this.InitializeAppAsync(slaveContainer);
@@ -74,17 +78,66 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         }
 
         [Test]
+        public async Task DispatchAsync_pair_request_response_multiple()
+        {
+            var masterId = $"Master-{Guid.NewGuid():N}";
+            var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
+            var masterContainer = this.CreateContainer(
+                new AmbientServices()
+                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
+                parts: new[] { typeof(RedisSettingsProvider) });
+            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
+
+            var slaveId = $"Slave-{Guid.NewGuid():N}";
+            var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
+            var slaveContainer = this.CreateContainer(
+                new AmbientServices()
+                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
+                parts: new[] { typeof(RedisSettingsProvider) });
+            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
+
+            await this.InitializeAppAsync(masterContainer);
+            await this.InitializeAppAsync(slaveContainer);
+
+            var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
+
+            try
+            {
+                var pingBackTasks = new int[3]
+                    .Select(i =>
+                        masterMessageBroker.DispatchAsync(
+                            new PingMessage(),
+                            ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
+                                      .Timeout(TimeSpan.FromSeconds(5))));
+
+                var pingBacks = await Task.WhenAll(pingBackTasks);
+                CollectionAssert.AllItemsAreInstancesOfType(pingBacks, typeof(PingBackMessage));
+            }
+            finally
+            {
+                await this.FinalizeAppAsync(slaveContainer);
+                await this.FinalizeAppAsync(masterContainer);
+            }
+        }
+
+        [Test]
         public async Task DispatchAsync_pair_request_response_redis_unavailable()
         {
-            var masterContainer = this.CreateContainer();
+            var masterId = $"Master-{Guid.NewGuid():N}";
+            var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
+            var masterContainer = this.CreateContainer(
+                new AmbientServices()
+                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
+                parts: new[] { typeof(RedisSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
-            masterRuntime[AppRuntimeBase.AppIdKey] = "Master";
-            masterRuntime[AppRuntimeBase.AppInstanceIdKey] = "Master-1";
 
-            var slaveContainer = this.CreateContainer();
+            var slaveId = $"Slave-{Guid.NewGuid():N}";
+            var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
+            var slaveContainer = this.CreateContainer(
+                new AmbientServices()
+                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
+                parts: new[] { typeof(RedisSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
-            slaveRuntime[AppRuntimeBase.AppIdKey] = "Slave";
-            slaveRuntime[AppRuntimeBase.AppInstanceIdKey] = "Slave-1";
 
             await this.InitializeAppAsync(masterContainer);
             await this.InitializeAppAsync(slaveContainer);
@@ -98,6 +151,49 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                     ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
                               .Timeout(TimeSpan.FromSeconds(5)));
                 Assert.IsInstanceOf<PingBackMessage>(pingBack);
+            }
+            finally
+            {
+                await this.FinalizeAppAsync(slaveContainer);
+                await this.FinalizeAppAsync(masterContainer);
+            }
+        }
+
+        [Test]
+        public async Task DispatchAsync_pair_request_response_redis_unavailable_multiple()
+        {
+            var masterId = $"Master-{Guid.NewGuid():N}";
+            var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
+            var masterContainer = this.CreateContainer(
+                new AmbientServices()
+                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
+                parts: new[] { typeof(RedisSettingsProvider) });
+            var masterRuntime = masterContainer.GetExport<IAppRuntime>();
+
+            var slaveId = $"Slave-{Guid.NewGuid():N}";
+            var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
+            var slaveContainer = this.CreateContainer(
+                new AmbientServices()
+                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
+                parts: new[] { typeof(RedisSettingsProvider) });
+            var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
+
+            await this.InitializeAppAsync(masterContainer);
+            await this.InitializeAppAsync(slaveContainer);
+
+            var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
+
+            try
+            {
+                var pingBackTasks = new int[3]
+                    .Select(i =>
+                        masterMessageBroker.DispatchAsync(
+                            new PingMessage(),
+                            ctx => ctx.To((IEndpoint)new Endpoint(appInstanceId: slaveRuntime.GetAppInstanceId()))
+                                      .Timeout(TimeSpan.FromSeconds(5))));
+
+                var pingBacks = await Task.WhenAll(pingBackTasks);
+                CollectionAssert.AllItemsAreInstancesOfType(pingBacks, typeof(PingBackMessage));
             }
             finally
             {
@@ -129,7 +225,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                     return new RedisClientSettings
                     {
                         Namespace = "unit-test",
-                        ConnectionString = "put-your-connection-string-here",
+                        ConnectionString = "localhost",
                     };
                 }
 

@@ -46,7 +46,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
                 var request = new BrokeredMessage { Content = new PingMessage() };
                 var result = await inProcessRouter.DispatchAsync(request, Substitute.For<IDispatchingContext>(), default);
 
-                Thread.Sleep(100);
+                await Task.Delay(200);
                 Assert.IsNotNull(eventArgs);
                 Assert.AreEqual(RoutingInstruction.None, result.action);
                 Assert.IsInstanceOf<PingBackMessage>(eventArgs.Message.Content);
