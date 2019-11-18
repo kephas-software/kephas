@@ -139,11 +139,8 @@ namespace Kephas.Data.Client.Queries.Conversion
         protected virtual IQueryable CreateQuery(Type entityType, IClientQueryConversionContext context)
         {
             var queryMethod = DataContextQueryMethod.MakeGenericMethod(entityType);
-            var queryContext = new QueryOperationContext(context.DataContext)
-                                    {
-                                        Options = context.Options
-                                    };
-            var queryable = (IQueryable) queryMethod.Call(context.DataContext, queryContext);
+            Action<IQueryOperationContext> queryConfig = ctx => ctx.Options(context.Options);
+            var queryable = (IQueryable) queryMethod.Call(context.DataContext, queryConfig);
             return queryable;
         }
 

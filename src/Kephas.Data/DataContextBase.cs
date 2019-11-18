@@ -141,7 +141,7 @@ namespace Kephas.Data
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
-            using (var queryOperationContext = CreateQueryOperationContext(queryConfig))
+            using (var queryOperationContext = this.CreateQueryOperationContext(queryConfig))
             {
                 var entityType = typeof(T);
                 var implementationTypeInfo = this.EntityActivator.GetImplementationType(
@@ -151,7 +151,7 @@ namespace Kephas.Data
                 if (implementationType != entityType)
                 {
                     var queryMethod = QueryMethod.MakeGenericMethod(implementationType);
-                    var implementationQuery = queryMethod.Call(this, queryOperationContext);
+                    var implementationQuery = queryMethod.Call(this, queryConfig);
                     return (IQueryable<T>)implementationQuery;
                 }
 
