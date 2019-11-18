@@ -33,6 +33,7 @@ namespace Kephas.Redis
     public class DefaultRedisClient : Loggable, IRedisClient, IAsyncInitializable, IAsyncFinalizable
     {
         private readonly InitializationMonitor<IRedisClient> initMonitor;
+        private readonly FinalizationMonitor<IRedisClient> finMonitor;
         private readonly ILogManager logManager;
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
         private readonly IEventHub eventHub;
@@ -53,6 +54,7 @@ namespace Kephas.Redis
             this.redisConfiguration = redisConfiguration;
             this.eventHub = eventHub;
             this.initMonitor = new InitializationMonitor<IRedisClient>(this.GetType());
+            this.finMonitor = new FinalizationMonitor<IRedisClient>(this.GetType());
         }
 
         /// <summary>
@@ -95,14 +97,14 @@ namespace Kephas.Redis
                 this.connection = ConnectionMultiplexer.Connect(settings.ConnectionString, new RedisLogger(this.logManager));
                 this.initMonitor.Complete();
 
-                await this.eventHub.PublishAsync(new RedisClientInitializedSignal(), context, cancellationToken).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new RedisClientStartedSignal(), context, cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {
                 this.Logger.Fatal(ex, "Error while connecting to Redis server.");
                 this.initMonitor.Fault(ex);
 
-                await this.eventHub.PublishAsync(new RedisClientInitializedSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new RedisClientStartedSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
             }
         }
 
@@ -116,12 +118,33 @@ namespace Kephas.Redis
         /// </returns>
         public async Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default)
         {
-            if (this.connection == null)
-            {
-                return;
-            }
+            this.finMonitor.AssertIsNotStarted();
 
-            await this.connection.CloseAsync(allowCommandsToComplete: true).PreserveThreadContext();
+            this.finMonitor.Start();
+
+            try
+            {
+                await this.eventHub.PublishAsync(new RedisClientStoppingSignal(), context, cancellationToken).PreserveThreadContext();
+
+                if (this.connection != null)
+                {
+                    await this.connection.CloseAsync(allowCommandsToComplete: true).PreserveThreadContext();
+                    this.connection.Dispose();
+                }
+
+                this.finMonitor.Complete();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Fatal(ex, "Error while closing the Redis connection.");
+                this.finMonitor.Fault(ex);
+
+                await this.eventHub.PublishAsync(new RedisClientStoppingSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
+            }
+            finally
+            {
+                this.initMonitor.Reset();
+            }
         }
     }
 }

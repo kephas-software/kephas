@@ -48,7 +48,8 @@ namespace Kephas.Messaging.Redis.Routing
         private ChannelMessageQueue appInstanceMessageQueue;
         private string redisRootChannelName;
         private bool isRedisChannelInitialized;
-        private IEventSubscription redisInitializedSubscription;
+        private IEventSubscription redisClientStartedSubscription;
+        private IEventSubscription redisClientStoppingSubscription;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisAppMessageRouter"/> class.
@@ -88,58 +89,59 @@ namespace Kephas.Messaging.Redis.Routing
         {
             await base.InitializeCoreAsync(context, cancellationToken).PreserveThreadContext();
 
-            await this.InitializeRedisChannelAsync(context, cancellationToken).PreserveThreadContext();
-        }
-
-        /// <summary>Initializes the Redis channel asynchronously.</summary>
-        /// <param name="context">An optional context for initialization.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>An awaitable task.</returns>
-        protected virtual async Task InitializeRedisChannelAsync(IContext context, CancellationToken cancellationToken)
-        {
-            async Task InitializeAsync(RedisClientInitializedSignal initSignal, CancellationToken token)
-            {
-                this.redisInitializedSubscription?.Dispose();
-                this.redisInitializedSubscription = null;
-
-                if (initSignal.Severity.IsError())
-                {
-                    this.Logger.Info($"Redis client initialization failed, cancelling initialization of the Redis channel.");
-                    return;
-                }
-
-                this.Logger.Info($"Redis initialized, starting initialization of the Redis channel...");
-
-                var redisNS = this.redisConfiguration.Settings.Namespace;
-                this.redisRootChannelName = string.IsNullOrEmpty(redisNS) ? ChannelType : $"{redisNS}:{ChannelType}";
-
-                var connection = this.redisClient.GetConnection();
-
-                this.subscriber = connection.GetSubscriber();
-                this.messageQueue = await this.subscriber.SubscribeAsync(this.redisRootChannelName).PreserveThreadContext();
-                this.messageQueue.OnMessage(this.ReceiveMessageAsync);
-
-                this.appMessageQueue = await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppId()}").PreserveThreadContext();
-                this.appMessageQueue.OnMessage(this.ReceiveMessageAsync);
-
-                this.appInstanceMessageQueue = await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppInstanceId()}").PreserveThreadContext();
-                this.appInstanceMessageQueue.OnMessage(this.ReceiveMessageAsync);
-
-                this.Logger.Info($"Completed initialization of the Redis channel.");
-
-                this.isRedisChannelInitialized = true;
-            }
-
             if (!this.redisClient.IsInitialized)
             {
                 this.Logger.Info($"Redis client not initialized, postponing initialization of the Redis channel.");
 
-                this.redisInitializedSubscription = this.eventHub.Subscribe<RedisClientInitializedSignal>((s, ctx, ct) => InitializeAsync(s, ct));
+                this.redisClientStartedSubscription = this.eventHub.Subscribe<RedisClientStartedSignal>((e, ctx, ct) => this.InitializeRedisChannelAsync(e, ct));
 
                 return;
             }
 
-            await InitializeAsync(new RedisClientInitializedSignal(), cancellationToken).PreserveThreadContext();
+            await this.InitializeRedisChannelAsync(new RedisClientStartedSignal(), cancellationToken).PreserveThreadContext();
+        }
+
+        /// <summary>
+        /// Initializes the Redis channel asynchronously.
+        /// </summary>
+        /// <param name="signal">The Redis client started signal.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An awaitable task.
+        /// </returns>
+        protected virtual async Task InitializeRedisChannelAsync(RedisClientStartedSignal signal, CancellationToken cancellationToken)
+        {
+            this.redisClientStartedSubscription?.Dispose();
+            this.redisClientStartedSubscription = null;
+
+            this.redisClientStoppingSubscription = this.eventHub.Subscribe<RedisClientStoppingSignal>((e, ctx) => this.DisposeRedisChannel(e));
+
+            if (signal.Severity.IsError())
+            {
+                this.Logger.Info($"Redis client initialization failed, cancelling initialization of the Redis channel.");
+                return;
+            }
+
+            this.Logger.Info($"Redis initialized, starting initialization of the Redis channel...");
+
+            var redisNS = this.redisConfiguration.Settings.Namespace;
+            this.redisRootChannelName = string.IsNullOrEmpty(redisNS) ? ChannelType : $"{redisNS}:{ChannelType}";
+
+            var connection = this.redisClient.GetConnection();
+
+            this.subscriber = connection.GetSubscriber();
+            this.messageQueue = await this.subscriber.SubscribeAsync(this.redisRootChannelName).PreserveThreadContext();
+            this.messageQueue.OnMessage(this.ReceiveMessageAsync);
+
+            this.appMessageQueue = await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppId()}").PreserveThreadContext();
+            this.appMessageQueue.OnMessage(this.ReceiveMessageAsync);
+
+            this.appInstanceMessageQueue = await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppInstanceId()}").PreserveThreadContext();
+            this.appInstanceMessageQueue.OnMessage(this.ReceiveMessageAsync);
+
+            this.Logger.Info($"Completed initialization of the Redis channel.");
+
+            this.isRedisChannelInitialized = true;
         }
 
         /// <summary>
@@ -257,21 +259,33 @@ namespace Kephas.Messaging.Redis.Routing
         {
             try
             {
-                this.redisInitializedSubscription?.Dispose();
-                this.redisInitializedSubscription = null;
-
-                if (this.isRedisChannelInitialized)
-                {
-                    this.messageQueue.Unsubscribe();
-                    this.appMessageQueue.Unsubscribe();
-                    this.appInstanceMessageQueue.Unsubscribe();
-
-                    this.isRedisChannelInitialized = false;
-                }
+                this.DisposeRedisChannel(new RedisClientStoppingSignal());
             }
             finally
             {
                 base.Dispose(disposing);
+            }
+        }
+
+        /// <summary>
+        /// Disposes the Redis channel.
+        /// </summary>
+        /// <param name="signal">The Redis client stopping signal.</param>
+        protected virtual void DisposeRedisChannel(RedisClientStoppingSignal signal)
+        {
+            this.redisClientStartedSubscription?.Dispose();
+            this.redisClientStartedSubscription = null;
+
+            this.redisClientStoppingSubscription?.Dispose();
+            this.redisClientStoppingSubscription = null;
+
+            if (this.isRedisChannelInitialized)
+            {
+                this.messageQueue.Unsubscribe();
+                this.appMessageQueue.Unsubscribe();
+                this.appInstanceMessageQueue.Unsubscribe();
+
+                this.isRedisChannelInitialized = false;
             }
         }
 
