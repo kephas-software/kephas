@@ -11,6 +11,7 @@
 namespace Kephas.Redis
 {
     using System;
+    using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -94,7 +95,7 @@ namespace Kephas.Redis
             try
             {
                 var settings = this.redisConfiguration.Settings;
-                this.connection = ConnectionMultiplexer.Connect(settings.ConnectionString, new RedisLogger(this.logManager));
+                this.connection = ConnectionMultiplexer.Connect(settings.ConnectionString, this.CreateRedisLogger(context));
                 this.initMonitor.Complete();
 
                 await this.eventHub.PublishAsync(new RedisClientStartedSignal(), context, cancellationToken).PreserveThreadContext();
@@ -145,6 +146,18 @@ namespace Kephas.Redis
             {
                 this.initMonitor.Reset();
             }
+        }
+
+        /// <summary>
+        /// Creates a Redis logger.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        /// <returns>
+        /// The new Redis logger.
+        /// </returns>
+        protected virtual TextWriter CreateRedisLogger(IContext context)
+        {
+            return new RedisLogger(this.logManager);
         }
     }
 }
