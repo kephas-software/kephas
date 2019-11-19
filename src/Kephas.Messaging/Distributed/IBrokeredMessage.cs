@@ -138,14 +138,15 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
         /// <param name="router">The router.</param>
+        /// <param name="appInstanceId">Identifier for the application instance.</param>
         /// <returns>
         /// This <paramref name="brokeredMessage"/>.
         /// </returns>
-        public static IBrokeredMessage TraceInputRoute(this IBrokeredMessage brokeredMessage, IMessageRouter router)
+        public static IBrokeredMessage TraceInputRoute(this IBrokeredMessage brokeredMessage, IMessageRouter router, string appInstanceId)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 
-            brokeredMessage.Trace = $"in:{router?.GetType().Name}:{DateTime.UtcNow:s}{Environment.NewLine}{brokeredMessage.Trace}";
+            brokeredMessage.Trace = $"in:{appInstanceId}:{router?.GetType().Name}:{DateTime.UtcNow:s}{Environment.NewLine}{brokeredMessage.Trace}";
 
             return brokeredMessage;
         }
@@ -155,14 +156,15 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
         /// <param name="router">The router.</param>
+        /// <param name="appInstanceId">Identifier for the application instance.</param>
         /// <returns>
         /// This <paramref name="brokeredMessage"/>.
         /// </returns>
-        public static IBrokeredMessage TraceOutputRoute(this IBrokeredMessage brokeredMessage, IMessageRouter router)
+        public static IBrokeredMessage TraceOutputRoute(this IBrokeredMessage brokeredMessage, IMessageRouter router, string appInstanceId)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 
-            brokeredMessage.Trace = $"out:{router?.GetType().Name}:{DateTime.UtcNow:s}{Environment.NewLine}{brokeredMessage.Trace}";
+            brokeredMessage.Trace = $"out:{appInstanceId}:{router?.GetType().Name}:{DateTime.UtcNow:s}{Environment.NewLine}{brokeredMessage.Trace}";
 
             return brokeredMessage;
         }
@@ -172,14 +174,15 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         /// <param name="brokeredMessage">The brokered message.</param>
         /// <param name="requestTrace">The request trace.</param>
+        /// <param name="appInstanceId">Identifier for the application instance.</param>
         /// <returns>
         /// This <paramref name="brokeredMessage"/>.
         /// </returns>
-        public static IBrokeredMessage TraceReply(this IBrokeredMessage brokeredMessage, string requestTrace)
+        public static IBrokeredMessage TraceReply(this IBrokeredMessage brokeredMessage, string requestTrace, string appInstanceId)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 
-            brokeredMessage.Trace = $"reply:{DateTime.UtcNow:s}{Environment.NewLine}{requestTrace}";
+            brokeredMessage.Trace = $"reply:{appInstanceId}:{DateTime.UtcNow:s}{Environment.NewLine}{requestTrace}";
 
             return brokeredMessage;
         }

@@ -158,7 +158,7 @@ namespace Kephas.Messaging.Distributed.Routing
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
             Requires.NotNull(context, nameof(context));
 
-            brokeredMessage.TraceOutputRoute(this);
+            brokeredMessage.TraceOutputRoute(this, this.AppRuntime.GetAppInstanceId());
 
             if (brokeredMessage.IsOneWay)
             {
@@ -276,7 +276,10 @@ namespace Kephas.Messaging.Distributed.Routing
         {
             try
             {
-                brokeredMessage.TraceInputRoute(this);
+                var appId = this.AppRuntime.GetAppId();
+                var appInstanceId = this.AppRuntime.GetAppInstanceId();
+
+                brokeredMessage.TraceInputRoute(this, appInstanceId);
 
                 // if the input queue notifies a reply, notify it further to the message broker.
                 if (brokeredMessage.ReplyToMessageId != null)
@@ -286,8 +289,6 @@ namespace Kephas.Messaging.Distributed.Routing
                 }
 
                 // identify the local and the remote recipients
-                var appId = this.AppRuntime.GetAppId();
-                var appInstanceId = this.AppRuntime.GetAppInstanceId();
                 var localRecipients = brokeredMessage.Recipients?
                     .Where(r => (r.AppInstanceId == null || r.AppInstanceId == appInstanceId)
                                     && (r.AppId == null || r.AppId == appId))
@@ -309,7 +310,7 @@ namespace Kephas.Messaging.Distributed.Routing
                     {
                         redirectContext.Impersonate(context);
 
-                        remoteMessage.TraceOutputRoute(this);
+                        remoteMessage.TraceOutputRoute(this, appInstanceId);
                         (remoteInstruction, remoteReply) = await this.RouteOutputAsync(remoteMessage, redirectContext, cancellationToken).PreserveThreadContext();
                     }
                 }
@@ -348,7 +349,7 @@ namespace Kephas.Messaging.Distributed.Routing
                         {
                             replyContext.Impersonate(context).ReplyTo(brokeredMessage);
 
-                            replyContext.BrokeredMessage.TraceOutputRoute(this);
+                            replyContext.BrokeredMessage.TraceOutputRoute(this, appInstanceId);
                             (localInstruction, localReply) = await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
                         }
                     }

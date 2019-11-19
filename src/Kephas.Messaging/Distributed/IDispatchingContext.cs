@@ -439,7 +439,7 @@ namespace Kephas.Messaging.Distributed
             Requires.NotNullOrEmpty(messageId, nameof(messageId));
 
             context.BrokeredMessage.ReplyToMessageId = messageId;
-            context.BrokeredMessage.TraceReply(trace);
+            context.BrokeredMessage.TraceReply(trace, null);
             if (sender != null)
             {
                 context.BrokeredMessage.Recipients = new[] { sender };
