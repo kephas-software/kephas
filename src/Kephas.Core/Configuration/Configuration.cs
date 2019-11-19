@@ -10,17 +10,9 @@
 
 namespace Kephas.Configuration
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Kephas.Composition;
     using Kephas.Configuration.Providers;
-    using Kephas.Configuration.Providers.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
-    using Kephas.Reflection;
-    using Kephas.Services;
 
     /// <summary>
     /// Provides the configuration for the settings type indicated as the generic parameter type.
