@@ -525,7 +525,7 @@ namespace Kephas.Messaging.Distributed
         {
             if (!added)
             {
-                this.Logger.Error(Strings.DefaultMessageBroker_LogOnEnqueue_NotAddedError, brokeredMessage.Id, brokeredMessage.Content, brokeredMessage.Timeout);
+                this.Logger.Error(Strings.DefaultMessageBroker_LogOnEnqueue_NotAddedError, brokeredMessage.Id, brokeredMessage, brokeredMessage.Timeout);
                 return;
             }
 
@@ -534,7 +534,7 @@ namespace Kephas.Messaging.Distributed
                 return;
             }
 
-            this.Logger.Debug(Strings.DefaultMessageBroker_LogOnEnqueue_Success, brokeredMessage.Id, brokeredMessage.Content, brokeredMessage.Timeout);
+            this.Logger.Debug(Strings.DefaultMessageBroker_LogOnEnqueue_Success, brokeredMessage.Id, brokeredMessage, brokeredMessage.Timeout);
         }
 
         /// <summary>
@@ -548,9 +548,7 @@ namespace Kephas.Messaging.Distributed
                 return;
             }
 
-            // TODO localization
-            var direction = brokeredMessage.IsOneWay ? "one way" : "with reply";
-            this.Logger.Debug($"Sending brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) {direction}.");
+            this.Logger.Debug($"Sending brokered message '{brokeredMessage}'.");
         }
 
         /// <summary>
@@ -565,8 +563,7 @@ namespace Kephas.Messaging.Distributed
             }
 
             // TODO localization
-            var reply = brokeredMessage.ReplyToMessageId != null ? $" as reply to {brokeredMessage.ReplyToMessageId}" : string.Empty;
-            this.Logger.Debug($"Received brokered message (#{brokeredMessage.Id}, {brokeredMessage.Content}) {reply}.");
+            this.Logger.Debug($"Received brokered message '{brokeredMessage}'.");
         }
 
         /// <summary>
@@ -582,8 +579,7 @@ namespace Kephas.Messaging.Distributed
             }
 
             // TODO localization
-            var reply = brokeredMessage.ReplyToMessageId != null ? $" as reply to {brokeredMessage.ReplyToMessageId}" : string.Empty;
-            this.Logger.Warn(timeoutException, $"Timeout after {brokeredMessage.Timeout} for {brokeredMessage} {reply}.");
+            this.Logger.Warn(timeoutException, $"Timeout after {brokeredMessage.Timeout} for '{brokeredMessage}'.");
         }
     }
 }
