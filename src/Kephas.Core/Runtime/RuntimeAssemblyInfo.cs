@@ -28,7 +28,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// Default type loader.
         /// </summary>
-        private static readonly ITypeLoader TypeLoader = new DefaultTypeLoader();
+        private static readonly ITypeLoader TypeLoader = new DefaultTypeLoader(null);
 
         /// <summary>
         /// The cache of runtime assembly infos.

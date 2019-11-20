@@ -49,7 +49,6 @@ namespace Kephas.Model.Runtime
             ICollection<IRuntimeModelRegistry> modelRegistries)
             : base(runtimeModelElementFactory)
         {
-            Requires.NotNull(runtimeModelElementFactory, nameof(runtimeModelElementFactory));
             Requires.NotNull(modelRegistries, nameof(modelRegistries));
 
             this.modelRegistries = modelRegistries;
