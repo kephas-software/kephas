@@ -37,7 +37,7 @@ namespace Kephas.Messaging
             : base(exceptionData.Message)
         {
             this.Severity = exceptionData.Severity;
-            this.OriginalExceptionType = exceptionData.ExceptionType;
+            this.ExceptionType = exceptionData.ExceptionType;
         }
 
         /// <summary>
@@ -65,6 +65,6 @@ namespace Kephas.Messaging
         /// <value>
         /// The type of the original exception.
         /// </value>
-        public string OriginalExceptionType { get; }
+        public string ExceptionType { get; }
     }
 }
