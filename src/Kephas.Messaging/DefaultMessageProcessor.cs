@@ -32,20 +32,8 @@ namespace Kephas.Messaging
     public class DefaultMessageProcessor : Loggable, IMessageProcessor
     {
         private readonly IMessageHandlerRegistry handlerRegistry;
-
-        /// <summary>
-        /// The message match service.
-        /// </summary>
         private readonly IMessageMatchService messageMatchService;
-
-        /// <summary>
-        /// The behavior factories.
-        /// </summary>
         private readonly IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories;
-
-        /// <summary>
-        /// The behavior factories.
-        /// </summary>
         private readonly
             ConcurrentDictionary<string, (IEnumerable<IMessagingBehavior> behaviors, IEnumerable<IMessagingBehavior> reversedBehaviors)> behaviorFactoriesDictionary =
                 new ConcurrentDictionary<string, (IEnumerable<IMessagingBehavior>, IEnumerable<IMessagingBehavior>)>();
@@ -62,6 +50,7 @@ namespace Kephas.Messaging
             IMessageHandlerRegistry handlerRegistry,
             IMessageMatchService messageMatchService,
             IList<IExportFactory<IMessagingBehavior, MessagingBehaviorMetadata>> behaviorFactories)
+            : base(contextFactory)
         {
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(handlerRegistry, nameof(handlerRegistry));

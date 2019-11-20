@@ -13,11 +13,10 @@ namespace Kephas.Messaging
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
-    using Kephas.Messaging.Distributed;
-    using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Threading.Tasks;
 
@@ -55,6 +54,7 @@ namespace Kephas.Messaging
             Requires.NotNull(message, nameof(message));
             Requires.NotNull(context, nameof(context));
 
+            this.Logger = this.GetLogger(context);
             var response = await this.ProcessAsync(message, context, token).PreserveThreadContext();
             return response.ToMessage();
         }
@@ -79,6 +79,7 @@ namespace Kephas.Messaging
                 throw new ArgumentException(Strings.MessageHandler_BadMessageType_Exception.FormatWith(typeof(TMessage), content?.GetType()), nameof(message));
             }
 
+            this.Logger = this.GetLogger(context);
             var response = await this.ProcessAsync(typedMessage, context, token).PreserveThreadContext();
             return response.ToMessage();
         }

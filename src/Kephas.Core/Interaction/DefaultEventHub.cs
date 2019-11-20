@@ -33,6 +33,15 @@ namespace Kephas.Interaction
         private readonly IList<EventSubscription> subscriptions = new List<EventSubscription>();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultEventHub"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public DefaultEventHub(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
+
+        /// <summary>
         /// Publishes the event asynchronously to its subscribers.
         /// </summary>
         /// <param name="event">The event.</param>

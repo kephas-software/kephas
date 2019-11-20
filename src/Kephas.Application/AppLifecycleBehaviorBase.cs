@@ -26,6 +26,8 @@ namespace Kephas.Application
     /// </summary>
     public abstract class AppLifecycleBehaviorBase : Loggable, IAppLifecycleBehavior
     {
+        private bool isInitialized;
+
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
@@ -39,6 +41,7 @@ namespace Kephas.Application
         /// </remarks>
         Task IAppLifecycleBehavior.BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken)
         {
+            this.EnsureInitialized(appContext);
             return this.BeforeAppInitializeAsync(this.GetAppContext(appContext), cancellationToken);
         }
 
@@ -68,6 +71,7 @@ namespace Kephas.Application
         /// </returns>
         Task IAppLifecycleBehavior.AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken)
         {
+            this.EnsureInitialized(appContext);
             return this.AfterAppInitializeAsync(this.GetAppContext(appContext), cancellationToken);
         }
 
@@ -98,6 +102,7 @@ namespace Kephas.Application
         /// </returns>
         Task IAppLifecycleBehavior.BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken)
         {
+            this.EnsureInitialized(appContext);
             return this.BeforeAppFinalizeAsync(this.GetAppContext(appContext), cancellationToken);
         }
 
@@ -128,6 +133,7 @@ namespace Kephas.Application
         /// </returns>
         Task IAppLifecycleBehavior.AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken)
         {
+            this.EnsureInitialized(appContext);
             return this.AfterAppFinalizeAsync(this.GetAppContext(appContext), cancellationToken);
         }
 
@@ -150,6 +156,16 @@ namespace Kephas.Application
             return context is IAppContext appContext
                 ? appContext
                 : throw new ApplicationException(Strings.MismatchedAppContext_Exception.FormatWith(nameof(IAppContext)));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void EnsureInitialized(IContext context)
+        {
+            if (!this.isInitialized)
+            {
+                this.Logger = this.GetLogger(context);
+                this.isInitialized = true;
+            }
         }
     }
 }

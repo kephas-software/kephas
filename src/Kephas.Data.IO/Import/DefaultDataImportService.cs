@@ -59,6 +59,7 @@ namespace Kephas.Data.IO.Import
             IDataConversionService conversionService,
             IProjectedTypeResolver projectedTypeResolver,
             ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories = null)
+            : base(contextFactory)
         {
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(dataStreamReadService, nameof(dataStreamReadService));

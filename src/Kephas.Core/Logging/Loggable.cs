@@ -11,8 +11,10 @@
 namespace Kephas.Logging
 {
     using System;
+
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Services;
 
     /// <summary>
     /// A loggable mixin class.
@@ -21,16 +23,13 @@ namespace Kephas.Logging
     {
         private static ILogManager logManager = new NullLogManager();
 
-        /// <summary>
-        /// The logger.
-        /// </summary>
-        private ILogger logger;
+        private Lazy<ILogger> lazyLogger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
         public Loggable()
-            : this(DefaultLogManager)
+            : this(() => DefaultLogManager)
         {
         }
 
@@ -39,7 +38,7 @@ namespace Kephas.Logging
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         public Loggable(IAmbientServices ambientServices)
-            : this(ambientServices?.LogManager)
+            : this(() => ambientServices?.LogManager)
         {
         }
 
@@ -48,7 +47,16 @@ namespace Kephas.Logging
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
         public Loggable(ICompositionContext compositionContext)
-            : this(compositionContext?.GetExport<ILogManager>())
+            : this(() => compositionContext?.GetExport<ILogManager>())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Loggable"/> class.
+        /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
+        public Loggable(IContextFactory contextFactory)
+            : this(() => contextFactory?.GetLogManager())
         {
         }
 
@@ -58,10 +66,20 @@ namespace Kephas.Logging
         /// <param name="logManager">The log manager.</param>
         public Loggable(ILogManager logManager)
         {
-            if (logManager != null)
-            {
-                this.GetLogger = () => logManager.GetLogger(this.GetType());
-            }
+            this.lazyLogger = new Lazy<ILogger>(
+                () => logManager?.GetLogger(this.GetType())
+                        ?? LoggingExtensions.GetLogger(this, null));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Loggable"/> class.
+        /// </summary>
+        /// <param name="logManagerGetter">The log manager getter.</param>
+        public Loggable(Func<ILogManager> logManagerGetter)
+        {
+            this.lazyLogger = new Lazy<ILogger>(
+                () => logManagerGetter?.Invoke()?.GetLogger(this.GetType())
+                        ?? LoggingExtensions.GetLogger(this, null));
         }
 
         /// <summary>
@@ -88,16 +106,12 @@ namespace Kephas.Logging
         /// </value>
         public ILogger Logger
         {
-            get => this.logger ?? (this.logger = this.GetLogger?.Invoke() ?? LoggingExtensions.GetLogger(this, null));
-            protected internal set => this.logger = value;
+            get => this.lazyLogger.Value;
+            protected internal set
+            {
+                Requires.NotNull(value, nameof(value));
+                this.lazyLogger = new Lazy<ILogger>(() => value);
+            }
         }
-
-        /// <summary>
-        /// Gets or sets the logger factory.
-        /// </summary>
-        /// <returns>
-        /// The logger factory.
-        /// </returns>
-        protected virtual Func<ILogger> GetLogger { get; set; }
     }
 }

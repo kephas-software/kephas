@@ -17,6 +17,7 @@ namespace Kephas.Messaging.Distributed
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Data;
     using Kephas.Logging;
@@ -25,7 +26,6 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Messaging.Events;
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
-    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Transitions;
     using Kephas.Threading.Tasks;
@@ -60,6 +60,7 @@ namespace Kephas.Messaging.Distributed
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories)
+            : base(contextFactory)
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());
             this.contextFactory = contextFactory;

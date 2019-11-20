@@ -26,7 +26,9 @@ namespace Kephas.Diagnostics
         /// Initializes a new instance of the <see cref="ProcessStarter"/> class.
         /// </summary>
         /// <param name="processStartInfo">Information describing the process start.</param>
-        public ProcessStarter(ProcessStartInfo processStartInfo)
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public ProcessStarter(ProcessStartInfo processStartInfo, ILogManager logManager = null)
+            : base(logManager)
         {
             this.ProcessStartInfo = processStartInfo;
         }

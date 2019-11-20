@@ -30,6 +30,7 @@ namespace Kephas.Composition.Lite.Conventions
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         public LiteRegistrationBuilder(IAmbientServices ambientServices)
+            : base(ambientServices)
         {
             this.ambientServices = ambientServices;
         }

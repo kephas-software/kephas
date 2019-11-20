@@ -74,15 +74,15 @@ namespace Kephas.Messaging.Distributed.Routing
         protected override async Task InitializeCoreAsync(IContext context, CancellationToken cancellationToken)
         {
             this.RootChannelName = this.ComputeRootChannelName();
-            this.messageQueue = Channels.GetOrAdd(this.RootChannelName, _ => new MessageQueue(this.RootChannelName));
+            this.messageQueue = Channels.GetOrAdd(this.RootChannelName, _ => new MessageQueue(this.ContextFactory, this.RootChannelName));
             this.messageQueue.MessageArrived += this.HandleMessageArrivedAsync;
 
             var appChannelName = $"{this.RootChannelName}:{this.AppRuntime.GetAppId()}";
-            this.appMessageQueue = Channels.GetOrAdd(appChannelName, _ => new MessageQueue(appChannelName));
+            this.appMessageQueue = Channels.GetOrAdd(appChannelName, _ => new MessageQueue(this.ContextFactory, appChannelName));
             this.appMessageQueue.MessageArrived += this.HandleMessageArrivedAsync;
 
             var appInstanceChannelName = $"{this.RootChannelName}:{this.AppRuntime.GetAppInstanceId()}";
-            this.appInstanceMessageQueue = Channels.GetOrAdd(appInstanceChannelName, _ => new MessageQueue(appInstanceChannelName));
+            this.appInstanceMessageQueue = Channels.GetOrAdd(appInstanceChannelName, _ => new MessageQueue(this.ContextFactory, appInstanceChannelName));
             this.appInstanceMessageQueue.MessageArrived += this.HandleMessageArrivedAsync;
         }
 
@@ -220,7 +220,7 @@ namespace Kephas.Messaging.Distributed.Routing
 
         private async Task PublishAsync(IBrokeredMessage message, string channelName)
         {
-            var queue = Channels.GetOrAdd(channelName, _ => new MessageQueue(channelName));
+            var queue = Channels.GetOrAdd(channelName, _ => new MessageQueue(this.ContextFactory, channelName));
             await queue.PublishAsync(message).PreserveThreadContext();
         }
 
@@ -254,7 +254,8 @@ namespace Kephas.Messaging.Distributed.Routing
         {
             private ConcurrentQueue<IBrokeredMessage> internalQueue = new ConcurrentQueue<IBrokeredMessage>();
 
-            public MessageQueue(string channel)
+            public MessageQueue(IContextFactory contextFactory, string channel)
+                : base(contextFactory)
             {
                 this.Channel = channel;
             }

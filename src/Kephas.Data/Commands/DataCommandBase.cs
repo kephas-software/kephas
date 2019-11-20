@@ -12,6 +12,7 @@ namespace Kephas.Data.Commands
 {
     using System;
     using System.Linq.Expressions;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -31,6 +32,8 @@ namespace Kephas.Data.Commands
         where TOperationContext : IDataOperationContext
         where TResult : IDataCommandResult
     {
+        private bool isInitialized;
+
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
@@ -57,6 +60,7 @@ namespace Kephas.Data.Commands
                 throw new DataException($"{typeof(TOperationContext)} context expected, instead provided an {operationContext?.GetType()}.");
             }
 
+            this.EnsureInitialized(operationContext);
             var result = await this.ExecuteAsync(typedOperationContext, cancellationToken).PreserveThreadContext();
             return result;
         }
@@ -66,11 +70,11 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <exception cref="DataException">Thrown when a Data error condition occurs.</exception>
         /// <param name="context">Optional. The context.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token .</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        async Task<object> IAsyncOperation.ExecuteAsync(IContext context = null, CancellationToken cancellationToken = default)
+        async Task<object> IAsyncOperation.ExecuteAsync(IContext context, CancellationToken cancellationToken)
         {
             if (!(context is TOperationContext typedOperationContext))
             {
@@ -78,6 +82,7 @@ namespace Kephas.Data.Commands
                 throw new DataException($"{typeof(TOperationContext)} context expected, instead provided an {context?.GetType()}.");
             }
 
+            this.EnsureInitialized(context);
             var result = await this.ExecuteAsync(typedOperationContext, cancellationToken).PreserveThreadContext();
             return result;
         }
@@ -119,6 +124,16 @@ namespace Kephas.Data.Commands
         protected virtual IActivator TryGetEntityActivator(IDataContext dataContext)
         {
             return (dataContext as DataContextBase)?.EntityActivator;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void EnsureInitialized(IContext context)
+        {
+            if (!this.isInitialized)
+            {
+                this.Logger = this.GetLogger(context);
+                this.isInitialized = true;
+            }
         }
     }
 }

@@ -44,6 +44,7 @@ namespace Kephas.Data.IO.Setup
             IContextFactory contextFactory,
             IDataImportService dataImportService,
             IExportFactory<IDataSpace> dataSpaceFactory)
+            : base(contextFactory)
         {
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(dataImportService, nameof(dataImportService));

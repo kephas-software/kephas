@@ -10,11 +10,13 @@
 
 namespace Kephas.Messaging.Behaviors
 {
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -24,6 +26,8 @@ namespace Kephas.Messaging.Behaviors
     public abstract class MessagingBehaviorBase<TMessage> : Loggable, IMessagingBehavior<TMessage>
         where TMessage : IMessage
     {
+        private bool isInitialized;
+
         /// <summary>
         /// Interception called before invoking the handler to process the message.
         /// </summary>
@@ -34,6 +38,7 @@ namespace Kephas.Messaging.Behaviors
         {
             Requires.NotNull(context, nameof(context));
 
+            this.EnsureInitialized(context);
             var message = (TMessage)context.Message;
             return this.BeforeProcessAsync(message, context, token);
         }
@@ -52,6 +57,7 @@ namespace Kephas.Messaging.Behaviors
         {
             Requires.NotNull(context, nameof(context));
 
+            this.EnsureInitialized(context);
             var message = (TMessage)context.Message;
             return this.AfterProcessAsync(message, context, token);
         }
@@ -86,6 +92,16 @@ namespace Kephas.Messaging.Behaviors
         public virtual Task AfterProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
             return TaskHelper.CompletedTask;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void EnsureInitialized(IContext context)
+        {
+            if (!this.isInitialized)
+            {
+                this.Logger = this.GetLogger(context);
+                this.isInitialized = true;
+            }
         }
     }
 }

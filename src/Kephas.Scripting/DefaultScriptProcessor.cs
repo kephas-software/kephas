@@ -54,6 +54,7 @@ namespace Kephas.Scripting
             IContextFactory contextFactory,
             ICollection<Lazy<ILanguageService, LanguageServiceMetadata>> languageServiceFactories,
             ICollection<Lazy<IScriptingBehavior, ScriptingBehaviorMetadata>> scriptingBehaviorFactories)
+            : base(contextFactory)
         {
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(languageServiceFactories, nameof(languageServiceFactories));

@@ -43,7 +43,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Repositories
         /// Initializes a new instance of the <see cref="TriggerRepository"/> class.
         /// </summary>
         /// <param name="jobStore">The job store.</param>
-        public TriggerRepository(ISchedulingJobStore jobStore)
+        public TriggerRepository(ISchedulingJobStore jobStore, ILogManager logManager)
+            : base(logManager)
         {
             this.jobStore = jobStore;
         }

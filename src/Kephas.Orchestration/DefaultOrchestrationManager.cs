@@ -58,12 +58,15 @@ namespace Kephas.Orchestration
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="processStarterFactoryFactory">Factory for the process starter factory.</param>
+        /// <param name="logManager">Manager for log.</param>
         public DefaultOrchestrationManager(
             IAppRuntime appRuntime,
             IEventHub eventHub,
             IMessageBroker messageBroker,
             IMessageProcessor messageProcessor,
-            IExportFactory<IProcessStarterFactory> processStarterFactoryFactory)
+            IExportFactory<IProcessStarterFactory> processStarterFactoryFactory,
+            ILogManager logManager)
+            : base(logManager)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(eventHub, nameof(eventHub));

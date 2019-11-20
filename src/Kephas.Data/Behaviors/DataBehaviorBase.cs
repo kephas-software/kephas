@@ -16,6 +16,7 @@ namespace Kephas.Data.Behaviors
     using Kephas.Data.Capabilities;
     using Kephas.Data.Validation;
     using Kephas.Logging;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// An entity behavior base.
@@ -96,7 +97,7 @@ namespace Kephas.Data.Behaviors
         {
             this.BeforePersist(entity, entityEntry, operationContext);
 
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace Kephas.Data.Behaviors
         {
             this.AfterPersist(entity, entityEntry, operationContext);
 
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -160,7 +161,7 @@ namespace Kephas.Data.Behaviors
         {
             this.Initialize(entity, entityEntry, operationContext);
 
-            return Task.FromResult(0);
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>

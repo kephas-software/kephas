@@ -44,6 +44,7 @@ namespace Kephas.Workflow
         public DefaultWorkflowProcessor(
             IContextFactory contextFactory,
             ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories)
+            : base(contextFactory)
         {
             this.contextFactory = contextFactory;
             this.behaviorFactories = behaviorFactories;

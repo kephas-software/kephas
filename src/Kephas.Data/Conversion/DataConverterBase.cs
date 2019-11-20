@@ -10,23 +10,29 @@
 
 namespace Kephas.Data.Conversion
 {
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Kephas.Logging;
+    using Kephas.Services;
 
     /// <summary>
     /// A data converter base.
     /// </summary>
     /// <typeparam name="TSource">Type of the source.</typeparam>
     /// <typeparam name="TTarget">Type of the target.</typeparam>
-    public abstract class DataConverterBase<TSource, TTarget> : IDataConverter<TSource, TTarget>
+    public abstract class DataConverterBase<TSource, TTarget> : Loggable, IDataConverter<TSource, TTarget>
     {
+        private bool isInitialized;
+
         /// <summary>
         /// Converts the source object to the target object asynchronously.
         /// </summary>
         /// <param name="source">The source object.</param>
         /// <param name="target">The target object.</param>
         /// <param name="conversionContext">The conversion context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A data conversion result.
         /// </returns>
@@ -42,17 +48,28 @@ namespace Kephas.Data.Conversion
         /// <param name="source">The source object.</param>
         /// <param name="target">The target object.</param>
         /// <param name="conversionContext">The conversion context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A data conversion result.
         /// </returns>
-        public Task<IDataConversionResult> ConvertAsync(
+        Task<IDataConversionResult> IDataConverter.ConvertAsync(
             object source,
             object target,
             IDataConversionContext conversionContext,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
+            this.EnsureInitialized(conversionContext);
             return this.ConvertAsync((TSource)source, (TTarget)target, conversionContext, cancellationToken);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void EnsureInitialized(IContext context)
+        {
+            if (!this.isInitialized)
+            {
+                this.Logger = this.GetLogger(context);
+                this.isInitialized = true;
+            }
         }
     }
 }

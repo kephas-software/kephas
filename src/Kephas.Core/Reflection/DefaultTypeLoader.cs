@@ -24,6 +24,15 @@ namespace Kephas.Reflection
     public class DefaultTypeLoader : Loggable, ITypeLoader
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultTypeLoader"/> class.
+        /// </summary>
+        /// <param name="ambientServices">Optional. The ambient services.</param>
+        public DefaultTypeLoader(IAmbientServices ambientServices = null)
+            : base(ambientServices)
+        {
+        }
+
+        /// <summary>
         /// Gets the loadable exported types from the provided assembly.
         /// </summary>
         /// <param name="assembly">The assembly containing the types.</param>

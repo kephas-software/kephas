@@ -50,6 +50,7 @@ namespace Kephas.Redis
             ILogManager logManager,
             IConfiguration<RedisClientSettings> redisConfiguration,
             IEventHub eventHub)
+            : base(logManager)
         {
             this.logManager = logManager;
             this.redisConfiguration = redisConfiguration;

@@ -42,6 +42,7 @@ namespace Kephas.Messaging.Distributed.Routing
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor)
+            : base(contextFactory)
         {
             this.ContextFactory = contextFactory;
             this.AppRuntime = appRuntime;

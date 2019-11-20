@@ -41,7 +41,9 @@ namespace Kephas.Reflection
         /// Initializes a new instance of the <see cref="DefaultTypeResolver"/> class.
         /// </summary>
         /// <param name="assemblyLoader">The assembly loader.</param>
-        public DefaultTypeResolver(IAssemblyLoader assemblyLoader)
+        /// <param name="logManager">Optional. The log manager.</param>
+        public DefaultTypeResolver(IAssemblyLoader assemblyLoader, ILogManager logManager = null)
+            : base(logManager)
         {
             Requires.NotNull(assemblyLoader, nameof(assemblyLoader));
 

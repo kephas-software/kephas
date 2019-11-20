@@ -28,26 +28,17 @@ namespace Kephas.Diagnostics
     [OverridePriority(Priority.Low)]
     public class ProcessStarterFactory : IProcessStarterFactory
     {
-        /// <summary>
-        /// Information describing the process start.
-        /// </summary>
         private readonly ProcessStartInfo processStartInfo = new ProcessStartInfo();
-
-        /// <summary>
-        /// The arguments.
-        /// </summary>
         private readonly IList<string> arguments = new List<string>();
-
-        /// <summary>
-        /// The executable file.
-        /// </summary>
+        private readonly ILogManager logManager;
         private string executableFile;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessStarterFactory"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        public ProcessStarterFactory(IAppRuntime appRuntime)
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public ProcessStarterFactory(IAppRuntime appRuntime, ILogManager logManager = null)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
 
@@ -61,6 +52,7 @@ namespace Kephas.Diagnostics
             }
 
             this.WithShell(false);
+            this.logManager = logManager;
         }
 
         /// <summary>
@@ -209,7 +201,7 @@ namespace Kephas.Diagnostics
         /// </returns>
         public IProcessStarter CreateProcessStarter()
         {
-            return new ProcessStarter(this.GetProcessStartInfo());
+            return new ProcessStarter(this.GetProcessStartInfo(), this.logManager);
         }
     }
 }

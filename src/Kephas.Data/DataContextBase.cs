@@ -36,24 +36,9 @@ namespace Kephas.Data
     /// </summary>
     public abstract class DataContextBase : Context, IDataContext
     {
-        /// <summary>
-        /// The initialization monitor.
-        /// </summary>
-        protected readonly InitializationMonitor<DataContextBase> InitializationMonitor;
-
-        /// <summary>
-        /// The query method.
-        /// </summary>
         private static readonly MethodInfo QueryMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IDataContext)null).Query<IIdentifiable>(null));
 
-        /// <summary>
-        /// The data behavior provider.
-        /// </summary>
         private readonly IDataBehaviorProvider dataBehaviorProvider;
-
-        /// <summary>
-        /// The data command provider.
-        /// </summary>
         private readonly IDataCommandProvider dataCommandProvider;
 
         /// <summary>
@@ -103,6 +88,11 @@ namespace Kephas.Data
         /// The local cache.
         /// </value>
         protected internal virtual IDataContextCache LocalCache { get; }
+
+        /// <summary>
+        /// Gets the initialization monitor.
+        /// </summary>
+        protected InitializationMonitor<DataContextBase> InitializationMonitor { get; }
 
         /// <summary>
         /// Initializes the service asynchronously.

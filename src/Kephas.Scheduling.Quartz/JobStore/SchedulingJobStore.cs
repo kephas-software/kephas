@@ -70,8 +70,10 @@ namespace Kephas.Scheduling.Quartz.JobStore
         /// <summary>
         /// Initializes a new instance of the <see cref="SchedulingJobStore"/> class.
         /// </summary>
+        /// <param name="triggerFactory">The trigger factory.</param>
         /// <param name="logManager">Manager for log.</param>
         public SchedulingJobStore(ITriggerFactory triggerFactory, ILogManager logManager)
+            : base(logManager)
         {
             this.MaxMisfiresToHandleAtATime = 20;
             this.RetryableActionErrorLogThreshold = 4;
@@ -242,7 +244,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         Task IJobStore.Initialize(
             ITypeLoadHelper loadHelper,
             ISchedulerSignaler signaler,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             this.schedulerSignaler = signaler;
 
@@ -250,15 +252,21 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             this.lockManager = new LockManager(this.InstanceName);
 
-            this.triggerRepository = new TriggerRepository(this);
+            this.triggerRepository = new TriggerRepository(this, this.LogManager);
 
             return Task.FromResult(0);
         }
 
         /// <summary>
-        /// Called by the QuartzScheduler to inform the <see cref="T:Quartz.Spi.IJobStore" /> that
-        /// the scheduler has started.
+        /// Called by the QuartzScheduler to inform the <see cref="T:Quartz.Spi.IJobStore" /> that the
+        /// scheduler has started.
         /// </summary>
+        /// <exception cref="SchedulerConfigException">Thrown when a Scheduler Configuration error
+        ///                                            condition occurs.</exception>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
         public async Task SchedulerStarted(CancellationToken cancellationToken = default)
         {
             this.Logger.Trace($"Scheduler {this} started.");

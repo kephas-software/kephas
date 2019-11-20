@@ -26,17 +26,7 @@ namespace Kephas.Application
     /// </summary>
     public abstract class FeatureManagerBase : Loggable, IFeatureManager
     {
-#pragma warning disable SA1401 // Fields must be private
-        /// <summary>
-        /// The initialization monitor.
-        /// </summary>
-        protected readonly InitializationMonitor<IFeatureManager> InitializationMonitor;
-
-        /// <summary>
-        /// The finalization monitor.
-        /// </summary>
-        protected readonly FinalizationMonitor<IFeatureManager> FinalizationMonitor;
-#pragma warning restore SA1401 // Fields must be private
+        private bool isInitialized;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureManagerBase"/> class.
@@ -48,6 +38,16 @@ namespace Kephas.Application
         }
 
         /// <summary>
+        /// Gets the initialization monitor.
+        /// </summary>
+        protected InitializationMonitor<IFeatureManager> InitializationMonitor { get; }
+
+        /// <summary>
+        /// Gets the finalization monitor.
+        /// </summary>
+        protected FinalizationMonitor<IFeatureManager> FinalizationMonitor { get; }
+
+        /// <summary>
         /// Initializes the feature asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
@@ -57,6 +57,8 @@ namespace Kephas.Application
         /// </returns>
         public async Task InitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
+            this.EnsureLoggerInitialized(appContext);
+
             this.InitializationMonitor.Start();
 
             try
@@ -81,6 +83,8 @@ namespace Kephas.Application
         /// </returns>
         public async Task FinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
+            this.EnsureLoggerInitialized(appContext);
+
             this.FinalizationMonitor.Start();
 
             try
@@ -153,6 +157,16 @@ namespace Kephas.Application
             return context is IAppContext appContext
                 ? appContext
                 : throw new ApplicationException(Strings.MismatchedAppContext_Exception.FormatWith(nameof(IAppContext)));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void EnsureLoggerInitialized(IContext context)
+        {
+            if (!this.isInitialized)
+            {
+                this.Logger = this.GetLogger(context);
+                this.isInitialized = true;
+            }
         }
     }
 }
