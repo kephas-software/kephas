@@ -12,11 +12,13 @@ namespace Kephas.Messaging.Redis.Tests.Routing
 {
     using System;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Configuration.Providers;
-    using Kephas.Messaging.Composition;
+    using Kephas.Diagnostics.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
@@ -80,18 +82,22 @@ namespace Kephas.Messaging.Redis.Tests.Routing
         [Test]
         public async Task DispatchAsync_pair_request_response_multiple()
         {
+            var sbMaster = new StringBuilder();
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
+                    .WithDebugLogManager((logger, level, msg, ex) => sbMaster.AppendLine($"[{logger}] {level} {msg} {ex}"))
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
                 parts: new[] { typeof(RedisSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
+            var sbSlave = new StringBuilder();
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
+                    .WithDebugLogManager((logger, level, msg, ex) => sbSlave.AppendLine($"[{logger}] {level} {msg} {ex}"))
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
                 parts: new[] { typeof(RedisSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
