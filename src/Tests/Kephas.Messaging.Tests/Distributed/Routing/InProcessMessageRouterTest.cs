@@ -49,6 +49,12 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
                 await Task.Delay(200);
                 Assert.IsNotNull(eventArgs);
                 Assert.AreEqual(RoutingInstruction.None, result.action);
+                var contentMessage = eventArgs.Message.Content;
+                if (contentMessage is ExceptionResponseMessage exMessage)
+                {
+                    Assert.Fail(exMessage.Exception.Message);
+                }
+
                 Assert.IsInstanceOf<PingBackMessage>(eventArgs.Message.Content);
             }
         }

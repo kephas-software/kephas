@@ -14,6 +14,7 @@ namespace Kephas.Core.Tests.Services
 
     using Kephas.Composition;
     using Kephas.Cryptography;
+    using Kephas.Logging;
     using Kephas.Serialization;
     using Kephas.Services;
     using Kephas.Services.Reflection;
@@ -27,7 +28,7 @@ namespace Kephas.Core.Tests.Services
         public void CreateContext_Context()
         {
             var (ambientServices, compositionContext) = this.GetServices();
-            var factory = new ContextFactory(compositionContext, ambientServices);
+            var factory = new ContextFactory(compositionContext, ambientServices, Substitute.For<ILogManager>());
             var context = factory.CreateContext<Context>();
 
             Assert.AreSame(ambientServices, context.AmbientServices);
@@ -38,7 +39,7 @@ namespace Kephas.Core.Tests.Services
         public void CreateContext_EncryptionContext()
         {
             var (ambientServices, compositionContext) = this.GetServices();
-            var factory = new ContextFactory(compositionContext, ambientServices);
+            var factory = new ContextFactory(compositionContext, ambientServices, Substitute.For<ILogManager>());
             var context = factory.CreateContext<EncryptionContext>();
 
             Assert.AreSame(ambientServices, context.AmbientServices);
@@ -52,7 +53,7 @@ namespace Kephas.Core.Tests.Services
 
             var (ambientServices, compositionContext) = this.GetServices(new AppServiceInfo(typeof(ISerializationService), serializationService));
             compositionContext.GetExport(typeof(ISerializationService), Arg.Any<string>()).Returns(serializationService);
-            var factory = new ContextFactory(compositionContext, ambientServices);
+            var factory = new ContextFactory(compositionContext, ambientServices, Substitute.For<ILogManager>());
             var context = factory.CreateContext<SerializationContext>(typeof(string));
 
             Assert.AreSame(ambientServices, context.AmbientServices);

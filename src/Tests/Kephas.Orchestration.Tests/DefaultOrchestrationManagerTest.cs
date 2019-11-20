@@ -21,6 +21,7 @@ namespace Kephas.Orchestration.Tests
     using Kephas.Composition;
     using Kephas.Diagnostics;
     using Kephas.Interaction;
+    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Events;
@@ -84,7 +85,13 @@ namespace Kephas.Orchestration.Tests
             var compositionContext = Substitute.For<ICompositionContext>();
             var appContext = new Context(compositionContext);
 
-            var manager = new DefaultOrchestrationManager(appRuntime, eventHub, messageBroker, Substitute.For<IMessageProcessor>(), Substitute.For<IExportFactory<IProcessStarterFactory>>());
+            var manager = new DefaultOrchestrationManager(
+                appRuntime, 
+                eventHub, 
+                messageBroker, 
+                Substitute.For<IMessageProcessor>(), 
+                Substitute.For<IExportFactory<IProcessStarterFactory>>(),
+                Substitute.For<ILogManager>());
             manager.TimerDueTime = TimeSpan.FromMilliseconds(100);
             manager.TimerPeriod = TimeSpan.FromMilliseconds(100);
 
