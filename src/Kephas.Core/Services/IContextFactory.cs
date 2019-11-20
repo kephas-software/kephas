@@ -81,7 +81,7 @@ namespace Kephas.Services
                 return factory.LogManager;
             }
 
-            return logManagerMap.GetOrAdd(contextFactory, _ => contextFactory.CreateContext<Context>().AmbientServices.LogManager);
+            return logManagerMap.GetOrAdd(contextFactory, _ => contextFactory.CreateContext<Context>()?.AmbientServices.LogManager);
         }
     }
 }
