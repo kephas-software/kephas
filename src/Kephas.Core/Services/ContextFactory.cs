@@ -18,6 +18,7 @@ namespace Kephas.Services
 
     using Kephas;
     using Kephas.Composition;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services.Composition;
@@ -31,6 +32,7 @@ namespace Kephas.Services
     {
         private const int AmbientServicesIndex = -1;
         private const int CompositionContextIndex = -2;
+        private const int LogManagerIndex = -3;
 
         private readonly ICompositionContext compositionContext;
         private readonly IAmbientServices ambientServices;
@@ -47,12 +49,22 @@ namespace Kephas.Services
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="ambientServices">The ambient services.</param>
-        public ContextFactory(ICompositionContext compositionContext, IAmbientServices ambientServices)
+        /// <param name="logManager">Manager for log.</param>
+        public ContextFactory(ICompositionContext compositionContext, IAmbientServices ambientServices, ILogManager logManager)
         {
             this.compositionContext = compositionContext;
             this.ambientServices = ambientServices;
+            this.LogManager = logManager;
             this.appServiceInfos = this.ambientServices.GetAppServiceInfos()?.ToList();
         }
+
+        /// <summary>
+        /// Gets the manager for log.
+        /// </summary>
+        /// <value>
+        /// The log manager.
+        /// </value>
+        public ILogManager LogManager { get; }
 
         /// <summary>
         /// Creates a typed context.
@@ -109,6 +121,7 @@ namespace Kephas.Services
                     null,
                     () => this.ambientServices,
                     () => this.compositionContext,
+                    () => this.LogManager,
                 };
             foreach (var paramInfo in paramInfos)
             {
@@ -157,6 +170,10 @@ namespace Kephas.Services
             else if (paramType == typeof(ICompositionContext))
             {
                 return CompositionContextIndex;
+            }
+            else if (paramType == typeof(ILogManager))
+            {
+                return LogManagerIndex;
             }
             else
             {
