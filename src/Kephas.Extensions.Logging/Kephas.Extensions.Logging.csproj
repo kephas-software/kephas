@@ -6,7 +6,7 @@
         <AssemblyName>Kephas.Extensions.Logging</AssemblyName>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>7.2.0-preview.10.1</Version>
+        <Version>7.2.0-preview.10.2</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
