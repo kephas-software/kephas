@@ -162,15 +162,12 @@ namespace Kephas.Redis
         }
 
         /// <summary>
-        /// Creates the connection (core implementation).
+        /// Creates the connection. This method may be overridden.
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
         /// <returns>
-        /// The new connection core.
+        /// The new connection.
         /// </returns>
-        /// <example>
-        /// .
-        /// </example>
         protected virtual ConnectionMultiplexer CreateConnectionCore(IContext context)
         {
             var settings = this.redisConfiguration.Settings;
