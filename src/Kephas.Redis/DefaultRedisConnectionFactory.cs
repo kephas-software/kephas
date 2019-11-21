@@ -77,8 +77,7 @@ namespace Kephas.Redis
         {
             this.initMonitor.AssertIsCompletedSuccessfully();
 
-            var settings = this.redisConfiguration.Settings;
-            return ConnectionMultiplexer.Connect(settings.ConnectionString, this.CreateRedisLogger(this.appContext));
+            return this.CreateConnectionCore(this.appContext);
         }
 
         /// <summary>
@@ -99,7 +98,7 @@ namespace Kephas.Redis
             {
                 var settings = this.redisConfiguration.Settings;
                 this.appContext = context;
-                using (var connection = this.CreateConnection())
+                using (var connection = this.CreateConnectionCore(context))
                 {
                     this.Logger.Info("Connected successfully to the Redis server.");
                 }
@@ -160,6 +159,22 @@ namespace Kephas.Redis
         protected virtual TextWriter CreateRedisLogger(IContext context)
         {
             return new RedisLogger(this.logManager);
+        }
+
+        /// <summary>
+        /// Creates the connection (core implementation).
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        /// <returns>
+        /// The new connection core.
+        /// </returns>
+        /// <example>
+        /// .
+        /// </example>
+        protected virtual ConnectionMultiplexer CreateConnectionCore(IContext context)
+        {
+            var settings = this.redisConfiguration.Settings;
+            return ConnectionMultiplexer.Connect(settings.ConnectionString, this.CreateRedisLogger(context));
         }
     }
 }
