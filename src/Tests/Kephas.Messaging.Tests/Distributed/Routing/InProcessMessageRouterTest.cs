@@ -52,7 +52,7 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
                 var contentMessage = eventArgs.Message.Content;
                 if (contentMessage is ExceptionResponseMessage exMessage)
                 {
-                    Assert.Fail(exMessage.Exception.Message);
+                    Assert.Fail(exMessage.Exception.ToString());
                 }
 
                 Assert.IsInstanceOf<PingBackMessage>(eventArgs.Message.Content);

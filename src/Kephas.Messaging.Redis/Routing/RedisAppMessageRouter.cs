@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RedisMessageRouter.cs" company="Kephas Software SRL">
+// <copyright file="RedisAppMessageRouter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -38,15 +38,18 @@ namespace Kephas.Messaging.Redis.Routing
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
     public class RedisAppMessageRouter : InProcessAppMessageRouter
     {
-        private readonly IRedisClient redisClient;
+        private readonly IRedisConnectionFactory redisConnectionFactory;
         private readonly ISerializationService serializationService;
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
         private readonly IEventHub eventHub;
+        private ISubscriber publisher;
+        private ConnectionMultiplexer subConnection;
         private ISubscriber subscriber;
         private ChannelMessageQueue messageQueue;
         private ChannelMessageQueue appMessageQueue;
         private ChannelMessageQueue appInstanceMessageQueue;
         private string redisRootChannelName;
+        private ConnectionMultiplexer pubConnection;
         private bool isRedisChannelInitialized;
         private IEventSubscription redisClientStartedSubscription;
         private IEventSubscription redisClientStoppingSubscription;
@@ -57,7 +60,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="redisClient">The redis client.</param>
+        /// <param name="redisConnectionFactory">The Redis connection factory.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="redisConfiguration">The redis configuration.</param>
         /// <param name="eventHub">The event hub.</param>
@@ -65,13 +68,13 @@ namespace Kephas.Messaging.Redis.Routing
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor,
-            IRedisClient redisClient,
+            IRedisConnectionFactory redisConnectionFactory,
             ISerializationService serializationService,
             IConfiguration<RedisClientSettings> redisConfiguration,
             IEventHub eventHub)
             : base(contextFactory, appRuntime, messageProcessor)
         {
-            this.redisClient = redisClient;
+            this.redisConnectionFactory = redisConnectionFactory;
             this.serializationService = serializationService;
             this.redisConfiguration = redisConfiguration;
             this.eventHub = eventHub;
@@ -89,7 +92,7 @@ namespace Kephas.Messaging.Redis.Routing
         {
             await base.InitializeCoreAsync(context, cancellationToken).PreserveThreadContext();
 
-            if (!this.redisClient.IsInitialized)
+            if (!this.redisConnectionFactory.IsInitialized)
             {
                 this.Logger.Info($"Redis client not initialized, postponing initialization of the Redis channel.");
 
@@ -127,9 +130,12 @@ namespace Kephas.Messaging.Redis.Routing
             var redisNS = this.redisConfiguration.Settings.Namespace;
             this.redisRootChannelName = string.IsNullOrEmpty(redisNS) ? ChannelType : $"{redisNS}:{ChannelType}";
 
-            var connection = this.redisClient.GetConnection();
+            this.pubConnection = this.redisConnectionFactory.CreateConnection();
+            this.publisher = this.pubConnection.GetSubscriber();
 
-            this.subscriber = connection.GetSubscriber();
+            this.subConnection = this.redisConnectionFactory.CreateConnection();
+            this.subscriber = this.subConnection.GetSubscriber();
+
             this.messageQueue = await this.subscriber.SubscribeAsync(this.redisRootChannelName).PreserveThreadContext();
             this.messageQueue.OnMessage(this.ReceiveMessageAsync);
 
@@ -285,7 +291,22 @@ namespace Kephas.Messaging.Redis.Routing
                 this.appMessageQueue.Unsubscribe();
                 this.appInstanceMessageQueue.Unsubscribe();
 
+                this.DisposeConnection(this.pubConnection);
+                this.pubConnection = null;
+
+                this.DisposeConnection(this.subConnection);
+                this.subConnection = null;
+
                 this.isRedisChannelInitialized = false;
+            }
+        }
+
+        private void DisposeConnection(IConnectionMultiplexer connection)
+        {
+            if (connection != null)
+            {
+                connection.Close(allowCommandsToComplete: true);
+                connection.Dispose();
             }
         }
 
@@ -293,11 +314,11 @@ namespace Kephas.Messaging.Redis.Routing
         {
             if (oneWay)
             {
-                await this.subscriber.PublishAsync(channelName, serializedMessage, CommandFlags.FireAndForget).PreserveThreadContext();
+                await this.publisher.PublishAsync(channelName, serializedMessage, CommandFlags.FireAndForget).PreserveThreadContext();
             }
             else
             {
-                await this.subscriber.PublishAsync(channelName, serializedMessage).PreserveThreadContext();
+                await this.publisher.PublishAsync(channelName, serializedMessage).PreserveThreadContext();
             }
         }
     }

@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultRedisClient.cs" company="Kephas Software SRL">
+// <copyright file="DefaultRedisConnectionFactory.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the default redis client class.
+//   Implements the default Redis connection factory class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -28,25 +28,25 @@ namespace Kephas.Redis
     using StackExchange.Redis;
 
     /// <summary>
-    /// A default redis client.
+    /// The default Redis connection factory.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultRedisClient : Loggable, IRedisClient, IAsyncInitializable, IAsyncFinalizable
+    public class DefaultRedisConnectionFactory : Loggable, IRedisConnectionFactory, IAsyncInitializable, IAsyncFinalizable
     {
-        private readonly InitializationMonitor<IRedisClient> initMonitor;
-        private readonly FinalizationMonitor<IRedisClient> finMonitor;
+        private readonly InitializationMonitor<IRedisConnectionFactory> initMonitor;
+        private readonly FinalizationMonitor<IRedisConnectionFactory> finMonitor;
         private readonly ILogManager logManager;
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
         private readonly IEventHub eventHub;
-        private ConnectionMultiplexer connection;
+        private IContext appContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultRedisClient"/> class.
+        /// Initializes a new instance of the <see cref="DefaultRedisConnectionFactory"/> class.
         /// </summary>
         /// <param name="logManager">Manager for log.</param>
         /// <param name="redisConfiguration">The redis configuration.</param>
         /// <param name="eventHub">The event hub.</param>
-        public DefaultRedisClient(
+        public DefaultRedisConnectionFactory(
             ILogManager logManager,
             IConfiguration<RedisClientSettings> redisConfiguration,
             IEventHub eventHub)
@@ -55,8 +55,8 @@ namespace Kephas.Redis
             this.logManager = logManager;
             this.redisConfiguration = redisConfiguration;
             this.eventHub = eventHub;
-            this.initMonitor = new InitializationMonitor<IRedisClient>(this.GetType());
-            this.finMonitor = new FinalizationMonitor<IRedisClient>(this.GetType());
+            this.initMonitor = new InitializationMonitor<IRedisConnectionFactory>(this.GetType());
+            this.finMonitor = new FinalizationMonitor<IRedisConnectionFactory>(this.GetType());
         }
 
         /// <summary>
@@ -68,15 +68,17 @@ namespace Kephas.Redis
         public bool IsInitialized => this.initMonitor.IsCompletedSuccessfully;
 
         /// <summary>
-        /// Gets the connection.
+        /// Creates the connection.
         /// </summary>
         /// <returns>
-        /// The connection.
+        /// The new connection.
         /// </returns>
-        public ConnectionMultiplexer GetConnection()
+        public ConnectionMultiplexer CreateConnection()
         {
             this.initMonitor.AssertIsCompletedSuccessfully();
-            return this.connection;
+
+            var settings = this.redisConfiguration.Settings;
+            return ConnectionMultiplexer.Connect(settings.ConnectionString, this.CreateRedisLogger(this.appContext));
         }
 
         /// <summary>
@@ -96,7 +98,12 @@ namespace Kephas.Redis
             try
             {
                 var settings = this.redisConfiguration.Settings;
-                this.connection = ConnectionMultiplexer.Connect(settings.ConnectionString, this.CreateRedisLogger(context));
+                this.appContext = context;
+                using (var connection = this.CreateConnection())
+                {
+                    this.Logger.Info("Connected successfully to the Redis server.");
+                }
+
                 this.initMonitor.Complete();
 
                 await this.eventHub.PublishAsync(new RedisClientStartedSignal(), context, cancellationToken).PreserveThreadContext();
@@ -127,12 +134,6 @@ namespace Kephas.Redis
             try
             {
                 await this.eventHub.PublishAsync(new RedisClientStoppingSignal(), context, cancellationToken).PreserveThreadContext();
-
-                if (this.connection != null)
-                {
-                    await this.connection.CloseAsync(allowCommandsToComplete: true).PreserveThreadContext();
-                    this.connection.Dispose();
-                }
 
                 this.finMonitor.Complete();
             }

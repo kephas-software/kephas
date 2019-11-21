@@ -88,7 +88,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithDebugLogManager((logger, level, msg, ex) => sbMaster.AppendLine($"[{logger}] {level} {msg} {ex}"))
-                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
+                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId, assemblyFilter: this.IsNotTestAssembly),
                 parts: new[] { typeof(RedisSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
@@ -98,7 +98,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithDebugLogManager((logger, level, msg, ex) => sbSlave.AppendLine($"[{logger}] {level} {msg} {ex}"))
-                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
+                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId, assemblyFilter: this.IsNotTestAssembly),
                 parts: new[] { typeof(RedisSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
