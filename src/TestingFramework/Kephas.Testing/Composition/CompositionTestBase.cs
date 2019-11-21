@@ -46,9 +46,9 @@ namespace Kephas.Testing.Composition
         {
             var log = new StringBuilder();
             logManager = logManager ?? ambientServices?.LogManager ?? new DebugLogManager((logger, level, message, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
-            appRuntime = appRuntime ?? new StaticAppRuntime(
+            appRuntime = appRuntime ?? ambientServices?.AppRuntime ?? new StaticAppRuntime(
                              logManager: logManager,
-                             defaultAssemblyFilter: a => !a.IsSystemAssembly() && !a.FullName.StartsWith("NUnit") && !a.FullName.StartsWith("xunit") && !a.FullName.StartsWith("JetBrains"));
+                             defaultAssemblyFilter: this.IsNotTestAssembly);
 
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices

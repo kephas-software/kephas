@@ -12,6 +12,7 @@ namespace Kephas.Testing
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
     using Kephas.Composition;
@@ -34,6 +35,18 @@ namespace Kephas.Testing
     /// </content>
     public class TestBase
     {
+        /// <summary>
+        /// Query if 'a' is not test assembly.
+        /// </summary>
+        /// <param name="assembly">An Assembly to process.</param>
+        /// <returns>
+        /// True if not test assembly, false if not.
+        /// </returns>
+        protected virtual bool IsNotTestAssembly(AssemblyName assembly)
+        {
+            return !assembly.IsSystemAssembly() && !assembly.FullName.StartsWith("NUnit") && !assembly.FullName.StartsWith("xunit") && !assembly.FullName.StartsWith("JetBrains");
+        }
+
         /// <summary>
         /// Creates a context factory mock.
         /// </summary>
