@@ -116,14 +116,14 @@ namespace Kephas.Redis
 
                 this.initMonitor.Complete();
 
-                await this.eventHub.PublishAsync(new ConnectionFactoryStartedSignal(), context, cancellationToken).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new ConnectionManagerStartedSignal(), context, cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {
                 this.Logger.Fatal(ex, "Error while connecting to Redis.");
                 this.initMonitor.Fault(ex);
 
-                await this.eventHub.PublishAsync(new ConnectionFactoryStartedSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new ConnectionManagerStartedSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
             }
         }
 
@@ -143,7 +143,7 @@ namespace Kephas.Redis
 
             try
             {
-                await this.eventHub.PublishAsync(new ConnectionFactoryStoppingSignal(), context, cancellationToken).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new ConnectionManagerStoppingSignal(), context, cancellationToken).PreserveThreadContext();
 
                 this.finMonitor.Complete();
             }
@@ -152,7 +152,7 @@ namespace Kephas.Redis
                 this.Logger.Fatal(ex, "Error while closing the Redis connection.");
                 this.finMonitor.Fault(ex);
 
-                await this.eventHub.PublishAsync(new ConnectionFactoryStoppingSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new ConnectionManagerStoppingSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
             }
             finally
             {

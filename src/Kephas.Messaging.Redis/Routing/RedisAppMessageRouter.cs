@@ -93,12 +93,12 @@ namespace Kephas.Messaging.Redis.Routing
             {
                 this.Logger.Info($"Redis client not initialized, postponing initialization of the Redis channel.");
 
-                this.redisClientStartedSubscription = this.eventHub.Subscribe<ConnectionFactoryStartedSignal>((e, ctx, ct) => this.InitializeRedisChannelAsync(e, ct));
+                this.redisClientStartedSubscription = this.eventHub.Subscribe<ConnectionManagerStartedSignal>((e, ctx, ct) => this.InitializeRedisChannelAsync(e, ct));
 
                 return;
             }
 
-            await this.InitializeRedisChannelAsync(new ConnectionFactoryStartedSignal(), cancellationToken).PreserveThreadContext();
+            await this.InitializeRedisChannelAsync(new ConnectionManagerStartedSignal(), cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -109,12 +109,12 @@ namespace Kephas.Messaging.Redis.Routing
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        protected virtual async Task InitializeRedisChannelAsync(ConnectionFactoryStartedSignal signal, CancellationToken cancellationToken)
+        protected virtual async Task InitializeRedisChannelAsync(ConnectionManagerStartedSignal signal, CancellationToken cancellationToken)
         {
             this.redisClientStartedSubscription?.Dispose();
             this.redisClientStartedSubscription = null;
 
-            this.redisClientStoppingSubscription = this.eventHub.Subscribe<ConnectionFactoryStoppingSignal>((e, ctx) => this.DisposeRedisChannel(e));
+            this.redisClientStoppingSubscription = this.eventHub.Subscribe<ConnectionManagerStoppingSignal>((e, ctx) => this.DisposeRedisChannel(e));
 
             if (signal.Severity.IsError())
             {
@@ -258,7 +258,7 @@ namespace Kephas.Messaging.Redis.Routing
         {
             try
             {
-                this.DisposeRedisChannel(new ConnectionFactoryStoppingSignal());
+                this.DisposeRedisChannel(new ConnectionManagerStoppingSignal());
             }
             finally
             {
@@ -270,7 +270,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// Disposes the Redis channel.
         /// </summary>
         /// <param name="signal">The Redis client stopping signal.</param>
-        protected virtual void DisposeRedisChannel(ConnectionFactoryStoppingSignal signal)
+        protected virtual void DisposeRedisChannel(ConnectionManagerStoppingSignal signal)
         {
             this.redisClientStartedSubscription?.Dispose();
             this.redisClientStartedSubscription = null;
