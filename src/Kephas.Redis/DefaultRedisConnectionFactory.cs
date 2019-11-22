@@ -14,7 +14,7 @@ namespace Kephas.Redis
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.ExceptionHandling;
     using Kephas.Interaction;
@@ -33,9 +33,12 @@ namespace Kephas.Redis
     [OverridePriority(Priority.Low)]
     public class DefaultRedisConnectionFactory : Loggable, IRedisConnectionFactory, IAsyncInitializable, IAsyncFinalizable
     {
+        private static int connectionCounter;
+
         private readonly InitializationMonitor<IRedisConnectionFactory> initMonitor;
         private readonly FinalizationMonitor<IRedisConnectionFactory> finMonitor;
         private readonly ILogManager logManager;
+        private readonly IAppRuntime appRuntime;
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
         private readonly IEventHub eventHub;
         private IContext appContext;
@@ -44,15 +47,18 @@ namespace Kephas.Redis
         /// Initializes a new instance of the <see cref="DefaultRedisConnectionFactory"/> class.
         /// </summary>
         /// <param name="logManager">Manager for log.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="redisConfiguration">The redis configuration.</param>
         /// <param name="eventHub">The event hub.</param>
         public DefaultRedisConnectionFactory(
             ILogManager logManager,
+            IAppRuntime appRuntime,
             IConfiguration<RedisClientSettings> redisConfiguration,
             IEventHub eventHub)
             : base(logManager)
         {
             this.logManager = logManager;
+            this.appRuntime = appRuntime;
             this.redisConfiguration = redisConfiguration;
             this.eventHub = eventHub;
             this.initMonitor = new InitializationMonitor<IRedisConnectionFactory>(this.GetType());
@@ -100,19 +106,19 @@ namespace Kephas.Redis
                 this.appContext = context;
                 using (var connection = this.CreateConnectionCore(context))
                 {
-                    this.Logger.Info("Connected successfully to the Redis server.");
+                    this.Logger.Info($"Connected successfully to Redis.");
                 }
 
                 this.initMonitor.Complete();
 
-                await this.eventHub.PublishAsync(new RedisClientStartedSignal(), context, cancellationToken).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new ConnectionFactoryStartedSignal(), context, cancellationToken).PreserveThreadContext();
             }
             catch (Exception ex)
             {
-                this.Logger.Fatal(ex, "Error while connecting to Redis server.");
+                this.Logger.Fatal(ex, "Error while connecting to Redis.");
                 this.initMonitor.Fault(ex);
 
-                await this.eventHub.PublishAsync(new RedisClientStartedSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new ConnectionFactoryStartedSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
             }
         }
 
@@ -132,7 +138,7 @@ namespace Kephas.Redis
 
             try
             {
-                await this.eventHub.PublishAsync(new RedisClientStoppingSignal(), context, cancellationToken).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new ConnectionFactoryStoppingSignal(), context, cancellationToken).PreserveThreadContext();
 
                 this.finMonitor.Complete();
             }
@@ -141,7 +147,7 @@ namespace Kephas.Redis
                 this.Logger.Fatal(ex, "Error while closing the Redis connection.");
                 this.finMonitor.Fault(ex);
 
-                await this.eventHub.PublishAsync(new RedisClientStoppingSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
+                await this.eventHub.PublishAsync(new ConnectionFactoryStoppingSignal(ex.Message, SeverityLevel.Error), context, cancellationToken).PreserveThreadContext();
             }
             finally
             {
@@ -170,8 +176,23 @@ namespace Kephas.Redis
         /// </returns>
         protected virtual ConnectionMultiplexer CreateConnectionCore(IContext context)
         {
+            return ConnectionMultiplexer.Connect(this.GetConfigurationOptions(context), this.CreateRedisLogger(context));
+        }
+
+        /// <summary>
+        /// Gets configuration options.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        /// <returns>
+        /// The configuration options.
+        /// </returns>
+        protected virtual ConfigurationOptions GetConfigurationOptions(IContext context)
+        {
             var settings = this.redisConfiguration.Settings;
-            return ConnectionMultiplexer.Connect(settings.ConnectionString, this.CreateRedisLogger(context));
+            var configuration = ConfigurationOptions.Parse(settings.ConnectionString);
+            var connectionId = Interlocked.Increment(ref connectionCounter);
+            configuration.ClientName = $"{this.appRuntime.GetAppInstanceId()}-{connectionId}";
+            return configuration;
         }
     }
 }

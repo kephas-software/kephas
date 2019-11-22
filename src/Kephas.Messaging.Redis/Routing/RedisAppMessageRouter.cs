@@ -45,9 +45,6 @@ namespace Kephas.Messaging.Redis.Routing
         private ISubscriber publisher;
         private ConnectionMultiplexer subConnection;
         private ISubscriber subscriber;
-        private ChannelMessageQueue messageQueue;
-        private ChannelMessageQueue appMessageQueue;
-        private ChannelMessageQueue appInstanceMessageQueue;
         private string redisRootChannelName;
         private ConnectionMultiplexer pubConnection;
         private bool isRedisChannelInitialized;
@@ -96,12 +93,12 @@ namespace Kephas.Messaging.Redis.Routing
             {
                 this.Logger.Info($"Redis client not initialized, postponing initialization of the Redis channel.");
 
-                this.redisClientStartedSubscription = this.eventHub.Subscribe<RedisClientStartedSignal>((e, ctx, ct) => this.InitializeRedisChannelAsync(e, ct));
+                this.redisClientStartedSubscription = this.eventHub.Subscribe<ConnectionFactoryStartedSignal>((e, ctx, ct) => this.InitializeRedisChannelAsync(e, ct));
 
                 return;
             }
 
-            await this.InitializeRedisChannelAsync(new RedisClientStartedSignal(), cancellationToken).PreserveThreadContext();
+            await this.InitializeRedisChannelAsync(new ConnectionFactoryStartedSignal(), cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -112,12 +109,12 @@ namespace Kephas.Messaging.Redis.Routing
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        protected virtual async Task InitializeRedisChannelAsync(RedisClientStartedSignal signal, CancellationToken cancellationToken)
+        protected virtual async Task InitializeRedisChannelAsync(ConnectionFactoryStartedSignal signal, CancellationToken cancellationToken)
         {
             this.redisClientStartedSubscription?.Dispose();
             this.redisClientStartedSubscription = null;
 
-            this.redisClientStoppingSubscription = this.eventHub.Subscribe<RedisClientStoppingSignal>((e, ctx) => this.DisposeRedisChannel(e));
+            this.redisClientStoppingSubscription = this.eventHub.Subscribe<ConnectionFactoryStoppingSignal>((e, ctx) => this.DisposeRedisChannel(e));
 
             if (signal.Severity.IsError())
             {
@@ -136,14 +133,9 @@ namespace Kephas.Messaging.Redis.Routing
             this.subConnection = this.redisConnectionFactory.CreateConnection();
             this.subscriber = this.subConnection.GetSubscriber();
 
-            this.messageQueue = await this.subscriber.SubscribeAsync(this.redisRootChannelName).PreserveThreadContext();
-            this.messageQueue.OnMessage(this.ReceiveMessageAsync);
-
-            this.appMessageQueue = await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppId()}").PreserveThreadContext();
-            this.appMessageQueue.OnMessage(this.ReceiveMessageAsync);
-
-            this.appInstanceMessageQueue = await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppInstanceId()}").PreserveThreadContext();
-            this.appInstanceMessageQueue.OnMessage(this.ReceiveMessageAsync);
+            await this.subscriber.SubscribeAsync(this.redisRootChannelName, this.HandleOnMessage).PreserveThreadContext();
+            await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppId()}", this.HandleOnMessage).PreserveThreadContext();
+            await this.subscriber.SubscribeAsync($"{this.redisRootChannelName}:{this.AppRuntime.GetAppInstanceId()}", this.HandleOnMessage).PreserveThreadContext();
 
             this.Logger.Info($"Completed initialization of the Redis channel.");
 
@@ -161,19 +153,20 @@ namespace Kephas.Messaging.Redis.Routing
         /// <summary>
         /// Receives a message asynchronously.
         /// </summary>
-        /// <param name="channelMessage">The channel message.</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        protected virtual async Task ReceiveMessageAsync(ChannelMessage channelMessage)
+        /// <param name="channel">The channel.</param>
+        /// <param name="value">The value.</param>
+        protected virtual void HandleOnMessage(RedisChannel channel, RedisValue value)
         {
-            var serializedMessage = (string)channelMessage.Message;
+            var serializedMessage = (string)value;
             try
             {
-                var message = await this.serializationService.JsonDeserializeAsync(serializedMessage).PreserveThreadContext();
+                var message = this.serializationService.JsonDeserialize(serializedMessage);
                 if (message is IBrokeredMessage brokeredMessage)
                 {
-                    await this.RouteInputAsync(brokeredMessage, this.AppContext, default).PreserveThreadContext();
+                    this.RouteInputAsync(brokeredMessage, this.AppContext, default)
+                        .ContinueWith(
+                            t => this.Logger.Error(t.Exception, $"Error while routing from input '{brokeredMessage}'."),
+                            TaskContinuationOptions.OnlyOnFaulted);
                 }
                 else
                 {
@@ -265,7 +258,7 @@ namespace Kephas.Messaging.Redis.Routing
         {
             try
             {
-                this.DisposeRedisChannel(new RedisClientStoppingSignal());
+                this.DisposeRedisChannel(new ConnectionFactoryStoppingSignal());
             }
             finally
             {
@@ -277,7 +270,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// Disposes the Redis channel.
         /// </summary>
         /// <param name="signal">The Redis client stopping signal.</param>
-        protected virtual void DisposeRedisChannel(RedisClientStoppingSignal signal)
+        protected virtual void DisposeRedisChannel(ConnectionFactoryStoppingSignal signal)
         {
             this.redisClientStartedSubscription?.Dispose();
             this.redisClientStartedSubscription = null;
@@ -287,13 +280,10 @@ namespace Kephas.Messaging.Redis.Routing
 
             if (this.isRedisChannelInitialized)
             {
-                this.messageQueue.Unsubscribe();
-                this.appMessageQueue.Unsubscribe();
-                this.appInstanceMessageQueue.Unsubscribe();
-
                 this.DisposeConnection(this.pubConnection);
                 this.pubConnection = null;
 
+                this.subscriber.UnsubscribeAll();
                 this.DisposeConnection(this.subConnection);
                 this.subConnection = null;
 

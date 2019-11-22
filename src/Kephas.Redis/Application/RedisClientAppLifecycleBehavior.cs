@@ -20,6 +20,7 @@ namespace Kephas.Redis.Application
     /// <summary>
     /// The Redis client application lifecycle behavior.
     /// </summary>
+    [ProcessingPriority(Priority.High)]
     public class RedisClientAppLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IRedisConnectionFactory redisClient;
@@ -27,10 +28,10 @@ namespace Kephas.Redis.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisClientAppLifecycleBehavior"/> class.
         /// </summary>
-        /// <param name="redisClient">The redis client.</param>
-        public RedisClientAppLifecycleBehavior(IRedisConnectionFactory redisClient)
+        /// <param name="connectionFactory">The Redis connection factory.</param>
+        public RedisClientAppLifecycleBehavior(IRedisConnectionFactory connectionFactory)
         {
-            this.redisClient = redisClient;
+            this.redisClient = connectionFactory;
         }
 
         /// <summary>
