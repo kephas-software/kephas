@@ -283,7 +283,19 @@ namespace Kephas.Messaging.Redis.Routing
                 this.redisConnectionManager.DisposeConnection(this.pubConnection);
                 this.pubConnection = null;
 
-                this.subscriber.UnsubscribeAll();
+                try
+                {
+                    this.subscriber.UnsubscribeAll();
+                }
+                catch (OperationCanceledException ex)
+                {
+                    this.Logger.Warn(ex, $"Redis subscription cancelation was canceled.");
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Error(ex, $"Errors occured during Redis subscription cancelation.");
+                }
+
                 this.redisConnectionManager.DisposeConnection(this.subConnection);
                 this.subConnection = null;
 
