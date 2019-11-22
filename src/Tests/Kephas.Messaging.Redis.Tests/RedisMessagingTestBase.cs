@@ -27,7 +27,7 @@ namespace Kephas.Messaging.Redis.Tests
             {
                 typeof(IAppManager).Assembly,                   // Kephas.Application
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
-                typeof(IRedisConnectionFactory).Assembly,                  // Kephas.Redis
+                typeof(IRedisConnectionManager).Assembly,                  // Kephas.Redis
                 typeof(RedisAppMessageRouter).Assembly,         // Kephas.Messaging.Redis
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.Josn
             };
