@@ -37,7 +37,7 @@ namespace Kephas.Data.Commands
                 var entityEntry = dataContext.GetEntityEntry(entity);
                 if (entityEntry == null)
                 {
-                    throw new InvalidOperationException(Strings.DataContextBase_EntityNotAttached_Exception);
+                    throw new InvalidOperationException(Strings.DataContextBase_EntityNotAttached_Exception.FormatWith(entity));
                 }
 
                 if (entityEntry.ChangeState == ChangeState.Added)
