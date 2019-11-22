@@ -125,9 +125,11 @@ namespace Kephas.Threading.Tasks
         /// </summary>
         /// <typeparam name="T">The return type.</typeparam>
         /// <param name="task">The task.</param>
-        /// <param name="timeout">The timeout (optional). The default value is <see cref="DefaultTimeout"/>.</param>
-        /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task (optional). The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
-        /// <param name="throwOnTimeout">If set to <c>true</c> an exception is thrown on timeout.</param>
+        /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
+        /// <param name="waitMilliseconds">
+        /// Optional. The milliseconds used to wait until checking again the state of the task. The default value is
+        /// <see cref="DefaultWaitMilliseconds"/>.</param>
+        /// <param name="throwOnTimeout">Optional. If set to <c>true</c> an exception is thrown on timeout.</param>
         /// <returns>
         /// The task result.
         /// </returns>
