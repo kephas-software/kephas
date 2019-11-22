@@ -7,7 +7,7 @@
         <RootNamespace>Kephas.Mail</RootNamespace>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-        <Version>7.2.0-preview.10.3</Version>
+        <Version>7.2.0-preview.10.4</Version>
         <AssemblyVersion>7.2.0.0</AssemblyVersion>
         <FileVersion>7.2.0.0</FileVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
