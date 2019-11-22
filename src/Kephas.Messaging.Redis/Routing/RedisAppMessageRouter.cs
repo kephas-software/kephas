@@ -148,7 +148,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <returns>
         /// The calculated root channel name.
         /// </returns>
-        protected override string ComputeRootChannelName() => $"InProcess-{base.ComputeRootChannelName()}";
+        protected override string ComputeRootChannelName() => $"{this.GetType().Name}-{base.ComputeRootChannelName()}";
 
         /// <summary>
         /// Receives a message asynchronously.
