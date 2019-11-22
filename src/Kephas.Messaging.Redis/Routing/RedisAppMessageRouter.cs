@@ -38,15 +38,15 @@ namespace Kephas.Messaging.Redis.Routing
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
     public class RedisAppMessageRouter : InProcessAppMessageRouter
     {
-        private readonly IRedisConnectionFactory redisConnectionFactory;
+        private readonly IRedisConnectionManager redisConnectionManager;
         private readonly ISerializationService serializationService;
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
         private readonly IEventHub eventHub;
         private ISubscriber publisher;
-        private ConnectionMultiplexer subConnection;
+        private IConnectionMultiplexer subConnection;
         private ISubscriber subscriber;
         private string redisRootChannelName;
-        private ConnectionMultiplexer pubConnection;
+        private IConnectionMultiplexer pubConnection;
         private bool isRedisChannelInitialized;
         private IEventSubscription redisClientStartedSubscription;
         private IEventSubscription redisClientStoppingSubscription;
@@ -57,7 +57,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="redisConnectionFactory">The Redis connection factory.</param>
+        /// <param name="redisConnectionManager">The Redis connection manager.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="redisConfiguration">The redis configuration.</param>
         /// <param name="eventHub">The event hub.</param>
@@ -65,13 +65,13 @@ namespace Kephas.Messaging.Redis.Routing
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor,
-            IRedisConnectionFactory redisConnectionFactory,
+            IRedisConnectionManager redisConnectionManager,
             ISerializationService serializationService,
             IConfiguration<RedisClientSettings> redisConfiguration,
             IEventHub eventHub)
             : base(contextFactory, appRuntime, messageProcessor)
         {
-            this.redisConnectionFactory = redisConnectionFactory;
+            this.redisConnectionManager = redisConnectionManager;
             this.serializationService = serializationService;
             this.redisConfiguration = redisConfiguration;
             this.eventHub = eventHub;
@@ -89,7 +89,7 @@ namespace Kephas.Messaging.Redis.Routing
         {
             await base.InitializeCoreAsync(context, cancellationToken).PreserveThreadContext();
 
-            if (!this.redisConnectionFactory.IsInitialized)
+            if (!this.redisConnectionManager.IsInitialized)
             {
                 this.Logger.Info($"Redis client not initialized, postponing initialization of the Redis channel.");
 
@@ -127,10 +127,10 @@ namespace Kephas.Messaging.Redis.Routing
             var redisNS = this.redisConfiguration.Settings.Namespace;
             this.redisRootChannelName = string.IsNullOrEmpty(redisNS) ? ChannelType : $"{redisNS}:{ChannelType}";
 
-            this.pubConnection = this.redisConnectionFactory.CreateConnection();
+            this.pubConnection = this.redisConnectionManager.CreateConnection();
             this.publisher = this.pubConnection.GetSubscriber();
 
-            this.subConnection = this.redisConnectionFactory.CreateConnection();
+            this.subConnection = this.redisConnectionManager.CreateConnection();
             this.subscriber = this.subConnection.GetSubscriber();
 
             await this.subscriber.SubscribeAsync(this.redisRootChannelName, this.HandleOnMessage).PreserveThreadContext();
@@ -280,23 +280,14 @@ namespace Kephas.Messaging.Redis.Routing
 
             if (this.isRedisChannelInitialized)
             {
-                this.DisposeConnection(this.pubConnection);
+                this.redisConnectionManager.DisposeConnection(this.pubConnection);
                 this.pubConnection = null;
 
                 this.subscriber.UnsubscribeAll();
-                this.DisposeConnection(this.subConnection);
+                this.redisConnectionManager.DisposeConnection(this.subConnection);
                 this.subConnection = null;
 
                 this.isRedisChannelInitialized = false;
-            }
-        }
-
-        private void DisposeConnection(IConnectionMultiplexer connection)
-        {
-            if (connection != null)
-            {
-                connection.Close(allowCommandsToComplete: true);
-                connection.Dispose();
             }
         }
 

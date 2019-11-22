@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultRedisConnectionFactory.cs" company="Kephas Software SRL">
+// <copyright file="DefaultRedisConnectionManager.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the default Redis connection factory class.
+//   Implements the default Redis connection manager class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,6 +14,7 @@ namespace Kephas.Redis
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Configuration;
     using Kephas.ExceptionHandling;
@@ -28,15 +29,15 @@ namespace Kephas.Redis
     using StackExchange.Redis;
 
     /// <summary>
-    /// The default Redis connection factory.
+    /// The default Redis connection manager.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultRedisConnectionFactory : Loggable, IRedisConnectionFactory, IAsyncInitializable, IAsyncFinalizable
+    public class DefaultRedisConnectionManager : Loggable, IRedisConnectionManager, IAsyncInitializable, IAsyncFinalizable
     {
         private static int connectionCounter;
 
-        private readonly InitializationMonitor<IRedisConnectionFactory> initMonitor;
-        private readonly FinalizationMonitor<IRedisConnectionFactory> finMonitor;
+        private readonly InitializationMonitor<IRedisConnectionManager> initMonitor;
+        private readonly FinalizationMonitor<IRedisConnectionManager> finMonitor;
         private readonly ILogManager logManager;
         private readonly IAppRuntime appRuntime;
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
@@ -44,13 +45,13 @@ namespace Kephas.Redis
         private IContext appContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultRedisConnectionFactory"/> class.
+        /// Initializes a new instance of the <see cref="DefaultRedisConnectionManager"/> class.
         /// </summary>
         /// <param name="logManager">Manager for log.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="redisConfiguration">The redis configuration.</param>
         /// <param name="eventHub">The event hub.</param>
-        public DefaultRedisConnectionFactory(
+        public DefaultRedisConnectionManager(
             ILogManager logManager,
             IAppRuntime appRuntime,
             IConfiguration<RedisClientSettings> redisConfiguration,
@@ -61,25 +62,29 @@ namespace Kephas.Redis
             this.appRuntime = appRuntime;
             this.redisConfiguration = redisConfiguration;
             this.eventHub = eventHub;
-            this.initMonitor = new InitializationMonitor<IRedisConnectionFactory>(this.GetType());
-            this.finMonitor = new FinalizationMonitor<IRedisConnectionFactory>(this.GetType());
+            this.initMonitor = new InitializationMonitor<IRedisConnectionManager>(this.GetType());
+            this.finMonitor = new FinalizationMonitor<IRedisConnectionManager>(this.GetType());
         }
 
         /// <summary>
-        /// Gets a value indicating whether the Redis client is initialized.
+        /// Gets a value indicating whether the manager is initialized or not.
         /// </summary>
         /// <value>
-        /// True if the Redis client is initialized, false if not.
+        /// True if the manager is initialized, false if not.
         /// </value>
         public bool IsInitialized => this.initMonitor.IsCompletedSuccessfully;
 
         /// <summary>
-        /// Creates the connection.
+        /// Creates the connection based on <see cref="RedisClientSettings"/>.
         /// </summary>
+        /// <remarks>
+        /// It is the caller responsibility to properly dispose the created connection.
+        /// Use <see cref="DisposeConnection(IConnectionMultiplexer)"/> method to properly dispose of the created connection.
+        /// </remarks>
         /// <returns>
         /// The new connection.
         /// </returns>
-        public ConnectionMultiplexer CreateConnection()
+        public IConnectionMultiplexer CreateConnection()
         {
             this.initMonitor.AssertIsCompletedSuccessfully();
 
@@ -106,7 +111,7 @@ namespace Kephas.Redis
                 this.appContext = context;
                 using (var connection = this.CreateConnectionCore(context))
                 {
-                    this.Logger.Info($"Connected successfully to Redis.");
+                    this.Logger.Info($"Successfully connected to Redis.");
                 }
 
                 this.initMonitor.Complete();
@@ -156,6 +161,22 @@ namespace Kephas.Redis
         }
 
         /// <summary>
+        /// Disposes a previously created connection.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        public virtual void DisposeConnection(IConnectionMultiplexer connection)
+        {
+            if (connection != null)
+            {
+                var clientName = connection.ClientName;
+                connection.Close(allowCommandsToComplete: true);
+                connection.Dispose();
+
+                this.Logger.Debug($"Redis connection '{clientName}' disposed.");
+            }
+        }
+
+        /// <summary>
         /// Creates a Redis logger.
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
@@ -174,9 +195,16 @@ namespace Kephas.Redis
         /// <returns>
         /// The new connection.
         /// </returns>
-        protected virtual ConnectionMultiplexer CreateConnectionCore(IContext context)
+        protected virtual IConnectionMultiplexer CreateConnectionCore(IContext context)
         {
-            return ConnectionMultiplexer.Connect(this.GetConfigurationOptions(context), this.CreateRedisLogger(context));
+            var connection = ConnectionMultiplexer.Connect(this.GetConfigurationOptions(context), this.CreateRedisLogger(context));
+            connection.ConnectionFailed += this.HandleConnectionFailed;
+            connection.ConnectionRestored += this.HandleConnectionRestored;
+            connection.InternalError += this.HandleInternalError;
+
+            this.Logger.Debug($"Redis connection '{connection.ClientName}' created.");
+
+            return connection;
         }
 
         /// <summary>
@@ -193,6 +221,39 @@ namespace Kephas.Redis
             var connectionId = Interlocked.Increment(ref connectionCounter);
             configuration.ClientName = $"{this.appRuntime.GetAppInstanceId()}-{connectionId}";
             return configuration;
+        }
+
+        /// <summary>
+        /// Handles the internal error event.
+        /// </summary>
+        /// <param name="sender">Source of the event.</param>
+        /// <param name="eventArgs">Internal error event information.</param>
+        protected virtual void HandleInternalError(object sender, InternalErrorEventArgs eventArgs)
+        {
+            var connection = sender as IConnectionMultiplexer;
+            this.Logger.Warn(eventArgs.Exception, $"Redis connection '{connection?.ClientName}' internal error.");
+        }
+
+        /// <summary>
+        /// Handles the connection failed event.
+        /// </summary>
+        /// <param name="sender">Source of the event.</param>
+        /// <param name="eventArgs">Connection failed event information.</param>
+        protected virtual void HandleConnectionFailed(object sender, ConnectionFailedEventArgs eventArgs)
+        {
+            var connection = sender as IConnectionMultiplexer;
+            this.Logger.Warn($"Redis connection '{connection?.ClientName}' failed.");
+        }
+
+        /// <summary>
+        /// Handles the connection restored event.
+        /// </summary>
+        /// <param name="sender">Source of the event.</param>
+        /// <param name="eventArgs">Connection failed event information.</param>
+        protected virtual void HandleConnectionRestored(object sender, ConnectionFailedEventArgs eventArgs)
+        {
+            var connection = sender as IConnectionMultiplexer;
+            this.Logger.Warn($"Redis connection '{connection?.ClientName}' restored.");
         }
     }
 }
