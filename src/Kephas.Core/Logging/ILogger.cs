@@ -12,7 +12,7 @@ namespace Kephas.Logging
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using Kephas.ExceptionHandling;
     using Kephas.Services;
 
@@ -104,17 +104,19 @@ namespace Kephas.Logging
         /// </returns>
         public static ILogger Merge(this ILogger logger, params ILogger[] loggers)
         {
-            if (loggers == null || loggers.Length == 0)
+            var validLoggers = loggers?.Where(l => l != null).ToList();
+            if (validLoggers == null || validLoggers.Count == 0)
             {
                 return logger;
             }
 
             if (logger == null)
             {
-                return loggers.Length == 1 ? loggers[0] : new AggregateLogger(loggers);
+                return validLoggers.Count == 1 ? validLoggers[0] : new AggregateLogger(validLoggers);
             }
 
-            return new AggregateLogger(new List<ILogger>(loggers) { logger });
+            validLoggers.Add(logger);
+            return new AggregateLogger(validLoggers);
         }
 
         /// <summary>
