@@ -271,7 +271,7 @@ namespace Kephas.Services.Composition
                 sb.Append(", instanceFactory: '(function)'");
             }
 
-            sb.Append("}");
+            sb.Append("} }");
 
             return sb.ToString();
         }
