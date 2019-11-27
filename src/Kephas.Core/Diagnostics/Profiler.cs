@@ -108,14 +108,14 @@ namespace Kephas.Diagnostics
                 return TimeSpan.Zero;
             }
 
-            logger?.Log(logLevel, $"{memberName}. Started at: {DateTime.Now:s}.");
+            logger?.Log(logLevel, "{memberName}. Started at: {startedAt:s}.", memberName, DateTime.Now);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             action();
             stopwatch.Stop();
 
-            logger?.Log(logLevel, $"{memberName}. Ended at: {DateTime.Now:s}. Elapsed: {stopwatch.Elapsed:c}.");
+            logger?.Log(logLevel, "{memberName}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
 
             return stopwatch.Elapsed;
         }
@@ -205,14 +205,14 @@ namespace Kephas.Diagnostics
                 return TimeSpan.Zero;
             }
 
-            logger?.Log(logLevel, $"{memberName}. Started at: {DateTime.Now:s}.");
+            logger?.Log(logLevel, "{memberName}. Started at: {startedAt:s}.", memberName, DateTime.Now);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             await action().PreserveThreadContext();
             stopwatch.Stop();
 
-            logger?.Log(logLevel, $"{memberName}. Ended at: {DateTime.Now:s}. Elapsed: {stopwatch.Elapsed:c}.");
+            logger?.Log(logLevel, "{memberName}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
 
             return stopwatch.Elapsed;
         }
