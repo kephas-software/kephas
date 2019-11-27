@@ -169,7 +169,7 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors occurred while redirecting reply &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Errors occurred while redirecting reply &apos;{reply}&apos;..
         /// </summary>
         public static string DefaultMessageBroker_ErrorsOccurredWhileRedirecting_Exception {
             get {
@@ -178,7 +178,7 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors occurred while sending message &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Errors occurred while sending message &apos;{message}&apos;..
         /// </summary>
         public static string DefaultMessageBroker_ErrorsOccurredWhileSending_Exception {
             get {
@@ -187,7 +187,7 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not enqueue brokered message (#{0}, {1}) timeout: {2}..
+        ///   Looks up a localized string similar to Could not enqueue brokered message (#{messageId}, {message}) timeout: {timeout}..
         /// </summary>
         public static string DefaultMessageBroker_LogOnEnqueue_NotAddedError {
             get {
@@ -196,7 +196,7 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enqueue brokered message (#{0}, {1}) timeout: {2}..
+        ///   Looks up a localized string similar to Enqueue brokered message (#{messageId}, {message}) timeout: {timeout}..
         /// </summary>
         public static string DefaultMessageBroker_LogOnEnqueue_Success {
             get {
@@ -205,7 +205,7 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Received a reply message without the {0} being set (&apos;{0}&apos;)..
+        ///   Looks up a localized string similar to Received a reply message without the {0} being set (&apos;{1}&apos;)..
         /// </summary>
         public static string DefaultMessageBroker_MissingReplyToMessageId_Exception {
             get {
@@ -223,7 +223,7 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Received reply &apos;{0}&apos;, which has no corresponding request. Possible cause: a timeout may have had interrupted the communication..
+        ///   Looks up a localized string similar to Received reply &apos;{reply}&apos;, which has no corresponding request. Possible cause: a timeout may have had interrupted the communication..
         /// </summary>
         public static string DefaultMessageBroker_ReplyToMessageNotFound_Exception {
             get {
@@ -259,7 +259,7 @@ namespace Kephas.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot specify a negative timeout value..
+        ///   Looks up a localized string similar to Cannot specify a negative timeout value: {0}..
         /// </summary>
         public static string DispatchingContext_NonNegativeTimeout_Exception {
             get {

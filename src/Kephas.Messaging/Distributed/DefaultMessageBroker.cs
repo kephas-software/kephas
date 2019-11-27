@@ -124,7 +124,7 @@ namespace Kephas.Messaging.Distributed
                     this.LogBeforeSend(brokeredMessage);
                     this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
                         .ContinueWith(
-                            t => this.Logger.Error(string.Format(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage)),
+                            t => this.Logger.Error(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
                             TaskContinuationOptions.OnlyOnFaulted);
                     return Task.FromResult((IMessage)null);
                 }
@@ -134,7 +134,7 @@ namespace Kephas.Messaging.Distributed
                 this.LogBeforeSend(brokeredMessage);
                 this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
                     .ContinueWith(
-                        t => this.Logger.Error(string.Format(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage)),
+                        t => this.Logger.Error(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
                         TaskContinuationOptions.OnlyOnFaulted);
 
                 // Returns an awaiter for the answer, must pair with the reply ID.
@@ -340,7 +340,7 @@ namespace Kephas.Messaging.Distributed
                         {
                             if (t.IsFaulted)
                             {
-                                this.Logger.Error(string.Format(Strings.DefaultMessageBroker_ErrorsOccurredWhileRedirecting_Exception, replyMessage));
+                                this.Logger.Error(Strings.DefaultMessageBroker_ErrorsOccurredWhileRedirecting_Exception, replyMessage);
                             }
 
                             redirectContext?.Dispose();
@@ -579,7 +579,7 @@ namespace Kephas.Messaging.Distributed
             }
 
             // TODO localization
-            this.Logger.Warn(timeoutException, $"Timeout after {brokeredMessage.Timeout} for '{brokeredMessage}'.");
+            this.Logger.Warn(timeoutException, "Timeout after {timeout:c} for '{message}'.", brokeredMessage.Timeout, brokeredMessage);
         }
     }
 }
