@@ -11,7 +11,7 @@
 namespace Kephas.Logging.Log4Net
 {
     using System;
-
+    using Kephas.Logging.Log4Net.Internal;
     using log4net;
 
     /// <summary>
@@ -19,10 +19,8 @@ namespace Kephas.Logging.Log4Net
     /// </summary>
     public class Log4NetLogger : ILogger
     {
-        /// <summary>
-        /// The log4net logger.
-        /// </summary>
         private readonly ILog logger;
+        private readonly StructuredLogEntryProvider entryProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
@@ -31,6 +29,7 @@ namespace Kephas.Logging.Log4Net
         protected internal Log4NetLogger(ILog logger)
         {
             this.logger = logger;
+            this.entryProvider = new StructuredLogEntryProvider();
         }
 
         /// <summary>
@@ -85,7 +84,8 @@ namespace Kephas.Logging.Log4Net
                 return;
             }
 
-            var message = args == null || args.Length == 0 ? messageFormat : string.Format(messageFormat, args);
+            var (message, positionalArgs, _) = this.entryProvider.GetLogEntry(messageFormat, args);
+            message = positionalArgs == null || positionalArgs.Length == 0 ? message : string.Format(message, positionalArgs);
 
             switch (level)
             {
@@ -121,28 +121,76 @@ namespace Kephas.Logging.Log4Net
         /// <param name="args">The arguments.</param>
         public void Log(LogLevel level, string messageFormat, params object[] args)
         {
+            var (message, positionalArgs, namedArgs) = this.entryProvider.GetLogEntry(messageFormat, args);
+
             switch (level)
             {
                 case LogLevel.Fatal:
-                    this.logger.FatalFormat(messageFormat, args);
+                    if (positionalArgs == null)
+                    {
+                        this.logger.Fatal(message);
+                    }
+                    else
+                    {
+                        this.logger.FatalFormat(messageFormat, positionalArgs);
+                    }
+
                     break;
                 case LogLevel.Error:
-                    this.logger.ErrorFormat(messageFormat, args);
+                    if (positionalArgs == null)
+                    {
+                        this.logger.Error(message);
+                    }
+                    else
+                    {
+                        this.logger.ErrorFormat(messageFormat, positionalArgs);
+                    }
+
                     break;
                 case LogLevel.Warning:
-                    this.logger.WarnFormat(messageFormat, args);
+                    if (positionalArgs == null)
+                    {
+                        this.logger.Warn(message);
+                    }
+                    else
+                    {
+                        this.logger.WarnFormat(messageFormat, positionalArgs);
+                    }
+
                     break;
                 case LogLevel.Info:
-                    this.logger.InfoFormat(messageFormat, args);
+                    if (positionalArgs == null)
+                    {
+                        this.logger.Info(message);
+                    }
+                    else
+                    {
+                        this.logger.InfoFormat(messageFormat, positionalArgs);
+                    }
+
                     break;
                 case LogLevel.Debug:
-                    this.logger.DebugFormat(messageFormat, args);
-                    break;
                 case LogLevel.Trace:
-                    this.logger.DebugFormat(messageFormat, args);
+                    if (positionalArgs == null)
+                    {
+                        this.logger.Debug(message);
+                    }
+                    else
+                    {
+                        this.logger.DebugFormat(messageFormat, positionalArgs);
+                    }
+
                     break;
                 default:
-                    this.logger.DebugFormat(messageFormat, args);
+                    if (positionalArgs == null)
+                    {
+                        this.logger.Debug(message);
+                    }
+                    else
+                    {
+                        this.logger.DebugFormat(messageFormat, positionalArgs);
+                    }
+
                     break;
             }
         }
