@@ -91,7 +91,7 @@ namespace Kephas.Services.Composition
                     }
                     else
                     {
-                        logger.Warn($"No part conventions builders nor part builders found for {appServiceContract}.");
+                        logger.Warn("No part conventions builders nor part builders found for {serviceContractType}.", appServiceContract);
                     }
                 }
             }
@@ -533,7 +533,7 @@ namespace Kephas.Services.Composition
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug($"Service {serviceContractType} matches {appServiceInfo.InstanceType}.");
+                    logger.Debug("Service {serviceContractType} matches {serviceInstanceType}.", serviceContractType, appServiceInfo.InstanceType);
                 }
 
                 return conventions
@@ -546,7 +546,7 @@ namespace Kephas.Services.Composition
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug($"Service {serviceContractType} matches open generic contract types.");
+                    logger.Debug("Service {serviceContractType} matches open generic contract types.", serviceContractType);
                 }
 
                 // for open generics select a single implementation type
@@ -558,7 +558,7 @@ namespace Kephas.Services.Composition
                                                                      t => this.MatchOpenGenericContractType(t, serviceContractType));
                     if (logger.IsDebugEnabled())
                     {
-                        logger.Debug($"Service {serviceContractType} matches open generic implementation type {selectedInstanceType?.ToString() ?? "<not found>"}.");
+                        logger.Debug("Service {serviceContractType} matches open generic implementation type {serviceInstanceType}.", serviceContractType, selectedInstanceType?.ToString() ?? "<not found>");
                     }
 
                     // TODO HACK: remove the *isOverride* check when the BUG https://github.com/dotnet/corefx/issues/40094 is fixed
@@ -575,7 +575,7 @@ namespace Kephas.Services.Composition
 
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug($"Service {serviceContractType} matches open generic contract types.");
+                    logger.Debug("Service {serviceContractType} matches open generic contract types.", serviceContractType);
                 }
 
                 // if there is non-generic service contract with the same full name
@@ -590,7 +590,7 @@ namespace Kephas.Services.Composition
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug($"Service {serviceContractType} matches multiple derived from it.");
+                    logger.Debug("Service {serviceContractType} matches multiple derived from it.", serviceContractType);
                 }
 
                 // if the service contract metadata allows multiple service registrations
@@ -610,7 +610,7 @@ namespace Kephas.Services.Composition
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug($"Service {serviceContractType} matches {selectedPart}.");
+                    logger.Debug("Service {serviceContractType} matches {serviceInstanceType}.", serviceContractType, selectedPart);
                 }
 
                 return conventions
