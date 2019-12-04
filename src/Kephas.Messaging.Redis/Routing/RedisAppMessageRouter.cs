@@ -165,17 +165,17 @@ namespace Kephas.Messaging.Redis.Routing
                 {
                     this.RouteInputAsync(brokeredMessage, this.AppContext, default)
                         .ContinueWith(
-                            t => this.Logger.Error(t.Exception, $"Error while routing from input '{brokeredMessage}'."),
+                            t => this.Logger.Error(t.Exception, "Error while routing from input '{message}'.", brokeredMessage),
                             TaskContinuationOptions.OnlyOnFaulted);
                 }
                 else
                 {
-                    this.Logger.Warn($"Unsupported message '{serializedMessage}'.");
+                    this.Logger.Warn("Unsupported message '{message}'.", serializedMessage);
                 }
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, $"Error while handling message '{serializedMessage}'.");
+                this.Logger.Error(ex, "Error while handling message '{message}'.", serializedMessage);
             }
         }
 

@@ -111,7 +111,7 @@ namespace Kephas.Redis
                 this.appContext = context;
                 using (var connection = this.CreateConnectionCore(context))
                 {
-                    this.Logger.Info($"Successfully connected to Redis.");
+                    this.Logger.Info("Successfully connected to Redis.");
                 }
 
                 this.initMonitor.Complete();
@@ -172,7 +172,7 @@ namespace Kephas.Redis
                 connection.Close(allowCommandsToComplete: true);
                 connection.Dispose();
 
-                this.Logger.Debug($"Redis connection '{clientName}' disposed.");
+                this.Logger.Debug("Redis connection '{redisConnection}' disposed.", clientName);
             }
         }
 
@@ -202,7 +202,7 @@ namespace Kephas.Redis
             connection.ConnectionRestored += this.HandleConnectionRestored;
             connection.InternalError += this.HandleInternalError;
 
-            this.Logger.Debug($"Redis connection '{connection.ClientName}' created.");
+            this.Logger.Debug("Redis connection '{redisConnection}' created.", connection.ClientName);
 
             return connection;
         }
@@ -231,7 +231,7 @@ namespace Kephas.Redis
         protected virtual void HandleInternalError(object sender, InternalErrorEventArgs eventArgs)
         {
             var connection = sender as IConnectionMultiplexer;
-            this.Logger.Warn(eventArgs.Exception, $"Redis connection '{connection?.ClientName}' internal error.");
+            this.Logger.Warn(eventArgs.Exception, "Redis connection '{redisConnection}' internal error.", connection?.ClientName);
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace Kephas.Redis
         protected virtual void HandleConnectionFailed(object sender, ConnectionFailedEventArgs eventArgs)
         {
             var connection = sender as IConnectionMultiplexer;
-            this.Logger.Warn($"Redis connection '{connection?.ClientName}' failed.");
+            this.Logger.Warn("Redis connection '{redisConnection}' failed.", connection?.ClientName);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace Kephas.Redis
         protected virtual void HandleConnectionRestored(object sender, ConnectionFailedEventArgs eventArgs)
         {
             var connection = sender as IConnectionMultiplexer;
-            this.Logger.Warn($"Redis connection '{connection?.ClientName}' restored.");
+            this.Logger.Warn("Redis connection '{redisConnection}' restored.", connection?.ClientName);
         }
     }
 }
