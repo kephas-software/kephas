@@ -386,11 +386,11 @@ namespace Kephas.Messaging.Distributed
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, $"Error while trying to create and initialize router '{f.Metadata.AppServiceImplementationType}'.");
+                this.Logger.Warn(ex, "Error while trying to create and initialize router '{router}'.", f.Metadata.AppServiceImplementationType);
                 f.Metadata[InitializationException] = ex;
                 if (f.Metadata.IsOptional)
                 {
-                    this.Logger.Warn($"Router '{f.Metadata.AppServiceImplementationType}' will be ignored.");
+                    this.Logger.Warn("Router '{router}' will be ignored.", f.Metadata.AppServiceImplementationType);
                     return null;
                 }
 
@@ -469,9 +469,9 @@ namespace Kephas.Messaging.Distributed
             if (this.Logger.IsDebugEnabled())
             {
                 var recipients = (brokeredMessage.Recipients?.Any() ?? false)
-                    ? $"recipients : { string.Join(", ", brokeredMessage.Recipients)}"
+                    ? $"recipients : {string.Join(", ", brokeredMessage.Recipients)}"
                     : $"no recipients";
-                this.Logger.Debug($"Message {brokeredMessage} has {recipients}; using router {router.GetType()}.");
+                this.Logger.Debug("Message {message} has {recipients}; using router {router}.", brokeredMessage, recipients, router.GetType());
             }
 
             if (context.InputRouter == router && !string.IsNullOrEmpty(brokeredMessage.ReplyToMessageId))
@@ -548,7 +548,7 @@ namespace Kephas.Messaging.Distributed
                 return;
             }
 
-            this.Logger.Debug($"Sending brokered message '{brokeredMessage}'.");
+            this.Logger.Debug("Sending brokered message '{message}'.", brokeredMessage);
         }
 
         /// <summary>
@@ -563,7 +563,7 @@ namespace Kephas.Messaging.Distributed
             }
 
             // TODO localization
-            this.Logger.Debug($"Received brokered message '{brokeredMessage}'.");
+            this.Logger.Debug("Received brokered message '{message}'.", brokeredMessage);
         }
 
         /// <summary>
