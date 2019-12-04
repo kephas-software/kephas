@@ -146,7 +146,7 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 
-            brokeredMessage.Trace = $"in:{appInstanceId}:{router?.GetType().Name}:{DateTime.UtcNow:s}{Environment.NewLine}{brokeredMessage.Trace}";
+            brokeredMessage.Trace = $"in:{appInstanceId}:{router?.GetType().Name}:{DateTime.Now:O}{Environment.NewLine}{brokeredMessage.Trace}";
 
             return brokeredMessage;
         }
@@ -164,7 +164,7 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 
-            brokeredMessage.Trace = $"out:{appInstanceId}:{router?.GetType().Name}:{DateTime.UtcNow:s}{Environment.NewLine}{brokeredMessage.Trace}";
+            brokeredMessage.Trace = $"out:{appInstanceId}:{router?.GetType().Name}:{DateTime.Now:O}{Environment.NewLine}{brokeredMessage.Trace}";
 
             return brokeredMessage;
         }
@@ -182,7 +182,7 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 
-            brokeredMessage.Trace = $"reply:{appInstanceId}:{DateTime.UtcNow:s}{Environment.NewLine}{requestTrace}";
+            brokeredMessage.Trace = $"reply:{appInstanceId}:{DateTime.Now:O}{Environment.NewLine}{requestTrace}";
 
             return brokeredMessage;
         }
