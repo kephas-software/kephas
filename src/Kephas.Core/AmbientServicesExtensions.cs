@@ -680,7 +680,7 @@ namespace Kephas
                 Loggable.DefaultLogManager = logManager;
             }
 
-            ambientServices.Register(logManager);
+            ambientServices.Register<ILogManager>(b => b.WithInstance(logManager).ExternallyOwned(false));
 
             return ambientServices;
         }
