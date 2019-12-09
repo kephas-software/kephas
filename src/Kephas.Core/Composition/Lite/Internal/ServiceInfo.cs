@@ -24,7 +24,7 @@ namespace Kephas.Composition.Lite.Internal
     /// <summary>
     /// Information about the service.
     /// </summary>
-    internal class ServiceInfo : IServiceInfo
+    internal class ServiceInfo : IServiceInfo, IDisposable
     {
         private readonly LazyFactory lazyFactory;
 
@@ -92,6 +92,8 @@ namespace Kephas.Composition.Lite.Internal
 
         public object Instance { get; internal set; }
 
+        public bool ExternallyOwned { get; internal set; }
+
         public Type InstanceType { get; }
 
         public Func<ICompositionContext, object> InstanceFactory { get; }
@@ -125,6 +127,7 @@ namespace Kephas.Composition.Lite.Internal
             {
                 ServiceType = closedServiceType,
                 AllowMultiple = this.AllowMultiple,
+                ExternallyOwned = this.ExternallyOwned,
             };
 
             return closedServiceInfo;
@@ -141,6 +144,14 @@ namespace Kephas.Composition.Lite.Internal
         public object GetService(IAmbientServices ambientServices) => this.lazyFactory.GetValue();
 
         public IDictionary<string, object> Metadata { get; internal set; }
+
+        public void Dispose()
+        {
+            if (!this.ExternallyOwned)
+            {
+                this.lazyFactory.Dispose();
+            }
+        }
 
         private Func<object> GetInstanceResolver(IAmbientServices ambientServices, Type instanceType)
         {
@@ -243,9 +254,16 @@ namespace Kephas.Composition.Lite.Internal
                     return this.value = base.GetValue();
                 }
             }
+
+            public override void Dispose()
+            {
+                (this.value as IDisposable)?.Dispose();
+                this.value = null;
+                base.Dispose();
+            }
         }
 
-        private class LazyFactory
+        private class LazyFactory : IDisposable
         {
             [ThreadStatic]
             private static List<LazyFactory> isProducing;
@@ -258,6 +276,10 @@ namespace Kephas.Composition.Lite.Internal
             {
                 this.factory = factory;
                 this.serviceType = serviceType;
+            }
+
+            public virtual void Dispose()
+            {
             }
 
             public virtual object GetValue()

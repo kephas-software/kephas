@@ -34,6 +34,8 @@ namespace Kephas.Composition.Lite
 
         private bool allowMultiple = false;
 
+        private bool externallyOwned = true;
+
         private object instancing;
 
         private IDictionary<string, object> metadata;
@@ -66,12 +68,14 @@ namespace Kephas.Composition.Lite
                     {
                         AllowMultiple = this.allowMultiple,
                         ServiceType = this.serviceType,
+                        ExternallyOwned = this.externallyOwned,
                     };
                 case Func<ICompositionContext, object> factory:
                     return new ServiceInfo(this.ambientServices, this.contractType, factory, this.lifetime == AppServiceLifetime.Singleton)
                     {
                         AllowMultiple = this.allowMultiple,
                         ServiceType = this.serviceType,
+                        ExternallyOwned = this.externallyOwned,
                     };
                 default:
                     if (this.instancing == null)
@@ -88,6 +92,7 @@ namespace Kephas.Composition.Lite
                     {
                         AllowMultiple = this.allowMultiple,
                         ServiceType = this.serviceType,
+                        ExternallyOwned = this.externallyOwned,
                     };
             }
         }
@@ -225,23 +230,6 @@ namespace Kephas.Composition.Lite
             return this;
         }
 
-        private void EnsureContractTypeMatchesImplementationType(Type contractType, Type implementationType)
-        {
-            if (contractType.IsGenericTypeDefinition && !implementationType.IsGenericTypeDefinition)
-            {
-                throw new ArgumentException(
-                    string.Format("The implementation type {0} must be also a generic type definition for contract {1}.", implementationType, contractType),
-                    nameof(implementationType));
-            }
-
-            if (!this.contractType.IsGenericTypeDefinition && implementationType.IsGenericTypeDefinition)
-            {
-                throw new ArgumentException(
-                    string.Format("The implementation type {0} must not be a generic type definition for contract {1}.", implementationType, contractType),
-                    nameof(implementationType));
-            }
-        }
-
         /// <summary>
         /// Adds metadata in form of (key, value) pairs.
         /// </summary>
@@ -262,6 +250,36 @@ namespace Kephas.Composition.Lite
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <param name="value">True if externally owned, false otherwise.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        public IServiceRegistrationBuilder ExternallyOwned(bool value)
+        {
+            this.externallyOwned = value;
+            return this;
+        }
+
+        private void EnsureContractTypeMatchesImplementationType(Type contractType, Type implementationType)
+        {
+            if (contractType.IsGenericTypeDefinition && !implementationType.IsGenericTypeDefinition)
+            {
+                throw new ArgumentException(
+                    string.Format("The implementation type {0} must be also a generic type definition for contract {1}.", implementationType, contractType),
+                    nameof(implementationType));
+            }
+
+            if (!this.contractType.IsGenericTypeDefinition && implementationType.IsGenericTypeDefinition)
+            {
+                throw new ArgumentException(
+                    string.Format("The implementation type {0} must not be a generic type definition for contract {1}.", implementationType, contractType),
+                    nameof(implementationType));
+            }
         }
     }
 }

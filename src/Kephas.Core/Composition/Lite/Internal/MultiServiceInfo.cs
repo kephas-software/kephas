@@ -20,7 +20,7 @@ namespace Kephas.Composition.Lite.Internal
     using Kephas.Services;
     using Kephas.Services.Reflection;
 
-    internal class MultiServiceInfo : IServiceInfo, IEnumerable<IServiceInfo>
+    internal class MultiServiceInfo : IServiceInfo, IEnumerable<IServiceInfo>, IDisposable
     {
         private IList<ServiceInfo> serviceInfos = new List<ServiceInfo>();
 
@@ -106,6 +106,12 @@ namespace Kephas.Composition.Lite.Internal
             var closedServiceInfos = this.serviceInfos.Select(si => (ServiceInfo)si.MakeGenericServiceInfo(ambientServices, genericArgs));
 
             return new MultiServiceInfo(closedContractType, closedServiceType, closedServiceInfos);
+        }
+
+        public void Dispose()
+        {
+            this.serviceInfos.ForEach(svc => (svc as IDisposable)?.Dispose());
+            this.serviceInfos.Clear();
         }
     }
 }

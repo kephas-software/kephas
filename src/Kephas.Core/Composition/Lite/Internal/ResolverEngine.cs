@@ -11,6 +11,7 @@
 namespace Kephas.Composition.Lite.Internal
 {
     using System;
+
     using Kephas;
 
     /// <summary>

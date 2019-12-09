@@ -15,6 +15,7 @@ namespace Kephas.Composition.Lite.Internal
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using Kephas.Collections;
     using Kephas.Resources;
 
     /// <summary>
@@ -122,6 +123,17 @@ namespace Kephas.Composition.Lite.Internal
         public IServiceInfo GetOrRegister(Type serviceType, Func<Type, IServiceInfo> serviceInfoGetter)
         {
             return this.services.GetOrAdd(serviceType, serviceInfoGetter);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.services.ForEach(kv => (kv.Value as IDisposable)?.Dispose());
+            this.services.Clear();
+            this.serviceSources.Clear();
         }
     }
 }

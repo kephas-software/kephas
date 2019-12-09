@@ -91,5 +91,14 @@ namespace Kephas.Composition.Lite
         /// This builder.
         /// </returns>
         IServiceRegistrationBuilder AddMetadata(string key, object value);
+
+        /// <summary>
+        /// Indicates whether the created instances are disposed by an external owner.
+        /// </summary>
+        /// <param name="value">True if externally owned, false otherwise.</param>
+        /// <returns>
+        /// This builder.
+        /// </returns>
+        IServiceRegistrationBuilder ExternallyOwned(bool value);
     }
 }

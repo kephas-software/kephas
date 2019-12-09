@@ -16,7 +16,7 @@ namespace Kephas.Composition.Lite.Internal
     /// <summary>
     /// Interface for service registry.
     /// </summary>
-    internal interface IServiceRegistry : IEnumerable<IServiceInfo>
+    internal interface IServiceRegistry : IEnumerable<IServiceInfo>, IDisposable
     {
         /// <summary>
         /// Gets the registration sources.
