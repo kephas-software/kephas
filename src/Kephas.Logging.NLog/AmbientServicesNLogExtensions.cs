@@ -32,12 +32,7 @@ namespace Kephas.Logging.NLog
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            if (configuration != null)
-            {
-                LogManager.Configuration = configuration;
-            }
-
-            return ambientServices.WithLogManager(new NLogManager(), replaceDefault);
+            return ambientServices.WithLogManager(new NLogManager(configuration), replaceDefault);
         }
     }
 }
