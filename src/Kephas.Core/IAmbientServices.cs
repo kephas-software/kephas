@@ -14,7 +14,6 @@ namespace Kephas
 
     using Kephas.Application;
     using Kephas.Composition;
-    using Kephas.Composition.Conventions;
     using Kephas.Composition.Lite;
     using Kephas.Configuration;
     using Kephas.Dynamic;
@@ -24,7 +23,7 @@ namespace Kephas
     /// <summary>
     /// Contract interface for ambient services.
     /// </summary>
-    public interface IAmbientServices : IExpando, IServiceProvider
+    public interface IAmbientServices : IExpando, IServiceProvider, IDisposable
     {
         /// <summary>
         /// Gets the configuration store.
