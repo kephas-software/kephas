@@ -105,13 +105,30 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of the <see cref="IAppContext"/>.
+        /// An asynchronous result.
         /// </returns>
-        public virtual async Task<IAppContext> ShutdownAsync(CancellationToken cancellationToken = default)
+        public virtual async Task ShutdownAsync(CancellationToken cancellationToken = default)
         {
-            var appContext = await this.FinalizeAppManagerAsync(cancellationToken).PreserveThreadContext();
-            appContext?.Dispose();
-            return appContext;
+            try
+            {
+                var appContext = await this.FinalizeAppManagerAsync(cancellationToken).PreserveThreadContext();
+                appContext?.Dispose();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Fatal(ex, "Errors occurred during shutdown procedure, gracefully terminating the application.");
+            }
+            finally
+            {
+                try
+                {
+                    this.AmbientServices?.Dispose();
+                }
+                catch
+                {
+                    // TODO at this moment the loggers are disposed, do nothing
+                }
+            }
         }
 
         /// <summary>

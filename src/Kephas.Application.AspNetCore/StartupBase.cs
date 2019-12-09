@@ -145,26 +145,6 @@ namespace Kephas.Application.AspNetCore
         }
 
         /// <summary>
-        /// Shuts down the application asynchronously and gracefully.
-        /// </summary>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// A promise of the <see cref="T:Kephas.Application.IAppContext" />.
-        /// </returns>
-        public override async Task<IAppContext> ShutdownAsync(CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                return await base.ShutdownAsync(cancellationToken).PreserveThreadContext();
-            }
-            catch (Exception ex)
-            {
-                this.Logger.Fatal(ex, "Errors occurred during shutdown procedure, gracefully terminating the application.");
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Creates the application context.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
