@@ -109,6 +109,34 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         }
 
         [Test]
+        public void WithLiteCompositionContainer_internally_owned_disposed()
+        {
+            var disposable = Substitute.For<IDisposable>();
+            var ambientServices = new AmbientServices()
+                .WithStaticAppRuntime(this.IsAppAssembly)
+                .Register<IDisposable>(b => b.WithInstance(disposable).ExternallyOwned(false));
+
+            ambientServices.WithLiteCompositionContainer();
+
+            ambientServices.Dispose();
+            disposable.Received(1).Dispose();
+        }
+
+        [Test]
+        public void WithLiteCompositionContainer_externally_owned_disposed()
+        {
+            var disposable = Substitute.For<IDisposable>();
+            var ambientServices = new AmbientServices()
+                .WithStaticAppRuntime(this.IsAppAssembly)
+                .Register<IDisposable>(b => b.WithInstance(disposable).ExternallyOwned(true));
+
+            ambientServices.WithLiteCompositionContainer();
+
+            ambientServices.Dispose();
+            disposable.Received(0).Dispose();
+        }
+
+        [Test]
         public void GetExport_AppService_Singleton()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();
