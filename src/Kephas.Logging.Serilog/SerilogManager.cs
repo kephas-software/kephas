@@ -10,6 +10,7 @@
 
 namespace Kephas.Logging.Serilog
 {
+    using System;
     using System.Collections.Concurrent;
 
     using global::Serilog;
@@ -18,16 +19,12 @@ namespace Kephas.Logging.Serilog
     /// <summary>
     /// The Serilog log manager.
     /// </summary>
-    public class SerilogManager : ILogManager
+    public class SerilogManager : ILogManager, IDisposable
     {
         private readonly LoggerConfiguration configuration;
+        private readonly ConcurrentDictionary<string, global::Kephas.Logging.ILogger> loggers = new ConcurrentDictionary<string, global::Kephas.Logging.ILogger>();
 
         private Logger rootLogger;
-
-        /// <summary>
-        /// The loggers dictionary.
-        /// </summary>
-        private readonly ConcurrentDictionary<string, global::Kephas.Logging.ILogger> loggers = new ConcurrentDictionary<string, global::Kephas.Logging.ILogger>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SerilogManager"/> class.
@@ -47,6 +44,27 @@ namespace Kephas.Logging.Serilog
         public global::Kephas.Logging.ILogger GetLogger(string loggerName)
         {
             return this.loggers.GetOrAdd(loggerName, this.CreateLogger);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            this.loggers.Clear();
+            this.rootLogger.Dispose();
         }
 
         /// <summary>
