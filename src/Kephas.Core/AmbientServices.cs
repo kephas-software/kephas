@@ -54,8 +54,8 @@ namespace Kephas
         /// <param name="registerDefaultServices">Optional. True to register default services.</param>
         public AmbientServices(bool registerDefaultServices = true)
         {
-            this.Register<IAmbientServices>(this)
-                .Register<ICompositionContext>(this.AsCompositionContext());
+            this.Register<IAmbientServices>(b => b.WithInstance(this).ExternallyOwned(true))
+                .Register<ICompositionContext>(b => b.WithInstance(this.AsCompositionContext()).ExternallyOwned(true));
 
             if (registerDefaultServices)
             {
@@ -193,6 +193,26 @@ namespace Kephas
                 .Where(s => !ReferenceEquals(s.ContractType, typeof(ICompositionContext)))
                 .SelectMany(s => this.ToAppServiceInfos(s).Select(si => (si.ContractType, si)))
                 .ToList();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            this.registry?.Dispose();
         }
 
         private IEnumerable<IAppServiceInfo> ToAppServiceInfos(IServiceInfo appServiceInfo)
