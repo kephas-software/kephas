@@ -11,22 +11,22 @@
 namespace Kephas.Logging.Log4Net
 {
     using System;
+
     using Kephas.Logging.Log4Net.Internal;
-    using log4net;
 
     /// <summary>
     /// A log4net logger.
     /// </summary>
     public class Log4NetLogger : ILogger
     {
-        private readonly ILog logger;
+        private readonly log4net.Core.ILogger logger;
         private readonly StructuredLogEntryProvider entryProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetLogger"/> class.
         /// </summary>
         /// <param name="logger">The NLog logger.</param>
-        protected internal Log4NetLogger(ILog logger)
+        protected internal Log4NetLogger(log4net.Core.ILogger logger)
         {
             this.logger = logger;
             this.entryProvider = new StructuredLogEntryProvider();
@@ -41,32 +41,7 @@ namespace Kephas.Logging.Log4Net
         /// </returns>
         public bool IsEnabled(LogLevel level)
         {
-            if (this.logger.IsDebugEnabled)
-            {
-                return level <= LogLevel.Trace;
-            }
-
-            if (this.logger.IsInfoEnabled)
-            {
-                return level <= LogLevel.Info;
-            }
-
-            if (this.logger.IsWarnEnabled)
-            {
-                return level <= LogLevel.Warning;
-            }
-
-            if (this.logger.IsErrorEnabled)
-            {
-                return level <= LogLevel.Error;
-            }
-
-            if (this.logger.IsFatalEnabled)
-            {
-                return level <= LogLevel.Fatal;
-            }
-
-            return false;
+            return this.logger.IsEnabledFor(this.ToLevel(level));
         }
 
         /// <summary>
@@ -78,120 +53,30 @@ namespace Kephas.Logging.Log4Net
         /// <param name="args">         A variable-length parameters list containing arguments.</param>
         public void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
         {
-            if (exception == null)
-            {
-                this.Log(level, messageFormat, args);
-                return;
-            }
-
             var (message, positionalArgs, _) = this.entryProvider.GetLogEntry(messageFormat, args);
             message = positionalArgs == null || positionalArgs.Length == 0 ? message : string.Format(message, positionalArgs);
 
-            switch (level)
-            {
-                case LogLevel.Fatal:
-                    this.logger.Fatal(message, exception);
-                    break;
-                case LogLevel.Error:
-                    this.logger.Error(message, exception);
-                    break;
-                case LogLevel.Warning:
-                    this.logger.Warn(message, exception);
-                    break;
-                case LogLevel.Info:
-                    this.logger.Info(message, exception);
-                    break;
-                case LogLevel.Debug:
-                    this.logger.Debug(message, exception);
-                    break;
-                case LogLevel.Trace:
-                    this.logger.Debug(message, exception);
-                    break;
-                default:
-                    this.logger.Debug(message, exception);
-                    break;
-            }
+            this.logger.Log(this.GetType(), this.ToLevel(level), message, exception);
         }
 
-        /// <summary>
-        /// Logs the information at the provided level.
-        /// </summary>
-        /// <param name="level">The logging level.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        public void Log(LogLevel level, string messageFormat, params object[] args)
+        private log4net.Core.Level ToLevel(LogLevel logLevel)
         {
-            var (message, positionalArgs, namedArgs) = this.entryProvider.GetLogEntry(messageFormat, args);
-
-            switch (level)
+            switch (logLevel)
             {
                 case LogLevel.Fatal:
-                    if (positionalArgs == null)
-                    {
-                        this.logger.Fatal(message);
-                    }
-                    else
-                    {
-                        this.logger.FatalFormat(messageFormat, positionalArgs);
-                    }
-
-                    break;
+                    return log4net.Core.Level.Critical;
                 case LogLevel.Error:
-                    if (positionalArgs == null)
-                    {
-                        this.logger.Error(message);
-                    }
-                    else
-                    {
-                        this.logger.ErrorFormat(messageFormat, positionalArgs);
-                    }
-
-                    break;
+                    return log4net.Core.Level.Error;
                 case LogLevel.Warning:
-                    if (positionalArgs == null)
-                    {
-                        this.logger.Warn(message);
-                    }
-                    else
-                    {
-                        this.logger.WarnFormat(messageFormat, positionalArgs);
-                    }
-
-                    break;
+                    return log4net.Core.Level.Warn;
                 case LogLevel.Info:
-                    if (positionalArgs == null)
-                    {
-                        this.logger.Info(message);
-                    }
-                    else
-                    {
-                        this.logger.InfoFormat(messageFormat, positionalArgs);
-                    }
-
-                    break;
+                    return log4net.Core.Level.Info;
                 case LogLevel.Debug:
+                    return log4net.Core.Level.Debug;
                 case LogLevel.Trace:
-                    if (positionalArgs == null)
-                    {
-                        this.logger.Debug(message);
-                    }
-                    else
-                    {
-                        this.logger.DebugFormat(messageFormat, positionalArgs);
-                    }
-
-                    break;
+                    return log4net.Core.Level.Trace;
                 default:
-                    if (positionalArgs == null)
-                    {
-                        this.logger.Debug(message);
-                    }
-                    else
-                    {
-                        this.logger.DebugFormat(messageFormat, positionalArgs);
-                    }
-
-                    break;
+                    return log4net.Core.Level.Off;
             }
         }
     }

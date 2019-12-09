@@ -10,31 +10,40 @@
 
 namespace Kephas.Logging.Log4Net
 {
+    using System;
     using System.Collections.Concurrent;
 
     using log4net;
+    using log4net.Repository;
 
     /// <summary>
     /// Log manager for log4net.
     /// </summary>
-    public class Log4NetLogManager : ILogManager
+    public class Log4NetLogManager : ILogManager, IDisposable
     {
         /// <summary>
         /// The default repository name.
         /// </summary>
         private const string DefaultRepositoryName = "Default";
 
-        /// <summary>
-        /// The loggers dictionary.
-        /// </summary>
         private readonly ConcurrentDictionary<string, ILogger> loggers = new ConcurrentDictionary<string, ILogger>();
+        private ILoggerRepository rootRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetLogManager"/> class.
         /// </summary>
         public Log4NetLogManager()
         {
-            LogManager.CreateRepository(DefaultRepositoryName);
+            this.rootRepository = LogManager.CreateRepository(DefaultRepositoryName);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
         }
 
         /// <summary>
@@ -56,8 +65,20 @@ namespace Kephas.Logging.Log4Net
         /// <returns>A logger with the provided name.</returns>
         protected virtual ILogger CreateLogger(string loggerName)
         {
-            var nlogger = LogManager.GetLogger(DefaultRepositoryName, loggerName);
+            var nlogger = this.rootRepository.GetLogger(loggerName);
             return new Log4NetLogger(nlogger);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the Kephas.Logging.Log4Net.Log4NetLogManager and
+        /// optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            this.loggers.Clear();
+            this.rootRepository.Shutdown();
         }
     }
 }
