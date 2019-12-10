@@ -53,13 +53,16 @@ namespace Kephas.Logging
         /// <summary>
         /// Logs the information at the provided level.
         /// </summary>
-        /// <param name="level">        The logging level.</param>
-        /// <param name="exception">    The exception.</param>
+        /// <param name="level">The logging level.</param>
+        /// <param name="exception">The exception.</param>
         /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">         The arguments.</param>
-        public void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
+        /// <param name="args">The arguments.</param>
+        /// <returns>
+        /// True if the log operation succeeded, false if it failed.
+        /// </returns>
+        public bool Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
         {
-            this.innerLogger.Log(level, exception, messageFormat, args);
+            return this.innerLogger.Log(level, exception, messageFormat, args);
         }
     }
 }

@@ -343,9 +343,12 @@ namespace Kephas.Application
         /// <param name="exception">The exception.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments.</param>
-        protected virtual void Log(LogLevel level, Exception exception, string messageFormat = null, params object[] args)
+        /// <returns>
+        /// True if the log operation succeeded, false if it failed.
+        /// </returns>
+        protected virtual bool Log(LogLevel level, Exception exception, string messageFormat = null, params object[] args)
         {
-            this.Logger?.Log(level, exception, messageFormat ?? exception.Message, args);
+            return this.Logger?.Log(level, exception, messageFormat ?? exception.Message, args) ?? false;
         }
     }
 }

@@ -43,7 +43,10 @@ namespace Kephas.Logging.Serilog
         /// <param name="exception">The exception.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">The arguments for the message format.</param>
-        public void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
+        /// <returns>
+        /// True if the log operation succeeded, false if it failed.
+        /// </returns>
+        public bool Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
         {
             if (exception == null)
             {
@@ -53,6 +56,8 @@ namespace Kephas.Logging.Serilog
             {
                 this.logger.Write(this.ToLogEventLevel(level), exception, messageFormat, args);
             }
+
+            return true;
         }
 
         /// <summary>
@@ -84,7 +89,7 @@ namespace Kephas.Logging.Serilog
                 case LogLevel.Trace:
                     return LogEventLevel.Verbose;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(level), level, null);
+                    return LogEventLevel.Verbose;
             }
         }
     }

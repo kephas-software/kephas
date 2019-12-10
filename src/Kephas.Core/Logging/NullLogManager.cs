@@ -73,8 +73,12 @@ namespace Kephas.Logging
             /// <param name="exception">The exception.</param>
             /// <param name="messageFormat">The message format.</param>
             /// <param name="args">The arguments.</param>
-            public void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
+            /// <returns>
+            /// True if the log operation succeeded, false if it failed.
+            /// </returns>
+            public bool Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
             {
+                return false;
             }
 
             /// <summary>

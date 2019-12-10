@@ -42,37 +42,7 @@ namespace Kephas.Logging.NLog
         /// </returns>
         public bool IsEnabled(Logging.LogLevel level)
         {
-            if (this.logger.IsTraceEnabled)
-            {
-                return level <= Logging.LogLevel.Trace;
-            }
-
-            if (this.logger.IsDebugEnabled)
-            {
-                return level <= Logging.LogLevel.Debug;
-            }
-
-            if (this.logger.IsInfoEnabled)
-            {
-                return level <= Logging.LogLevel.Info;
-            }
-
-            if (this.logger.IsWarnEnabled)
-            {
-                return level <= Logging.LogLevel.Warning;
-            }
-
-            if (this.logger.IsErrorEnabled)
-            {
-                return level <= Logging.LogLevel.Error;
-            }
-
-            if (this.logger.IsFatalEnabled)
-            {
-                return level <= Logging.LogLevel.Fatal;
-            }
-
-            return false;
+            return this.logger.IsEnabled(this.ToLogLevel(level));
         }
 
         /// <summary>
@@ -82,71 +52,41 @@ namespace Kephas.Logging.NLog
         /// <param name="exception">    The exception.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">         A variable-length parameters list containing arguments.</param>
-        public void Log(Logging.LogLevel level, Exception exception, string messageFormat, params object[] args)
+        /// <returns>
+        /// True if the log operation succeeded, false if it failed.
+        /// </returns>
+        public bool Log(Logging.LogLevel level, Exception exception, string messageFormat, params object[] args)
         {
             if (exception == null)
             {
-                this.Log(level, messageFormat, args);
-                return;
+                this.logger.Log(this.ToLogLevel(level), messageFormat, args);
+            }
+            else
+            {
+                this.logger.Log(this.ToLogLevel(level), exception, messageFormat, args);
             }
 
-            switch (level)
-            {
-                case Logging.LogLevel.Fatal:
-                    this.logger.Fatal(exception, messageFormat, args);
-                    break;
-                case Logging.LogLevel.Error:
-                    this.logger.Error(exception, messageFormat, args);
-                    break;
-                case Logging.LogLevel.Warning:
-                    this.logger.Warn(exception, messageFormat, args);
-                    break;
-                case Logging.LogLevel.Info:
-                    this.logger.Info(exception, messageFormat, args);
-                    break;
-                case Logging.LogLevel.Debug:
-                    this.logger.Debug(exception, messageFormat, args);
-                    break;
-                case Logging.LogLevel.Trace:
-                    this.logger.Trace(exception, messageFormat, args);
-                    break;
-                default:
-                    this.logger.Trace(exception, messageFormat, args);
-                    break;
-            }
+            return true;
         }
 
-        /// <summary>
-        /// Logs the information at the provided level.
-        /// </summary>
-        /// <param name="level">The logging level.</param>
-        /// <param name="messageFormat">The message format.</param>
-        /// <param name="args">The arguments.</param>
-        public void Log(Logging.LogLevel level, string messageFormat, params object[] args)
+        private LogLevel ToLogLevel(Logging.LogLevel level)
         {
             switch (level)
             {
                 case Logging.LogLevel.Fatal:
-                    this.logger.Fatal(messageFormat, args);
-                    break;
+                    return LogLevel.Fatal;
                 case Logging.LogLevel.Error:
-                    this.logger.Error(messageFormat, args);
-                    break;
+                    return LogLevel.Error;
                 case Logging.LogLevel.Warning:
-                    this.logger.Warn(messageFormat, args);
-                    break;
+                    return LogLevel.Warn;
                 case Logging.LogLevel.Info:
-                    this.logger.Info(messageFormat, args);
-                    break;
+                    return LogLevel.Info;
                 case Logging.LogLevel.Debug:
-                    this.logger.Debug(messageFormat, args);
-                    break;
+                    return LogLevel.Debug;
                 case Logging.LogLevel.Trace:
-                    this.logger.Trace(messageFormat, args);
-                    break;
+                    return LogLevel.Trace;
                 default:
-                    this.logger.Trace(messageFormat, args);
-                    break;
+                    return LogLevel.Off;
             }
         }
     }

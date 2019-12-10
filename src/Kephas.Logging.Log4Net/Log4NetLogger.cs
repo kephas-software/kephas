@@ -51,12 +51,16 @@ namespace Kephas.Logging.Log4Net
         /// <param name="exception">    The exception.</param>
         /// <param name="messageFormat">The message format.</param>
         /// <param name="args">         A variable-length parameters list containing arguments.</param>
-        public void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
+        /// <returns>
+        /// True if the log operation succeeded, false if it failed.
+        /// </returns>
+        public bool Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
         {
             var (message, positionalArgs, _) = this.entryProvider.GetLogEntry(messageFormat, args);
             message = positionalArgs == null || positionalArgs.Length == 0 ? message : string.Format(message, positionalArgs);
 
             this.logger.Log(this.GetType(), this.ToLevel(level), message, exception);
+            return true;
         }
 
         private log4net.Core.Level ToLevel(LogLevel logLevel)

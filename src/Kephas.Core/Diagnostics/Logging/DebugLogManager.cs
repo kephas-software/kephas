@@ -96,9 +96,12 @@ namespace Kephas.Diagnostics.Logging
             /// <param name="exception">The exception.</param>
             /// <param name="messageFormat">The message format.</param>
             /// <param name="args">The arguments.</param>
-            public void Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
+            /// <returns>
+            /// True if the log operation succeeded, false if it failed.
+            /// </returns>
+            public bool Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
             {
-                this.LogCore(level.ToString(), messageFormat, exception);
+                return this.LogCore(level.ToString(), messageFormat, exception);
             }
 
             /// <summary>
@@ -107,7 +110,10 @@ namespace Kephas.Diagnostics.Logging
             /// <param name="level">The level.</param>
             /// <param name="message">The message.</param>
             /// <param name="exception">The exception.</param>
-            private void LogCore(string level, object message, Exception exception = null)
+            /// <returns>
+            /// True if the log operation succeeded, false if it failed.
+            /// </returns>
+            private bool LogCore(string level, object message, Exception exception = null)
             {
                 if (this.logCallback == null)
                 {
@@ -117,6 +123,8 @@ namespace Kephas.Diagnostics.Logging
                 {
                     this.logCallback(this.name, level, message, exception);
                 }
+
+                return true;
             }
         }
     }
