@@ -111,7 +111,7 @@ namespace Kephas.Messaging.Distributed.Routing
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, $"Error while handling message '{e.Message}'.");
+                this.Logger.Error(ex, "Error while handling message '{message}'.", e.Message);
             }
         }
 
@@ -280,7 +280,7 @@ namespace Kephas.Messaging.Distributed.Routing
                     }
                     catch (Exception ex)
                     {
-                        this.Logger.Error(ex, $"Error while publishing message {msg}.");
+                        this.Logger.Error(ex, $"Error while issuing the {nameof(this.MessageArrived)} event for message {{message}}.", msg);
                     }
                 });
 

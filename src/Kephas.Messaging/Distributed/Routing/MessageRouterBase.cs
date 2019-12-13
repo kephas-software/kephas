@@ -162,7 +162,7 @@ namespace Kephas.Messaging.Distributed.Routing
             brokeredMessage.TraceOutputRoute(this, this.AppRuntime.GetAppInstanceId());
             if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Trace($"Routing message {brokeredMessage} through: {brokeredMessage.Trace}.");
+                this.Logger.Trace("Routing message {message} through: {messageTrace}.", brokeredMessage, brokeredMessage.Trace);
             }
 
             if (brokeredMessage.IsOneWay)
@@ -216,18 +216,18 @@ namespace Kephas.Messaging.Distributed.Routing
             var messageRouterName = this.GetType().Name;
             try
             {
-                this.Logger.Info($"Stopping the {messageRouterName} message router...");
+                this.Logger.Info("Stopping the {router} message router...", messageRouterName);
 
                 this.FinalizationMonitor.Start();
 
                 this.Dispose(true);
 
                 this.FinalizationMonitor.Complete();
-                this.Logger.Info($"{messageRouterName} message router stopped.");
+                this.Logger.Info("{router} message router stopped.", messageRouterName);
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, $"{messageRouterName} failed to stop.");
+                this.Logger.Warn(ex, "{router} failed to stop.", messageRouterName);
                 this.FinalizationMonitor.Fault(ex);
                 throw;
             }
@@ -287,7 +287,7 @@ namespace Kephas.Messaging.Distributed.Routing
                 brokeredMessage.TraceInputRoute(this, appInstanceId);
                 if (this.Logger.IsTraceEnabled())
                 {
-                    this.Logger.Trace($"Routing message {brokeredMessage} through: {brokeredMessage.Trace}.");
+                    this.Logger.Trace("Routing message {message} through: {messageTrace}.", brokeredMessage, brokeredMessage.Trace);
                 }
 
                 // if the input queue notifies a reply, notify it further to the message broker.
@@ -322,7 +322,7 @@ namespace Kephas.Messaging.Distributed.Routing
                         remoteMessage.TraceOutputRoute(this, appInstanceId);
                         if (this.Logger.IsTraceEnabled())
                         {
-                            this.Logger.Trace($"Routing message {remoteMessage} through: {remoteMessage.Trace}.");
+                            this.Logger.Trace("Routing message {message} through: {messageTrace}.", remoteMessage, remoteMessage.Trace);
                         }
 
                         (remoteInstruction, remoteReply) = await this.RouteOutputAsync(remoteMessage, redirectContext, cancellationToken).PreserveThreadContext();
@@ -366,7 +366,7 @@ namespace Kephas.Messaging.Distributed.Routing
                             replyContext.BrokeredMessage.TraceOutputRoute(this, appInstanceId);
                             if (this.Logger.IsTraceEnabled())
                             {
-                                this.Logger.Trace($"Routing message {replyContext.BrokeredMessage} through: {replyContext.BrokeredMessage.Trace}.");
+                                this.Logger.Trace("Routing message {message} through: {messageTrace}.", replyContext.BrokeredMessage, replyContext.BrokeredMessage.Trace);
                             }
 
                             (localInstruction, localReply) = await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
