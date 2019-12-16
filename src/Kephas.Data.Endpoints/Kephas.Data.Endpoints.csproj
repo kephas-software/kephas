@@ -9,11 +9,11 @@
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <AssemblyVersion>7.2.2.0</AssemblyVersion>
-        <FileVersion>7.2.2.0</FileVersion>
+        <AssemblyVersion>7.2.3.0</AssemblyVersion>
+        <FileVersion>7.2.3.0</FileVersion>
         <Copyright>Copyright © Kephas Software SRL 2010-2019</Copyright>
         <Description>Provides the endpoints for the data flow.</Description>
-        <Version>7.2.2</Version>
+        <Version>7.2.3</Version>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
