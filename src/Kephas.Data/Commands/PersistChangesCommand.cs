@@ -114,33 +114,36 @@ namespace Kephas.Data.Commands
             {
                 this.Logger.Error(
                     exception,
-                        "PersistChangesCommand.ExecuteAsync|ID: {0}|Message: {1}|Elapsed: {2}|Change count: {3}|Iteration: #{4}|Data: {5}",
-                        operationContext.DataContext.Id,
-                        exception.Message,
-                        elapsed,
-                        changes,
-                        operationContext.Iteration,
-                        sb);
+                    "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, change count: {changeCount}, iteration count: #{iterationCount}, trace: '{opTrace}'",
+                    $"{nameof(PersistChangesCommand)}.{nameof(this.ExecuteAsync)}",
+                    exception.Message,
+                    operationContext.DataContext.Id,
+                    elapsed,
+                    changes,
+                    operationContext.Iteration,
+                    sb);
                 throw exception;
             }
 
             if (elapsed.TotalMilliseconds > 1000)
             {
                 this.Logger.Warn(
-                        "PersistChangesCommand.ExecuteAsync|ID: {0}|Message: {1}|Elapsed: {2}|Change count: {3}|Iteration: #{4}|Data: {5}",
-                        operationContext.DataContext.Id,
-                        "Elapsed time more than 1s",
-                        elapsed,
-                        changes,
-                        operationContext.Iteration,
-                        sb);
+                    "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, change count: {changeCount}, iteration count: #{iterationCount}, trace: '{opTrace}'",
+                    $"{nameof(PersistChangesCommand)}.{nameof(this.ExecuteAsync)}",
+                    "Elapsed time more than 1s",
+                    operationContext.DataContext.Id,
+                    elapsed,
+                    changes,
+                    operationContext.Iteration,
+                    sb);
             }
             else
             {
                 this.Logger.Debug(
-                    "PersistChangesCommand.ExecuteAsync|ID: {0}|Message: {1}|Elapsed: {2}|Change count: {3}|Iteration: #{4}|Data: {5}",
+                    "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, change count: {changeCount}, iteration count: #{iterationCount}, trace: '{opTrace}'",
+                    $"{nameof(PersistChangesCommand)}.{nameof(this.ExecuteAsync)}",
+                    "Success",
                     operationContext.DataContext.Id,
-                    "OK",
                     elapsed,
                     changes,
                     operationContext.Iteration,
@@ -316,7 +319,7 @@ namespace Kephas.Data.Commands
                     if (entityPartInfo == null)
                     {
                         // TODO localization
-                        this.Logger.Warn($"No entity info provided for graph part '{entityPart}' ({entityPart.GetType()}), skipping validation.");
+                        this.Logger.Warn("No entity info provided for graph part '{entity}' ({entityType}), skipping validation.", entityPart, entityPart.GetType());
                     }
                     else
                     {
