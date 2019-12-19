@@ -21,6 +21,7 @@ namespace Kephas.Runtime
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services;
@@ -44,24 +45,9 @@ namespace Kephas.Runtime
         /// </summary>
         private static readonly ConcurrentDictionary<Type, IRuntimeTypeInfo> RuntimeTypeInfosCache = new ConcurrentDictionary<Type, IRuntimeTypeInfo>();
 
-        /// <summary>
-        /// The <see cref="RuntimeFieldInfo{T,TMember}"/> generic type information.
-        /// </summary>
         private static readonly TypeInfo RuntimeFieldInfoGenericTypeInfo = typeof(RuntimeFieldInfo<,>).GetTypeInfo();
-
-        /// <summary>
-        /// The <see cref="RuntimeFieldInfo"/> type information.
-        /// </summary>
         private static readonly TypeInfo RuntimeFieldInfoTypeInfo = typeof(RuntimeFieldInfo).GetTypeInfo();
-
-        /// <summary>
-        /// The <see cref="RuntimePropertyInfo{T,TMember}"/> generic type information.
-        /// </summary>
         private static readonly TypeInfo RuntimePropertyInfoGenericTypeInfo = typeof(RuntimePropertyInfo<,>).GetTypeInfo();
-
-        /// <summary>
-        /// The <see cref="RuntimePropertyInfo"/> type information.
-        /// </summary>
         private static readonly TypeInfo RuntimePropertyInfoTypeInfo = typeof(RuntimePropertyInfo).GetTypeInfo();
 
         /// <summary>
@@ -72,31 +58,16 @@ namespace Kephas.Runtime
         /// <summary>
         /// The factories.
         /// </summary>
-        private static readonly IList<IRuntimeTypeInfoFactory> factories = new List<IRuntimeTypeInfoFactory>();
+        private static readonly IList<IRuntimeTypeInfoFactory> Factories = new List<IRuntimeTypeInfoFactory>();
 
         /// <summary>
         /// The function for creating the type info.
         /// </summary>
         private static Func<Type, IRuntimeTypeInfo> createRuntimeTypeInfoFunc = CreateRuntimeTypeInfoCore;
 
-        /// <summary>
-        /// The fields.
-        /// </summary>
         private IDictionary<string, IRuntimeFieldInfo> fields;
-
-        /// <summary>
-        /// The properties.
-        /// </summary>
         private IDictionary<string, IRuntimePropertyInfo> properties;
-
-        /// <summary>
-        /// The methods.
-        /// </summary>
         private IDictionary<string, ICollection<IRuntimeMethodInfo>> methods;
-
-        /// <summary>
-        /// The members.
-        /// </summary>
         private IDictionary<string, IRuntimeElementInfo> members;
 
         /// <summary>
@@ -152,8 +123,9 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        internal RuntimeTypeInfo(TypeInfo typeInfo)
-            : this(typeInfo.AsType(), typeInfo)
+        /// <param name="logger">Optional. The logger.</param>
+        internal RuntimeTypeInfo(TypeInfo typeInfo, ILogger logger = null)
+            : this(typeInfo.AsType(), typeInfo, logger)
         {
         }
 
@@ -161,8 +133,9 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        protected internal RuntimeTypeInfo(Type type)
-            : this(type, type.GetTypeInfo())
+        /// <param name="logger">Optional. The logger.</param>
+        protected internal RuntimeTypeInfo(Type type, ILogger logger = null)
+            : this(type, type.GetTypeInfo(), logger)
         {
         }
 
@@ -171,7 +144,8 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        private RuntimeTypeInfo(Type type, TypeInfo typeInfo)
+        /// <param name="logger">The logger.</param>
+        private RuntimeTypeInfo(Type type, TypeInfo typeInfo, ILogger logger)
             : base(isThreadSafe: true)
         {
             this.Type = type;
@@ -179,6 +153,7 @@ namespace Kephas.Runtime
             this.Name = type.Name;
             this.FullName = typeInfo.FullName;
             this.Namespace = type.Namespace;
+            this.Logger = logger;
         }
 
         /// <summary>
@@ -373,6 +348,14 @@ namespace Kephas.Runtime
         public IDictionary<string, ICollection<IRuntimeMethodInfo>> Methods => this.GetMethods();
 
         /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        protected ILogger Logger { get; }
+
+        /// <summary>
         /// Registers a factory used to create <see cref="IRuntimeTypeInfo"/> instances.
         /// </summary>
         /// <remarks>
@@ -385,7 +368,7 @@ namespace Kephas.Runtime
         {
             Requires.NotNull(factory, nameof(factory));
 
-            factories.Insert(0, factory);
+            Factories.Insert(0, factory);
         }
 
         /// <summary>
@@ -420,7 +403,7 @@ namespace Kephas.Runtime
             {
                 if (methodInfos.Count > 1)
                 {
-                    throw new AmbiguousMatchException(string.Format(Strings.RuntimeTypeInfo_AmbiguousMember_Exception, name, this, nameof(this.Methods)));
+                    throw new AmbiguousMatchException(Strings.RuntimeTypeInfo_AmbiguousMember_Exception.FormatWith(name, this, nameof(this.Methods)));
                 }
 
                 return methodInfos.First();
@@ -428,7 +411,7 @@ namespace Kephas.Runtime
 
             if (throwIfNotFound)
             {
-                throw new KeyNotFoundException(string.Format(Strings.RuntimeTypeInfo_MemberNotFound_Exception, name, this.Type));
+                throw new KeyNotFoundException(Strings.RuntimeTypeInfo_MemberNotFound_Exception.FormatWith(name, this.Type));
             }
 
             return null;
@@ -642,19 +625,6 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Creates the runtime method infos.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>A dictionary of runtime method infos.</returns>
-        private static IDictionary<string, ICollection<IRuntimeMethodInfo>> CreateMethodInfos(Type type)
-        {
-            var methodInfos = type.GetRuntimeMethods()
-                                .Where(mi => !mi.IsStatic && mi.IsPublic)
-                                .GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, ICollection<IRuntimeMethodInfo>>(name, new ReadOnlyCollection<IRuntimeMethodInfo>(methods.Select(mi => (IRuntimeMethodInfo)new RuntimeMethodInfo(mi)).ToList())));
-            return new ReadOnlyDictionary<string, ICollection<IRuntimeMethodInfo>>(methodInfos.ToDictionary(g => g.Key, g => g.Value));
-        }
-
-        /// <summary>
         /// Creates the member infos.
         /// </summary>
         /// <param name="membersConfig">Optional. The members configuration.</param>
@@ -667,15 +637,109 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Creates the member infos.
+        /// Creates the members.
         /// </summary>
-        /// <param name="fieldInfos">The field infos.</param>
-        /// <param name="propertyInfos">The property infos.</param>
-        /// <param name="methodInfos">The method infos.</param>
-        /// <param name="membersConfig">The members configuration.</param>
+        /// <typeparam name="TRuntimeMemberInfo">Type of the runtime member.</typeparam>
+        /// <typeparam name="TMemberInfo">Type of the member.</typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="runtimeMembers">The runtime members.</param>
+        /// <param name="memberTypeGetter">The member type getter.</param>
+        /// <param name="criteria">Optional. The criteria.</param>
         /// <returns>
-        /// The new member infos.
+        /// A dictionary of members.
         /// </returns>
+        protected IDictionary<string, TMemberInfo> CreateMembers<TRuntimeMemberInfo, TMemberInfo>(Type type, IEnumerable<TRuntimeMemberInfo> runtimeMembers, Func<TRuntimeMemberInfo, Type> memberTypeGetter, Func<TRuntimeMemberInfo, bool> criteria = null)
+            where TRuntimeMemberInfo : MemberInfo
+        {
+            var memberInfos = new Dictionary<string, TMemberInfo>();
+            if (criteria != null)
+            {
+                runtimeMembers = runtimeMembers.Where(criteria);
+            }
+
+            var position = 0;
+            foreach (var runtimeMemberInfo in runtimeMembers)
+            {
+                var memberName = runtimeMemberInfo.Name;
+                if (memberInfos.ContainsKey(memberName))
+                {
+                    continue;
+                }
+
+                var memberType = memberTypeGetter(runtimeMemberInfo);
+                var memberCtor = memberType.GetTypeInfo().DeclaredConstructors.First();
+                var memberInfo = (TMemberInfo)memberCtor.Invoke(new object[] { runtimeMemberInfo, position++, this.Logger });
+                memberInfos.Add(memberName, memberInfo);
+            }
+
+            return new ReadOnlyDictionary<string, TMemberInfo>(memberInfos);
+        }
+
+        /// <summary>
+        /// Creates the fields.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="criteria">Optional. The criteria.</param>
+        /// <returns>
+        /// A dictionary of fields.
+        /// </returns>
+        protected virtual IDictionary<string, IRuntimeFieldInfo> CreateFieldInfos(Type type, Func<FieldInfo, bool> criteria = null)
+        {
+            var memberTypeGetter = type.GetTypeInfo().ContainsGenericParameters
+                                       ? (Func<FieldInfo, Type>)(fieldType => RuntimeFieldInfoTypeInfo.AsType())
+                                       : (field => RuntimeFieldInfoGenericTypeInfo.MakeGenericType(type, field.FieldType));
+
+            var runtimeMembers = type.GetRuntimeFields().Where(f => f.IsPublic);
+
+            return this.CreateMembers<FieldInfo, IRuntimeFieldInfo>(type, runtimeMembers, memberTypeGetter, criteria);
+        }
+
+        /// <summary>
+        /// Creates the properties.
+        /// </summary>
+        /// <param name="type">The container type.</param>
+        /// <param name="criteria">The criteria.</param>
+        /// <returns>
+        /// A dictionary of properties.
+        /// </returns>
+        protected virtual IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type, Func<PropertyInfo, bool> criteria = null)
+        {
+            var memberTypeGetter = type.GetTypeInfo().ContainsGenericParameters
+                                       ? (Func<PropertyInfo, Type>)(prop => RuntimePropertyInfoTypeInfo.AsType())
+                                       : (prop => RuntimePropertyInfoGenericTypeInfo.MakeGenericType(type, prop.PropertyType));
+
+            var runtimeMembers = type.GetRuntimeProperties()
+                .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
+                            && p.GetIndexParameters().Length == 0);
+
+            return this.CreateMembers<PropertyInfo, IRuntimePropertyInfo>(type, runtimeMembers, memberTypeGetter, criteria);
+        }
+
+        private static IRuntimeTypeInfo CreateRuntimeTypeInfoCore(Type rawType)
+        {
+            if (Factories.Count > 0)
+            {
+                foreach (var factory in Factories)
+                {
+                    var typeInfo = factory.TryCreateRuntimeTypeInfo(rawType);
+                    if (typeInfo != null)
+                    {
+                        return typeInfo;
+                    }
+                }
+            }
+
+            return new RuntimeTypeInfo(rawType);
+        }
+
+        private static IDictionary<string, ICollection<IRuntimeMethodInfo>> CreateMethodInfos(Type type)
+        {
+            var methodInfos = type.GetRuntimeMethods()
+                                .Where(mi => !mi.IsStatic && mi.IsPublic)
+                                .GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, ICollection<IRuntimeMethodInfo>>(name, new ReadOnlyCollection<IRuntimeMethodInfo>(methods.Select(mi => (IRuntimeMethodInfo)new RuntimeMethodInfo(mi)).ToList())));
+            return new ReadOnlyDictionary<string, ICollection<IRuntimeMethodInfo>>(methodInfos.ToDictionary(g => g.Key, g => g.Value));
+        }
+
         private static IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(
             IDictionary<string, IRuntimeFieldInfo> fieldInfos,
             IDictionary<string, IRuntimePropertyInfo> propertyInfos,
@@ -713,85 +777,6 @@ namespace Kephas.Runtime
             membersConfig?.Invoke(memberInfos);
 
             return new ReadOnlyDictionary<string, IRuntimeElementInfo>(memberInfos);
-        }
-
-        /// <summary>
-        /// Creates the members.
-        /// </summary>
-        /// <typeparam name="TRuntimeMemberInfo">Type of the runtime member.</typeparam>
-        /// <typeparam name="TMemberInfo">Type of the member.</typeparam>
-        /// <param name="type">The type.</param>
-        /// <param name="runtimeMembers">The runtime members.</param>
-        /// <param name="memberTypeGetter">The member type getter.</param>
-        /// <param name="criteria">Optional. The criteria.</param>
-        /// <returns>
-        /// A dictionary of members.
-        /// </returns>
-        protected static IDictionary<string, TMemberInfo> CreateMembers<TRuntimeMemberInfo, TMemberInfo>(Type type, IEnumerable<TRuntimeMemberInfo> runtimeMembers, Func<TRuntimeMemberInfo, Type> memberTypeGetter, Func<TRuntimeMemberInfo, bool> criteria = null)
-            where TRuntimeMemberInfo : MemberInfo
-        {
-            var memberInfos = new Dictionary<string, TMemberInfo>();
-            if (criteria != null)
-            {
-                runtimeMembers = runtimeMembers.Where(criteria);
-            }
-
-            var position = 0;
-            foreach (var runtimeMemberInfo in runtimeMembers)
-            {
-                var memberName = runtimeMemberInfo.Name;
-                if (memberInfos.ContainsKey(memberName))
-                {
-                    continue;
-                }
-
-                var memberType = memberTypeGetter(runtimeMemberInfo);
-                var memberCtor = memberType.GetTypeInfo().DeclaredConstructors.First();
-                var memberInfo = (TMemberInfo)memberCtor.Invoke(new object[] { runtimeMemberInfo, position++ });
-                memberInfos.Add(memberName, memberInfo);
-            }
-
-            return new ReadOnlyDictionary<string, TMemberInfo>(memberInfos);
-        }
-
-        /// <summary>
-        /// Creates the fields.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="criteria">Optional. The criteria.</param>
-        /// <returns>
-        /// A dictionary of fields.
-        /// </returns>
-        protected virtual IDictionary<string, IRuntimeFieldInfo> CreateFieldInfos(Type type, Func<FieldInfo, bool> criteria = null)
-        {
-            var memberTypeGetter = type.GetTypeInfo().ContainsGenericParameters
-                                       ? (Func<FieldInfo, Type>)(fieldType => RuntimeFieldInfoTypeInfo.AsType())
-                                       : (field => RuntimeFieldInfoGenericTypeInfo.MakeGenericType(type, field.FieldType));
-
-            var runtimeMembers = type.GetRuntimeFields().Where(f => f.IsPublic);
-
-            return CreateMembers<FieldInfo, IRuntimeFieldInfo>(type, runtimeMembers, memberTypeGetter, criteria);
-        }
-
-        /// <summary>
-        /// Creates the properties.
-        /// </summary>
-        /// <param name="type">The container type.</param>
-        /// <param name="criteria">The criteria.</param>
-        /// <returns>
-        /// A dictionary of properties.
-        /// </returns>
-        protected virtual IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type, Func<PropertyInfo, bool> criteria = null)
-        {
-            var memberTypeGetter = type.GetTypeInfo().ContainsGenericParameters
-                                       ? (Func<PropertyInfo, Type>)(prop => RuntimePropertyInfoTypeInfo.AsType())
-                                       : (prop => RuntimePropertyInfoGenericTypeInfo.MakeGenericType(type, prop.PropertyType));
-
-            var runtimeMembers = type.GetRuntimeProperties()
-                .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
-                            && p.GetIndexParameters().Length == 0);
-
-            return CreateMembers<PropertyInfo, IRuntimePropertyInfo>(type, runtimeMembers, memberTypeGetter, criteria);
         }
 
         /// <summary>
@@ -1042,23 +1027,6 @@ namespace Kephas.Runtime
             var lambda = Expression.Lambda(typeof(InstanceActivator), newex, argsParam);
             var activator = (InstanceActivator)lambda.Compile();
             return activator;
-        }
-
-        private static IRuntimeTypeInfo CreateRuntimeTypeInfoCore(Type rawType)
-        {
-            if (factories.Count > 0)
-            {
-                foreach (var factory in factories)
-                {
-                    var typeInfo = factory.TryCreateRuntimeTypeInfo(rawType);
-                    if (typeInfo != null)
-                    {
-                        return typeInfo;
-                    }
-                }
-            }
-
-            return new RuntimeTypeInfo(rawType);
         }
     }
 }

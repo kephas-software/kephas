@@ -10,14 +10,16 @@
 
 namespace Kephas.Core.Tests.Reflection
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using System.Text;
     using Kephas.Graphs;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
-
+    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
@@ -69,6 +71,27 @@ namespace Kephas.Core.Tests.Reflection
             var typeInfo = new RuntimeTypeInfo(typeof(IEnumerable<string>));
 
             Assert.IsFalse(typeInfo.IsGenericTypeDefinition());
+        }
+
+        [Test]
+        public void Type_contains_IsSecurityTransparent_property_DateTime()
+        {
+            var log = new StringBuilder();
+            var logger = Substitute.For<ILogger>();
+            logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
+            logger.Log(Arg.Any<LogLevel>(), Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<object[]>())
+                .Returns(ci => { log.AppendLine($"{ci.Arg<LogLevel>()} {ci.Arg<string>()}-{ci.Arg<object[]>()?.FirstOrDefault()}"); return true; });
+            var typeInfo = new RuntimeTypeInfo(typeof(DateTime).GetTypeInfo(), logger);
+
+            object dateTime = new DateTime();
+            var date = typeInfo.GetValue(dateTime, "Date");
+
+#if NET45
+            Assert.IsEmpty(log.ToString());
+#else
+            Assert.AreEqual("Trace Cannot compute getter delegate for {typeName}.{methodName}, falling back to reflection.-System.DateTime" + Environment.NewLine, log.ToString());
+#endif
+            Assert.AreEqual(dateTime, date);
         }
 
         [Test]

@@ -367,7 +367,7 @@ namespace Kephas.Runtime
                 {
                     if (this.Logger.IsTraceEnabled())
                     {
-                        this.Logger.Trace(ex, "Cannot compute getter for {typeName}.{methodName}", mi.DeclaringType, mi.Name);
+                        this.Logger.Trace(ex, "Cannot compute getter delegate for {typeName}.{methodName}, falling back to reflection.", mi.DeclaringType, mi.Name);
                     }
 
                     return obj => (TMember)mi.Invoke(obj, EmptyArgs);
@@ -401,7 +401,7 @@ namespace Kephas.Runtime
                 {
                     if (this.Logger.IsTraceEnabled())
                     {
-                        this.Logger.Trace(ex, "Cannot compute setter for {typeName}.{methodName}", mi.DeclaringType, mi.Name);
+                        this.Logger.Trace(ex, "Cannot compute setter delegate for {typeName}.{methodName}, falling back to reflection.", mi.DeclaringType, mi.Name);
                     }
 
                     return (obj, v) => mi.Invoke(obj, new object[] { v });

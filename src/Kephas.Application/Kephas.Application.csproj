@@ -5,9 +5,9 @@
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Description>Provides infrastructure for applications based on Kephas Framework.</Description>
-        <Version>7.2.4</Version>
-        <AssemblyVersion>7.2.4.0</AssemblyVersion>
-        <FileVersion>7.2.4.0</FileVersion>
+        <Version>7.2.5</Version>
+        <AssemblyVersion>7.2.5.0</AssemblyVersion>
+        <FileVersion>7.2.5.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>

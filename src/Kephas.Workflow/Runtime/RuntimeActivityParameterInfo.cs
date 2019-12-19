@@ -16,6 +16,7 @@ namespace Kephas.Workflow.Runtime
     using System.Reflection;
 
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Runtime.AttributedModel;
@@ -50,7 +51,8 @@ namespace Kephas.Workflow.Runtime
         /// </summary>
         /// <param name="propertyInfo">Information describing the property backing the parameter.</param>
         /// <param name="position">The position.</param>
-        internal RuntimeActivityParameterInfo(PropertyInfo propertyInfo, int position)
+        /// <param name="logger">The logger.</param>
+        internal RuntimeActivityParameterInfo(PropertyInfo propertyInfo, int position, ILogger logger = null)
             : base(isThreadSafe: true)
         {
             this.PropertyInfo = propertyInfo;

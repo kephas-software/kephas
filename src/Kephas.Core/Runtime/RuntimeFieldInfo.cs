@@ -15,6 +15,7 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Reflection;
 
     /// <summary>
@@ -31,8 +32,9 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimeFieldInfo"/> class.
         /// </summary>
         /// <param name="fieldInfo">The field information.</param>
-        /// <param name="position">The position.</param>
-        internal RuntimeFieldInfo(FieldInfo fieldInfo, int position = -1)
+        /// <param name="position">Optional. The position.</param>
+        /// <param name="logger">Optional. the logger.</param>
+        internal RuntimeFieldInfo(FieldInfo fieldInfo, int position = -1, ILogger logger = null)
             : base(isThreadSafe: true)
         {
             this.FieldInfo = fieldInfo;
@@ -185,9 +187,10 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimeFieldInfo{T,TMember}"/> class.
         /// </summary>
         /// <param name="fieldInfo">The field information.</param>
-        /// <param name="position">The position.</param>
-        internal RuntimeFieldInfo(FieldInfo fieldInfo, int position = -1)
-            : base(fieldInfo, position)
+        /// <param name="position">Optional. The position.</param>
+        /// <param name="logger">Optional. The logger.</param>
+        internal RuntimeFieldInfo(FieldInfo fieldInfo, int position = -1, ILogger logger = null)
+            : base(fieldInfo, position, logger)
         {
         }
 

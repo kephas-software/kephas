@@ -106,7 +106,7 @@ namespace Kephas.Core.Tests.Reflection
 
             var logger = Substitute.For<ILogger<DefaultTypeResolver>>();
             logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<object[]>()))
-                .Do(ci => sb.Append(ci.Arg<LogLevel>()).Append(":").Append(string.Format(ci.Arg<string>(), ci.Arg<object[]>()[0])));
+                .Do(ci => sb.Append(ci.Arg<LogLevel>()).Append(":").Append(ci.Arg<string>()).Append(ci.Arg<object[]>()[0]));
 
             var resolver = new DefaultTypeResolver(loader) { Logger = logger };
 
@@ -114,7 +114,7 @@ namespace Kephas.Core.Tests.Reflection
             Assert.IsNull(type);
 
             var log = sb.ToString();
-            Assert.AreEqual("Warning:Errors occurred when trying to resolve type 'bla, bla'.", log);
+            Assert.AreEqual("Warning:Errors occurred when trying to resolve type '{type}'.bla, bla", log);
         }
     }
 }

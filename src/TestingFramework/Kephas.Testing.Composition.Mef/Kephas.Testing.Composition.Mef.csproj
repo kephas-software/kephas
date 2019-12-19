@@ -5,12 +5,12 @@
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>7.2.4</Version>
+        <Version>7.2.5</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <AssemblyVersion>7.2.4.0</AssemblyVersion>
-        <FileVersion>7.2.4.0</FileVersion>
+        <AssemblyVersion>7.2.5.0</AssemblyVersion>
+        <FileVersion>7.2.5.0</FileVersion>
         <Description>Provides testing artifacts using the System.Composition composition services implementation.</Description>
         <Copyright>Copyright Kephas Software SRL 2010-2019</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>

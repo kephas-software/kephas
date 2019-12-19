@@ -274,7 +274,7 @@ namespace Kephas.Application.Tests
             var logger = Substitute.For<ILogger<IAppManager>>();
             logger
                 .WhenForAnyArgs(l => l.Log(LogLevel.Debug, null, null, null))
-                .Do(ci => sb.AppendLine($"{ci.Arg<LogLevel>()}: {ci.Arg<string>()} ({ci.Arg<Exception>()?.GetType().Name})"));
+                .Do(ci => sb.AppendLine($"{ci.Arg<object[]>()?.FirstOrDefault()}-{ci.Arg<LogLevel>()}: {ci.Arg<string>()} ({ci.Arg<Exception>()?.GetType().Name})"));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
@@ -292,7 +292,7 @@ namespace Kephas.Application.Tests
             Assert.AreEqual(1, order[1]);
 
             var log = sb.ToString();
-            Assert.IsTrue(log.Contains("Error: '2'"));
+            Assert.IsTrue(log.Contains("'2' (Castle.Proxies.ObjectProxy)-Error: {feature} ({featureKind}) failed to initialize. See the inner exception for more details. (InvalidOperationException)"));
             Assert.IsTrue(log.Contains("(InvalidOperationException)"));
         }
 
@@ -309,7 +309,7 @@ namespace Kephas.Application.Tests
             var logger = Substitute.For<ILogger<IAppManager>>();
             logger
                 .WhenForAnyArgs(l => l.Log(LogLevel.Debug, null, null, null))
-                .Do(ci => sb.AppendLine($"{ci.Arg<LogLevel>()}: {ci.Arg<string>()} ({ci.Arg<Exception>()?.GetType().Name})"));
+                .Do(ci => sb.AppendLine($"{ci.Arg<object[]>()?.FirstOrDefault()}-{ci.Arg<LogLevel>()}: {ci.Arg<string>()} ({ci.Arg<Exception>()?.GetType().Name})"));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
@@ -323,7 +323,7 @@ namespace Kephas.Application.Tests
             Assert.That(() => appManager.InitializeAppAsync(Substitute.For<IAppContext>(), CancellationToken.None), Throws.InvalidOperationException);
 
             var log = sb.ToString();
-            Assert.IsTrue(log.Contains("Error: '1'"));
+            Assert.IsTrue(log.Contains("'1' (Castle.Proxies.ObjectProxy)-Error: {feature} ({featureKind}) failed to initialize. See the inner exception for more details. (InvalidOperationException)"));
             Assert.IsTrue(log.Contains("(InvalidOperationException)"));
             Assert.IsTrue(log.Contains("Error: The application's initialize procedure encountered an exception"));
         }
