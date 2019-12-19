@@ -306,14 +306,14 @@ namespace Kephas.Application
                 }
                 catch (OperationCanceledException cex)
                 {
-                    this.Logger.Error(cex, $"{featureManagerIdentifier} was canceled during initialization. The current operation will be interrupted.");
+                    this.Logger.Error(cex, "{feature} was canceled during initialization. The current operation will be interrupted.", featureManagerIdentifier);
                     throw;
                 }
                 catch (Exception ex)
                 {
                     var isRequiredFeature = featureManagerMetadata?.FeatureInfo.IsRequired ?? false;
-                    var initializerKind = isRequiredFeature ? "required" : "optional";
-                    this.Logger.Error(ex, $"{featureManagerIdentifier} ({initializerKind}) failed to initialize. See the inner exception for more details.");
+                    var featureKind = isRequiredFeature ? "required" : "optional";
+                    this.Logger.Error(ex, "{feature} ({featureKind}) failed to initialize. See the inner exception for more details.", featureManagerIdentifier, featureKind);
 
                     // interrupt the initialization if a required feature manager failed to initialize.
                     if (isRequiredFeature)
@@ -497,14 +497,14 @@ namespace Kephas.Application
                 }
                 catch (OperationCanceledException cex)
                 {
-                    this.Logger.Error(cex, $"{featureManagerIdentifier} was canceled during finalization. The current operation will be interrupted.");
+                    this.Logger.Error(cex, "{feature} was canceled during finalization. The current operation will be interrupted.", featureManagerIdentifier);
                     throw;
                 }
                 catch (Exception ex)
                 {
                     var isRequiredFeature = featureManagerMetadata?.FeatureInfo.IsRequired ?? false;
-                    var initializerKind = isRequiredFeature ? "required" : "optional";
-                    this.Logger.Error(ex, $"{featureManagerIdentifier} ({initializerKind}) failed to finalize. See the inner exception for more details.");
+                    var featureKind = isRequiredFeature ? "required" : "optional";
+                    this.Logger.Error(ex, "{feature} ({featureKind}) failed to finalize. See the inner exception for more details.", featureManagerIdentifier, featureKind);
 
                     // interrupt the finalization if a required feature manager failed to finalize.
                     if (isRequiredFeature)

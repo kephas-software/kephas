@@ -97,7 +97,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             {
                 if (this.numFails % this.jobStore.RetryableActionErrorLogThreshold == 0)
                 {
-                    this.Log.Error($"Error handling misfires: {ex.Message}", ex);
+                    this.Log.Error(ex, "Error handling misfires.");
                 }
 
                 this.numFails++;

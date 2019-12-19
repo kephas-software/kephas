@@ -79,7 +79,7 @@ namespace Kephas.Configuration.Providers
 
             if (factory == null)
             {
-                this.Logger.Warn(Strings.SettingsProviderSelector_NoProviderFoundForSettingsType.FormatWith(settingsType));
+                this.Logger.Warn(Strings.SettingsProviderSelector_NoProviderFoundForSettingsType, settingsType);
                 return null;
             }
 

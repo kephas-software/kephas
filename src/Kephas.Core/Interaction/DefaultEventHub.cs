@@ -72,7 +72,7 @@ namespace Kephas.Interaction
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, Strings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback.FormatWith(@event));
+                    this.Logger.Error(ex, Strings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback, @event);
                 }
             }
         }

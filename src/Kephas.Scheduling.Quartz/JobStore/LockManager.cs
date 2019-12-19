@@ -24,13 +24,11 @@ namespace Kephas.Scheduling.Quartz.JobStore
     /// Implements a simple distributed lock on top of MongoDB. It is not a reentrant lock so you can't 
     /// acquire the lock more than once in the same thread of execution.
     /// </summary>
-    internal class LockManager : IDisposable
+    internal class LockManager : Loggable, IDisposable
     {
         private readonly string instanceName;
 
         private static readonly TimeSpan SleepThreshold = TimeSpan.FromMilliseconds(1000);
-
-        private readonly ILogger Log = typeof(LockManager).GetLogger();
 
         private readonly ConcurrentDictionary<LockType, LockInstance> pendingLocks =
             new ConcurrentDictionary<LockType, LockInstance>();
@@ -98,7 +96,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             if (!this.pendingLocks.TryRemove(lockInstance.LockType, out _))
             {
-                Log.Warn($"Unable to remove pending lock {lockInstance.LockType} on {lockInstance.InstanceId}");
+                this.Logger.Warn("Unable to remove pending lock {lockType} on {lockInstanceId}", lockInstance.LockType, lockInstance.InstanceId);
             }
         }
 

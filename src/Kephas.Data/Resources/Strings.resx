@@ -121,7 +121,7 @@
     <value>The command {0} is not supported.</value>
   </data>
   <data name="DataConverterNotFound_Exception" xml:space="preserve">
-    <value>No data converters were found for source type '{0}' and target type '{1}'.</value>
+    <value>No data converters were found for source type '{sourceType}' and target type '{targetType}'.</value>
   </data>
   <data name="DataContext_FindAsync_IdEmpty_Exception" xml:space="preserve">
     <value>The provided ID is empty.</value>

@@ -417,13 +417,8 @@ namespace Kephas.Composition.Hosting
 
             if (this.Logger.IsDebugEnabled())
             {
-                var assemblyNames = string.Join(", ", assemblies.Select(a => a.GetName().Name));
-                if (string.IsNullOrEmpty(assemblyNames))
-                {
-                    assemblyNames = "<none>";
-                }
-
-                this.Logger.Debug($"{nameof(this.GetConventions)}. Convention assemblies: {assemblyNames}.");
+                var assemblyNames = assemblies.Select(a => a.GetName().Name).ToList();
+                this.Logger.Debug("{operation}. Convention assemblies: {assemblies}.", nameof(this.GetConventions), assemblyNames);
             }
 
             Profiler.WithInfoStopwatch(
@@ -470,7 +465,7 @@ namespace Kephas.Composition.Hosting
         {
             searchPattern = searchPattern ?? this.GetSettings()?.AssemblyFileNamePattern;
 
-            this.Logger.Debug($"{nameof(this.GetAssemblies)}. With assemblies matching pattern '{searchPattern}'.");
+            this.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(this.GetAssemblies), searchPattern);
 
             IList<Assembly> assemblies = null;
 

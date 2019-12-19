@@ -248,11 +248,13 @@ namespace Kephas.Scheduling.Quartz.JobStore
         {
             this.schedulerSignaler = signaler;
 
-            this.Logger.Trace($"Scheduler {this} initialize.");
+            this.Logger.Trace($"Scheduler {this} is initializing...");
 
             this.lockManager = new LockManager(this.InstanceName);
 
             this.triggerRepository = new TriggerRepository(this, this.LogManager);
+
+            this.Logger.Trace($"Scheduler {this} is initialized.");
 
             return Task.FromResult(0);
         }
@@ -1381,7 +1383,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
                         }
                         catch (Exception ex)
                         {
-                            this.Logger.Error($"Caught exception: {ex.Message}", ex);
+                            this.Logger.Error(ex, $"Error during triggering.");
                             result = new TriggerFiredResult(ex);
                         }
 
@@ -2318,8 +2320,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
             }
             else
             {
-                this.Logger.Debug(
-                    "Found 0 triggers that missed their scheduled fire-time.");
+                this.Logger.Debug("Found 0 triggers that missed their scheduled fire-time.");
                 return RecoverMisfiredJobsResult.NoOp;
             }
 

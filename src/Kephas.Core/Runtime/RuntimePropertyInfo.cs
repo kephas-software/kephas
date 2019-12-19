@@ -15,6 +15,7 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
 
@@ -32,11 +33,13 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimePropertyInfo"/> class.
         /// </summary>
         /// <param name="propertyInfo">The property information.</param>
-        /// <param name="position">The position.</param>
-        internal RuntimePropertyInfo(PropertyInfo propertyInfo, int position = -1)
+        /// <param name="position">Optional. The position.</param>
+        /// <param name="logger">Optional. The logger.</param>
+        internal RuntimePropertyInfo(PropertyInfo propertyInfo, int position = -1, ILogger logger = null)
             : base(isThreadSafe: true)
         {
             this.PropertyInfo = propertyInfo;
+            this.Logger = logger;
             this.Name = propertyInfo.Name;
             this.FullName = propertyInfo.DeclaringType?.FullName + "." + propertyInfo.Name;
         }
@@ -166,6 +169,14 @@ namespace Kephas.Runtime
             return this.PropertyInfo.GetCustomAttributes<TAttribute>(inherit: true);
         }
 
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        protected ILogger Logger { get; }
+
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
@@ -226,9 +237,10 @@ namespace Kephas.Runtime
         /// Initializes a new instance of the <see cref="RuntimePropertyInfo{T,TMember}"/> class.
         /// </summary>
         /// <param name="propertyInfo">The property information.</param>
-        /// <param name="position">The position.</param>
-        internal RuntimePropertyInfo(PropertyInfo propertyInfo, int position = -1)
-            : base(propertyInfo, position)
+        /// <param name="position">Optional. The position.</param>
+        /// <param name="logger">Optional. The logger.</param>
+        internal RuntimePropertyInfo(PropertyInfo propertyInfo, int position = -1, ILogger logger = null)
+            : base(propertyInfo, position, logger)
         {
         }
 
@@ -344,10 +356,20 @@ namespace Kephas.Runtime
             {
                 try
                 {
+                    if (mi.IsSecurityTransparent)
+                    {
+                        return obj => (TMember)mi.Invoke(obj, EmptyArgs);
+                    }
+
                     return (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
                 }
-                catch (ArgumentException)
+                catch (ArgumentException ex)
                 {
+                    if (this.Logger.IsTraceEnabled())
+                    {
+                        this.Logger.Trace(ex, "Cannot compute getter for {typeName}.{methodName}", mi.DeclaringType, mi.Name);
+                    }
+
                     return obj => (TMember)mi.Invoke(obj, EmptyArgs);
                 }
             }
@@ -368,10 +390,20 @@ namespace Kephas.Runtime
             {
                 try
                 {
+                    if (mi.IsSecurityTransparent)
+                    {
+                        return (obj, v) => mi.Invoke(obj, new object[] { v });
+                    }
+
                     return (Action<T, TMember>)mi.CreateDelegate(typeof(Action<T, TMember>));
                 }
-                catch (ArgumentException)
+                catch (ArgumentException ex)
                 {
+                    if (this.Logger.IsTraceEnabled())
+                    {
+                        this.Logger.Trace(ex, "Cannot compute setter for {typeName}.{methodName}", mi.DeclaringType, mi.Name);
+                    }
+
                     return (obj, v) => mi.Invoke(obj, new object[] { v });
                 }
             }

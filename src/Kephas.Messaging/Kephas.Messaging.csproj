@@ -8,9 +8,9 @@
         <RootNamespace>Kephas.Messaging</RootNamespace>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-        <Version>7.2.3</Version>
-        <AssemblyVersion>7.2.3.0</AssemblyVersion>
-        <FileVersion>7.2.3.0</FileVersion>
+        <Version>7.2.4</Version>
+        <AssemblyVersion>7.2.4.0</AssemblyVersion>
+        <FileVersion>7.2.4.0</FileVersion>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>

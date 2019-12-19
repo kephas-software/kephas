@@ -158,7 +158,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// </returns>
         public IExportConventionsBuilder AddMetadata(string name, object value)
         {
-            this.Logger.Warn($"Metadata not supported. Service type: {this.ServiceType}.");
+            this.Logger.Warn("Metadata not supported. Service type: {serviceType}.", this.ServiceType);
             return this;
         }
 
@@ -173,7 +173,7 @@ namespace Kephas.Extensions.DependencyInjection.Conventions
         /// </returns>
         public IExportConventionsBuilder AddMetadata(string name, Func<Type, object> getValueFromPartType)
         {
-            this.Logger.Warn($"Metadata not supported. Service type: {this.ServiceType}.");
+            this.Logger.Warn("Metadata not supported. Service type: {serviceType}.", this.ServiceType);
             return this;
         }
     }

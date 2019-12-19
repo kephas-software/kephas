@@ -118,7 +118,7 @@ namespace Kephas.Messaging.Distributed.Routing
             this.InitializationMonitor.AssertIsNotStarted();
 
             var messageRouterName = this.GetType().Name;
-            this.Logger.Info($"Starting the {messageRouterName} message router...");
+            this.Logger.Info("Starting the {router} message router...", messageRouterName);
 
             this.AppContext = context;
 
@@ -130,11 +130,11 @@ namespace Kephas.Messaging.Distributed.Routing
 
                 this.InitializationMonitor.Complete();
 
-                this.Logger.Info($"{messageRouterName} started.");
+                this.Logger.Info("{router} started.", messageRouterName);
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, $"{messageRouterName} failed to initialize.");
+                this.Logger.Warn(ex, "{router} failed to initialize.", messageRouterName);
                 this.InitializationMonitor.Fault(ex);
                 throw;
             }

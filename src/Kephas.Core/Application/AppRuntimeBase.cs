@@ -330,7 +330,7 @@ namespace Kephas.Application
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, string.Format(Strings.AppRuntimeBase_CannotLoadAssembly_Exception, n));
+                this.Logger.Warn(ex, Strings.AppRuntimeBase_CannotLoadAssembly_Exception, n);
                 return null;
             }
         }

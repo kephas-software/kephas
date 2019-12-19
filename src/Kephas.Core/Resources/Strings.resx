@@ -159,11 +159,11 @@
   <data name="Serialization_MediaTypeMismatch_Exception" xml:space="preserve">
     <value>Expected {0} instead of {1} media type in the serialization context.</value>
   </data>
-  <data name="AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException" xml:space="preserve">
-    <value>Cannot load exported type {0} from {1}. Only the loadable types will be considered.</value>
+  <data name="DefaultTypeLoader_GetLoadableExportedTypes_TypeLoadException" xml:space="preserve">
+    <value>Cannot load exported type {type} from {assembly}. Only the loadable types will be considered.</value>
   </data>
-  <data name="AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException" xml:space="preserve">
-    <value>Cannot load all exported types from {0}. Only the loadable types will be considered.</value>
+  <data name="DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException" xml:space="preserve">
+    <value>Cannot load all exported types from {assembly}. Only the loadable types will be considered.</value>
   </data>
   <data name="AppServiceCompositionContractTypeDoesNotMatchServiceContract" xml:space="preserve">
     <value>The specified contract type '{0}' is not assignable from the service contract '{1}'.</value>
@@ -171,11 +171,11 @@
   <data name="AppServiceMultipleCompositionConstructors" xml:space="preserve">
     <value>Multiple constructors marked with {0} are declared for service implementation '{1}' with contract '{2}'.</value>
   </data>
-  <data name="AssemblyExtensions_GetLoadableDefinedTypes_ReflectionTypeLoadException" xml:space="preserve">
-    <value>Cannot load all defined types from {0}. Only the loadable types will be considered.</value>
+  <data name="DefaultTypeLoader_GetLoadableDefinedTypes_ReflectionTypeLoadException" xml:space="preserve">
+    <value>Cannot load all defined types from {assembly}. Only the loadable types will be considered.</value>
   </data>
   <data name="AppRuntimeBase_CannotLoadAssembly_Exception" xml:space="preserve">
-    <value>Cannot load assembly '{0}'. See the exception for more information.</value>
+    <value>Cannot load assembly '{assembly}'. See the exception for more information.</value>
   </data>
   <data name="DefaultAppManager_FinalizeCanceled_Exception" xml:space="preserve">
     <value>The application's finalize procedure was canceled, at {0:s}.</value>
@@ -202,7 +202,7 @@
     <value>No public constructor defined for '{0}', cannot create instances.</value>
   </data>
   <data name="AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning" xml:space="preserve">
-    <value>Application service contracts exported as open generics do not support metadata attributes and they will be ignored ('{0}'). Instead, try to pass metadata through generic parameter types.</value>
+    <value>Application service contracts exported as open generics do not support metadata attributes and they will be ignored ('{serviceContractType}'). Instead, try to pass metadata through generic parameter types.</value>
   </data>
   <data name="RuntimeTypeInfo_PropertyNotFound_Exception" xml:space="preserve">
     <value>Property {0} not found or is not accessible in {1}.</value>
@@ -268,7 +268,7 @@
     <value>The application shut down successfully. Good bye!</value>
   </data>
   <data name="DefaultTypeResolver_ResolveTypeCore_Exception" xml:space="preserve">
-    <value>Errors occurred when trying to resolve type '{0}'.</value>
+    <value>Errors occurred when trying to resolve type '{type}'.</value>
   </data>
   <data name="App_BootstrapAsync_ErrorDuringConfiguration_Exception" xml:space="preserve">
     <value>Errors occurred during the application configuration procedure, please check the exception details for more information.</value>
@@ -343,7 +343,7 @@
     <value>Cannot identify the constructed service type of {0} from {1}.</value>
   </data>
   <data name="SettingsProviderSelector_NoProviderFoundForSettingsType" xml:space="preserve">
-    <value>No provider found for settings type '{0}'.</value>
+    <value>No provider found for settings type '{settingsType}'.</value>
   </data>
   <data name="ConfigurationStoreSettingsProvider_SettingsTypeMismatch_Exception" xml:space="preserve">
     <value>The stored settings type '{0}' differs from the requested settings type '{1}'.</value>
@@ -358,7 +358,7 @@
     <value>The type {0} should export a public property {1}: {2} to be able to create a serialization context.</value>
   </data>
   <data name="DefaultEventHub_ErrorWhenInvokingSubscriptionCallback" xml:space="preserve">
-    <value>An error occurred when invoking subscription callback for {0}.</value>
+    <value>An error occurred when invoking subscription callback for '{event}'.</value>
   </data>
   <data name="NoImplementationForServiceType_Exception" xml:space="preserve">
     <value>No implementation found for service type '{0}'.</value>

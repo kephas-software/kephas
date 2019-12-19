@@ -143,7 +143,7 @@ namespace Kephas.Composition.Conventions
             {
                 if (logger.IsDebugEnabled())
                 {
-                    logger.Debug($"Registering conventions from '{registrar.GetType()}...");
+                    logger.Debug("Registering conventions from '{conventionsRegistrar}...", registrar.GetType());
                 }
 
                 registrar.RegisterConventions(builder, parts, registrationContext);

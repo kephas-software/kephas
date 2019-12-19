@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CannotProvideElementInfoForRuntimeElement" xml:space="preserve">
-    <value>Cannot provide an element information for the runtime element '{0}'.</value>
+    <value>Cannot provide an element information for the runtime element '{typeInfo}'.</value>
   </data>
   <data name="ClassifierBase_MultipleGenericPartsNotSupported_Exception" xml:space="preserve">
     <value>A generic classifier with more than one part is not supported. Check the {0} classifier with parts: {1}.</value>

@@ -228,15 +228,13 @@ namespace Kephas.Data.IO.Setup
                                      .ImportDataAsync(dataSource, this.GetDataImportConfig(dataSetupContext, dataSpace), cancellationToken)
                                      .PreserveThreadContext();
                     result.MergeResult(importResult);
-                    result.Messages?.ForEach(m => this.Logger.Info($"{m.Timestamp}: {m.Message}"));
-                    var errorMessage = $"Exception while importing {dataFilePath}.";
-                    result.Exceptions?.ForEach(e => this.Logger.Error(e, errorMessage));
+                    result.Messages?.ForEach(m => this.Logger.Info($"{{timestamp}}: {m.Message}", m.Timestamp));
+                    result.Exceptions?.ForEach(e => this.Logger.Error(e, "Exception while importing {file}.", dataFilePath));
                     return result;
                 }
                 catch (Exception ex)
                 {
-                    var errorMessage = $"Exception while importing {dataFilePath}.";
-                    this.Logger.Error(ex, errorMessage);
+                    this.Logger.Error(ex, "Exception while importing {file}.", dataFilePath);
                     result.MergeException(ex);
                     return result;
                 }

@@ -201,7 +201,7 @@ namespace Kephas.Services.Composition
                         // warn about metadata on open generic exports only if custom attributes are provided.
                         if (hasCustomMetadataAttributes)
                         {
-                            logger.Warn(string.Format(Strings.AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning, exportedContract));
+                            logger.Warn(Strings.AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning, exportedContract);
                         }
                     }
                 }

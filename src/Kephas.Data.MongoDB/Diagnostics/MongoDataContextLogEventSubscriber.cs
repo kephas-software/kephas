@@ -14,12 +14,10 @@ namespace Kephas.Data.MongoDB.Diagnostics
     using System.Reflection;
     using System.Text;
 
-    using Kephas.Logging;
-
     using global::MongoDB.Bson;
     using global::MongoDB.Driver.Core.Events;
-
     using Kephas.Composition;
+    using Kephas.Logging;
 
     /// <summary>
     /// An <see cref="IEventSubscriber"/> for <see cref="MongoDataContext"/>.
@@ -29,7 +27,7 @@ namespace Kephas.Data.MongoDB.Diagnostics
         /// <summary>
         /// The logger prefix.
         /// </summary>
-        private const string LoggerPrefix = "MongoDB Driver: ";
+        private const string LoggerPrefix = "MongoDB Driver";
 
         /// <summary>
         /// Limit for a duration to be marked as warning.
@@ -72,13 +70,14 @@ namespace Kephas.Data.MongoDB.Diagnostics
         private void Handle(CommandFailedEvent driverEvent)
         {
             this.logger.Error(
-              "{0}|{1}|ConnectionId:{2}|RequestId:{3}|Elapsed:{4:c}|{5}",
-              LoggerPrefix,
-              driverEvent.GetType().Name,
-              driverEvent.ConnectionId,
-              driverEvent.RequestId,
-              driverEvent.Duration,
-              this.GetExceptionContent(driverEvent.Failure));
+                driverEvent.Failure,
+                "{driver} {event}: connection ID: {connectionId}, request ID: {requestId}, elapsed: {elapsed:c}",
+                LoggerPrefix,
+                driverEvent.GetType().Name,
+                driverEvent.ConnectionId,
+                driverEvent.RequestId,
+                driverEvent.Duration,
+                driverEvent.Failure.GetType().Name);
         }
 
         private void Handle(CommandStartedEvent driverEvent)
@@ -90,14 +89,12 @@ namespace Kephas.Data.MongoDB.Diagnostics
             if (driverEvent.Duration > WarningLimitDuration)
             {
                 this.logger.Warn(
-                  "{0}|{1}|ConnectionId:{2}|RequestId:{3}|Elapsed:{4:c}|Elapsed (network):{5}|Elapsed (deserialization):{6}|Cmd:{7}|Cursor:{8}",
+                  "{driver} {event}: connection ID: {connectionId}, request ID: {requestId}, elapsed: {elapsed:c}, command: {command}, cursor: {cursor}",
                   LoggerPrefix,
                   driverEvent.GetType().Name,
                   driverEvent.ConnectionId,
                   driverEvent.RequestId,
                   driverEvent.Duration,
-                  string.Empty,
-                  string.Empty,
                   driverEvent.CommandName,
                   this.GetCursorInfo(driverEvent.Reply));
             }
@@ -170,7 +167,7 @@ namespace Kephas.Data.MongoDB.Diagnostics
             if (driverEvent.Duration > WarningLimitDuration)
             {
                 this.logger.Warn(
-                  "{0}|{1}|ConnectionId:{2}|RequestId:{3}|Elapsed:{4:c}|Elapsed (network):{5:c}|Elapsed (deserialization):{6:c}",
+                  "{driver} {event}: connection ID: {connectionId}, request ID: {requestId}, elapsed: {elapsed:c}, elapsed (network): {elapsedNetwork:c}, elapsed (deserialization): {elapsedDeserialization:c}",
                   LoggerPrefix,
                   driverEvent.GetType().Name,
                   driverEvent.ConnectionId,
@@ -183,29 +180,16 @@ namespace Kephas.Data.MongoDB.Diagnostics
 
         private void Handle(ConnectionSendingMessagesFailedEvent driverEvent)
         {
-            this.logger.Error("{0}|{1}|ConnectionId:{2}|{3}", LoggerPrefix, driverEvent.GetType().Name, driverEvent.ConnectionId, this.GetExceptionContent(driverEvent.Exception));
+            this.logger.Error(
+                driverEvent.Exception,
+                "{driver} {event}: connection ID: {connectionId}",
+                LoggerPrefix,
+                driverEvent.GetType().Name,
+                driverEvent.ConnectionId);
         }
 
         private void Handle(ConnectionSentMessagesEvent driverEvent)
         {
-        }
-
-        /// <summary>
-        /// Gets the content of the exception.
-        /// </summary>
-        /// <param name="ex">The exception.</param>
-        /// <returns>The exception content as string.</returns>
-        private string GetExceptionContent(Exception ex)
-        {
-            if (ex == null)
-            {
-                return null;
-            }
-
-            var escapedMessage = ex.Message.Replace("'", @"""");
-            var content = $"{{$type:'{ex.GetType().FullName}',message:'{escapedMessage}'}}";
-
-            return content;
         }
     }
 }

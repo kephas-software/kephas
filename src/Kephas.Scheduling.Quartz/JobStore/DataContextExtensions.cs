@@ -555,9 +555,20 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
         #region Locks
 
+        /// <summary>
+        /// An IDataContext extension method that try acquire lock.
+        /// </summary>
+        /// <param name="dataContext">The dataContext to act on.</param>
+        /// <param name="instanceName">Name of the instance.</param>
+        /// <param name="lockType">Type of the lock.</param>
+        /// <param name="instanceId">Identifier for the instance.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields true if it succeeds, false if it fails.
+        /// </returns>
         public static async Task<bool> TryAcquireLock(this IDataContext dataContext, string instanceName, LockType lockType, string instanceId, CancellationToken cancellationToken = default)
         {
-            Log.Trace($"Trying to acquire lock {instanceName}/{lockType} on {instanceId}");
+            Log.Trace("Trying to acquire lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
             try
             {
                 var entity = await dataContext.CreateAsync<ILock>(cancellationToken: cancellationToken)
@@ -569,19 +580,19 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
                 await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
 
-                Log.Trace($"Acquired lock {instanceName}/{lockType} on {instanceId}");
+                Log.Trace("Acquired lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
                 return true;
             }
             catch (Exception ex)
             {
-                Log.Trace(ex, $"Failed to acquire lock {instanceName}/{lockType} on {instanceId}");
+                Log.Trace(ex, "Failed to acquire lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
                 return false;
             }
         }
 
         public static async Task<bool> ReleaseLock(this IDataContext dataContext, string instanceName, LockType lockType, string instanceId, CancellationToken cancellationToken = default)
         {
-            Log.Trace($"Releasing lock {instanceName}/{lockType} on {instanceId}");
+            Log.Trace("Releasing lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
             var entity = await dataContext.FindOneAsync<ILock>(
                              l => l.InstanceName == instanceName && l.LockType == lockType && l.InstanceId == instanceId,
                              throwIfNotFound: false,
@@ -589,7 +600,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             if (entity == null)
             {
-                Log.Warn($"Failed to release lock {instanceName}/{lockType} on {instanceId}. You do not own the lock.");
+                Log.Warn("Failed to release lock {instanceName}/{lockType} on {instanceId}. You do not own the lock.", instanceName, lockType, instanceId);
                 return false;
             }
 
@@ -597,7 +608,7 @@ namespace Kephas.Scheduling.Quartz.JobStore
 
             await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
 
-            Log.Trace($"Released lock {instanceName}/{lockType} on {instanceId}");
+            Log.Trace("Released lock {instanceName}/{lockType} on {instanceId}", instanceName, lockType, instanceId);
             return true;
         }
 

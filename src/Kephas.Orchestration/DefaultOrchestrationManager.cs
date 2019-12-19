@@ -241,7 +241,7 @@ namespace Kephas.Orchestration
         /// </returns>
         public virtual async Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, Action<IContext> optionsConfig = null, CancellationToken cancellationToken = default)
         {
-            this.Logger.Info($"Stopping application {runtimeAppInfo.AppInstanceId}...");
+            this.Logger.Info("Stopping application {appInstanceId}...", runtimeAppInfo.AppInstanceId);
 
             var stopMessage = this.CreateStopAppMessage(runtimeAppInfo);
 
@@ -362,7 +362,7 @@ namespace Kephas.Orchestration
         /// </returns>
         protected virtual Task OnAppStartedAsync(AppStartedEvent appEvent, IContext context, CancellationToken cancellationToken)
         {
-            this.Logger.Info($"App started: {appEvent?.AppInfo}.");
+            this.Logger.Info("App started: {appInstance}.", appEvent?.AppInfo);
 
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)
@@ -390,7 +390,7 @@ namespace Kephas.Orchestration
         /// </returns>
         protected virtual Task OnAppStoppedAsync(AppStoppedEvent appEvent, IContext context, CancellationToken cancellationToken)
         {
-            this.Logger.Info($"App stopped: {appEvent?.AppInfo}.");
+            this.Logger.Info("App stopped: {appInstance}.", appEvent?.AppInfo);
 
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)

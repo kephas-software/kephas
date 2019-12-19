@@ -13,6 +13,7 @@ namespace Kephas.Composition.Lite.Conventions
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.Composition.Conventions;
     using Kephas.Logging;
     using Kephas.Resources;
@@ -100,7 +101,7 @@ namespace Kephas.Composition.Lite.Conventions
         public Action<Type, IExportConventionsBuilder> ExportConfiguration { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether we allow multiple.
+        /// Gets or sets a value indicating whether we allow multiple.
         /// </summary>
         /// <value>
         /// True if allow multiple, false if not.
@@ -119,7 +120,7 @@ namespace Kephas.Composition.Lite.Conventions
         {
             if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Trace($"Metadata {name} is automatically added for {this}.");
+                this.Logger.Trace("Metadata {metadataName} is automatically added for {registrationBuilder}.", name, this);
             }
 
             return this;
@@ -138,7 +139,7 @@ namespace Kephas.Composition.Lite.Conventions
         {
             if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Trace($"Metadata {name} is automatically added for {this}.");
+                this.Logger.Trace("Metadata {metadataName} is automatically added for {registrationBuilder}.", name, this);
             }
 
             return this;

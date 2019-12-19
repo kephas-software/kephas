@@ -389,7 +389,7 @@ namespace Kephas.Data.Conversion
 
             if (matchingConverters.Count == 0)
             {
-                this.Logger.Warn(string.Format(Strings.DataConverterNotFound_Exception, sourceType, targetType));
+                this.Logger.Warn(Strings.DataConverterNotFound_Exception, sourceType, targetType);
             }
 
             return matchingConverters;
@@ -413,7 +413,7 @@ namespace Kephas.Data.Conversion
 
             if (matchingConverters.Count == 0)
             {
-                this.Logger.Warn(string.Format(Strings.DataConverterNotFound_Exception, sourceType, targetType));
+                this.Logger.Warn(Strings.DataConverterNotFound_Exception, sourceType, targetType);
             }
 
             return matchingConverters;

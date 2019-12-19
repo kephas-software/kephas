@@ -55,7 +55,7 @@ namespace Kephas.Diagnostics
 
             var processCommandLine = $"{this.ProcessStartInfo.FileName} {this.ProcessStartInfo.Arguments}";
 
-            this.Logger.Info($"Starting '{processCommandLine}'...");
+            this.Logger.Info("Starting '{commandLine}'...", processCommandLine);
 
             var process = new Process { StartInfo = processStartInfo };
 
@@ -74,13 +74,11 @@ namespace Kephas.Diagnostics
                         var started = process.Start();
                         if (!started)
                         {
-                            var errorMessage = $"There was an error starting process {processCommandLine}. "
-                                               + $"The runtime indicated that the process did not start.";
-                            this.Logger.Fatal(errorMessage);
-                            throw new ProcessStartException(errorMessage);
+                            this.Logger.Fatal("There was an error starting process {commandLine}. The runtime indicated that the process did not start.", processCommandLine);
+                            throw new ProcessStartException($"There was an error starting process {processCommandLine}. The runtime indicated that the process did not start.");
                         }
 
-                        this.Logger.Info($"Started '{processCommandLine}' (#{process.Id}).");
+                        this.Logger.Info("Started '{commandLine}' (#{processId}).", processCommandLine, process.Id);
 
                         taskCompletionSource.SetResult(new ProcessStartResult(process));
                     }

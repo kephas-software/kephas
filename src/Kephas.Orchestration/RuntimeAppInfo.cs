@@ -85,6 +85,7 @@ namespace Kephas.Orchestration
         {
             return this.AppInstanceId?.GetHashCode() ?? 0;
         }
+
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>

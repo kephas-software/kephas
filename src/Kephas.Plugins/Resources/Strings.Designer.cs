@@ -61,7 +61,7 @@ namespace Kephas.Plugins.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application loading directories: {0}. Plugins are {1}..
+        ///   Looks up a localized string similar to Application loading directories: {appFolders}. Plugins are {pluginsState}..
         /// </summary>
         internal static string PluginsAppRuntime_LoadingApplicationFolders_Message {
             get {

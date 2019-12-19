@@ -149,22 +149,40 @@ namespace Kephas.Data.MongoDB.Commands
             if (exception != null)
             {
                 this.Logger.Error(
-                  $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}|ID: {operationContext.DataContext.Id}|Message: {exception.Message}|Elapsed: {elapsed}|Change count: {0}|Data: {string.Empty}",
-                  exception);
+                    exception,
+                    "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}.",
+                    $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}",
+                    exception.Message,
+                    operationContext.DataContext.Id,
+                    elapsed);
                 throw exception;
             }
 
             if (elapsed.TotalMilliseconds > 1000)
             {
                 this.Logger.Warn(
-                  $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}|ID: {operationContext.DataContext.Id}|Message: {"Elapsed time more than 1s"}|Elapsed: {elapsed}|Change count: {saveResult.InsertedCount + saveResult.ModifiedCount + saveResult.DeletedCount}|Data: {saveResult}");
+                    "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, inserted: {inserted}, modified: {modified}, deleted: {deleted}.",
+                    $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}",
+                    "Elapsed time more than 1s",
+                    operationContext.DataContext.Id,
+                    elapsed,
+                    saveResult.InsertedCount,
+                    saveResult.ModifiedCount,
+                    saveResult.DeletedCount);
             }
             else
             {
                 if (this.Logger.IsDebugEnabled())
                 {
                     this.Logger.Debug(
-                      $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}|ID: {operationContext.DataContext.Id}|Message: {"OK"}|Elapsed: {elapsed}|Change count: {saveResult.InsertedCount + saveResult.ModifiedCount + saveResult.DeletedCount}|Data: {saveResult}");
+                        "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, inserted: {inserted}, modified: {modified}, deleted: {deleted}.",
+                        $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}",
+                        "Success",
+                        operationContext.DataContext.Id,
+                        elapsed,
+                        saveResult.InsertedCount,
+                        saveResult.ModifiedCount,
+                        saveResult.DeletedCount);
                 }
             }
         }

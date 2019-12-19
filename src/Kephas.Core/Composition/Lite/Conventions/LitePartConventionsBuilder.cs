@@ -125,7 +125,7 @@ namespace Kephas.Composition.Lite.Conventions
             // TODO not supported.
             if (this.Logger.IsTraceEnabled())
             {
-                this.Logger.Warn($"Selecting a specific constructor is not supported ({this.descriptorBuilder}).");
+                this.Logger.Warn("Selecting a specific constructor is not supported ({registrationBuilder}).", this.descriptorBuilder);
             }
 
             return this;

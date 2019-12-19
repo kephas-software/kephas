@@ -241,7 +241,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot load assembly &apos;{0}&apos;. See the exception for more information..
+        ///   Looks up a localized string similar to Cannot load assembly &apos;{assembly}&apos;. See the exception for more information..
         /// </summary>
         public static string AppRuntimeBase_CannotLoadAssembly_Exception {
             get {
@@ -259,7 +259,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Application service contracts exported as open generics do not support metadata attributes and they will be ignored (&apos;{0}&apos;). Instead, try to pass metadata through generic parameter types..
+        ///   Looks up a localized string similar to Application service contracts exported as open generics do not support metadata attributes and they will be ignored (&apos;{serviceContractType}&apos;). Instead, try to pass metadata through generic parameter types..
         /// </summary>
         public static string AppServiceConventionsRegistrarBase_AsOpenGenericDoesNotSupportMetadataAttributes_Warning {
             get {
@@ -274,33 +274,6 @@ namespace Kephas.Resources {
         public static string AppServiceMultipleCompositionConstructors {
             get {
                 return ResourceManager.GetString("AppServiceMultipleCompositionConstructors", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot load all defined types from {0}. Only the loadable types will be considered..
-        /// </summary>
-        public static string AssemblyExtensions_GetLoadableDefinedTypes_ReflectionTypeLoadException {
-            get {
-                return ResourceManager.GetString("AssemblyExtensions_GetLoadableDefinedTypes_ReflectionTypeLoadException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot load all exported types from {0}. Only the loadable types will be considered..
-        /// </summary>
-        public static string AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException {
-            get {
-                return ResourceManager.GetString("AssemblyExtensions_GetLoadableExportedTypes_ReflectionTypeLoadException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot load exported type {0} from {1}. Only the loadable types will be considered..
-        /// </summary>
-        public static string AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException {
-            get {
-                return ResourceManager.GetString("AssemblyExtensions_GetLoadableExportedTypes_TypeLoadException", resourceCulture);
             }
         }
         
@@ -422,7 +395,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occurred when invoking subscription callback for {0}..
+        ///   Looks up a localized string similar to An error occurred when invoking subscription callback for &apos;{event}&apos;..
         /// </summary>
         public static string DefaultEventHub_ErrorWhenInvokingSubscriptionCallback {
             get {
@@ -467,6 +440,33 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot load all defined types from {assembly}. Only the loadable types will be considered..
+        /// </summary>
+        public static string DefaultTypeLoader_GetLoadableDefinedTypes_ReflectionTypeLoadException {
+            get {
+                return ResourceManager.GetString("DefaultTypeLoader_GetLoadableDefinedTypes_ReflectionTypeLoadException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot load all exported types from {assembly}. Only the loadable types will be considered..
+        /// </summary>
+        public static string DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException {
+            get {
+                return ResourceManager.GetString("DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot load exported type {type} from {assembly}. Only the loadable types will be considered..
+        /// </summary>
+        public static string DefaultTypeLoader_GetLoadableExportedTypes_TypeLoadException {
+            get {
+                return ResourceManager.GetString("DefaultTypeLoader_GetLoadableExportedTypes_TypeLoadException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Multiple types found for &apos;{0}&apos; : {1}..
         /// </summary>
         public static string DefaultTypeResolver_ResolveType_AmbiguousMatch_Exception {
@@ -485,7 +485,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errors occurred when trying to resolve type &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Errors occurred when trying to resolve type &apos;{type}&apos;..
         /// </summary>
         public static string DefaultTypeResolver_ResolveTypeCore_Exception {
             get {
@@ -728,7 +728,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No provider found for settings type &apos;{0}&apos;..
+        ///   Looks up a localized string similar to No provider found for settings type &apos;{settingsType}&apos;..
         /// </summary>
         public static string SettingsProviderSelector_NoProviderFoundForSettingsType {
             get {
