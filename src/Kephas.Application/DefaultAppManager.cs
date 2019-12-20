@@ -14,6 +14,7 @@ namespace Kephas.Application
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -231,7 +232,7 @@ namespace Kephas.Application
                 await Profiler.WithTraceStopwatchAsync(
                     () => behavior.Value.BeforeAppInitializeAsync(appContext, cancellationToken),
                     this.Logger,
-                    $"{behavior.Value.GetType()}.{nameof(IAppLifecycleBehavior.BeforeAppInitializeAsync)}").PreserveThreadContext();
+                    this.GetBehaviorInfo(behavior, nameof(IAppLifecycleBehavior.BeforeAppInitializeAsync))).PreserveThreadContext();
             }
         }
 
@@ -254,7 +255,7 @@ namespace Kephas.Application
                 await Profiler.WithTraceStopwatchAsync(
                     () => behavior.Value.AfterAppInitializeAsync(appContext, cancellationToken),
                     this.Logger,
-                    $"{behavior.Value.GetType()}.{nameof(IAppLifecycleBehavior.AfterAppInitializeAsync)}").PreserveThreadContext();
+                    this.GetBehaviorInfo(behavior, nameof(IAppLifecycleBehavior.AfterAppInitializeAsync))).PreserveThreadContext();
             }
         }
 
@@ -369,7 +370,7 @@ namespace Kephas.Application
                     await Profiler.WithTraceStopwatchAsync(
                         () => behavior.Value.BeforeInitializeAsync(appContext, appServiceMetadata, cancellationToken),
                         this.Logger,
-                        $"{behavior.Value.GetType()}.{nameof(IFeatureLifecycleBehavior.BeforeInitializeAsync)}").PreserveThreadContext();
+                        this.GetBehaviorInfo(behavior, nameof(IFeatureLifecycleBehavior.BeforeInitializeAsync))).PreserveThreadContext();
                 }
             }
         }
@@ -398,7 +399,7 @@ namespace Kephas.Application
                     await Profiler.WithTraceStopwatchAsync(
                         () => behavior.Value.AfterInitializeAsync(appContext, appServiceMetadata, cancellationToken),
                         this.Logger,
-                        $"{behavior.Value.GetType()}.{nameof(IFeatureLifecycleBehavior.AfterInitializeAsync)}").PreserveThreadContext();
+                        this.GetBehaviorInfo(behavior, nameof(IFeatureLifecycleBehavior.AfterInitializeAsync))).PreserveThreadContext();
                 }
             }
         }
@@ -422,7 +423,7 @@ namespace Kephas.Application
                 await Profiler.WithTraceStopwatchAsync(
                     () => behavior.Value.BeforeAppFinalizeAsync(appContext, cancellationToken),
                     this.Logger,
-                    $"{behavior.Value.GetType()}.{nameof(IAppLifecycleBehavior.BeforeAppFinalizeAsync)}").PreserveThreadContext();
+                    this.GetBehaviorInfo(behavior, nameof(IAppLifecycleBehavior.BeforeAppFinalizeAsync))).PreserveThreadContext();
             }
         }
 
@@ -445,7 +446,7 @@ namespace Kephas.Application
                 await Profiler.WithTraceStopwatchAsync(
                     () => behavior.Value.AfterAppFinalizeAsync(appContext, cancellationToken),
                     this.Logger,
-                    $"{behavior.Value.GetType()}.{nameof(IAppLifecycleBehavior.AfterAppFinalizeAsync)}").PreserveThreadContext();
+                    this.GetBehaviorInfo(behavior, nameof(IAppLifecycleBehavior.AfterAppFinalizeAsync))).PreserveThreadContext();
             }
         }
 
@@ -556,7 +557,7 @@ namespace Kephas.Application
                     await Profiler.WithTraceStopwatchAsync(
                         () => behavior.Value.BeforeFinalizeAsync(appContext, appServiceMetadata, cancellationToken),
                         this.Logger,
-                        $"{behavior.Value.GetType()}.{nameof(IFeatureLifecycleBehavior.BeforeFinalizeAsync)}").PreserveThreadContext();
+                        this.GetBehaviorInfo(behavior, nameof(IFeatureLifecycleBehavior.BeforeFinalizeAsync))).PreserveThreadContext();
                 }
             }
         }
@@ -585,7 +586,7 @@ namespace Kephas.Application
                     await Profiler.WithTraceStopwatchAsync(
                         () => behavior.Value.AfterFinalizeAsync(appContext, appServiceMetadata, cancellationToken),
                         this.Logger,
-                        $"{behavior.Value.GetType()}.{nameof(IFeatureLifecycleBehavior.AfterFinalizeAsync)}").PreserveThreadContext();
+                        this.GetBehaviorInfo(behavior, nameof(IFeatureLifecycleBehavior.AfterFinalizeAsync))).PreserveThreadContext();
                 }
             }
         }
@@ -699,6 +700,12 @@ namespace Kephas.Application
             var featureType = featureManager.GetType();
             var featureIdentifier = $"'{featureManagerMetadata.FeatureInfo.Name}' ({featureType}, #{featureManagerMetadata.ProcessingPriority})";
             return (featureIdentifier, featureType);
+        }
+
+        private string GetBehaviorInfo<TBehavior, TMetadata>(IExport<TBehavior, TMetadata> behavior, string operation)
+            where TMetadata : AppServiceMetadata
+        {
+            return $"Behavior {behavior.Value.GetType()}.{operation} (#{behavior.Metadata.ProcessingPriority})";
         }
     }
 }
