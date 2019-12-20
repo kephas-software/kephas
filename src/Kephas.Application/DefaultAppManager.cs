@@ -290,8 +290,7 @@ namespace Kephas.Application
                 var featureManager = featureManagerFactory.Value;
                 var featureManagerMetadata = featureManagerFactory.Metadata;
 
-                var featureManagerType = featureManager.GetType();
-                var featureManagerIdentifier = $"'{featureManagerMetadata.FeatureInfo.Name}' ({featureManagerType})";
+                var (featureIdentifier, featureType) = this.GetFeatureInfo(featureManager, featureManagerMetadata);
                 try
                 {
                     await Profiler.WithInfoStopwatchAsync(
@@ -302,18 +301,18 @@ namespace Kephas.Application
                             await this.AfterFeatureInitializeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                         },
                         this.Logger,
-                        "Initialize feature " + featureManagerIdentifier).PreserveThreadContext();
+                        "Initialize feature " + featureIdentifier).PreserveThreadContext();
                 }
                 catch (OperationCanceledException cex)
                 {
-                    this.Logger.Error(cex, "{feature} was canceled during initialization. The current operation will be interrupted.", featureManagerIdentifier);
+                    this.Logger.Error(cex, "{feature} was canceled during initialization. The current operation will be interrupted.", featureIdentifier);
                     throw;
                 }
                 catch (Exception ex)
                 {
                     var isRequiredFeature = featureManagerMetadata?.FeatureInfo.IsRequired ?? false;
                     var featureKind = isRequiredFeature ? "required" : "optional";
-                    this.Logger.Error(ex, "{feature} ({featureKind}) failed to initialize. See the inner exception for more details.", featureManagerIdentifier, featureKind);
+                    this.Logger.Error(ex, "{feature} ({featureKind}) failed to initialize. See the inner exception for more details.", featureIdentifier, featureKind);
 
                     // interrupt the initialization if a required feature manager failed to initialize.
                     if (isRequiredFeature)
@@ -481,8 +480,7 @@ namespace Kephas.Application
                 var featureManager = featureManagerFactory.Value;
                 var featureManagerMetadata = featureManagerFactory.Metadata;
 
-                var featureManagerType = featureManager.GetType();
-                var featureManagerIdentifier = $"Finalize feature '{featureManagerType}' (#{featureManagerMetadata.FeatureInfo.Name})";
+                var (featureIdentifier, featureType) = this.GetFeatureInfo(featureManager, featureManagerMetadata);
                 try
                 {
                     await Profiler.WithInfoStopwatchAsync(
@@ -493,18 +491,18 @@ namespace Kephas.Application
                             await this.AfterFeatureFinalizeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                         },
                         this.Logger,
-                        featureManagerIdentifier).PreserveThreadContext();
+                        "Finalize feature " + featureIdentifier).PreserveThreadContext();
                 }
                 catch (OperationCanceledException cex)
                 {
-                    this.Logger.Error(cex, "{feature} was canceled during finalization. The current operation will be interrupted.", featureManagerIdentifier);
+                    this.Logger.Error(cex, "{feature} was canceled during finalization. The current operation will be interrupted.", featureIdentifier);
                     throw;
                 }
                 catch (Exception ex)
                 {
                     var isRequiredFeature = featureManagerMetadata?.FeatureInfo.IsRequired ?? false;
                     var featureKind = isRequiredFeature ? "required" : "optional";
-                    this.Logger.Error(ex, "{feature} ({featureKind}) failed to finalize. See the inner exception for more details.", featureManagerIdentifier, featureKind);
+                    this.Logger.Error(ex, "{feature} ({featureKind}) failed to finalize. See the inner exception for more details.", featureIdentifier, featureKind);
 
                     // interrupt the finalization if a required feature manager failed to finalize.
                     if (isRequiredFeature)
@@ -555,7 +553,10 @@ namespace Kephas.Application
                 var featureRef = behavior.Metadata.Target;
                 if (featureRef == null || featureRef.IsMatch(appServiceMetadata.FeatureInfo))
                 {
-                    await behavior.Value.BeforeFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+                    await Profiler.WithTraceStopwatchAsync(
+                        () => behavior.Value.BeforeFinalizeAsync(appContext, appServiceMetadata, cancellationToken),
+                        this.Logger,
+                        $"{behavior.Value.GetType()}.{nameof(IFeatureLifecycleBehavior.BeforeFinalizeAsync)}").PreserveThreadContext();
                 }
             }
         }
@@ -581,7 +582,10 @@ namespace Kephas.Application
                 var featureRef = behavior.Metadata.Target;
                 if (featureRef == null || featureRef.IsMatch(appServiceMetadata.FeatureInfo))
                 {
-                    await behavior.Value.AfterFinalizeAsync(appContext, appServiceMetadata, cancellationToken).PreserveThreadContext();
+                    await Profiler.WithTraceStopwatchAsync(
+                        () => behavior.Value.AfterFinalizeAsync(appContext, appServiceMetadata, cancellationToken),
+                        this.Logger,
+                        $"{behavior.Value.GetType()}.{nameof(IFeatureLifecycleBehavior.AfterFinalizeAsync)}").PreserveThreadContext();
                 }
             }
         }
@@ -688,6 +692,13 @@ namespace Kephas.Application
                     fmFactory.Metadata.FeatureInfo = this.ComputeDefaultFeatureInfo(fmFactory.Metadata);
                 }
             }
+        }
+
+        private (string featureIdentifier, Type featureType) GetFeatureInfo(IFeatureManager featureManager, FeatureManagerMetadata featureManagerMetadata)
+        {
+            var featureType = featureManager.GetType();
+            var featureIdentifier = $"'{featureManagerMetadata.FeatureInfo.Name}' ({featureType}, #{featureManagerMetadata.ProcessingPriority})";
+            return (featureIdentifier, featureType);
         }
     }
 }
