@@ -30,6 +30,22 @@ namespace Kephas.Messaging
         where TResponse : class
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="MessageHandlerBase{TMessage, TResponse}"/> class.
+        /// </summary>
+        protected MessageHandlerBase()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageHandlerBase{TMessage, TResponse}"/> class.
+        /// </summary>
+        /// <param name="logManager">Manager for log.</param>
+        protected MessageHandlerBase(ILogManager logManager)
+            : base(logManager)
+        {
+        }
+
+        /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.
         /// </summary>
         /// <param name="message">The message to be handled.</param>
