@@ -18,6 +18,7 @@ namespace Kephas.Application
     using System.Net;
     using System.Net.Sockets;
     using System.Reflection;
+    using System.Runtime.Versioning;
 
     using Kephas.Collections;
     using Kephas.Dynamic;
@@ -125,6 +126,29 @@ namespace Kephas.Application
         protected Func<AssemblyName, bool> AssemblyFilter { get; }
 
         /// <summary>
+        /// Gets the application's underlying .NET framework identifier.
+        /// </summary>
+        /// <returns>
+        /// The application's underlying .NET framework identifier.
+        /// </returns>
+        public virtual string GetAppFramework()
+        {
+            var fwkName = this.GetAppFrameworkName();
+            var fwkId = fwkName.Identifier == ".NETFramework"
+                ? "net"
+                : fwkName.Identifier == ".NETStandard"
+                    ? "netstandard"
+                    : fwkName.Identifier == ".NETCoreApp"
+                        ? "netcoreapp"
+                        : "net";
+            var build = fwkName.Version.Build <= 0 ? string.Empty : fwkName.Version.Build.ToString();
+            var fwkVersion = fwkId == "net"
+                ? $"{fwkName.Version.Major}{fwkName.Version.Minor}{build}"
+                : $"{fwkName.Version.Major}.{fwkName.Version.Minor}";
+            return fwkId + fwkVersion;
+        }
+
+        /// <summary>
         /// Gets the application location (directory where the application lies).
         /// </summary>
         /// <returns>
@@ -216,6 +240,30 @@ namespace Kephas.Application
             this[AppIdKey] = appId = this.GetAppId(entryAssembly, appId);
             this[AppInstanceIdKey] = string.IsNullOrEmpty(appInstanceId) ? $"{appId}-{Guid.NewGuid():N}" : appInstanceId;
             this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? (entryAssembly?.GetName().Version.ToString() ?? "0.0.0.0") : appVersion;
+        }
+
+        /// <summary>
+        /// Gets the application's underlying framework name.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
+        /// <returns>
+        /// The application framework name.
+        /// </returns>
+        protected virtual FrameworkName GetAppFrameworkName()
+        {
+            var assembly = Assembly.GetEntryAssembly();
+            var targetFramework = assembly?.GetCustomAttribute<TargetFrameworkAttribute>();
+            if (targetFramework == null)
+            {
+                assembly = Assembly.GetExecutingAssembly();
+                targetFramework = assembly.GetCustomAttribute<TargetFrameworkAttribute>();
+                if (targetFramework == null)
+                {
+                    throw new InvalidOperationException($"Could not identify the current framework from {Assembly.GetEntryAssembly()} and {Assembly.GetExecutingAssembly()}.");
+                }
+            }
+
+            return new FrameworkName(targetFramework.FrameworkName);
         }
 
         /// <summary>

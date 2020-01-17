@@ -49,5 +49,18 @@ namespace Kephas.Core.Tests.Application
             Assert.AreEqual("hello-app", appEnv.GetAppId());
             Assert.AreEqual("1.0.0-beta", appEnv.GetAppVersion());
         }
+
+        [Test]
+        public void GetAppFramework()
+        {
+            var appEnv = new StaticAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
+            var appFramework = appEnv.GetAppFramework();
+
+#if NET45
+            Assert.AreEqual("net45", appFramework);
+#else
+            Assert.AreEqual("netstandard2.0", appFramework);
+#endif
+        }
     }
 }

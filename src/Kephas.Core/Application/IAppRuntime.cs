@@ -50,6 +50,14 @@ namespace Kephas.Application
         IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool> assemblyFilter = null);
 
         /// <summary>
+        /// Gets the application's underlying .NET framework identifier.
+        /// </summary>
+        /// <returns>
+        /// The application's underlying .NET framework identifier.
+        /// </returns>
+        string GetAppFramework();
+
+        /// <summary>
         /// Gets host address.
         /// </summary>
         /// <returns>
