@@ -6,14 +6,8 @@ $keyPath = "..\..\src\Kephas.snk"
 $editorPath = "$Env:ProgramFiles\Notepad++\notepad++.exe"
 
 $assemblies = @(
-    "mongodb.bson.$version\lib\net452\MongoDB.Bson",
-    "mongodb.bson.$version\lib\netstandard1.5\MongoDB.Bson",
-    "mongodb.driver.$version\lib\net452\MongoDB.Driver",
-    "mongodb.driver.$version\lib\netstandard1.5\MongoDB.Driver",
-    "mongodb.driver.core.$version\lib\net452\MongoDB.Driver.Core",
-    "mongodb.driver.core.$version\lib\netstandard1.5\MongoDB.Driver.Core",
-    "mongodb.driver.gridfs.$version\lib\net452\MongoDB.Driver.GridFS",
-    "mongodb.driver.gridfs.$version\lib\netstandard1.5\MongoDB.Driver.GridFS"
+    "mongodb.libmongocrypt.$version\lib\net452\MongoDB.Libmongocrypt",
+    "mongodb.libmongocrypt.$version\lib\netstandard1.5\MongoDB.Libmongocrypt"
 )
 
 foreach ($assembly in $assemblies) {
