@@ -16,6 +16,7 @@ namespace Kephas.Data.InMemory.Commands
     using System.Threading.Tasks;
 
     using Kephas.Data.Commands;
+    using Kephas.Logging;
 
     /// <summary>
     /// An in memory bulk delete command.
@@ -23,6 +24,15 @@ namespace Kephas.Data.InMemory.Commands
     [DataContextType(typeof(InMemoryDataContext))]
     public class InMemoryBulkDeleteCommand : BulkDeleteCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InMemoryBulkDeleteCommand"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public InMemoryBulkDeleteCommand(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Deletes the entities matching the provided criteria and returns the number of deleted entities.
         /// </summary>

@@ -17,6 +17,7 @@ namespace Kephas.Data.InMemory.Commands
     using System.Threading.Tasks;
 
     using Kephas.Data.Commands;
+    using Kephas.Logging;
 
     /// <summary>
     /// An in memory bulk update command.
@@ -24,6 +25,15 @@ namespace Kephas.Data.InMemory.Commands
     [DataContextType(typeof(InMemoryDataContext))]
     public class InMemoryBulkUpdateCommand : BulkUpdateCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InMemoryBulkUpdateCommand"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public InMemoryBulkUpdateCommand(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Updates the entities matching the provided criteria and returns the number of affected
         /// entities.

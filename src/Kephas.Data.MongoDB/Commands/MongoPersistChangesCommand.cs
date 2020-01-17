@@ -43,8 +43,9 @@ namespace Kephas.Data.MongoDB.Commands
         /// Initializes a new instance of the <see cref="MongoPersistChangesCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
-        public MongoPersistChangesCommand(IDataBehaviorProvider behaviorProvider)
-            : base(behaviorProvider)
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public MongoPersistChangesCommand(IDataBehaviorProvider behaviorProvider, ILogManager logManager = null)
+            : base(behaviorProvider, logManager)
         {
         }
 

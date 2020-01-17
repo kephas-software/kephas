@@ -16,6 +16,7 @@ namespace Kephas.Data.MongoDB.Commands
     using System.Threading.Tasks;
 
     using Kephas.Data.Commands;
+    using Kephas.Logging;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -24,6 +25,15 @@ namespace Kephas.Data.MongoDB.Commands
     [DataContextType(typeof(MongoDataContext))]
     public class MongoBulkDeleteCommand : BulkDeleteCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MongoBulkDeleteCommand"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public MongoBulkDeleteCommand(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Deletes the entities matching the provided criteria and returns the number of affected
         /// entities.

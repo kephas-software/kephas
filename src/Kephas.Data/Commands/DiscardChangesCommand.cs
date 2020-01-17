@@ -14,6 +14,7 @@ namespace Kephas.Data.Commands
     using System.Linq;
 
     using Kephas.Data.Capabilities;
+    using Kephas.Logging;
 
     /// <summary>
     /// Base implementation of a <see cref="IDiscardChangesCommand"/>.
@@ -21,6 +22,15 @@ namespace Kephas.Data.Commands
     [DataContextType(typeof(DataContextBase))]
     public class DiscardChangesCommand : SyncDataCommandBase<IDiscardChangesContext, IDataCommandResult>, IDiscardChangesCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiscardChangesCommand"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public DiscardChangesCommand(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Removes all the changed entity infos from the cache.
         /// </summary>

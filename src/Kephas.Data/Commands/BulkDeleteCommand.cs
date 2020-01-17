@@ -18,6 +18,7 @@ namespace Kephas.Data.Commands
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
@@ -32,6 +33,15 @@ namespace Kephas.Data.Commands
         /// </summary>
         private static readonly MethodInfo BulkDeleteAsyncMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ((BulkDeleteCommand)null).BulkDeleteAsync<string>(default, default));
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BulkDeleteCommand"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public BulkDeleteCommand(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
 
         /// <summary>
         /// Executes the data command asynchronously.

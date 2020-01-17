@@ -37,7 +37,9 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="PersistChangesCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
-        public PersistChangesCommand(IDataBehaviorProvider behaviorProvider)
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public PersistChangesCommand(IDataBehaviorProvider behaviorProvider, ILogManager logManager = null)
+            : base(logManager)
         {
             Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
 

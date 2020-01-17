@@ -14,6 +14,7 @@ namespace Kephas.Data.Commands
     using System.Linq.Expressions;
 
     using Kephas.Data.Resources;
+    using Kephas.Logging;
 
     /// <summary>
     /// Base abstract class for bulk operation commands.
@@ -24,6 +25,14 @@ namespace Kephas.Data.Commands
         where TOperationContext : IBulkDataOperationContext
         where TOperationResult : IBulkDataOperationResult
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BulkOperationCommandBase{TOperationContext,TResult}"/> class.
+        /// </summary>
+        /// <param name="logManager">Manager for log.</param>
+        protected BulkOperationCommandBase(ILogManager logManager)
+            : base(logManager)
+        {
+        }
 
         /// <summary>
         /// Gets the find criteria.

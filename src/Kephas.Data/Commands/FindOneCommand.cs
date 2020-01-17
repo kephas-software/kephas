@@ -16,6 +16,7 @@ namespace Kephas.Data.Commands
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
 
     /// <summary>
     /// Base class for find commands retrieving one result.
@@ -23,6 +24,15 @@ namespace Kephas.Data.Commands
     [DataContextType(typeof(DataContextBase))]
     public class FindOneCommand : FindCommandBase<IFindOneContext>, IFindOneCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FindOneCommand"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public FindOneCommand(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>

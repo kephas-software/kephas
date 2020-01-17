@@ -21,6 +21,7 @@ namespace Kephas.Data.Commands
     using Kephas.Data.Linq;
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
@@ -36,6 +37,15 @@ namespace Kephas.Data.Commands
         /// </summary>
         private static readonly MethodInfo FindAsyncMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ((FindCommandBase<TFindContext>)null).FindAsync<string>(default, CancellationToken.None));
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FindCommandBase{TFindContext}"/> class.
+        /// </summary>
+        /// <param name="logManager">Manager for log.</param>
+        protected FindCommandBase(ILogManager logManager)
+            : base(logManager)
+        {
+        }
 
         /// <summary>
         /// Executes the data command asynchronously.

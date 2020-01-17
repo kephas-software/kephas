@@ -14,6 +14,7 @@ namespace Kephas.Data.Commands
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Resources;
+    using Kephas.Logging;
 
     /// <summary>
     /// Base implementation of a <see cref="IDeleteEntityCommand"/>.
@@ -21,6 +22,15 @@ namespace Kephas.Data.Commands
     [DataContextType(typeof(DataContextBase))]
     public class DeleteEntityCommand : SyncDataCommandBase<IDeleteEntityContext, IDataCommandResult>, IDeleteEntityCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteEntityCommand"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public DeleteEntityCommand(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Discards the changes in the data context.
         /// </summary>

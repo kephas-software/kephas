@@ -13,6 +13,7 @@ namespace Kephas.Data.LLBLGen.Commands
     using System.Threading.Tasks;
 
     using Kephas.Data.Commands;
+    using Kephas.Logging;
 
     /// <summary>
     /// A LLBLGen bulk delete command.
@@ -20,6 +21,15 @@ namespace Kephas.Data.LLBLGen.Commands
     [DataContextType(typeof(LLBLGenDataContext))]
     public class LLBLGenBulkDeleteCommand : DataCommandBase<IBulkDeleteContext, IBulkDataOperationResult>, IBulkDeleteCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LLBLGenBulkDeleteCommand"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public LLBLGenBulkDeleteCommand(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>

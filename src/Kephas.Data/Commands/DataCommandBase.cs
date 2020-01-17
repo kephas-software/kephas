@@ -35,6 +35,15 @@ namespace Kephas.Data.Commands
         private bool isInitialized;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DataCommandBase{TOperationContext,TResult}"/> class.
+        /// </summary>
+        /// <param name="logManager">Manager for log.</param>
+        protected DataCommandBase(ILogManager logManager)
+            : base(logManager)
+        {
+        }
+
+        /// <summary>
         /// Executes the data command asynchronously.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>

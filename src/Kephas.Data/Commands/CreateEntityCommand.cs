@@ -16,6 +16,7 @@ namespace Kephas.Data.Commands
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Threading.Tasks;
@@ -30,7 +31,9 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="CreateEntityCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
-        public CreateEntityCommand(IDataBehaviorProvider behaviorProvider)
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public CreateEntityCommand(IDataBehaviorProvider behaviorProvider, ILogManager logManager = null)
+            : base(logManager)
         {
             Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
 

@@ -19,6 +19,7 @@ namespace Kephas.Data.Commands
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
@@ -34,6 +35,15 @@ namespace Kephas.Data.Commands
         /// </summary>
         private static readonly MethodInfo BulkUpdateAsyncMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ((BulkUpdateCommand)null).BulkUpdateAsync<string>(default, default));
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BulkUpdateCommand"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public BulkUpdateCommand(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
 
         /// <summary>
         /// Executes the data command asynchronously.

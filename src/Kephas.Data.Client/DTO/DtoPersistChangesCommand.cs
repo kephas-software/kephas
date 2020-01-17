@@ -11,6 +11,7 @@
 namespace Kephas.Data.Client.DTO
 {
     using Kephas.Data.Commands;
+    using Kephas.Logging;
 
     /// <summary>
     /// A persist changes command for DTOs.
@@ -21,11 +22,12 @@ namespace Kephas.Data.Client.DTO
         /// <summary>
         /// Initializes a new instance of the <see cref="DtoPersistChangesCommand"/> class.
         /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
         /// <remarks>
         /// The DTO entities do not need behaviors for persistence.
         /// </remarks>
-        public DtoPersistChangesCommand()
-            : base(new DtoDataContext.NoneDataBehaviorProvider())
+        public DtoPersistChangesCommand(ILogManager logManager = null)
+            : base(new DtoDataContext.NoneDataBehaviorProvider(), logManager)
         {
         }
     }

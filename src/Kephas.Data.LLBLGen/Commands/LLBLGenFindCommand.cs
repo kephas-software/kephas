@@ -18,6 +18,7 @@ namespace Kephas.Data.LLBLGen.Commands
     using Kephas.Data;
     using Kephas.Data.Commands;
     using Kephas.Data.LLBLGen.Entities;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -38,7 +39,9 @@ namespace Kephas.Data.LLBLGen.Commands
         /// Initializes a new instance of the <see cref="LLBLGenFindCommand"/> class.
         /// </summary>
         /// <param name="entityActivator">The entity activator.</param>
-        public LLBLGenFindCommand(IEntityActivator entityActivator)
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public LLBLGenFindCommand(IEntityActivator entityActivator, ILogManager logManager = null)
+            : base(logManager)
         {
             this.entityActivator = entityActivator;
         }

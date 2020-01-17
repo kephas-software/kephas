@@ -13,6 +13,8 @@ namespace Kephas.Data.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Logging;
+
     /// <summary>
     /// Base implementation of a synchronous data command.
     /// </summary>
@@ -23,6 +25,15 @@ namespace Kephas.Data.Commands
         where TOperationContext : IDataOperationContext
         where TResult : IDataCommandResult
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SyncDataCommandBase{TOperationContext,TResult}"/> class.
+        /// </summary>
+        /// <param name="logManager">Manager for log.</param>
+        protected SyncDataCommandBase(ILogManager logManager)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Executes the data command.
         /// </summary>

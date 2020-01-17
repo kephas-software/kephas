@@ -16,7 +16,7 @@ namespace Kephas.Data.LLBLGen.Commands
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
-
+    using Kephas.Logging;
     using SD.LLBLGen.Pro.ORMSupportClasses;
 
     /// <summary>
@@ -29,8 +29,9 @@ namespace Kephas.Data.LLBLGen.Commands
         /// Initializes a new instance of the <see cref="LLBLGenPersistChangesCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
-        public LLBLGenPersistChangesCommand(IDataBehaviorProvider behaviorProvider)
-            : base(behaviorProvider)
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public LLBLGenPersistChangesCommand(IDataBehaviorProvider behaviorProvider, ILogManager logManager = null)
+            : base(behaviorProvider, logManager)
         {
         }
 

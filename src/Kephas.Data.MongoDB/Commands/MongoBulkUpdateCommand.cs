@@ -19,6 +19,7 @@ namespace Kephas.Data.MongoDB.Commands
     using global::MongoDB.Driver;
 
     using Kephas.Data.Commands;
+    using Kephas.Logging;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -27,6 +28,15 @@ namespace Kephas.Data.MongoDB.Commands
     [DataContextType(typeof(MongoDataContext))]
     public class MongoBulkUpdateCommand : BulkUpdateCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MongoBulkUpdateCommand"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public MongoBulkUpdateCommand(ILogManager logManager = null)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Updates the entities matching the provided criteria and returns the number of affected
         /// entities.
