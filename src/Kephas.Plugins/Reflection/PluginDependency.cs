@@ -19,11 +19,11 @@ namespace Kephas.Plugins.Reflection
         /// Initializes a new instance of the <see cref="PluginDependency"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="version">The version pattern.</param>
-        public PluginDependency(string name, string version = null)
+        /// <param name="versionRange">The version range.</param>
+        public PluginDependency(string name, string versionRange = null)
         {
             this.Name = name;
-            this.Version = version;
+            this.VersionRange = versionRange;
         }
 
         /// <summary>
@@ -35,11 +35,11 @@ namespace Kephas.Plugins.Reflection
         public string Name { get; }
 
         /// <summary>
-        /// Gets the version pattern.
+        /// Gets the version range.
         /// </summary>
         /// <value>
-        /// The version pattern.
+        /// The version range.
         /// </value>
-        public string Version { get; }
+        public string VersionRange { get; }
     }
 }

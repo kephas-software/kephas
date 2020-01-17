@@ -10,7 +10,6 @@
 
 namespace Kephas.Plugins.Reflection
 {
-    using System;
     using System.Collections.Generic;
 
     using Kephas.Reflection;
@@ -18,8 +17,16 @@ namespace Kephas.Plugins.Reflection
     /// <summary>
     /// Interface for plugin information.
     /// </summary>
-    public interface IPluginInfo : IElementInfo
+    public interface IPluginInfo : ITypeInfo
     {
+        /// <summary>
+        /// Gets the tags.
+        /// </summary>
+        /// <value>
+        /// The tags.
+        /// </value>
+        public string[] Tags { get; }
+
         /// <summary>
         /// Gets the plugin description.
         /// </summary>
@@ -29,12 +36,12 @@ namespace Kephas.Plugins.Reflection
         string Description { get; }
 
         /// <summary>
-        /// Gets the application version.
+        /// Gets the plugin version.
         /// </summary>
         /// <value>
-        /// The application version.
+        /// The plugin version.
         /// </value>
-        Version Version { get; }
+        string Version { get; }
 
         /// <summary>
         /// Gets the plugin dependencies.

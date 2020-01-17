@@ -1,34 +1,36 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPluginDependency.cs" company="Kephas Software SRL">
+// <copyright file="ISearchPluginContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IPluginDependency interface.
+//   Declares the ISearchPluginContext interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Plugins.Reflection
+namespace Kephas.Plugins
 {
+    using Kephas.Services;
+
     /// <summary>
-    /// Interface for plugin dependency.
+    /// Interface for search plugin context.
     /// </summary>
-    public interface IPluginDependency
+    public interface ISearchContext : IContext
     {
         /// <summary>
-        /// Gets the name of the referenced plugin.
+        /// Gets or sets the search term.
         /// </summary>
         /// <value>
-        /// The name of the referenced plugin.
+        /// The search term.
         /// </value>
-        string Name { get; }
+        string SearchTerm { get; set; }
 
         /// <summary>
-        /// Gets the version range.
+        /// Gets or sets a value indicating whether the prerelease versions should be included.
         /// </summary>
         /// <value>
-        /// The version range.
+        /// True to include prerelease versions, false to ignore them.
         /// </value>
-        string VersionRange { get; }
+        bool IncludePrerelease { get; set; }
     }
 }

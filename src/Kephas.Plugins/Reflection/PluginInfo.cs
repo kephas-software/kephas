@@ -10,40 +10,32 @@
 
 namespace Kephas.Plugins.Reflection
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using Kephas.Dynamic;
+
     using Kephas.Reflection;
+    using Kephas.Reflection.Dynamic;
     using Kephas.Runtime;
 
     /// <summary>
     /// Information about the plugin.
     /// </summary>
-    public class PluginInfo : Expando, IPluginInfo
+    public class PluginInfo : DynamicTypeInfo, IPluginInfo
     {
-        private static readonly IEnumerable<object> EmptyAnnotations = new ReadOnlyCollection<object>(new List<object>());
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginInfo"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="version">Optional. the version.</param>
         /// <param name="description">Optional. The description.</param>
-        public PluginInfo(string name, Version version = null, string description = null)
+        /// <param name="tags">Optional. The tags.</param>
+        public PluginInfo(string name, string version = null, string description = null, string[] tags = null)
         {
             this.Name = name;
             this.Version = version;
             this.Description = description;
+            this.Tags = tags;
         }
-
-        /// <summary>
-        /// Gets the application name.
-        /// </summary>
-        /// <value>
-        /// The application name.
-        /// </value>
-        public string Name { get; }
 
         /// <summary>
         /// Gets the application version.
@@ -51,7 +43,7 @@ namespace Kephas.Plugins.Reflection
         /// <value>
         /// The application version.
         /// </value>
-        public Version Version { get; }
+        public string Version { get; }
 
         /// <summary>
         /// Gets the plugin description.
@@ -61,39 +53,32 @@ namespace Kephas.Plugins.Reflection
         /// </value>
         public string Description { get; }
 
-        public IEnumerable<IPluginDependency> Dependencies => throw new NotImplementedException();
-
         /// <summary>
-        /// Gets the application full name.
+        /// Gets the tags.
         /// </summary>
         /// <value>
-        /// The application full name.
+        /// The tags.
         /// </value>
-        string IElementInfo.FullName => this.Name;
+        public string[] Tags { get; }
 
         /// <summary>
-        /// Gets the annotations.
+        /// Gets the plugin dependencies.
         /// </summary>
         /// <value>
-        /// The annotations.
+        /// The dependencies.
         /// </value>
-        IEnumerable<object> IElementInfo.Annotations => EmptyAnnotations;
+        public IEnumerable<IPluginDependency> Dependencies { get; } = new List<IPluginDependency>();
 
         /// <summary>
-        /// Gets the declaring container.
+        /// Creates an instance with the provided arguments (if any).
         /// </summary>
-        /// <value>
-        /// The declaring container.
-        /// </value>
-        IElementInfo IElementInfo.DeclaringContainer => null;
-
-        /// <summary>
-        /// Gets the attributes in this collection.
-        /// </summary>
-        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <param name="args">Optional. The arguments.</param>
         /// <returns>
-        /// An enumerator that allows foreach to be used to process the attributes in this collection.
+        /// The new instance.
         /// </returns>
-        IEnumerable<TAttribute> IAttributeProvider.GetAttributes<TAttribute>() => new TAttribute[0];
+        public override object CreateInstance(IEnumerable<object> args = null)
+        {
+            return new Plugin(this);
+        }
     }
 }
