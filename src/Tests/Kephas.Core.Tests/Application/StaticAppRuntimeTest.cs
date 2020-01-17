@@ -59,7 +59,7 @@ namespace Kephas.Core.Tests.Application
 #if NET45
             Assert.AreEqual("net45", appFramework);
 #else
-            Assert.AreEqual("netstandard2.0", appFramework);
+            Assert.AreEqual("netcoreapp1.0", appFramework);
 #endif
         }
     }
