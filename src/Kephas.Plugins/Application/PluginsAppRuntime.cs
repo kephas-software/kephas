@@ -15,7 +15,7 @@ namespace Kephas.Plugins.Application
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Kephas;
+
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.Logging;
