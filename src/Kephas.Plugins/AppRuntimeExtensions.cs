@@ -19,9 +19,9 @@ namespace Kephas.Plugins
     public static class AppRuntimeExtensions
     {
         /// <summary>
-        /// An IAppRuntime extension method that gets plugins folder.
+        /// Gets the folder where the plugins are installed.
         /// </summary>
-        /// <param name="appRuntime">The appRuntime to act on.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <returns>
         /// The plugins folder.
         /// </returns>
@@ -33,6 +33,23 @@ namespace Kephas.Plugins
             }
 
             return appRuntime?[nameof(PluginsAppRuntime.PluginsFolder)] as string;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the plugins are enabled.
+        /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <returns>
+        /// A value indicating whether the plugins are enabled.
+        /// </returns>
+        public static bool PluginsEnabled(this IAppRuntime appRuntime)
+        {
+            if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
+            {
+                return pluginsAppRuntime.EnablePlugins;
+            }
+
+            return (bool?)appRuntime?[nameof(PluginsAppRuntime.EnablePlugins)] ?? false;
         }
     }
 }

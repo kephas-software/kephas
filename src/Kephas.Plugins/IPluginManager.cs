@@ -32,7 +32,7 @@ namespace Kephas.Plugins
         /// <param name="context">Optional. The context.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
-        /// An asynchronous result that yields the operation result.
+        /// An asynchronous result that yields the install operation result.
         /// </returns>
         Task<IOperationResult> InstallPluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default);
 
@@ -43,20 +43,64 @@ namespace Kephas.Plugins
         /// <param name="context">Optional. The context.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
-        /// An asynchronous result that yields the uninstall plugin.
+        /// An asynchronous result that yields the uninstall operation result.
         /// </returns>
         Task<IOperationResult> UninstallPluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Gets the plugins in this collection.
+        /// Initializes the plugin asynchronously.
+        /// </summary>
+        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the initialize operation result.
+        /// </returns>
+        Task<IOperationResult> InitializePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Uninitializes the plugin asynchronously.
+        /// </summary>
+        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the uninitialize operation result.
+        /// </returns>
+        Task<IOperationResult> UninitializePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Enables the plugin asynchronously if the plugin was previously disabled.
+        /// </summary>
+        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the enable operation result.
+        /// </returns>
+        Task<IOperationResult> EnablePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Disables the plugin asynchronously if the plugin was previously enabled.
+        /// </summary>
+        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the enable operation result.
+        /// </returns>
+        Task<IOperationResult> DisablePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Gets the installed plugins.
         /// </summary>
         /// <returns>
-        /// An enumerator that allows foreach to be used to process the plugins in this collection.
+        /// An enumeration of installed plugins.
         /// </returns>
         IEnumerable<IPlugin> GetInstalledPlugins();
 
         /// <summary>
-        /// Gets available plugins asynchronously.
+        /// Gets the plugins available in the package sources asynchronously.
         /// </summary>
         /// <param name="filter">Specifies the filter.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>

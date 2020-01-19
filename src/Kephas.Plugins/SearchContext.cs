@@ -41,6 +41,22 @@ namespace Kephas.Plugins
         /// <value>
         /// True to include prerelease versions, false to ignore them.
         /// </value>
-        public bool IncludePrerelease { get; set; }
+        public bool IncludePrerelease { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the number of packages to skip.
+        /// </summary>
+        /// <value>
+        /// The number of packages to skip.
+        /// </value>
+        public int Skip { get; set; } = 0;
+
+        /// <summary>
+        /// Gets or sets the number of packages to take.
+        /// </summary>
+        /// <value>
+        /// The number of packages to take.
+        /// </value>
+        public int Take { get; set; } = 20;
     }
 }

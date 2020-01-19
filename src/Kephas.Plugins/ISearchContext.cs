@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISearchPluginContext.cs" company="Kephas Software SRL">
+// <copyright file="ISearchContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the ISearchPluginContext interface.
+//   Declares the ISearchContext interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,5 +32,21 @@ namespace Kephas.Plugins
         /// True to include prerelease versions, false to ignore them.
         /// </value>
         bool IncludePrerelease { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of packages to skip.
+        /// </summary>
+        /// <value>
+        /// The number of packages to skip.
+        /// </value>
+        int Skip { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of packages to take.
+        /// </summary>
+        /// <value>
+        /// The number of packages to take.
+        /// </value>
+        int Take { get; set; }
     }
 }

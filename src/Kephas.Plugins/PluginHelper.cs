@@ -52,19 +52,56 @@ namespace Kephas.Plugins
         /// </returns>
         public static PluginState GetPluginState(string pluginLocation)
         {
+            return GetPluginData(pluginLocation).state;
+        }
+
+        /// <summary>
+        /// Gets the installed plugin version.
+        /// </summary>
+        /// <param name="pluginLocation">Pathname of the plugin bin folder.</param>
+        /// <returns>
+        /// The plugin version.
+        /// </returns>
+        public static string GetPluginVersion(string pluginLocation)
+        {
+            return GetPluginData(pluginLocation).version;
+        }
+
+        /// <summary>
+        /// Gets the installed plugin state and version.
+        /// </summary>
+        /// <param name="pluginLocation">Pathname of the plugin bin folder.</param>
+        /// <returns>
+        /// The plugin state and version.
+        /// </returns>
+        public static (PluginState state, string version) GetPluginData(string pluginLocation)
+        {
             var pluginStateFile = Path.Combine(pluginLocation, PluginStateFileName);
             if (!File.Exists(pluginStateFile))
             {
-                return PluginState.None;
+                return (PluginState.None, null);
             }
 
-            var stateString = File.ReadAllText(pluginStateFile);
-            if (Enum.TryParse<PluginState>(stateString, ignoreCase: true, out var state))
+            var pluginDataArray = File.ReadAllText(pluginStateFile)?.Split(new[] { ',' }) ?? new string[0];
+            PluginState state;
+            if (!(pluginDataArray.Length > 0 && Enum.TryParse(pluginDataArray[0], ignoreCase: true, out state)))
             {
-                return state;
+                state = PluginState.Corrupt;
             }
 
-            return PluginState.Corrupt;
+            return (state, pluginDataArray.Length > 1 ? pluginDataArray[1] : null);
+        }
+
+        /// <summary>
+        /// Sets the plugin state, writing the state file in the provided bin folder.
+        /// </summary>
+        /// <param name="pluginLocation">Pathname of the plugin bin folder.</param>
+        /// <param name="state">State of the plugin.</param>
+        /// <param name="version">The plugin version.</param>
+        public static void SetPluginData(string pluginLocation, PluginState state, string version)
+        {
+            var pluginStateFile = Path.Combine(pluginLocation, PluginStateFileName);
+            File.WriteAllText(pluginStateFile, $"{state},{version}");
         }
     }
 }

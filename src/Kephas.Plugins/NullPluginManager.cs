@@ -26,6 +26,34 @@ namespace Kephas.Plugins
     public class NullPluginManager : IPluginManager
     {
         /// <summary>
+        /// Disables the plugin asynchronously if the plugin was previously enabled.
+        /// </summary>
+        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the enable operation result.
+        /// </returns>
+        public Task<IOperationResult> DisablePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+        }
+
+        /// <summary>
+        /// Enables the plugin asynchronously if the plugin was previously disabled.
+        /// </summary>
+        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the enable operation result.
+        /// </returns>
+        public Task<IOperationResult> EnablePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+        }
+
+        /// <summary>
         /// Gets available plugins asynchronously.
         /// </summary>
         /// <param name="filter">Optional. Specifies the filter.</param>
@@ -50,6 +78,20 @@ namespace Kephas.Plugins
         }
 
         /// <summary>
+        /// Initializes the plugin asynchronously.
+        /// </summary>
+        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the initialize operation result.
+        /// </returns>
+        public Task<IOperationResult> InitializePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+        }
+
+        /// <summary>
         /// Installs the plugin asynchronously.
         /// </summary>
         /// <param name="plugin">The plugin identity.</param>
@@ -59,6 +101,20 @@ namespace Kephas.Plugins
         /// An asynchronous result that yields the operation result.
         /// </returns>
         public Task<IOperationResult> InstallPluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+        }
+
+        /// <summary>
+        /// Uninitializes the plugin asynchronously.
+        /// </summary>
+        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the uninitialize operation result.
+        /// </returns>
+        public Task<IOperationResult> UninitializePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
         }

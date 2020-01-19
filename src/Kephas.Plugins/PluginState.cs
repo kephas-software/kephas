@@ -24,7 +24,7 @@ namespace Kephas.Plugins
         /// <summary>
         /// The plugin has been expanded in all folders, it awaits initialization.
         /// </summary>
-        PendingInstall,
+        PendingInitialization,
 
         /// <summary>
         /// The plugin is completely installed and enabled.
@@ -39,7 +39,7 @@ namespace Kephas.Plugins
         /// <summary>
         /// The plugin specific data has been uninstalled, it awaits final removal of folders.
         /// </summary>
-        PendingUninstall,
+        PendingUninitialization,
 
         /// <summary>
         /// The plugin installation is corrupt.

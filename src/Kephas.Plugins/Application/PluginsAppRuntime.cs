@@ -105,7 +105,7 @@ namespace Kephas.Plugins.Application
                     d =>
                     {
                         var pluginState = this.GetPluginState(Path.GetFileName(d), d);
-                        return pluginState == PluginState.PendingInstall || pluginState == PluginState.Enabled;
+                        return pluginState == PluginState.PendingInitialization || pluginState == PluginState.Enabled;
                     }));
             }
 
