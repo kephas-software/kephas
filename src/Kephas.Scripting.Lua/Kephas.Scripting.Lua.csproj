@@ -5,12 +5,12 @@
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>7.2.6</Version>
+        <Version>7.3.0</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <AssemblyVersion>7.2.6.0</AssemblyVersion>
-        <FileVersion>7.2.6.0</FileVersion>
+        <AssemblyVersion>7.3.0.0</AssemblyVersion>
+        <FileVersion>7.3.0.0</FileVersion>
         <Description>Provides the infrastructure for executing LUA scripts.</Description>
         <Copyright>Copyright Kephas Software SRL 2010-2019</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
