@@ -168,7 +168,7 @@ namespace Kephas.Serialization.Json
         private static DefaultJsonSerializerSettingsProvider CreateDefaultInstance()
         {
             var defaultInstance =
-                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Loggable.DefaultLogManager);
+                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), LoggingHelper.DefaultLogManager);
 
             return defaultInstance;
         }

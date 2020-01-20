@@ -677,7 +677,7 @@ namespace Kephas
 
             if (replaceDefault)
             {
-                Loggable.DefaultLogManager = logManager;
+                LoggingHelper.DefaultLogManager = logManager;
             }
 
             ambientServices.Register<ILogManager>(b => b.WithInstance(logManager).ExternallyOwned(false));
