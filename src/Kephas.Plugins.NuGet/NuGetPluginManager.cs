@@ -205,7 +205,7 @@ namespace Kephas.Plugins.NuGet
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var resolverContext = new PackageResolverContext(
-                    DependencyBehavior.Lowest,
+                    this.pluginsSettings.ResolverDependencyBehavior,
                     new[] { plugin.Id },
                     Enumerable.Empty<string>(),
                     Enumerable.Empty<PackageReference>(),

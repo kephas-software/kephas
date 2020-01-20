@@ -10,6 +10,8 @@
 
 namespace Kephas.Plugins.NuGet
 {
+    using global::NuGet.Resolver;
+
     /// <summary>
     /// The plugins settings.
     /// </summary>
@@ -38,5 +40,13 @@ namespace Kephas.Plugins.NuGet
         /// The search term used for identifying plugins.
         /// </value>
         public string SearchTerm { get; set; }
+
+        /// <summary>
+        /// Gets or sets the resolver dependency behavior.
+        /// </summary>
+        /// <value>
+        /// The resolver dependency behavior.
+        /// </value>
+        public DependencyBehavior ResolverDependencyBehavior { get; set; } = DependencyBehavior.Lowest;
     }
 }
