@@ -663,6 +663,12 @@ namespace Kephas.Plugins.NuGet
                     : targetPath.Substring(0, indexSearchTerm + 1) + targetPath.Substring(indexSearchTerm + searchTerm.Length);
             }
 
+            var directory = Path.GetDirectoryName(targetPath);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
             File.Copy(sourceFile, targetPath, overwrite: true);
             return targetPath;
         }
