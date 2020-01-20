@@ -27,19 +27,22 @@ namespace Kephas.Configuration
         /// <summary>
         /// Gets or sets the pathname of the configuration folder.
         /// </summary>
+        /// <remarks>
+        /// If this value is a relative path, it is used relative to the application location as well as all the plugins.
+        /// </remarks>
         /// <value>
         /// The pathname of the configuration folder.
         /// </value>
         public static string ConfigFolder { get; set; } = DefaultConfigFolder;
 
         /// <summary>
-        /// Gets the configuration folder full path.
+        /// Gets the full path of the application configuration folder.
         /// </summary>
         /// <param name="appRuntime">The app runtime to act on.</param>
         /// <returns>
-        /// The configuration folder full path.
+        /// The full path of the application configuration folder.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetConfigFullPath(this IAppRuntime appRuntime) => appRuntime?.GetFullPath(ConfigFolder);
+        public static string GetAppConfigFullPath(this IAppRuntime appRuntime) => appRuntime?.GetFullPath(ConfigFolder);
     }
 }
