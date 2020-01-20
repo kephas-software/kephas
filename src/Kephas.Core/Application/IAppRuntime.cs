@@ -12,6 +12,7 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Net;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -108,5 +109,22 @@ namespace Kephas.Application
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetAppInstanceId(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppInstanceIdKey] as string;
+
+        /// <summary>
+        /// Gets the full path of the file or folder name. If the name is a relative path, it will be made relative to the application location.
+        /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
+        /// <param name="fileName">Name of the file or folder.</param>
+        /// <returns>
+        /// The full path of the file or folder name.
+        /// </returns>
+        public static string GetFullPath(this IAppRuntime appRuntime, string fileName)
+        {
+            return string.IsNullOrEmpty(fileName)
+                ? appRuntime.GetAppLocation()
+                : Path.IsPathRooted(fileName)
+                    ? fileName
+                    : Path.Combine(appRuntime.GetAppLocation(), fileName);
+        }
     }
 }
