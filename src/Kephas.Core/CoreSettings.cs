@@ -25,16 +25,5 @@ namespace Kephas
         /// The task settings.
         /// </value>
         public TaskSettings Task { get; set; } = new TaskSettings();
-
-        /// <summary>
-        /// Gets or sets the pathname of the configuration folder.
-        /// </summary>
-        /// <remarks>
-        /// If the folder refers to a relative path, it is relative to the application location (see <see cref="IAppRuntime.GetAppLocation"/>).
-        /// </remarks>
-        /// <value>
-        /// The pathname of the configuration folder.
-        /// </value>
-        public string ConfigFolder { get; set; } = "Config";
     }
 }
