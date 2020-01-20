@@ -33,6 +33,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Kephas.Application.AspNetCore\Kephas.Application.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Kephas.Application\Kephas.Application.csproj" />
     <ProjectReference Include="..\..\Kephas.Composition.Autofac\Kephas.Composition.Autofac.csproj" />

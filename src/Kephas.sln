@@ -186,6 +186,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Plugins.NuGet", "Kep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.TextProcessing", "Kephas.TextProcessing\Kephas.TextProcessing.csproj", "{8E08ED8D-630B-4FDC-9B87-A71BDCD63D87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.TextProcessing.Tests", "Tests\Kephas.TextProcessing.Tests\Kephas.TextProcessing.Tests.csproj", "{7E0421A4-529B-4CA5-8881-0C2668EA0EDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -504,6 +506,10 @@ Global
 		{8E08ED8D-630B-4FDC-9B87-A71BDCD63D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E08ED8D-630B-4FDC-9B87-A71BDCD63D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E08ED8D-630B-4FDC-9B87-A71BDCD63D87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E0421A4-529B-4CA5-8881-0C2668EA0EDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E0421A4-529B-4CA5-8881-0C2668EA0EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E0421A4-529B-4CA5-8881-0C2668EA0EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E0421A4-529B-4CA5-8881-0C2668EA0EDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -542,6 +548,7 @@ Global
 		{0B937C85-0612-413E-B0C7-3DAAFFF62AFE} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{060279F8-A987-485A-96E0-6DBB96C3AD59} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{C26088F4-086E-4A7A-82D8-0EDF7F0095C0} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{7E0421A4-529B-4CA5-8881-0C2668EA0EDD} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}

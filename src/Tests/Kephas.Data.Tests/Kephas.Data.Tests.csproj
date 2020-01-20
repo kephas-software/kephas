@@ -12,6 +12,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netcoreapp2.2;net45</TargetFrameworks>
@@ -40,14 +40,16 @@
         <PackageReference Include="NUnit" Version="3.12.0" />
         <PackageReference Include="NUnit3TestAdapter" Version="3.15.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\..\Kephas.Configuration.Legacy\Kephas.Configuration.Legacy.csproj" />
+        <ProjectReference Include="..\..\Kephas.TextProcessing\Kephas.TextProcessing.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 
     <ItemGroup>

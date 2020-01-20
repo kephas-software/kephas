@@ -24,6 +24,11 @@
         <None Remove="Data\Install\my-embedded-data.json" />
         <None Remove="Data\my-embedded-data-2.json" />
         <None Remove="Data\my-embedded-data.json" />
+        <None Remove="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
