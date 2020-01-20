@@ -459,10 +459,10 @@ namespace Kephas.Plugins.NuGet
                 var repositoryPathSettings = settings.GetSection("config")?.GetFirstItemWithAttribute<AddItem>("key", "repositoryPath");
                 var repositoryPath = repositoryPathSettings?.Value;
                 var fullRepositoryPath = string.IsNullOrEmpty(repositoryPath)
-                    ? Path.Combine(this.AppRuntime.GetAppLocation(), defaultPackagesFolder)
+                    ? this.AppRuntime.GetFullPath(defaultPackagesFolder)
                     : Path.IsPathRooted(repositoryPath)
                         ? repositoryPath
-                        : Path.GetFullPath(Path.Combine(this.GetSettingsFileFolder(), repositoryPath));
+                        : Path.GetFullPath(Path.Combine(this.GetSettingsFolderPath(), repositoryPath));
                 return fullRepositoryPath;
             }
 
@@ -472,23 +472,16 @@ namespace Kephas.Plugins.NuGet
         }
 
         /// <summary>
-        /// Gets settings file folder.
+        /// Gets the settings folder path.
         /// </summary>
         /// <returns>
-        /// The settings file folder.
+        /// The settings folder path.
         /// </returns>
-        protected virtual string GetSettingsFileFolder()
+        protected virtual string GetSettingsFolderPath()
         {
-            if (!string.IsNullOrEmpty(this.pluginsSettings.NuGetConfigPath))
-            {
-                return this.pluginsSettings.NuGetConfigPath;
-            }
-
-            return string.IsNullOrEmpty(this.coreSettings.ConfigFolder)
-                ? this.AppRuntime.GetAppLocation()
-                : Path.IsPathRooted(this.coreSettings.ConfigFolder)
-                    ? this.coreSettings.ConfigFolder
-                    : Path.Combine(this.AppRuntime.GetAppLocation(), this.coreSettings.ConfigFolder);
+            return string.IsNullOrEmpty(this.pluginsSettings.NuGetConfigPath)
+                ? this.AppRuntime.GetAppConfigFullPath()
+                : this.AppRuntime.GetFullPath(this.pluginsSettings.NuGetConfigPath);
         }
 
         /// <summary>
@@ -501,7 +494,7 @@ namespace Kephas.Plugins.NuGet
         {
             if (this.settings == null)
             {
-                string root = this.GetSettingsFileFolder();
+                string root = this.GetSettingsFolderPath();
                 this.settings = new Settings(root);
             }
 
