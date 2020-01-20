@@ -19,7 +19,7 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
         <copyright>Copyright © Kephas Software SRL 2010-2020</copyright>
-        <tags>kephas plugins nuget</tags>
+        <tags>kephas plugins endpoints</tags>
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
             <group targetFramework=".NETFramework4.5">
