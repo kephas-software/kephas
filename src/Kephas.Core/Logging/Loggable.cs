@@ -21,15 +21,13 @@ namespace Kephas.Logging
     /// </summary>
     public class Loggable : ILoggable
     {
-        private static ILogManager logManager = new NullLogManager();
-
         private Lazy<ILogger> lazyLogger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
         public Loggable()
-            : this(() => DefaultLogManager)
+            : this(() => LoggingHelper.DefaultLogManager)
         {
         }
 
@@ -80,22 +78,6 @@ namespace Kephas.Logging
             this.lazyLogger = new Lazy<ILogger>(
                 () => logManagerGetter?.Invoke()?.GetLogger(this.GetType())
                         ?? LoggingExtensions.GetLogger(this, null));
-        }
-
-        /// <summary>
-        /// Gets or sets the default manager for log.
-        /// </summary>
-        /// <value>
-        /// The default log manager.
-        /// </value>
-        public static ILogManager DefaultLogManager
-        {
-            get => logManager;
-            set
-            {
-                Requires.NotNull(value, nameof(value));
-                logManager = value;
-            }
         }
 
         /// <summary>
