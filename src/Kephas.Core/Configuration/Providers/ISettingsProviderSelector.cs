@@ -11,6 +11,7 @@
 namespace Kephas.Configuration.Providers
 {
     using System;
+    using System.Collections.Generic;
 
     using Kephas.Services;
 
@@ -21,12 +22,12 @@ namespace Kephas.Configuration.Providers
     public interface ISettingsProviderSelector
     {
         /// <summary>
-        /// Tries to get the provider handling a specific settings type.
+        /// Tries to get the providers handling a specific settings type.
         /// </summary>
         /// <param name="settingsType">Type of the settings.</param>
         /// <returns>
-        /// The provider or <c>null</c>.
+        /// An enumeration of providers.
         /// </returns>
-        ISettingsProvider TryGetProvider(Type settingsType);
+        IEnumerable<ISettingsProvider> TryGetProviders(Type settingsType);
     }
 }

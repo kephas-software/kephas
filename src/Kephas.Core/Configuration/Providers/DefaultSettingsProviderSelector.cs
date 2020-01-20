@@ -15,7 +15,6 @@ namespace Kephas.Configuration.Providers
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas;
     using Kephas.Composition;
     using Kephas.Configuration.Providers.Composition;
     using Kephas.Diagnostics.Contracts;
@@ -30,7 +29,7 @@ namespace Kephas.Configuration.Providers
     public class DefaultSettingsProviderSelector : Loggable, ISettingsProviderSelector
     {
         private readonly IOrderedServiceFactoryCollection<ISettingsProvider, SettingsProviderMetadata> providerFactories;
-        private readonly ConcurrentDictionary<Type, ISettingsProvider> providersMap = new ConcurrentDictionary<Type, ISettingsProvider>();
+        private readonly ConcurrentDictionary<Type, IEnumerable<ISettingsProvider>> providersMap = new ConcurrentDictionary<Type, IEnumerable<ISettingsProvider>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultSettingsProviderSelector"/> class.
@@ -50,40 +49,46 @@ namespace Kephas.Configuration.Providers
         /// <returns>
         /// The provider.
         /// </returns>
-        public ISettingsProvider TryGetProvider(Type settingsType)
+        public IEnumerable<ISettingsProvider> TryGetProviders(Type settingsType)
         {
-            return this.providersMap.GetOrAdd(settingsType, _ => this.ComputeConfigurationProvider(settingsType));
+            return this.providersMap.GetOrAdd(settingsType, _ => this.ComputeConfigurationProviders(settingsType).ToArray());
         }
 
         /// <summary>
-        /// Calculates the settings provider.
+        /// Calculates the settings providers.
         /// </summary>
         /// <exception cref="NotSupportedException">Thrown when the requested operation is not supported.</exception>
         /// <param name="settingsType">Type of the settings.</param>
         /// <returns>
         /// The calculated settings provider.
         /// </returns>
-        private ISettingsProvider ComputeConfigurationProvider(Type settingsType)
+        private IEnumerable<ISettingsProvider> ComputeConfigurationProviders(Type settingsType)
         {
             var orderedFactories = this.providerFactories;
 
-            var factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType == settingsType);
-            if (factory == null)
+            var exists = false;
+            foreach (var factory in orderedFactories.Where(f => f.Metadata.SettingsType == settingsType))
             {
-                factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType?.IsAssignableFrom(settingsType) ?? false);
-                if (factory == null)
-                {
-                    factory = orderedFactories.FirstOrDefault(f => f.Metadata.SettingsType == null);
-                }
+                exists = true;
+                yield return factory.CreateExportedValue();
             }
 
-            if (factory == null)
+            foreach (var factory in orderedFactories.Where(f => f.Metadata.SettingsType?.IsAssignableFrom(settingsType) ?? false))
+            {
+                exists = true;
+                yield return factory.CreateExportedValue();
+            }
+
+            foreach (var factory in orderedFactories.Where(f => f.Metadata.SettingsType == null))
+            {
+                exists = true;
+                yield return factory.CreateExportedValue();
+            }
+
+            if (!exists)
             {
                 this.Logger.Warn(Strings.SettingsProviderSelector_NoProviderFoundForSettingsType, settingsType);
-                return null;
             }
-
-            return factory.CreateExportedValue();
         }
     }
 }

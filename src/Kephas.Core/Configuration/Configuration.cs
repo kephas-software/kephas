@@ -48,10 +48,17 @@ namespace Kephas.Configuration
 
         private TSettings ComputeSettings()
         {
-            var settingsProvider = this.settingsProviderSelector.TryGetProvider(typeof(TSettings));
-            if (settingsProvider != null)
+            var settingsProviders = this.settingsProviderSelector.TryGetProviders(typeof(TSettings));
+            if (settingsProviders != null)
             {
-                return (TSettings)settingsProvider.GetSettings(typeof(TSettings));
+                foreach (var settingsProvider in settingsProviders)
+                {
+                    var settings = (TSettings)settingsProvider.GetSettings(typeof(TSettings));
+                    if (settings != null)
+                    {
+                        return settings;
+                    }
+                }
             }
 
             return new TSettings();

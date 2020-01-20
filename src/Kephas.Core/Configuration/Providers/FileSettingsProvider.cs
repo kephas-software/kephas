@@ -30,8 +30,7 @@ namespace Kephas.Configuration.Providers
     /// <summary>
     /// A file settings provider.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
-    [OverridePriority(Priority.Low)]
+    [ProcessingPriority(Priority.BelowNormal)]
     public class FileSettingsProvider : Loggable, ISettingsProvider
     {
         private readonly IAppRuntime appRuntime;
@@ -69,7 +68,7 @@ namespace Kephas.Configuration.Providers
             if (filePath == null)
             {
                 this.Logger.Warn(result.Exceptions.First().Message);
-                return settingsType.AsRuntimeTypeInfo().CreateInstance();
+                return null;
             }
 
             this.Logger.Debug(result.Messages.First().Message);
