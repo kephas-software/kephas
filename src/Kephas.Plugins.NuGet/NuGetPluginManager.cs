@@ -174,6 +174,9 @@ namespace Kephas.Plugins.NuGet
                 throw new InvalidOperationException($"Plugin {plugin} is already installed. State: '{state}', version: '{version}'.");
             }
 
+            IPluginInfo pluginInfo = null;
+            IPlugin pluginData = null;
+
             var repositories = this.GetSourceRepositories();
             using (var cacheContext = new SourceCacheContext())
             {
@@ -227,6 +230,8 @@ namespace Kephas.Plugins.NuGet
                 // get the right casing of the package ID, the provided casing might not be the right one.
                 pluginPackageIdentity = dependenciesToInstall.FirstOrDefault(d => d.Equals(pluginPackageIdentity)) ?? pluginPackageIdentity;
 
+                pluginInfo = new PluginInfo(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
+
                 var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsFolder(), pluginPackageIdentity.Id);
                 if (!Directory.Exists(pluginFolder))
                 {
@@ -241,11 +246,16 @@ namespace Kephas.Plugins.NuGet
                 }
 
                 PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, pluginPackageIdentity.Version.ToString());
+
+                pluginData = new Plugin(pluginInfo) { FolderPath = pluginFolder };
             }
 
             this.Logger.Info("Plugin {plugin} successfully installed, awaiting initialization.", plugin);
 
-            return new OperationResult().MergeMessage($"Plugin {plugin} successfully installed, awaiting initialization.");
+            var result = new OperationResult().MergeMessage($"Plugin {plugin} successfully installed, awaiting initialization.");
+            result["Plugin"] = pluginData;
+
+            return result;
         }
 
         /// <summary>

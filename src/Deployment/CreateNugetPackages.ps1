@@ -43,6 +43,7 @@ $paths = @(
     "..\Kephas.Npgsql",
     "..\Kephas.Orchestration",
     "..\Kephas.Plugins",
+    "..\Kephas.Plugins.Endpoints",
     "..\Kephas.Plugins.NuGet",
     "..\Kephas.Redis",
     "..\Kephas.Scheduling",
