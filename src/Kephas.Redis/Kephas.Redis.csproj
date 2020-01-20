@@ -14,7 +14,7 @@
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
         <Description>Provides the infrastructure for Redis connectivity.</Description>
-        <Copyright>Copyright Kephas Software SRL 2010-2019</Copyright>
+        <Copyright>Copyright © Kephas Software SRL 2010-2020</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>

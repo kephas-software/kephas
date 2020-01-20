@@ -20,7 +20,7 @@
         <iconUrl>http://kephas-framework.com/favicon.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <license type="expression">MIT</license>
-        <copyright>Copyright Kephas Software SRL 2010-2019</copyright>
+        <copyright>Copyright © Kephas Software SRL 2010-2020</copyright>
         <tags>kephas logging serilog</tags>
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>

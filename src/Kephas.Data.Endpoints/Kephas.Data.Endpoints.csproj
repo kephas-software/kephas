@@ -11,7 +11,7 @@
         <Product>Kephas Framework</Product>
         <AssemblyVersion>7.3.0.0</AssemblyVersion>
         <FileVersion>7.3.0.0</FileVersion>
-        <Copyright>Copyright © Kephas Software SRL 2010-2019</Copyright>
+        <Copyright>Copyright © Kephas Software SRL 2010-2020</Copyright>
         <Description>Provides the endpoints for the data flow.</Description>
         <Version>7.3.0</Version>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>

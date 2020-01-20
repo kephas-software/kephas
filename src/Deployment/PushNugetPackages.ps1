@@ -35,6 +35,7 @@ $packages = @(
     "Kephas.Npgsql",
     "Kephas.Orchestration",
     "Kephas.Plugins",
+    "Kephas.Plugins.NuGet",
     "Kephas.Redis",
     "Kephas.Scheduling",
 #    "Kephas.Scheduling.Quartz",
