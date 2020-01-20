@@ -11,17 +11,16 @@
 namespace Kephas.Plugins.Reflection
 {
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
 
-    using Kephas.Reflection;
     using Kephas.Reflection.Dynamic;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Information about the plugin.
     /// </summary>
     public class PluginInfo : DynamicTypeInfo, IPluginInfo
     {
+        private PluginIdentity identity;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginInfo"/> class.
         /// </summary>
@@ -35,6 +34,7 @@ namespace Kephas.Plugins.Reflection
             this.Version = version;
             this.Description = description;
             this.Tags = tags;
+            this.identity = new PluginIdentity(name, version);
         }
 
         /// <summary>
@@ -70,6 +70,14 @@ namespace Kephas.Plugins.Reflection
         public IEnumerable<IPluginDependency> Dependencies { get; } = new List<IPluginDependency>();
 
         /// <summary>
+        /// Gets the identity.
+        /// </summary>
+        /// <returns>
+        /// The identity.
+        /// </returns>
+        public PluginIdentity GetIdentity() => this.identity;
+
+        /// <summary>
         /// Creates an instance with the provided arguments (if any).
         /// </summary>
         /// <param name="args">Optional. The arguments.</param>
@@ -79,6 +87,17 @@ namespace Kephas.Plugins.Reflection
         public override object CreateInstance(IEnumerable<object> args = null)
         {
             return new Plugin(this);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.GetIdentity().ToString();
         }
     }
 }

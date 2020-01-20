@@ -58,7 +58,7 @@ namespace Kephas.Plugins.Endpoints
 
             return new GetAvailablePluginsResponseMessage
                 {
-                    Plugins = plugins.Select(p => $"{p.Name} {p.Version}").ToArray(),
+                    Plugins = plugins.Select(p => p.GetIdentity()).ToArray(),
                 };
         }
     }

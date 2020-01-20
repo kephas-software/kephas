@@ -50,5 +50,13 @@ namespace Kephas.Plugins.Reflection
         /// The dependencies.
         /// </value>
         IEnumerable<IPluginDependency> Dependencies { get; }
+
+        /// <summary>
+        /// Gets the identity.
+        /// </summary>
+        /// <returns>
+        /// The identity.
+        /// </returns>
+        PluginIdentity GetIdentity();
     }
 }

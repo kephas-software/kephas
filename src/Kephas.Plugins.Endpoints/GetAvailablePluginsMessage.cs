@@ -38,7 +38,7 @@ namespace Kephas.Plugins.Endpoints
         /// True if include prerelease, false if not.
         /// </value>
         [Display(Description = "Optional. Value indicating whether the prerelease packages should be included.")]
-        public bool IncludePrerelease { get; set; }
+        public bool IncludePrerelease { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the number of packages to skip.
@@ -70,6 +70,6 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The plugins.
         /// </value>
-        public string[] Plugins { get; set; }
+        public PluginIdentity[] Plugins { get; set; }
     }
 }

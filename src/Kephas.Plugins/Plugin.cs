@@ -23,7 +23,6 @@ namespace Kephas.Plugins
     public class Plugin : Expando, IPlugin
     {
         private readonly IPluginInfo pluginInfo;
-        private readonly PluginIdentity identity;
         private PluginState? state;
 
         /// <summary>
@@ -35,7 +34,6 @@ namespace Kephas.Plugins
             Requires.NotNull(pluginInfo, nameof(pluginInfo));
 
             this.pluginInfo = pluginInfo;
-            this.identity = new PluginIdentity(this.pluginInfo.Name, this.pluginInfo.Version);
         }
 
         /// <summary>
@@ -72,7 +70,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// The identity.
         /// </returns>
-        public PluginIdentity GetIdentity() => this.identity;
+        public PluginIdentity GetIdentity() => this.pluginInfo.GetIdentity();
 
         /// <summary>
         /// Gets the type information for this instance.
@@ -98,7 +96,7 @@ namespace Kephas.Plugins
         /// </returns>
         public override string ToString()
         {
-            return this.GetIdentity().ToString();
+            return $"{this.pluginInfo.GetIdentity()} ({this.State})";
         }
     }
 }
