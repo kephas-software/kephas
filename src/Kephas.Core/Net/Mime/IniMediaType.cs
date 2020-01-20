@@ -14,6 +14,7 @@ namespace Kephas.Net.Mime
     /// Marker class for the INI format.
     /// </summary>
     [SupportedMediaTypes(new[] { MediaTypeNames.Text.Ini })]
+    [SupportedFileExtensions(new[] { "ini" })]
     public class IniMediaType : IMediaType
     {
     }

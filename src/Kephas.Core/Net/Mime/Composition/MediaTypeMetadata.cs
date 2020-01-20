@@ -34,20 +34,23 @@ namespace Kephas.Net.Mime.Composition
             }
 
             this.SupportedMediaTypes = (string[])metadata.TryGetValue(nameof(this.SupportedMediaTypes));
+            this.SupportedFileExtensions = (string[])metadata.TryGetValue(nameof(this.SupportedFileExtensions));
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeMetadata" /> class.
         /// </summary>
         /// <param name="supportedMediaTypes">The supported media types.</param>
+        /// <param name="supportedFileExtensions">Optional. The supported file extensions.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public MediaTypeMetadata(string[] supportedMediaTypes, int processingPriority = 0, int overridePriority = 0)
+        public MediaTypeMetadata(string[] supportedMediaTypes, string[] supportedFileExtensions = null, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             Requires.NotNull(supportedMediaTypes, nameof(supportedMediaTypes));
 
             this.SupportedMediaTypes = supportedMediaTypes;
+            this.SupportedFileExtensions = supportedFileExtensions;
         }
 
         /// <summary>
@@ -57,5 +60,13 @@ namespace Kephas.Net.Mime.Composition
         /// The supported data formats.
         /// </value>
         public string[] SupportedMediaTypes { get; }
+
+        /// <summary>
+        /// Gets the supported file extensions.
+        /// </summary>
+        /// <value>
+        /// The supported file extensions.
+        /// </value>
+        public string[] SupportedFileExtensions { get; }
     }
 }

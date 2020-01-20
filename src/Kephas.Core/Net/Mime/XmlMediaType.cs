@@ -14,6 +14,7 @@ namespace Kephas.Net.Mime
     /// Marker class for XML format.
     /// </summary>
     [SupportedMediaTypes(new[] { MediaTypeNames.Application.Xml, MediaTypeNames.Text.Xml })]
+    [SupportedFileExtensions(new[] { "xml" })]
     public sealed class XmlMediaType : IMediaType
     {
     }

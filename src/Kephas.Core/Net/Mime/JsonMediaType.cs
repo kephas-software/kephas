@@ -14,6 +14,7 @@ namespace Kephas.Net.Mime
     /// Marker class for JSON format.
     /// </summary>
     [SupportedMediaTypes(new[] { MediaTypeNames.Application.Json })]
+    [SupportedFileExtensions(new[] { "json" })]
     public sealed class JsonMediaType : IMediaType
     {
     }
