@@ -15,6 +15,7 @@ namespace Kephas.Configuration.Providers
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.ExceptionHandling;
@@ -24,10 +25,13 @@ namespace Kephas.Configuration.Providers
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Serialization;
+    using Kephas.Services;
 
     /// <summary>
     /// A file settings provider.
     /// </summary>
+    [ProcessingPriority(Priority.Low)]
+    [OverridePriority(Priority.Low)]
     public class FileSettingsProvider : Loggable, ISettingsProvider
     {
         private readonly IAppRuntime appRuntime;
