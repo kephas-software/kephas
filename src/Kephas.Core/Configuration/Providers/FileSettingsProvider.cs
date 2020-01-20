@@ -97,7 +97,7 @@ namespace Kephas.Configuration.Providers
                     if (filePath != null)
                     {
                         result.MergeMessage($"Configuration file {fileName} found as '{filePath}'.");
-                        return (filePath, result, mediaType.GetType());
+                        return (filePath, result, mediaType.Value.GetType());
                     }
                 }
             }
