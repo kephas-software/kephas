@@ -95,6 +95,8 @@ namespace Kephas.Application
             this.appLocation = appLocation;
 
             this.InitializeAppProperties(Assembly.GetEntryAssembly(), appId, appInstanceId, appVersion);
+
+            AppDomain.CurrentDomain.AssemblyResolve += (s, e) => this.HandleAssemblyResolve(s as AppDomain ?? AppDomain.CurrentDomain, e);
         }
 
         /// <summary>
@@ -243,6 +245,63 @@ namespace Kephas.Application
         }
 
         /// <summary>
+        /// Handles the assembly resolve event.
+        /// </summary>
+        /// <param name="appDomain">The application domain.</param>
+        /// <param name="args">Resolve event information.</param>
+        /// <returns>
+        /// The resolved assembly -or- <c>null</c>.
+        /// </returns>
+        protected virtual Assembly HandleAssemblyResolve(AppDomain appDomain, ResolveEventArgs args)
+        {
+            var assemblyFullName = args.Name;
+            if (!this.IsCodeAssembly(assemblyFullName))
+            {
+                return null;
+            }
+
+            var appAssemblies = appDomain.GetAssemblies();
+            var assembly = appAssemblies.FirstOrDefault(a => a.FullName == assemblyFullName);
+            if (assembly == null)
+            {
+                var assemblyName = new AssemblyName(args.Name);
+                var name = assemblyName.Name;
+                var version = assemblyName.Version;
+                var publicKeyToken = assemblyName.GetPublicKeyToken();
+                assembly = appAssemblies.FirstOrDefault(a => this.IsAssemblyMatch(a.GetName(), name, version, publicKeyToken));
+            }
+
+            return assembly;
+        }
+
+        /// <summary>
+        /// Query if the assembly name matches the provided values.
+        /// </summary>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="version">The version.</param>
+        /// <param name="publicKeyToken">The public key token.</param>
+        /// <returns>
+        /// True if assembly match, false if not.
+        /// </returns>
+        protected virtual bool IsAssemblyMatch(AssemblyName assemblyName, string name, Version version, byte[] publicKeyToken)
+        {
+            return assemblyName.Name == name && EqualArray(assemblyName.GetPublicKeyToken(), publicKeyToken);
+        }
+
+        /// <summary>
+        /// Query if 'assemblyName' is a code assembly.
+        /// </summary>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <returns>
+        /// True if code assembly, false if not.
+        /// </returns>
+        protected virtual bool IsCodeAssembly(string assemblyName)
+        {
+            return !assemblyName.Contains(".resources,");
+        }
+
+        /// <summary>
         /// Gets the application's underlying framework name.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
@@ -361,6 +420,34 @@ namespace Kephas.Application
             }
 
             return assemblies;
+        }
+
+        private static bool EqualArray(byte[] s1, byte[] s2)
+        {
+            if (s1 == null)
+            {
+                return s2 == null;
+            }
+
+            if (s2 == null)
+            {
+                return false;
+            }
+
+            if (s1.Length != s2.Length)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < s1.Length; i++)
+            {
+                if (s1[i] != s2[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
