@@ -70,7 +70,7 @@ namespace Kephas.Data.Commands
             Exception exception = null;
             var sb = new StringBuilder();
 
-            var elapsed = await Profiler.WithStopwatchAsync(
+            var opResult = await Profiler.WithStopwatchAsync(
                 async () =>
                     {
                         try
@@ -120,21 +120,21 @@ namespace Kephas.Data.Commands
                     $"{nameof(PersistChangesCommand)}.{nameof(this.ExecuteAsync)}",
                     exception.Message,
                     operationContext.DataContext.Id,
-                    elapsed,
+                    opResult.Elapsed,
                     changes,
                     operationContext.Iteration,
                     sb);
                 throw exception;
             }
 
-            if (elapsed.TotalMilliseconds > 1000)
+            if (opResult.Elapsed.TotalMilliseconds > 1000)
             {
                 this.Logger.Warn(
                     "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, change count: {changeCount}, iteration count: #{iterationCount}, trace: '{opTrace}'",
                     $"{nameof(PersistChangesCommand)}.{nameof(this.ExecuteAsync)}",
                     "Elapsed time more than 1s",
                     operationContext.DataContext.Id,
-                    elapsed,
+                    opResult.Elapsed,
                     changes,
                     operationContext.Iteration,
                     sb);
@@ -146,7 +146,7 @@ namespace Kephas.Data.Commands
                     $"{nameof(PersistChangesCommand)}.{nameof(this.ExecuteAsync)}",
                     "Success",
                     operationContext.DataContext.Id,
-                    elapsed,
+                    opResult.Elapsed,
                     changes,
                     operationContext.Iteration,
                     sb);

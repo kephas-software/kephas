@@ -134,7 +134,7 @@ namespace Kephas.Data.MongoDB.Commands
             BulkWriteResult<T> saveResult = null;
             Exception exception = null;
 
-            var elapsed = await Profiler.WithStopwatchAsync(async () =>
+            var opResult = await Profiler.WithStopwatchAsync(async () =>
             {
                 try
                 {
@@ -155,18 +155,18 @@ namespace Kephas.Data.MongoDB.Commands
                     $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}",
                     exception.Message,
                     operationContext.DataContext.Id,
-                    elapsed);
+                    opResult.Elapsed);
                 throw exception;
             }
 
-            if (elapsed.TotalMilliseconds > 1000)
+            if (opResult.Elapsed.TotalMilliseconds > 1000)
             {
                 this.Logger.Warn(
                     "{operation}: {message}, data context ID: {dataContextId}, elapsed: {elapsed}, inserted: {inserted}, modified: {modified}, deleted: {deleted}.",
                     $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}",
                     "Elapsed time more than 1s",
                     operationContext.DataContext.Id,
-                    elapsed,
+                    opResult.Elapsed,
                     saveResult.InsertedCount,
                     saveResult.ModifiedCount,
                     saveResult.DeletedCount);
@@ -180,7 +180,7 @@ namespace Kephas.Data.MongoDB.Commands
                         $"{nameof(MongoPersistChangesCommand)}.{nameof(this.BulkWriteAsync)}",
                         "Success",
                         operationContext.DataContext.Id,
-                        elapsed,
+                        opResult.Elapsed,
                         saveResult.InsertedCount,
                         saveResult.ModifiedCount,
                         saveResult.DeletedCount);

@@ -82,6 +82,44 @@ namespace Kephas.Operations
     public static class OperationResultExtensions
     {
         /// <summary>
+        /// Sets the elapsed time to the provided one.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="result">The result.</param>
+        /// <param name="elapsed">The elapsed time.</param>
+        /// <returns>
+        /// The provided result.
+        /// </returns>
+        public static TResult Elapsed<TResult>(this TResult result, TimeSpan elapsed)
+            where TResult : class, IOperationResult
+        {
+            Requires.NotNull(result, nameof(result));
+
+            result.Elapsed = elapsed;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets the operation state to the provided one.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="result">The result.</param>
+        /// <param name="state">The operation state.</param>
+        /// <returns>
+        /// The provided result.
+        /// </returns>
+        public static TResult OperationState<TResult>(this TResult result, OperationState state)
+            where TResult : class, IOperationResult
+        {
+            Requires.NotNull(result, nameof(result));
+
+            result.OperationState = state;
+
+            return result;
+        }
+
+        /// <summary>
         /// Merges the exception.
         /// </summary>
         /// <typeparam name="TResult">Type of the result.</typeparam>

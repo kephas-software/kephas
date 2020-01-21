@@ -12,6 +12,7 @@ namespace Kephas.Data.IO.Tests.Setup
 {
     using System.Collections.Generic;
     using System.IO;
+
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Data.IO.DataStreams;
@@ -57,6 +58,18 @@ namespace Kephas.Data.IO.Tests.Setup
             }
 
             /// <summary>
+            /// Creates a data source for the import operation.
+            /// </summary>
+            /// <param name="dataFilePath">The data file path.</param>
+            /// <returns>
+            /// The new data source.
+            /// </returns>
+            public new DataStream CreateDataSource(string dataFilePath)
+            {
+                return base.CreateDataSource(dataFilePath);
+            }
+
+            /// <summary>
             /// Gets the data files to be imported.
             /// </summary>
             /// <returns>
@@ -77,18 +90,6 @@ namespace Kephas.Data.IO.Tests.Setup
             protected override IEnumerable<string> GetUninstallDataFilePaths()
             {
                 return this.uninstallFilePaths;
-            }
-
-            /// <summary>
-            /// Creates a data source for the import operation.
-            /// </summary>
-            /// <param name="dataFilePath">The data file path.</param>
-            /// <returns>
-            /// The new data source.
-            /// </returns>
-            public new DataStream CreateDataSource(string dataFilePath)
-            {
-                return base.CreateDataSource(dataFilePath);
             }
         }
     }

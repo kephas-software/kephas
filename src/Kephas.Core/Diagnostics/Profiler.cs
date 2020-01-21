@@ -16,6 +16,7 @@ namespace Kephas.Diagnostics
     using System.Threading.Tasks;
 
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -32,7 +33,7 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static TimeSpan WithWarningStopwatch(
+        public static IOperationResult WithWarningStopwatch(
             Action action,
             ILogger logger = null,
             [CallerMemberName] string memberName = null)
@@ -49,7 +50,7 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static TimeSpan WithInfoStopwatch(
+        public static IOperationResult WithInfoStopwatch(
             Action action,
             ILogger logger = null,
             [CallerMemberName] string memberName = null)
@@ -66,7 +67,7 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static TimeSpan WithDebugStopwatch(
+        public static IOperationResult WithDebugStopwatch(
             Action action,
             ILogger logger = null,
             [CallerMemberName] string memberName = null)
@@ -83,7 +84,7 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static TimeSpan WithTraceStopwatch(
+        public static IOperationResult WithTraceStopwatch(
             Action action,
             ILogger logger = null,
             [CallerMemberName] string memberName = null)
@@ -101,13 +102,15 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static TimeSpan WithStopwatch(Action action, ILogger logger = null, LogLevel logLevel = LogLevel.Debug, [CallerMemberName] string memberName = null)
+        public static IOperationResult WithStopwatch(Action action, ILogger logger = null, LogLevel logLevel = LogLevel.Debug, [CallerMemberName] string memberName = null)
         {
+            var result = new OperationResult();
             if (action == null)
             {
-                return TimeSpan.Zero;
+                return result.MergeMessage($"No action provided for {memberName}.");
             }
 
+            result.MergeMessage($"{memberName}. Started at: {DateTime.Now:s}.");
             logger?.Log(logLevel, "{operation}. Started at: {startedAt:s}.", memberName, DateTime.Now);
 
             var stopwatch = new Stopwatch();
@@ -115,9 +118,12 @@ namespace Kephas.Diagnostics
             action();
             stopwatch.Stop();
 
+            result.MergeMessage($"{memberName}. Ended at: {DateTime.Now:s}. Elapsed: {stopwatch.Elapsed:c}.")
+                .Elapsed(stopwatch.Elapsed)
+                .OperationState(OperationState.Completed);
             logger?.Log(logLevel, "{operation}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
 
-            return stopwatch.Elapsed;
+            return result;
         }
 
         /// <summary>
@@ -129,7 +135,7 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static Task<TimeSpan> WithWarningStopwatchAsync(
+        public static Task<IOperationResult> WithWarningStopwatchAsync(
             Func<Task> action,
             ILogger logger = null,
             [CallerMemberName] string memberName = null)
@@ -146,7 +152,7 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static Task<TimeSpan> WithInfoStopwatchAsync(
+        public static Task<IOperationResult> WithInfoStopwatchAsync(
             Func<Task> action,
             ILogger logger = null,
             [CallerMemberName] string memberName = null)
@@ -163,7 +169,7 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static Task<TimeSpan> WithDebugStopwatchAsync(
+        public static Task<IOperationResult> WithDebugStopwatchAsync(
             Func<Task> action,
             ILogger logger = null,
             [CallerMemberName] string memberName = null)
@@ -180,7 +186,7 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static Task<TimeSpan> WithTraceStopwatchAsync(
+        public static Task<IOperationResult> WithTraceStopwatchAsync(
             Func<Task> action,
             ILogger logger = null,
             [CallerMemberName] string memberName = null)
@@ -198,13 +204,15 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static async Task<TimeSpan> WithStopwatchAsync(Func<Task> action, ILogger logger = null, LogLevel logLevel = LogLevel.Debug, [CallerMemberName] string memberName = null)
+        public static async Task<IOperationResult> WithStopwatchAsync(Func<Task> action, ILogger logger = null, LogLevel logLevel = LogLevel.Debug, [CallerMemberName] string memberName = null)
         {
+            var result = new OperationResult();
             if (action == null)
             {
-                return TimeSpan.Zero;
+                return result.MergeMessage($"No action provided for {memberName}.");
             }
 
+            result.MergeMessage($"{memberName}. Started at: {DateTime.Now:s}.");
             logger?.Log(logLevel, "{operation}. Started at: {startedAt:s}.", memberName, DateTime.Now);
 
             var stopwatch = new Stopwatch();
@@ -212,9 +220,12 @@ namespace Kephas.Diagnostics
             await action().PreserveThreadContext();
             stopwatch.Stop();
 
+            result.MergeMessage($"{memberName}. Ended at: {DateTime.Now:s}. Elapsed: {stopwatch.Elapsed:c}.")
+                .Elapsed(stopwatch.Elapsed)
+                .OperationState(OperationState.Completed);
             logger?.Log(logLevel, "{operation}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
 
-            return stopwatch.Elapsed;
+            return result;
         }
     }
 }

@@ -122,7 +122,7 @@ namespace Kephas.Data.IO.Tests.Import
             var b1 = this.CreateBehaviorFactory(sb, "b1", Priority.Low);
             var b2 = this.CreateBehaviorFactory(sb, "b2", Priority.High);
 
-            var service = new DefaultDataImportService(ctxFactory, reader, conversionService, resolver, new List<IExportFactory<IDataImportBehavior, AppServiceMetadata>> { b1, b2});
+            var service = new DefaultDataImportService(ctxFactory, reader, conversionService, resolver, new List<IExportFactory<IDataImportBehavior, AppServiceMetadata>> { b1, b2 });
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
                 reader.ReadAsync(dataStream, Arg.Any<IDataIOContext>(), Arg.Any<CancellationToken>())
@@ -183,7 +183,6 @@ namespace Kephas.Data.IO.Tests.Import
                         sb?.Append($"before-persist({name}),");
                         return Task.FromResult(0);
                     });
-
 
             b.AfterPersistEntityAsync(
                 Arg.Any<IEntityEntry>(),

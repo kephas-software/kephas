@@ -105,7 +105,7 @@ namespace Kephas.Data.IO.Import
                 result.OperationState = OperationState.InProgress;
 
                 IOperationResult jobResult = null;
-                var elapsed = await Profiler.WithStopwatchAsync(
+                var opResult = await Profiler.WithStopwatchAsync(
                     async () =>
                     {
                         var job = this.CreateImportJob(dataSource, context, result);
@@ -113,7 +113,7 @@ namespace Kephas.Data.IO.Import
                     }).PreserveThreadContext();
 
                 result.MergeResult(jobResult);
-                result.Elapsed = elapsed;
+                result.Elapsed = opResult.Elapsed;
                 result.OperationState = OperationState.Completed;
                 return result;
             }
