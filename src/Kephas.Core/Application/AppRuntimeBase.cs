@@ -269,6 +269,10 @@ namespace Kephas.Application
                 var version = assemblyName.Version;
                 var publicKeyToken = assemblyName.GetPublicKeyToken();
                 assembly = appAssemblies.FirstOrDefault(a => this.IsAssemblyMatch(a.GetName(), name, version, publicKeyToken));
+                if (assembly != null)
+                {
+                    this.Logger.Warn("Assembly '{assembly}' requested by '{requestingAssembly}' was resolved using {resolvedAssembly}", assemblyFullName, args.RequestingAssembly, assembly);
+                }
             }
 
             return assembly;
