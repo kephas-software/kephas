@@ -28,6 +28,7 @@ namespace Kephas.Plugins.NuGet
     using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Configuration;
+    using Kephas.Diagnostics;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Operations;
@@ -52,7 +53,6 @@ namespace Kephas.Plugins.NuGet
 
         private ISettings settings;
         private PluginsSettings pluginsSettings;
-        private CoreSettings coreSettings;
         private global::NuGet.Common.ILogger nativeLogger;
 
         /// <summary>
@@ -66,7 +66,6 @@ namespace Kephas.Plugins.NuGet
         public NuGetPluginManager(
             IAppRuntime appRuntime,
             IContextFactory contextFactory,
-            IConfiguration<CoreSettings> coreConfig,
             IConfiguration<PluginsSettings> pluginsConfig,
             ILogManager logManager = null)
             : base(logManager)
@@ -75,7 +74,6 @@ namespace Kephas.Plugins.NuGet
             this.ContextFactory = contextFactory;
             this.nativeLogger = new NuGetLogger(this.Logger);
             this.pluginsSettings = pluginsConfig.Settings;
-            this.coreSettings = coreConfig.Settings;
         }
 
         /// <summary>
@@ -177,85 +175,88 @@ namespace Kephas.Plugins.NuGet
             IPluginInfo pluginInfo = null;
             IPlugin pluginData = null;
 
-            var repositories = this.GetSourceRepositories();
-            using (var cacheContext = new SourceCacheContext())
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var packagesFolder = this.GetPackagesFolder();
-
-                var pluginPackageIdentity = this.ToPackageIdentity(plugin);
-                var downloadResult = await this.DownloadPackageAsync(pluginPackageIdentity, packagesFolder, repositories, cacheContext, cancellationToken).PreserveThreadContext();
-                if (downloadResult.Status != DownloadResourceResultStatus.Available)
+            var result = await Profiler.WithInfoStopwatchAsync(
+                async () =>
                 {
-                    throw new InvalidOperationException($"Plugin package {pluginPackageIdentity} not available ({downloadResult.Status}).");
-                }
+                    var repositories = this.GetSourceRepositories();
+                    using (var cacheContext = new SourceCacheContext())
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
 
-                var currentFramework = this.AppRuntime.GetAppFramework();
-                var nugetFramework = NuGetFramework.ParseFolder(currentFramework);
-                var dependencies = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
-                await this.GetPackageDependenciesAsync(
-                    pluginPackageIdentity,
-                    nugetFramework,
-                    cacheContext,
-                    this.nativeLogger,
-                    repositories,
-                    dependencies).PreserveThreadContext();
+                        var packagesFolder = this.GetPackagesFolder();
 
-                cancellationToken.ThrowIfCancellationRequested();
+                        var pluginPackageIdentity = this.ToPackageIdentity(plugin);
+                        var downloadResult = await this.DownloadPackageAsync(pluginPackageIdentity, packagesFolder, repositories, cacheContext, cancellationToken).PreserveThreadContext();
+                        if (downloadResult.Status != DownloadResourceResultStatus.Available)
+                        {
+                            throw new InvalidOperationException($"Plugin package {pluginPackageIdentity} not available ({downloadResult.Status}).");
+                        }
 
-                var resolverContext = new PackageResolverContext(
-                    this.pluginsSettings.ResolverDependencyBehavior,
-                    new[] { plugin.Id },
-                    Enumerable.Empty<string>(),
-                    Enumerable.Empty<PackageReference>(),
-                    Enumerable.Empty<PackageIdentity>(),
-                    dependencies,
-                    repositories.Select(s => s.PackageSource),
-                    this.nativeLogger);
+                        var currentFramework = this.AppRuntime.GetAppFramework();
+                        var nugetFramework = NuGetFramework.ParseFolder(currentFramework);
+                        var dependencies = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
+                        await this.GetPackageDependenciesAsync(
+                            pluginPackageIdentity,
+                            nugetFramework,
+                            cacheContext,
+                            this.nativeLogger,
+                            repositories,
+                            dependencies).PreserveThreadContext();
 
-                var resolver = new PackageResolver();
-                var dependenciesToInstall = resolver.Resolve(resolverContext, cancellationToken)
-                    .Select(p => dependencies.Single(x => PackageIdentityComparer.Default.Equals(x, p)));
+                        cancellationToken.ThrowIfCancellationRequested();
 
-                cancellationToken.ThrowIfCancellationRequested();
+                        var resolverContext = new PackageResolverContext(
+                            this.pluginsSettings.ResolverDependencyBehavior,
+                            new[] { plugin.Id },
+                            Enumerable.Empty<string>(),
+                            Enumerable.Empty<PackageReference>(),
+                            Enumerable.Empty<PackageIdentity>(),
+                            dependencies,
+                            repositories.Select(s => s.PackageSource),
+                            this.nativeLogger);
 
-                var packageReaders = await this.GetPackageReadersAsync(
-                    repositories,
-                    cacheContext,
-                    packagesFolder,
-                    dependenciesToInstall,
-                    cancellationToken).PreserveThreadContext();
+                        var resolver = new PackageResolver();
+                        var dependenciesToInstall = resolver.Resolve(resolverContext, cancellationToken)
+                            .Select(p => dependencies.Single(x => PackageIdentityComparer.Default.Equals(x, p)));
 
-                // get the right casing of the package ID, the provided casing might not be the right one.
-                pluginPackageIdentity = dependenciesToInstall.FirstOrDefault(d => d.Equals(pluginPackageIdentity)) ?? pluginPackageIdentity;
+                        cancellationToken.ThrowIfCancellationRequested();
 
-                pluginInfo = new PluginInfo(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
+                        var packageReaders = await this.GetPackageReadersAsync(
+                            repositories,
+                            cacheContext,
+                            packagesFolder,
+                            dependenciesToInstall,
+                            cancellationToken).PreserveThreadContext();
 
-                var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsFolder(), pluginPackageIdentity.Id);
-                if (!Directory.Exists(pluginFolder))
-                {
-                    Directory.CreateDirectory(pluginFolder);
-                }
+                        // get the right casing of the package ID, the provided casing might not be the right one.
+                        pluginPackageIdentity = dependenciesToInstall.FirstOrDefault(d => d.Equals(pluginPackageIdentity)) ?? pluginPackageIdentity;
 
-                var frameworkReducer = new FrameworkReducer();
-                foreach (var packageReader in packageReaders)
-                {
-                    await this.InstallPluginBinAsync(plugin, context, nugetFramework, pluginFolder, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
-                    await this.InstallPluginContentAsync(plugin, context, nugetFramework, pluginFolder, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
-                }
+                        pluginInfo = new PluginInfo(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
 
-                PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, pluginPackageIdentity.Version.ToString());
+                        var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsFolder(), pluginPackageIdentity.Id);
+                        if (!Directory.Exists(pluginFolder))
+                        {
+                            Directory.CreateDirectory(pluginFolder);
+                        }
 
-                pluginData = new Plugin(pluginInfo) { FolderPath = pluginFolder };
-            }
+                        var frameworkReducer = new FrameworkReducer();
+                        foreach (var packageReader in packageReaders)
+                        {
+                            await this.InstallPluginBinAsync(plugin, context, nugetFramework, pluginFolder, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
+                            await this.InstallPluginContentAsync(plugin, context, nugetFramework, pluginFolder, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
+                        }
 
-            this.Logger.Info("Plugin {plugin} successfully installed, awaiting initialization.", plugin);
+                        PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, pluginPackageIdentity.Version.ToString());
 
-            var result = new OperationResult().MergeMessage($"Plugin {plugin} successfully installed, awaiting initialization.");
+                        pluginData = new Plugin(pluginInfo) { FolderPath = pluginFolder };
+                    }
+                }).PreserveThreadContext();
+
             result["Plugin"] = pluginData;
 
-            return result;
+            this.Logger.Info("Plugin {plugin} successfully installed, awaiting initialization. Elapsed: {elapsed:c}.", plugin, result.Elapsed);
+
+            return result.MergeMessage($"Plugin {plugin} successfully installed, awaiting initialization. Elapsed: {result.Elapsed:c}.");
         }
 
         /// <summary>
@@ -270,26 +271,32 @@ namespace Kephas.Plugins.NuGet
         public virtual async Task<IOperationResult> UninstallPluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
         {
             this.AssertPluginsDisabled();
-            var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
-            if (state == PluginState.None)
-            {
-                throw new InvalidOperationException($"Plugin {plugin} is already uninstalled.");
-            }
 
-            if (state == PluginState.Enabled || state == PluginState.Disabled)
-            {
-                var result = await this.UninitializePluginAsync(plugin, context, cancellationToken).PreserveThreadContext();
-                if (result.HasErrors())
+            var result = await Profiler.WithInfoStopwatchAsync(
+                async () =>
                 {
-                    return result;
-                }
-            }
+                    var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
+                    if (state == PluginState.None)
+                    {
+                        throw new InvalidOperationException($"Plugin {plugin} is already uninstalled.");
+                    }
 
-            Directory.Delete(pluginFolder, recursive: true);
+                    if (state == PluginState.Enabled || state == PluginState.Disabled)
+                    {
+                        var uninitResult = await this.UninitializePluginAsync(plugin, context, cancellationToken).PreserveThreadContext();
+                        if (uninitResult.HasErrors())
+                        {
+                            throw new AggregateException(uninitResult.Exceptions);
+                        }
+                    }
 
-            this.Logger.Info("Plugin {plugin} successfully uninstalled.", plugin);
+                    Directory.Delete(pluginFolder, recursive: true);
+                }).PreserveThreadContext();
 
-            return new OperationResult().MergeMessage($"Plugin {plugin} successfully uninstalled.");
+
+            this.Logger.Info("Plugin {plugin} successfully uninstalled. Elapsed: {elapsed:c}.", plugin, result.Elapsed);
+
+            return result.MergeMessage($"Plugin {plugin} successfully uninstalled. Elapsed: {result.Elapsed:c}.");
         }
 
         /// <summary>
@@ -305,19 +312,23 @@ namespace Kephas.Plugins.NuGet
         {
             this.AssertPluginsDisabled();
 
-            var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
-            if (state != PluginState.PendingInitialization)
-            {
-                throw new InvalidOperationException($"Cannot initialize plugin {plugin} while in state '{state}'.");
-            }
+            var result = await Profiler.WithInfoStopwatchAsync(
+                async () =>
+                {
+                    var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
+                    if (state != PluginState.PendingInitialization)
+                    {
+                        throw new InvalidOperationException($"Cannot initialize plugin {plugin} while in state '{state}'.");
+                    }
 
-            await this.InitializePluginDataAsync(plugin, context, cancellationToken).PreserveThreadContext();
+                    await this.InitializePluginDataAsync(plugin, context, cancellationToken).PreserveThreadContext();
 
-            PluginHelper.SetPluginData(pluginFolder, PluginState.Enabled, version);
+                    PluginHelper.SetPluginData(pluginFolder, PluginState.Enabled, version);
+                }).PreserveThreadContext();
 
-            this.Logger.Info("Plugin {plugin} successfully initialized.", plugin);
+            this.Logger.Info("Plugin {plugin} successfully initialized. Elapsed: {elapsed:c}.", plugin, result.Elapsed);
 
-            return new OperationResult().MergeMessage($"Plugin {plugin} successfully initialized.");
+            return result.MergeMessage($"Plugin {plugin} successfully initialized. Elapsed: {result.Elapsed:c}.");
         }
 
         /// <summary>
@@ -333,19 +344,23 @@ namespace Kephas.Plugins.NuGet
         {
             this.AssertPluginsDisabled();
 
-            var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
-            if (state != PluginState.Enabled && state != PluginState.Disabled)
-            {
-                throw new InvalidOperationException($"Cannot uninitialize plugin {plugin} while in state '{state}'.");
-            }
+            var result = await Profiler.WithInfoStopwatchAsync(
+                async () =>
+                {
+                    var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
+                    if (state != PluginState.Enabled && state != PluginState.Disabled)
+                    {
+                        throw new InvalidOperationException($"Cannot uninitialize plugin {plugin} while in state '{state}'.");
+                    }
 
-            await this.UninitializePluginDataAsync(plugin, context, cancellationToken).PreserveThreadContext();
+                    await this.UninitializePluginDataAsync(plugin, context, cancellationToken).PreserveThreadContext();
 
-            PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, version);
+                    PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, version);
+                }).PreserveThreadContext();
 
-            this.Logger.Info("Plugin {plugin} successfully uninitialized.", plugin);
+            this.Logger.Info("Plugin {plugin} successfully uninitialized. Elapsed: {elapsed:c}.", plugin, result.Elapsed);
 
-            return new OperationResult().MergeMessage($"Plugin {plugin} successfully uninitialized.");
+            return result.MergeMessage($"Plugin {plugin} successfully uninitialized. Elapsed: {result.Elapsed:c}.");
         }
 
         /// <summary>
@@ -361,17 +376,21 @@ namespace Kephas.Plugins.NuGet
         {
             this.AssertPluginsDisabled();
 
-            var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
-            if (state != PluginState.Disabled)
-            {
-                throw new InvalidOperationException($"Cannot enable plugin {plugin} while in state '{state}'.");
-            }
+            var result = Profiler.WithInfoStopwatch(
+                () =>
+                {
+                    var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
+                    if (state != PluginState.Disabled)
+                    {
+                        throw new InvalidOperationException($"Cannot enable plugin {plugin} while in state '{state}'.");
+                    }
 
-            PluginHelper.SetPluginData(pluginFolder, PluginState.Enabled, version);
+                    PluginHelper.SetPluginData(pluginFolder, PluginState.Enabled, version);
+                });
 
-            this.Logger.Info("Plugin {plugin} successfully enabled.", plugin);
+            this.Logger.Info("Plugin {plugin} successfully enabled. Elapsed: {elapsed:c}.", plugin, result.Elapsed);
 
-            return new OperationResult().MergeMessage($"Plugin {plugin} successfully enabled.");
+            return result.MergeMessage($"Plugin {plugin} successfully enabled. Elapsed: {result.Elapsed:c}.");
         }
 
         /// <summary>
@@ -387,17 +406,21 @@ namespace Kephas.Plugins.NuGet
         {
             this.AssertPluginsDisabled();
 
-            var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
-            if (state != PluginState.Enabled)
-            {
-                throw new InvalidOperationException($"Cannot disable plugin {plugin} while in state '{state}'.");
-            }
+            var result = Profiler.WithInfoStopwatch(
+                () =>
+                {
+                    var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
+                    if (state != PluginState.Enabled)
+                    {
+                        throw new InvalidOperationException($"Cannot disable plugin {plugin} while in state '{state}'.");
+                    }
 
-            PluginHelper.SetPluginData(pluginFolder, PluginState.Disabled, version);
+                    PluginHelper.SetPluginData(pluginFolder, PluginState.Disabled, version);
+                });
 
-            this.Logger.Warn("Plugin {plugin} successfully disabled.", plugin);
+            this.Logger.Warn("Plugin {plugin} successfully disabled. Elapsed: {elapsed:c}.", plugin, result.Elapsed);
 
-            return new OperationResult().MergeMessage($"Plugin {plugin} successfully disabled.");
+            return result.MergeMessage($"Plugin {plugin} successfully disabled. Elapsed: {result.Elapsed:c}.");
         }
 
         /// <summary>

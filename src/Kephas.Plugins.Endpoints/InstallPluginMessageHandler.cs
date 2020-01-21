@@ -58,11 +58,11 @@ namespace Kephas.Plugins.Endpoints
             var pluginId = plugin?.GetTypeInfo().Name ?? message.Id;
             var pluginVersion = plugin?.GetTypeInfo().Version ?? message.Version;
 
-            this.appContext.Logger.Info("Plugin {plugin} {version} installed in {pluginPath}.", pluginId, pluginVersion, plugin?.FolderPath);
+            this.appContext.Logger.Info("Plugin {plugin} {version} installed in {pluginPath}. Elapsed: {elapsed:c}.", pluginId, pluginVersion, plugin?.FolderPath, result.Elapsed);
 
             return new ResponseMessage
                 {
-                    Message = $"Plugin {pluginId} ({pluginVersion}) installed in {plugin?.FolderPath}.",
+                    Message = $"Plugin {pluginId} ({pluginVersion}) installed in {plugin?.FolderPath}. Elapsed: {result.Elapsed:c}.",
                 };
         }
     }
