@@ -183,53 +183,10 @@ namespace Kephas.Plugins.NuGet
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        var packagesFolder = this.GetPackagesFolder();
-
-                        var pluginPackageIdentity = this.ToPackageIdentity(plugin);
-                        var downloadResult = await this.DownloadPackageAsync(pluginPackageIdentity, packagesFolder, repositories, cacheContext, cancellationToken).PreserveThreadContext();
-                        if (downloadResult.Status != DownloadResourceResultStatus.Available)
-                        {
-                            throw new InvalidOperationException($"Plugin package {pluginPackageIdentity} not available ({downloadResult.Status}).");
-                        }
-
                         var currentFramework = this.AppRuntime.GetAppFramework();
                         var nugetFramework = NuGetFramework.ParseFolder(currentFramework);
-                        var dependencies = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
-                        await this.GetPackageDependenciesAsync(
-                            pluginPackageIdentity,
-                            nugetFramework,
-                            cacheContext,
-                            this.nativeLogger,
-                            repositories,
-                            dependencies).PreserveThreadContext();
 
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        var resolverContext = new PackageResolverContext(
-                            this.pluginsSettings.ResolverDependencyBehavior,
-                            new[] { plugin.Id },
-                            Enumerable.Empty<string>(),
-                            Enumerable.Empty<PackageReference>(),
-                            Enumerable.Empty<PackageIdentity>(),
-                            dependencies,
-                            repositories.Select(s => s.PackageSource),
-                            this.nativeLogger);
-
-                        var resolver = new PackageResolver();
-                        var dependenciesToInstall = resolver.Resolve(resolverContext, cancellationToken)
-                            .Select(p => dependencies.Single(x => PackageIdentityComparer.Default.Equals(x, p)));
-
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        var packageReaders = await this.GetPackageReadersAsync(
-                            repositories,
-                            cacheContext,
-                            packagesFolder,
-                            dependenciesToInstall,
-                            cancellationToken).PreserveThreadContext();
-
-                        // get the right casing of the package ID, the provided casing might not be the right one.
-                        pluginPackageIdentity = dependenciesToInstall.FirstOrDefault(d => d.Equals(pluginPackageIdentity)) ?? pluginPackageIdentity;
+                        var (pluginPackageIdentity, packageReaders) = await this.GetPackageReadersAsync(plugin, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
 
                         pluginInfo = new PluginInfo(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
 
@@ -239,14 +196,22 @@ namespace Kephas.Plugins.NuGet
                             Directory.CreateDirectory(pluginFolder);
                         }
 
-                        var frameworkReducer = new FrameworkReducer();
-                        foreach (var packageReader in packageReaders)
+                        try
                         {
-                            await this.InstallPluginBinAsync(plugin, context, nugetFramework, pluginFolder, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
-                            await this.InstallPluginContentAsync(plugin, context, nugetFramework, pluginFolder, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
-                        }
+                            var frameworkReducer = new FrameworkReducer();
+                            foreach (var packageReader in packageReaders)
+                            {
+                                await this.InstallPluginBinAsync(plugin, context, nugetFramework, pluginFolder, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
+                                await this.InstallPluginContentAsync(plugin, context, nugetFramework, pluginFolder, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
+                            }
 
-                        PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, pluginPackageIdentity.Version.ToString());
+                            PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, pluginPackageIdentity.Version.ToString());
+                        }
+                        catch
+                        {
+                            Directory.Delete(pluginFolder, recursive: true);
+                            throw;
+                        }
 
                         pluginData = new Plugin(pluginInfo) { FolderPath = pluginFolder };
                     }
@@ -321,9 +286,17 @@ namespace Kephas.Plugins.NuGet
                         throw new InvalidOperationException($"Cannot initialize plugin {plugin} while in state '{state}'.");
                     }
 
-                    await this.InitializePluginDataAsync(plugin, context, cancellationToken).PreserveThreadContext();
+                    try
+                    {
+                        await this.InitializePluginDataAsync(plugin, context, cancellationToken).PreserveThreadContext();
 
-                    PluginHelper.SetPluginData(pluginFolder, PluginState.Enabled, version);
+                        PluginHelper.SetPluginData(pluginFolder, PluginState.Enabled, version);
+                    }
+                    catch
+                    {
+                        PluginHelper.SetPluginData(pluginFolder, PluginState.Corrupt, version);
+                        throw;
+                    }
                 }).PreserveThreadContext();
 
             this.Logger.Info("Plugin {plugin} successfully initialized. Elapsed: {elapsed:c}.", plugin, result.Elapsed);
@@ -353,9 +326,17 @@ namespace Kephas.Plugins.NuGet
                         throw new InvalidOperationException($"Cannot uninitialize plugin {plugin} while in state '{state}'.");
                     }
 
-                    await this.UninitializePluginDataAsync(plugin, context, cancellationToken).PreserveThreadContext();
+                    try
+                    {
+                        await this.UninitializePluginDataAsync(plugin, context, cancellationToken).PreserveThreadContext();
 
-                    PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, version);
+                        PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, version);
+                    }
+                    catch
+                    {
+                        PluginHelper.SetPluginData(pluginFolder, PluginState.Corrupt, version);
+                        throw;
+                    }
                 }).PreserveThreadContext();
 
             this.Logger.Info("Plugin {plugin} successfully uninitialized. Elapsed: {elapsed:c}.", plugin, result.Elapsed);
@@ -677,6 +658,56 @@ namespace Kephas.Plugins.NuGet
             {
                 Directory.Delete(contentFolder, recursive: true);
             }
+        }
+
+        private async Task<(PackageIdentity pluginPackageIdentity, IList<PackageReaderBase> packageReaders)> GetPackageReadersAsync(PluginIdentity plugin, IList<SourceRepository> repositories, SourceCacheContext cacheContext, NuGetFramework nugetFramework, CancellationToken cancellationToken)
+        {
+            var packagesFolder = this.GetPackagesFolder();
+
+            var pluginPackageIdentity = this.ToPackageIdentity(plugin);
+            var downloadResult = await this.DownloadPackageAsync(pluginPackageIdentity, packagesFolder, repositories, cacheContext, cancellationToken).PreserveThreadContext();
+            if (downloadResult.Status != DownloadResourceResultStatus.Available)
+            {
+                throw new InvalidOperationException($"Plugin package {pluginPackageIdentity} not available ({downloadResult.Status}).");
+            }
+
+            var dependencies = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
+            await this.GetPackageDependenciesAsync(
+                pluginPackageIdentity,
+                nugetFramework,
+                cacheContext,
+                this.nativeLogger,
+                repositories,
+                dependencies).PreserveThreadContext();
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var resolverContext = new PackageResolverContext(
+                this.pluginsSettings.ResolverDependencyBehavior,
+                new[] { plugin.Id },
+                Enumerable.Empty<string>(),
+                Enumerable.Empty<PackageReference>(),
+                Enumerable.Empty<PackageIdentity>(),
+                dependencies,
+                repositories.Select(s => s.PackageSource),
+                this.nativeLogger);
+
+            var resolver = new PackageResolver();
+            var dependenciesToInstall = resolver.Resolve(resolverContext, cancellationToken)
+                .Select(p => dependencies.Single(x => PackageIdentityComparer.Default.Equals(x, p)));
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var packageReaders = await this.GetPackageReadersAsync(
+                repositories,
+                cacheContext,
+                packagesFolder,
+                dependenciesToInstall,
+                cancellationToken).PreserveThreadContext();
+
+            // get the right casing of the package ID, the provided casing might not be the right one.
+            pluginPackageIdentity = dependenciesToInstall.FirstOrDefault(d => d.Equals(pluginPackageIdentity)) ?? pluginPackageIdentity;
+            return (pluginPackageIdentity, packageReaders);
         }
 
         private string ExtractPackageFile(string sourceFile, string targetPath, string subFolder, bool flatten)
