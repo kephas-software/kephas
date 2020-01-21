@@ -334,7 +334,7 @@ namespace Kephas.Plugins.NuGet
             this.AssertPluginsDisabled();
 
             var (pluginFolder, state, version) = this.GetInstalledPluginData(plugin);
-            if (state != PluginState.Enabled || state != PluginState.Disabled)
+            if (state != PluginState.Enabled && state != PluginState.Disabled)
             {
                 throw new InvalidOperationException($"Cannot uninitialize plugin {plugin} while in state '{state}'.");
             }
@@ -647,6 +647,12 @@ namespace Kephas.Plugins.NuGet
             if (!(contentItem?.HasEmptyFolder ?? true))
             {
                 await packageReader.CopyFilesAsync(pluginFolder, contentItem.Items, (src, target, stream) => this.ExtractPackageFile(src, target, contentFolderName, flatten: false), this.nativeLogger, cancellationToken).PreserveThreadContext();
+            }
+
+            var contentFolder = Path.Combine(pluginFolder, contentFolderName);
+            if (Directory.Exists(contentFolder))
+            {
+                Directory.Delete(contentFolder, recursive: true);
             }
         }
 
