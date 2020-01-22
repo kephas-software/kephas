@@ -19,6 +19,7 @@ namespace Kephas.Data.LLBLGen
     using Kephas.Data.Commands.Factory;
     using Kephas.Data.Linq;
     using Kephas.Data.LLBLGen.Entities;
+    using Kephas.Data.LLBLGen.Linq;
     using Kephas.Data.Store;
     using Kephas.Model;
 

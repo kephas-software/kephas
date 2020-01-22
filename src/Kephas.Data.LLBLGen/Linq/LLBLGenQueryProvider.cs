@@ -1,20 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="LLBLGenQueryProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
 //   Implements the llbl generate query provider class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.LLBLGen
+namespace Kephas.Data.LLBLGen.Linq
 {
     using System;
     using System.Linq;
 
     using Kephas.Data;
     using Kephas.Data.Linq;
-
     using SD.LLBLGen.Pro.ORMSupportClasses;
 
     /// <summary>

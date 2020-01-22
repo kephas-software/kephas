@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Data.LLBLGen
+namespace Kephas.Data.LLBLGen.Linq
 {
     using System;
 
