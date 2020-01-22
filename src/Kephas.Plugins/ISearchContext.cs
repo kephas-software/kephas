@@ -10,6 +10,7 @@
 
 namespace Kephas.Plugins
 {
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
     /// <summary>
@@ -48,5 +49,87 @@ namespace Kephas.Plugins
         /// The number of packages to take.
         /// </value>
         int Take { get; set; }
+    }
+
+    /// <summary>
+    /// A search context extensions.
+    /// </summary>
+    public static class SearchContextExtensions
+    {
+        /// <summary>
+        /// Sets the search term.
+        /// </summary>
+        /// <typeparam name="TContext">Actual type of the search operation context.</typeparam>
+        /// <param name="searchContext">The search context.</param>
+        /// <param name="searchTerm">The search term.</param>
+        /// <returns>
+        /// This <paramref name="searchContext"/>.
+        /// </returns>
+        public static TContext SearchTerm<TContext>(this TContext searchContext, string searchTerm)
+            where TContext : class, ISearchContext
+        {
+            Requires.NotNull(searchContext, nameof(searchContext));
+
+            searchContext.SearchTerm = searchTerm;
+
+            return searchContext;
+        }
+
+        /// <summary>
+        /// Sets a value indicating whether to include prerelease versions in the results.
+        /// </summary>
+        /// <typeparam name="TContext">Actual type of the search operation context.</typeparam>
+        /// <param name="searchContext">The search context.</param>
+        /// <param name="includePrerelease">True to include prerelease versions, false otherwise.</param>
+        /// <returns>
+        /// This <paramref name="searchContext"/>.
+        /// </returns>
+        public static TContext IncludePrerelease<TContext>(this TContext searchContext, bool includePrerelease)
+            where TContext : class, ISearchContext
+        {
+            Requires.NotNull(searchContext, nameof(searchContext));
+
+            searchContext.IncludePrerelease = includePrerelease;
+
+            return searchContext;
+        }
+
+        /// <summary>
+        /// Sets the number of results to skip.
+        /// </summary>
+        /// <typeparam name="TContext">Actual type of the search operation context.</typeparam>
+        /// <param name="searchContext">The search context.</param>
+        /// <param name="skip">The number of results to skip.</param>
+        /// <returns>
+        /// This <paramref name="searchContext"/>.
+        /// </returns>
+        public static TContext Skip<TContext>(this TContext searchContext, int skip)
+            where TContext : class, ISearchContext
+        {
+            Requires.NotNull(searchContext, nameof(searchContext));
+
+            searchContext.Skip = skip;
+
+            return searchContext;
+        }
+
+        /// <summary>
+        /// Sets the number of results to take.
+        /// </summary>
+        /// <typeparam name="TContext">Actual type of the search operation context.</typeparam>
+        /// <param name="searchContext">The search context.</param>
+        /// <param name="take">The number of results to take.</param>
+        /// <returns>
+        /// This <paramref name="searchContext"/>.
+        /// </returns>
+        public static TContext Take<TContext>(this TContext searchContext, int take)
+            where TContext : class, ISearchContext
+        {
+            Requires.NotNull(searchContext, nameof(searchContext));
+
+            searchContext.Take = take;
+
+            return searchContext;
+        }
     }
 }

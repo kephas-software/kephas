@@ -50,11 +50,16 @@ namespace Kephas.Plugins.Endpoints
         /// </returns>
         public override async Task<GetAvailablePluginsResponseMessage> ProcessAsync(GetAvailablePluginsMessage message, IMessagingContext context, CancellationToken token)
         {
-            this.appContext.Logger.Info("Retrieving {count} packages for {search}...", message.Take, message.SearchTerm);
+            this.appContext.Logger.Info("Retrieving {count} packages for {search}...", message.Take, message.SearchTerm ?? "<all>");
 
-            var plugins = await this.pluginManager.GetAvailablePluginsAsync(f => { f.SearchTerm = message.SearchTerm; f.IncludePrerelease = message.IncludePrerelease; }, cancellationToken: token).PreserveThreadContext();
+            var plugins = await this.pluginManager.GetAvailablePluginsAsync(
+                f => f.SearchTerm(message.SearchTerm)
+                      .IncludePrerelease(message.IncludePrerelease)
+                      .Skip(message.Skip)
+                      .Take(message.Take),
+                cancellationToken: token).PreserveThreadContext();
 
-            this.appContext.Logger.Info("Retrieved {count} packages for {search}...", plugins.Count(), message.SearchTerm);
+            this.appContext.Logger.Info("Retrieved {count} packages for {search}...", plugins.Count(), message.SearchTerm ?? "<all>");
 
             return new GetAvailablePluginsResponseMessage
                 {
