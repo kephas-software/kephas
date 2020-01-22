@@ -59,5 +59,10 @@ namespace Kephas.Data.Store
         /// An enum constant representing the maria database option.
         /// </summary>
         MariaDB,
+
+        /// <summary>
+        /// An enum constant representing the SharePoint option.
+        /// </summary>
+        SharePoint,
     }
 }
