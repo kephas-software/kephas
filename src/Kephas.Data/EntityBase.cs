@@ -51,7 +51,7 @@ namespace Kephas.Data
         /// Initializes a new instance of the <see cref="EntityBase"/> class.
         /// </summary>
         /// <param name="innerDictionary">The inner dictionary.</param>
-        private EntityBase(IDictionary<string, object> innerDictionary)
+        protected EntityBase(IDictionary<string, object> innerDictionary)
             : base(innerDictionary)
         {
             this.values = innerDictionary;
