@@ -1,32 +1,31 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EventMessageHandlerSelector.cs" company="Kephas Software SRL">
+// <copyright file="DefaultMessageHandlerProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the event message handler selector class.
+//   Implements the default message handler provider class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.HandlerSelectors
+namespace Kephas.Messaging.HandlerProviders
 {
     using System;
 
-    using Kephas.Messaging.Events;
+    using Kephas.Messaging;
     using Kephas.Services;
 
     /// <summary>
-    /// Strategy service for selecting message handlers for events.
+    /// A default message handler provider.
     /// </summary>
-    [ProcessingPriority(Priority.Low)]
-    public class EventMessageHandlerSelector : MessageHandlerSelectorBase
+    [ProcessingPriority(Priority.Lowest)]
+    public class DefaultMessageHandlerProvider : SingleMessageHandlerProviderBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EventMessageHandlerSelector"/> class.
+        /// Initializes a new instance of the <see cref="DefaultMessageHandlerProvider"/> class.
         /// </summary>
         /// <param name="messageMatchService">The message match service.</param>
-        public EventMessageHandlerSelector(
-            IMessageMatchService messageMatchService)
+        public DefaultMessageHandlerProvider(IMessageMatchService messageMatchService)
             : base(messageMatchService)
         {
         }
@@ -42,8 +41,7 @@ namespace Kephas.Messaging.HandlerSelectors
         /// </returns>
         public override bool CanHandle(Type envelopeType, Type messageType, object messageId)
         {
-            return typeof(IEvent).IsAssignableFrom(messageType)
-                || typeof(IEvent).IsAssignableFrom(envelopeType);
+            return true;
         }
     }
 }

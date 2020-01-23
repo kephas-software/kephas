@@ -14,11 +14,12 @@ namespace Kephas.Messaging
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging.Composition;
-    using Kephas.Messaging.HandlerSelectors;
+    using Kephas.Messaging.HandlerProviders;
     using Kephas.Services;
     using Kephas.Services.Composition;
 
@@ -28,7 +29,7 @@ namespace Kephas.Messaging
     [OverridePriority(Priority.Low)]
     public class DefaultMessageHandlerRegistry : IMessageHandlerRegistry
     {
-        private readonly IList<IMessageHandlerSelector> handlerSelectors;
+        private readonly IList<IMessageHandlerProvider> handlerProviders;
         private readonly ConcurrentDictionary<string, (Type envelopeType, Type messageType, object messageId, Func<IEnumerable<IMessageHandler>> factory)> handlerFactories
             = new ConcurrentDictionary<string, (Type envelopeType, Type messageType, object messageId, Func<IEnumerable<IMessageHandler>> factory)>();
 
@@ -40,18 +41,18 @@ namespace Kephas.Messaging
         /// Initializes a new instance of the <see cref="DefaultMessageHandlerRegistry"/> class.
         /// </summary>
         /// <param name="messageMatchService">The message match service.</param>
-        /// <param name="handlerSelectorFactories">The handler selector factories.</param>
+        /// <param name="handlerProviderFactories">The handler provider factories.</param>
         /// <param name="handlerFactories">The handler factories.</param>
         public DefaultMessageHandlerRegistry(
             IMessageMatchService messageMatchService,
-            IList<IExportFactory<IMessageHandlerSelector, AppServiceMetadata>> handlerSelectorFactories,
+            IList<IExportFactory<IMessageHandlerProvider, AppServiceMetadata>> handlerProviderFactories,
             IList<IExportFactory<IMessageHandler, MessageHandlerMetadata>> handlerFactories)
         {
             Requires.NotNull(messageMatchService, nameof(messageMatchService));
-            Requires.NotNull(handlerSelectorFactories, nameof(handlerSelectorFactories));
+            Requires.NotNull(handlerProviderFactories, nameof(handlerProviderFactories));
             Requires.NotNull(handlerFactories, nameof(handlerFactories));
 
-            this.handlerSelectors = handlerSelectorFactories
+            this.handlerProviders = handlerProviderFactories
                 .Order()
                 .Select(f => f.CreateExportedValue())
                 .ToList();
@@ -90,13 +91,13 @@ namespace Kephas.Messaging
             var messageId = this.messageMatchService.GetMessageId(message);
             var (_, _, _, messageHandlersFactory) = this.handlerFactories.GetOrAdd($"{envelopeType}/{messageType}/{messageId}", _ =>
             {
-                var handlerSelector = this.handlerSelectors.FirstOrDefault(s => s.CanHandle(envelopeType, messageType, messageId));
-                if (handlerSelector == null)
+                var handlerProvider = this.handlerProviders.FirstOrDefault(s => s.CanHandle(envelopeType, messageType, messageId));
+                if (handlerProvider == null)
                 {
                     return (envelopeType, messageType, messageId, () => null);
                 }
 
-                return (envelopeType, messageType, messageId, handlerSelector.GetHandlersFactory(this.handlerRegistry, envelopeType, messageType, messageId));
+                return (envelopeType, messageType, messageId, handlerProvider.GetHandlersFactory(this.handlerRegistry, envelopeType, messageType, messageId));
             });
 
             var handlers = messageHandlersFactory();

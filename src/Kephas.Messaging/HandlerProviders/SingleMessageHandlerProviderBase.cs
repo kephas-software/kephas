@@ -1,14 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SingleMessageHandlerSelectorBase.cs" company="Kephas Software SRL">
+// <copyright file="SingleMessageHandlerProviderBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the single message handler selector base class.
+//   Implements the single message handler provider base class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.HandlerSelectors
+namespace Kephas.Messaging.HandlerProviders
 {
     using System;
     using System.Collections.Generic;
@@ -16,19 +16,20 @@ namespace Kephas.Messaging.HandlerSelectors
     using System.Reflection;
 
     using Kephas.Composition;
+    using Kephas.Messaging;
     using Kephas.Messaging.Composition;
     using Kephas.Messaging.Resources;
 
     /// <summary>
-    /// Base class for message handler selectors requiring a single handler per message type.
+    /// Base class for message handler providers requiring a single handler per message type.
     /// </summary>
-    public abstract class SingleMessageHandlerSelectorBase : MessageHandlerSelectorBase
+    public abstract class SingleMessageHandlerProviderBase : MessageHandlerProviderBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SingleMessageHandlerSelectorBase"/> class.
+        /// Initializes a new instance of the <see cref="SingleMessageHandlerProviderBase"/> class.
         /// </summary>
         /// <param name="messageMatchService">The message match service.</param>
-        protected SingleMessageHandlerSelectorBase(IMessageMatchService messageMatchService)
+        protected SingleMessageHandlerProviderBase(IMessageMatchService messageMatchService)
             : base(messageMatchService)
         {
         }
@@ -50,7 +51,7 @@ namespace Kephas.Messaging.HandlerSelectors
             Type messageType,
             object messageId)
         {
-            var orderedFactories = this.GetOrderedMessageHandlerFactories(handlerFactories, envelopeType, messageType, messageId);
+            var orderedFactories = GetOrderedMessageHandlerFactories(handlerFactories, envelopeType, messageType, messageId);
 
             if (orderedFactories.Count == 0)
             {

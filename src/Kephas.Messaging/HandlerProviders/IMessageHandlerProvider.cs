@@ -1,26 +1,27 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMessageHandlerSelector.cs" company="Kephas Software SRL">
+// <copyright file="IMessageHandlerProvider.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IMessageHandlerSelector interface.
+//   Declares the IMessageHandlerProvider interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.HandlerSelectors
+namespace Kephas.Messaging.HandlerProviders
 {
     using System;
     using System.Collections.Generic;
+
     using Kephas.Composition;
     using Kephas.Messaging.Composition;
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for message handler selector.
+    /// Interface for message handler provider.
     /// </summary>
     [SingletonAppServiceContract(AllowMultiple = true)]
-    public interface IMessageHandlerSelector
+    public interface IMessageHandlerProvider
     {
         /// <summary>
         /// Indicates whether the selector can handle the indicated message type.
