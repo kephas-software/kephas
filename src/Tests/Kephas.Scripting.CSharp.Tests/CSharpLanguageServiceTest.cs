@@ -14,6 +14,7 @@ namespace Kephas.Scripting.CSharp.Tests
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.Scripting;
     using NUnit.Framework;
 
     [TestFixture]

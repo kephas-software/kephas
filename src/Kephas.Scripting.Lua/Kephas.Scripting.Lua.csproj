@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;netstandard2.0;net45</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -32,6 +32,14 @@
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Kephas.Scripting.Lua.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_1</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
+        <DefineConstants>NETSTANDARD2_1</DefineConstants>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
         <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
@@ -40,11 +48,11 @@
         <DefineConstants>NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
         <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
         <DefineConstants>NET45</DefineConstants>
     </PropertyGroup>
 

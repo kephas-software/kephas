@@ -29,7 +29,11 @@ namespace Kephas.Scripting.Python
     /// A Python language service.
     /// </summary>
     [Language(Language, LanguageAlt)]
-    public class PythonLanguageService : ILanguageService, ISyncLanguageService
+    public class PythonLanguageService : ILanguageService
+#if NETSTANDARD2_1
+#else
+        , ISyncLanguageService
+#endif
     {
         /// <summary>
         /// The language identifier.

@@ -34,10 +34,19 @@
                 <dependency id="Microsoft.CSharp" version="4.6.0" exclude="Build,Analyzers" />
                 <dependency id="NeoLua" version="1.3.11" exclude="Build,Analyzers" />
             </group>
+            <group targetFramework=".NETStandard2.1">
+                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.CSharp" version="4.6.0" exclude="Build,Analyzers" />
+                <dependency id="NeoLua" version="1.3.11" exclude="Build,Analyzers" />
+            </group>
         </dependencies>
     </metadata>
     <files>
         <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.1\Kephas.Scripting.Lua.dll" target="lib\netstandard2.1" />
+        <file src="bin\$configuration$\netstandard2.1\Kephas.Scripting.Lua.pdb" target="lib\netstandard2.1" />
+        <file src="bin\$configuration$\netstandard2.1\Kephas.Scripting.Lua.xml" target="lib\netstandard2.1" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.Lua.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.Lua.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.Lua.xml" target="lib\netstandard2.0" />

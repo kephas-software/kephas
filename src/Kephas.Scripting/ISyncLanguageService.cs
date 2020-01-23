@@ -10,6 +10,8 @@
 
 namespace Kephas.Scripting
 {
+#if NETSTANDARD2_1
+#else
     using Kephas.Dynamic;
     using Kephas.Services;
 
@@ -34,4 +36,5 @@ namespace Kephas.Scripting
             IExpando args = null,
             IContext executionContext = null);
     }
+#endif
 }

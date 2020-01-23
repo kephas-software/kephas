@@ -43,8 +43,31 @@ namespace Kephas.Scripting
             IExpando args = null,
             IContext executionContext = null,
             CancellationToken cancellationToken = default);
+
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Executes the script synchronously.
+        /// </summary>
+        /// <param name="script">The script to be interpreted/executed.</param>
+        /// <param name="scriptGlobals">Optional. The script globals.</param>
+        /// <param name="args">Optional. The arguments.</param>
+        /// <param name="executionContext">Optional. The execution context.</param>
+        /// <returns>
+        /// A promise of the execution result.
+        /// </returns>
+        object Execute(
+            IScript script,
+            IScriptGlobals scriptGlobals = null,
+            IExpando args = null,
+            IContext executionContext = null)
+        {
+            return this.ExecuteAsync(script, scriptGlobals, args, executionContext).GetResultNonLocking();
+        }
+#endif
     }
 
+#if NETSTANDARD2_1
+#else
     /// <summary>
     /// Extension methods for <see cref="ILanguageService"/>.
     /// </summary>
@@ -78,4 +101,5 @@ namespace Kephas.Scripting
             return languageService.ExecuteAsync(script, scriptGlobals, args, executionContext).GetResultNonLocking();
         }
     }
+#endif
 }
