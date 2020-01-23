@@ -35,7 +35,7 @@ namespace Kephas.Data.Tests.InMemory
         public void SetInitialData_object_enumeration()
         {
             var context = new TestContext(Substitute.For<ICompositionContext>());
-            context.WithInitialData(new[] { "ana", "are", "mere" });
+            context.InitialData(new[] { "ana", "are", "mere" });
 
             var initialData = context.InitialData();
             Assert.IsNotNull(initialData);
@@ -54,7 +54,7 @@ namespace Kephas.Data.Tests.InMemory
         public void SetInitialData_tuple_enumeration()
         {
             var context = new TestContext(Substitute.For<ICompositionContext>());
-            context.WithInitialData(new[]
+            context.InitialData(new[]
                                        {
                                            ((object)"ana", ChangeState.Added),
                                            ((object)"are", ChangeState.Changed),
@@ -78,7 +78,7 @@ namespace Kephas.Data.Tests.InMemory
         public void SetInitialData_entity_entry_enumeration()
         {
             var context = new TestContext(Substitute.For<ICompositionContext>());
-            context.WithInitialData(new[]
+            context.InitialData(new[]
                                        {
                                            new EntityEntry("ana") { ChangeState = ChangeState.Added },
                                            new EntityEntry("are") { ChangeState = ChangeState.Changed },

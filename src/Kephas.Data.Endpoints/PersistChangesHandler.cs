@@ -84,7 +84,7 @@ namespace Kephas.Data.Endpoints
                 return response;
             }
 
-            var dataSpaceContext = new Context(context).WithInitialData(message.EntityEntries);
+            var dataSpaceContext = new Context(context).InitialData(message.EntityEntries);
             using (var dataSpace = this.dataSpaceFactory.CreateInitializedValue(dataSpaceContext))
             {
                 // convert to entities

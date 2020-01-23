@@ -145,7 +145,7 @@ namespace Kephas.Data
                                                       var initializationContext = new Context(this.CompositionContext)
                                                                                       {
                                                                                           Identity = this.Identity,
-                                                                                      }.WithInitialData(g);
+                                                                                      }.InitialData(g);
                                                       return this.dataContextFactory.CreateDataContext(
                                                           g.Key,
                                                           initializationContext);

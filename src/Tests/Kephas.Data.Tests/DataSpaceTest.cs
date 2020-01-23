@@ -179,7 +179,7 @@ namespace Kephas.Data.Tests
 
             var identity = Substitute.For<IIdentity>();
             var context = new Context(Substitute.For<ICompositionContext>()) { Identity = identity };
-            context.WithInitialData(
+            context.InitialData(
                 new[]
                     {
                         new EntityEntry("gigi") { ChangeState = ChangeState.Added },
