@@ -32,7 +32,7 @@ namespace Kephas.Application.Reflection
         /// <param name="name">The name.</param>
         /// <param name="version">Optional. The version.</param>
         /// <param name="description">Optional. The description.</param>
-        public AppInfo(string name, Version version = null, string description = null)
+        public AppInfo(string name, string version = null, string description = null)
         {
             this.Name = name;
             this.Version = version;
@@ -53,7 +53,7 @@ namespace Kephas.Application.Reflection
         /// <value>
         /// The application version.
         /// </value>
-        public Version Version { get; }
+        public string Version { get; }
 
         /// <summary>
         /// Gets the application description.
