@@ -13,6 +13,7 @@ namespace Kephas.Data.Store
     using System;
 
     using Kephas.Activation;
+    using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Runtime;
 
@@ -26,10 +27,10 @@ namespace Kephas.Data.Store
         /// </summary>
         /// <param name="name">The data store name.</param>
         /// <param name="kind">The data store kind.</param>
-        /// <param name="dataContextType">The type of the data context (optional).</param>
-        /// <param name="dataContextConfiguration">The data context configuration (optional).</param>
-        /// <param name="entityActivator">The entity activator (optional).</param>
-        public DataStore(string name, string kind, Type dataContextType = null, IDataContextConfiguration dataContextConfiguration = null, IActivator entityActivator = null)
+        /// <param name="dataContextType">Optional. The type of the data context.</param>
+        /// <param name="dataContextSettings">Optional. The data context settings.</param>
+        /// <param name="entityActivator">Optional. The entity activator.</param>
+        public DataStore(string name, string kind, Type dataContextType = null, IDataContextSettings dataContextSettings = null, IActivator entityActivator = null)
         {
             Requires.NotNull(name, nameof(name));
             Requires.NotNullOrEmpty(kind, nameof(kind));
@@ -37,7 +38,7 @@ namespace Kephas.Data.Store
             this.Name = name;
             this.Kind = kind;
             this.DataContextType = dataContextType;
-            this.DataContextConfiguration = dataContextConfiguration;
+            this.DataContextSettings = dataContextSettings;
             this.EntityActivator = entityActivator ?? RuntimeActivator.Instance;
         }
 
@@ -66,12 +67,12 @@ namespace Kephas.Data.Store
         public Type DataContextType { get; }
 
         /// <summary>
-        /// Gets the data context configuration.
+        /// Gets the data context settings.
         /// </summary>
         /// <value>
-        /// The data context configuration.
+        /// The data context settings.
         /// </value>
-        public IDataContextConfiguration DataContextConfiguration { get; }
+        public IDataContextSettings DataContextSettings { get; }
 
         /// <summary>
         /// Gets the entity activator.
