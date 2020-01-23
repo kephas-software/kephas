@@ -50,11 +50,11 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
+        <DefineConstants>TRACE;DEBUG;NET46</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
-        <DefineConstants>NET45</DefineConstants>
+        <DefineConstants>NET46</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>

@@ -105,7 +105,7 @@ namespace Kephas.Scripting.CSharp
 
             sb.AppendLine("};");
 
-            assemblies.ForEach(a => sb.Insert(0, $"#r \"{a.GetName().Name}\"" + Environment.NewLine));
+            assemblies.ForEach(a => sb.Insert(0, $"#r \"{a.Location}\"" + Environment.NewLine));
 
             return (sb.ToString(), assemblies);
         }
