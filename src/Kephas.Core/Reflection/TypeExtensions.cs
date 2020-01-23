@@ -231,8 +231,10 @@ namespace Kephas.Reflection
         /// The base constructed generic.
         /// </returns>
         /// <example>
+        /// <code>
         /// var type = typeof(string).GetBaseConstructedGenericOf(typeof(IEnumerable&lt;&gt;));
         /// Assert.AreSame(type, typeof(IEnumerable&lt;char&gt;));
+        /// </code>
         /// </example>
         public static Type GetBaseConstructedGenericOf(this Type type, Type openGenericType)
         {

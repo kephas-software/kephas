@@ -45,7 +45,7 @@ namespace Kephas.Services.Composition
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="appServiceInfos">An enumeration of key-value pairs, where the key is the <see cref="T:TypeInfo"/> and the
-        /// value is the <see cref="IAppServiceInfo"/></param>
+        /// value is the <see cref="IAppServiceInfo"/>.</param>
         internal static void SetAppServiceInfos(this IAmbientServices ambientServices, IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)> appServiceInfos)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
