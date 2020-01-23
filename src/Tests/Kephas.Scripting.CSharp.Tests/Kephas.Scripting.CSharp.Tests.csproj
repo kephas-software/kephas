@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp2.2;net46</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1;net46</TargetFrameworks>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.2'">
+    <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     </ItemGroup>
 
