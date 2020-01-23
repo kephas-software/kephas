@@ -35,7 +35,7 @@ namespace Kephas.Scripting.CSharp.Tests
         {
             var langService = new CSharpLanguageService();
             var script = new Script(CSharpLanguageService.Language, "(1 + 2) * 3");
-            var result = langService.Execute(script);
+            var result = ((ILanguageService)langService).Execute(script);
 
             Assert.AreEqual(9, result);
         }
@@ -61,7 +61,7 @@ namespace Kephas.Scripting.CSharp.Tests
                 CSharpLanguageService.Language,
                 "int Power(int a) => a * a;" +
                 "return Power(2);");
-            var result = langService.Execute(script);
+            var result = ((ILanguageService)langService).Execute(script);
 
             Assert.AreEqual(4, result);
         }
@@ -93,7 +93,7 @@ namespace Kephas.Scripting.CSharp.Tests
             {
                 ["Power"] = (Func<int, int>)(s => s * s),
             };
-            var result = langService.Execute(script, globals);
+            var result = ((ILanguageService)langService).Execute(script, globals);
 
             Assert.AreEqual(4, result);
         }
@@ -127,7 +127,7 @@ namespace Kephas.Scripting.CSharp.Tests
             {
                 ["a"] = 2,
             };
-            var result = langService.Execute(script, new ScriptGlobals { Args = args });
+            var result = ((ILanguageService)langService).Execute(script, new ScriptGlobals { Args = args });
 
             Assert.AreEqual(4, result);
         }
