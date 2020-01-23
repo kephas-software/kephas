@@ -15,6 +15,7 @@ namespace Kephas.Data.Tests
 
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
+    using Kephas.Data;
     using Kephas.Data.Composition;
     using Kephas.Data.Store;
     using Kephas.Services;
@@ -48,8 +49,8 @@ namespace Kephas.Data.Tests
         public void CreateDataContext_proper_initialized()
         {
             var dataStoreProvider = Substitute.For<IDataStoreProvider>();
-            var dcConfig = Substitute.For<IDataContextConfiguration>();
-            var dataStore = new DataStore("test-store", "kind1", dataContextConfiguration: dcConfig);
+            var dcConfig = Substitute.For<IDataContextSettings>();
+            var dataStore = new DataStore("test-store", "kind1", dataContextSettings: dcConfig);
             dataStoreProvider.GetDataStore("test-store").Returns(dataStore);
             IDataInitializationContext initContext = null;
             var dataContext1 = Substitute.For<IDataContext>();

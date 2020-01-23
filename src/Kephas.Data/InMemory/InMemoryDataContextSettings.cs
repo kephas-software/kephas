@@ -1,32 +1,30 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryDataContextConfiguration.cs" company="Kephas Software SRL">
+// <copyright file="InMemoryDataContextSettings.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the in memory data context configuration class.
+//   Implements the in memory data context settings class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data.InMemory
 {
     using System.Collections.Generic;
-
-    using Kephas.Composition;
+    using Kephas.Data;
     using Kephas.Data.Capabilities;
 
     /// <summary>
-    /// An in memory data context configuration.
+    /// An in memory data context settings.
     /// </summary>
-    public class InMemoryDataContextConfiguration : DataContextConfiguration
+    public class InMemoryDataContextSettings : DataContextSettings
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryDataContextConfiguration"/> class.
+        /// Initializes a new instance of the <see cref="InMemoryDataContextSettings"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="connectionString">The connection string.</param>
-        public InMemoryDataContextConfiguration(ICompositionContext compositionContext, string connectionString)
-            : base(compositionContext, connectionString)
+        public InMemoryDataContextSettings(string connectionString)
+            : base(connectionString)
         {
         }
 

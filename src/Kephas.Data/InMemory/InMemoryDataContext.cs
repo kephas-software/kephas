@@ -144,14 +144,14 @@ namespace Kephas.Data.InMemory
         {
             base.Initialize(dataInitializationContext);
 
-            var config = dataInitializationContext?.DataStore.DataContextConfiguration;
+            var config = dataInitializationContext?.DataStore.DataContextSettings;
             var connectionStringValues = string.IsNullOrWhiteSpace(config?.ConnectionString)
                                              ? new Dictionary<string, string>()
                                              : ConnectionStringParser.AsDictionary(config.ConnectionString);
 
-            this.InitializeLocalCache(config as InMemoryDataContextConfiguration, connectionStringValues);
+            this.InitializeLocalCache(config as InMemoryDataContextSettings, connectionStringValues);
 
-            this.InitializeData(config as InMemoryDataContextConfiguration, connectionStringValues, dataInitializationContext);
+            this.InitializeData(config as InMemoryDataContextSettings, connectionStringValues, dataInitializationContext);
         }
 
         /// <summary>
@@ -160,9 +160,9 @@ namespace Kephas.Data.InMemory
         /// <param name="config">The configuration.</param>
         /// <param name="connectionStringValues">The connection string values.</param>
         /// <param name="dataInitializationContext">The data initialization context.</param>
-        private void InitializeData(InMemoryDataContextConfiguration config, IDictionary<string, string> connectionStringValues, IDataInitializationContext dataInitializationContext)
+        private void InitializeData(InMemoryDataContextSettings config, IDictionary<string, string> connectionStringValues, IDataInitializationContext dataInitializationContext)
         {
-            var serializedData = connectionStringValues.TryGetValue(nameof(InMemoryDataContextConfiguration.InitialData));
+            var serializedData = connectionStringValues.TryGetValue(nameof(InMemoryDataContextSettings.InitialData));
             this.InitializeData(serializedData);
 
             this.InitializeData(config?.InitialData);
@@ -175,7 +175,7 @@ namespace Kephas.Data.InMemory
         /// <param name="config">The configuration.</param>
         /// <param name="connectionStringValues">The connection string values.</param>
         private void InitializeLocalCache(
-            InMemoryDataContextConfiguration config,
+            InMemoryDataContextSettings config,
             IDictionary<string, string> connectionStringValues)
         {
             bool useSharedCache;
@@ -186,7 +186,7 @@ namespace Kephas.Data.InMemory
             else
             {
                 bool.TryParse(
-                    connectionStringValues.TryGetValue(nameof(InMemoryDataContextConfiguration.UseSharedCache)),
+                    connectionStringValues.TryGetValue(nameof(InMemoryDataContextSettings.UseSharedCache)),
                     out useSharedCache);
             }
 

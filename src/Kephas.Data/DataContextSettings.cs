@@ -1,34 +1,29 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataContextConfiguration.cs" company="Kephas Software SRL">
+// <copyright file="DataContextSettings.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the data context configuration class.
+//   Implements the data context settings class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.Data
 {
-    using Kephas.Composition;
-    using Kephas.Services;
+    using Kephas.Dynamic;
 
     /// <summary>
-    /// A data context configuration.
+    /// A data context settings.
     /// </summary>
-    public class DataContextConfiguration : Context, IDataContextConfiguration
+    public class DataContextSettings : Expando, IDataContextSettings
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataContextConfiguration"/> class.
+        /// Initializes a new instance of the <see cref="DataContextSettings"/> class.
         /// </summary>
-        /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="connectionString">The connection string.</param>
-        public DataContextConfiguration(
-            ICompositionContext compositionContext,
-            string connectionString)
-            : base(compositionContext)
+        public DataContextSettings(string connectionString)
         {
-            this.ConnectionString = connectionString;
+            ConnectionString = connectionString;
         }
 
         /// <summary>

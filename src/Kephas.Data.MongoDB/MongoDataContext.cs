@@ -102,11 +102,11 @@ namespace Kephas.Data.MongoDB
         protected override void Initialize(IDataInitializationContext dataInitializationContext)
         {
             Requires.NotNull(dataInitializationContext.DataStore, nameof(dataInitializationContext.DataStore));
-            Requires.NotNull(dataInitializationContext.DataStore.DataContextConfiguration, nameof(dataInitializationContext.DataStore.DataContextConfiguration));
+            Requires.NotNull(dataInitializationContext.DataStore.DataContextSettings, nameof(dataInitializationContext.DataStore.DataContextSettings));
 
             base.Initialize(dataInitializationContext);
 
-            var config = dataInitializationContext.DataStore.DataContextConfiguration;
+            var config = dataInitializationContext.DataStore.DataContextSettings;
             var mongoUrl = MongoUrl.Create(config.ConnectionString);
             var databaseName = mongoUrl.DatabaseName;
             if (string.IsNullOrEmpty(databaseName))
