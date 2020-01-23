@@ -33,10 +33,8 @@ namespace Kephas.Configuration.Providers
     [ProcessingPriority(Priority.BelowNormal)]
     public class FileSettingsProvider : Loggable, ISettingsProvider
     {
-        private readonly IAppRuntime appRuntime;
-        private readonly ISerializationService serializationService;
         private readonly ICollection<Lazy<IMediaType, MediaTypeMetadata>> mediaTypes;
-        private ConcurrentDictionary<Type, (string filePath, IOperationResult result, Type mediaType)> filePaths =
+        private ConcurrentDictionary<Type, (string filePath, IOperationResult result, Type mediaType)> fileInfos =
             new ConcurrentDictionary<Type, (string filePath, IOperationResult result, Type mediaType)>();
 
         /// <summary>
@@ -45,26 +43,45 @@ namespace Kephas.Configuration.Providers
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="mediaTypes">List of supported media types.</param>
+        /// <param name="logManager">Optional. Manager for log.</param>
         public FileSettingsProvider(
             IAppRuntime appRuntime,
             ISerializationService serializationService,
-            ICollection<Lazy<IMediaType, MediaTypeMetadata>> mediaTypes)
+            ICollection<Lazy<IMediaType, MediaTypeMetadata>> mediaTypes,
+            ILogManager logManager = null)
+            : base(logManager)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(serializationService, nameof(serializationService));
             Requires.NotNull(mediaTypes, nameof(mediaTypes));
 
-            this.appRuntime = appRuntime;
-            this.serializationService = serializationService;
+            this.AppRuntime = appRuntime;
+            this.SerializationService = serializationService;
             this.mediaTypes = mediaTypes;
         }
+
+        /// <summary>
+        /// Gets the application runtime.
+        /// </summary>
+        /// <value>
+        /// The application runtime.
+        /// </value>
+        protected IAppRuntime AppRuntime { get; }
+
+        /// <summary>
+        /// Gets the serialization service.
+        /// </summary>
+        /// <value>
+        /// The serialization service.
+        /// </value>
+        protected ISerializationService SerializationService { get; }
 
         /// <summary>Gets the settings with the provided type.</summary>
         /// <param name="settingsType">Type of the settings.</param>
         /// <returns>The settings.</returns>
-        public object GetSettings(Type settingsType)
+        public virtual object GetSettings(Type settingsType)
         {
-            var (filePath, result, mediaType) = this.filePaths.GetOrAdd(settingsType, _ => this.GetSettingsFilePath(settingsType));
+            var (filePath, result, mediaType) = this.GetSettingsFileInfo(settingsType);
             if (filePath == null)
             {
                 this.Logger.Warn(result.Exceptions.First().Message);
@@ -73,18 +90,43 @@ namespace Kephas.Configuration.Providers
 
             this.Logger.Debug(result.Messages.First().Message);
             var settingsContent = File.ReadAllText(filePath);
-            var settings = this.serializationService.Deserialize(settingsContent, ctx => ctx.RootObjectType(settingsType).MediaType(mediaType));
+            var settings = this.SerializationService.Deserialize(settingsContent, ctx => ctx.RootObjectType(settingsType).MediaType(mediaType));
 
             return settings;
         }
 
-        private (string filePath, IOperationResult result, Type mediaType) GetSettingsFilePath(Type settingsType)
+        /// <summary>
+        /// Gets the settings file information.
+        /// </summary>
+        /// <param name="settingsType">Type of the settings.</param>
+        /// <returns>
+        /// The settings file path.
+        /// </returns>
+        protected virtual (string filePath, IOperationResult result, Type mediaType) GetSettingsFileInfo(Type settingsType)
+        {
+            return this.fileInfos.GetOrAdd(settingsType, _ => this.ComputeSettingsFileInfo(settingsType));
+        }
+
+        /// <summary>
+        /// Gets the probing folders for configuration files.
+        /// </summary>
+        /// <returns>
+        /// An enumerator that allows foreach to be used to process the probing folders in this
+        /// collection.
+        /// </returns>
+        protected virtual IEnumerable<string> GetProbingFolders()
+        {
+            var appBinFolders = this.AppRuntime.GetAppBinDirectories();
+            var probingFolders = appBinFolders.Select(f => Path.Combine(f, ConfigurationHelper.ConfigFolder)).ToArray();
+            return probingFolders;
+        }
+
+        private (string filePath, IOperationResult result, Type mediaType) ComputeSettingsFileInfo(Type settingsType)
         {
             var result = new OperationResult();
             var settingsName = settingsType.Name.ToCamelCase();
 
-            var appBinFolders = this.appRuntime.GetAppBinDirectories();
-            var probingFolders = appBinFolders.Select(f => Path.Combine(f, ConfigurationHelper.ConfigFolder)).ToArray();
+            var probingFolders = this.GetProbingFolders();
             var probingFiles = new List<string>();
             foreach (var mediaType in this.mediaTypes)
             {
