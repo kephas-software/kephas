@@ -106,7 +106,7 @@ namespace Kephas.Data.Endpoints
                             // deleted entities are marked as deleted
                             if (dtoEntityEntry.ChangeState == ChangeState.Deleted)
                             {
-                                var domainDataContext = dataSpace[domainEntityType, context];
+                                var domainDataContext = dataSpace[domainEntityType];
                                 var changeStateEntity = domainDataContext.GetEntityEntry(result.Target);
                                 changeStateEntity.ChangeState = ChangeState.Deleted;
                             }

@@ -80,7 +80,7 @@ namespace Kephas.Data.Conversion
         {
             Requires.NotNull(conversionContext, nameof(conversionContext));
 
-            return conversionContext.DataSpace[entityType, conversionContext];
+            return conversionContext.DataSpace[entityType];
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Kephas.Data.Conversion
         {
             Requires.NotNull(conversionContext, nameof(conversionContext));
 
-            return conversionContext.DataSpace[entity.GetType(), conversionContext];
+            return conversionContext.DataSpace[entity.GetType()];
         }
 
         /// <summary>

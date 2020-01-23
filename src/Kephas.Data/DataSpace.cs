@@ -27,24 +27,9 @@ namespace Kephas.Data
     /// </summary>
     public class DataSpace : Context, IDataSpace
     {
-        /// <summary>
-        /// The data context factory.
-        /// </summary>
         private readonly IDataContextFactory dataContextFactory;
-
-        /// <summary>
-        /// The data store provider.
-        /// </summary>
         private readonly IDataStoreProvider dataStoreProvider;
-
-        /// <summary>
-        /// Context for the operation.
-        /// </summary>
-        private IContext operationContext;
-
-        /// <summary>
-        /// The data contexts' map.
-        /// </summary>
+        private IContext initializationContext;
         private IDictionary<string, IDataContext> dataContextMap = new Dictionary<string, IDataContext>();
 
         /// <summary>
@@ -90,21 +75,19 @@ namespace Kephas.Data
         /// Gets the data context for the provided entity type.
         /// </summary>
         /// <param name="entityType">Type of the entity.</param>
-        /// <param name="context">Optional. The context.</param>
         /// <returns>
         /// The data context.
         /// </returns>
-        IDataContext IDataSpace.this[Type entityType, IContext context] => this.GetDataContext(entityType, context);
+        IDataContext IDataSpace.this[Type entityType] => this.GetDataContext(entityType);
 
         /// <summary>
         /// Gets the data context for the provided entity type.
         /// </summary>
         /// <param name="entityType">Type of the entity.</param>
-        /// <param name="context">Optional. The context.</param>
         /// <returns>
         /// The data context.
         /// </returns>
-        IDataContext IDataSpace.this[ITypeInfo entityType, IContext context] => this.GetDataContext(entityType, context);
+        IDataContext IDataSpace.this[ITypeInfo entityType] => this.GetDataContext(entityType);
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
@@ -126,7 +109,7 @@ namespace Kephas.Data
         /// <param name="context">An optional context for initialization.</param>
         public virtual void Initialize(IContext context = null)
         {
-            this.operationContext = context;
+            this.initializationContext = context;
             if (this.Identity == null)
             {
                 this.Identity = context?.Identity;
@@ -137,7 +120,7 @@ namespace Kephas.Data
             if (entityEntries != null)
             {
                 this.dataContextMap = entityEntries
-                                          .GroupBy(e => this.dataStoreProvider.GetDataStoreName(e.Entity.GetType(), this.operationContext), e => e)
+                                          .GroupBy(e => this.dataStoreProvider.GetDataStoreName(e.Entity.GetType(), this.initializationContext), e => e)
                                           .ToDictionary(
                                               g => g.Key,
                                               g =>
@@ -169,28 +152,26 @@ namespace Kephas.Data
         /// Gets the data context for the provided entity type.
         /// </summary>
         /// <param name="entityType">Type of the entity.</param>
-        /// <param name="context">Optional. The context.</param>
         /// <returns>
         /// The data context.
         /// </returns>
-        protected virtual IDataContext GetDataContext(ITypeInfo entityType, IContext context) =>
-            this.GetDataContext(entityType.AsType(), context);
+        protected virtual IDataContext GetDataContext(ITypeInfo entityType) =>
+            this.GetDataContext(entityType.AsType());
 
         /// <summary>
         /// Gets the data context for the provided entity type.
         /// </summary>
         /// <param name="entityType">Type of the entity.</param>
-        /// <param name="context">Optional. The context.</param>
         /// <returns>
         /// The data context.
         /// </returns>
-        protected virtual IDataContext GetDataContext(Type entityType, IContext context)
+        protected virtual IDataContext GetDataContext(Type entityType)
         {
-            var dataStoreName = this.dataStoreProvider.GetDataStoreName(entityType, this.operationContext);
+            var dataStoreName = this.dataStoreProvider.GetDataStoreName(entityType, this.initializationContext);
             var dataContext = this.dataContextMap.TryGetValue(dataStoreName);
             if (dataContext == null)
             {
-                dataContext = this.dataContextFactory.CreateDataContext(dataStoreName, this.operationContext);
+                dataContext = this.dataContextFactory.CreateDataContext(dataStoreName, this.initializationContext);
                 this.dataContextMap.Add(dataStoreName, dataContext);
             }
 

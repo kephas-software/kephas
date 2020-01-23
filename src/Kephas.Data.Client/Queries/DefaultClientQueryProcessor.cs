@@ -193,7 +193,7 @@ namespace Kephas.Data.Client.Queries
 
             using (var dataSpace = this.DataSpaceFactory.CreateInitializedValue(executionContext))
             {
-                var dataContext = dataSpace[executionContext.EntityType, executionContext];
+                var dataContext = dataSpace[executionContext.EntityType];
                 var queryConversionContext = new ClientQueryConversionContext(dataContext)
                 {
                     Options = executionContext.Options,

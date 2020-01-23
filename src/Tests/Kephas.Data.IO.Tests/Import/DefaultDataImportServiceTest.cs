@@ -218,8 +218,8 @@ namespace Kephas.Data.IO.Tests.Import
             IDataContext targetDataContext)
         {
             var dataSpace = Substitute.For<IDataSpace>();
-            dataSpace[typeof(TSource), Arg.Any<IContext>()].Returns(sourceDataContext);
-            dataSpace[typeof(TTarget), Arg.Any<IContext>()].Returns(targetDataContext);
+            dataSpace[typeof(TSource)].Returns(sourceDataContext);
+            dataSpace[typeof(TTarget)].Returns(targetDataContext);
             return dataSpace;
         }
 

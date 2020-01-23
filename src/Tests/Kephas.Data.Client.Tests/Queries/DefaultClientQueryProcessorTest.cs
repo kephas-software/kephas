@@ -188,8 +188,8 @@ namespace Kephas.Data.Client.Tests.Queries
                 Func<IDataContext> clientDataContextCreator)
             {
                 var dataSpace = Substitute.For<IDataSpace>();
-                dataSpace[typeof(TestClientEntity), Arg.Any<IContext>()].Returns(ci => clientDataContextCreator?.Invoke() ?? Substitute.For<IDataContext>());
-                dataSpace[typeof(TestEntity), Arg.Any<IContext>()].Returns(ci => dataContextCreator?.Invoke() ?? Substitute.For<IDataContext>());
+                dataSpace[typeof(TestClientEntity)].Returns(ci => clientDataContextCreator?.Invoke() ?? Substitute.For<IDataContext>());
+                dataSpace[typeof(TestEntity)].Returns(ci => dataContextCreator?.Invoke() ?? Substitute.For<IDataContext>());
                 var factory = new ExportFactory<IDataSpace>(() => dataSpace);
                 return factory;
             }

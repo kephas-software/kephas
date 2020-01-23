@@ -413,7 +413,7 @@ namespace Kephas.Data.IO.Import
                     changeState = ChangeState.AddedOrChanged;
                 }
 
-                var sourceDataContext = this.dataSpace[entity.GetType(), this.context];
+                var sourceDataContext = this.dataSpace[entity.GetType()];
                 var sourceEntityEntry = sourceDataContext.Attach(entity);
                 sourceEntityEntry.ChangeState = changeState;
 
@@ -443,7 +443,7 @@ namespace Kephas.Data.IO.Import
                     cancellationToken.ThrowIfCancellationRequested();
 
                     var targetEntity = conversionResult.Target;
-                    var targetDataContext = this.dataSpace[targetEntity.GetType(), this.context];
+                    var targetDataContext = this.dataSpace[targetEntity.GetType()];
                     var targetEntityEntry = targetDataContext.Attach(targetEntity);
 
                     // force the change of the entity change state only if
