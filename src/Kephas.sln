@@ -182,13 +182,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Redis.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Extensions.Hosting", "Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj", "{002A80E9-B604-464A-9E57-EE9191D0741F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Plugins.NuGet", "Kephas.Plugins.NuGet\Kephas.Plugins.NuGet.csproj", "{58837CBA-F893-4647-90AD-671C84C8D8C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Plugins.NuGet", "Kephas.Plugins.NuGet\Kephas.Plugins.NuGet.csproj", "{58837CBA-F893-4647-90AD-671C84C8D8C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.TextProcessing", "Kephas.TextProcessing\Kephas.TextProcessing.csproj", "{8E08ED8D-630B-4FDC-9B87-A71BDCD63D87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.TextProcessing", "Kephas.TextProcessing\Kephas.TextProcessing.csproj", "{8E08ED8D-630B-4FDC-9B87-A71BDCD63D87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.TextProcessing.Tests", "Tests\Kephas.TextProcessing.Tests\Kephas.TextProcessing.Tests.csproj", "{7E0421A4-529B-4CA5-8881-0C2668EA0EDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.TextProcessing.Tests", "Tests\Kephas.TextProcessing.Tests\Kephas.TextProcessing.Tests.csproj", "{7E0421A4-529B-4CA5-8881-0C2668EA0EDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Plugins.Endpoints", "Kephas.Plugins.Endpoints\Kephas.Plugins.Endpoints.csproj", "{99BBFB72-C815-45BD-A1B2-4122393BA4BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Plugins.Endpoints", "Kephas.Plugins.Endpoints\Kephas.Plugins.Endpoints.csproj", "{99BBFB72-C815-45BD-A1B2-4122393BA4BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Licensing", "Kephas.Licensing\Kephas.Licensing.csproj", "{6F24E512-B1C9-4774-834A-F44586607778}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -516,6 +518,10 @@ Global
 		{99BBFB72-C815-45BD-A1B2-4122393BA4BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99BBFB72-C815-45BD-A1B2-4122393BA4BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99BBFB72-C815-45BD-A1B2-4122393BA4BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F24E512-B1C9-4774-834A-F44586607778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F24E512-B1C9-4774-834A-F44586607778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F24E512-B1C9-4774-834A-F44586607778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F24E512-B1C9-4774-834A-F44586607778}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

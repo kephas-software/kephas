@@ -52,17 +52,20 @@ namespace Kephas.Plugins.Endpoints
         {
             this.appContext.Logger.Info("Retrieving {count} packages for {search}...", message.Take, message.SearchTerm ?? "<all>");
 
-            var plugins = await this.pluginManager.GetAvailablePluginsAsync(
+            var result = await this.pluginManager.GetAvailablePluginsAsync(
                 f => f.SearchTerm(message.SearchTerm)
                       .IncludePrerelease(message.IncludePrerelease)
                       .Skip(message.Skip)
                       .Take(message.Take),
                 cancellationToken: token).PreserveThreadContext();
+            var plugins = result.ReturnValue;
 
-            this.appContext.Logger.Info("Retrieved {count} packages for {search}...", plugins.Count(), message.SearchTerm ?? "<all>");
+            var searchTerm = message.SearchTerm ?? "<all>";
+            this.appContext.Logger.Info("Retrieved {count} packages for {search}. Elapsed: {elapsed:c}.", plugins.Count(), searchTerm, result.Elapsed);
 
             return new GetAvailablePluginsResponseMessage
                 {
+                    Message = $"Retrieved {plugins.Count()} packages for {searchTerm}. Elapsed: {result.Elapsed:c}.",
                     Plugins = plugins.Select(p => p.GetIdentity()).ToArray(),
                 };
         }

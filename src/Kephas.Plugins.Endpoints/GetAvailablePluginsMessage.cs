@@ -12,6 +12,7 @@ namespace Kephas.Plugins.Endpoints
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Kephas.Application;
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
@@ -70,6 +71,6 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The plugins.
         /// </value>
-        public PluginIdentity[] Plugins { get; set; }
+        public AppIdentity[] Plugins { get; set; }
     }
 }

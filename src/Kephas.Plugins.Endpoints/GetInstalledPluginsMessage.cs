@@ -10,6 +10,7 @@
 
 namespace Kephas.Plugins.Endpoints
 {
+    using Kephas.Application;
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
@@ -82,7 +83,7 @@ namespace Kephas.Plugins.Endpoints
         /// </returns>
         public override string ToString()
         {
-            return $"{new PluginIdentity(this.Id, this.Version)} ({this.State} in {this.FolderPath})";
+            return $"{new AppIdentity(this.Id, this.Version)} ({this.State} in {this.FolderPath})";
         }
     }
 }

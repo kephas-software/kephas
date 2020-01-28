@@ -15,6 +15,7 @@ namespace Kephas.Plugins
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Operations;
     using Kephas.Plugins.Reflection;
     using Kephas.Services;
@@ -29,28 +30,28 @@ namespace Kephas.Plugins
         /// Disables the plugin asynchronously if the plugin was previously enabled.
         /// </summary>
         /// <param name="plugin">The plugin identity.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the enable operation result.
         /// </returns>
-        public Task<IOperationResult> DisablePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+            return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
 
         /// <summary>
         /// Enables the plugin asynchronously if the plugin was previously disabled.
         /// </summary>
         /// <param name="plugin">The plugin identity.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the enable operation result.
         /// </returns>
-        public Task<IOperationResult> EnablePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> EnablePluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+            return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
 
         /// <summary>
@@ -61,9 +62,9 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the available plugins.
         /// </returns>
-        public Task<IEnumerable<IPluginInfo>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IEnumerable<IPluginInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<IEnumerable<IPluginInfo>>(new IPluginInfo[0]);
+            return Task.FromResult<IOperationResult<IEnumerable<IPluginInfo>>>(new OperationResult<IEnumerable<IPluginInfo>>(new IPluginInfo[0]));
         }
 
         /// <summary>
@@ -81,56 +82,70 @@ namespace Kephas.Plugins
         /// Initializes the plugin asynchronously.
         /// </summary>
         /// <param name="plugin">The plugin identity.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the initialize operation result.
         /// </returns>
-        public Task<IOperationResult> InitializePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+            return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
 
         /// <summary>
         /// Installs the plugin asynchronously.
         /// </summary>
         /// <param name="plugin">The plugin identity.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the operation result.
         /// </returns>
-        public Task<IOperationResult> InstallPluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> InstallPluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+            return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
 
         /// <summary>
         /// Uninitializes the plugin asynchronously.
         /// </summary>
         /// <param name="plugin">The plugin identity.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the uninitialize operation result.
         /// </returns>
-        public Task<IOperationResult> UninitializePluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+            return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
 
         /// <summary>
         /// Uninstalls the plugin asynchronously.
         /// </summary>
         /// <param name="plugin">The plugin identity.</param>
-        /// <param name="context">Optional. The context.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the uninstall plugin.
         /// </returns>
-        public Task<IOperationResult> UninstallPluginAsync(PluginIdentity plugin, IContext context = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> UninstallPluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+        }
+
+        /// <summary>
+        /// Updates the plugin asynchronously.
+        /// </summary>
+        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the update operation result.
+        /// </returns>
+        public Task<IOperationResult<IPlugin>> UpdatePluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
     }
 }

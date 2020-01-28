@@ -52,7 +52,7 @@ namespace Kephas.Plugins.Endpoints
         {
             this.appContext.Logger.Info("Disabling plugin {plugin}...", message.Id);
 
-            var result = await this.pluginManager.DisablePluginAsync(new PluginIdentity(message.Id)).PreserveThreadContext();
+            var result = await this.pluginManager.DisablePluginAsync(new AppIdentity(message.Id)).PreserveThreadContext();
 
             this.appContext.Logger.Info("Plugin {plugin} disabled.", message.Id);
 
