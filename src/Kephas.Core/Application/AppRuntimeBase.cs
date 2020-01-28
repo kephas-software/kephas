@@ -34,6 +34,11 @@ namespace Kephas.Application
         /// <summary>
         /// The application identifier key.
         /// </summary>
+        public const string AppIdentityKey = "AppIdentity";
+
+        /// <summary>
+        /// The application identifier key.
+        /// </summary>
         public const string AppIdKey = "AppId";
 
         /// <summary>
@@ -95,6 +100,8 @@ namespace Kephas.Application
             this.appLocation = appLocation;
 
             this.InitializeAppProperties(Assembly.GetEntryAssembly(), appId, appInstanceId, appVersion);
+
+            this[AppIdentityKey] = new AppIdentity(this[AppIdKey] as string, this[AppVersionKey] as string);
 
             AppDomain.CurrentDomain.AssemblyResolve += (s, e) => this.HandleAssemblyResolve(s as AppDomain ?? AppDomain.CurrentDomain, e);
         }
