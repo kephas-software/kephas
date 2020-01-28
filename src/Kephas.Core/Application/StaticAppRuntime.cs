@@ -14,6 +14,7 @@ namespace Kephas.Application
     using System.Reflection;
 
     using Kephas.Dynamic;
+    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
 
@@ -26,6 +27,7 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="StaticAppRuntime"/> class.
         /// </summary>
         /// <param name="assemblyLoader">Optional. The assembly loader.</param>
+        /// <param name="licensingManager">Optional. Manager for licensing.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
         ///                                     assemblies.</param>
@@ -36,7 +38,8 @@ namespace Kephas.Application
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public StaticAppRuntime(
-            IAssemblyLoader assemblyLoader = null, 
+            IAssemblyLoader assemblyLoader = null,
+            ILicensingManager licensingManager = null,
             ILogManager logManager = null, 
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
             string appLocation = null,
@@ -44,7 +47,7 @@ namespace Kephas.Application
             string appInstanceId = null,
             string appVersion = null,
             IExpando appArgs = null)
-            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
+            : base(assemblyLoader, licensingManager, logManager, defaultAssemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
         {
         }
     }

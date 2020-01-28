@@ -51,7 +51,7 @@ namespace Kephas.Application
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var appRuntime = new DynamicAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation, appId, appInstanceId, appVersion);
+            var appRuntime = new DynamicAppRuntime(ambientServices.AssemblyLoader, ambientServices.LicensingManager, ambientServices.LogManager, assemblyFilter, appLocation, appId, appInstanceId, appVersion);
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }
@@ -85,7 +85,7 @@ namespace Kephas.Application
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var appRuntime = new StaticAppRuntime(ambientServices.AssemblyLoader, ambientServices.LogManager, assemblyFilter, appLocation, appId, appInstanceId, appVersion);
+            var appRuntime = new StaticAppRuntime(ambientServices.AssemblyLoader, ambientServices.LicensingManager, ambientServices.LogManager, assemblyFilter, appLocation, appId, appInstanceId, appVersion);
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }

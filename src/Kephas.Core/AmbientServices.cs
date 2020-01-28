@@ -25,6 +25,7 @@ namespace Kephas
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services.Composition;
@@ -65,6 +66,7 @@ namespace Kephas
                     .Register<IAssemblyLoader, DefaultAssemblyLoader>()
                     .Register<ITypeLoader, DefaultTypeLoader>()
                     .Register<IAppRuntime, StaticAppRuntime>()
+                    .Register<ILicensingManager, NullLicensingManager>()
 
                     .RegisterMultiple<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>())
 
@@ -123,6 +125,14 @@ namespace Kephas
         /// The log manager.
         /// </value>
         public ILogManager LogManager => this.GetService<ILogManager>();
+
+        /// <summary>
+        /// Gets the manager for licensing.
+        /// </summary>
+        /// <value>
+        /// The licensing manager.
+        /// </value>
+        public ILicensingManager LicensingManager => this.GetService<ILicensingManager>();
 
         /// <summary>
         /// Registers the provided service using a registration builder.

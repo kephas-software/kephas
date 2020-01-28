@@ -17,6 +17,7 @@ namespace Kephas
     using Kephas.Composition.Lite;
     using Kephas.Configuration;
     using Kephas.Dynamic;
+    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
 
@@ -64,6 +65,14 @@ namespace Kephas
         /// The log manager.
         /// </value>
         ILogManager LogManager { get; }
+
+        /// <summary>
+        /// Gets the manager for licensing.
+        /// </summary>
+        /// <value>
+        /// The licensing manager.
+        /// </value>
+        ILicensingManager LicensingManager { get; }
 
         /// <summary>
         /// Registers the provided service using a registration builder.

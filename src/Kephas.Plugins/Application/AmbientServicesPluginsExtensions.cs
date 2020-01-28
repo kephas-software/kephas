@@ -34,7 +34,7 @@ namespace Kephas.Plugins.Application
         /// <param name="appArgs">Optional. the application arguments.</param>
         /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
         /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
-        /// <param name="targetFramework">Optional. target framework.</param>
+        /// <param name="targetFramework">Optional. The target framework.</param>
         /// <returns>
         /// The provided ambient services.
         /// </returns>
@@ -55,6 +55,7 @@ namespace Kephas.Plugins.Application
             return ambientServices.WithAppRuntime(
                 new PluginsAppRuntime(
                     ambientServices.AssemblyLoader,
+                    ambientServices.LicensingManager,
                     ambientServices.LogManager,
                     assemblyFilter: assemblyFilter,
                     appLocation: appLocation,

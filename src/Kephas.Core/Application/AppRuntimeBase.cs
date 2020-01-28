@@ -22,6 +22,7 @@ namespace Kephas.Application
 
     using Kephas.Collections;
     using Kephas.Dynamic;
+    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -74,6 +75,7 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
         /// <param name="assemblyLoader">Optional. The assembly loader.</param>
+        /// <param name="licensingManager">Optional. Manager for licensing.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
         ///                                     assemblies.</param>
@@ -85,6 +87,7 @@ namespace Kephas.Application
         /// <param name="appArgs">Optional. The application arguments.</param>
         protected AppRuntimeBase(
             IAssemblyLoader assemblyLoader = null,
+            ILicensingManager licensingManager = null,
             ILogManager logManager = null,
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
             string appLocation = null,
@@ -96,6 +99,7 @@ namespace Kephas.Application
         {
             this.logManager = logManager ?? new NullLogManager();
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
+            this.LicensingManager = licensingManager ?? new NullLicensingManager();
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appLocation = appLocation;
 
@@ -105,14 +109,6 @@ namespace Kephas.Application
 
             AppDomain.CurrentDomain.AssemblyResolve += (s, e) => this.HandleAssemblyResolve(s as AppDomain ?? AppDomain.CurrentDomain, e);
         }
-
-        /// <summary>
-        /// Gets the assembly loader.
-        /// </summary>
-        /// <value>
-        /// The assembly loader.
-        /// </value>
-        public IAssemblyLoader AssemblyLoader { get; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -125,6 +121,22 @@ namespace Kephas.Application
             get => this.logger ?? (this.logger = this.GetLogger());
             protected internal set => this.logger = value;
         }
+
+        /// <summary>
+        /// Gets the assembly loader.
+        /// </summary>
+        /// <value>
+        /// The assembly loader.
+        /// </value>
+        protected IAssemblyLoader AssemblyLoader { get; }
+
+        /// <summary>
+        /// Gets the manager for licensing.
+        /// </summary>
+        /// <value>
+        /// The licensing manager.
+        /// </value>
+        protected ILicensingManager LicensingManager { get; }
 
         /// <summary>
         /// Gets the assembly filter.

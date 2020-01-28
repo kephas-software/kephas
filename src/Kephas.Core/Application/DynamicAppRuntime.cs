@@ -18,6 +18,7 @@ namespace Kephas.Application
 
     using Kephas.Collections;
     using Kephas.Dynamic;
+    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
 
@@ -30,6 +31,7 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="DynamicAppRuntime"/> class.
         /// </summary>
         /// <param name="assemblyLoader">Optional. The assembly loader.</param>
+        /// <param name="licensingManager">Optional. Manager for licensing.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="defaultAssemblyFilter">Optional. The default assembly filter.</param>
         /// <param name="appLocation">Optional. The application location.</param>
@@ -39,6 +41,7 @@ namespace Kephas.Application
         /// <param name="appArgs">Optional. The application arguments.</param>
         public DynamicAppRuntime(
             IAssemblyLoader assemblyLoader = null,
+            ILicensingManager licensingManager = null,
             ILogManager logManager = null,
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
             string appLocation = null,
@@ -46,7 +49,7 @@ namespace Kephas.Application
             string appInstanceId = null,
             string appVersion = null,
             IExpando appArgs = null)
-            : base(assemblyLoader, logManager, defaultAssemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
+            : base(assemblyLoader, licensingManager, logManager, defaultAssemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
         {
         }
 

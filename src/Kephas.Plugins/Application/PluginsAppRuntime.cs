@@ -18,6 +18,7 @@ namespace Kephas.Plugins.Application
 
     using Kephas.Application;
     using Kephas.Dynamic;
+    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Plugins.Resources;
     using Kephas.Reflection;
@@ -31,6 +32,7 @@ namespace Kephas.Plugins.Application
         /// Initializes a new instance of the <see cref="PluginsAppRuntime"/> class.
         /// </summary>
         /// <param name="assemblyLoader">Optional. The assembly loader.</param>
+        /// <param name="licensingManager">Optional. Manager for licensing.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="assemblyFilter">Optional. A filter for loaded assemblies.</param>
         /// <param name="appLocation">Optional. The application location. If not specified, the current
@@ -44,6 +46,7 @@ namespace Kephas.Plugins.Application
         /// <param name="targetFramework">Optional. The target framework.</param>
         public PluginsAppRuntime(
             IAssemblyLoader assemblyLoader = null,
+            ILicensingManager licensingManager = null,
             ILogManager logManager = null,
             Func<AssemblyName, bool> assemblyFilter = null,
             string appLocation = null,
@@ -54,7 +57,7 @@ namespace Kephas.Plugins.Application
             bool? enablePlugins = null,
             string pluginsFolder = null,
             string targetFramework = null)
-            : base(assemblyLoader, logManager, assemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
+            : base(assemblyLoader, licensingManager, logManager, assemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsFolder = this.ComputePluginsFolder(pluginsFolder, appArgs);
@@ -99,14 +102,7 @@ namespace Kephas.Plugins.Application
             if (this.EnablePlugins)
             {
                 var pluginsDirectories = this.EnumeratePluginLocations();
-
-                // load only plugins in pending install and enabled states.
-                appDirectories.AddRange(pluginsDirectories.Where(
-                    d =>
-                    {
-                        var pluginState = this.GetPluginState(Path.GetFileName(d), d);
-                        return pluginState == PluginState.PendingInitialization || pluginState == PluginState.Enabled;
-                    }));
+                appDirectories.AddRange(pluginsDirectories.Where(this.CanLoadPlugin));
             }
 
             this.Logger.Info(Strings.PluginsAppRuntime_LoadingApplicationFolders_Message, appDirectories, this.EnablePlugins ? "enabled" : "disabled");
@@ -184,16 +180,48 @@ namespace Kephas.Plugins.Application
         }
 
         /// <summary>
-        /// Gets the plugin state.
+        /// Gets the plugin data.
         /// </summary>
         /// <param name="pluginName">Name of the plugin.</param>
         /// <param name="pluginLocation">The plugin location.</param>
         /// <returns>
-        /// The plugin state.
+        /// The plugin data.
         /// </returns>
-        protected virtual PluginState GetPluginState(string pluginName, string pluginLocation)
+        protected virtual (PluginState state, string version) GetPluginData(string pluginName, string pluginLocation)
         {
-            return PluginHelper.GetPluginState(pluginLocation);
+            return PluginHelper.GetPluginData(pluginLocation);
+        }
+
+        /// <summary>
+        /// Determine if the indicated plugin can be loaded. Load only licensed plugins in
+        /// <see cref="PluginState.PendingInitialization"/> and <see cref="PluginState.Enabled"/> states.
+        /// </summary>
+        /// <param name="pluginFolder">Pathname of the plugin folder.</param>
+        /// <returns>
+        /// True if we can load plugin, false if not.
+        /// </returns>
+        protected virtual bool CanLoadPlugin(string pluginFolder)
+        {
+            var pluginId = Path.GetFileName(pluginFolder);
+            var (pluginState, pluginVersion) = this.GetPluginData(Path.GetFileName(pluginFolder), pluginFolder);
+
+            var shouldLoadPlugin = pluginState == PluginState.PendingInitialization || pluginState == PluginState.Enabled;
+            if (shouldLoadPlugin)
+            {
+                var plugin = new AppIdentity(pluginId, pluginVersion);
+                try
+                {
+                    var licenseState = this.LicensingManager.GetLicensingState(plugin);
+                    return licenseState.IsLicensed;
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Error(ex, "Error while checking the license for plugin {plugin}.", plugin);
+                    return false;
+                }
+            }
+
+            return false;
         }
     }
 }
