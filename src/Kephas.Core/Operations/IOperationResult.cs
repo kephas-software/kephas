@@ -77,6 +77,21 @@ namespace Kephas.Operations
     }
 
     /// <summary>
+    /// Interface for typed operation result.
+    /// </summary>
+    /// <typeparam name="TValue">Type of the return value.</typeparam>
+    public interface IOperationResult<TValue> : IOperationResult
+    {
+        /// <summary>
+        /// Gets or sets the return value.
+        /// </summary>
+        /// <value>
+        /// The return value.
+        /// </value>
+        new TValue ReturnValue { get; set; }
+    }
+
+    /// <summary>
     /// Extensions for <see cref="IOperationResult"/>.
     /// </summary>
     public static class OperationResultExtensions

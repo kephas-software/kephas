@@ -54,6 +54,16 @@ namespace Kephas.Operations
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="OperationResult"/> class.
+        /// </summary>
+        /// <param name="returnValue">The return value.</param>
+        public OperationResult(object returnValue)
+            : this()
+        {
+            this.ReturnValue = returnValue;
+        }
+
+        /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
@@ -191,6 +201,42 @@ namespace Kephas.Operations
             {
                 throw new NotSupportedException();
             }
+        }
+    }
+
+    /// <summary>
+    /// Encapsulates the result of an operation.
+    /// </summary>
+    /// <typeparam name="TValue">Type of the value.</typeparam>
+    public class OperationResult<TValue> : OperationResult, IOperationResult<TValue>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OperationResult{TValue}"/> class.
+        /// </summary>
+        public OperationResult()
+            : this(default)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OperationResult{TValue}"/> class.
+        /// </summary>
+        /// <param name="returnValue">The return value.</param>
+        public OperationResult(TValue returnValue)
+            : base(returnValue)
+        {
+        }
+
+        /// <summary>
+        /// Gets or sets the return value.
+        /// </summary>
+        /// <value>
+        /// The return value.
+        /// </value>
+        public new TValue ReturnValue
+        {
+            get => (TValue)base.ReturnValue;
+            set => base.ReturnValue = value;
         }
     }
 }
