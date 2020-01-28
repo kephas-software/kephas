@@ -11,12 +11,10 @@
 namespace Kephas.Licensing
 {
     using Kephas.Application;
-    using Kephas.Services;
 
     /// <summary>
     /// Interface for licensing manager.
     /// </summary>
-    [SingletonAppServiceContract]
     public interface ILicensingManager
     {
         /// <summary>
