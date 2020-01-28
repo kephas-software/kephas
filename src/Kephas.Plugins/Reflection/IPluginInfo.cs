@@ -12,6 +12,7 @@ namespace Kephas.Plugins.Reflection
 {
     using System.Collections.Generic;
 
+    using Kephas.Application;
     using Kephas.Reflection;
 
     /// <summary>
@@ -57,6 +58,6 @@ namespace Kephas.Plugins.Reflection
         /// <returns>
         /// The identity.
         /// </returns>
-        PluginIdentity GetIdentity();
+        AppIdentity GetIdentity();
     }
 }

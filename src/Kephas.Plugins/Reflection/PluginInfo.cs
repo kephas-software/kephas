@@ -12,6 +12,7 @@ namespace Kephas.Plugins.Reflection
 {
     using System.Collections.Generic;
 
+    using Kephas.Application;
     using Kephas.Reflection.Dynamic;
 
     /// <summary>
@@ -19,7 +20,7 @@ namespace Kephas.Plugins.Reflection
     /// </summary>
     public class PluginInfo : DynamicTypeInfo, IPluginInfo
     {
-        private PluginIdentity identity;
+        private AppIdentity identity;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginInfo"/> class.
@@ -34,7 +35,7 @@ namespace Kephas.Plugins.Reflection
             this.Version = version;
             this.Description = description;
             this.Tags = tags;
-            this.identity = new PluginIdentity(name, version);
+            this.identity = new AppIdentity(name, version);
         }
 
         /// <summary>
@@ -75,7 +76,7 @@ namespace Kephas.Plugins.Reflection
         /// <returns>
         /// The identity.
         /// </returns>
-        public PluginIdentity GetIdentity() => this.identity;
+        public AppIdentity GetIdentity() => this.identity;
 
         /// <summary>
         /// Creates an instance with the provided arguments (if any).

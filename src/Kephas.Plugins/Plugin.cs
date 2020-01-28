@@ -11,6 +11,7 @@
 namespace Kephas.Plugins
 {
     using Kephas;
+    using Kephas.Application;
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -70,7 +71,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// The identity.
         /// </returns>
-        public PluginIdentity GetIdentity() => this.pluginInfo.GetIdentity();
+        public AppIdentity GetIdentity() => this.pluginInfo.GetIdentity();
 
         /// <summary>
         /// Gets the type information for this instance.

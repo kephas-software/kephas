@@ -10,6 +10,7 @@
 
 namespace Kephas.Plugins
 {
+    using Kephas.Application;
     using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Plugins.Reflection;
@@ -41,6 +42,6 @@ namespace Kephas.Plugins
         /// <returns>
         /// The identity.
         /// </returns>
-        PluginIdentity GetIdentity();
+        AppIdentity GetIdentity();
     }
 }
