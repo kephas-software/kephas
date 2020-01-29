@@ -149,7 +149,7 @@ namespace Kephas.Plugins.NuGet
             IPlugin pluginData = null;
             var context = this.CreatePluginContext(options)
                 .Operation(PluginOperation.Install, overwrite: false)
-                .Plugin(plugin);
+                .PluginId(plugin);
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
                 {
@@ -164,7 +164,7 @@ namespace Kephas.Plugins.NuGet
                         var (pluginPackageIdentity, packageReaders) = await this.GetPackageReadersAsync(plugin, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
 
                         pluginInfo = new PluginInfo(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
-                        context.Plugin(plugin = pluginInfo.GetIdentity());
+                        context.PluginId(plugin = pluginInfo.GetIdentity());
 
                         var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsFolder(), pluginPackageIdentity.Id);
                         if (!Directory.Exists(pluginFolder))
@@ -223,7 +223,7 @@ namespace Kephas.Plugins.NuGet
                 var (pluginPackageIdentity, packageReaders) = await this.GetPackageReadersAsync(plugin, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
 
                 var pluginInfo = new PluginInfo(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
-                context.Plugin(plugin = pluginInfo.GetIdentity());
+                context.PluginId(plugin = pluginInfo.GetIdentity());
 
                 var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsFolder(), pluginPackageIdentity.Id);
                 if (!Directory.Exists(pluginFolder))
@@ -390,7 +390,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task InstallPluginBinAsync(AppIdentity plugin, IContext context, NuGetFramework nugetFramework, string pluginFolder, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
+        protected virtual async Task InstallPluginBinAsync(AppIdentity plugin, IPluginContext context, NuGetFramework nugetFramework, string pluginFolder, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
         {
             const string libFolderName = "lib";
 
@@ -423,7 +423,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task InstallPluginContentAsync(AppIdentity plugin, IContext context, NuGetFramework nugetFramework, string pluginFolder, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
+        protected virtual async Task InstallPluginContentAsync(AppIdentity plugin, IPluginContext context, NuGetFramework nugetFramework, string pluginFolder, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
         {
             const string contentFolderName = "content";
 

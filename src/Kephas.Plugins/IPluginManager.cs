@@ -29,79 +29,79 @@ namespace Kephas.Plugins
         /// <summary>
         /// Installs the plugin asynchronously.
         /// </summary>
-        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="pluginId">The plugin identity.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the install operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> InstallPluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> InstallPluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Uninstalls the plugin asynchronously.
         /// </summary>
-        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="pluginId">The plugin identity.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the uninstall operation result.
         /// </returns>
-        Task<IOperationResult> UninstallPluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult> UninstallPluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Initializes the plugin asynchronously.
         /// </summary>
-        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="pluginId">The plugin identity.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the initialize operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Uninitializes the plugin asynchronously.
         /// </summary>
-        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="pluginId">The plugin identity.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the uninitialize operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates the plugin asynchronously.
         /// </summary>
-        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="pluginId">The plugin identity.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the update operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> UpdatePluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> UpdatePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Enables the plugin asynchronously if the plugin was previously disabled.
         /// </summary>
-        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="pluginId">The plugin identity.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the enable operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> EnablePluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> EnablePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Disables the plugin asynchronously if the plugin was previously enabled.
         /// </summary>
-        /// <param name="plugin">The plugin identity.</param>
+        /// <param name="pluginId">The plugin identity.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the enable operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the installed plugins.

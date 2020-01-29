@@ -57,7 +57,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The plugin.
         /// </value>
-        AppIdentity Plugin { get; set; }
+        AppIdentity PluginId { get; set; }
 
         /// <summary>
         /// Gets or sets the operation.
@@ -66,6 +66,14 @@ namespace Kephas.Plugins
         /// The operation.
         /// </value>
         PluginOperation? Operation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the plugin data.
+        /// </summary>
+        /// <value>
+        /// The plugin data.
+        /// </value>
+        IPlugin Plugin { get; set; }
     }
 
     /// <summary>
@@ -102,12 +110,37 @@ namespace Kephas.Plugins
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context to act on.</param>
-        /// <param name="plugin">The plugin.</param>
+        /// <param name="pluginId">The plugin identity.</param>
         /// <param name="overwrite">Optional. True to overwrite the previously set value, false to preserve it.</param>
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext Plugin<TContext>(this TContext context, AppIdentity plugin, bool overwrite = true)
+        public static TContext PluginId<TContext>(this TContext context, AppIdentity pluginId, bool overwrite = true)
+            where TContext : class, IPluginContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            if (context.PluginId != null && !overwrite)
+            {
+                return context;
+            }
+
+            context.PluginId = pluginId;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the plugin operation.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The context to act on.</param>
+        /// <param name="plugin">The plugin data.</param>
+        /// <param name="overwrite">Optional. True to overwrite the previously set value, false to
+        ///                         preserve it.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext Plugin<TContext>(this TContext context, IPlugin plugin, bool overwrite = true)
             where TContext : class, IPluginContext
         {
             Requires.NotNull(context, nameof(context));
