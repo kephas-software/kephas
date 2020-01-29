@@ -13,7 +13,7 @@
         <FileVersion>7.4.0.0</FileVersion>
         <Copyright>Copyright © Kephas Software SRL 2010-2020</Copyright>
         <Description>Provides the client infrastructure for the data flow.</Description>
-        <Version>7.4.0-dev.2</Version>
+        <Version>7.4.0-dev.3</Version>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
