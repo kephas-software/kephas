@@ -160,13 +160,13 @@ namespace Kephas.Plugins.NuGet
                 try
                 {
                     var frameworkReducer = new FrameworkReducer();
-                    foreach (var packageReader in packageReaders)
+                    foreach (var (packageId, packageReader) in packageReaders)
                     {
-                        await this.InstallBinAsync(pluginId, pluginFolder, context, nugetFramework, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
-                        await this.InstallContentAsync(pluginId, pluginFolder, context, nugetFramework, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
+                        await this.InstallBinAsync(pluginId, pluginFolder, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
+                        await this.InstallContentAsync(pluginId, pluginFolder, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken).PreserveThreadContext();
                     }
 
-                    PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, pluginPackageIdentity.Version.ToString());
+                    await this.InstallConfigAsync(pluginId, pluginFolder, context, cancellationToken).PreserveThreadContext();
                 }
                 catch
                 {
@@ -176,6 +176,21 @@ namespace Kephas.Plugins.NuGet
 
                 return new Plugin(pluginInfo) { FolderPath = pluginFolder };
             }
+        }
+
+        /// <summary>
+        /// Installs the configuration asynchronously.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="pluginFolder">Pathname of the plugin folder.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected virtual Task InstallConfigAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, CancellationToken cancellationToken)
+        {
+            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -309,6 +324,7 @@ namespace Kephas.Plugins.NuGet
         /// <param name="pluginId">The plugin identity.</param>
         /// <param name="pluginFolder">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
+        /// <param name="packageId">Identifier for the package being installed.</param>
         /// <param name="nugetFramework">The nuget framework.</param>
         /// <param name="frameworkReducer">The framework reducer.</param>
         /// <param name="packageReader">The package reader.</param>
@@ -316,7 +332,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task InstallBinAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
+        protected virtual async Task InstallBinAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, PackageIdentity packageId, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
         {
             const string libFolderName = "lib";
 
@@ -342,6 +358,7 @@ namespace Kephas.Plugins.NuGet
         /// <param name="pluginId">The plugin identity.</param>
         /// <param name="pluginFolder">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
+        /// <param name="packageId">Identifier for the package being installed.</param>
         /// <param name="nugetFramework">The nuget framework.</param>
         /// <param name="frameworkReducer">The framework reducer.</param>
         /// <param name="packageReader">The package reader.</param>
@@ -349,7 +366,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task InstallContentAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
+        protected virtual async Task InstallContentAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, PackageIdentity packageId, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
         {
             const string contentFolderName = "content";
 
@@ -369,7 +386,7 @@ namespace Kephas.Plugins.NuGet
             }
         }
 
-        private async Task<(PackageIdentity pluginPackageIdentity, IList<PackageReaderBase> packageReaders)> GetPackageReadersAsync(AppIdentity plugin, IList<SourceRepository> repositories, SourceCacheContext cacheContext, NuGetFramework nugetFramework, CancellationToken cancellationToken)
+        private async Task<(PackageIdentity pluginPackageIdentity, IList<(PackageIdentity packageId, PackageReaderBase packageReader)> packageReaders)> GetPackageReadersAsync(AppIdentity plugin, IList<SourceRepository> repositories, SourceCacheContext cacheContext, NuGetFramework nugetFramework, CancellationToken cancellationToken)
         {
             var packagesFolder = this.GetPackagesFolder();
 
@@ -442,12 +459,12 @@ namespace Kephas.Plugins.NuGet
             return targetPath;
         }
 
-        private async Task<List<PackageReaderBase>> GetPackageReadersAsync(IList<SourceRepository> repositories, SourceCacheContext cacheContext, string packagesFolder, IEnumerable<SourcePackageDependencyInfo> dependenciesToInstall, CancellationToken cancellationToken)
+        private async Task<List<(PackageIdentity packageId, PackageReaderBase packageReader)>> GetPackageReadersAsync(IList<SourceRepository> repositories, SourceCacheContext cacheContext, string packagesFolder, IEnumerable<SourcePackageDependencyInfo> dependenciesToInstall, CancellationToken cancellationToken)
         {
             var downloadContext = new PackageDownloadContext(cacheContext);
             var downloadResources = await this.GetDownloadResourcesAsync(repositories, cancellationToken).PreserveThreadContext();
 
-            var packageReaders = new List<PackageReaderBase>();
+            var packageReaders = new List<(PackageIdentity packageId, PackageReaderBase packageReader)>();
 
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -459,7 +476,7 @@ namespace Kephas.Plugins.NuGet
                 var installedPath = packagePathResolver.GetInstalledPath(dependency);
                 if (installedPath != null)
                 {
-                    packageReaders.Add(new PackageFolderReader(installedPath));
+                    packageReaders.Add((dependency, new PackageFolderReader(installedPath)));
                 }
                 else
                 {
@@ -469,7 +486,7 @@ namespace Kephas.Plugins.NuGet
                             downloadResources,
                             downloadContext,
                             cancellationToken).PreserveThreadContext();
-                    packageReaders.Add(downloadResult.PackageReader);
+                    packageReaders.Add((dependency, downloadResult.PackageReader));
                 }
             }
 
