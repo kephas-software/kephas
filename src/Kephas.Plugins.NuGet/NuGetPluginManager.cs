@@ -194,6 +194,37 @@ namespace Kephas.Plugins.NuGet
         }
 
         /// <summary>
+        /// Uninstall the plugin asynchronously (core implementation).
+        /// </summary>
+        /// <param name="pluginId">Identifier for the plugin.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected override async Task UninstallPluginCoreAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken)
+        {
+            await this.UninstallConfigAsync(pluginId, context.Plugin.FolderPath, context, cancellationToken).PreserveThreadContext();
+
+            await base.UninstallPluginCoreAsync(pluginId, context, cancellationToken).PreserveThreadContext();
+        }
+
+        /// <summary>
+        /// Uninstalls the configuration asynchronously.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="folderPath">Full pathname of the folder file.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected virtual Task UninstallConfigAsync(AppIdentity pluginId, string folderPath, IPluginContext context, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
         /// Gets the packages folder.
         /// </summary>
         /// <param name="defaultPackagesFolder">Optional. The default packages folder.</param>
