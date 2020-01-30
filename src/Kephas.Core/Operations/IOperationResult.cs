@@ -241,7 +241,7 @@ namespace Kephas.Operations
         }
 
         /// <summary>
-        /// Marks the result as completed and computes the operation state.
+        /// Indicates whether the result has errors.
         /// </summary>
         /// <param name="result">The result.</param>
         /// <returns>
@@ -258,7 +258,7 @@ namespace Kephas.Operations
         }
 
         /// <summary>
-        /// Marks the result as completed and computes the operation state.
+        /// Indicates whether the result has warnings.
         /// </summary>
         /// <param name="result">The result.</param>
         /// <returns>
@@ -269,6 +269,21 @@ namespace Kephas.Operations
             Requires.NotNull(result, nameof(result));
 
             return result.Exceptions.Any(
+                e => e is ISeverityQualifiedException qex && qex.Severity == SeverityLevel.Warning);
+        }
+
+        /// <summary>
+        /// Marks the result as completed and computes the operation state.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <returns>
+        /// A TResult.
+        /// </returns>
+        public static IEnumerable<Exception> Warnings(this IOperationResult result)
+        {
+            Requires.NotNull(result, nameof(result));
+
+            return result.Exceptions.Where(
                 e => e is ISeverityQualifiedException qex && qex.Severity == SeverityLevel.Warning);
         }
     }
