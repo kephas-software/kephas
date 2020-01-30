@@ -109,8 +109,13 @@ namespace Kephas.Plugins
                 .Operation(PluginOperation.Install, overwrite: false)
                 .PluginId(pluginId);
             var opResult = await Profiler.WithInfoStopwatchAsync(
-                async () => pluginData = await this.InstallPluginCoreAsync(pluginId, context, cancellationToken)
-                                            .PreserveThreadContext()).PreserveThreadContext();
+                async () =>
+                {
+                    pluginData = await this.InstallPluginCoreAsync(pluginId, context, cancellationToken)
+                                                .PreserveThreadContext();
+
+                    PluginHelper.SetPluginData(pluginData.FolderPath, PluginState.PendingInitialization, pluginData.GetTypeInfo().Version);
+                }).PreserveThreadContext();
 
             this.Logger.Info("Plugin {plugin} successfully installed, awaiting initialization. Elapsed: {elapsed:c}.", pluginId, opResult.Elapsed);
 
