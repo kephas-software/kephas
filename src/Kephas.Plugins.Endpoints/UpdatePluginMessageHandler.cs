@@ -50,7 +50,7 @@ namespace Kephas.Plugins.Endpoints
         /// </returns>
         public override async Task<ResponseMessage> ProcessAsync(UpdatePluginMessage message, IMessagingContext context, CancellationToken token)
         {
-            this.appContext.Logger.Info("Installing plugin {plugin} {version}...", message.Id, message.Version);
+            this.appContext.Logger.Info("Updating plugin {plugin} to version {version}...", message.Id, message.Version);
 
             var result = await this.pluginManager.UpdatePluginAsync(new AppIdentity(message.Id, message.Version)).PreserveThreadContext();
 
@@ -58,7 +58,7 @@ namespace Kephas.Plugins.Endpoints
             var pluginId = plugin?.GetTypeInfo().Name ?? message.Id;
             var pluginVersion = plugin?.GetTypeInfo().Version ?? message.Version;
 
-            this.appContext.Logger.Info("Plugin {plugin} {version} updated in {pluginPath}. Elapsed: {elapsed:c}.", pluginId, pluginVersion, plugin?.FolderPath, result.Elapsed);
+            this.appContext.Logger.Info("Plugin {plugin} updated to version {version} in {pluginPath}. Elapsed: {elapsed:c}.", pluginId, pluginVersion, plugin?.FolderPath, result.Elapsed);
 
             return new ResponseMessage
             {

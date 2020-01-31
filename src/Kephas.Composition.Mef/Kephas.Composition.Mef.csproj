@@ -7,7 +7,7 @@
         <RootNamespace>Kephas</RootNamespace>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>7.4.0-dev.3</Version>
+        <Version>7.4.0-dev.4</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
