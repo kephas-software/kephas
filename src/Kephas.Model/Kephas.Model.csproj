@@ -5,7 +5,7 @@
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Description>Provides abstract multi-dimensional modeling artifacts like classifiers, value types, and other model elements.</Description>
-        <Version>7.4.0-dev.4</Version>
+        <Version>7.4.0</Version>
         <AssemblyVersion>7.4.0.0</AssemblyVersion>
         <FileVersion>7.4.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
