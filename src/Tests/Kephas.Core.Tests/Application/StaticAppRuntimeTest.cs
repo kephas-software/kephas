@@ -69,9 +69,29 @@ namespace Kephas.Core.Tests.Application
         }
 
         [Test]
-        public void GetAppConfigLocations()
+        public void GetAppConfigLocations_configured()
         {
             var appEnv = new StaticAppRuntime(appFolder: "/root", configFolders: new[] { "../my/config", "config" });
+            var configLocations = appEnv.GetAppConfigLocations();
+
+            Assert.AreEqual(2, configLocations.Count());
+
+            if (RuntimeEnvironment.IsWindows())
+            {
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith("\\my\\config") && !l.Contains("..")));
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith("\\root\\config")));
+            }
+            else
+            {
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith("/my/config") && !l.Contains("..")));
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith("/root/config")));
+            }
+        }
+
+        [Test]
+        public void GetAppConfigLocations_configured_distinct()
+        {
+            var appEnv = new StaticAppRuntime(appFolder: "/root", configFolders: new[] { "../my/config", "../my/config", "config" });
             var configLocations = appEnv.GetAppConfigLocations();
 
             Assert.AreEqual(2, configLocations.Count());

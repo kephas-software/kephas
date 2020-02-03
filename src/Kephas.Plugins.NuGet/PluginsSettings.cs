@@ -11,6 +11,7 @@
 namespace Kephas.Plugins.NuGet
 {
     using global::NuGet.Resolver;
+    using Kephas.Application;
 
     /// <summary>
     /// The plugins settings.
@@ -32,6 +33,14 @@ namespace Kephas.Plugins.NuGet
         /// The pathname of the cached packages folder.
         /// </value>
         public string PackagesFolder { get; set; }
+
+        /// <summary>
+        /// Gets or sets the relative folder within the package containing the configuration files.
+        /// </summary>
+        /// <value>
+        /// The relative folder within the package containing the configuration files.
+        /// </value>
+        public string PackageConfigFolder { get; set; } = AppRuntimeBase.DefaultConfigFolder;
 
         /// <summary>
         /// Gets or sets the search term used for identifying plugins.

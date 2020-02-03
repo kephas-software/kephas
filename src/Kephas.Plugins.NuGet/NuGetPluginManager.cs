@@ -189,9 +189,55 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task InstallConfigAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual async Task InstallConfigAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            var sourceConfigFilesFolder = Path.Combine(pluginFolder, this.pluginsSettings.PackageConfigFolder);
+            var targetConfigFilesFolder = this.AppRuntime.GetAppConfigLocations().First();
+
+            if (!Directory.Exists(sourceConfigFilesFolder))
+            {
+                return;
+            }
+
+            if (!Directory.Exists(targetConfigFilesFolder))
+            {
+                Directory.CreateDirectory(targetConfigFilesFolder);
+            }
+
+            var adjustment = sourceConfigFilesFolder.EndsWith(Path.DirectorySeparatorChar.ToString())
+                || sourceConfigFilesFolder.EndsWith(Path.AltDirectorySeparatorChar.ToString())
+                    ? 0 : 1;
+            foreach (var configFile in Directory.GetFiles(sourceConfigFilesFolder, "*.*", SearchOption.AllDirectories))
+            {
+                var sourceFile = configFile.Substring(sourceConfigFilesFolder.Length + adjustment);
+                var targetFile = Path.Combine(targetConfigFilesFolder, sourceFile);
+                var targetDirectory = Path.GetDirectoryName(targetFile);
+                if (!Directory.Exists(targetDirectory))
+                {
+                    Directory.CreateDirectory(targetDirectory);
+                }
+
+                if (File.Exists(targetFile))
+                {
+                    if (context.Operation == PluginOperation.Update)
+                    {
+                        this.Logger.Info("Configuration file '{targetFile}' exists already, will not be overwritten with '{sourceFile}'.", targetFile, configFile);
+                    }
+                    else
+                    {
+                        var extension = Path.GetExtension(targetFile);
+                        var targetFileRaw = targetFile.Substring(0, targetFile.Length - extension.Length);
+                        var renamedTargetFile = $"{targetFileRaw}-{DateTime.Now:yyyyMMddhhmmss}{extension}";
+                        File.Move(targetFile, renamedTargetFile);
+                        File.Copy(configFile, targetFile);
+                        this.Logger.Warn("Configuration file '{targetFile}' exists already, will be renamed to '{sourceFile}'. Check whether it should be changed.", targetFile, Path.GetFileName(renamedTargetFile));
+                    }
+                }
+                else
+                {
+                    File.Copy(configFile, targetFile);
+                }
+            }
         }
 
         /// <summary>
@@ -214,15 +260,50 @@ namespace Kephas.Plugins.NuGet
         /// Uninstalls the configuration asynchronously.
         /// </summary>
         /// <param name="pluginId">The plugin identity.</param>
-        /// <param name="folderPath">Full pathname of the folder file.</param>
+        /// <param name="pluginFolder">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task UninstallConfigAsync(AppIdentity pluginId, string folderPath, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual async Task UninstallConfigAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, CancellationToken cancellationToken)
         {
-            return Task.CompletedTask;
+            if (context.Operation == PluginOperation.Update)
+            {
+                return;
+            }
+
+            var sourceConfigFilesFolder = Path.Combine(pluginFolder, this.pluginsSettings.PackageConfigFolder);
+            var targetConfigFilesFolder = this.AppRuntime.GetAppConfigLocations().First();
+
+            if (!Directory.Exists(sourceConfigFilesFolder))
+            {
+                return;
+            }
+
+            if (!Directory.Exists(targetConfigFilesFolder))
+            {
+                return;
+            }
+
+            var adjustment = sourceConfigFilesFolder.EndsWith(Path.DirectorySeparatorChar.ToString())
+                || sourceConfigFilesFolder.EndsWith(Path.AltDirectorySeparatorChar.ToString())
+                    ? 0 : 1;
+            foreach (var configFile in Directory.GetFiles(sourceConfigFilesFolder, "*.*", SearchOption.AllDirectories))
+            {
+                var sourceFile = configFile.Substring(sourceConfigFilesFolder.Length + adjustment);
+                var targetFile = Path.Combine(targetConfigFilesFolder, sourceFile);
+                var targetDirectory = Path.GetDirectoryName(targetFile);
+                if (!Directory.Exists(targetDirectory))
+                {
+                    continue;
+                }
+
+                if (File.Exists(targetFile))
+                {
+                    File.Delete(targetFile);
+                }
+            }
         }
 
         /// <summary>

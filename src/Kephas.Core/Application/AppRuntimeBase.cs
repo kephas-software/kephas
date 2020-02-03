@@ -513,12 +513,12 @@ namespace Kephas.Application
                 return new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultConfigFolder)) };
             }
 
-            var locations = new HashSet<string>();
+            var locations = new List<string>();
             locations.AddRange(this.GetAppBinLocations().SelectMany(l => configFolders.Select(f => FileSystem.NormalizePath(Path.GetFullPath(Path.IsPathRooted(f) ? f : Path.Combine(l, f))))));
 
             return locations.Count == 0
                 ? new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultConfigFolder)) }
-                : locations.ToArray();
+                : locations.Distinct().ToArray();
         }
     }
 }
