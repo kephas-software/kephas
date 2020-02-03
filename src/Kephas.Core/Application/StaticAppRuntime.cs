@@ -11,6 +11,7 @@
 namespace Kephas.Application
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     using Kephas.Dynamic;
@@ -31,8 +32,9 @@ namespace Kephas.Application
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
         ///                                     assemblies.</param>
-        /// <param name="appLocation">Optional. The application location. If not specified, the current
+        /// <param name="appFolder">Optional. The application location. If not specified, the current
         ///                           application location is considered.</param>
+        /// <param name="configFolders">Optional. The configuration folders.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -42,12 +44,13 @@ namespace Kephas.Application
             ILicensingManager licensingManager = null,
             ILogManager logManager = null, 
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
-            string appLocation = null,
+            string appFolder = null,
+            IEnumerable<string> configFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
             IExpando appArgs = null)
-            : base(assemblyLoader, licensingManager, logManager, defaultAssemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
+            : base(assemblyLoader, licensingManager, logManager, defaultAssemblyFilter, appFolder, configFolders, appId, appInstanceId, appVersion, appArgs)
         {
         }
     }

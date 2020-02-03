@@ -45,7 +45,7 @@ namespace Kephas.Diagnostics
             if (!RuntimeEnvironment.IsWindows())
             {
                 // include all app paths in the library paths.
-                var appBinDirectories = appRuntime.GetAppBinDirectories();
+                var appBinDirectories = appRuntime.GetAppBinLocations();
                 var libraryPath = string.Join(":", appBinDirectories);
 
                 this.WithEnvironmentVariable(RuntimeEnvironment.LibraryPathEnvVariable, libraryPath);

@@ -34,7 +34,8 @@ namespace Kephas.Application
         /// <param name="licensingManager">Optional. Manager for licensing.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="defaultAssemblyFilter">Optional. The default assembly filter.</param>
-        /// <param name="appLocation">Optional. The application location.</param>
+        /// <param name="appFolder">Optional. The application location.</param>
+        /// <param name="configFolders">Optional. The configuration folders.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -44,12 +45,13 @@ namespace Kephas.Application
             ILicensingManager licensingManager = null,
             ILogManager logManager = null,
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
-            string appLocation = null,
+            string appFolder = null,
+            IEnumerable<string> configFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
             IExpando appArgs = null)
-            : base(assemblyLoader, licensingManager, logManager, defaultAssemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
+            : base(assemblyLoader, licensingManager, logManager, defaultAssemblyFilter, appFolder, configFolders, appId, appInstanceId, appVersion, appArgs)
         {
         }
 
@@ -75,7 +77,7 @@ namespace Kephas.Application
         protected virtual void AddAdditionalAssemblies(IList<Assembly> assemblies, Func<AssemblyName, bool> assemblyFilter)
         {
             // load all the assemblies found in the application directories which are not already loaded.
-            var directories = this.GetAppBinDirectories();
+            var directories = this.GetAppBinLocations();
             foreach (var directory in directories.Where(d => !string.IsNullOrEmpty(d)))
             {
                 var loadedAssemblyFiles = assemblies.Where(a => !a.IsDynamic).Select(this.GetFileName).Select(f => f.ToLowerInvariant());

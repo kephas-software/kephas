@@ -33,13 +33,20 @@ namespace Kephas.Application
         string GetAppLocation();
 
         /// <summary>
-        /// Gets the application bin folders from where application is loaded.
+        /// Gets the application bin directories from where application is loaded.
         /// </summary>
         /// <returns>
-        /// An enumerator that allows foreach to be used to process the application bin folders in this
-        /// collection.
+        /// The application bin directories.
         /// </returns>
-        IEnumerable<string> GetAppBinDirectories();
+        IEnumerable<string> GetAppBinLocations();
+
+        /// <summary>
+        /// Gets the application configuration directories where configuration files are stored.
+        /// </summary>
+        /// <returns>
+        /// The application configuration directories.
+        /// </returns>
+        IEnumerable<string> GetAppConfigLocations();
 
         /// <summary>
         /// Gets the application assemblies.
@@ -122,9 +129,7 @@ namespace Kephas.Application
         {
             return string.IsNullOrEmpty(fileName)
                 ? appRuntime.GetAppLocation()
-                : Path.IsPathRooted(fileName)
-                    ? fileName
-                    : Path.Combine(appRuntime.GetAppLocation(), fileName);
+                : Path.GetFullPath(Path.IsPathRooted(fileName) ? fileName : Path.Combine(appRuntime.GetAppLocation(), fileName));
         }
     }
 }

@@ -114,12 +114,7 @@ namespace Kephas.Configuration.Providers
         /// An enumerator that allows foreach to be used to process the probing folders in this
         /// collection.
         /// </returns>
-        protected virtual IEnumerable<string> GetProbingFolders()
-        {
-            var appBinFolders = this.AppRuntime.GetAppBinDirectories();
-            var probingFolders = appBinFolders.Select(f => Path.Combine(f, ConfigurationHelper.ConfigFolder)).ToArray();
-            return probingFolders;
-        }
+        protected virtual IEnumerable<string> GetProbingFolders() => this.AppRuntime.GetAppConfigLocations();
 
         private (string filePath, IOperationResult result, Type mediaType) ComputeSettingsFileInfo(Type settingsType)
         {

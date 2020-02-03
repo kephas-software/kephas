@@ -22,6 +22,7 @@ namespace Kephas.Application
 
     using Kephas.Collections;
     using Kephas.Dynamic;
+    using Kephas.IO;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -32,6 +33,11 @@ namespace Kephas.Application
     /// </summary>
     public abstract class AppRuntimeBase : Expando, IAppRuntime, ILoggable
     {
+        /// <summary>
+        /// The default configuration folder.
+        /// </summary>
+        public const string DefaultConfigFolder = "Config";
+
         /// <summary>
         /// The application identifier key.
         /// </summary>
@@ -62,13 +68,14 @@ namespace Kephas.Application
         /// </summary>
         protected const string AssemblyFileExtension = ".dll";
 
-        private readonly string appLocation;
-
         private readonly ILogManager logManager;
-
         private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache =
             new ConcurrentDictionary<object, IEnumerable<Assembly>>();
 
+        private string appLocation;
+        private string appFolder;
+        private string[] configLocations;
+        private IEnumerable<string> configFolders;
         private ILogger logger;
 
         /// <summary>
@@ -79,8 +86,9 @@ namespace Kephas.Application
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
         ///                                     assemblies.</param>
-        /// <param name="appLocation">Optional. The application location. If not specified, the current
+        /// <param name="appFolder">Optional. The application folder. If not specified, the current
         ///                           application location is considered.</param>
+        /// <param name="configFolders">Optional. The configuration folders relative to the application location.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -90,7 +98,8 @@ namespace Kephas.Application
             ILicensingManager licensingManager = null,
             ILogManager logManager = null,
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
-            string appLocation = null,
+            string appFolder = null,
+            IEnumerable<string> configFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
@@ -101,7 +110,8 @@ namespace Kephas.Application
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
             this.LicensingManager = licensingManager ?? new NullLicensingManager();
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
-            this.appLocation = appLocation;
+            this.appFolder = appFolder;
+            this.configFolders = configFolders;
 
             this.InitializeAppProperties(Assembly.GetEntryAssembly(), appId, appInstanceId, appVersion);
 
@@ -175,16 +185,7 @@ namespace Kephas.Application
         /// <returns>
         /// A path indicating the application location.
         /// </returns>
-        public virtual string GetAppLocation()
-        {
-            if (!string.IsNullOrEmpty(this.appLocation))
-            {
-                return Path.GetFullPath(this.appLocation);
-            }
-
-            var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-            return assembly.GetLocation();
-        }
+        public virtual string GetAppLocation() => this.appLocation ?? (this.appLocation = this.ComputeAppLocation(this.appFolder));
 
         /// <summary>
         /// Gets the application bin folders from where application is loaded.
@@ -193,10 +194,18 @@ namespace Kephas.Application
         /// An enumerator that allows foreach to be used to process the application bin folders in this
         /// collection.
         /// </returns>
-        public virtual IEnumerable<string> GetAppBinDirectories()
+        public virtual IEnumerable<string> GetAppBinLocations()
         {
             yield return this.GetAppLocation();
         }
+
+        /// <summary>
+        /// Gets the application configuration directories where configuration files are stored.
+        /// </summary>
+        /// <returns>
+        /// The application configuration directories.
+        /// </returns>
+        public IEnumerable<string> GetAppConfigLocations() => this.configLocations ?? (this.configLocations = this.ComputeConfigLocations(this.configFolders));
 
         /// <summary>
         /// Gets the application assemblies.
@@ -473,13 +482,6 @@ namespace Kephas.Application
             return true;
         }
 
-        /// <summary>
-        /// Tries to load the assembly.
-        /// </summary>
-        /// <param name="n">The name of the assembly to load.</param>
-        /// <returns>
-        /// An assembly or <c>null</c>.
-        /// </returns>
         private Assembly TryLoadAssembly(AssemblyName n)
         {
             try
@@ -491,6 +493,32 @@ namespace Kephas.Application
                 this.Logger.Warn(ex, Strings.AppRuntimeBase_CannotLoadAssembly_Exception, n);
                 return null;
             }
+        }
+
+        private string ComputeAppLocation(string appFolder)
+        {
+            if (!string.IsNullOrEmpty(appFolder))
+            {
+                return FileSystem.NormalizePath(Path.GetFullPath(appFolder));
+            }
+
+            var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+            return assembly.GetLocation();
+        }
+
+        private string[] ComputeConfigLocations(IEnumerable<string> configFolders)
+        {
+            if (configFolders == null)
+            {
+                return new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultConfigFolder)) };
+            }
+
+            var locations = new HashSet<string>();
+            locations.AddRange(this.GetAppBinLocations().SelectMany(l => configFolders.Select(f => FileSystem.NormalizePath(Path.GetFullPath(Path.IsPathRooted(f) ? f : Path.Combine(l, f))))));
+
+            return locations.Count == 0
+                ? new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultConfigFolder)) }
+                : locations.ToArray();
         }
     }
 }
