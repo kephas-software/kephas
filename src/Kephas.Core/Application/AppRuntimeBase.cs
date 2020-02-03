@@ -27,11 +27,13 @@ namespace Kephas.Application
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Services;
+    using Kephas.Services.Transitions;
 
     /// <summary>
     /// An application application runtime providing only assemblies loaded by the runtime.
     /// </summary>
-    public abstract class AppRuntimeBase : Expando, IAppRuntime, ILoggable
+    public abstract class AppRuntimeBase : Expando, IAppRuntime, ILoggable, IInitializable, IDisposable
     {
         /// <summary>
         /// The default configuration folder.
@@ -77,6 +79,7 @@ namespace Kephas.Application
         private string[] configLocations;
         private IEnumerable<string> configFolders;
         private ILogger logger;
+        private bool isDisposed = false; // To detect redundant calls
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
@@ -113,11 +116,10 @@ namespace Kephas.Application
             this.appFolder = appFolder;
             this.configFolders = configFolders;
 
+            this.InitializationMonitor = new InitializationMonitor<IAppRuntime>(this.GetType());
             this.InitializeAppProperties(Assembly.GetEntryAssembly(), appId, appInstanceId, appVersion);
 
             this[AppIdentityKey] = new AppIdentity(this[AppIdKey] as string, this[AppVersionKey] as string);
-
-            AppDomain.CurrentDomain.AssemblyResolve += (s, e) => this.HandleAssemblyResolve(s as AppDomain ?? AppDomain.CurrentDomain, e);
         }
 
         /// <summary>
@@ -155,6 +157,27 @@ namespace Kephas.Application
         /// The assembly filter.
         /// </value>
         protected Func<AssemblyName, bool> AssemblyFilter { get; }
+
+        /// <summary>
+        /// Gets the initialization monitor.
+        /// </summary>
+        /// <value>
+        /// The initialization monitor.
+        /// </value>
+        protected InitializationMonitor<IAppRuntime> InitializationMonitor { get; private set; }
+
+        /// <summary>
+        /// Initializes the service.
+        /// </summary>
+        /// <param name="context">An optional context for initialization.</param>
+        void IInitializable.Initialize(IContext context)
+        {
+            this.InitializationMonitor.Start();
+
+            this.InitializeCore(context);
+
+            this.InitializationMonitor.Complete();
+        }
 
         /// <summary>
         /// Gets the application's underlying .NET framework identifier.
@@ -216,6 +239,8 @@ namespace Kephas.Application
         /// </returns>
         public virtual IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool> assemblyFilter = null)
         {
+            this.InitializationMonitor.AssertIsCompletedSuccessfully();
+
             // TODO The assemblies from the current domain do not consider the not loaded
             // but required referenced assemblies. Therefore load all the references recursively.
             // This could be optimized somehow.
@@ -248,6 +273,36 @@ namespace Kephas.Application
         public virtual string GetHostName()
         {
             return Dns.GetHostName();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        void IDisposable.Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the Kephas.Application.AppRuntimeBase and optionally
+        /// releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (this.InitializationMonitor.IsCompleted)
+            {
+                AppDomain.CurrentDomain.AssemblyResolve -= this.HandleAssemblyResolveRaw;
+            }
+
+            this.isDisposed = true;
         }
 
         /// <summary>
@@ -454,6 +509,16 @@ namespace Kephas.Application
             return assemblies;
         }
 
+
+        /// <summary>
+        /// Initializes the service, ensuring that the assembly resolution is properly handled.
+        /// </summary>
+        /// <param name="context">Optional. An optional context for initialization.</param>
+        protected virtual void InitializeCore(IContext context = null)
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += this.HandleAssemblyResolveRaw;
+        }
+
         private static bool EqualArray(byte[] s1, byte[] s2)
         {
             if (s1 == null)
@@ -520,5 +585,7 @@ namespace Kephas.Application
                 ? new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultConfigFolder)) }
                 : locations.Distinct().ToArray();
         }
+
+        private Assembly HandleAssemblyResolveRaw(object s, ResolveEventArgs e) => this.HandleAssemblyResolve(s as AppDomain ?? AppDomain.CurrentDomain, e);
     }
 }

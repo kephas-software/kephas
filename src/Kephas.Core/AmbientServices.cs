@@ -28,6 +28,7 @@ namespace Kephas
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
 
@@ -65,8 +66,8 @@ namespace Kephas
                     .Register<ILogManager, NullLogManager>()
                     .Register<IAssemblyLoader, DefaultAssemblyLoader>()
                     .Register<ITypeLoader, DefaultTypeLoader>()
-                    .Register<IAppRuntime, StaticAppRuntime>()
                     .Register<ILicensingManager, NullLicensingManager>()
+                    .Register<IAppRuntime>(this.CreateDefaultAppRuntime)
 
                     .RegisterMultiple<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>())
 
@@ -223,6 +224,19 @@ namespace Kephas
         protected virtual void Dispose(bool disposing)
         {
             this.registry?.Dispose();
+        }
+
+        /// <summary>
+        /// Creates the default application runtime.
+        /// </summary>
+        /// <returns>
+        /// The new application runtime.
+        /// </returns>
+        protected virtual IAppRuntime CreateDefaultAppRuntime()
+        {
+            var appRuntime = new StaticAppRuntime(this.AssemblyLoader, this.LicensingManager, this.LogManager);
+            ServiceHelper.Initialize(appRuntime);
+            return appRuntime;
         }
 
         private IEnumerable<IAppServiceInfo> ToAppServiceInfos(IServiceInfo appServiceInfo)

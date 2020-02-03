@@ -17,6 +17,7 @@ namespace Kephas.Application
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Services;
 
     /// <summary>
     /// Extension methods for the <see cref="IAmbientServices"/>.

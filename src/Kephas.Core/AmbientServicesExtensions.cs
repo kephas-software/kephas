@@ -698,6 +698,8 @@ namespace Kephas
             Requires.NotNull(ambientServices, nameof(ambientServices));
             Requires.NotNull(appRuntime, nameof(appRuntime));
 
+            ServiceHelper.Finalize(ambientServices.AppRuntime);
+            ServiceHelper.Initialize(appRuntime);
             ambientServices.Register(appRuntime);
 
             return ambientServices;
