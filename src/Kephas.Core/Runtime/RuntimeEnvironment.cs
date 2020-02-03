@@ -22,6 +22,26 @@ namespace Kephas.Runtime
         /// </summary>
         public const string LibraryPathEnvVariable = "LD_LIBRARY_PATH";
 
+        /// <summary>
+        /// The Windows path separator.
+        /// </summary>
+        public static readonly char WindowsDirectorySeparatorChar = '\\';
+
+        /// <summary>
+        /// The Unix path separator.
+        /// </summary>
+        public static readonly char UnixDirectorySeparatorChar = '/';
+
+        /// <summary>
+        /// The Windows new line.
+        /// </summary>
+        public static readonly string WindowsNewLine = "\r\n";
+
+        /// <summary>
+        /// The Unix new line.
+        /// </summary>
+        public static readonly string UnixNewLine = "\n";
+
         private static PlatformID? platform;
 
         /// <summary>
