@@ -164,7 +164,7 @@ namespace Kephas.Plugins.Application
         /// </returns>
         protected virtual string ComputePluginsLocation(string rawPluginsFolder, IExpando appArgs)
         {
-            var pluginsFolder = Path.Combine(this.GetAppLocation(), rawPluginsFolder ?? appArgs?[PluginHelper.PluginsFolderArgName] as string ?? PluginHelper.PluginsFolder);
+            var pluginsFolder = Path.Combine(this.GetAppLocation(), rawPluginsFolder ?? appArgs?[PluginHelper.PluginsFolderArgName] as string ?? PluginHelper.DefaultPluginsFolder);
             return Path.GetFullPath(pluginsFolder);
         }
 

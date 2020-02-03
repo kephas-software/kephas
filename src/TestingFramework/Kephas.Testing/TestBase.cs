@@ -62,7 +62,13 @@ namespace Kephas.Testing
         /// </returns>
         protected virtual bool IsNotTestAssembly(AssemblyName assembly)
         {
-            return !assembly.IsSystemAssembly() && !assembly.FullName.StartsWith("NUnit") && !assembly.FullName.StartsWith("xunit") && !assembly.FullName.StartsWith("JetBrains");
+            return !assembly.IsSystemAssembly()
+                && !assembly.FullName.StartsWith("NUnit", StringComparison.OrdinalIgnoreCase)
+                && !assembly.FullName.StartsWith("xunit", StringComparison.OrdinalIgnoreCase)
+                && !assembly.FullName.StartsWith("JetBrains", StringComparison.OrdinalIgnoreCase)
+                && !assembly.Name.EndsWith("Testing", StringComparison.OrdinalIgnoreCase)
+                && !assembly.Name.EndsWith("Test", StringComparison.OrdinalIgnoreCase)
+                && !assembly.Name.EndsWith("Tests", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>

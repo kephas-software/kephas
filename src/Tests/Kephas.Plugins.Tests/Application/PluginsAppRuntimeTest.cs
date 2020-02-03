@@ -64,7 +64,7 @@ namespace Kephas.Plugins.Tests.Application
             Directory.CreateDirectory(appLocation);
             var pluginsFolder = Path.Combine(appLocation, "myPlugins");
 
-            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, appArgs: new Expando { [nameof(PluginsAppRuntime.PluginsLocation)] = "myPlugins" } );
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, appArgs: new Expando { [PluginHelper.PluginsFolderArgName] = "myPlugins" } );
             Assert.AreEqual(pluginsFolder, appRuntime.PluginsLocation);
 
             Directory.Delete(appLocation, recursive: true);

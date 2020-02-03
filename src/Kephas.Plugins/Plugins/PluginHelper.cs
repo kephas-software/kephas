@@ -36,7 +36,7 @@ namespace Kephas.Plugins
         /// <summary>
         /// Pathname of the plugins folder.
         /// </summary>
-        public const string PluginsFolder = "Plugins";
+        public const string DefaultPluginsFolder = "Plugins";
 
         /// <summary>
         /// Name of the plugin state file.
