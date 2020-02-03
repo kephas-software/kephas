@@ -15,9 +15,12 @@ namespace Kephas.Testing
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Interaction;
+    using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Serialization;
     using Kephas.Serialization.Composition;
@@ -35,6 +38,21 @@ namespace Kephas.Testing
     /// </content>
     public class TestBase
     {
+        /// <summary>
+        /// Creates default application runtime.
+        /// </summary>
+        /// <param name="logManager">Manager for log.</param>
+        /// <returns>
+        /// The new default application runtime.
+        /// </returns>
+        protected virtual IAppRuntime CreateDefaultAppRuntime(ILogManager logManager)
+        {
+            var appRuntime = new StaticAppRuntime(
+                                         logManager: logManager,
+                                         defaultAssemblyFilter: this.IsNotTestAssembly);
+            return appRuntime;
+        }
+
         /// <summary>
         /// Query if 'a' is not test assembly.
         /// </summary>

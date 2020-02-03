@@ -10,19 +10,20 @@
 
 namespace Kephas.Tests.Composition.Mef
 {
-    using Kephas.Application;
-    using Kephas.Reflection;
+    using Kephas.Logging;
+    using Kephas.Testing;
+    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class AmbientServicesTest
+    public class AmbientServicesTest : TestBase
     {
         [Test]
         public void CustomAmbientServices_singleton()
         {
             var ambientServices = CustomAmbientServices.CreateAmbientServices();
             var container = ambientServices
-                .WithAppRuntime(new StaticAppRuntime(defaultAssemblyFilter: n => !n.IsSystemAssembly() && !n.Name.Contains("JetBrains") && !n.Name.Contains("NUnit") && !n.Name.Contains("Test")))
+                .WithAppRuntime(this.CreateDefaultAppRuntime(Substitute.For<ILogManager>()))
                 .WithMefCompositionContainer(b => b.WithPart(typeof(CustomAmbientServices))).CompositionContainer;
             var otherAmbientServices = container.GetExport<IAmbientServices>();
 

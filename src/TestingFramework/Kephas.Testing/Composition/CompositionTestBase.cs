@@ -46,14 +46,11 @@ namespace Kephas.Testing.Composition
         {
             var log = new StringBuilder();
             logManager = logManager ?? ambientServices?.LogManager ?? new DebugLogManager((logger, level, message, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
-            appRuntime = appRuntime ?? ambientServices?.AppRuntime ?? new StaticAppRuntime(
-                             logManager: logManager,
-                             defaultAssemblyFilter: this.IsNotTestAssembly);
+            appRuntime = appRuntime ?? this.CreateDefaultAppRuntime(logManager);
 
-            ambientServices = ambientServices ?? new AmbientServices();
-            ambientServices
+            ambientServices = (ambientServices ?? new AmbientServices())
                 .Register(logManager)
-                .Register(appRuntime)
+                .WithAppRuntime(appRuntime)
                 .Register(log);
             return new LiteCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }

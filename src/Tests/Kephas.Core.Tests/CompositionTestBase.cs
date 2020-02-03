@@ -26,19 +26,17 @@ namespace Kephas.Core.Tests
     /// Base class for tests using composition.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class CompositionTestBase
+    public class CompositionTestBase : TestBase
     {
         public virtual LiteCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
         {
             logManager = logManager ?? new NullLogManager();
-            appRuntime = appRuntime ?? new StaticAppRuntime(
-                             logManager: logManager,
-                             defaultAssemblyFilter: a => !a.IsSystemAssembly() && !a.FullName.StartsWith("NUnit") && !a.FullName.StartsWith("xunit") && !a.FullName.StartsWith("JetBrains"));
+            appRuntime = appRuntime ?? this.CreateDefaultAppRuntime(logManager);
 
             ambientServices = ambientServices ?? new AmbientServices();
             ambientServices
                 .Register(logManager)
-                .Register(appRuntime);
+                .WithAppRuntime(appRuntime);
             return new LiteCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }
 

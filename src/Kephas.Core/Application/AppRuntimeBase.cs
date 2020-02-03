@@ -172,6 +172,8 @@ namespace Kephas.Application
         /// <param name="context">An optional context for initialization.</param>
         void IInitializable.Initialize(IContext context)
         {
+            this.InitializationMonitor.AssertIsNotStarted();
+
             this.InitializationMonitor.Start();
 
             this.InitializeCore(context);

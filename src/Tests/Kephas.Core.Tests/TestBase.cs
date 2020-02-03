@@ -12,9 +12,13 @@ namespace Kephas.Core.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
+    using Kephas.Logging;
+    using Kephas.Reflection;
     using Kephas.Serialization;
     using Kephas.Serialization.Composition;
     using Kephas.Services;
@@ -22,6 +26,33 @@ namespace Kephas.Core.Tests
 
     public class TestBase
     {
+        /// <summary>
+        /// Creates default application runtime.
+        /// </summary>
+        /// <param name="logManager">Manager for log.</param>
+        /// <returns>
+        /// The new default application runtime.
+        /// </returns>
+        protected virtual IAppRuntime CreateDefaultAppRuntime(ILogManager logManager)
+        {
+            var appRuntime = new StaticAppRuntime(
+                                         logManager: logManager,
+                                         defaultAssemblyFilter: this.IsNotTestAssembly);
+            return appRuntime;
+        }
+
+        /// <summary>
+        /// Query if 'a' is not test assembly.
+        /// </summary>
+        /// <param name="assembly">An Assembly to process.</param>
+        /// <returns>
+        /// True if not test assembly, false if not.
+        /// </returns>
+        protected virtual bool IsNotTestAssembly(AssemblyName assembly)
+        {
+            return !assembly.IsSystemAssembly() && !assembly.FullName.StartsWith("NUnit") && !assembly.FullName.StartsWith("xunit") && !assembly.FullName.StartsWith("JetBrains");
+        }
+
         /// <summary>
         /// Creates a context factory.
         /// </summary>

@@ -67,7 +67,7 @@ namespace Kephas
                     .Register<IAssemblyLoader, DefaultAssemblyLoader>()
                     .Register<ITypeLoader, DefaultTypeLoader>()
                     .Register<ILicensingManager, NullLicensingManager>()
-                    .Register<IAppRuntime>(this.CreateDefaultAppRuntime)
+                    .Register<IAppRuntime>(this.CreateDefaultInitializedAppRuntime)
 
                     .RegisterMultiple<IConventionsRegistrar>(b => b.WithType<AppServiceInfoConventionsRegistrar>())
 
@@ -227,12 +227,12 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Creates the default application runtime.
+        /// Creates the default application runtime and initializes it.
         /// </summary>
         /// <returns>
         /// The new application runtime.
         /// </returns>
-        protected virtual IAppRuntime CreateDefaultAppRuntime()
+        protected virtual IAppRuntime CreateDefaultInitializedAppRuntime()
         {
             var appRuntime = new StaticAppRuntime(this.AssemblyLoader, this.LicensingManager, this.LogManager);
             ServiceHelper.Initialize(appRuntime);
