@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Plugins
+namespace Kephas
 {
     using Kephas.Application;
     using Kephas.Plugins.Application;
@@ -23,16 +23,33 @@ namespace Kephas.Plugins
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <returns>
-        /// The plugins folder.
+        /// The plugins location.
         /// </returns>
-        public static string GetPluginsFolder(this IAppRuntime appRuntime)
+        public static string GetPluginsLocation(this IAppRuntime appRuntime)
         {
             if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
             {
-                return pluginsAppRuntime.PluginsFolder;
+                return pluginsAppRuntime.PluginsLocation;
             }
 
-            return appRuntime?[nameof(PluginsAppRuntime.PluginsFolder)] as string;
+            return appRuntime?[nameof(PluginsAppRuntime.PluginsLocation)] as string;
+        }
+
+        /// <summary>
+        /// Gets the application's target framework.
+        /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <returns>
+        /// The target framework.
+        /// </returns>
+        public static string GetTargetFramework(this IAppRuntime appRuntime)
+        {
+            if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
+            {
+                return pluginsAppRuntime.TargetFramework;
+            }
+
+            return appRuntime?[nameof(PluginsAppRuntime.TargetFramework)] as string;
         }
 
         /// <summary>

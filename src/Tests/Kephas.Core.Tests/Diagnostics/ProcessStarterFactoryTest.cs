@@ -92,7 +92,7 @@ namespace Kephas.Core.Tests.Diagnostics
 
         private IAppRuntime CreateAppRuntime(string appLocation = null)
         {
-            var appRuntime = new DynamicAppRuntime(appLocation: appLocation);
+            var appRuntime = new DynamicAppRuntime(appFolder: appLocation);
             return appRuntime;
         }
     }

@@ -14,7 +14,7 @@ namespace Kephas.Core.Tests.Application
 
     using Kephas.Application;
     using Kephas.Reflection;
-
+    using Kephas.Runtime;
     using NUnit.Framework;
 
     [TestFixture]
@@ -48,6 +48,44 @@ namespace Kephas.Core.Tests.Application
 
             Assert.AreEqual("hello-app", appEnv.GetAppId());
             Assert.AreEqual("1.0.0-beta", appEnv.GetAppVersion());
+        }
+
+        [Test]
+        public void GetAppConfigLocations_default()
+        {
+            var appEnv = new StaticAppRuntime(appFolder: "/root");
+            var configLocations = appEnv.GetAppConfigLocations();
+
+            Assert.AreEqual(1, configLocations.Count());
+
+            if (RuntimeEnvironment.IsWindows())
+            {
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith($"\\root\\{StaticAppRuntime.DefaultConfigFolder}")));
+            }
+            else
+            {
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith($"/root/{StaticAppRuntime.DefaultConfigFolder}")));
+            }
+        }
+
+        [Test]
+        public void GetAppConfigLocations()
+        {
+            var appEnv = new StaticAppRuntime(appFolder: "/root", configFolders: new[] { "../my/config", "config" });
+            var configLocations = appEnv.GetAppConfigLocations();
+
+            Assert.AreEqual(2, configLocations.Count());
+
+            if(RuntimeEnvironment.IsWindows())
+            {
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith("\\my\\config") && !l.Contains("..")));
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith("\\root\\config")));
+            }
+            else
+            {
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith("/my/config") && !l.Contains("..")));
+                Assert.IsTrue(configLocations.Any(l => l.EndsWith("/root/config")));
+            }
         }
 
         [Test]

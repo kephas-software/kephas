@@ -8,13 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Plugins.Application
+namespace Kephas
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Plugins.Application;
 
     /// <summary>
     /// The plugins ambient services builder extensions.
@@ -26,8 +28,9 @@ namespace Kephas.Plugins.Application
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
-        /// <param name="appLocation">Optional. The application location. If not specified, the
-        ///                           assembly location is used.</param>
+        /// <param name="appFolder">Optional. The application location. If not specified, the assembly
+        ///                           location is used.</param>
+        /// <param name="configFolders">Optional. The configuration folders.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -41,7 +44,8 @@ namespace Kephas.Plugins.Application
         public static IAmbientServices WithPluginsAppRuntime(
             this IAmbientServices ambientServices,
             Func<AssemblyName, bool> assemblyFilter = null,
-            string appLocation = null,
+            string appFolder = null,
+            IEnumerable<string> configFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
@@ -57,15 +61,16 @@ namespace Kephas.Plugins.Application
                     ambientServices.AssemblyLoader,
                     ambientServices.LicensingManager,
                     ambientServices.LogManager,
-                    assemblyFilter: assemblyFilter,
-                    appLocation: appLocation,
-                    appId: appId,
-                    appInstanceId: appInstanceId,
-                    appVersion: appVersion,
-                    appArgs: appArgs,
-                    enablePlugins: enablePlugins,
-                    pluginsFolder: pluginsFolder,
-                    targetFramework: targetFramework));
+                    assemblyFilter,
+                    appFolder,
+                    configFolders,
+                    appId,
+                    appInstanceId,
+                    appVersion,
+                    appArgs,
+                    enablePlugins,
+                    pluginsFolder,
+                    targetFramework));
         }
     }
 }

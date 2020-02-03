@@ -13,6 +13,7 @@ namespace Kephas.Plugins.Tests.Application
     using System;
     using System.IO;
     using System.Linq;
+
     using Kephas.Dynamic;
     using Kephas.Plugins.Application;
     using NUnit.Framework;
@@ -49,8 +50,8 @@ namespace Kephas.Plugins.Tests.Application
             Directory.CreateDirectory(appLocation);
             var pluginsFolder = Path.Combine(appLocation, "myPlugins");
 
-            var appRuntime = new PluginsAppRuntime(appLocation: appLocation, pluginsFolder: "myPlugins");
-            Assert.AreEqual(pluginsFolder, appRuntime.PluginsFolder);
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "myPlugins");
+            Assert.AreEqual(pluginsFolder, appRuntime.PluginsLocation);
 
             Directory.Delete(appLocation, recursive: true);
         }
@@ -63,8 +64,8 @@ namespace Kephas.Plugins.Tests.Application
             Directory.CreateDirectory(appLocation);
             var pluginsFolder = Path.Combine(appLocation, "myPlugins");
 
-            var appRuntime = new PluginsAppRuntime(appLocation: appLocation, appArgs: new Expando { [nameof(PluginsAppRuntime.PluginsFolder)] = "myPlugins" } );
-            Assert.AreEqual(pluginsFolder, appRuntime.PluginsFolder);
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, appArgs: new Expando { [nameof(PluginsAppRuntime.PluginsLocation)] = "myPlugins" } );
+            Assert.AreEqual(pluginsFolder, appRuntime.PluginsLocation);
 
             Directory.Delete(appLocation, recursive: true);
         }
@@ -83,8 +84,8 @@ namespace Kephas.Plugins.Tests.Application
             var plugin2Location = Path.Combine(pluginsFolder, "p2");
             Directory.CreateDirectory(plugin2Location);
 
-            var appRuntime = new PluginsAppRuntime(appLocation: appLocation, pluginsFolder: "myPlugins");
-            var binFolders = appRuntime.GetAppBinDirectories().ToList();
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "myPlugins");
+            var binFolders = appRuntime.GetAppBinLocations().ToList();
 
             var binFolder = appRuntime.GetAppLocation();
             Assert.AreEqual(2, binFolders.Count);
@@ -95,7 +96,7 @@ namespace Kephas.Plugins.Tests.Application
         }
 
         [Test]
-        public void EnumeratePluginLocations()
+        public void GetPluginLocations()
         {
             var tempFolder = Path.GetFullPath(Path.GetTempPath());
             var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
@@ -107,8 +108,8 @@ namespace Kephas.Plugins.Tests.Application
             var plugin2Location = Path.Combine(pluginsFolder, "p2");
             Directory.CreateDirectory(plugin2Location);
 
-            var appRuntime = new PluginsAppRuntime(appLocation: appLocation, pluginsFolder: "myPlugins");
-            var binFolders = appRuntime.EnumeratePluginLocations().ToList();
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "myPlugins");
+            var binFolders = appRuntime.GetPluginLocations().ToList();
 
             var binFolder = appRuntime.GetAppLocation();
             Assert.AreEqual(2, binFolders.Count);

@@ -25,6 +25,7 @@
         <NeutralLanguage>en</NeutralLanguage>
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+        <RootNamespace>Kephas</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -67,7 +68,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Resources\Strings.Designer.cs">
+        <Compile Update="Plugins\Resources\Strings.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>Strings.resx</DependentUpon>
@@ -75,7 +76,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Update="Resources\Strings.resx">
+        <EmbeddedResource Update="Plugins\Resources\Strings.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Strings.Designer.cs</LastGenOutput>
         </EmbeddedResource>

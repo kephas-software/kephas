@@ -24,6 +24,7 @@ namespace Kephas.Plugins.NuGet
     using global::NuGet.Protocol.Core.Types;
     using global::NuGet.Resolver;
     using global::NuGet.Versioning;
+    using Kephas;
     using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Configuration;
@@ -151,7 +152,7 @@ namespace Kephas.Plugins.NuGet
                 var pluginInfo = new PluginInfo(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
                 context.PluginId(pluginId = pluginInfo.GetIdentity());
 
-                var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsFolder(), pluginPackageIdentity.Id);
+                var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
                 if (!Directory.Exists(pluginFolder))
                 {
                     Directory.CreateDirectory(pluginFolder);
@@ -261,7 +262,7 @@ namespace Kephas.Plugins.NuGet
         protected virtual string GetSettingsFolderPath()
         {
             return string.IsNullOrEmpty(this.pluginsSettings.NuGetConfigPath)
-                ? this.AppRuntime.GetAppConfigFullPath()
+                ? this.AppRuntime.GetAppConfigLocations().FirstOrDefault() ?? this.AppRuntime.GetAppLocation()
                 : this.AppRuntime.GetFullPath(this.pluginsSettings.NuGetConfigPath);
         }
 

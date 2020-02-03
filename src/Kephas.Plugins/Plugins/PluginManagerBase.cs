@@ -16,7 +16,7 @@ namespace Kephas.Plugins
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas;
     using Kephas.Application;
     using Kephas.Diagnostics;
     using Kephas.Dynamic;
@@ -81,7 +81,7 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual IEnumerable<IPlugin> GetInstalledPlugins()
         {
-            var pluginsFolder = this.AppRuntime.GetPluginsFolder();
+            var pluginsFolder = this.AppRuntime.GetPluginsLocation();
             return Directory.EnumerateDirectories(pluginsFolder)
                     .Select(d => new Plugin(new PluginInfo(Path.GetFileName(d), PluginHelper.GetPluginVersion(d))) { FolderPath = d });
         }
@@ -453,7 +453,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual (string pluginFolder, PluginState state, AppIdentity identity) GetInstalledPluginData(AppIdentity pluginId)
         {
-            var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsFolder(), pluginId.Id);
+            var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginId.Id);
             var (state, version) = PluginHelper.GetPluginData(pluginFolder);
             return (pluginFolder, state, new AppIdentity(pluginId.Id, version));
         }

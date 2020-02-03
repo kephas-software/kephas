@@ -35,8 +35,9 @@ namespace Kephas.Plugins.Application
         /// <param name="licensingManager">Optional. Manager for licensing.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="assemblyFilter">Optional. A filter for loaded assemblies.</param>
-        /// <param name="appLocation">Optional. The application location. If not specified, the current
+        /// <param name="appFolder">Optional. The application location. If not specified, the current
         ///                           application location is considered.</param>
+        /// <param name="configFolders">Optional. The configuration folders.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -49,7 +50,8 @@ namespace Kephas.Plugins.Application
             ILicensingManager licensingManager = null,
             ILogManager logManager = null,
             Func<AssemblyName, bool> assemblyFilter = null,
-            string appLocation = null,
+            string appFolder = null,
+            IEnumerable<string> configFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
@@ -57,10 +59,10 @@ namespace Kephas.Plugins.Application
             bool? enablePlugins = null,
             string pluginsFolder = null,
             string targetFramework = null)
-            : base(assemblyLoader, licensingManager, logManager, assemblyFilter, appLocation, appId, appInstanceId, appVersion, appArgs)
+            : base(assemblyLoader, licensingManager, logManager, assemblyFilter, appFolder, configFolders, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
-            this.PluginsFolder = this.ComputePluginsFolder(pluginsFolder, appArgs);
+            this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);
             this.TargetFramework = this.ComputeTargetFramework(targetFramework, appArgs);
         }
 
@@ -70,7 +72,7 @@ namespace Kephas.Plugins.Application
         /// <value>
         /// The pathname of the plugins folder.
         /// </value>
-        public string PluginsFolder { get; }
+        public string PluginsLocation { get; }
 
         /// <summary>
         /// Gets a value indicating whether the plugins are enabled.
@@ -95,13 +97,13 @@ namespace Kephas.Plugins.Application
         /// An enumerator that allows foreach to be used to process the application bin folders in this
         /// collection.
         /// </returns>
-        public override IEnumerable<string> GetAppBinDirectories()
+        public override IEnumerable<string> GetAppBinLocations()
         {
-            var appDirectories = base.GetAppBinDirectories().ToList();
+            var appDirectories = base.GetAppBinLocations().ToList();
 
             if (this.EnablePlugins)
             {
-                var pluginsDirectories = this.EnumeratePluginLocations();
+                var pluginsDirectories = this.GetPluginLocations();
                 appDirectories.AddRange(pluginsDirectories.Where(this.CanLoadPlugin));
             }
 
@@ -111,18 +113,18 @@ namespace Kephas.Plugins.Application
         }
 
         /// <summary>
-        /// Enumerates the locations for plugins.
+        /// Gets the locations for plugins.
         /// </summary>
         /// <returns>
         /// The locations for plugins.
         /// </returns>
-        public virtual IEnumerable<string> EnumeratePluginLocations()
+        public virtual IEnumerable<string> GetPluginLocations()
         {
             var targetFramework = this.TargetFramework;
 
-            if (Directory.Exists(this.PluginsFolder))
+            if (Directory.Exists(this.PluginsLocation))
             {
-                var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsFolder);
+                var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation);
 
                 foreach (var pluginDirectory in pluginsDirectories)
                 {
@@ -160,7 +162,7 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// The calculated plugins folder.
         /// </returns>
-        protected virtual string ComputePluginsFolder(string rawPluginsFolder, IExpando appArgs)
+        protected virtual string ComputePluginsLocation(string rawPluginsFolder, IExpando appArgs)
         {
             var pluginsFolder = Path.Combine(this.GetAppLocation(), rawPluginsFolder ?? appArgs?[PluginHelper.PluginsFolderArgName] as string ?? PluginHelper.PluginsFolder);
             return Path.GetFullPath(pluginsFolder);
