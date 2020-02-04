@@ -354,6 +354,22 @@ namespace Kephas.Application
                 var version = assemblyName.Version;
                 var publicKeyToken = assemblyName.GetPublicKeyToken();
                 assembly = appAssemblies.FirstOrDefault(a => this.IsAssemblyMatch(a.GetName(), name, version, publicKeyToken));
+
+                if (assembly == null)
+                {
+                    var fileName = $"{args.Name}.dll";
+                    var appBinLocations = this.GetAppBinLocations();
+                    foreach (var binLocation in appBinLocations)
+                    {
+                        var filePath = Path.Combine(binLocation, fileName);
+                        if (File.Exists(filePath))
+                        {
+                            assembly = Assembly.LoadFrom(filePath);
+                            break;
+                        }
+                    }
+                }
+
                 if (assembly != null)
                 {
                     this.Logger.Warn("Assembly '{assembly}' requested by '{requestingAssembly}' was resolved using {resolvedAssembly}", assemblyFullName, args.RequestingAssembly, assembly);
