@@ -387,7 +387,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual bool IsCodeAssembly(string assemblyName)
         {
-            return !assemblyName.Contains(".resources,");
+            return !string.IsNullOrEmpty(assemblyName) && !assemblyName.Contains(".resources,");
         }
 
         /// <summary>
