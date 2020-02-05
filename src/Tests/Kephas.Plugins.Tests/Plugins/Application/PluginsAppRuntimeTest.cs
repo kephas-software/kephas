@@ -8,13 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Plugins.Tests.Application
+namespace Kephas.Tests.Plugins.Application
 {
     using System;
     using System.IO;
     using System.Linq;
 
     using Kephas.Dynamic;
+    using Kephas.Plugins;
     using Kephas.Plugins.Application;
     using NUnit.Framework;
 
@@ -64,7 +65,7 @@ namespace Kephas.Plugins.Tests.Application
             Directory.CreateDirectory(appLocation);
             var pluginsFolder = Path.Combine(appLocation, "myPlugins");
 
-            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, appArgs: new Expando { [PluginHelper.PluginsFolderArgName] = "myPlugins" } );
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, appArgs: new Expando { [PluginHelper.PluginsFolderArgName] = "myPlugins" });
             Assert.AreEqual(pluginsFolder, appRuntime.PluginsLocation);
 
             Directory.Delete(appLocation, recursive: true);
