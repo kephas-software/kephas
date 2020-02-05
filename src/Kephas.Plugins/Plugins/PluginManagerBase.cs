@@ -201,6 +201,7 @@ namespace Kephas.Plugins
             var context = this.CreatePluginContext(options)
                 .Operation(PluginOperation.Initialize, overwrite: false)
                 .PluginId(pluginId);
+            var result = new OperationResult<IPlugin>();
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
                 {
@@ -215,7 +216,8 @@ namespace Kephas.Plugins
                     pluginData = new Plugin(pluginInfo) { FolderPath = pluginFolder };
                     try
                     {
-                        await this.InitializeDataAsync(pluginId, context, cancellationToken).PreserveThreadContext();
+                        var initResult = await this.InitializeDataAsync(pluginId, context, cancellationToken).PreserveThreadContext();
+                        result.MergeResult(initResult);
 
                         PluginHelper.SetPluginData(pluginFolder, PluginState.Enabled, pluginId.Version);
                     }
@@ -228,7 +230,8 @@ namespace Kephas.Plugins
 
             this.Logger.Info("Plugin {plugin} successfully initialized. Elapsed: {elapsed:c}.", pluginId, opResult.Elapsed);
 
-            return new OperationResult<IPlugin>(pluginData)
+            result.ReturnValue = pluginData;
+            return result
                 .MergeResult(opResult)
                 .MergeMessage($"Plugin {pluginId} successfully initialized. Elapsed: {opResult.Elapsed:c}.")
                 .Elapsed(opResult.Elapsed);
@@ -252,6 +255,7 @@ namespace Kephas.Plugins
             var context = this.CreatePluginContext(options)
                 .Operation(PluginOperation.Uninitialize, overwrite: false)
                 .PluginId(pluginId);
+            var result = new OperationResult<IPlugin>();
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
                 {
@@ -267,7 +271,8 @@ namespace Kephas.Plugins
 
                     try
                     {
-                        await this.UninitializeDataAsync(pluginId, context, cancellationToken).PreserveThreadContext();
+                        var uninitResult = await this.UninitializeDataAsync(pluginId, context, cancellationToken).PreserveThreadContext();
+                        result.MergeResult(uninitResult);
 
                         PluginHelper.SetPluginData(pluginFolder, PluginState.PendingInitialization, pid.Version);
                     }
@@ -280,7 +285,8 @@ namespace Kephas.Plugins
 
             this.Logger.Info("Plugin {plugin} successfully uninitialized. Elapsed: {elapsed:c}.", pluginId, opResult.Elapsed);
 
-            return new OperationResult<IPlugin>(pluginData)
+            result.ReturnValue = pluginData;
+            return result
                 .MergeResult(opResult)
                 .MergeMessage($"Plugin {pluginId} successfully uninitialized. Elapsed: {opResult.Elapsed:c}.")
                 .Elapsed(opResult.Elapsed);
@@ -467,9 +473,9 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task InitializeDataAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual Task<IOperationResult> InitializeDataAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            return Task.FromResult<IOperationResult>(new OperationResult());
         }
 
         /// <summary>
@@ -481,9 +487,9 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task UninitializeDataAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual Task<IOperationResult> UninitializeDataAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            return Task.FromResult<IOperationResult>(new OperationResult());
         }
 
         /// <summary>
