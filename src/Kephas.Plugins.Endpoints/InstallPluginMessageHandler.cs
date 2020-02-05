@@ -14,6 +14,7 @@ namespace Kephas.Plugins.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
@@ -52,17 +53,17 @@ namespace Kephas.Plugins.Endpoints
         {
             this.appContext.Logger.Info("Installing plugin {plugin} {version}...", message.Id, message.Version);
 
-            var result = await this.pluginManager.InstallPluginAsync(new AppIdentity(message.Id, message.Version)).PreserveThreadContext();
+            var result = await this.pluginManager.InstallPluginAsync(new AppIdentity(message.Id, message.Version), ctx => ctx.Merge(context), token).PreserveThreadContext();
 
             var plugin = result.ReturnValue;
             var pluginId = plugin?.GetTypeInfo().Name ?? message.Id;
             var pluginVersion = plugin?.GetTypeInfo().Version ?? message.Version;
 
-            this.appContext.Logger.Info("Plugin {plugin} {version} installed in {pluginPath}. Elapsed: {elapsed:c}.", pluginId, pluginVersion, plugin?.FolderPath, result.Elapsed);
+            this.appContext.Logger.Info("Plugin {plugin} {version} ({state}) installed in {pluginPath}. Elapsed: {elapsed:c}.", pluginId, pluginVersion, plugin?.State, plugin?.FolderPath, result.Elapsed);
 
             return new ResponseMessage
                 {
-                    Message = $"Plugin {pluginId} ({pluginVersion}) installed in {plugin?.FolderPath}. Elapsed: {result.Elapsed:c}.",
+                    Message = $"Plugin {pluginId} {pluginVersion} ({plugin?.State}) installed in {plugin?.FolderPath}. Elapsed: {result.Elapsed:c}.",
                 };
         }
     }

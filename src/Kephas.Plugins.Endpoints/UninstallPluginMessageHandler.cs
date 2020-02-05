@@ -14,10 +14,12 @@ namespace Kephas.Plugins.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Plugins;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -52,13 +54,17 @@ namespace Kephas.Plugins.Endpoints
         {
             this.appContext.Logger.Info("Uninstalling plugin {plugin}...", message.Id);
 
-            var result = await this.pluginManager.UninstallPluginAsync(new AppIdentity(message.Id)).PreserveThreadContext();
+            var result = await this.pluginManager.UninstallPluginAsync(new AppIdentity(message.Id), ctx => ctx.Merge(context), token).PreserveThreadContext();
 
-            this.appContext.Logger.Info("Plugin {plugin} uninstalled. Elapsed: {elapsed:c}.", message.Id, result.Elapsed);
+            var operation = result.ReturnValue?.State == PluginState.PendingUninstallation
+                ? "uninitialized"
+                : "uninstalled";
+
+            this.appContext.Logger.Info("Plugin {plugin} {operation} ({state}). Elapsed: {elapsed:c}.", result.ReturnValue?.Id ?? message.Id, operation, result.ReturnValue?.State, result.Elapsed);
 
             return new ResponseMessage
             {
-                Message = $"Plugin {message.Id} uninstalled. Elapsed: {result.Elapsed:c}.",
+                Message = $"Plugin {message.Id} {operation}. Elapsed: {result.Elapsed:c}.",
             };
         }
     }

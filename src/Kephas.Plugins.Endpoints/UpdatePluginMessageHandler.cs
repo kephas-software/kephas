@@ -14,6 +14,7 @@ namespace Kephas.Plugins.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
@@ -52,7 +53,7 @@ namespace Kephas.Plugins.Endpoints
         {
             this.appContext.Logger.Info("Updating plugin {plugin} to version {version}...", message.Id, message.Version);
 
-            var result = await this.pluginManager.UpdatePluginAsync(new AppIdentity(message.Id, message.Version)).PreserveThreadContext();
+            var result = await this.pluginManager.UpdatePluginAsync(new AppIdentity(message.Id, message.Version), ctx => ctx.Merge(context), token).PreserveThreadContext();
 
             var plugin = result.ReturnValue;
             var pluginId = plugin?.GetTypeInfo().Name ?? message.Id;
