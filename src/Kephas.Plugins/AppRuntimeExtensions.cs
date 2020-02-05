@@ -96,20 +96,20 @@ namespace Kephas
 
 
         /// <summary>
-        /// Gets the plugin data provider.
+        /// Gets the plugin data service.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <returns>
-        /// The plugin data provider.
+        /// The plugin data service.
         /// </returns>
-        internal static IPluginDataProvider GetPluginDataProvider(this IAppRuntime appRuntime)
+        internal static IPluginDataService GetPluginDataService(this IAppRuntime appRuntime)
         {
             if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
             {
-                return pluginsAppRuntime.PluginDataProvider;
+                return pluginsAppRuntime.PluginDataService;
             }
 
-            throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginDataProvider)} from {appRuntime.GetType()}.");
+            throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginDataService)} from {appRuntime.GetType()}.");
         }
     }
 }

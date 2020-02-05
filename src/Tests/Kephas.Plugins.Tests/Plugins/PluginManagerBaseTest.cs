@@ -29,8 +29,8 @@ namespace Kephas.Tests.Plugins
     {
         public class TestPluginManager : PluginManagerBase
         {
-            public TestPluginManager(IAppRuntime appRuntime, IContextFactory contextFactory, IEventHub eventHub, IPluginDataProvider pluginDataProvider, ILogManager logManager = null)
-                : base(appRuntime, contextFactory, eventHub, pluginDataProvider, logManager)
+            public TestPluginManager(IAppRuntime appRuntime, IContextFactory contextFactory, IEventHub eventHub, IPluginDataService pluginDataService, ILogManager logManager = null)
+                : base(appRuntime, contextFactory, eventHub, pluginDataService, logManager)
             {
             }
 

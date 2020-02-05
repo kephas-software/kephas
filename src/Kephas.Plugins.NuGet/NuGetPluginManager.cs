@@ -153,7 +153,7 @@ namespace Kephas.Plugins.NuGet
 
                 var (pluginPackageIdentity, packageReaders) = await this.GetPackageReadersAsync(pluginId, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
 
-                var pluginInfo = new PluginInfo(this.PluginDataProvider, pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
+                var pluginInfo = new PluginInfo(this.PluginDataService, pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
                 context.PluginId(pluginId = pluginInfo.GetIdentity());
 
                 var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
@@ -469,7 +469,7 @@ namespace Kephas.Plugins.NuGet
         protected virtual IPluginInfo ToPluginInfo(IPackageSearchMetadata searchMetadata)
         {
             return new PluginInfo(
-                this.PluginDataProvider,
+                this.PluginDataService,
                 searchMetadata.Identity.Id,
                 searchMetadata.Identity.Version.ToString(),
                 searchMetadata.Description,

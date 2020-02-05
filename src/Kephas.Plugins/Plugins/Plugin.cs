@@ -24,7 +24,7 @@ namespace Kephas.Plugins
     public class Plugin : Expando, IPlugin
     {
         private readonly IPluginInfo pluginInfo;
-        private readonly IPluginDataProvider pluginDataProvider;
+        private readonly IPluginDataService pluginDataService;
         private PluginState? state;
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Kephas.Plugins
             Requires.NotNull(pluginInfo, nameof(pluginInfo));
 
             this.pluginInfo = pluginInfo;
-            this.pluginDataProvider = pluginInfo.PluginDataProvider;
+            this.pluginDataService = pluginInfo.PluginDataSevice;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Kephas.Plugins
         /// </value>
         public PluginState State
         {
-            get => this.state ?? this.pluginDataProvider.GetPluginData(this.Location).state;
+            get => this.state ?? this.pluginDataService.GetPluginData(this.Location).state;
             protected internal set => this.state = value;
         }
 

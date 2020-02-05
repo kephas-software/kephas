@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPluginDataProvider.cs" company="Kephas Software SRL">
+// <copyright file="IPluginDataService.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,16 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Plugins.Application;
-using System;
-using System.IO;
-
 namespace Kephas.Plugins
 {
+    using System;
+    using System.IO;
+
     /// <summary>
-    /// Interface for plugin data provider.
+    /// Interface for plugin data service.
     /// </summary>
-    public interface IPluginDataProvider
+    public interface IPluginDataService
     {
         /// <summary>
         /// Gets the installed plugin state and version.
@@ -38,9 +37,9 @@ namespace Kephas.Plugins
     }
 
     /// <summary>
-    /// A plugin data provider.
+    /// A plugin data service.
     /// </summary>
-    internal class PluginDataProvider : IPluginDataProvider
+    internal class PluginDataService : IPluginDataService
     {
         /// <summary>
         /// Name of the plugin state file.

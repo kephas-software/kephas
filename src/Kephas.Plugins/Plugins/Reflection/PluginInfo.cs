@@ -25,15 +25,15 @@ namespace Kephas.Plugins.Reflection
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginInfo"/> class.
         /// </summary>
-        /// <param name="pluginDataProvider">The plugin data provider.</param>
+        /// <param name="pluginDataService">The plugin data service.</param>
         /// <param name="name">The name.</param>
         /// <param name="version">Optional. the version.</param>
         /// <param name="description">Optional. The description.</param>
         /// <param name="tags">Optional. The tags.</param>
-        public PluginInfo(IPluginDataProvider pluginDataProvider, string name, string version = null, string description = null, string[] tags = null)
+        public PluginInfo(IPluginDataService pluginDataService, string name, string version = null, string description = null, string[] tags = null)
         {
             this.Name = name;
-            this.PluginDataProvider = pluginDataProvider;
+            this.PluginDataSevice = pluginDataService;
             this.Version = version;
             this.Description = description;
             this.Tags = tags;
@@ -41,12 +41,12 @@ namespace Kephas.Plugins.Reflection
         }
 
         /// <summary>
-        /// Gets the plugin data provider.
+        /// Gets the plugin data service.
         /// </summary>
         /// <value>
-        /// The plugin data provider.
+        /// The plugin data service.
         /// </value>
-        public IPluginDataProvider PluginDataProvider { get; }
+        public IPluginDataService PluginDataSevice { get; }
 
         /// <summary>
         /// Gets the application version.

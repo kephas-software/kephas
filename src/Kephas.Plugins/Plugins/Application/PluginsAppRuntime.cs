@@ -65,7 +65,7 @@ namespace Kephas.Plugins.Application
         /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
         /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
         /// <param name="targetFramework">Optional. The target framework.</param>
-        /// <param name="pluginDataProvider">Optional. The plugin data provider.</param>
+        /// <param name="pluginDataService">Optional. The plugin data service.</param>
         public PluginsAppRuntime(
             IAssemblyLoader assemblyLoader = null,
             ILicensingManager licensingManager = null,
@@ -80,13 +80,13 @@ namespace Kephas.Plugins.Application
             bool? enablePlugins = null,
             string pluginsFolder = null,
             string targetFramework = null,
-            IPluginDataProvider pluginDataProvider = null)
+            IPluginDataService pluginDataService = null)
             : base(assemblyLoader, licensingManager, logManager, assemblyFilter, appFolder, configFolders, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);
             this.TargetFramework = this.ComputeTargetFramework(targetFramework, appArgs);
-            this.PluginDataProvider = pluginDataProvider ?? new PluginDataProvider();
+            this.PluginDataService = pluginDataService ?? new PluginDataService();
         }
 
         /// <summary>
@@ -114,12 +114,12 @@ namespace Kephas.Plugins.Application
         public string TargetFramework { get; }
 
         /// <summary>
-        /// Gets the plugin data provider.
+        /// Gets the plugin data service.
         /// </summary>
         /// <value>
-        /// The plugin data provider.
+        /// The plugin data service.
         /// </value>
-        internal IPluginDataProvider PluginDataProvider { get; }
+        internal IPluginDataService PluginDataService { get; }
 
         /// <summary>
         /// Gets the application bin folders from where application is loaded.
@@ -223,7 +223,7 @@ namespace Kephas.Plugins.Application
         protected virtual bool CanLoadPlugin(string pluginFolder)
         {
             var pluginId = Path.GetFileName(pluginFolder);
-            var (pluginState, pluginVersion) = this.PluginDataProvider.GetPluginData(pluginFolder);
+            var (pluginState, pluginVersion) = this.PluginDataService.GetPluginData(pluginFolder);
 
             var shouldLoadPlugin = pluginState == PluginState.PendingInitialization || pluginState == PluginState.Enabled;
             if (shouldLoadPlugin)

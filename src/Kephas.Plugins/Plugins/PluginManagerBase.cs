@@ -47,7 +47,7 @@ namespace Kephas.Plugins
             IContextFactory contextFactory,
             IEventHub eventHub,
             ILogManager logManager = null)
-            : this(appRuntime, contextFactory, eventHub, appRuntime.GetPluginDataProvider(), logManager)
+            : this(appRuntime, contextFactory, eventHub, appRuntime.GetPluginDataService(), logManager)
         {
         }
 
@@ -57,20 +57,20 @@ namespace Kephas.Plugins
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="eventHub">The event hub.</param>
-        /// <param name="pluginDataProvider">The plugin data provider.</param>
+        /// <param name="pluginDataService">The plugin data service.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         protected PluginManagerBase(
             IAppRuntime appRuntime,
             IContextFactory contextFactory,
             IEventHub eventHub,
-            IPluginDataProvider pluginDataProvider,
+            IPluginDataService pluginDataService,
             ILogManager logManager = null)
             : base(logManager)
         {
             this.AppRuntime = appRuntime;
             this.ContextFactory = contextFactory;
             this.EventHub = eventHub;
-            this.PluginDataProvider = pluginDataProvider;
+            this.PluginDataService = pluginDataService;
         }
 
         /// <summary>
@@ -98,12 +98,12 @@ namespace Kephas.Plugins
         protected IEventHub EventHub { get; }
 
         /// <summary>
-        /// Gets the plugin data provider.
+        /// Gets the plugin data service.
         /// </summary>
         /// <value>
-        /// The plugin data provider.
+        /// The plugin data service.
         /// </value>
-        protected IPluginDataProvider PluginDataProvider { get; }
+        protected IPluginDataService PluginDataService { get; }
 
         /// <summary>
         /// Gets the available plugins asynchronously.
@@ -125,7 +125,7 @@ namespace Kephas.Plugins
         {
             var pluginsFolder = this.AppRuntime.GetPluginsLocation();
             return Directory.EnumerateDirectories(pluginsFolder)
-                    .Select(d => new Plugin(new PluginInfo(this.PluginDataProvider, Path.GetFileName(d), this.PluginDataProvider.GetPluginData(d).version)) { Location = d });
+                    .Select(d => new Plugin(new PluginInfo(this.PluginDataService, Path.GetFileName(d), this.PluginDataService.GetPluginData(d).version)) { Location = d });
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace Kephas.Plugins
                 return PluginState.None;
             }
 
-            return this.PluginDataProvider.GetPluginData(pluginLocation).state;
+            return this.PluginDataService.GetPluginData(pluginLocation).state;
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace Kephas.Plugins
                             .MergeResult(instResult)
                             .MergeMessage($"Plugin {pluginId} successfully installed, awaiting initialization.");
 
-                        this.PluginDataProvider.SetPluginData(pluginData.Location, PluginState.PendingInitialization, pluginData.GetTypeInfo().Version);
+                        this.PluginDataService.SetPluginData(pluginData.Location, PluginState.PendingInitialization, pluginData.GetTypeInfo().Version);
 
                         (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
                         installComplete = state == PluginState.PendingInitialization;
@@ -246,7 +246,7 @@ namespace Kephas.Plugins
                     var (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
 
                     pluginId = pid;
-                    var pluginInfo = new PluginInfo(this.PluginDataProvider, pid.Id, pid.Version);
+                    var pluginInfo = new PluginInfo(this.PluginDataService, pid.Id, pid.Version);
                     var pluginData = new Plugin(pluginInfo) { Location = pluginFolder, State = state };
                     result.ReturnValue = pluginData;
 
@@ -326,7 +326,7 @@ namespace Kephas.Plugins
                 {
                     var (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
                     pluginId = pid;
-                    var pluginInfo = new PluginInfo(this.PluginDataProvider, pid.Id, pid.Version);
+                    var pluginInfo = new PluginInfo(this.PluginDataService, pid.Id, pid.Version);
                     pluginData = new Plugin(pluginInfo) { Location = pluginFolder };
                     result.ReturnValue = pluginData;
 
@@ -352,7 +352,7 @@ namespace Kephas.Plugins
                         var initResult = await this.InitializeDataAsync(pluginId, context, cancellationToken).PreserveThreadContext();
                         result.MergeResult(initResult);
 
-                        this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.Disabled, pluginId.Version);
+                        this.PluginDataService.SetPluginData(pluginFolder, PluginState.Disabled, pluginId.Version);
 
                         (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
                     }
@@ -363,7 +363,7 @@ namespace Kephas.Plugins
                     }
                     catch
                     {
-                        this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.Corrupt, pluginId.Version);
+                        this.PluginDataService.SetPluginData(pluginFolder, PluginState.Corrupt, pluginId.Version);
                         throw;
                     }
 
@@ -446,7 +446,7 @@ namespace Kephas.Plugins
                         (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
                     }
 
-                    var pluginInfo = new PluginInfo(this.PluginDataProvider, pid.Id, pid.Version);
+                    var pluginInfo = new PluginInfo(this.PluginDataService, pid.Id, pid.Version);
                     pluginData = new Plugin(pluginInfo) { Location = pluginFolder };
                     var context = this.CreatePluginContext(uninitializeOptions)
                         .Plugin(pluginData);
@@ -468,7 +468,7 @@ namespace Kephas.Plugins
                         var uninitResult = await this.UninitializeDataAsync(pluginId, context, cancellationToken).PreserveThreadContext();
                         result.MergeResult(uninitResult);
 
-                        this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.PendingUninstallation, pid.Version);
+                        this.PluginDataService.SetPluginData(pluginFolder, PluginState.PendingUninstallation, pid.Version);
                     }
                     catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
                     {
@@ -477,7 +477,7 @@ namespace Kephas.Plugins
                     }
                     catch
                     {
-                        this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.Corrupt, pid.Version);
+                        this.PluginDataService.SetPluginData(pluginFolder, PluginState.Corrupt, pid.Version);
                         throw;
                     }
 
@@ -566,10 +566,10 @@ namespace Kephas.Plugins
                     }
 
                     pluginId = pid;
-                    var pluginInfo = new PluginInfo(this.PluginDataProvider, pid.Id, pid.Version);
+                    var pluginInfo = new PluginInfo(this.PluginDataService, pid.Id, pid.Version);
                     pluginData = new Plugin(pluginInfo) { Location = pluginFolder };
 
-                    this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.Enabled, pid.Version);
+                    this.PluginDataService.SetPluginData(pluginFolder, PluginState.Enabled, pid.Version);
                 });
 
             this.Logger.Info("Plugin {plugin} successfully enabled. Elapsed: {elapsed:c}.", pluginId, opResult.Elapsed);
@@ -608,10 +608,10 @@ namespace Kephas.Plugins
                     }
 
                     pluginId = pid;
-                    var pluginInfo = new PluginInfo(this.PluginDataProvider, pid.Id, pid.Version);
+                    var pluginInfo = new PluginInfo(this.PluginDataService, pid.Id, pid.Version);
                     pluginData = new Plugin(pluginInfo) { Location = pluginFolder };
 
-                    this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.Disabled, pid.Version);
+                    this.PluginDataService.SetPluginData(pluginFolder, PluginState.Disabled, pid.Version);
                 });
 
             this.Logger.Warn("Plugin {plugin} successfully disabled. Elapsed: {elapsed:c}.", pluginId, opResult.Elapsed);
@@ -763,7 +763,7 @@ namespace Kephas.Plugins
         protected virtual (string pluginFolder, PluginState state, AppIdentity identity) GetInstalledPluginData(AppIdentity pluginId)
         {
             var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginId.Id);
-            var (state, version) = this.PluginDataProvider.GetPluginData(pluginFolder);
+            var (state, version) = this.PluginDataService.GetPluginData(pluginFolder);
             return (pluginFolder, state, new AppIdentity(pluginId.Id, version));
         }
 

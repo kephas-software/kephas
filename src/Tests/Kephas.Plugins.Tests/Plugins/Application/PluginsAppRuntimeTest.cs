@@ -81,7 +81,7 @@ namespace Kephas.Tests.Plugins.Application
             Directory.CreateDirectory(pluginsFolder);
             var plugin1Location = Path.Combine(pluginsFolder, "p1");
             Directory.CreateDirectory(plugin1Location);
-            File.WriteAllText(Path.Combine(plugin1Location, PluginDataProvider.PluginStateFileName), PluginState.Enabled.ToString());
+            File.WriteAllText(Path.Combine(plugin1Location, PluginDataService.PluginStateFileName), PluginState.Enabled.ToString());
             var plugin2Location = Path.Combine(pluginsFolder, "p2");
             Directory.CreateDirectory(plugin2Location);
 
