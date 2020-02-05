@@ -207,7 +207,11 @@ namespace Kephas.Operations
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
-            Requires.NotNull(resultToMerge, nameof(resultToMerge));
+
+            if (resultToMerge == null)
+            {
+                return result;
+            }
 
             result.Messages.AddRange(resultToMerge.Messages);
             result.Exceptions.AddRange(resultToMerge.Exceptions);
