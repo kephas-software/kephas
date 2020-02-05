@@ -10,6 +10,9 @@
 
 namespace Kephas
 {
+    using System;
+    using System.Collections.Generic;
+
     using Kephas.Application;
     using Kephas.Plugins.Application;
 
@@ -33,6 +36,27 @@ namespace Kephas
             }
 
             return appRuntime?[nameof(PluginsAppRuntime.PluginsLocation)] as string;
+        }
+
+        /// <summary>
+        /// Gets the folder where the plugins are installed.
+        /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <returns>
+        /// The plugins location.
+        /// </returns>
+        public static IEnumerable<string> GetPluginsInstallationLocations(this IAppRuntime appRuntime)
+        {
+            if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
+            {
+                return pluginsAppRuntime.GetPluginsInstallationLocations();
+            }
+
+#if NET45
+            return new string[0];
+#else
+            return Array.Empty<string>();
+#endif
         }
 
         /// <summary>

@@ -109,7 +109,7 @@ namespace Kephas.Plugins.Tests.Application
             Directory.CreateDirectory(plugin2Location);
 
             var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "myPlugins");
-            var binFolders = appRuntime.GetPluginLocations().ToList();
+            var binFolders = appRuntime.GetPluginsInstallationLocations().ToList();
 
             var binFolder = appRuntime.GetAppLocation();
             Assert.AreEqual(2, binFolders.Count);

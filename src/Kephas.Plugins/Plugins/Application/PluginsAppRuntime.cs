@@ -103,7 +103,7 @@ namespace Kephas.Plugins.Application
 
             if (this.EnablePlugins)
             {
-                var pluginsDirectories = this.GetPluginLocations();
+                var pluginsDirectories = this.GetPluginsInstallationLocations();
                 appDirectories.AddRange(pluginsDirectories.Where(this.CanLoadPlugin));
             }
 
@@ -113,12 +113,12 @@ namespace Kephas.Plugins.Application
         }
 
         /// <summary>
-        /// Gets the locations for plugins.
+        /// Gets the installation locations for plugins.
         /// </summary>
         /// <returns>
-        /// The locations for plugins.
+        /// The installation locations for plugins.
         /// </returns>
-        public virtual IEnumerable<string> GetPluginLocations()
+        public virtual IEnumerable<string> GetPluginsInstallationLocations()
         {
             var targetFramework = this.TargetFramework;
 
