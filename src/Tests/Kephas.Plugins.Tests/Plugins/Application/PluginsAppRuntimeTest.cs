@@ -44,7 +44,7 @@ namespace Kephas.Tests.Plugins.Application
         }
 
         [Test]
-        public void PluginsFolder_default()
+        public void PluginsLocation_default()
         {
             var tempFolder = Path.GetFullPath(Path.GetTempPath());
             var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
@@ -58,7 +58,7 @@ namespace Kephas.Tests.Plugins.Application
         }
 
         [Test]
-        public void PluginsFolder_appArgs()
+        public void PluginsLocation_appArgs()
         {
             var tempFolder = Path.GetFullPath(Path.GetTempPath());
             var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
@@ -72,7 +72,7 @@ namespace Kephas.Tests.Plugins.Application
         }
 
         [Test]
-        public void GetAppBinDirectories()
+        public void GetAppBinLocations()
         {
             var tempFolder = Path.GetFullPath(Path.GetTempPath());
             var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
@@ -97,7 +97,7 @@ namespace Kephas.Tests.Plugins.Application
         }
 
         [Test]
-        public void GetPluginLocations()
+        public void GetPluginsInstallationLocations()
         {
             var tempFolder = Path.GetFullPath(Path.GetTempPath());
             var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
@@ -118,6 +118,39 @@ namespace Kephas.Tests.Plugins.Application
             Assert.AreEqual(Path.Combine(binFolder, "myPlugins", "p2"), binFolders[1]);
 
             Directory.Delete(appLocation, recursive: true);
+        }
+
+        [Test]
+        public void GetPluginsLocation_default_plugins_folder()
+        {
+            var appLocation = Path.GetFullPath("/");
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation);
+
+            var pluginsFolder = Path.Combine(appLocation, "Plugins");
+            Assert.AreEqual(pluginsFolder, appRuntime.PluginsLocation);
+            Assert.AreEqual(pluginsFolder, appRuntime.GetPluginsLocation());
+        }
+
+        [Test]
+        public void GetPluginsLocation_custom_plugins_folder()
+        {
+            var appLocation = Path.GetFullPath("/");
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "my/folder");
+
+            var pluginsFolder = Path.Combine(appLocation, "my", "folder");
+            Assert.AreEqual(pluginsFolder, appRuntime.PluginsLocation);
+            Assert.AreEqual(pluginsFolder, appRuntime.GetPluginsLocation());
+        }
+
+        [Test]
+        public void GetPluginsLocation_custom_plugins_folder_relative_path()
+        {
+            var appLocation = Path.GetFullPath("/one/two");
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "../folder");
+
+            var pluginsFolder = Path.GetFullPath(Path.Combine(appLocation, "..", "folder"));
+            Assert.AreEqual(pluginsFolder, appRuntime.PluginsLocation);
+            Assert.AreEqual(pluginsFolder, appRuntime.GetPluginsLocation());
         }
     }
 }
