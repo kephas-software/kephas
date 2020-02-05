@@ -31,6 +31,16 @@ namespace Kephas.Plugins
         Initialize,
 
         /// <summary>
+        /// An enum constant representing the enable option.
+        /// </summary>
+        Enable,
+
+        /// <summary>
+        /// An enum constant representing the disable option.
+        /// </summary>
+        Disable,
+
+        /// <summary>
         /// An enum constant representing the uninitialize option.
         /// </summary>
         Uninitialize,

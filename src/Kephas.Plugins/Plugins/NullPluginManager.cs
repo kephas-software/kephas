@@ -79,6 +79,18 @@ namespace Kephas.Plugins
         }
 
         /// <summary>
+        /// Gets the plugin state.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <returns>
+        /// The plugin state.
+        /// </returns>
+        public PluginState GetPluginState(AppIdentity pluginId)
+        {
+            return PluginState.None;
+        }
+
+        /// <summary>
         /// Initializes the plugin asynchronously.
         /// </summary>
         /// <param name="plugin">The plugin identity.</param>

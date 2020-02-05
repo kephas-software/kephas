@@ -14,6 +14,7 @@ namespace Kephas
     using System.Collections.Generic;
 
     using Kephas.Application;
+    using Kephas.Plugins;
     using Kephas.Plugins.Application;
 
     /// <summary>
@@ -91,6 +92,24 @@ namespace Kephas
             }
 
             return (bool?)appRuntime?[nameof(PluginsAppRuntime.EnablePlugins)] ?? false;
+        }
+
+
+        /// <summary>
+        /// Gets the plugin data provider.
+        /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <returns>
+        /// The plugin data provider.
+        /// </returns>
+        internal static IPluginDataProvider GetPluginDataProvider(this IAppRuntime appRuntime)
+        {
+            if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
+            {
+                return pluginsAppRuntime.PluginDataProvider;
+            }
+
+            throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginDataProvider)} from {appRuntime.GetType()}.");
         }
     }
 }

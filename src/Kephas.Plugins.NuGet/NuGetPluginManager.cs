@@ -153,7 +153,7 @@ namespace Kephas.Plugins.NuGet
 
                 var (pluginPackageIdentity, packageReaders) = await this.GetPackageReadersAsync(pluginId, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
 
-                var pluginInfo = new PluginInfo(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
+                var pluginInfo = new PluginInfo(this.PluginDataProvider, pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
                 context.PluginId(pluginId = pluginInfo.GetIdentity());
 
                 var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
@@ -189,7 +189,7 @@ namespace Kephas.Plugins.NuGet
                     throw;
                 }
 
-                result.ReturnValue = new Plugin(pluginInfo) { FolderPath = pluginFolder };
+                result.ReturnValue = new Plugin(pluginInfo) { Location = pluginFolder };
                 return result;
             }
         }
@@ -290,11 +290,11 @@ namespace Kephas.Plugins.NuGet
             var result = new OperationResult<IPlugin>();
 
             result.MergeResult(
-                await this.UninstallDataAsync(pluginId, context.Plugin.FolderPath, context, cancellationToken)
+                await this.UninstallDataAsync(pluginId, context.Plugin.Location, context, cancellationToken)
                 .PreserveThreadContext());
 
             result.MergeResult(
-                await this.UninstallConfigAsync(pluginId, context.Plugin.FolderPath, context, cancellationToken)
+                await this.UninstallConfigAsync(pluginId, context.Plugin.Location, context, cancellationToken)
                 .PreserveThreadContext());
 
             var baseResult = await base.UninstallPluginCoreAsync(pluginId, context, cancellationToken)
@@ -469,6 +469,7 @@ namespace Kephas.Plugins.NuGet
         protected virtual IPluginInfo ToPluginInfo(IPackageSearchMetadata searchMetadata)
         {
             return new PluginInfo(
+                this.PluginDataProvider,
                 searchMetadata.Identity.Id,
                 searchMetadata.Identity.Version.ToString(),
                 searchMetadata.Description,

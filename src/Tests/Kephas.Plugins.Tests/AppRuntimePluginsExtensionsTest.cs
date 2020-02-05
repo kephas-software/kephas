@@ -29,7 +29,7 @@ namespace Kephas.Tests
             var appRuntime = new PluginsAppRuntime(appFolder: appLocation);
             var pluginFolder = appRuntime.GetPluginsLocation();
 
-            Assert.AreEqual(Path.Combine(appLocation, PluginHelper.DefaultPluginsFolder), pluginFolder);
+            Assert.AreEqual(Path.Combine(appLocation, PluginsAppRuntime.DefaultPluginsFolder), pluginFolder);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace Kephas.Tests
         {
             var appLocation = Path.GetFullPath("/");
             var pluginsLocation = Path.Combine(appLocation, "my", "plugins");
-            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, appArgs: new Expando { [PluginHelper.PluginsFolderArgName] = pluginsLocation });
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, appArgs: new Expando { [PluginsAppRuntime.PluginsFolderArgName] = pluginsLocation });
             var pluginFolder = appRuntime.GetPluginsLocation();
 
             Assert.AreEqual(pluginsLocation, pluginFolder);
@@ -46,7 +46,7 @@ namespace Kephas.Tests
         [Test]
         public void GetTargetFramework_configured()
         {
-            var appRuntime = new PluginsAppRuntime(appArgs: new Expando { [PluginHelper.TargetFrameworkArgName] = "net461" });
+            var appRuntime = new PluginsAppRuntime(appArgs: new Expando { [PluginsAppRuntime.TargetFrameworkArgName] = "net461" });
 
             Assert.AreEqual("net461", appRuntime.GetTargetFramework());
         }

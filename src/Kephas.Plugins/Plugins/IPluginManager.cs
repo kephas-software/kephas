@@ -104,6 +104,15 @@ namespace Kephas.Plugins
         Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Gets the plugin state.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <returns>
+        /// The plugin state.
+        /// </returns>
+        PluginState GetPluginState(AppIdentity pluginId);
+
+        /// <summary>
         /// Gets the installed plugins.
         /// </summary>
         /// <returns>

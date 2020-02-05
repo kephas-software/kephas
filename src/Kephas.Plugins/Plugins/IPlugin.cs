@@ -26,7 +26,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The full pathname of the installation folder.
         /// </value>
-        string FolderPath { get; }
+        string Location { get; }
 
         /// <summary>
         /// Gets the state.

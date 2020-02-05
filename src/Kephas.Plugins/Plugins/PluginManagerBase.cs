@@ -16,10 +16,12 @@ namespace Kephas.Plugins
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas;
     using Kephas.Application;
     using Kephas.Diagnostics;
     using Kephas.Dynamic;
+    using Kephas.ExceptionHandling;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
@@ -45,11 +47,30 @@ namespace Kephas.Plugins
             IContextFactory contextFactory,
             IEventHub eventHub,
             ILogManager logManager = null)
+            : this(appRuntime, contextFactory, eventHub, appRuntime.GetPluginDataProvider(), logManager)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PluginManagerBase"/> class.
+        /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="eventHub">The event hub.</param>
+        /// <param name="pluginDataProvider">The plugin data provider.</param>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        protected PluginManagerBase(
+            IAppRuntime appRuntime,
+            IContextFactory contextFactory,
+            IEventHub eventHub,
+            IPluginDataProvider pluginDataProvider,
+            ILogManager logManager = null)
             : base(logManager)
         {
             this.AppRuntime = appRuntime;
             this.ContextFactory = contextFactory;
             this.EventHub = eventHub;
+            this.PluginDataProvider = pluginDataProvider;
         }
 
         /// <summary>
@@ -77,6 +98,14 @@ namespace Kephas.Plugins
         protected IEventHub EventHub { get; }
 
         /// <summary>
+        /// Gets the plugin data provider.
+        /// </summary>
+        /// <value>
+        /// The plugin data provider.
+        /// </value>
+        protected IPluginDataProvider PluginDataProvider { get; }
+
+        /// <summary>
         /// Gets the available plugins asynchronously.
         /// </summary>
         /// <param name="filter">Optional. Specifies the filter.</param>
@@ -96,7 +125,27 @@ namespace Kephas.Plugins
         {
             var pluginsFolder = this.AppRuntime.GetPluginsLocation();
             return Directory.EnumerateDirectories(pluginsFolder)
-                    .Select(d => new Plugin(new PluginInfo(Path.GetFileName(d), PluginHelper.GetPluginVersion(d))) { FolderPath = d });
+                    .Select(d => new Plugin(new PluginInfo(this.PluginDataProvider, Path.GetFileName(d), this.PluginDataProvider.GetPluginData(d).version)) { Location = d });
+        }
+
+        /// <summary>
+        /// Gets the plugin state.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <returns>
+        /// The plugin state.
+        /// </returns>
+        public virtual PluginState GetPluginState(AppIdentity pluginId)
+        {
+            var pluginsFolder = this.AppRuntime.GetPluginsLocation();
+            var pluginLocation = Directory.EnumerateDirectories(pluginsFolder)
+                    .FirstOrDefault(d => Path.GetFileName(d).Equals(pluginId.Id, StringComparison.CurrentCultureIgnoreCase));
+            if (pluginLocation == null)
+            {
+                return PluginState.None;
+            }
+
+            return this.PluginDataProvider.GetPluginData(pluginLocation).state;
         }
 
         /// <summary>
@@ -114,24 +163,15 @@ namespace Kephas.Plugins
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
                 {
-                    var (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
-
                     Action<IPluginContext> installOptions = ctx =>
                         ctx.Merge(options)
                             .Operation(PluginOperation.Install, overwrite: false)
                             .PluginId(pluginId);
-                    if (state == PluginState.PendingInitialization)
-                    {
-                        var initResult = await this.InitializePluginAsync(pluginId, installOptions, cancellationToken).PreserveThreadContext();
-                        if (initResult.HasErrors())
-                        {
-                            throw new AggregateException(initResult.Exceptions);
-                        }
 
-                        result.ReturnValue = initResult.ReturnValue;
-                        result.MergeResult(initResult);
-                    }
-                    else if (state == PluginState.None)
+                    var (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
+                    var installComplete = false;
+                    var initializeComplete = false;
+                    if (this.CanInstallPlugin(pid, state, pluginFolder))
                     {
                         var context = this.CreatePluginContext(options)
                             .Merge(installOptions)
@@ -145,13 +185,41 @@ namespace Kephas.Plugins
                             .MergeResult(instResult)
                             .MergeMessage($"Plugin {pluginId} successfully installed, awaiting initialization.");
 
-                        PluginHelper.SetPluginData(pluginData.FolderPath, PluginState.PendingInitialization, pluginData.GetTypeInfo().Version);
+                        this.PluginDataProvider.SetPluginData(pluginData.Location, PluginState.PendingInitialization, pluginData.GetTypeInfo().Version);
 
-                        this.Logger.Info("Plugin {plugin} successfully installed, awaiting initialization.", pluginId);
+                        (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
+                        installComplete = state == PluginState.PendingInitialization;
+
+                        if (installComplete)
+                        {
+                            this.Logger.Info("Plugin {plugin} successfully installed, awaiting initialization.", pluginId);
+                        }
                     }
-                    else
+
+                    if (this.CanInitializePlugin(pid, state, pluginFolder))
                     {
-                        throw new InvalidOperationException($"Plugin {pluginId} is already installed. State: '{state}', version: '{pid.Version}'.");
+                        try
+                        {
+                            var initResult = await this.InitializePluginAsync(pluginId, installOptions, cancellationToken).PreserveThreadContext();
+                            result.ReturnValue = initResult.ReturnValue;
+                            result.MergeResult(initResult);
+                        }
+                        catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                        {
+                            result.MergeException(ex);
+                            if (ex is PluginOperationException pex)
+                            {
+                                result.Merge(pex.Result);
+                            }
+                        }
+
+                        (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
+                        initializeComplete = state == PluginState.Enabled;
+                    }
+
+                    if (!installComplete && !initializeComplete)
+                    {
+                        throw new PluginOperationException($"Plugin {pluginId} cannot be installed. State: '{state}', version: '{pid.Version}'.", result);
                     }
                 }).PreserveThreadContext();
 
@@ -178,36 +246,40 @@ namespace Kephas.Plugins
                     var (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
 
                     pluginId = pid;
-                    var pluginInfo = new PluginInfo(pid.Id, pid.Version);
-                    var pluginData = new Plugin(pluginInfo) { FolderPath = pluginFolder, State = state };
+                    var pluginInfo = new PluginInfo(this.PluginDataProvider, pid.Id, pid.Version);
+                    var pluginData = new Plugin(pluginInfo) { Location = pluginFolder, State = state };
                     result.ReturnValue = pluginData;
 
                     Action<IPluginContext> uninstallOptions = ctx =>
                         ctx.Merge(options)
                             .Operation(PluginOperation.Uninstall, overwrite: false)
                             .PluginId(pluginId);
-                    if (state == PluginState.Enabled || state == PluginState.Disabled)
+                    var uninstallComplete = false;
+                    var uninitializeComplete = false;
+                    if (this.CanUninitializePlugin(pluginId, state, pluginFolder))
                     {
-                        var uninitResult = await this.UninitializePluginAsync(pluginId, uninstallOptions, cancellationToken).PreserveThreadContext();
-                        if (uninitResult.HasErrors())
+                        try
                         {
-                            throw new AggregateException(uninitResult.Exceptions);
+                            var uninitResult = await this.UninitializePluginAsync(pluginId, uninstallOptions, cancellationToken).PreserveThreadContext();
+                            result.ReturnValue = uninitResult.ReturnValue;
+                            result.MergeResult(uninitResult);
+                        }
+                        catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                        {
+                            result.MergeException(ex);
+                            if (ex is PluginOperationException pex)
+                            {
+                                result.Merge(pex.Result);
+                            }
                         }
 
-                        result.ReturnValue = uninitResult.ReturnValue;
-                        result.MergeResult(uninitResult);
+                        (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
+                        uninitializeComplete = state == PluginState.PendingUninstallation;
                     }
 
-                    state = this.GetInstalledPluginData(pluginId).state;
-                    pluginData.State = state;
-                    result.ReturnValue = pluginData;
-                    if (state == PluginState.None)
+                    if (this.CanUninstallPlugin(pluginId, state, pluginFolder))
                     {
-                        this.Logger.Warn($"Plugin {pluginId} is not installed.");
-                        result.MergeException(new InvalidOperationException($"Plugin {pluginId} is not installed."));
-                    }
-                    else if (state == PluginState.PendingUninstallation || state == PluginState.Corrupt)
-                    {
+                        pluginData.State = state;
                         var context = this.ContextFactory.CreateContext<PluginContext>()
                                             .Merge(uninstallOptions)
                                             .Plugin(pluginData);
@@ -215,11 +287,18 @@ namespace Kephas.Plugins
                         result.ReturnValue = uninstResult.ReturnValue;
                         result.MergeResult(uninstResult);
 
-                        this.Logger.Info("Plugin {plugin} successfully uninstalled.", pluginId);
+                        (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
+                        uninstallComplete = state == PluginState.None;
+
+                        if (uninstallComplete)
+                        {
+                            this.Logger.Info("Plugin {plugin} successfully uninstalled.", pluginId);
+                        }
                     }
-                    else
+
+                    if (!uninstallComplete && !uninitializeComplete)
                     {
-                        throw new InvalidOperationException($"Cannot uninstall plugin {pluginId}. State: '{state}', version: '{pid.Version}'.");
+                        throw new PluginOperationException($"Plugin {pluginId} cannot be uninstalled. State: '{state}', version: '{pid.Version}'.", result);
                     }
                 }).PreserveThreadContext();
 
@@ -239,38 +318,75 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual async Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            IPluginInfo pluginInfo = null;
             IPlugin pluginData = null;
-            var context = this.CreatePluginContext(options)
-                .Operation(PluginOperation.Initialize, overwrite: false)
-                .PluginId(pluginId);
-
-            await this.EventHub.PublishAsync(new InitializingPluginSignal(pluginId, context), context, cancellationToken).PreserveThreadContext();
 
             var result = new OperationResult<IPlugin>();
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
                 {
                     var (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
-                    if (state != PluginState.PendingInitialization)
+                    pluginId = pid;
+                    var pluginInfo = new PluginInfo(this.PluginDataProvider, pid.Id, pid.Version);
+                    pluginData = new Plugin(pluginInfo) { Location = pluginFolder };
+                    result.ReturnValue = pluginData;
+
+                    Action<IPluginContext> initializeOptions = ctx => ctx
+                        .Merge(options)
+                        .Operation(PluginOperation.Initialize, overwrite: false)
+                        .PluginId(pluginId);
+                    var context = this.CreatePluginContext(initializeOptions)
+                        .Plugin(pluginData);
+
+                    if (!this.CanInitializePlugin(pid, state, pluginFolder))
                     {
-                        throw new InvalidOperationException($"Cannot initialize plugin {pluginId} while in state '{state}'.");
+                        throw new PluginOperationException(
+                            $"Plugin {pluginId} cannot be initialized. State '{state}', version: '{pid.Version}'.",
+                            result,
+                            context.Operation == PluginOperation.Initialize ? SeverityLevel.Error : SeverityLevel.Warning);
                     }
 
-                    context.PluginId(pluginId = pid);
-                    pluginInfo = new PluginInfo(pid.Id, pid.Version);
-                    pluginData = new Plugin(pluginInfo) { FolderPath = pluginFolder };
+                    await this.EventHub.PublishAsync(new InitializingPluginSignal(pluginId, context), context, cancellationToken).PreserveThreadContext();
+
                     try
                     {
                         var initResult = await this.InitializeDataAsync(pluginId, context, cancellationToken).PreserveThreadContext();
                         result.MergeResult(initResult);
 
-                        PluginHelper.SetPluginData(pluginFolder, PluginState.Enabled, pluginId.Version);
+                        this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.Disabled, pluginId.Version);
+
+                        (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
+                    }
+                    catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                    {
+                        // treat non-errors as ignorable, meaning that the plugin state is not changed to corrupt.
+                        throw;
                     }
                     catch
                     {
-                        PluginHelper.SetPluginData(pluginFolder, PluginState.Corrupt, pluginId.Version);
+                        this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.Corrupt, pluginId.Version);
                         throw;
+                    }
+
+                    await this.EventHub.PublishAsync(new InitializedPluginSignal(pluginId, context, result), context, cancellationToken).PreserveThreadContext();
+
+                    if (this.CanEnablePlugin(pid, state, pluginFolder))
+                    {
+                        try
+                        {
+                            var enableResult = await this.EnablePluginAsync(pluginId, initializeOptions, cancellationToken).PreserveThreadContext();
+                            result.ReturnValue = enableResult.ReturnValue;
+                            result.MergeResult(enableResult);
+                        }
+                        catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                        {
+                            result.MergeException(ex);
+                            if (ex is PluginOperationException pex)
+                            {
+                                result.Merge(pex.Result);
+                            }
+                        }
+
+                        (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
                     }
                 }).PreserveThreadContext();
 
@@ -281,8 +397,6 @@ namespace Kephas.Plugins
                 .MergeResult(opResult)
                 .MergeMessage($"Plugin {pluginId} successfully initialized. Elapsed: {opResult.Elapsed:c}.")
                 .Elapsed(opResult.Elapsed);
-
-            await this.EventHub.PublishAsync(new InitializedPluginSignal(pluginId, context, result), context, cancellationToken).PreserveThreadContext();
 
             return result;
         }
@@ -298,40 +412,77 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual async Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            IPluginInfo pluginInfo = null;
             IPlugin pluginData = null;
-            var context = this.CreatePluginContext(options)
-                .Operation(PluginOperation.Uninitialize, overwrite: false)
-                .PluginId(pluginId);
-
-            await this.EventHub.PublishAsync(new UninitializingPluginSignal(pluginId, context), context, cancellationToken).PreserveThreadContext();
 
             var result = new OperationResult<IPlugin>();
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
                 {
                     var (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
-                    if (state != PluginState.Enabled && state != PluginState.Disabled)
+                    pluginId = pid;
+
+                    Action<IPluginContext> uninitializeOptions = ctx => ctx
+                        .Merge(options)
+                        .Operation(PluginOperation.Uninitialize, overwrite: false)
+                        .PluginId(pluginId);
+
+                    if (this.CanDisablePlugin(pid, state, pluginFolder))
                     {
-                        throw new InvalidOperationException($"Cannot uninitialize plugin {pluginId} while in state '{state}'.");
+                        try
+                        {
+                            var disableResult = await this.DisablePluginAsync(pluginId, uninitializeOptions, cancellationToken).PreserveThreadContext();
+                            result.ReturnValue = disableResult.ReturnValue;
+                            result.MergeResult(disableResult);
+                        }
+                        catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                        {
+                            result.MergeException(ex);
+                            if (ex is PluginOperationException pex)
+                            {
+                                result.Merge(pex.Result);
+                            }
+                        }
+
+                        (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
                     }
 
-                    context.PluginId(pluginId = pid);
-                    pluginInfo = new PluginInfo(pid.Id, pid.Version);
-                    pluginData = new Plugin(pluginInfo) { FolderPath = pluginFolder };
+                    var pluginInfo = new PluginInfo(this.PluginDataProvider, pid.Id, pid.Version);
+                    pluginData = new Plugin(pluginInfo) { Location = pluginFolder };
+                    var context = this.CreatePluginContext(uninitializeOptions)
+                        .Plugin(pluginData);
+
+                    result.ReturnValue = pluginData;
+
+                    if (!this.CanUninitializePlugin(pid, state, pluginFolder))
+                    {
+                        throw new PluginOperationException(
+                            $"Plugin {pluginId} cannot be uninitialized. State '{state}', version: '{pid.Version}'.",
+                            result,
+                            context.Operation == PluginOperation.Uninitialize ? SeverityLevel.Error : SeverityLevel.Warning);
+                    }
+
+                    await this.EventHub.PublishAsync(new UninitializingPluginSignal(pluginId, context), context, cancellationToken).PreserveThreadContext();
 
                     try
                     {
                         var uninitResult = await this.UninitializeDataAsync(pluginId, context, cancellationToken).PreserveThreadContext();
                         result.MergeResult(uninitResult);
 
-                        PluginHelper.SetPluginData(pluginFolder, PluginState.PendingUninstallation, pid.Version);
+                        this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.PendingUninstallation, pid.Version);
+                    }
+                    catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                    {
+                        // treat non-errors as ignorable, meaning that the plugin state is not changed to corrupt.
+                        throw;
                     }
                     catch
                     {
-                        PluginHelper.SetPluginData(pluginFolder, PluginState.Corrupt, pid.Version);
+                        this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.Corrupt, pid.Version);
                         throw;
                     }
+
+                    await this.EventHub.PublishAsync(new UninitializedPluginSignal(pluginId, context, result), context, cancellationToken).PreserveThreadContext();
+
                 }).PreserveThreadContext();
 
             this.Logger.Info("Plugin {plugin} successfully uninitialized. Elapsed: {elapsed:c}.", pluginId, opResult.Elapsed);
@@ -341,8 +492,6 @@ namespace Kephas.Plugins
                 .MergeResult(opResult)
                 .MergeMessage($"Plugin {pluginId} successfully uninitialized. Elapsed: {opResult.Elapsed:c}.")
                 .Elapsed(opResult.Elapsed);
-
-            await this.EventHub.PublishAsync(new UninitializedPluginSignal(pluginId, context, result), context, cancellationToken).PreserveThreadContext();
 
             return result;
         }
@@ -401,27 +550,32 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual async Task<IOperationResult<IPlugin>> EnablePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            IPluginInfo pluginInfo = null;
             IPlugin pluginData = null;
+            var result = new OperationResult<IPlugin>();
             var opResult = Profiler.WithInfoStopwatch(
                 () =>
                 {
+                    var context = this.CreatePluginContext(ctx => ctx.Merge(options).Operation(PluginOperation.Enable, overwrite: false));
                     var (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
-                    if (state != PluginState.Disabled)
+                    if (!this.CanEnablePlugin(pid, state, pluginFolder))
                     {
-                        throw new InvalidOperationException($"Cannot enable plugin {pid} while in state '{state}'.");
+                        throw new PluginOperationException(
+                            $"Plugin {pluginId} cannot be enabled. State '{state}', version: '{pid.Version}'.",
+                            result,
+                            context.Operation == PluginOperation.Enable ? SeverityLevel.Error : SeverityLevel.Warning);
                     }
 
                     pluginId = pid;
-                    pluginInfo = new PluginInfo(pid.Id, pid.Version);
-                    pluginData = new Plugin(pluginInfo) { FolderPath = pluginFolder };
+                    var pluginInfo = new PluginInfo(this.PluginDataProvider, pid.Id, pid.Version);
+                    pluginData = new Plugin(pluginInfo) { Location = pluginFolder };
 
-                    PluginHelper.SetPluginData(pluginFolder, PluginState.Enabled, pid.Version);
+                    this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.Enabled, pid.Version);
                 });
 
             this.Logger.Info("Plugin {plugin} successfully enabled. Elapsed: {elapsed:c}.", pluginId, opResult.Elapsed);
 
-            return new OperationResult<IPlugin>(pluginData)
+            result.ReturnValue = pluginData;
+            return result
                 .MergeResult(opResult)
                 .MergeMessage($"Plugin {pluginId} successfully enabled. Elapsed: {opResult.Elapsed:c}.")
                 .Elapsed(opResult.Elapsed);
@@ -438,27 +592,32 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual async Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            IPluginInfo pluginInfo = null;
             IPlugin pluginData = null;
+            var result = new OperationResult<IPlugin>();
             var opResult = Profiler.WithInfoStopwatch(
                 () =>
                 {
+                    var context = this.CreatePluginContext(ctx => ctx.Merge(options).Operation(PluginOperation.Disable, overwrite: false));
                     var (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
-                    if (state != PluginState.Enabled)
+                    if (!this.CanDisablePlugin(pid, state, pluginFolder))
                     {
-                        throw new InvalidOperationException($"Cannot disable plugin {pid} while in state '{state}'.");
+                        throw new PluginOperationException(
+                            $"Plugin {pluginId} cannot be disabled. State '{state}', version: '{pid.Version}'.",
+                            result,
+                            context.Operation == PluginOperation.Enable ? SeverityLevel.Error : SeverityLevel.Warning);
                     }
 
                     pluginId = pid;
-                    pluginInfo = new PluginInfo(pid.Id, pid.Version);
-                    pluginData = new Plugin(pluginInfo) { FolderPath = pluginFolder };
+                    var pluginInfo = new PluginInfo(this.PluginDataProvider, pid.Id, pid.Version);
+                    pluginData = new Plugin(pluginInfo) { Location = pluginFolder };
 
-                    PluginHelper.SetPluginData(pluginFolder, PluginState.Disabled, pid.Version);
+                    this.PluginDataProvider.SetPluginData(pluginFolder, PluginState.Disabled, pid.Version);
                 });
 
             this.Logger.Warn("Plugin {plugin} successfully disabled. Elapsed: {elapsed:c}.", pluginId, opResult.Elapsed);
 
-            return new OperationResult<IPlugin>(pluginData)
+            result.ReturnValue = pluginData;
+            return result
                 .MergeResult(opResult)
                 .MergeMessage($"Plugin {pluginId} successfully disabled. Elapsed: {opResult.Elapsed:c}.")
                 .Elapsed(opResult.Elapsed);
@@ -471,7 +630,7 @@ namespace Kephas.Plugins
         {
             if (!this.AppRuntime.PluginsEnabled())
             {
-                throw new InvalidOperationException("Cannot proceed with the operation while the plugins are disabled. Please start the application in productive mode to enable them and then rerun the operation.");
+                throw new PluginOperationException("Cannot proceed with the operation while the plugins are disabled. Please start the application in productive mode to enable them and then rerun the operation.");
             }
         }
 
@@ -482,8 +641,92 @@ namespace Kephas.Plugins
         {
             if (this.AppRuntime.PluginsEnabled())
             {
-                throw new InvalidOperationException("Cannot proceed with the operation while the plugins are enabled. Please start the application in setup mode to disable them and then rerun the operation.");
+                throw new PluginOperationException("Cannot proceed with the operation while the plugins are enabled. Please start the application in setup mode to disable them and then rerun the operation.");
             }
+        }
+
+        /// <summary>
+        /// Determines whether the plugin can be installed.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="state">The state.</param>
+        /// <param name="pluginLocation">The plugin location.</param>
+        /// <returns>
+        /// True if the plugin can be installed, false if not.
+        /// </returns>
+        protected virtual bool CanInstallPlugin(AppIdentity pluginId, PluginState state, string pluginLocation)
+        {
+            return state == PluginState.None;
+        }
+
+        /// <summary>
+        /// Determines whether the plugin can be initialized.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="state">The state.</param>
+        /// <param name="pluginLocation">The plugin location.</param>
+        /// <returns>
+        /// True if the plugin can be initialized, false if not.
+        /// </returns>
+        protected virtual bool CanInitializePlugin(AppIdentity pluginId, PluginState state, string pluginLocation)
+        {
+            return state == PluginState.PendingInitialization;
+        }
+
+        /// <summary>
+        /// Determines whether the plugin can be uninitialized.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="state">The state.</param>
+        /// <param name="pluginLocation">The plugin location.</param>
+        /// <returns>
+        /// True if the plugin can be uninitialized, false if not.
+        /// </returns>
+        protected virtual bool CanUninitializePlugin(AppIdentity pluginId, PluginState state, string pluginLocation)
+        {
+            return state == PluginState.Disabled;
+        }
+
+        /// <summary>
+        /// Determines whether the plugin can be uninstalled.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="state">The state.</param>
+        /// <param name="pluginLocation">The plugin location.</param>
+        /// <returns>
+        /// True if the plugin can be uninstalled, false if not.
+        /// </returns>
+        protected virtual bool CanUninstallPlugin(AppIdentity pluginId, PluginState state, string pluginLocation)
+        {
+            return state == PluginState.PendingUninstallation || state == PluginState.Corrupt;
+        }
+
+        /// <summary>
+        /// Determines whether the plugin can be enabled.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="state">The state.</param>
+        /// <param name="pluginLocation">The plugin location.</param>
+        /// <returns>
+        /// True if the plugin can be enabled, false if not.
+        /// </returns>
+        protected virtual bool CanEnablePlugin(AppIdentity pluginId, PluginState state, string pluginLocation)
+        {
+            return state == PluginState.Disabled;
+        }
+
+        /// <summary>
+        /// Determines whether the plugin can be disabled.
+        /// </summary>
+        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="state">The state.</param>
+        /// <param name="pluginLocation">The plugin location.</param>
+        /// <returns>
+        /// True if the plugin can be disabled, false if not.
+        /// </returns>
+        protected virtual bool CanDisablePlugin(AppIdentity pluginId, PluginState state, string pluginLocation)
+        {
+            return state == PluginState.Enabled;
         }
 
         /// <summary>
@@ -520,7 +763,7 @@ namespace Kephas.Plugins
         protected virtual (string pluginFolder, PluginState state, AppIdentity identity) GetInstalledPluginData(AppIdentity pluginId)
         {
             var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginId.Id);
-            var (state, version) = PluginHelper.GetPluginData(pluginFolder);
+            var (state, version) = this.PluginDataProvider.GetPluginData(pluginFolder);
             return (pluginFolder, state, new AppIdentity(pluginId.Id, version));
         }
 
@@ -574,7 +817,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual Task<IOperationResult<IPlugin>> UninstallPluginCoreAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken)
         {
-            var pluginFolder = context.Plugin.FolderPath;
+            var pluginFolder = context.Plugin.Location;
             if (Directory.Exists(pluginFolder))
             {
                 Directory.Delete(pluginFolder, recursive: true);

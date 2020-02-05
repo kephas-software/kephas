@@ -58,7 +58,7 @@ namespace Kephas.Plugins.Endpoints
             {
                 Id = plugin.GetIdentity().Id,
                 Version = plugin.GetIdentity().Version,
-                FolderPath = plugin.FolderPath,
+                Location = plugin.Location,
                 State = plugin.State,
             };
         }

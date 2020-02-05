@@ -49,7 +49,7 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The full pathname of the plugin folder.
         /// </value>
-        public string FolderPath { get; set; }
+        public string Location { get; set; }
 
         /// <summary>
         /// Gets or sets the state.
@@ -83,7 +83,7 @@ namespace Kephas.Plugins.Endpoints
         /// </returns>
         public override string ToString()
         {
-            return $"{new AppIdentity(this.Id, this.Version)} ({this.State} in {this.FolderPath})";
+            return $"{new AppIdentity(this.Id, this.Version)} ({this.State} in {this.Location})";
         }
     }
 }
