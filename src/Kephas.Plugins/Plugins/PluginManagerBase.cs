@@ -256,7 +256,7 @@ namespace Kephas.Plugins
                             .PluginId(pluginId);
                     var uninstallComplete = false;
                     var uninitializeComplete = false;
-                    if (this.CanUninitializePlugin(pluginId, state, pluginFolder))
+                    if (this.CanUninitializePlugin(pluginId, state, pluginFolder) || this.CanDisablePlugin(pluginId, state, pluginFolder))
                     {
                         try
                         {
@@ -287,11 +287,14 @@ namespace Kephas.Plugins
                         result.ReturnValue = uninstResult.ReturnValue;
                         result.MergeResult(uninstResult);
 
+                        this.PluginDataService.SetPluginData(pluginData.Location, PluginState.None, pluginData.GetTypeInfo().Version);
+
                         (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
                         uninstallComplete = state == PluginState.None;
 
                         if (uninstallComplete)
                         {
+                            pluginData.State = PluginState.None;
                             this.Logger.Info("Plugin {plugin} successfully uninstalled.", pluginId);
                         }
                     }

@@ -80,6 +80,16 @@ namespace Kephas.Plugins
         public virtual void SetPluginData(string pluginLocation, PluginState state, string version)
         {
             var pluginStateFile = Path.Combine(pluginLocation, PluginStateFileName);
+            if (state == PluginState.None)
+            {
+                if (File.Exists(pluginStateFile))
+                {
+                    File.Delete(pluginStateFile);
+                }
+
+                return;
+            }
+
             File.WriteAllText(pluginStateFile, $"{state},{version}");
         }
     }

@@ -34,13 +34,44 @@ namespace Kephas.Tests.Plugins
     public class PluginManagerBaseTest : CompositionTestBase
     {
         [Test]
-        public void GetInstalledPlugins()
+        public void GetInstalledPlugins_empty()
         {
             using (var ctx = new PluginsTestContext())
             {
                 var pluginManager = this.CreatePluginManager(ctx);
 
                 var plugins = pluginManager.GetInstalledPlugins();
+
+                CollectionAssert.IsEmpty(plugins);
+            }
+        }
+
+        [Test]
+        public async Task InstallPluginAsync_p1()
+        {
+            using (var ctx = new PluginsTestContext())
+            {
+                var pluginManager = this.CreatePluginManager(ctx);
+
+                var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(PluginState.Enabled, result.ReturnValue.State);
+            }
+        }
+
+        [Test]
+        public async Task UninstallPluginAsync_p1()
+        {
+            using (var ctx = new PluginsTestContext())
+            {
+                var pluginManager = this.CreatePluginManager(ctx);
+
+                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
+                var uninstResult = await pluginManager.UninstallPluginAsync(new AppIdentity("p1"));
+
+                Assert.IsNotNull(uninstResult);
+                Assert.AreEqual(PluginState.None, uninstResult.ReturnValue.State);
             }
         }
 
@@ -49,6 +80,7 @@ namespace Kephas.Tests.Plugins
             var pluginsDataService = new TestPluginDataService();
             var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginDataService: pluginsDataService);
             return new TestPluginManager(
+                context,
                 appRuntime,
                 this.CreateContextFactoryMock(() => new PluginContext(Substitute.For<ICompositionContext>())),
                 this.CreateEventHubMock(),
@@ -84,9 +116,12 @@ namespace Kephas.Tests.Plugins
 
         public class TestPluginManager : PluginManagerBase
         {
-            public TestPluginManager(IAppRuntime appRuntime, IContextFactory contextFactory, IEventHub eventHub, IPluginDataService pluginDataService, ILogManager logManager = null)
+            private readonly PluginsTestContext ctx;
+
+            public TestPluginManager(PluginsTestContext ctx, IAppRuntime appRuntime, IContextFactory contextFactory, IEventHub eventHub, IPluginDataService pluginDataService, ILogManager logManager = null)
                 : base(appRuntime, contextFactory, eventHub, pluginDataService, logManager)
             {
+                this.ctx = ctx;
             }
 
             public override Task<IOperationResult<IEnumerable<IPluginInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
@@ -99,12 +134,19 @@ namespace Kephas.Tests.Plugins
 
             protected override Task<IOperationResult<IPlugin>> InstallPluginCoreAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken = default)
             {
+                var pluginInfo = Substitute.For<IPluginInfo>();
+                pluginInfo.GetIdentity().Returns(pluginId);
+                pluginInfo.Name.Returns(pluginId.Id);
+                pluginInfo.Version.Returns(pluginId.Version);
                 var plugin = Substitute.For<IPlugin>();
+                plugin.Id.Returns(pluginId.Id);
+                plugin.GetTypeInfo().Returns(pluginInfo);
+                plugin.Location.Returns(Path.Combine(this.ctx.PluginsLocation, pluginId.Id));
                 return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>(plugin));
             }
         }
 
-        private class PluginsTestContext : IDisposable
+        public class PluginsTestContext : IDisposable
         {
             public PluginsTestContext(string pluginsFolder = null)
             {
