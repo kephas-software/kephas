@@ -129,9 +129,9 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the uninstall plugin.
         /// </returns>
-        public Task<IOperationResult> UninstallPluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> UninstallPluginAsync(AppIdentity plugin, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
+            return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
 
         /// <summary>

@@ -39,7 +39,7 @@ namespace Kephas.Plugins
         /// <summary>
         /// The plugin specific data has been uninstalled, it awaits final removal of folders.
         /// </summary>
-        PendingUninitialization,
+        PendingUninstallation,
 
         /// <summary>
         /// The plugin installation is corrupt.

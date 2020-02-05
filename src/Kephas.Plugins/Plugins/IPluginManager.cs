@@ -46,7 +46,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the uninstall operation result.
         /// </returns>
-        Task<IOperationResult> UninstallPluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> UninstallPluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Initializes the plugin asynchronously.
