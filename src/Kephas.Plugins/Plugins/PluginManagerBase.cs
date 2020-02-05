@@ -442,6 +442,17 @@ namespace Kephas.Plugins
         }
 
         /// <summary>
+        /// Asserts that the plugins are enabled.
+        /// </summary>
+        protected virtual void AssertPluginsEnabled()
+        {
+            if (!this.AppRuntime.PluginsEnabled())
+            {
+                throw new InvalidOperationException("Cannot proceed with the operation while the plugins are disabled. Please start the application in productive mode to enable them and then rerun the operation.");
+            }
+        }
+
+        /// <summary>
         /// Asserts that the plugins are disabled.
         /// </summary>
         protected virtual void AssertPluginsDisabled()
