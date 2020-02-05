@@ -29,6 +29,7 @@ namespace Kephas.Plugins.NuGet
     using Kephas.Collections;
     using Kephas.Configuration;
     using Kephas.Diagnostics;
+    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Plugins;
@@ -59,14 +60,16 @@ namespace Kephas.Plugins.NuGet
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="contextFactory">The context factory.</param>
+        /// <param name="eventHub">The event hub.</param>
         /// <param name="pluginsConfig">The plugins configuration.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         public NuGetPluginManager(
             IAppRuntime appRuntime,
             IContextFactory contextFactory,
+            IEventHub eventHub,
             IConfiguration<PluginsSettings> pluginsConfig,
             ILogManager logManager = null)
-            : base(appRuntime, contextFactory, logManager)
+            : base(appRuntime, contextFactory, eventHub, logManager)
         {
             this.nativeLogger = new NuGetLogger(this.Logger);
             this.pluginsSettings = pluginsConfig.Settings;

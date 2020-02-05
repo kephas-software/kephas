@@ -20,8 +20,10 @@ namespace Kephas.Plugins
     using Kephas.Application;
     using Kephas.Diagnostics;
     using Kephas.Dynamic;
+    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
+    using Kephas.Plugins.Interaction;
     using Kephas.Plugins.Reflection;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -36,15 +38,18 @@ namespace Kephas.Plugins
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="contextFactory">The context factory.</param>
+        /// <param name="eventHub">The event hub.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         protected PluginManagerBase(
             IAppRuntime appRuntime,
             IContextFactory contextFactory,
+            IEventHub eventHub,
             ILogManager logManager = null)
             : base(logManager)
         {
             this.AppRuntime = appRuntime;
             this.ContextFactory = contextFactory;
+            this.EventHub = eventHub;
         }
 
         /// <summary>
@@ -62,6 +67,14 @@ namespace Kephas.Plugins
         /// The context factory.
         /// </value>
         protected IContextFactory ContextFactory { get; }
+
+        /// <summary>
+        /// Gets the event hub.
+        /// </summary>
+        /// <value>
+        /// The event hub.
+        /// </value>
+        protected IEventHub EventHub { get; }
 
         /// <summary>
         /// Gets the available plugins asynchronously.
@@ -197,13 +210,14 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual async Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            this.AssertPluginsDisabled();
-
             IPluginInfo pluginInfo = null;
             IPlugin pluginData = null;
             var context = this.CreatePluginContext(options)
                 .Operation(PluginOperation.Initialize, overwrite: false)
                 .PluginId(pluginId);
+
+            await this.EventHub.PublishAsync(new InitializingPluginSignal(pluginId, context), context, cancellationToken).PreserveThreadContext();
+
             var result = new OperationResult<IPlugin>();
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
@@ -234,10 +248,14 @@ namespace Kephas.Plugins
             this.Logger.Info("Plugin {plugin} successfully initialized. Elapsed: {elapsed:c}.", pluginId, opResult.Elapsed);
 
             result.ReturnValue = pluginData;
-            return result
+            result
                 .MergeResult(opResult)
                 .MergeMessage($"Plugin {pluginId} successfully initialized. Elapsed: {opResult.Elapsed:c}.")
                 .Elapsed(opResult.Elapsed);
+
+            await this.EventHub.PublishAsync(new InitializedPluginSignal(pluginId, context, result), context, cancellationToken).PreserveThreadContext();
+
+            return result;
         }
 
         /// <summary>
@@ -251,13 +269,14 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual async Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity pluginId, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
         {
-            this.AssertPluginsDisabled();
-
             IPluginInfo pluginInfo = null;
             IPlugin pluginData = null;
             var context = this.CreatePluginContext(options)
                 .Operation(PluginOperation.Uninitialize, overwrite: false)
                 .PluginId(pluginId);
+
+            await this.EventHub.PublishAsync(new UninitializingPluginSignal(pluginId, context), context, cancellationToken).PreserveThreadContext();
+
             var result = new OperationResult<IPlugin>();
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
@@ -289,10 +308,14 @@ namespace Kephas.Plugins
             this.Logger.Info("Plugin {plugin} successfully uninitialized. Elapsed: {elapsed:c}.", pluginId, opResult.Elapsed);
 
             result.ReturnValue = pluginData;
-            return result
+            result
                 .MergeResult(opResult)
                 .MergeMessage($"Plugin {pluginId} successfully uninitialized. Elapsed: {opResult.Elapsed:c}.")
                 .Elapsed(opResult.Elapsed);
+
+            await this.EventHub.PublishAsync(new UninitializedPluginSignal(pluginId, context, result), context, cancellationToken).PreserveThreadContext();
+
+            return result;
         }
 
         /// <summary>
