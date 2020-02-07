@@ -65,7 +65,7 @@ namespace Kephas.Plugins.Application
         /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
         /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
         /// <param name="targetFramework">Optional. The target framework.</param>
-        /// <param name="pluginDataService">Optional. The plugin data service.</param>
+        /// <param name="pluginDataStore">Optional. The plugin data store.</param>
         public PluginsAppRuntime(
             IAssemblyLoader assemblyLoader = null,
             ILicensingManager licensingManager = null,
@@ -80,13 +80,13 @@ namespace Kephas.Plugins.Application
             bool? enablePlugins = null,
             string pluginsFolder = null,
             string targetFramework = null,
-            IPluginDataService pluginDataService = null)
+            IPluginDataStore pluginDataStore = null)
             : base(assemblyLoader, licensingManager, logManager, assemblyFilter, appFolder, configFolders, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);
             this.TargetFramework = this.ComputeTargetFramework(targetFramework, appArgs);
-            this.PluginDataService = pluginDataService ?? new PluginDataService();
+            this.PluginDataStore = pluginDataStore ?? new PluginDataStore(appIdentity => this.GetAppLocation(appIdentity, throwOnNotFound: false));
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Kephas.Plugins.Application
         /// <value>
         /// The plugin data service.
         /// </value>
-        internal IPluginDataService PluginDataService { get; }
+        internal IPluginDataStore PluginDataStore { get; }
 
         /// <summary>
         /// Gets the location of the application with the indicated identity.
@@ -179,6 +179,26 @@ namespace Kephas.Plugins.Application
             this.Logger.Info(Strings.PluginsAppRuntime_LoadingApplicationFolders_Message, appDirectories, this.EnablePlugins ? "enabled" : "disabled");
 
             return appDirectories;
+        }
+
+        /// <summary>
+        /// Gets the installed plugins.
+        /// </summary>
+        /// <returns>
+        /// The installed plugins.
+        /// </returns>
+        public virtual IEnumerable<PluginData> GetInstalledPlugins()
+        {
+            if (Directory.Exists(this.PluginsLocation))
+            {
+                var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation);
+
+                foreach (var pluginDirectory in pluginsDirectories)
+                {
+                    var pluginId = Path.GetFileName(pluginDirectory);
+                    yield return this.PluginDataStore.GetPluginData(new AppIdentity(pluginId));
+                }
+            }
         }
 
         /// <summary>
@@ -261,20 +281,26 @@ namespace Kephas.Plugins.Application
         protected virtual bool CanLoadPlugin(string pluginFolder)
         {
             var pluginId = Path.GetFileName(pluginFolder);
-            var (pluginState, pluginVersion) = this.PluginDataService.GetPluginData(pluginFolder);
+            var pluginIdentity = new AppIdentity(pluginId);
+            var pluginData = this.PluginDataStore.GetPluginData(pluginIdentity);
+            pluginIdentity = pluginData.Identity;
 
-            var shouldLoadPlugin = pluginState == PluginState.PendingInitialization || pluginState == PluginState.Enabled;
+            var shouldLoadPlugin = pluginData.State == PluginState.PendingInitialization || pluginData.State == PluginState.Enabled;
             if (shouldLoadPlugin)
             {
-                var plugin = new AppIdentity(pluginId, pluginVersion);
                 try
                 {
-                    var licenseState = this.LicensingManager.CheckLicense(plugin);
+                    var licenseState = this.LicensingManager.CheckLicense(pluginIdentity);
+                    if (!licenseState.IsLicensed)
+                    {
+                        this.Logger.Warn("Plugin '{plugin}' is not licensed, will not be loaded. Checker information: {messages}.", pluginIdentity, licenseState.Messages.Select(m => m.Message).ToArray());
+                    }
+
                     return licenseState.IsLicensed;
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, "Error while checking the license for plugin {plugin}.", plugin);
+                    this.Logger.Error(ex, "Error while checking the license for plugin {plugin}.", pluginIdentity);
                     return false;
                 }
             }

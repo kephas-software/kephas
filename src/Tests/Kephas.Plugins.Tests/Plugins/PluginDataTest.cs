@@ -30,7 +30,7 @@ namespace Kephas.Tests.Plugins
         public void Parse_valid_checksum()
         {
             var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3,Disabled,-736467149");
-            Assert.AreEqual(new AppIdentity("Gigi.Belogea", "1.2.3"), pluginData.AppIdentity);
+            Assert.AreEqual(new AppIdentity("Gigi.Belogea", "1.2.3"), pluginData.Identity);
             Assert.AreEqual(PluginState.Disabled, pluginData.State);
         }
 

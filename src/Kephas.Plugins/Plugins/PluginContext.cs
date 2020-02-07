@@ -34,7 +34,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The plugin.
         /// </value>
-        public AppIdentity PluginId { get; set; }
+        public AppIdentity PluginIdentity { get; set; }
 
         /// <summary>
         /// Gets or sets the operation.

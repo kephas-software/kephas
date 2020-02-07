@@ -67,7 +67,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The plugin.
         /// </value>
-        AppIdentity PluginId { get; set; }
+        AppIdentity PluginIdentity { get; set; }
 
         /// <summary>
         /// Gets or sets the operation.
@@ -120,22 +120,22 @@ namespace Kephas.Plugins
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context to act on.</param>
-        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
         /// <param name="overwrite">Optional. True to overwrite the previously set value, false to preserve it.</param>
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext PluginId<TContext>(this TContext context, AppIdentity pluginId, bool overwrite = true)
+        public static TContext PluginIdentity<TContext>(this TContext context, AppIdentity pluginIdentity, bool overwrite = true)
             where TContext : class, IPluginContext
         {
             Requires.NotNull(context, nameof(context));
 
-            if (context.PluginId != null && !overwrite)
+            if (context.PluginIdentity != null && !overwrite)
             {
                 return context;
             }
 
-            context.PluginId = pluginId;
+            context.PluginIdentity = pluginIdentity;
             return context;
         }
 

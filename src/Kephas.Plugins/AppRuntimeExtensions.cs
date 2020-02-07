@@ -12,6 +12,7 @@ namespace Kephas
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Kephas.Application;
     using Kephas.Plugins;
@@ -61,6 +62,27 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Gets the installed plugins.
+        /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <returns>
+        /// The installed plugins.
+        /// </returns>
+        public static IEnumerable<PluginData> GetInstalledPlugins(this IAppRuntime appRuntime)
+        {
+            if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
+            {
+                return pluginsAppRuntime.GetInstalledPlugins();
+            }
+
+#if NET45
+            return new PluginData[0];
+#else
+            return Enumerable.Empty<PluginData>();
+#endif
+        }
+
+        /// <summary>
         /// Gets the application's target framework.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
@@ -94,7 +116,6 @@ namespace Kephas
             return (bool?)appRuntime?[nameof(PluginsAppRuntime.EnablePlugins)] ?? false;
         }
 
-
         /// <summary>
         /// Gets the plugin data service.
         /// </summary>
@@ -102,14 +123,19 @@ namespace Kephas
         /// <returns>
         /// The plugin data service.
         /// </returns>
-        internal static IPluginDataService GetPluginDataService(this IAppRuntime appRuntime)
+        internal static IPluginDataStore GetPluginDataStore(this IAppRuntime appRuntime)
         {
             if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
             {
-                return pluginsAppRuntime.PluginDataService;
+                return pluginsAppRuntime.PluginDataStore;
             }
 
-            throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginDataService)} from {appRuntime.GetType()}.");
+            if (!(appRuntime?[nameof(PluginsAppRuntime.PluginDataStore)] is IPluginDataStore pluginDataStore))
+            {
+                throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginDataStore)} from {appRuntime.GetType()}.");
+            }
+
+            return pluginDataStore;
         }
     }
 }

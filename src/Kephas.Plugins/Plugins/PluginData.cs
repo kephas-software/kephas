@@ -28,23 +28,23 @@ namespace Kephas.Plugins
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginData"/> class.
         /// </summary>
-        /// <param name="appIdentity">The application identity.</param>
+        /// <param name="identity">The plugin identity.</param>
         /// <param name="state">The plugin state.</param>
-        public PluginData(AppIdentity appIdentity, PluginState state)
+        public PluginData(AppIdentity identity, PluginState state)
         {
-            Requires.NotNull(appIdentity, nameof(appIdentity));
+            Requires.NotNull(identity, nameof(identity));
 
-            this.AppIdentity = appIdentity;
+            this.Identity = identity;
             this.State = state;
         }
 
         /// <summary>
-        /// Gets the identifier of the application.
+        /// Gets the identifier of the plugin.
         /// </summary>
         /// <value>
-        /// The identifier of the application.
+        /// The identifier of the plugin.
         /// </value>
-        public AppIdentity AppIdentity { get; }
+        public AppIdentity Identity { get; }
 
         /// <summary>
         /// Gets the plugin state.
@@ -96,7 +96,7 @@ namespace Kephas.Plugins
         /// </returns>
         public override string ToString()
         {
-            return $"{this.AppIdentity},{this.State},{this.GetChecksum()}";
+            return $"{this.Identity},{this.State},{this.GetChecksum()}";
         }
 
         private void Validate(int checksum)
@@ -106,12 +106,12 @@ namespace Kephas.Plugins
                 return;
             }
 
-            throw new InvalidPluginDataException($"The plugin data for {this.AppIdentity} is corrupt, probably was manually changed.");
+            throw new InvalidPluginDataException($"The plugin data for {this.Identity} is corrupt, probably was manually changed ({CheksumInvalidCode}).");
         }
 
         private int GetChecksum()
         {
-            var str = $"{this.AppIdentity},{this.State}";
+            var str = $"{this.Identity},{this.State}";
             unchecked
             {
                 int hash1 = (5381 << 16) + 5381;

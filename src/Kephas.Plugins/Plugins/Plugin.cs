@@ -25,19 +25,22 @@ namespace Kephas.Plugins
     public class Plugin : Expando, IPlugin
     {
         private readonly IAppInfo pluginInfo;
-        private readonly IPluginDataService pluginDataService;
+        private readonly IPluginDataStore pluginDataStore;
+        private readonly IAppRuntime appRuntime;
         private PluginState? state;
+        private string location;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plugin"/> class.
         /// </summary>
         /// <param name="pluginInfo">Information describing the plugin.</param>
-        public Plugin(PluginInfo pluginInfo)
+        internal Plugin(PluginInfo pluginInfo)
         {
             Requires.NotNull(pluginInfo, nameof(pluginInfo));
 
             this.pluginInfo = pluginInfo;
-            this.pluginDataService = pluginInfo.PluginDataService;
+            this.pluginDataStore = pluginInfo.PluginDataStore;
+            this.appRuntime = pluginInfo.AppRuntime;
         }
 
         /// <summary>
@@ -46,7 +49,11 @@ namespace Kephas.Plugins
         /// <value>
         /// The full pathname of the installation folder.
         /// </value>
-        public string Location { get; protected internal set; }
+        public string Location
+        {
+            get => this.location ?? this.appRuntime.GetAppLocation(this.GetIdentity(), throwOnNotFound: false);
+            protected internal set => this.location = value;
+        }
 
         /// <summary>
         /// Gets or sets the state.
@@ -56,7 +63,7 @@ namespace Kephas.Plugins
         /// </value>
         public PluginState State
         {
-            get => this.state ?? this.pluginDataService.GetPluginData(this.Location).state;
+            get => this.state ?? this.pluginDataStore.GetPluginData(this.GetIdentity()).State;
             protected internal set => this.state = value;
         }
 

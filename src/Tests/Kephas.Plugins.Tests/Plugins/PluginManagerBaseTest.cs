@@ -78,17 +78,17 @@ namespace Kephas.Tests.Plugins
 
         private IPluginManager CreatePluginManager(PluginsTestContext context)
         {
-            var pluginsDataService = new TestPluginDataService();
-            var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginDataService: pluginsDataService);
+            var pluginsDataStore = new TestPluginDataStore();
+            var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginDataStore: pluginsDataStore);
             return new TestPluginManager(
                 context,
                 appRuntime,
                 this.CreateContextFactoryMock(() => new PluginContext(Substitute.For<ICompositionContext>())),
                 this.CreateEventHubMock(),
-                pluginsDataService);
+                pluginsDataStore);
         }
 
-        public class TestPluginDataService : IPluginDataService
+        public class TestPluginDataStore : IPluginDataStore
         {
             private ConcurrentDictionary<string, PluginData> cache = new ConcurrentDictionary<string, PluginData>();
 
@@ -102,7 +102,7 @@ namespace Kephas.Tests.Plugins
                 return (PluginState.None, null);
             }
 
-            public void SetPluginData(string pluginLocation, PluginState state, string version)
+            public void StorePluginData(string pluginLocation, PluginState state, string version)
             {
                 this.cache.AddOrUpdate(pluginLocation, new PluginData { State = state, Version = version }, (_, __) => new PluginData { State = state, Version = version });
             }
@@ -119,8 +119,8 @@ namespace Kephas.Tests.Plugins
         {
             private readonly PluginsTestContext ctx;
 
-            public TestPluginManager(PluginsTestContext ctx, IAppRuntime appRuntime, IContextFactory contextFactory, IEventHub eventHub, IPluginDataService pluginDataService, ILogManager logManager = null)
-                : base(appRuntime, contextFactory, eventHub, pluginDataService, logManager)
+            public TestPluginManager(PluginsTestContext ctx, IAppRuntime appRuntime, IContextFactory contextFactory, IEventHub eventHub, IPluginDataStore pluginDataStore, ILogManager logManager = null)
+                : base(appRuntime, contextFactory, eventHub, pluginDataStore, logManager)
             {
                 this.ctx = ctx;
             }

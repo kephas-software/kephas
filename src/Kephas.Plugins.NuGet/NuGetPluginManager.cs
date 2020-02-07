@@ -127,8 +127,8 @@ namespace Kephas.Plugins.NuGet
                 }).PreserveThreadContext();
 
             var result = new OperationResult<IEnumerable<IAppInfo>>(availablePackages.Select(this.ToPluginInfo))
-                                .MergeResult(opResult)
-                                .Elapsed(opResult.Elapsed);
+                                .MergeMessages(opResult)
+                                .Complete(opResult.Elapsed);
             return result;
         }
 
@@ -154,8 +154,8 @@ namespace Kephas.Plugins.NuGet
 
                 var (pluginPackageIdentity, packageReaders) = await this.GetPackageReadersAsync(pluginId, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
 
-                var pluginInfo = new PluginInfo(this.PluginDataService, pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
-                context.PluginId(pluginId = pluginInfo.GetIdentity());
+                var pluginInfo = new PluginInfo(this.PluginDataStore, pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
+                context.PluginIdentity(pluginId = pluginInfo.GetIdentity());
 
                 var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
                 if (!Directory.Exists(pluginFolder))
@@ -168,19 +168,19 @@ namespace Kephas.Plugins.NuGet
                     var frameworkReducer = new FrameworkReducer();
                     foreach (var (packageId, packageReader) in packageReaders)
                     {
-                        result.MergeResult(
+                        result.MergeMessages(
                             await this.InstallBinAsync(pluginId, pluginFolder, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
                             .PreserveThreadContext());
-                        result.MergeResult(
+                        result.MergeMessages(
                             await this.InstallContentAsync(pluginId, pluginFolder, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
                             .PreserveThreadContext());
                     }
 
-                    result.MergeResult(
+                    result.MergeMessages(
                         await this.InstallConfigAsync(pluginId, pluginFolder, context, cancellationToken)
                         .PreserveThreadContext());
 
-                    result.MergeResult(
+                    result.MergeMessages(
                         await this.InstallDataAsync(pluginId, pluginFolder, context, cancellationToken)
                         .PreserveThreadContext());
                 }
@@ -290,11 +290,11 @@ namespace Kephas.Plugins.NuGet
         {
             var result = new OperationResult<IPlugin>();
 
-            result.MergeResult(
+            result.MergeMessages(
                 await this.UninstallDataAsync(pluginId, context.Plugin.Location, context, cancellationToken)
                 .PreserveThreadContext());
 
-            result.MergeResult(
+            result.MergeMessages(
                 await this.UninstallConfigAsync(pluginId, context.Plugin.Location, context, cancellationToken)
                 .PreserveThreadContext());
 
@@ -302,7 +302,7 @@ namespace Kephas.Plugins.NuGet
                 .PreserveThreadContext();
 
             result.ReturnValue = baseResult.ReturnValue;
-            return result.MergeResult(baseResult);
+            return result.MergeMessages(baseResult);
         }
 
         /// <summary>
@@ -470,7 +470,7 @@ namespace Kephas.Plugins.NuGet
         protected virtual IAppInfo ToPluginInfo(IPackageSearchMetadata searchMetadata)
         {
             return new PluginInfo(
-                this.PluginDataService,
+                this.PluginDataStore,
                 searchMetadata.Identity.Id,
                 searchMetadata.Identity.Version.ToString(),
                 searchMetadata.Description,

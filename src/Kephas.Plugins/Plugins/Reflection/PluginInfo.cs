@@ -12,6 +12,7 @@ namespace Kephas.Plugins.Reflection
 {
     using System.Collections.Generic;
 
+    using Kephas.Application;
     using Kephas.Application.Reflection;
 
     /// <summary>
@@ -22,24 +23,33 @@ namespace Kephas.Plugins.Reflection
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginInfo"/> class.
         /// </summary>
-        /// <param name="pluginDataService">The plugin data service.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="version">Optional. the version.</param>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="pluginDataStore">The plugin data store.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
         /// <param name="description">Optional. The description.</param>
         /// <param name="tags">Optional. The tags.</param>
-        public PluginInfo(IPluginDataService pluginDataService, string name, string version = null, string description = null, string[] tags = null)
-            : base(name, version, description, tags)
+        internal PluginInfo(IAppRuntime appRuntime, IPluginDataStore pluginDataStore, AppIdentity pluginIdentity, string description = null, string[] tags = null)
+            : base(pluginIdentity, description, tags)
         {
-            this.PluginDataService = pluginDataService;
+            this.AppRuntime = appRuntime;
+            this.PluginDataStore = pluginDataStore;
         }
 
         /// <summary>
-        /// Gets the plugin data service.
+        /// Gets the application runtime.
         /// </summary>
         /// <value>
-        /// The plugin data service.
+        /// The application runtime.
         /// </value>
-        public IPluginDataService PluginDataService { get; }
+        protected internal IAppRuntime AppRuntime { get; }
+
+        /// <summary>
+        /// Gets the plugin data store.
+        /// </summary>
+        /// <value>
+        /// The plugin data store.
+        /// </value>
+        protected internal IPluginDataStore PluginDataStore { get; }
 
         /// <summary>
         /// Creates an instance with the provided arguments (if any).
