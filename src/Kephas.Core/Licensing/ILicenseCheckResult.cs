@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ILicensingState.cs" company="Kephas Software SRL">
+// <copyright file="ILicenseCheckResult.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,9 +14,9 @@ namespace Kephas.Licensing
     using Kephas.Operations;
 
     /// <summary>
-    /// Interface for licensing state.
+    /// Interface for license check result.
     /// </summary>
-    public interface ILicensingState : IOperationResult<bool>
+    public interface ILicenseCheckResult : IOperationResult<bool>
     {
         /// <summary>
         /// Gets the app identifier.

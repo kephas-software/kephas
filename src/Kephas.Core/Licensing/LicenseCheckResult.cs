@@ -14,25 +14,25 @@ namespace Kephas.Licensing
     using Kephas.Operations;
 
     /// <summary>
-    /// A licensing state.
+    /// A license check result.
     /// </summary>
-    public class LicensingState : OperationResult<bool>, ILicensingState
+    public class LicenseCheckResult : OperationResult<bool>, ILicenseCheckResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LicensingState"/> class.
+        /// Initializes a new instance of the <see cref="LicenseCheckResult"/> class.
         /// </summary>
         /// <param name="appId">The app identity.</param>
-        public LicensingState(AppIdentity appId)
+        public LicenseCheckResult(AppIdentity appId)
             : this(appId, false)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LicensingState"/> class.
+        /// Initializes a new instance of the <see cref="LicenseCheckResult"/> class.
         /// </summary>
         /// <param name="appId">The app identity.</param>
         /// <param name="isLicensed">True if the app is licensed, false if not.</param>
-        public LicensingState(AppIdentity appId, bool isLicensed)
+        public LicenseCheckResult(AppIdentity appId, bool isLicensed)
             : base(isLicensed)
         {
             this.AppId = appId;

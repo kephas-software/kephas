@@ -12,6 +12,7 @@ namespace Kephas.Plugins
 {
     using Kephas;
     using Kephas.Application;
+    using Kephas.Application.Reflection;
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -23,7 +24,7 @@ namespace Kephas.Plugins
     /// </summary>
     public class Plugin : Expando, IPlugin
     {
-        private readonly IPluginInfo pluginInfo;
+        private readonly IAppInfo pluginInfo;
         private readonly IPluginDataService pluginDataService;
         private PluginState? state;
 
@@ -36,7 +37,7 @@ namespace Kephas.Plugins
             Requires.NotNull(pluginInfo, nameof(pluginInfo));
 
             this.pluginInfo = pluginInfo;
-            this.pluginDataService = pluginInfo.PluginDataSevice;
+            this.pluginDataService = pluginInfo.PluginDataService;
         }
 
         /// <summary>
@@ -81,7 +82,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// The type information.
         /// </returns>
-        public IPluginInfo GetTypeInfo() => this.pluginInfo;
+        public IAppInfo GetTypeInfo() => this.pluginInfo;
 
         /// <summary>
         /// Gets type information.

@@ -213,6 +213,26 @@ namespace Kephas.Application
         public virtual string GetAppLocation() => this.appLocation ?? (this.appLocation = this.ComputeAppLocation(this.appFolder));
 
         /// <summary>
+        /// Gets the location of the application with the indicated identity.
+        /// </summary>
+        /// <param name="appIdentity">The application identity.</param>
+        /// <param name="throwOnNotFound">Optional. True to throw if the indicated app is not found.</param>
+        /// <returns>
+        /// A path indicating the indicated application location.
+        /// </returns>
+        public virtual string GetAppLocation(AppIdentity appIdentity, bool throwOnNotFound = true)
+        {
+            if (appIdentity == null || appIdentity.Equals(this.GetAppIdentity()))
+            {
+                return this.GetAppLocation();
+            }
+
+            return throwOnNotFound
+                ? throw new InvalidOperationException($"App '{appIdentity}' not found.")
+                : (string)null;
+        }
+
+        /// <summary>
         /// Gets the application bin folders from where application is loaded.
         /// </summary>
         /// <returns>

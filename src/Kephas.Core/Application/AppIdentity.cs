@@ -14,13 +14,16 @@ namespace Kephas.Application
 
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Dynamic;
 
     /// <summary>
     /// An app identity.
     /// </summary>
-    public class AppIdentity : Expando, IIdentifiable, IEquatable<AppIdentity>
+    public sealed class AppIdentity : IIdentifiable, IEquatable<AppIdentity>
     {
+        private const char ItemSeparatorChar = ':';
+
+        private static readonly char[] InvalidChars = new[] { ItemSeparatorChar, ';', ',', '|', '/', '\\', '<', '>', '?', '\'', '"', '*', '@', '#', '$', '^', '`', '[', ']', '{', '}' };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AppIdentity"/> class.
         /// </summary>
@@ -28,27 +31,37 @@ namespace Kephas.Application
         /// <param name="version">Optional. The version.</param>
         public AppIdentity(string id, string version = null)
         {
-            Requires.NotNullOrEmpty(id, nameof(id));
+            if (!this.IsValidId(id, out var message))
+            {
+                throw new ArgumentException(message, nameof(id));
+            }
+
+            if (!this.IsValidVersion(version, out message))
+            {
+                throw new ArgumentException(message, nameof(version));
+            }
+
+            version = string.IsNullOrEmpty(version) ? null : version;
 
             this.Id = id;
             this.Version = version;
         }
 
         /// <summary>
-        /// Gets or sets the identifier for this instance.
+        /// Gets the identifier for this instance.
         /// </summary>
         /// <value>
         /// The identifier.
         /// </value>
-        public string Id { get; set; }
+        public string Id { get; }
 
         /// <summary>
-        /// Gets or sets the version.
+        /// Gets the version.
         /// </summary>
         /// <value>
         /// The version.
         /// </value>
-        public string Version { get; set; }
+        public string Version { get; }
 
         /// <summary>
         /// Gets the identifier for this instance.
@@ -57,6 +70,42 @@ namespace Kephas.Application
         /// The identifier.
         /// </value>
         object IIdentifiable.Id => this.ToString();
+
+        /// <summary>
+        /// Parses a string and returns an instance of <see cref="AppIdentity"/>.
+        /// </summary>
+        /// <param name="value">The value to parse.</param>
+        /// <returns>
+        /// An AppIdentity.
+        /// </returns>
+        public static AppIdentity Parse(string value)
+        {
+            Requires.NotNullOrEmpty(value, nameof(value));
+
+            var indexOfSeparator = value.IndexOf(ItemSeparatorChar);
+            if (indexOfSeparator >= 0)
+            {
+                return new AppIdentity(value.Substring(0, indexOfSeparator), value.Substring(indexOfSeparator + 1));
+            }
+
+            return new AppIdentity(value);
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether this identity matches the provided one.
+        /// It is considered a match when the IDs are the same and either the versions are
+        /// the same or this version is <c>null</c>.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// True if match, false if not.
+        /// </returns>
+        public bool IsMatch(AppIdentity other)
+        {
+            return other != null
+                && this.Id.Equals(other.Id, StringComparison.OrdinalIgnoreCase)
+                && (this.Version == null || this.Version.Equals(other.Version, StringComparison.OrdinalIgnoreCase));
+        }
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -102,7 +151,55 @@ namespace Kephas.Application
         /// </returns>
         public override string ToString()
         {
-            return string.IsNullOrEmpty(this.Version) ? this.Id : $"{this.Id}:{this.Version}";
+            return string.IsNullOrEmpty(this.Version) ? this.Id : $"{this.Id}{ItemSeparatorChar}{this.Version}";
+        }
+
+        private bool IsValidId(string id, out string message)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                message = $"The app ID may not be empty.";
+                return false;
+            }
+
+            if (id.IndexOfAny(new[] { ' ', '\t', '\r', '\n' }) >= 0)
+            {
+                message = $"The app ID '{id}' may not contain whitespace.";
+                return false;
+            }
+
+            if (id.IndexOfAny(InvalidChars) >= 0)
+            {
+                message = $"The app ID '{id}' may not contain '{string.Join("', '", InvalidChars)}'.";
+                return false;
+            }
+
+            message = null;
+            return true;
+        }
+
+        private bool IsValidVersion(string version, out string message)
+        {
+            if (string.IsNullOrEmpty(version))
+            {
+                message = null;
+                return true;
+            }
+
+            if (version.IndexOfAny(new[] { ' ', '\t', '\r', '\n' }) >= 0)
+            {
+                message = $"The app version '{version}' may not contain whitespace.";
+                return false;
+            }
+
+            if (version.IndexOfAny(InvalidChars) >= 0)
+            {
+                message = $"The app version '{version}' may not contain: '{string.Join("', '", InvalidChars)}'.";
+                return false;
+            }
+
+            message = null;
+            return true;
         }
     }
 }

@@ -11,14 +11,14 @@
 namespace Kephas.Plugins
 {
     using Kephas.Application;
+    using Kephas.Application.Reflection;
     using Kephas.Data;
     using Kephas.Dynamic;
-    using Kephas.Plugins.Reflection;
 
     /// <summary>
     /// Interface for plugin.
     /// </summary>
-    public interface IPlugin : IExpando, IInstance<IPluginInfo>, IIdentifiable
+    public interface IPlugin : IExpando, IInstance<IAppInfo>, IIdentifiable
     {
         /// <summary>
         /// Gets the full pathname of the installation folder.

@@ -26,6 +26,7 @@ namespace Kephas.Plugins.NuGet
     using global::NuGet.Versioning;
     using Kephas;
     using Kephas.Application;
+    using Kephas.Application.Reflection;
     using Kephas.Collections;
     using Kephas.Configuration;
     using Kephas.Diagnostics;
@@ -83,7 +84,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result that yields the available plugins.
         /// </returns>
-        public override async Task<IOperationResult<IEnumerable<IPluginInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
         {
             var searchContext = this.CreateSearchContext(filter);
             var repositories = this.GetSourceRepositories();
@@ -125,7 +126,7 @@ namespace Kephas.Plugins.NuGet
                     }
                 }).PreserveThreadContext();
 
-            var result = new OperationResult<IEnumerable<IPluginInfo>>(availablePackages.Select(this.ToPluginInfo))
+            var result = new OperationResult<IEnumerable<IAppInfo>>(availablePackages.Select(this.ToPluginInfo))
                                 .MergeResult(opResult)
                                 .Elapsed(opResult.Elapsed);
             return result;
@@ -464,9 +465,9 @@ namespace Kephas.Plugins.NuGet
         /// </summary>
         /// <param name="searchMetadata">The search metadata.</param>
         /// <returns>
-        /// SearchMetadata as an IPluginInfo.
+        /// SearchMetadata as an IAppInfo.
         /// </returns>
-        protected virtual IPluginInfo ToPluginInfo(IPackageSearchMetadata searchMetadata)
+        protected virtual IAppInfo ToPluginInfo(IPackageSearchMetadata searchMetadata)
         {
             return new PluginInfo(
                 this.PluginDataService,

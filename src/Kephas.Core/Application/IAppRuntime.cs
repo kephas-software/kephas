@@ -25,12 +25,22 @@ namespace Kephas.Application
     public interface IAppRuntime : IExpando
     {
         /// <summary>
-        /// Gets the application location (directory where the application lies).
+        /// Gets the application location (directory where the executing application lies).
         /// </summary>
         /// <returns>
         /// A path indicating the application location.
         /// </returns>
         string GetAppLocation();
+
+        /// <summary>
+        /// Gets the location of the application with the indicated identity.
+        /// </summary>
+        /// <param name="appIdentity">The application identity.</param>
+        /// <param name="throwOnNotFound">Optional. True to throw if the indicated app is not found.</param>
+        /// <returns>
+        /// A path indicating the indicated application location.
+        /// </returns>
+        string GetAppLocation(AppIdentity appIdentity, bool throwOnNotFound = true);
 
         /// <summary>
         /// Gets the application bin directories from where application is loaded.
@@ -106,6 +116,16 @@ namespace Kephas.Application
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetAppVersion(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppVersionKey] as string;
+
+        /// <summary>
+        /// Gets the application identity.
+        /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
+        /// <returns>
+        /// The application identity.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AppIdentity GetAppIdentity(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppIdentityKey] as AppIdentity;
 
         /// <summary>
         /// Gets the identifier of the application instance.

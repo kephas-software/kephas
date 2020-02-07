@@ -19,6 +19,7 @@ namespace Kephas.Plugins
 
     using Kephas;
     using Kephas.Application;
+    using Kephas.Application.Reflection;
     using Kephas.Diagnostics;
     using Kephas.Dynamic;
     using Kephas.ExceptionHandling;
@@ -113,7 +114,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the available plugins.
         /// </returns>
-        public abstract Task<IOperationResult<IEnumerable<IPluginInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default);
+        public abstract Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the installed plugins.
@@ -204,7 +205,7 @@ namespace Kephas.Plugins
                             result.ReturnValue = initResult.ReturnValue;
                             result.MergeResult(initResult);
                         }
-                        catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                        catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
                         {
                             result.MergeException(ex);
                             if (ex is PluginOperationException pex)
@@ -264,7 +265,7 @@ namespace Kephas.Plugins
                             result.ReturnValue = uninitResult.ReturnValue;
                             result.MergeResult(uninitResult);
                         }
-                        catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                        catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
                         {
                             result.MergeException(ex);
                             if (ex is PluginOperationException pex)
@@ -359,7 +360,7 @@ namespace Kephas.Plugins
 
                         (pluginFolder, state, pid) = this.GetInstalledPluginData(pluginId);
                     }
-                    catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                    catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
                     {
                         // treat non-errors as ignorable, meaning that the plugin state is not changed to corrupt.
                         throw;
@@ -380,7 +381,7 @@ namespace Kephas.Plugins
                             result.ReturnValue = enableResult.ReturnValue;
                             result.MergeResult(enableResult);
                         }
-                        catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                        catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
                         {
                             result.MergeException(ex);
                             if (ex is PluginOperationException pex)
@@ -437,7 +438,7 @@ namespace Kephas.Plugins
                             result.ReturnValue = disableResult.ReturnValue;
                             result.MergeResult(disableResult);
                         }
-                        catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                        catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
                         {
                             result.MergeException(ex);
                             if (ex is PluginOperationException pex)
@@ -473,7 +474,7 @@ namespace Kephas.Plugins
 
                         this.PluginDataService.SetPluginData(pluginFolder, PluginState.PendingUninstallation, pid.Version);
                     }
-                    catch (Exception ex) when (ex is ISeverityQualifiedException qex && !qex.Severity.IsError())
+                    catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
                     {
                         // treat non-errors as ignorable, meaning that the plugin state is not changed to corrupt.
                         throw;

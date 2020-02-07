@@ -18,6 +18,7 @@ namespace Kephas.Tests.Plugins
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Reflection;
     using Kephas.Composition;
     using Kephas.Interaction;
     using Kephas.Logging;
@@ -124,17 +125,17 @@ namespace Kephas.Tests.Plugins
                 this.ctx = ctx;
             }
 
-            public override Task<IOperationResult<IEnumerable<IPluginInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
+            public override Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
             {
-                var plugin1 = Substitute.For<IPluginInfo>();
-                var plugin2 = Substitute.For<IPluginInfo>();
+                var plugin1 = Substitute.For<IAppInfo>();
+                var plugin2 = Substitute.For<IAppInfo>();
 
-                return Task.FromResult<IOperationResult<IEnumerable<IPluginInfo>>>(new OperationResult<IEnumerable<IPluginInfo>>(new[] { plugin1, plugin2 }));
+                return Task.FromResult<IOperationResult<IEnumerable<IAppInfo>>>(new OperationResult<IEnumerable<IAppInfo>>(new[] { plugin1, plugin2 }));
             }
 
             protected override Task<IOperationResult<IPlugin>> InstallPluginCoreAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken = default)
             {
-                var pluginInfo = Substitute.For<IPluginInfo>();
+                var pluginInfo = Substitute.For<IAppInfo>();
                 pluginInfo.GetIdentity().Returns(pluginId);
                 pluginInfo.Name.Returns(pluginId.Id);
                 pluginInfo.Version.Returns(pluginId.Version);

@@ -16,6 +16,7 @@ namespace Kephas.Plugins
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Reflection;
     using Kephas.Operations;
     using Kephas.Plugins.Reflection;
     using Kephas.Services;
@@ -128,6 +129,6 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the available plugins.
         /// </returns>
-        Task<IOperationResult<IEnumerable<IPluginInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default);
     }
 }

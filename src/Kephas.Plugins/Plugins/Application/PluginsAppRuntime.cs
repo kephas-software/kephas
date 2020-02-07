@@ -122,6 +122,44 @@ namespace Kephas.Plugins.Application
         internal IPluginDataService PluginDataService { get; }
 
         /// <summary>
+        /// Gets the location of the application with the indicated identity.
+        /// </summary>
+        /// <param name="appIdentity">The application identity.</param>
+        /// <param name="throwOnNotFound">Optional. True to throw if the indicated app is not found.</param>
+        /// <returns>
+        /// A path indicating the indicated application location.
+        /// </returns>
+        public override string GetAppLocation(AppIdentity appIdentity, bool throwOnNotFound = true)
+        {
+            var location = base.GetAppLocation(appIdentity, throwOnNotFound: false);
+            if (location != null)
+            {
+                return location;
+            }
+
+            var targetFramework = this.TargetFramework;
+            var primaryLocation = Path.Combine(this.PluginsLocation, appIdentity.Id);
+
+            if (!string.IsNullOrEmpty(targetFramework))
+            {
+                var frameworkSpecificLocation = Path.Combine(primaryLocation, targetFramework);
+                if (Directory.Exists(frameworkSpecificLocation))
+                {
+                    return frameworkSpecificLocation;
+                }
+            }
+
+            if (Directory.Exists(primaryLocation))
+            {
+                return primaryLocation;
+            }
+
+            return throwOnNotFound
+                ? throw new InvalidOperationException($"App '{appIdentity}' not found.")
+                : (string)null;
+        }
+
+        /// <summary>
         /// Gets the application bin folders from where application is loaded.
         /// </summary>
         /// <returns>
@@ -231,7 +269,7 @@ namespace Kephas.Plugins.Application
                 var plugin = new AppIdentity(pluginId, pluginVersion);
                 try
                 {
-                    var licenseState = this.LicensingManager.GetLicensingState(plugin);
+                    var licenseState = this.LicensingManager.CheckLicense(plugin);
                     return licenseState.IsLicensed;
                 }
                 catch (Exception ex)

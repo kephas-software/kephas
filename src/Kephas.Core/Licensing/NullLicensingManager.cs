@@ -10,6 +10,9 @@
 
 namespace Kephas.Licensing
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Services;
 
@@ -20,15 +23,32 @@ namespace Kephas.Licensing
     public class NullLicensingManager : ILicensingManager
     {
         /// <summary>
+        /// Checks the license for the provided application identity asynchronously.
+        /// </summary>
+        /// <param name="appId">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the check license result.
+        /// </returns>
+        public Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appId, IContext context = null, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<ILicenseCheckResult>(new LicenseCheckResult(appId, true));
+        }
+
+#if NETSTANDARD2_1
+        /// <summary>
         /// Gets the app licensing state.
         /// </summary>
         /// <param name="appId">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
         /// <returns>
         /// The licensing state.
         /// </returns>
-        public ILicensingState GetLicensingState(AppIdentity appId)
+        public ILicenseCheckResult CheckLicense(AppIdentity appId, IContext context = null)
         {
-            return new LicensingState(appId, true);
+            return new LicenseCheckResult(appId, true);
         }
+#endif
     }
 }
