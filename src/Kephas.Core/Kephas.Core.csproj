@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net45;net461</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;netstandard2.0;net45;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -35,6 +35,10 @@ Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for
         <DefineConstants>NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
+        <DefineConstants>NETSTANDARD2_1</DefineConstants>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
         <DefineConstants>NET45</DefineConstants>
     </PropertyGroup>
@@ -53,6 +57,16 @@ Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for
 
     <ItemGroup>
         <None Include="..\Kephas.snk" Link="Kephas.snk" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
+        <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+        <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
+        <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
+        <PackageReference Include="System.Reflection" Version="4.3.0" />
+        <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+        <PackageReference Include="System.Security.Principal" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
