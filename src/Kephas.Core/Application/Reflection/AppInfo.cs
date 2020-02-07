@@ -14,6 +14,7 @@ namespace Kephas.Application.Reflection
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Reflection.Dynamic;
 
@@ -30,21 +31,34 @@ namespace Kephas.Application.Reflection
         /// <summary>
         /// Initializes a new instance of the <see cref="AppInfo"/> class.
         /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="version">Optional. The version.</param>
+        /// <param name="appIdentity">The application identity.</param>
         /// <param name="description">Optional. The description.</param>
         /// <param name="tags">Optional. The tags.</param>
-        public AppInfo(string name, string version = null, string description = null, string[] tags = null)
+        public AppInfo(AppIdentity appIdentity, string description = null, string[] tags = null)
         {
-            this.FullName = this.Name = name;
-            this.Version = version;
+            Requires.NotNull(appIdentity, nameof(AppIdentity));
+
+            this.identity = appIdentity;
+            this.FullName = this.Name = appIdentity.Id;
+            this.Version = appIdentity.Version;
             this.Description = description;
 #if NET45
             this.Tags = tags ?? new string[0];
 #else
             this.Tags = tags ?? Array.Empty<string>();
 #endif
-            this.identity = new AppIdentity(name, version);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppInfo"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="version">Optional. The version.</param>
+        /// <param name="description">Optional. The description.</param>
+        /// <param name="tags">Optional. The tags.</param>
+        public AppInfo(string name, string version = null, string description = null, string[] tags = null)
+            : this(new AppIdentity(name, version), description, tags)
+        {
         }
 
         /// <summary>
