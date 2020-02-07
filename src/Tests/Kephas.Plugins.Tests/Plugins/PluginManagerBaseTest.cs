@@ -92,26 +92,19 @@ namespace Kephas.Tests.Plugins
         {
             private ConcurrentDictionary<string, PluginData> cache = new ConcurrentDictionary<string, PluginData>();
 
-            public (PluginState state, string version) GetPluginData(string pluginLocation)
+            public PluginData GetPluginData(AppIdentity pluginIdentity)
             {
-                if (this.cache.TryGetValue(pluginLocation, out var pluginData))
+                if (this.cache.TryGetValue(pluginIdentity.Id.ToLower(), out var pluginData))
                 {
-                    return (pluginData.State, pluginData.Version);
+                    return pluginData;
                 }
 
-                return (PluginState.None, null);
+                return new PluginData(pluginIdentity, PluginState.None);
             }
 
-            public void StorePluginData(string pluginLocation, PluginState state, string version)
+            public void StorePluginData(PluginData pluginData)
             {
-                this.cache.AddOrUpdate(pluginLocation, new PluginData { State = state, Version = version }, (_, __) => new PluginData { State = state, Version = version });
-            }
-
-            private class PluginData
-            {
-                public PluginState State { get; set; }
-
-                public string Version { get; set; }
+                this.cache.AddOrUpdate(pluginData.Identity.Id.ToLower(), pluginData, (_, __) => pluginData);
             }
         }
 

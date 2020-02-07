@@ -11,9 +11,10 @@
 namespace Kephas.Tests.Plugins.Application
 {
     using System;
+    using System.Collections.Concurrent;
     using System.IO;
     using System.Linq;
-
+    using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.Plugins;
     using Kephas.Plugins.Application;
@@ -74,6 +75,8 @@ namespace Kephas.Tests.Plugins.Application
         [Test]
         public void GetAppBinLocations()
         {
+            var pluginDataStore = new TestPluginDataStore();
+
             var tempFolder = Path.GetFullPath(Path.GetTempPath());
             var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
             Directory.CreateDirectory(appLocation);
@@ -81,11 +84,11 @@ namespace Kephas.Tests.Plugins.Application
             Directory.CreateDirectory(pluginsFolder);
             var plugin1Location = Path.Combine(pluginsFolder, "p1");
             Directory.CreateDirectory(plugin1Location);
-            File.WriteAllText(Path.Combine(plugin1Location, PluginDataStore.PluginDataFileName), PluginState.Enabled.ToString());
+            pluginDataStore.StorePluginData(new PluginData(new AppIdentity("p1"), PluginState.Enabled));
             var plugin2Location = Path.Combine(pluginsFolder, "p2");
             Directory.CreateDirectory(plugin2Location);
 
-            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "myPlugins");
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "myPlugins", pluginDataStore: pluginDataStore);
             var binFolders = appRuntime.GetAppBinLocations().ToList();
 
             var binFolder = appRuntime.GetAppLocation();
@@ -151,6 +154,26 @@ namespace Kephas.Tests.Plugins.Application
             var pluginsFolder = Path.GetFullPath(Path.Combine(appLocation, "..", "folder"));
             Assert.AreEqual(pluginsFolder, appRuntime.PluginsLocation);
             Assert.AreEqual(pluginsFolder, appRuntime.GetPluginsLocation());
+        }
+
+        public class TestPluginDataStore : IPluginDataStore
+        {
+            private ConcurrentDictionary<string, PluginData> cache = new ConcurrentDictionary<string, PluginData>();
+
+            public PluginData GetPluginData(AppIdentity pluginIdentity)
+            {
+                if (this.cache.TryGetValue(pluginIdentity.Id.ToLower(), out var pluginData))
+                {
+                    return pluginData;
+                }
+
+                return new PluginData(pluginIdentity, PluginState.None);
+            }
+
+            public void StorePluginData(PluginData pluginData)
+            {
+                this.cache.AddOrUpdate(pluginData.Identity.Id.ToLower(), pluginData, (_, __) => pluginData);
+            }
         }
     }
 }

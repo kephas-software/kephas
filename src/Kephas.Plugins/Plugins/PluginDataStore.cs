@@ -36,29 +36,29 @@ namespace Kephas.Plugins
         /// <summary>
         /// Gets the installed plugin state and version.
         /// </summary>
-        /// <param name="appIdentity">The application identity.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
         /// <returns>
         /// The plugin state and version.
         /// </returns>
-        public PluginData GetPluginData(AppIdentity appIdentity)
+        public PluginData GetPluginData(AppIdentity pluginIdentity)
         {
-            var pluginLocation = this.pluginLocationResolver(appIdentity);
+            var pluginLocation = this.pluginLocationResolver(pluginIdentity);
             if (string.IsNullOrEmpty(pluginLocation))
             {
-                return new PluginData(appIdentity, PluginState.None);
+                return new PluginData(pluginIdentity, PluginState.None);
             }
 
             var pluginDataFile = Path.Combine(pluginLocation, PluginDataFileName);
             if (!File.Exists(pluginDataFile))
             {
-                return new PluginData(appIdentity, PluginState.None);
+                return new PluginData(pluginIdentity, PluginState.None);
             }
 
             var pluginDataString = File.ReadAllText(pluginDataFile);
             var pluginData = PluginData.Parse(pluginDataString);
-            if (!appIdentity.IsMatch(pluginData.Identity))
+            if (!pluginIdentity.IsMatch(pluginData.Identity))
             {
-                throw new InvalidPluginDataException($"Identity mismatch for stored plugin data: '{appIdentity}' requested, but '{pluginData.Identity}' found.");
+                throw new InvalidPluginDataException($"Identity mismatch for stored plugin data: '{pluginIdentity}' requested, but '{pluginData.Identity}' found.");
             }
 
             return pluginData;

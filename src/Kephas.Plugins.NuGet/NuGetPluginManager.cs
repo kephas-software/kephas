@@ -135,13 +135,13 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Installs the plugin asynchronously (core implementation).
         /// </summary>
-        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the plugin data.
         /// </returns>
-        protected override async Task<IOperationResult<IPlugin>> InstallPluginCoreAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken = default)
+        protected override async Task<IOperationResult<IPlugin>> InstallPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken = default)
         {
             var repositories = this.GetSourceRepositories();
             using (var cacheContext = new SourceCacheContext())
@@ -152,10 +152,11 @@ namespace Kephas.Plugins.NuGet
                 var currentFramework = this.AppRuntime.GetAppFramework();
                 var nugetFramework = NuGetFramework.ParseFolder(currentFramework);
 
-                var (pluginPackageIdentity, packageReaders) = await this.GetPackageReadersAsync(pluginId, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
+                var (pluginPackageIdentity, packageReaders) = await this.GetPackageReadersAsync(pluginIdentity, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
+                pluginIdentity = new AppIdentity(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
 
-                var pluginInfo = new PluginInfo(this.PluginDataStore, pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
-                context.PluginIdentity(pluginId = pluginInfo.GetIdentity());
+                var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginDataStore, pluginIdentity);
+                context.PluginIdentity(pluginIdentity);
 
                 var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
                 if (!Directory.Exists(pluginFolder))
@@ -169,19 +170,19 @@ namespace Kephas.Plugins.NuGet
                     foreach (var (packageId, packageReader) in packageReaders)
                     {
                         result.MergeMessages(
-                            await this.InstallBinAsync(pluginId, pluginFolder, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
+                            await this.InstallBinAsync(pluginIdentity, pluginFolder, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
                             .PreserveThreadContext());
                         result.MergeMessages(
-                            await this.InstallContentAsync(pluginId, pluginFolder, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
+                            await this.InstallContentAsync(pluginIdentity, pluginFolder, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
                             .PreserveThreadContext());
                     }
 
                     result.MergeMessages(
-                        await this.InstallConfigAsync(pluginId, pluginFolder, context, cancellationToken)
+                        await this.InstallConfigAsync(pluginIdentity, pluginFolder, context, cancellationToken)
                         .PreserveThreadContext());
 
                     result.MergeMessages(
-                        await this.InstallDataAsync(pluginId, pluginFolder, context, cancellationToken)
+                        await this.InstallDataAsync(pluginIdentity, pluginFolder, context, cancellationToken)
                         .PreserveThreadContext());
                 }
                 catch
@@ -198,16 +199,16 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Installs the configuration asynchronously.
         /// </summary>
-        /// <param name="pluginId">The plugin identity.</param>
-        /// <param name="pluginFolder">Pathname of the plugin folder.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task<IOperationResult> InstallConfigAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual async Task<IOperationResult> InstallConfigAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
         {
-            var sourceConfigFilesFolder = Path.Combine(pluginFolder, this.pluginsSettings.PackageConfigFolder);
+            var sourceConfigFilesFolder = Path.Combine(pluginLocation, this.pluginsSettings.PackageConfigFolder);
             var targetConfigFilesFolder = this.AppRuntime.GetAppConfigLocations().First();
 
             var result = new OperationResult();
@@ -265,14 +266,14 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Installs the data asynchronously.
         /// </summary>
-        /// <param name="pluginId">The plugin identity.</param>
-        /// <param name="pluginFolder">Pathname of the plugin folder.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the operation result.
         /// </returns>
-        protected virtual Task<IOperationResult> InstallDataAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual Task<IOperationResult> InstallDataAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult<IOperationResult>(new OperationResult());
         }
@@ -280,25 +281,25 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Uninstall the plugin asynchronously (core implementation).
         /// </summary>
-        /// <param name="pluginId">Identifier for the plugin.</param>
+        /// <param name="pluginIdentity">Identifier for the plugin.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected override async Task<IOperationResult<IPlugin>> UninstallPluginCoreAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken)
+        protected override async Task<IOperationResult<IPlugin>> UninstallPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
         {
             var result = new OperationResult<IPlugin>();
 
             result.MergeMessages(
-                await this.UninstallDataAsync(pluginId, context.Plugin.Location, context, cancellationToken)
+                await this.UninstallDataAsync(pluginIdentity, context.Plugin.Location, context, cancellationToken)
                 .PreserveThreadContext());
 
             result.MergeMessages(
-                await this.UninstallConfigAsync(pluginId, context.Plugin.Location, context, cancellationToken)
+                await this.UninstallConfigAsync(pluginIdentity, context.Plugin.Location, context, cancellationToken)
                 .PreserveThreadContext());
 
-            var baseResult = await base.UninstallPluginCoreAsync(pluginId, context, cancellationToken)
+            var baseResult = await base.UninstallPluginCoreAsync(pluginIdentity, context, cancellationToken)
                 .PreserveThreadContext();
 
             result.ReturnValue = baseResult.ReturnValue;
@@ -308,22 +309,22 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Uninstalls the configuration asynchronously.
         /// </summary>
-        /// <param name="pluginId">The plugin identity.</param>
-        /// <param name="pluginFolder">Pathname of the plugin folder.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task<IOperationResult> UninstallConfigAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual async Task<IOperationResult> UninstallConfigAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
         {
             var result = new OperationResult();
             if (context.Operation == PluginOperation.Update)
             {
-                return result.MergeMessage($"Skipping configuration file uninstallation during update of {pluginId}.");
+                return result.MergeMessage($"Skipping configuration file uninstallation during update of {pluginIdentity}.");
             }
 
-            var sourceConfigFilesFolder = Path.Combine(pluginFolder, this.pluginsSettings.PackageConfigFolder);
+            var sourceConfigFilesFolder = Path.Combine(pluginLocation, this.pluginsSettings.PackageConfigFolder);
             var targetConfigFilesFolder = this.AppRuntime.GetAppConfigLocations().First();
 
             if (!Directory.Exists(sourceConfigFilesFolder))
@@ -362,14 +363,14 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Uninstalls data asynchronously.
         /// </summary>
-        /// <param name="pluginId">The plugin identity.</param>
-        /// <param name="pluginFolder">Pathname of the plugin folder.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the operation result.
         /// </returns>
-        protected virtual Task<IOperationResult> UninstallDataAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual Task<IOperationResult> UninstallDataAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult<IOperationResult>(new OperationResult());
         }
@@ -470,9 +471,9 @@ namespace Kephas.Plugins.NuGet
         protected virtual IAppInfo ToPluginInfo(IPackageSearchMetadata searchMetadata)
         {
             return new PluginInfo(
+                this.AppRuntime,
                 this.PluginDataStore,
-                searchMetadata.Identity.Id,
-                searchMetadata.Identity.Version.ToString(),
+                new AppIdentity(searchMetadata.Identity.Id, searchMetadata.Identity.Version.ToString()),
                 searchMetadata.Description,
                 searchMetadata.Tags?.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
         }
@@ -503,8 +504,8 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Installs the plugin library items asynchronously.
         /// </summary>
-        /// <param name="pluginId">The plugin identity.</param>
-        /// <param name="pluginFolder">Pathname of the plugin folder.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="packageId">Identifier for the package being installed.</param>
         /// <param name="nugetFramework">The nuget framework.</param>
@@ -514,7 +515,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task<IOperationResult> InstallBinAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, PackageIdentity packageId, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
+        protected virtual async Task<IOperationResult> InstallBinAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, PackageIdentity packageId, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
         {
             const string libFolderName = "lib";
 
@@ -524,10 +525,10 @@ namespace Kephas.Plugins.NuGet
             var libItem = libItems.FirstOrDefault(l => l.TargetFramework == nearestLibItemFwk);
             if (!(libItem?.HasEmptyFolder ?? true))
             {
-                await packageReader.CopyFilesAsync(pluginFolder, libItem.Items, (src, target, stream) => this.ExtractPackageFile(src, target, libFolderName, flatten: true), this.nativeLogger, cancellationToken).PreserveThreadContext();
+                await packageReader.CopyFilesAsync(pluginLocation, libItem.Items, (src, target, stream) => this.ExtractPackageFile(src, target, libFolderName, flatten: true), this.nativeLogger, cancellationToken).PreserveThreadContext();
             }
 
-            var libFolder = Path.Combine(pluginFolder, libFolderName);
+            var libFolder = Path.Combine(pluginLocation, libFolderName);
             if (Directory.Exists(libFolder))
             {
                 Directory.Delete(libFolder, recursive: true);
@@ -539,8 +540,8 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Installs the plugin content items asynchronously.
         /// </summary>
-        /// <param name="pluginId">The plugin identity.</param>
-        /// <param name="pluginFolder">Pathname of the plugin folder.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="packageId">Identifier for the package being installed.</param>
         /// <param name="nugetFramework">The nuget framework.</param>
@@ -550,7 +551,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task<IOperationResult> InstallContentAsync(AppIdentity pluginId, string pluginFolder, IPluginContext context, PackageIdentity packageId, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
+        protected virtual async Task<IOperationResult> InstallContentAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, PackageIdentity packageId, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
         {
             const string contentFolderName = "content";
 
@@ -561,11 +562,11 @@ namespace Kephas.Plugins.NuGet
             var contentItem = contentItems.FirstOrDefault(l => l.TargetFramework == nearestLibItemFwk);
             if (!(contentItem?.HasEmptyFolder ?? true))
             {
-                var copiedFiles = await packageReader.CopyFilesAsync(pluginFolder, contentItem.Items, (src, target, stream) => this.ExtractPackageFile(src, target, contentFolderName, flatten: false), this.nativeLogger, cancellationToken).PreserveThreadContext();
-                result.MergeMessage($"Copied {copiedFiles.Count()} files into {pluginFolder}: '{string.Join("', '", copiedFiles)}'.");
+                var copiedFiles = await packageReader.CopyFilesAsync(pluginLocation, contentItem.Items, (src, target, stream) => this.ExtractPackageFile(src, target, contentFolderName, flatten: false), this.nativeLogger, cancellationToken).PreserveThreadContext();
+                result.MergeMessage($"Copied {copiedFiles.Count()} files into {pluginLocation}: '{string.Join("', '", copiedFiles)}'.");
             }
 
-            var contentFolder = Path.Combine(pluginFolder, contentFolderName);
+            var contentFolder = Path.Combine(pluginLocation, contentFolderName);
             if (Directory.Exists(contentFolder))
             {
                 Directory.Delete(contentFolder, recursive: true);

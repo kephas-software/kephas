@@ -10,9 +10,6 @@
 
 namespace Kephas.Plugins
 {
-    using System;
-    using System.IO;
-
     using Kephas.Application;
 
     /// <summary>
@@ -23,11 +20,11 @@ namespace Kephas.Plugins
         /// <summary>
         /// Gets the plugin information from the store.
         /// </summary>
-        /// <param name="appIdentity">The plugin identity.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
         /// <returns>
         /// The plugin data.
         /// </returns>
-        PluginData GetPluginData(AppIdentity appIdentity);
+        PluginData GetPluginData(AppIdentity pluginIdentity);
 
         /// <summary>
         /// Stores the plugin data, making it persistable among multiple application runs.
