@@ -20,6 +20,11 @@ namespace Kephas.Plugins
     /// </summary>
     public class PluginData
     {
+        private const int MissingPartsInvalidCode = 1;
+        private const int ParseStateInvalidCode = 2;
+        private const int ParseChecksumInvalidCode = 3;
+        private const int CheksumInvalidCode = 4;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginData"/> class.
         /// </summary>
@@ -64,17 +69,17 @@ namespace Kephas.Plugins
             var appId = AppIdentity.Parse(splits[0]);
             if (splits.Length < 3)
             {
-                throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed.");
+                throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({MissingPartsInvalidCode}).");
             }
 
             if (!Enum.TryParse<PluginState>(splits[1], out var state))
             {
-                throw new InvalidPluginDataException($"The plugin information for {appId} is corrupt, probably was manually changed.");
+                throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseStateInvalidCode}).");
             }
 
             if (!int.TryParse(splits[2], out var checksum))
             {
-                throw new InvalidPluginDataException($"The plugin information for {appId} is corrupt, probably was manually changed.");
+                throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseChecksumInvalidCode}).");
             }
 
             var pluginData = new PluginData(appId, state);
@@ -91,7 +96,7 @@ namespace Kephas.Plugins
         /// </returns>
         public override string ToString()
         {
-            return $"{this.AppIdentity},{this.State},{this.GetHashCode()}";
+            return $"{this.AppIdentity},{this.State},{this.GetChecksum()}";
         }
 
         private void Validate(int checksum)
