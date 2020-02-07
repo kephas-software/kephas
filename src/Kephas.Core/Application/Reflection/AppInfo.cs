@@ -14,17 +14,18 @@ namespace Kephas.Application.Reflection
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using Kephas.Dynamic;
     using Kephas.Reflection;
-    using Kephas.Runtime;
+    using Kephas.Reflection.Dynamic;
 
     /// <summary>
     /// Information about the application.
     /// </summary>
-    public class AppInfo : Expando, IAppInfo
+    public class AppInfo : DynamicTypeInfo, IAppInfo
     {
         private static readonly IEnumerable<object> EmptyAnnotations = new ReadOnlyCollection<object>(new List<object>());
         private static readonly IEnumerable<IParameterInfo> EmptyParameters = new ReadOnlyCollection<IParameterInfo>(new List<IParameterInfo>());
+
+        private readonly AppIdentity identity;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppInfo"/> class.
@@ -32,20 +33,19 @@ namespace Kephas.Application.Reflection
         /// <param name="name">The name.</param>
         /// <param name="version">Optional. The version.</param>
         /// <param name="description">Optional. The description.</param>
-        public AppInfo(string name, string version = null, string description = null)
+        /// <param name="tags">Optional. The tags.</param>
+        public AppInfo(string name, string version = null, string description = null, string[] tags = null)
         {
-            this.Name = name;
+            this.FullName = this.Name = name;
             this.Version = version;
             this.Description = description;
+#if NET45
+            this.Tags = tags ?? new string[0];
+#else
+            this.Tags = tags ?? Array.Empty<string>();
+#endif
+            this.identity = new AppIdentity(name, version);
         }
-
-        /// <summary>
-        /// Gets the application name.
-        /// </summary>
-        /// <value>
-        /// The application name.
-        /// </value>
-        public string Name { get; }
 
         /// <summary>
         /// Gets the application version.
@@ -64,6 +64,14 @@ namespace Kephas.Application.Reflection
         public string Description { get; }
 
         /// <summary>
+        /// Gets the tags.
+        /// </summary>
+        /// <value>
+        /// The tags.
+        /// </value>
+        public string[] Tags { get; }
+
+        /// <summary>
         /// Gets the application parameters.
         /// </summary>
         /// <value>
@@ -72,36 +80,30 @@ namespace Kephas.Application.Reflection
         IEnumerable<IParameterInfo> IAppInfo.Parameters => EmptyParameters;
 
         /// <summary>
-        /// Gets the application full name.
+        /// Gets the dependencies.
         /// </summary>
         /// <value>
-        /// The application full name.
+        /// The dependencies.
         /// </value>
-        string IElementInfo.FullName => this.Name;
+        public IEnumerable<IAppDependency> Dependencies { get; } = new List<IAppDependency>();
 
         /// <summary>
-        /// Gets the annotations.
+        /// Gets the identity.
         /// </summary>
-        /// <value>
-        /// The annotations.
-        /// </value>
-        IEnumerable<object> IElementInfo.Annotations => EmptyAnnotations;
-
-        /// <summary>
-        /// Gets the declaring container.
-        /// </summary>
-        /// <value>
-        /// The declaring container.
-        /// </value>
-        IElementInfo IElementInfo.DeclaringContainer => null;
-
-        /// <summary>
-        /// Gets the attribute of the provided type.
-        /// </summary>
-        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
         /// <returns>
-        /// The attribute of the provided type.
+        /// The identity.
         /// </returns>
-        IEnumerable<TAttribute> IAttributeProvider.GetAttributes<TAttribute>() => new TAttribute[0];
+        public AppIdentity GetIdentity() => this.identity;
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.GetIdentity().ToString();
+        }
     }
 }

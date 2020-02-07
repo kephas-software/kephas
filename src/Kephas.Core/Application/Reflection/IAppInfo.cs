@@ -17,8 +17,24 @@ namespace Kephas.Application.Reflection
     /// <summary>
     /// Interface for application information.
     /// </summary>
-    public interface IAppInfo : IElementInfo
+    public interface IAppInfo : ITypeInfo
     {
+        /// <summary>
+        /// Gets the plugin version.
+        /// </summary>
+        /// <value>
+        /// The plugin version.
+        /// </value>
+        string Version { get; }
+
+        /// <summary>
+        /// Gets the tags.
+        /// </summary>
+        /// <value>
+        /// The tags.
+        /// </value>
+        public string[] Tags { get; }
+
         /// <summary>
         /// Gets the application description.
         /// </summary>
@@ -34,5 +50,21 @@ namespace Kephas.Application.Reflection
         /// The application parameters.
         /// </value>
         IEnumerable<IParameterInfo> Parameters { get; }
+
+        /// <summary>
+        /// Gets the dependencies.
+        /// </summary>
+        /// <value>
+        /// The dependencies.
+        /// </value>
+        IEnumerable<IAppDependency> Dependencies { get; }
+
+        /// <summary>
+        /// Gets the identity.
+        /// </summary>
+        /// <returns>
+        /// The identity.
+        /// </returns>
+        AppIdentity GetIdentity();
     }
 }
