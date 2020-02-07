@@ -200,7 +200,7 @@ namespace Kephas.Data.IO.Setup
                 foreach (var dataFilePath in dataFilePaths)
                 {
                     var fileResult = await this.ImportDataFileAsync(dataSetupContext, dataFilePath, cancellationToken).PreserveThreadContext();
-                    result.MergeResult(fileResult);
+                    result.MergeMessages(fileResult);
                 }
             }
 
@@ -227,7 +227,7 @@ namespace Kephas.Data.IO.Setup
                     var importResult = await this.DataImportService
                                      .ImportDataAsync(dataSource, this.GetDataImportConfig(dataSetupContext, dataSpace), cancellationToken)
                                      .PreserveThreadContext();
-                    result.MergeResult(importResult);
+                    result.MergeMessages(importResult);
                     result.Messages?.ForEach(m => this.Logger.Info($"{{timestamp}}: {m.Message}", m.Timestamp));
                     result.Exceptions?.ForEach(e => this.Logger.Error(e, "Exception while importing {file}.", dataFilePath));
                     return result;

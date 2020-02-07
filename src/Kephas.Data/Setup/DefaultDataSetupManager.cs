@@ -72,7 +72,7 @@ namespace Kephas.Data.Setup
                     var handlerResult = await dataInstaller.InstallDataAsync(optionsConfig, cancellationToken).PreserveThreadContext();
                     if (handlerResult != null)
                     {
-                        result.MergeResult(handlerResult);
+                        result.MergeMessages(handlerResult);
                     }
                 }
 
@@ -103,7 +103,7 @@ namespace Kephas.Data.Setup
                     var handlerResult = await dataInstaller.UninstallDataAsync(optionsConfig, cancellationToken).PreserveThreadContext();
                     if (handlerResult != null)
                     {
-                        result.MergeResult(handlerResult);
+                        result.MergeMessages(handlerResult);
                     }
                 }
 

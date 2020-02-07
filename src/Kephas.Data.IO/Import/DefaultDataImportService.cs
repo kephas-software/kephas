@@ -104,17 +104,15 @@ namespace Kephas.Data.IO.Import
                 var result = context.EnsureResult();
                 result.OperationState = OperationState.InProgress;
 
-                IOperationResult jobResult = null;
-                var opResult = await Profiler.WithStopwatchAsync(
-                    async () =>
+                var opWrappedResult = await Profiler.WithStopwatchAsync(
+                    () =>
                     {
                         var job = this.CreateImportJob(dataSource, context, result);
-                        jobResult = await job.ExecuteAsync(cancellationToken).PreserveThreadContext();
+                        return job.ExecuteAsync(cancellationToken);
                     }).PreserveThreadContext();
 
-                result.MergeResult(jobResult);
-                result.Elapsed = opResult.Elapsed;
-                result.OperationState = OperationState.Completed;
+                result.MergeMessages(opWrappedResult.ReturnValue)
+                    .Complete(opWrappedResult.Elapsed);
                 return result;
             }
         }

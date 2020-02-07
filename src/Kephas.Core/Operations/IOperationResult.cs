@@ -97,20 +97,61 @@ namespace Kephas.Operations
     public static class OperationResultExtensions
     {
         /// <summary>
-        /// Sets the elapsed time to the provided one.
+        /// Sets the return value to the provided one.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="result">The result.</param>
+        /// <param name="returnValue">The return value.</param>
+        /// <returns>
+        /// The provided result.
+        /// </returns>
+        public static TResult ReturnValue<TResult>(this TResult result, object returnValue)
+            where TResult : class, IOperationResult
+        {
+            Requires.NotNull(result, nameof(result));
+
+            result.ReturnValue = returnValue;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sets the return value to the provided one.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <typeparam name="TValue">Type of the return value.</typeparam>
+        /// <param name="result">The result.</param>
+        /// <param name="returnValue">The return value.</param>
+        /// <returns>
+        /// The provided result.
+        /// </returns>
+        public static TResult ReturnValue<TResult, TValue>(this TResult result, TValue returnValue)
+            where TResult : class, IOperationResult<TValue>
+        {
+            Requires.NotNull(result, nameof(result));
+
+            result.ReturnValue = returnValue;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Marks the operation as completed setting the elapsed time and, optionally, the state.
         /// </summary>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="result">The result.</param>
         /// <param name="elapsed">The elapsed time.</param>
+        /// <param name="operationState">Optional. State of the operation.</param>
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult Elapsed<TResult>(this TResult result, TimeSpan elapsed)
+        public static TResult Complete<TResult>(this TResult result, TimeSpan elapsed, OperationState? operationState = null)
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
 
             result.Elapsed = elapsed;
+            result.OperationState = operationState ?? Kephas.Operations.OperationState.Completed;
 
             return result;
         }
@@ -195,7 +236,7 @@ namespace Kephas.Operations
         }
 
         /// <summary>
-        /// Merges the exception.
+        /// Merges all messages and exceptions.
         /// </summary>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="result">The result.</param>
@@ -203,7 +244,7 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeResult<TResult>(this TResult result, IOperationResult resultToMerge)
+        public static TResult MergeMessages<TResult>(this TResult result, IOperationResult resultToMerge)
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
@@ -220,7 +261,7 @@ namespace Kephas.Operations
         }
 
         /// <summary>
-        /// Merges the exception.
+        /// Merges all messages and exceptions.
         /// </summary>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="result">The result.</param>
@@ -228,7 +269,7 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeResult<TResult>(this TResult result, Task<IOperationResult> asyncResult)
+        public static TResult MergeMessages<TResult>(this TResult result, Task<IOperationResult> asyncResult)
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
@@ -240,8 +281,35 @@ namespace Kephas.Operations
             }
 
             return asyncResult.Exception == null
-                    ? MergeResult(result, asyncResult.Result)
+                    ? MergeMessages(result, asyncResult.Result)
                     : MergeException(result, asyncResult.Exception);
+        }
+
+        /// <summary>
+        /// Merges all messages, exceptions, the elapsed time, and the return value.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="result">The result.</param>
+        /// <param name="resultToMerge">The result to merge.</param>
+        /// <returns>
+        /// The provided result.
+        /// </returns>
+        public static TResult MergeAll<TResult>(this TResult result, IOperationResult resultToMerge)
+            where TResult : class, IOperationResult
+        {
+            Requires.NotNull(result, nameof(result));
+
+            if (resultToMerge == null)
+            {
+                return result;
+            }
+
+            result.Messages.AddRange(resultToMerge.Messages);
+            result.Exceptions.AddRange(resultToMerge.Exceptions);
+            result.ReturnValue = resultToMerge.ReturnValue;
+            result.Elapsed += resultToMerge.Elapsed;
+
+            return result;
         }
 
         /// <summary>
