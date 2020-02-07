@@ -118,9 +118,45 @@ namespace Kephas.Diagnostics
             action();
             stopwatch.Stop();
 
-            result.MergeMessage($"{memberName}. Ended at: {DateTime.Now:s}. Elapsed: {stopwatch.Elapsed:c}.")
-                .Elapsed(stopwatch.Elapsed)
-                .OperationState(OperationState.Completed);
+            result
+                .MergeMessage($"{memberName}. Ended at: {DateTime.Now:s}. Elapsed: {stopwatch.Elapsed:c}.")
+                .Complete(stopwatch.Elapsed);
+            logger?.Log(logLevel, "{operation}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch, optionally logging the elapsed time at the indicated
+        /// log level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">Optional. The logger.</param>
+        /// <param name="logLevel">Optional. The log level.</param>
+        /// <param name="memberName">Optional. Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        public static IOperationResult<T> WithStopwatch<T>(Func<T> action, ILogger logger = null, LogLevel logLevel = LogLevel.Debug, [CallerMemberName] string memberName = null)
+        {
+            var result = new OperationResult<T>();
+            if (action == null)
+            {
+                return result.MergeMessage($"No action provided for {memberName}.");
+            }
+
+            result.MergeMessage($"{memberName}. Started at: {DateTime.Now:s}.");
+            logger?.Log(logLevel, "{operation}. Started at: {startedAt:s}.", memberName, DateTime.Now);
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            result.ReturnValue = action();
+            stopwatch.Stop();
+
+            result
+                .MergeMessage($"{memberName}. Ended at: {DateTime.Now:s}. Elapsed: {stopwatch.Elapsed:c}.")
+                .Complete(stopwatch.Elapsed);
             logger?.Log(logLevel, "{operation}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
 
             return result;
@@ -220,9 +256,45 @@ namespace Kephas.Diagnostics
             await action().PreserveThreadContext();
             stopwatch.Stop();
 
-            result.MergeMessage($"{memberName}. Ended at: {DateTime.Now:s}. Elapsed: {stopwatch.Elapsed:c}.")
-                .Elapsed(stopwatch.Elapsed)
-                .OperationState(OperationState.Completed);
+            result
+                .MergeMessage($"{memberName}. Ended at: {DateTime.Now:s}. Elapsed: {stopwatch.Elapsed:c}.")
+                .Complete(stopwatch.Elapsed);
+            logger?.Log(logLevel, "{operation}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch for asynchronous actions, optionally logging the elapsed
+        /// time at the indicated log level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">Optional. The logger.</param>
+        /// <param name="logLevel">Optional. The log level.</param>
+        /// <param name="memberName">Optional. Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        public static async Task<IOperationResult<T>> WithStopwatchAsync<T>(Func<Task<T>> action, ILogger logger = null, LogLevel logLevel = LogLevel.Debug, [CallerMemberName] string memberName = null)
+        {
+            var result = new OperationResult<T>();
+            if (action == null)
+            {
+                return result.MergeMessage($"No action provided for {memberName}.");
+            }
+
+            result.MergeMessage($"{memberName}. Started at: {DateTime.Now:s}.");
+            logger?.Log(logLevel, "{operation}. Started at: {startedAt:s}.", memberName, DateTime.Now);
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            result.ReturnValue = await action().PreserveThreadContext();
+            stopwatch.Stop();
+
+            result
+                .MergeMessage($"{memberName}. Ended at: {DateTime.Now:s}. Elapsed: {stopwatch.Elapsed:c}.")
+                .Complete(stopwatch.Elapsed);
             logger?.Log(logLevel, "{operation}. Ended at: {endedAt:s}. Elapsed: {elapsed:c}.", memberName, DateTime.Now, stopwatch.Elapsed);
 
             return result;
