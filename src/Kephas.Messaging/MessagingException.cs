@@ -17,7 +17,7 @@ namespace Kephas.Messaging
     /// <summary>
     /// Exception for signalling messaging errors.
     /// </summary>
-    public class MessagingException : Exception, ISeverityQualifiedException
+    public class MessagingException : Exception, ISeverityQualifiedNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingException"/> class.

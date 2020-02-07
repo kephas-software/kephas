@@ -17,7 +17,7 @@ namespace Kephas.Model
     /// <summary>
     /// Exception for signalling model errors.
     /// </summary>
-    public class ModelException : Exception, ISeverityQualifiedException
+    public class ModelException : Exception, ISeverityQualifiedNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelException"/> class.

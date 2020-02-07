@@ -17,7 +17,7 @@ namespace Kephas.Data
     /// <summary>
     /// Exception for signalling generic data errors.
     /// </summary>
-    public class DataException : Exception, ISeverityQualifiedException
+    public class DataException : Exception, ISeverityQualifiedNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataException"/> class.

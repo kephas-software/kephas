@@ -17,7 +17,7 @@ namespace Kephas.Application
     /// <summary>
     /// Exception for signaling shutdown errors.
     /// </summary>
-    public class ShutdownException : ApplicationException, ISeverityQualifiedException
+    public class ShutdownException : ApplicationException, ISeverityQualifiedNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ShutdownException"/> class.

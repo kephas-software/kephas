@@ -17,7 +17,7 @@ namespace Kephas.ExceptionHandling
     /// <summary>
     /// An exception data.
     /// </summary>
-    public class ExceptionData : ISeverityQualifiedException
+    public class ExceptionData : ISeverityQualifiedNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionData"/> class.
@@ -39,7 +39,7 @@ namespace Kephas.ExceptionHandling
 
             if (severity == null)
             {
-                if (exception is ISeverityQualifiedException severityQualifiedException)
+                if (exception is ISeverityQualifiedNotification severityQualifiedException)
                 {
                     severity = severityQualifiedException.Severity;
                 }

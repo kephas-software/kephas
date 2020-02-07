@@ -17,7 +17,7 @@ namespace Kephas.Application
     /// <summary>
     /// Exception for signalling bootstrap errors.
     /// </summary>
-    public class BootstrapException : ApplicationException, ISeverityQualifiedException
+    public class BootstrapException : ApplicationException, ISeverityQualifiedNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BootstrapException"/> class.

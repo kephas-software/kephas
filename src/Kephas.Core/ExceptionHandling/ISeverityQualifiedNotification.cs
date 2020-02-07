@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISeverityQualifiedException.cs" company="Kephas Software SRL">
+// <copyright file="ISeverityQualifiedNotification.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,9 +11,9 @@
 namespace Kephas.ExceptionHandling
 {
     /// <summary>
-    /// Interface for severity qualified exception.
+    /// Interface for severity qualified notification.
     /// </summary>
-    public interface ISeverityQualifiedException
+    public interface ISeverityQualifiedNotification
     {
         /// <summary>
         /// Gets the message.

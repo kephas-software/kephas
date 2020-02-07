@@ -256,9 +256,9 @@ namespace Kephas.Operations
             Requires.NotNull(result, nameof(result));
 
             return result.Exceptions.Any(
-                e => (e is ISeverityQualifiedException qex
+                e => (e is ISeverityQualifiedNotification qex
                       && (qex.Severity == SeverityLevel.Error || qex.Severity == SeverityLevel.Fatal))
-                     || !(e is ISeverityQualifiedException));
+                     || !(e is ISeverityQualifiedNotification));
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace Kephas.Operations
             Requires.NotNull(result, nameof(result));
 
             return result.Exceptions.Any(
-                e => e is ISeverityQualifiedException qex && qex.Severity == SeverityLevel.Warning);
+                e => e is ISeverityQualifiedNotification qex && qex.Severity == SeverityLevel.Warning);
         }
 
         /// <summary>
@@ -288,7 +288,7 @@ namespace Kephas.Operations
             Requires.NotNull(result, nameof(result));
 
             return result.Exceptions.Where(
-                e => e is ISeverityQualifiedException qex && qex.Severity == SeverityLevel.Warning);
+                e => e is ISeverityQualifiedNotification qex && qex.Severity == SeverityLevel.Warning);
         }
     }
 }

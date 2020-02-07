@@ -18,7 +18,7 @@ namespace Kephas.Plugins
     /// <summary>
     /// Exception for signalling plugin operation errors.
     /// </summary>
-    public class PluginOperationException : Exception, ISeverityQualifiedException
+    public class PluginOperationException : Exception, ISeverityQualifiedNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginOperationException"/> class.

@@ -17,7 +17,7 @@ namespace Kephas.Operations
     /// <summary>
     /// Exception for signaling operation errors.
     /// </summary>
-    public class OperationException : Exception, ISeverityQualifiedException
+    public class OperationException : Exception, ISeverityQualifiedNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationException"/> class.

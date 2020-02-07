@@ -19,7 +19,7 @@ namespace Kephas.Interaction
     /// Signals may be implemented as a special kind of exceptions
     /// because, in some cases, they must interrupt the normal flow.
     /// </remarks>
-    public interface ISignal : ISeverityQualifiedException
+    public interface ISignal : ISeverityQualifiedNotification
     {
     }
 }

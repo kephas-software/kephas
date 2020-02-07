@@ -17,7 +17,7 @@ namespace Kephas.Scripting
     /// <summary>
     /// Exception for signalling scripting errors.
     /// </summary>
-    public class ScriptingException : Exception, ISeverityQualifiedException
+    public class ScriptingException : Exception, ISeverityQualifiedNotification
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptingException"/> class.
