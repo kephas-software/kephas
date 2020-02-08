@@ -27,22 +27,19 @@ namespace Kephas.Licensing
     public abstract class LicensingManagerBase : ILicensingManager
     {
         /// <summary>
-        /// Filename of the license file.
-        /// </summary>
-        private const string LicenseFileName = "License.lic";
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="LicensingManagerBase"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="encryptionService">The encryption service.</param>
-        protected LicensingManagerBase(IAppRuntime appRuntime, IEncryptionService encryptionService)
+        /// <param name="licenseRepository">Optional. The license repository.</param>
+        protected LicensingManagerBase(IAppRuntime appRuntime, IEncryptionService encryptionService, ILicenseRepository licenseRepository = null)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
             this.AppRuntime = appRuntime;
             this.EncryptionService = encryptionService;
+            this.LicenseRepository = licenseRepository ?? new LicenseRepository(appRuntime, encryptionService);
         }
 
         /// <summary>
@@ -62,23 +59,31 @@ namespace Kephas.Licensing
         protected IEncryptionService EncryptionService { get; }
 
         /// <summary>
+        /// Gets the license repository.
+        /// </summary>
+        /// <value>
+        /// The license repository.
+        /// </value>
+        protected ILicenseRepository LicenseRepository { get; }
+
+        /// <summary>
         /// Checks the license for the provided application identity asynchronously.
         /// </summary>
-        /// <param name="appId">Identifier for the application.</param>
+        /// <param name="appIdentity">Identifier for the application.</param>
         /// <param name="context">Optional. The context.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the check license result.
         /// </returns>
-        public Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appId, IContext context = null, CancellationToken cancellationToken = default)
+        public virtual Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext context = null, CancellationToken cancellationToken = default)
         {
-            var license = this.GetLicense(appId);
+            var license = this.GetLicenseData(appIdentity);
             if (license == null)
             {
-                return Task.FromResult<ILicenseCheckResult>(new LicenseCheckResult(appId, false));
+                return Task.FromResult<ILicenseCheckResult>(new LicenseCheckResult(appIdentity, false));
             }
 
-            var result = new LicenseCheckResult(appId, false);
+            var result = new LicenseCheckResult(appIdentity, false);
             if (license.ValidFrom.HasValue && DateTime.Now.Date < license.ValidFrom.Value)
             {
                 return Task.FromResult<ILicenseCheckResult>(
@@ -91,10 +96,10 @@ namespace Kephas.Licensing
                     result.MergeMessage($"The license expired on {license.ValidTo}."));
             }
 
-            if (!string.IsNullOrEmpty(license.AppId) && !license.AppId.Equals(appId.Id, StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrEmpty(license.AppId) && !license.AppId.Equals(appIdentity.Id, StringComparison.OrdinalIgnoreCase))
             {
                 return Task.FromResult<ILicenseCheckResult>(
-                    result.MergeMessage($"The license was issued for app '{license.AppId}' not for the requested {appId}."));
+                    result.MergeMessage($"The license was issued for app '{license.AppId}' not for the requested {appIdentity}."));
             }
 
             // TODO check version, too
@@ -106,22 +111,10 @@ namespace Kephas.Licensing
         /// <summary>
         /// Gets the license data.
         /// </summary>
-        /// <param name="appId">Identifier for the application.</param>
+        /// <param name="appIdentity">Identifier for the application.</param>
         /// <returns>
         /// The license data.
         /// </returns>
-        protected virtual License GetLicense(AppIdentity appId)
-        {
-            var location = this.AppRuntime.GetAppLocation(appId);
-            var licenseFilePath = Path.Combine(location, LicenseFileName);
-            if (!File.Exists(licenseFilePath))
-            {
-                return null;
-            }
-
-            var encryptedLicenseString = File.ReadAllText(licenseFilePath);
-            var licenseString = this.EncryptionService.Decrypt(encryptedLicenseString);
-            return License.Parse(licenseString);
-        }
+        protected virtual LicenseData GetLicenseData(AppIdentity appIdentity) => this.LicenseRepository.GetLicenseData(appIdentity);
     }
 }

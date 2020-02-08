@@ -20,10 +20,12 @@ namespace Kephas.Licensing
     /// <summary>
     /// Class storing license data.
     /// </summary>
-    public sealed class License : ICloneable, IIdentifiable
+    public sealed class LicenseData : ICloneable, IIdentifiable
     {
+        private const string DateTimeFormat = "yyyy-MM-dd";
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="License"/> class.
+        /// Initializes a new instance of the <see cref="LicenseData"/> class.
         /// </summary>
         /// <param name="id">The license identifier.</param>
         /// <param name="appId">The identifier of the application.</param>
@@ -34,7 +36,7 @@ namespace Kephas.Licensing
         /// <param name="validFrom">The valid from.</param>
         /// <param name="validTo">The valid to.</param>
         /// <param name="data">Optional. The additional data associated with the license.</param>
-        public License(
+        public LicenseData(
             string id,
             string appId,
             string appVersionRange,
@@ -140,6 +142,38 @@ namespace Kephas.Licensing
         public IDictionary<string, string> Data { get; }
 
         /// <summary>
+        /// Parses the license data from the provided string.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// A LicenseData.
+        /// </returns>
+        public static LicenseData Parse(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            var splits = value.Split('\n');
+            var id = splits[0];
+            var appId = splits.Length > 1 ? splits[1] : null;
+            var appVersionRange = splits.Length > 2 ? splits[2] : null;
+            var licenseType = splits.Length > 3 ? splits[3] : null;
+            var licensedTo = splits.Length > 4 ? splits[4] : null;
+            var licensedBy = splits.Length > 5 ? splits[5] : null;
+            var validFrom = splits.Length > 6 ? DateTimeParse(splits[6]) : null;
+            var validTo = splits.Length > 7 ? DateTimeParse(splits[7]) : null;
+            var checksum = splits.Length > 8 ? (int?)int.Parse(splits[splits.Length - 1]) : null;
+            var data = splits.Length > 9 ? DataParse(splits.Skip(8).Take(splits.Length - 9)) : null;
+
+            var licenseData = new LicenseData(id, appId, appVersionRange, licenseType, licensedTo, licensedBy, validFrom, validTo, data);
+            licenseData.Validate(checksum);
+
+            return licenseData;
+        }
+
+        /// <summary>
         /// Creates a new object that is a copy of the current instance.
         /// </summary>
         /// <returns>
@@ -147,7 +181,7 @@ namespace Kephas.Licensing
         /// </returns>
         public object Clone()
         {
-            return new License(
+            return new LicenseData(
                 this.Id,
                 this.AppId,
                 this.AppVersionRange,
@@ -167,35 +201,9 @@ namespace Kephas.Licensing
         /// </returns>
         public override string ToString()
         {
-            return $"{this.Id}\n{this.AppId}\n{this.AppVersionRange}\n{this.LicenseType}\n{this.LicensedTo}\n{this.LicensedBy}\n{this.ValidFrom:yyyy-MM-dd}\n{this.ValidTo:yyyy-MM-dd}\n{DataToString(this.Data)}";
-        }
-
-        /// <summary>
-        /// Parses the license data from the provided string.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>
-        /// A LicenseData.
-        /// </returns>
-        public static License Parse(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return null;
-            }
-
-            var splits = value.Split('\n');
-            var id = splits[0];
-            var appId = splits.Length > 1 ? splits[1] : null;
-            var appVersionRange = splits.Length > 2 ? splits[2] : null;
-            var licenseType = splits.Length > 3 ? splits[3] : null;
-            var licensedTo = splits.Length > 4 ? splits[4] : null;
-            var licensedBy = splits.Length > 5 ? splits[5] : null;
-            var validFrom = splits.Length > 6 ? DateTimeParse(splits[6]) : null;
-            var validTo = splits.Length > 7 ? DateTimeParse(splits[7]) : null;
-            var data = DataParse(splits.Skip(8));
-
-            return new License(id, appId, appVersionRange, licenseType, licensedTo, licensedBy, validFrom, validTo, data);
+            var validFromString = this.ValidFrom?.ToString(DateTimeFormat) ?? string.Empty;
+            var validToString = this.ValidTo?.ToString(DateTimeFormat) ?? string.Empty;
+            return $"{this.Id}\n{this.AppId}\n{this.AppVersionRange}\n{this.LicenseType}\n{this.LicensedTo}\n{this.LicensedBy}\n{validFromString}\n{validToString}\n{DataToString(this.Data)}\n{this.GetChecksum()}";
         }
 
         private static DateTime? DateTimeParse(string value)
@@ -245,6 +253,69 @@ namespace Kephas.Licensing
             }
 
             return string.Join("\n", data.Select(kv => $"{kv.Key}:{kv.Value}"));
+        }
+
+        private int GetChecksum()
+        {
+            var idChecksum = this.GetChecksum(this.Id);
+            var appIdChecksum = this.GetChecksum(this.AppId);
+            var appVersionRangeChecksum = this.GetChecksum(this.AppVersionRange);
+            var licenseTypeChecksum = this.GetChecksum(this.LicenseType);
+            var licensedToChecksum = this.GetChecksum(this.LicensedTo);
+            var licensedByChecksum = this.GetChecksum(this.LicensedBy);
+            var validFromChecksum = this.GetChecksum(this.ValidFrom?.ToString(DateTimeFormat));
+            var validToChecksum = this.GetChecksum(this.ValidTo?.ToString(DateTimeFormat));
+            var dataChecksum = this.GetChecksum(DataToString(this.Data));
+
+            unchecked
+            {
+                return idChecksum
+                    + (appIdChecksum << 1)
+                    + (appVersionRangeChecksum << 2)
+                    + (licenseTypeChecksum << 3)
+                    + (licensedToChecksum << 4)
+                    + (licensedByChecksum << 5)
+                    + (validFromChecksum << 6)
+                    + (validToChecksum << 7)
+                    + (dataChecksum << 8);
+            }
+        }
+
+        private int GetChecksum(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return 0;
+            }
+
+            unchecked
+            {
+                int hash1 = (5381 << 16) + 5381;
+                int hash2 = hash1;
+
+                for (int i = 0; i < str.Length; i += 2)
+                {
+                    hash1 = ((hash1 << 5) + hash1) ^ str[i];
+                    if (i == str.Length - 1)
+                    {
+                        break;
+                    }
+
+                    hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
+                }
+
+                return hash1 + (hash2 * 1566083941);
+            }
+        }
+
+        private void Validate(int? checksum)
+        {
+            if (this.GetChecksum() == checksum)
+            {
+                return;
+            }
+
+            throw new InvalidLicenseDataException($"The license data for {this.AppId} is corrupt, probably was manually changed.");
         }
     }
 }
