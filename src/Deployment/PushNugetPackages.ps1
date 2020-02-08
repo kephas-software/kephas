@@ -23,7 +23,6 @@ $packages = @(
     "Kephas.Extensions.DependencyInjection",
 #    "Kephas.Extensions.Hosting",
     "Kephas.Extensions.Logging",
-#    "Kephas.Licensing",
     "Kephas.Logging.Log4Net",
     "Kephas.Logging.NLog",
     "Kephas.Logging.Serilog",
