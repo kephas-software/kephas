@@ -30,7 +30,7 @@ namespace Kephas.Licensing
         /// Stores the license data, making it persistable among multiple application runs.
         /// </summary>
         /// <param name="appIdentity">The app identity being associated the license.</param>
-        /// <param name="licenseData">Information describing the license.</param>
-        void StoreLicenseData(AppIdentity appIdentity, LicenseData licenseData);
+        /// <param name="rawLicenseData">Raw information describing the license.</param>
+        void StoreRawLicenseData(AppIdentity appIdentity, string rawLicenseData);
     }
 }

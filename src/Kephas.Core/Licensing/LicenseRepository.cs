@@ -68,8 +68,8 @@ namespace Kephas.Licensing
         /// Stores the license data, making it persistable among multiple application runs.
         /// </summary>
         /// <param name="appIdentity">The app identity being associated the license.</param>
-        /// <param name="licenseData">Information describing the license.</param>
-        public void StoreLicenseData(AppIdentity appIdentity, LicenseData licenseData)
+        /// <param name="rawLicenseData">Raw information describing the license.</param>
+        public void StoreRawLicenseData(AppIdentity appIdentity, string rawLicenseData)
         {
             var fileName = $"{appIdentity?.Id ?? LicenseFileName}.lic";
             var licenseLocation = this.GetLicenseLocations(appIdentity).First();
@@ -79,7 +79,7 @@ namespace Kephas.Licensing
             }
 
             var licenseFilePath = Path.Combine(licenseLocation, fileName);
-            this.StoreLicenseData(licenseFilePath, licenseData);
+            File.WriteAllText(licenseFilePath, rawLicenseData);
         }
 
         private IEnumerable<string> GetLicenseLocations(AppIdentity appIdentity)
@@ -95,12 +95,6 @@ namespace Kephas.Licensing
             var encryptedLicenseString = File.ReadAllText(licenseFilePath);
             var licenseString = this.encryptionService.Decrypt(encryptedLicenseString);
             return LicenseData.Parse(licenseString);
-        }
-
-        private void StoreLicenseData(string licenseFilePath, LicenseData licenseData)
-        {
-            var encryptedLicenseString = this.encryptionService.Encrypt(licenseData.ToString());
-            File.WriteAllText(licenseFilePath, encryptedLicenseString);
         }
     }
 }

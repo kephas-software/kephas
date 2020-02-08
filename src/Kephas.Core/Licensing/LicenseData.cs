@@ -28,13 +28,13 @@ namespace Kephas.Licensing
         /// Initializes a new instance of the <see cref="LicenseData"/> class.
         /// </summary>
         /// <param name="id">The license identifier.</param>
-        /// <param name="appId">The identifier of the application.</param>
+        /// <param name="appId">The regular expression matching the identifier of the application.</param>
         /// <param name="appVersionRange">The application version range.</param>
         /// <param name="licenseType">The type of the license.</param>
-        /// <param name="licensedTo">The company the application is licensed to.</param>
-        /// <param name="licensedBy">Describes who issued this object.</param>
-        /// <param name="validFrom">The valid from.</param>
-        /// <param name="validTo">The valid to.</param>
+        /// <param name="licensedTo">The entity the application is licensed to.</param>
+        /// <param name="licensedBy">The entity that licensed the application.</param>
+        /// <param name="validFrom">Optional. The date the license is valid from.</param>
+        /// <param name="validTo">Optional. The date the license is valid to.</param>
         /// <param name="data">Optional. The additional data associated with the license.</param>
         public LicenseData(
             string id,
@@ -43,12 +43,16 @@ namespace Kephas.Licensing
             string licenseType,
             string licensedTo,
             string licensedBy,
-            DateTime? validFrom,
-            DateTime? validTo,
+            DateTime? validFrom = null,
+            DateTime? validTo = null,
             IDictionary<string, string> data = null)
         {
             Requires.NotNullOrEmpty(id, nameof(id));
             Requires.NotNullOrEmpty(appId, nameof(appId));
+            Requires.NotNullOrEmpty(appVersionRange, nameof(appVersionRange));
+            Requires.NotNullOrEmpty(licenseType, nameof(licenseType));
+            Requires.NotNullOrEmpty(licensedTo, nameof(licensedTo));
+            Requires.NotNullOrEmpty(licensedBy, nameof(licensedBy));
 
             this.Id = id;
             this.AppId = appId;
@@ -78,10 +82,10 @@ namespace Kephas.Licensing
         object IIdentifiable.Id => this.Id;
 
         /// <summary>
-        /// Gets the identifier of the application.
+        /// Gets a regular expression matching the identifier of the application.
         /// </summary>
         /// <value>
-        /// The identifier of the application.
+        /// The regular expression matching identifier of the application.
         /// </value>
         public string AppId { get; }
 
@@ -118,10 +122,10 @@ namespace Kephas.Licensing
         public string LicensedBy { get; }
 
         /// <summary>
-        /// Gets the entity the application is licensed to.
+        /// Gets the entity that licensed the application.
         /// </summary>
         /// <value>
-        /// The entity the application is licensed to.
+        /// The entity that licensed the application.
         /// </value>
         public string LicensedTo { get; }
 

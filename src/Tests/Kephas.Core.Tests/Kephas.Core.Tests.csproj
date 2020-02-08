@@ -50,7 +50,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Licensing\" />
         <Folder Include="Properties\" />
     </ItemGroup>
 
