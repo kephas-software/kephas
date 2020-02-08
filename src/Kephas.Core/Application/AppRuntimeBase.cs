@@ -41,6 +41,11 @@ namespace Kephas.Application
         public const string DefaultConfigFolder = "Config";
 
         /// <summary>
+        /// The default license folder.
+        /// </summary>
+        public const string DefaultLicenseFolder = "License";
+
+        /// <summary>
         /// The application identifier key.
         /// </summary>
         public const string AppIdentityKey = "AppIdentity";
@@ -77,7 +82,9 @@ namespace Kephas.Application
         private string appLocation;
         private string appFolder;
         private string[] configLocations;
+        private string[] licenseLocations;
         private IEnumerable<string> configFolders;
+        private IEnumerable<string> licenseFolders;
         private ILogger logger;
         private bool isDisposed = false; // To detect redundant calls
 
@@ -91,7 +98,10 @@ namespace Kephas.Application
         ///                                     assemblies.</param>
         /// <param name="appFolder">Optional. The application folder. If not specified, the current
         ///                           application location is considered.</param>
-        /// <param name="configFolders">Optional. The configuration folders relative to the application location.</param>
+        /// <param name="configFolders">Optional. The configuration folders relative to the application
+        ///                             location.</param>
+        /// <param name="licenseFolders">Optional. The license folders relative to the application
+        ///                             location.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -103,6 +113,7 @@ namespace Kephas.Application
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
             string appFolder = null,
             IEnumerable<string> configFolders = null,
+            IEnumerable<string> licenseFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
@@ -115,6 +126,7 @@ namespace Kephas.Application
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appFolder = appFolder;
             this.configFolders = configFolders;
+            this.licenseFolders = licenseFolders;
 
             this.InitializationMonitor = new InitializationMonitor<IAppRuntime>(this.GetType());
             this.InitializeAppProperties(Assembly.GetEntryAssembly(), appId, appInstanceId, appVersion);
@@ -245,12 +257,20 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the application configuration directories where configuration files are stored.
+        /// Gets the application directories where configuration files are stored.
         /// </summary>
         /// <returns>
         /// The application configuration directories.
         /// </returns>
         public IEnumerable<string> GetAppConfigLocations() => this.configLocations ?? (this.configLocations = this.ComputeConfigLocations(this.configFolders));
+
+        /// <summary>
+        /// Gets the application directories where license files are stored.
+        /// </summary>
+        /// <returns>
+        /// The application configuration directories.
+        /// </returns>
+        public IEnumerable<string> GetAppLicenseLocations() => this.licenseLocations ?? (this.licenseLocations = this.ComputeLicenseLocations(this.licenseFolders));
 
         /// <summary>
         /// Gets the application assemblies.
@@ -621,6 +641,21 @@ namespace Kephas.Application
 
             return locations.Count == 0
                 ? new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultConfigFolder)) }
+                : locations.Distinct().ToArray();
+        }
+
+        private string[] ComputeLicenseLocations(IEnumerable<string> licenseFolders)
+        {
+            if (licenseFolders == null)
+            {
+                return new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultLicenseFolder)) };
+            }
+
+            var locations = new List<string>();
+            locations.AddRange(this.GetAppBinLocations().SelectMany(l => licenseFolders.Select(f => FileSystem.NormalizePath(Path.GetFullPath(Path.IsPathRooted(f) ? f : Path.Combine(l, f))))));
+
+            return locations.Count == 0
+                ? new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultLicenseFolder)) }
                 : locations.Distinct().ToArray();
         }
 

@@ -24,15 +24,15 @@ namespace Kephas.Plugins.Reflection
         /// Initializes a new instance of the <see cref="PluginInfo"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="pluginDataStore">The plugin data store.</param>
+        /// <param name="pluginRepository">The plugin data store.</param>
         /// <param name="pluginIdentity">The plugin identity.</param>
         /// <param name="description">Optional. The description.</param>
         /// <param name="tags">Optional. The tags.</param>
-        internal PluginInfo(IAppRuntime appRuntime, IPluginDataStore pluginDataStore, AppIdentity pluginIdentity, string description = null, string[] tags = null)
+        internal PluginInfo(IAppRuntime appRuntime, IPluginRepository pluginRepository, AppIdentity pluginIdentity, string description = null, string[] tags = null)
             : base(pluginIdentity, description, tags)
         {
             this.AppRuntime = appRuntime;
-            this.PluginDataStore = pluginDataStore;
+            this.PluginRepository = pluginRepository;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Kephas.Plugins.Reflection
         /// <value>
         /// The plugin data store.
         /// </value>
-        protected internal IPluginDataStore PluginDataStore { get; }
+        protected internal IPluginRepository PluginRepository { get; }
 
         /// <summary>
         /// Creates an instance with the provided arguments (if any).

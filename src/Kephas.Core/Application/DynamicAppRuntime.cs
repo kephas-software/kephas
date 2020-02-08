@@ -36,6 +36,7 @@ namespace Kephas.Application
         /// <param name="defaultAssemblyFilter">Optional. The default assembly filter.</param>
         /// <param name="appFolder">Optional. The application location.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
+        /// <param name="licenseFolders">Optional. The license folders.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -47,11 +48,12 @@ namespace Kephas.Application
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
             string appFolder = null,
             IEnumerable<string> configFolders = null,
+            IEnumerable<string> licenseFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
             IExpando appArgs = null)
-            : base(assemblyLoader, licensingManager, logManager, defaultAssemblyFilter, appFolder, configFolders, appId, appInstanceId, appVersion, appArgs)
+            : base(assemblyLoader, licensingManager, logManager, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
         {
         }
 

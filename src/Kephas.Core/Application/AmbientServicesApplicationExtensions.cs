@@ -36,6 +36,7 @@ namespace Kephas.Application
         /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
         /// <param name="appFolder">Optional. The application location.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
+        /// <param name="licenseFolders">Optional. The license folders.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -48,6 +49,7 @@ namespace Kephas.Application
             Func<AssemblyName, bool> assemblyFilter = null,
             string appFolder = null,
             IEnumerable<string> configFolders = null,
+            IEnumerable<string> licenseFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
@@ -55,7 +57,17 @@ namespace Kephas.Application
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var appRuntime = new DynamicAppRuntime(ambientServices.AssemblyLoader, ambientServices.LicensingManager, ambientServices.LogManager, assemblyFilter, appFolder, configFolders, appId, appInstanceId, appVersion);
+            var appRuntime = new DynamicAppRuntime(
+                ambientServices.AssemblyLoader,
+                ambientServices.LicensingManager,
+                ambientServices.LogManager,
+                assemblyFilter,
+                appFolder,
+                configFolders,
+                licenseFolders,
+                appId,
+                appInstanceId,
+                appVersion);
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }
@@ -72,6 +84,7 @@ namespace Kephas.Application
         /// <param name="assemblyFilter">Optional. A filter specifying the assembly.</param>
         /// <param name="appFolder">Optional. The application location.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
+        /// <param name="licenseFolders">Optional. The license folders.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -84,6 +97,7 @@ namespace Kephas.Application
             Func<AssemblyName, bool> assemblyFilter = null,
             string appFolder = null,
             IEnumerable<string> configFolders = null,
+            IEnumerable<string> licenseFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
@@ -91,7 +105,17 @@ namespace Kephas.Application
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var appRuntime = new StaticAppRuntime(ambientServices.AssemblyLoader, ambientServices.LicensingManager, ambientServices.LogManager, assemblyFilter, appFolder, configFolders, appId, appInstanceId, appVersion);
+            var appRuntime = new StaticAppRuntime(
+                ambientServices.AssemblyLoader,
+                ambientServices.LicensingManager,
+                ambientServices.LogManager,
+                assemblyFilter,
+                appFolder,
+                configFolders,
+                licenseFolders,
+                appId,
+                appInstanceId,
+                appVersion);
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }

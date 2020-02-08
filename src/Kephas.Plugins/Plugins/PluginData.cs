@@ -109,9 +109,10 @@ namespace Kephas.Plugins
             throw new InvalidPluginDataException($"The plugin data for {this.Identity} is corrupt, probably was manually changed ({CheksumInvalidCode}).");
         }
 
-        private int GetChecksum()
+        private int GetChecksum() => this.GetChecksum($"{this.Identity},{this.State}");
+
+        private int GetChecksum(string str)
         {
-            var str = $"{this.Identity},{this.State}";
             unchecked
             {
                 int hash1 = (5381 << 16) + 5381;

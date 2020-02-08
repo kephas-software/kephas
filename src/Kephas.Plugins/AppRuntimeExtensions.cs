@@ -123,19 +123,19 @@ namespace Kephas
         /// <returns>
         /// The plugin data service.
         /// </returns>
-        internal static IPluginDataStore GetPluginDataStore(this IAppRuntime appRuntime)
+        internal static IPluginRepository GetPluginRepository(this IAppRuntime appRuntime)
         {
             if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
             {
-                return pluginsAppRuntime.PluginDataStore;
+                return pluginsAppRuntime.PluginRepository;
             }
 
-            if (!(appRuntime?[nameof(PluginsAppRuntime.PluginDataStore)] is IPluginDataStore pluginDataStore))
+            if (!(appRuntime?[nameof(PluginsAppRuntime.PluginRepository)] is IPluginRepository pluginRepository))
             {
-                throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginDataStore)} from {appRuntime.GetType()}.");
+                throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginRepository)} from {appRuntime.GetType()}.");
             }
 
-            return pluginDataStore;
+            return pluginRepository;
         }
     }
 }

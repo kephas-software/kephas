@@ -51,12 +51,20 @@ namespace Kephas.Application
         IEnumerable<string> GetAppBinLocations();
 
         /// <summary>
-        /// Gets the application configuration directories where configuration files are stored.
+        /// Gets the application directories where configuration files are stored.
         /// </summary>
         /// <returns>
         /// The application configuration directories.
         /// </returns>
         IEnumerable<string> GetAppConfigLocations();
+
+        /// <summary>
+        /// Gets the application directories where license files are stored.
+        /// </summary>
+        /// <returns>
+        /// The application configuration directories.
+        /// </returns>
+        IEnumerable<string> GetAppLicenseLocations();
 
         /// <summary>
         /// Gets the application assemblies.

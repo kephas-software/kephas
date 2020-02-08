@@ -31,6 +31,7 @@ namespace Kephas
         /// <param name="appFolder">Optional. The application location. If not specified, the assembly
         ///                           location is used.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
+        /// <param name="licenseFolders">Optional. The license folders.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -46,6 +47,7 @@ namespace Kephas
             Func<AssemblyName, bool> assemblyFilter = null,
             string appFolder = null,
             IEnumerable<string> configFolders = null,
+            IEnumerable<string> licenseFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
@@ -64,6 +66,7 @@ namespace Kephas
                     assemblyFilter,
                     appFolder,
                     configFolders,
+                    licenseFolders,
                     appId,
                     appInstanceId,
                     appVersion,

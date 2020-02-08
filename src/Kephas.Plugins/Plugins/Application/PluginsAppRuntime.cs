@@ -58,6 +58,7 @@ namespace Kephas.Plugins.Application
         /// <param name="appFolder">Optional. The application location. If not specified, the current
         ///                           application location is considered.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
+        /// <param name="licenseFolders">Optional. The license folders.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -65,7 +66,7 @@ namespace Kephas.Plugins.Application
         /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
         /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
         /// <param name="targetFramework">Optional. The target framework.</param>
-        /// <param name="pluginDataStore">Optional. The plugin data store.</param>
+        /// <param name="pluginRepository">Optional. The plugin repository.</param>
         public PluginsAppRuntime(
             IAssemblyLoader assemblyLoader = null,
             ILicensingManager licensingManager = null,
@@ -73,6 +74,7 @@ namespace Kephas.Plugins.Application
             Func<AssemblyName, bool> assemblyFilter = null,
             string appFolder = null,
             IEnumerable<string> configFolders = null,
+            IEnumerable<string> licenseFolders = null,
             string appId = null,
             string appInstanceId = null,
             string appVersion = null,
@@ -80,13 +82,13 @@ namespace Kephas.Plugins.Application
             bool? enablePlugins = null,
             string pluginsFolder = null,
             string targetFramework = null,
-            IPluginDataStore pluginDataStore = null)
-            : base(assemblyLoader, licensingManager, logManager, assemblyFilter, appFolder, configFolders, appId, appInstanceId, appVersion, appArgs)
+            IPluginRepository pluginRepository = null)
+            : base(assemblyLoader, licensingManager, logManager, assemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);
             this.TargetFramework = this.ComputeTargetFramework(targetFramework, appArgs);
-            this.PluginDataStore = pluginDataStore ?? new PluginDataStore(appIdentity => this.GetAppLocation(appIdentity, throwOnNotFound: false));
+            this.PluginRepository = pluginRepository ?? new PluginRepository(appIdentity => this.GetAppLocation(appIdentity, throwOnNotFound: false));
         }
 
         /// <summary>
@@ -114,12 +116,12 @@ namespace Kephas.Plugins.Application
         public string TargetFramework { get; }
 
         /// <summary>
-        /// Gets the plugin data service.
+        /// Gets the plugin repository.
         /// </summary>
         /// <value>
-        /// The plugin data service.
+        /// The plugin repository.
         /// </value>
-        internal IPluginDataStore PluginDataStore { get; }
+        protected internal IPluginRepository PluginRepository { get; }
 
         /// <summary>
         /// Gets the location of the application with the indicated identity.
@@ -196,7 +198,7 @@ namespace Kephas.Plugins.Application
                 foreach (var pluginDirectory in pluginsDirectories)
                 {
                     var pluginId = Path.GetFileName(pluginDirectory);
-                    yield return this.PluginDataStore.GetPluginData(new AppIdentity(pluginId));
+                    yield return this.PluginRepository.GetPluginData(new AppIdentity(pluginId));
                 }
             }
         }
@@ -282,7 +284,7 @@ namespace Kephas.Plugins.Application
         {
             var pluginId = Path.GetFileName(pluginFolder);
             var pluginIdentity = new AppIdentity(pluginId);
-            var pluginData = this.PluginDataStore.GetPluginData(pluginIdentity);
+            var pluginData = this.PluginRepository.GetPluginData(pluginIdentity);
             pluginIdentity = pluginData.Identity;
 
             var shouldLoadPlugin = pluginData.State == PluginState.PendingInitialization || pluginData.State == PluginState.Enabled;
