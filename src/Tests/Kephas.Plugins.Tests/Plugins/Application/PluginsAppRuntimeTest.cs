@@ -75,7 +75,7 @@ namespace Kephas.Tests.Plugins.Application
         [Test]
         public void GetAppBinLocations()
         {
-            var pluginDataStore = new TestPluginDataStore();
+            var pluginRepository = new TestPluginRepository();
 
             var tempFolder = Path.GetFullPath(Path.GetTempPath());
             var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
@@ -84,11 +84,11 @@ namespace Kephas.Tests.Plugins.Application
             Directory.CreateDirectory(pluginsFolder);
             var plugin1Location = Path.Combine(pluginsFolder, "p1");
             Directory.CreateDirectory(plugin1Location);
-            pluginDataStore.StorePluginData(new PluginData(new AppIdentity("p1"), PluginState.Enabled));
+            pluginRepository.StorePluginData(new PluginData(new AppIdentity("p1"), PluginState.Enabled));
             var plugin2Location = Path.Combine(pluginsFolder, "p2");
             Directory.CreateDirectory(plugin2Location);
 
-            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "myPlugins", pluginDataStore: pluginDataStore);
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "myPlugins", pluginRepository: pluginRepository);
             var binFolders = appRuntime.GetAppBinLocations().ToList();
 
             var binFolder = appRuntime.GetAppLocation();
@@ -156,7 +156,7 @@ namespace Kephas.Tests.Plugins.Application
             Assert.AreEqual(pluginsFolder, appRuntime.GetPluginsLocation());
         }
 
-        public class TestPluginDataStore : IPluginDataStore
+        public class TestPluginRepository : IPluginRepository
         {
             private ConcurrentDictionary<string, PluginData> cache = new ConcurrentDictionary<string, PluginData>();
 

@@ -78,8 +78,8 @@ namespace Kephas.Tests.Plugins
 
         private IPluginManager CreatePluginManager(PluginsTestContext context)
         {
-            var pluginsDataStore = new TestPluginDataStore();
-            var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginDataStore: pluginsDataStore);
+            var pluginsDataStore = new TestPluginRepository();
+            var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginRepository: pluginsDataStore);
             return new TestPluginManager(
                 context,
                 appRuntime,
@@ -88,7 +88,7 @@ namespace Kephas.Tests.Plugins
                 pluginsDataStore);
         }
 
-        public class TestPluginDataStore : IPluginDataStore
+        public class TestPluginRepository : IPluginRepository
         {
             private ConcurrentDictionary<string, PluginData> cache = new ConcurrentDictionary<string, PluginData>();
 
@@ -112,8 +112,8 @@ namespace Kephas.Tests.Plugins
         {
             private readonly PluginsTestContext ctx;
 
-            public TestPluginManager(PluginsTestContext ctx, IAppRuntime appRuntime, IContextFactory contextFactory, IEventHub eventHub, IPluginDataStore pluginDataStore, ILogManager logManager = null)
-                : base(appRuntime, contextFactory, eventHub, pluginDataStore, logManager)
+            public TestPluginManager(PluginsTestContext ctx, IAppRuntime appRuntime, IContextFactory contextFactory, IEventHub eventHub, IPluginRepository pluginRepository, ILogManager logManager = null)
+                : base(appRuntime, contextFactory, eventHub, pluginRepository, logManager)
             {
                 this.ctx = ctx;
             }

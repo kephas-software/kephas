@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DuplexMessageRouterBaseTest.cs" company="Kephas Software SRL">
+// <copyright file="MessageRouterBaseTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -12,18 +12,14 @@ namespace Kephas.Messaging.Tests.Distributed.Routing
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application;
     using Kephas.Composition;
-    using Kephas.Composition.ExportFactories;
     using Kephas.Configuration;
-    using Kephas.Dynamic;
-    using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
-    using Kephas.Reflection;
     using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
