@@ -66,6 +66,18 @@ namespace Kephas.IO
         }
 
         /// <summary>
+        /// Deletes the directory recursively, ensuring that the directory exists.
+        /// </summary>
+        /// <param name="directoryPath">Full pathname of the directory file.</param>
+        public static void DeleteDirectory(string directoryPath)
+        {
+            if (Directory.Exists(directoryPath))
+            {
+                Directory.Delete(directoryPath, recursive: true);
+            }
+        }
+
+        /// <summary>
         /// Normalizes the path, using proper path separator characters and expanding the environment variables if present.
         /// </summary>
         /// <param name="path">Full pathname of the file or directory.</param>
