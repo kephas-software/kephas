@@ -20,6 +20,14 @@ namespace Kephas.Application.Reflection
     public interface IAppInfo : ITypeInfo
     {
         /// <summary>
+        /// Gets the app identity.
+        /// </summary>
+        /// <value>
+        /// The app identity.
+        /// </value>
+        AppIdentity Identity { get; }
+
+        /// <summary>
         /// Gets the plugin version.
         /// </summary>
         /// <value>
@@ -58,13 +66,5 @@ namespace Kephas.Application.Reflection
         /// The dependencies.
         /// </value>
         IEnumerable<IAppDependency> Dependencies { get; }
-
-        /// <summary>
-        /// Gets the identity.
-        /// </summary>
-        /// <returns>
-        /// The identity.
-        /// </returns>
-        AppIdentity GetIdentity();
     }
 }

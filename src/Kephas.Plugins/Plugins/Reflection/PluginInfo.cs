@@ -11,7 +11,7 @@
 namespace Kephas.Plugins.Reflection
 {
     using System.Collections.Generic;
-
+    using System.Linq;
     using Kephas.Application;
     using Kephas.Application.Reflection;
 
@@ -60,6 +60,12 @@ namespace Kephas.Plugins.Reflection
         /// </returns>
         public override object CreateInstance(IEnumerable<object> args = null)
         {
+            if (args?.Any() ?? false)
+            {
+                var pluginData = (PluginData)args.First();
+                return new Plugin(this, pluginData);
+            }
+
             return new Plugin(this);
         }
     }

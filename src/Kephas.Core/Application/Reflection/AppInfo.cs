@@ -26,21 +26,19 @@ namespace Kephas.Application.Reflection
         private static readonly IEnumerable<object> EmptyAnnotations = new ReadOnlyCollection<object>(new List<object>());
         private static readonly IEnumerable<IParameterInfo> EmptyParameters = new ReadOnlyCollection<IParameterInfo>(new List<IParameterInfo>());
 
-        private readonly AppIdentity identity;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AppInfo"/> class.
         /// </summary>
-        /// <param name="appIdentity">The application identity.</param>
+        /// <param name="identity">The app identity.</param>
         /// <param name="description">Optional. The description.</param>
         /// <param name="tags">Optional. The tags.</param>
-        public AppInfo(AppIdentity appIdentity, string description = null, string[] tags = null)
+        public AppInfo(AppIdentity identity, string description = null, string[] tags = null)
         {
-            Requires.NotNull(appIdentity, nameof(AppIdentity));
+            Requires.NotNull(identity, nameof(AppIdentity));
 
-            this.identity = appIdentity;
-            this.FullName = this.Name = appIdentity.Id;
-            this.Version = appIdentity.Version;
+            this.Identity = identity;
+            this.FullName = this.Name = identity.Id;
+            this.Version = identity.Version;
             this.Description = description;
 #if NET45
             this.Tags = tags ?? new string[0];
@@ -60,6 +58,14 @@ namespace Kephas.Application.Reflection
             : this(new AppIdentity(name, version), description, tags)
         {
         }
+
+        /// <summary>
+        /// Gets the app identity.
+        /// </summary>
+        /// <value>
+        /// The app identity.
+        /// </value>
+        public AppIdentity Identity { get; }
 
         /// <summary>
         /// Gets the application version.
@@ -102,14 +108,6 @@ namespace Kephas.Application.Reflection
         public IEnumerable<IAppDependency> Dependencies { get; } = new List<IAppDependency>();
 
         /// <summary>
-        /// Gets the identity.
-        /// </summary>
-        /// <returns>
-        /// The identity.
-        /// </returns>
-        public AppIdentity GetIdentity() => this.identity;
-
-        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>
@@ -117,7 +115,7 @@ namespace Kephas.Application.Reflection
         /// </returns>
         public override string ToString()
         {
-            return this.GetIdentity().ToString();
+            return this.Identity.ToString();
         }
     }
 }
