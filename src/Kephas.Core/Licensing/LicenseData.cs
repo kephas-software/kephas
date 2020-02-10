@@ -22,6 +22,8 @@ namespace Kephas.Licensing
     /// </summary>
     public sealed class LicenseData : ICloneable, IIdentifiable
     {
+        private const int ParseChecksumInvalidCode = 3;
+        private const int ChecksumInvalidCode = 4;
         private const string DateTimeFormat = "yyyy-MM-dd";
 
         /// <summary>
@@ -168,8 +170,13 @@ namespace Kephas.Licensing
             var licensedBy = splits.Length > 5 ? splits[5] : null;
             var validFrom = splits.Length > 6 ? DateTimeParse(splits[6]) : null;
             var validTo = splits.Length > 7 ? DateTimeParse(splits[7]) : null;
-            var checksum = splits.Length > 8 ? (int?)int.Parse(splits[splits.Length - 1]) : null;
+            var checksumString = splits.Length > 8 ? splits[splits.Length - 1] : null;
             var data = splits.Length > 9 ? DataParse(splits.Skip(8).Take(splits.Length - 9)) : null;
+
+            if (checksumString == null || !int.TryParse(checksumString, out var checksum))
+            {
+                throw new InvalidLicenseDataException($"The license data for {id} is corrupt, probably was manually changed ({ParseChecksumInvalidCode}).");
+            }
 
             var licenseData = new LicenseData(id, appId, appVersionRange, licenseType, licensedTo, licensedBy, validFrom, validTo, data);
             licenseData.Validate(checksum);
@@ -319,7 +326,7 @@ namespace Kephas.Licensing
                 return;
             }
 
-            throw new InvalidLicenseDataException($"The license data for {this.AppId} is corrupt, probably was manually changed.");
+            throw new InvalidLicenseDataException($"The license data for {this.AppId} is corrupt, probably was manually changed ({ChecksumInvalidCode}).");
         }
     }
 }
