@@ -124,7 +124,7 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual IEnumerable<IPlugin> GetInstalledPlugins()
         {
-            return this.AppRuntime.GetInstalledPlugins().Select(this.ToPlugin);
+            return this.AppRuntime.GetInstalledPlugins().Select(p => this.ToPlugin(p));
         }
 
         /// <summary>
@@ -169,14 +169,14 @@ namespace Kephas.Plugins
                     if (this.CanInstallPlugin(pluginData))
                     {
                         var context = this.CreatePluginContext(options)
-                            .Merge(installOptions)
-                            .Plugin(result.ReturnValue);
+                            .Merge(installOptions);
 
                         var instWrappedResult = await Profiler.WithStopwatchAsync(
                                     () => this.InstallPluginCoreAsync(pluginIdentity, context, cancellationToken))
                             .PreserveThreadContext();
 
                         var plugin = result.ReturnValue = instWrappedResult.ReturnValue.ReturnValue;
+                        pluginData = plugin.GetPluginData();
                         result
                             .MergeMessages(instWrappedResult.ReturnValue)
                             .MergeMessage($"Plugin {pluginIdentity} successfully installed, awaiting initialization. Elapsed: {instWrappedResult.Elapsed:c}.");
@@ -638,12 +638,14 @@ namespace Kephas.Plugins
         /// Converts a plugin data to a plugin entity.
         /// </summary>
         /// <param name="pluginData">Information describing the plugin.</param>
+        /// <param name="offline">Optional. True to indicate that the offline data is used by the plugin.</param>
         /// <returns>
         /// Plugin data as an <see cref="IPlugin"/>.
         /// </returns>
-        protected virtual IPlugin ToPlugin(PluginData pluginData)
+        protected virtual IPlugin ToPlugin(PluginData pluginData, bool offline = false)
         {
-            return new Plugin(new PluginInfo(this.AppRuntime, this.PluginRepository, pluginData.Identity));
+            var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginData.Identity);
+            return (Plugin)pluginInfo.CreateInstance(new object[] { offline ? pluginData : null });
         }
 
         /// <summary>

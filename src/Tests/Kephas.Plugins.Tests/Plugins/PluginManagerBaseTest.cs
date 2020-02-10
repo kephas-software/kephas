@@ -129,7 +129,7 @@ namespace Kephas.Tests.Plugins
             protected override Task<IOperationResult<IPlugin>> InstallPluginCoreAsync(AppIdentity pluginId, IPluginContext context, CancellationToken cancellationToken = default)
             {
                 var pluginInfo = Substitute.For<IAppInfo>();
-                pluginInfo.GetIdentity().Returns(pluginId);
+                pluginInfo.Identity.Returns(pluginId);
                 pluginInfo.Name.Returns(pluginId.Id);
                 pluginInfo.Version.Returns(pluginId.Version);
                 var plugin = Substitute.For<IPlugin>();

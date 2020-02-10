@@ -18,7 +18,6 @@ namespace Kephas.Plugins
     using Kephas.Application;
     using Kephas.Application.Reflection;
     using Kephas.Operations;
-    using Kephas.Plugins.Reflection;
     using Kephas.Services;
 
     /// <summary>

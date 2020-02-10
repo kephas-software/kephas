@@ -14,6 +14,7 @@ namespace Kephas.Plugins.NuGet
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -157,11 +158,12 @@ namespace Kephas.Plugins.NuGet
 
                 var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginIdentity);
                 context.PluginIdentity(pluginIdentity);
+                var pluginData = new PluginData(pluginIdentity, PluginState.None);
 
-                var pluginFolder = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
-                if (!Directory.Exists(pluginFolder))
+                var pluginLocation = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
+                if (!Directory.Exists(pluginLocation))
                 {
-                    Directory.CreateDirectory(pluginFolder);
+                    Directory.CreateDirectory(pluginLocation);
                 }
 
                 try
@@ -170,28 +172,28 @@ namespace Kephas.Plugins.NuGet
                     foreach (var (packageId, packageReader) in packageReaders)
                     {
                         result.MergeMessages(
-                            await this.InstallBinAsync(pluginIdentity, pluginFolder, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
+                            await this.InstallBinAsync(pluginData, pluginLocation, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
                             .PreserveThreadContext());
                         result.MergeMessages(
-                            await this.InstallContentAsync(pluginIdentity, pluginFolder, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
+                            await this.InstallContentAsync(pluginData, pluginLocation, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
                             .PreserveThreadContext());
                     }
 
                     result.MergeMessages(
-                        await this.InstallConfigAsync(pluginIdentity, pluginFolder, context, cancellationToken)
+                        await this.InstallConfigAsync(pluginData, pluginLocation, context, cancellationToken)
                         .PreserveThreadContext());
 
                     result.MergeMessages(
-                        await this.InstallDataAsync(pluginIdentity, pluginFolder, context, cancellationToken)
+                        await this.InstallDataAsync(pluginData, pluginLocation, context, cancellationToken)
                         .PreserveThreadContext());
                 }
                 catch
                 {
-                    Directory.Delete(pluginFolder, recursive: true);
+                    Directory.Delete(pluginLocation, recursive: true);
                     throw;
                 }
 
-                result.ReturnValue = new Plugin(pluginInfo) { Location = pluginFolder };
+                result.ReturnValue = new Plugin(pluginInfo, pluginData) { Location = pluginLocation };
                 return result;
             }
         }
@@ -199,14 +201,14 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Installs the configuration asynchronously.
         /// </summary>
-        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginData">Information describing the plugin.</param>
         /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task<IOperationResult> InstallConfigAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual async Task<IOperationResult> InstallConfigAsync(PluginData pluginData, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
         {
             var sourceConfigFilesFolder = Path.Combine(pluginLocation, this.pluginsSettings.PackageConfigFolder);
             var targetConfigFilesFolder = this.AppRuntime.GetAppConfigLocations().First();
@@ -248,6 +250,9 @@ namespace Kephas.Plugins.NuGet
                         var targetFileRaw = targetFile.Substring(0, targetFile.Length - extension.Length);
                         var renamedTargetFile = $"{targetFileRaw}-{DateTime.Now:yyyyMMddhhmmss}{extension}";
                         File.Move(targetFile, renamedTargetFile);
+
+                        this.AddUndoCommand(pluginData, new RenameUndoCommand(targetFile, renamedTargetFile));
+
                         File.Copy(configFile, targetFile);
 
                         result.MergeMessage($"Configuration file '{targetFile}' exists already, will be renamed to '{Path.GetFileName(renamedTargetFile)}'. Check whether it should be changed.");
@@ -266,14 +271,14 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Installs the data asynchronously.
         /// </summary>
-        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginData">Information describing the plugin.</param>
         /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the operation result.
         /// </returns>
-        protected virtual Task<IOperationResult> InstallDataAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual Task<IOperationResult> InstallDataAsync(PluginData pluginData, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult<IOperationResult>(new OperationResult());
         }
@@ -291,16 +296,25 @@ namespace Kephas.Plugins.NuGet
         {
             var result = new OperationResult<IPlugin>();
 
+            var pluginData = context.Plugin.GetPluginData();
+            var pluginLocation = context.Plugin.Location;
+
             result.MergeMessages(
-                await this.UninstallDataAsync(pluginIdentity, context.Plugin.Location, context, cancellationToken)
+                await this.UninstallDataAsync(pluginData, pluginLocation, context, cancellationToken)
                 .PreserveThreadContext());
 
             result.MergeMessages(
-                await this.UninstallConfigAsync(pluginIdentity, context.Plugin.Location, context, cancellationToken)
+                await this.UninstallConfigAsync(pluginData, pluginLocation, context, cancellationToken)
                 .PreserveThreadContext());
 
             var baseResult = await base.UninstallPluginCoreAsync(pluginIdentity, context, cancellationToken)
                 .PreserveThreadContext();
+
+            var undoLog = this.GetUndoLog(pluginData);
+            foreach (var command in undoLog)
+            {
+                command.Execute();
+            }
 
             result.ReturnValue = baseResult.ReturnValue;
             return result.MergeMessages(baseResult);
@@ -309,19 +323,19 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Uninstalls the configuration asynchronously.
         /// </summary>
-        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginData">Information describing the plugin.</param>
         /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task<IOperationResult> UninstallConfigAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual async Task<IOperationResult> UninstallConfigAsync(PluginData pluginData, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
         {
             var result = new OperationResult();
             if (context.Operation == PluginOperation.Update)
             {
-                return result.MergeMessage($"Skipping configuration file uninstallation during update of {pluginIdentity}.");
+                return result.MergeMessage($"Skipping configuration file uninstallation during update of {pluginData.Identity}.");
             }
 
             var sourceConfigFilesFolder = Path.Combine(pluginLocation, this.pluginsSettings.PackageConfigFolder);
@@ -363,14 +377,14 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Uninstalls data asynchronously.
         /// </summary>
-        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginData">Information describing the plugin.</param>
         /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the operation result.
         /// </returns>
-        protected virtual Task<IOperationResult> UninstallDataAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual Task<IOperationResult> UninstallDataAsync(PluginData pluginData, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult<IOperationResult>(new OperationResult());
         }
@@ -504,7 +518,7 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Installs the plugin library items asynchronously.
         /// </summary>
-        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginData">Information describing the plugin.</param>
         /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="packageId">Identifier for the package being installed.</param>
@@ -515,7 +529,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task<IOperationResult> InstallBinAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, PackageIdentity packageId, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
+        protected virtual async Task<IOperationResult> InstallBinAsync(PluginData pluginData, string pluginLocation, IPluginContext context, PackageIdentity packageId, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
         {
             const string libFolderName = "lib";
 
@@ -540,7 +554,7 @@ namespace Kephas.Plugins.NuGet
         /// <summary>
         /// Installs the plugin content items asynchronously.
         /// </summary>
-        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="pluginData">Information describing the plugin.</param>
         /// <param name="pluginLocation">Pathname of the plugin folder.</param>
         /// <param name="context">The context.</param>
         /// <param name="packageId">Identifier for the package being installed.</param>
@@ -551,7 +565,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task<IOperationResult> InstallContentAsync(AppIdentity pluginIdentity, string pluginLocation, IPluginContext context, PackageIdentity packageId, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
+        protected virtual async Task<IOperationResult> InstallContentAsync(PluginData pluginData, string pluginLocation, IPluginContext context, PackageIdentity packageId, NuGetFramework nugetFramework, FrameworkReducer frameworkReducer, PackageReaderBase packageReader, CancellationToken cancellationToken)
         {
             const string contentFolderName = "content";
 
@@ -776,6 +790,128 @@ namespace Kephas.Plugins.NuGet
                         repositories,
                         availablePackages);
                 }
+            }
+        }
+
+        private PluginData AddUndoCommand(PluginData pluginData, UndoCommand undoCommand)
+        {
+            pluginData.Data.Add($"{UndoCommand.KeyPart}{undoCommand.Index}", undoCommand.ToString());
+
+            return pluginData;
+        }
+
+        private IEnumerable<UndoCommand> GetUndoLog(PluginData pluginData)
+        {
+            var cmds = pluginData.Data.Keys
+                .Where(k => k.StartsWith(UndoCommand.KeyPart))
+                .Select(k =>
+                {
+                    var cmd = UndoCommand.Parse(pluginData.Data[k]);
+                    cmd.Index = int.Parse(k.Substring(UndoCommand.KeyPart.Length));
+                    return cmd;
+                })
+                .OrderByDescending(cmd => cmd.Index)
+                .ToList();
+            return cmds;
+        }
+
+        private abstract class UndoCommand
+        {
+            public const string KeyPart = "-undo-";
+
+            private const char SplitSeparatorChar = '|';
+
+            private static readonly IDictionary<string, Func<string[], UndoCommand>> Activators =
+                new Dictionary<string, Func<string[], UndoCommand>>()
+                {
+                    { RenameUndoCommand.CommandName, args => new RenameUndoCommand(args) },
+                };
+
+            private static int index = 0;
+
+            public UndoCommand(string name, params string[] args)
+            {
+                this.Index = Interlocked.Increment(ref index);
+                this.Name = name;
+                this.Args = args;
+            }
+
+            public string Name { get; set; }
+
+            public string[] Args { get; set; }
+
+            public int Index { get; set; }
+
+            public static UndoCommand Parse(string commandString)
+            {
+                var splits = commandString.Split(SplitSeparatorChar);
+                var activator = Activators[splits[0]];
+                return activator(splits.Skip(1).Select(Unescape).ToArray());
+            }
+
+            public override string ToString()
+            {
+                var sb = new StringBuilder();
+                sb.Append(this.Name).Append(SplitSeparatorChar);
+                foreach (var arg in this.Args)
+                {
+                    sb.Append(Escape(arg)).Append(SplitSeparatorChar);
+                }
+
+                sb.Length = sb.Length - 1;
+
+                return sb.ToString();
+            }
+
+            public abstract void Execute();
+
+            private static string Escape(string value)
+            {
+                var sb = new StringBuilder(value);
+                sb.Replace("\\", "\\\\")
+                    .Replace("\n", "\\n")
+                    .Replace("\r", "\\r")
+                    .Replace("\t", "\\t")
+                    .Replace("&", "&amp;")
+                    .Replace(SplitSeparatorChar.ToString(), "&pipe;");
+                return sb.ToString();
+            }
+
+            private static string Unescape(string escapedValue)
+            {
+                var sb = new StringBuilder(escapedValue);
+                sb
+                    .Replace("&pipe;", SplitSeparatorChar.ToString())
+                    .Replace("&amp;", "&")
+                    .Replace("\\t", "\t")
+                    .Replace("\\r", "\r")
+                    .Replace("\\n", "\n")
+                    .Replace("\\\\", "\\");
+                return sb.ToString();
+            }
+        }
+
+        private class RenameUndoCommand : UndoCommand
+        {
+            public const string CommandName = "rename";
+
+            public RenameUndoCommand(string sourceFile, string originalFile, string renamedFile)
+                : base(CommandName, new string[] { originalFile, renamedFile })
+            {
+            }
+
+            public RenameUndoCommand(params string[] args)
+                : base(CommandName, args)
+            {
+            }
+
+            public string OriginalFile => this.Args[0];
+
+            public string RenamedFile => this.Args[1];
+
+            public override void Execute()
+            {
+                File.Move(this.RenamedFile, this.OriginalFile);
             }
         }
     }
