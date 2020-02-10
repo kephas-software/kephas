@@ -66,7 +66,7 @@ namespace Kephas.Plugins.Endpoints
             return new GetAvailablePluginsResponseMessage
                 {
                     Message = $"Retrieved {plugins.Count()} packages for {searchTerm}. Elapsed: {result.Elapsed:c}.",
-                    Plugins = plugins.Select(p => p.GetIdentity()).ToArray(),
+                    Plugins = plugins.Select(p => p.Identity).ToArray(),
                 };
         }
     }

@@ -56,8 +56,8 @@ namespace Kephas.Plugins.Endpoints
         {
             return new PluginData
             {
-                Id = plugin.GetIdentity().Id,
-                Version = plugin.GetIdentity().Version,
+                Id = plugin.Identity.Id,
+                Version = plugin.Identity.Version,
                 Location = plugin.Location,
                 State = plugin.State,
             };

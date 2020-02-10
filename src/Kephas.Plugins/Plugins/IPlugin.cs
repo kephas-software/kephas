@@ -21,6 +21,14 @@ namespace Kephas.Plugins
     public interface IPlugin : IExpando, IInstance<IAppInfo>, IIdentifiable
     {
         /// <summary>
+        /// Gets the identity.
+        /// </summary>
+        /// <returns>
+        /// The identity.
+        /// </returns>
+        AppIdentity Identity { get; }
+
+        /// <summary>
         /// Gets the full pathname of the installation folder.
         /// </summary>
         /// <value>
@@ -37,11 +45,11 @@ namespace Kephas.Plugins
         PluginState State { get; }
 
         /// <summary>
-        /// Gets the identity.
+        /// Gets the plugin data.
         /// </summary>
         /// <returns>
-        /// The identity.
+        /// The plugin data.
         /// </returns>
-        AppIdentity GetIdentity();
+        PluginData GetPluginData();
     }
 }
