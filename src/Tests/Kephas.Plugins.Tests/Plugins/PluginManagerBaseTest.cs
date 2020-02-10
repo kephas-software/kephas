@@ -159,7 +159,7 @@ namespace Kephas.Tests.Plugins
                 plugin.Id.Returns(pluginId.Id);
                 plugin.GetTypeInfo().Returns(pluginInfo);
                 plugin.Location.Returns(Path.Combine(this.ctx.PluginsLocation, pluginId.Id));
-                var pluginData = new PluginData(pluginId, PluginState.None);
+                var pluginData = context?.PluginData ?? new PluginData(pluginId, PluginState.None);
                 plugin.GetPluginData().Returns(pluginData);
                 this.onInstall?.Invoke(plugin, context);
                 return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>(plugin));

@@ -159,7 +159,8 @@ namespace Kephas.Plugins.NuGet
 
                 var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginIdentity);
                 context.PluginIdentity(pluginIdentity);
-                var pluginData = new PluginData(pluginIdentity, PluginState.None);
+                var pluginData = context.PluginData ?? this.GetInstalledPluginData(pluginIdentity);
+                pluginData.ChangeIdentity(pluginIdentity);
 
                 var pluginLocation = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
                 if (!Directory.Exists(pluginLocation))

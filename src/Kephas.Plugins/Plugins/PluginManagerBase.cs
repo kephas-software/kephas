@@ -171,6 +171,7 @@ namespace Kephas.Plugins
                     {
                         var context = this.CreatePluginContext(options)
                             .Merge(installOptions)
+                            .PluginData(pluginData)
                             .Transaction(new InstallTransaction(pluginData));
 
                         var instWrappedResult = await Profiler.WithStopwatchAsync(

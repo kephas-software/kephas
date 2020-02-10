@@ -46,6 +46,15 @@ namespace Kephas.Plugins
         public PluginOperation? Operation { get; set; }
 
         /// <summary>
+        /// Gets or sets information describing the plugin. Typically this is used upon installation,
+        /// when the plugin instance does not exist yet.
+        /// </summary>
+        /// <value>
+        /// Information describing the plugin.
+        /// </value>
+        public PluginData PluginData { get; set; }
+
+        /// <summary>
         /// Gets or sets the plugin data.
         /// </summary>
         /// <value>

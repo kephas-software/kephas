@@ -79,10 +79,19 @@ namespace Kephas.Plugins
         PluginOperation? Operation { get; set; }
 
         /// <summary>
-        /// Gets or sets the plugin data.
+        /// Gets or sets information describing the plugin.
+        /// Typically this is used upon installation, when the plugin instance does not exist yet.
         /// </summary>
         /// <value>
-        /// The plugin data.
+        /// Information describing the plugin.
+        /// </value>
+        PluginData PluginData { get; set; }
+
+        /// <summary>
+        /// Gets or sets the plugin instance.
+        /// </summary>
+        /// <value>
+        /// The plugin instance.
         /// </value>
         IPlugin Plugin { get; set; }
 
@@ -145,6 +154,31 @@ namespace Kephas.Plugins
             }
 
             context.PluginIdentity = pluginIdentity;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the plugin data. Typically this is used upon installation, when the plugin instance does not exist yet.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The context to act on.</param>
+        /// <param name="pluginData">The plugin data.</param>
+        /// <param name="overwrite">Optional. True to overwrite the previously set value, false to
+        ///                         preserve it.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext PluginData<TContext>(this TContext context, PluginData pluginData, bool overwrite = true)
+            where TContext : class, IPluginContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            if (context.PluginData != null && !overwrite)
+            {
+                return context;
+            }
+
+            context.PluginData = pluginData;
             return context;
         }
 

@@ -48,7 +48,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The identifier of the plugin.
         /// </value>
-        public AppIdentity Identity { get; }
+        public AppIdentity Identity { get; private set; }
 
         /// <summary>
         /// Gets the plugin state.
@@ -56,7 +56,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The plugin state.
         /// </value>
-        public PluginState State { get; }
+        public PluginState State { get; private set; }
 
         /// <summary>
         /// Gets additional data associated with the license.
@@ -104,30 +104,50 @@ namespace Kephas.Plugins
         }
 
         /// <summary>
-        /// Creates a clone of the plugin data instance with the provided changed state.
+        /// Changes the identity of this instance with the provided identity.
         /// </summary>
-        /// <param name="state">The plugin state.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
         /// <returns>
-        /// A new <see cref="PluginData"/>.
+        /// This <see cref="PluginData"/>.
         /// </returns>
-        public PluginData ChangeState(PluginState state)
+        public PluginData ChangeIdentity(AppIdentity pluginIdentity)
         {
-            return new PluginData(this.Identity, state, this.Data.ToDictionary(kv => kv.Key, kv => kv.Value));
+            Requires.NotNull(pluginIdentity, nameof(pluginIdentity));
+
+            if (!this.Identity.Id.Equals(pluginIdentity.Id, StringComparison.CurrentCultureIgnoreCase))
+            {
+                throw new InvalidPluginDataException($"Cannot change identity from {this.Identity} to {pluginIdentity}, only casing differences are accepted.");
+            }
+
+            this.Identity = pluginIdentity;
+            return this;
         }
 
         /// <summary>
-        /// Creates a clone of the plugin data instance with the provided changed data entry.
+        /// Changes the state of this instance with the provided changed state.
+        /// </summary>
+        /// <param name="state">The plugin state.</param>
+        /// <returns>
+        /// This <see cref="PluginData"/>.
+        /// </returns>
+        public PluginData ChangeState(PluginState state)
+        {
+            this.State = state;
+            return this;
+        }
+
+        /// <summary>
+        /// Changes the data value of this instance with the provided new value.
         /// </summary>
         /// <param name="key">The data entry key.</param>
         /// <param name="value">The data entry value.</param>
         /// <returns>
-        /// A new <see cref="PluginData"/>.
+        /// This <see cref="PluginData"/>.
         /// </returns>
         public PluginData ChangeData(string key, string value)
         {
-            var data = this.Data.ToDictionary(kv => kv.Key, kv => kv.Value);
-            data[key] = value;
-            return new PluginData(this.Identity, this.State, data);
+            this.Data[key] = value;
+            return this;
         }
 
         /// <summary>
