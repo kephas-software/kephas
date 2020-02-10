@@ -12,6 +12,7 @@ namespace Kephas.Plugins
 {
     using Kephas.Application;
     using Kephas.Composition;
+    using Kephas.Plugins.Transactions;
     using Kephas.Services;
 
     /// <summary>
@@ -51,5 +52,13 @@ namespace Kephas.Plugins
         /// The plugin data.
         /// </value>
         public IPlugin Plugin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the operation transaction.
+        /// </summary>
+        /// <value>
+        /// The operation transaction.
+        /// </value>
+        public ITransaction Transaction { get; set; }
     }
 }

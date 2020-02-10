@@ -26,6 +26,7 @@ namespace Kephas.Tests.Plugins
     using Kephas.Plugins;
     using Kephas.Plugins.Application;
     using Kephas.Plugins.Reflection;
+    using Kephas.Plugins.Transactions;
     using Kephas.Services;
     using Kephas.Testing.Composition;
     using NSubstitute;
@@ -52,7 +53,7 @@ namespace Kephas.Tests.Plugins
         {
             using (var ctx = new PluginsTestContext())
             {
-                var pluginManager = this.CreatePluginManager(ctx);
+                var pluginManager = this.CreatePluginManager(ctx, (p, pctx) => pctx.Transaction.AddCommand(new TestUndoCommand("h:i", "param|1", "param\n2")));
 
                 var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
 
@@ -76,7 +77,7 @@ namespace Kephas.Tests.Plugins
             }
         }
 
-        private IPluginManager CreatePluginManager(PluginsTestContext context)
+        private IPluginManager CreatePluginManager(PluginsTestContext context, Action<IPlugin, IPluginContext> onInstall = null)
         {
             var pluginsDataStore = new TestPluginRepository();
             var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginRepository: pluginsDataStore);
@@ -85,7 +86,20 @@ namespace Kephas.Tests.Plugins
                 appRuntime,
                 this.CreateContextFactoryMock(() => new PluginContext(Substitute.For<ICompositionContext>())),
                 this.CreateEventHubMock(),
-                pluginsDataStore);
+                pluginsDataStore,
+                onInstall: onInstall);
+        }
+
+        public class TestUndoCommand : UndoCommandBase
+        {
+            public TestUndoCommand(params string[] args)
+                : base("test", args)
+            {
+            }
+
+            public override void Execute(IPluginContext context)
+            {
+            }
         }
 
         public class TestPluginRepository : IPluginRepository
@@ -111,11 +125,20 @@ namespace Kephas.Tests.Plugins
         public class TestPluginManager : PluginManagerBase
         {
             private readonly PluginsTestContext ctx;
+            private readonly Action<IPlugin, IPluginContext> onInstall;
 
-            public TestPluginManager(PluginsTestContext ctx, IAppRuntime appRuntime, IContextFactory contextFactory, IEventHub eventHub, IPluginRepository pluginRepository, ILogManager logManager = null)
+            public TestPluginManager(
+                PluginsTestContext ctx,
+                IAppRuntime appRuntime,
+                IContextFactory contextFactory,
+                IEventHub eventHub,
+                IPluginRepository pluginRepository,
+                ILogManager logManager = null,
+                Action<IPlugin, IPluginContext> onInstall = null)
                 : base(appRuntime, contextFactory, eventHub, pluginRepository, logManager)
             {
                 this.ctx = ctx;
+                this.onInstall = onInstall;
             }
 
             public override Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
@@ -136,6 +159,9 @@ namespace Kephas.Tests.Plugins
                 plugin.Id.Returns(pluginId.Id);
                 plugin.GetTypeInfo().Returns(pluginInfo);
                 plugin.Location.Returns(Path.Combine(this.ctx.PluginsLocation, pluginId.Id));
+                var pluginData = new PluginData(pluginId, PluginState.None);
+                plugin.GetPluginData().Returns(pluginData);
+                this.onInstall?.Invoke(plugin, context);
                 return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>(plugin));
             }
         }

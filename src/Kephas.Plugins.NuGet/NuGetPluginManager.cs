@@ -36,6 +36,7 @@ namespace Kephas.Plugins.NuGet
     using Kephas.Operations;
     using Kephas.Plugins;
     using Kephas.Plugins.Reflection;
+    using Kephas.Plugins.Transactions;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -249,9 +250,8 @@ namespace Kephas.Plugins.NuGet
                         var extension = Path.GetExtension(targetFile);
                         var targetFileRaw = targetFile.Substring(0, targetFile.Length - extension.Length);
                         var renamedTargetFile = $"{targetFileRaw}-{DateTime.Now:yyyyMMddhhmmss}{extension}";
-                        File.Move(targetFile, renamedTargetFile);
 
-                        this.AddUndoCommand(pluginData, new RenameUndoCommand(targetFile, renamedTargetFile));
+                        context.Transaction.MoveFile(targetFile, renamedTargetFile);
 
                         File.Copy(configFile, targetFile);
 
@@ -310,14 +310,9 @@ namespace Kephas.Plugins.NuGet
             var baseResult = await base.UninstallPluginCoreAsync(pluginIdentity, context, cancellationToken)
                 .PreserveThreadContext();
 
-            var undoLog = this.GetUndoLog(pluginData);
-            foreach (var command in undoLog)
-            {
-                command.Execute();
-            }
-
-            result.ReturnValue = baseResult.ReturnValue;
-            return result.MergeMessages(baseResult);
+            return result
+                .ReturnValue(baseResult.ReturnValue)
+                .MergeMessages(baseResult);
         }
 
         /// <summary>
@@ -790,128 +785,6 @@ namespace Kephas.Plugins.NuGet
                         repositories,
                         availablePackages);
                 }
-            }
-        }
-
-        private PluginData AddUndoCommand(PluginData pluginData, UndoCommand undoCommand)
-        {
-            pluginData.Data.Add($"{UndoCommand.KeyPart}{undoCommand.Index}", undoCommand.ToString());
-
-            return pluginData;
-        }
-
-        private IEnumerable<UndoCommand> GetUndoLog(PluginData pluginData)
-        {
-            var cmds = pluginData.Data.Keys
-                .Where(k => k.StartsWith(UndoCommand.KeyPart))
-                .Select(k =>
-                {
-                    var cmd = UndoCommand.Parse(pluginData.Data[k]);
-                    cmd.Index = int.Parse(k.Substring(UndoCommand.KeyPart.Length));
-                    return cmd;
-                })
-                .OrderByDescending(cmd => cmd.Index)
-                .ToList();
-            return cmds;
-        }
-
-        private abstract class UndoCommand
-        {
-            public const string KeyPart = "-undo-";
-
-            private const char SplitSeparatorChar = '|';
-
-            private static readonly IDictionary<string, Func<string[], UndoCommand>> Activators =
-                new Dictionary<string, Func<string[], UndoCommand>>()
-                {
-                    { RenameUndoCommand.CommandName, args => new RenameUndoCommand(args) },
-                };
-
-            private static int index = 0;
-
-            public UndoCommand(string name, params string[] args)
-            {
-                this.Index = Interlocked.Increment(ref index);
-                this.Name = name;
-                this.Args = args;
-            }
-
-            public string Name { get; set; }
-
-            public string[] Args { get; set; }
-
-            public int Index { get; set; }
-
-            public static UndoCommand Parse(string commandString)
-            {
-                var splits = commandString.Split(SplitSeparatorChar);
-                var activator = Activators[splits[0]];
-                return activator(splits.Skip(1).Select(Unescape).ToArray());
-            }
-
-            public override string ToString()
-            {
-                var sb = new StringBuilder();
-                sb.Append(this.Name).Append(SplitSeparatorChar);
-                foreach (var arg in this.Args)
-                {
-                    sb.Append(Escape(arg)).Append(SplitSeparatorChar);
-                }
-
-                sb.Length = sb.Length - 1;
-
-                return sb.ToString();
-            }
-
-            public abstract void Execute();
-
-            private static string Escape(string value)
-            {
-                var sb = new StringBuilder(value);
-                sb.Replace("\\", "\\\\")
-                    .Replace("\n", "\\n")
-                    .Replace("\r", "\\r")
-                    .Replace("\t", "\\t")
-                    .Replace("&", "&amp;")
-                    .Replace(SplitSeparatorChar.ToString(), "&pipe;");
-                return sb.ToString();
-            }
-
-            private static string Unescape(string escapedValue)
-            {
-                var sb = new StringBuilder(escapedValue);
-                sb
-                    .Replace("&pipe;", SplitSeparatorChar.ToString())
-                    .Replace("&amp;", "&")
-                    .Replace("\\t", "\t")
-                    .Replace("\\r", "\r")
-                    .Replace("\\n", "\n")
-                    .Replace("\\\\", "\\");
-                return sb.ToString();
-            }
-        }
-
-        private class RenameUndoCommand : UndoCommand
-        {
-            public const string CommandName = "rename";
-
-            public RenameUndoCommand(string sourceFile, string originalFile, string renamedFile)
-                : base(CommandName, new string[] { originalFile, renamedFile })
-            {
-            }
-
-            public RenameUndoCommand(params string[] args)
-                : base(CommandName, args)
-            {
-            }
-
-            public string OriginalFile => this.Args[0];
-
-            public string RenamedFile => this.Args[1];
-
-            public override void Execute()
-            {
-                File.Move(this.RenamedFile, this.OriginalFile);
             }
         }
     }

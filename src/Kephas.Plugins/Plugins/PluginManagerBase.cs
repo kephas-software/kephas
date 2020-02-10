@@ -28,6 +28,7 @@ namespace Kephas.Plugins
     using Kephas.Operations;
     using Kephas.Plugins.Interaction;
     using Kephas.Plugins.Reflection;
+    using Kephas.Plugins.Transactions;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -169,7 +170,8 @@ namespace Kephas.Plugins
                     if (this.CanInstallPlugin(pluginData))
                     {
                         var context = this.CreatePluginContext(options)
-                            .Merge(installOptions);
+                            .Merge(installOptions)
+                            .Transaction(new InstallTransaction(pluginData));
 
                         var instWrappedResult = await Profiler.WithStopwatchAsync(
                                     () => this.InstallPluginCoreAsync(pluginIdentity, context, cancellationToken))
@@ -277,7 +279,8 @@ namespace Kephas.Plugins
                     {
                         var context = this.ContextFactory.CreateContext<PluginContext>()
                                             .Merge(uninstallOptions)
-                                            .Plugin(plugin);
+                                            .Plugin(plugin)
+                                            .Transaction(new InstallTransaction(pluginData));
 
                         var uninstWrappedResult = await Profiler.WithStopwatchAsync(
                                 () => this.UninstallPluginCoreAsync(pluginIdentity, context, cancellationToken))
@@ -827,15 +830,18 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task<IOperationResult<IPlugin>> UninstallPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
+        protected virtual async Task<IOperationResult<IPlugin>> UninstallPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
         {
+            var rollbackResult = await context.Transaction.RollbackAsync(context, cancellationToken).PreserveThreadContext();
+
             var pluginFolder = context.Plugin.Location;
             if (Directory.Exists(pluginFolder))
             {
                 Directory.Delete(pluginFolder, recursive: true);
             }
 
-            return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>(context.Plugin));
+            return new OperationResult<IPlugin>(context.Plugin)
+                .MergeMessages(rollbackResult);
         }
     }
 }

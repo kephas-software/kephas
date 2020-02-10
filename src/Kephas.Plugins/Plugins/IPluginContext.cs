@@ -12,6 +12,7 @@ namespace Kephas.Plugins
 {
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Plugins.Transactions;
     using Kephas.Services;
 
     /// <summary>
@@ -84,6 +85,14 @@ namespace Kephas.Plugins
         /// The plugin data.
         /// </value>
         IPlugin Plugin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the operation transaction.
+        /// </summary>
+        /// <value>
+        /// The operation transaction.
+        /// </value>
+        ITransaction Transaction { get; set; }
     }
 
     /// <summary>
@@ -140,11 +149,11 @@ namespace Kephas.Plugins
         }
 
         /// <summary>
-        /// Sets the plugin operation.
+        /// Sets the plugin instance.
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>
         /// <param name="context">The context to act on.</param>
-        /// <param name="plugin">The plugin data.</param>
+        /// <param name="plugin">The plugin instance.</param>
         /// <param name="overwrite">Optional. True to overwrite the previously set value, false to
         ///                         preserve it.</param>
         /// <returns>
@@ -161,6 +170,25 @@ namespace Kephas.Plugins
             }
 
             context.Plugin = plugin;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets the transaction.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The context to act on.</param>
+        /// <param name="transaction">The transaction.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext Transaction<TContext>(this TContext context, ITransaction transaction)
+            where TContext : class, IPluginContext
+        {
+            Requires.NotNull(context, nameof(context));
+            Requires.NotNull(transaction, nameof(transaction));
+
+            context.Transaction = transaction;
             return context;
         }
     }
