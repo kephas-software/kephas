@@ -181,7 +181,7 @@ namespace Kephas.Plugins
                             .MergeMessages(instWrappedResult.ReturnValue)
                             .MergeMessage($"Plugin {pluginIdentity} successfully installed, awaiting initialization. Elapsed: {instWrappedResult.Elapsed:c}.");
 
-                        this.PluginRepository.StorePluginData(new PluginData(pluginData.Identity, PluginState.PendingInitialization));
+                        this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.PendingInitialization));
 
                         pluginData = this.GetInstalledPluginData(pluginIdentity);
                         installComplete = pluginData.State == PluginState.PendingInitialization;
@@ -284,7 +284,7 @@ namespace Kephas.Plugins
                             .PreserveThreadContext();
                         result.MergeAll(uninstWrappedResult.ReturnValue);
 
-                        this.PluginRepository.StorePluginData(new PluginData(pluginData.Identity, PluginState.None));
+                        this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.None));
 
                         pluginData = this.GetInstalledPluginData(pluginIdentity);
                         uninstallComplete = pluginData.State == PluginState.None;
@@ -354,7 +354,7 @@ namespace Kephas.Plugins
                             .MergeAll(initWrappedResult.ReturnValue)
                             .ReturnValue(plugin);
 
-                        this.PluginRepository.StorePluginData(new PluginData(pluginData.Identity, PluginState.Disabled));
+                        this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.Disabled));
 
                         pluginData = this.GetInstalledPluginData(pluginIdentity);
                         initializeComplete = pluginData.State == PluginState.Disabled;
@@ -370,7 +370,7 @@ namespace Kephas.Plugins
                     }
                     catch
                     {
-                        this.PluginRepository.StorePluginData(new PluginData(pluginData.Identity, PluginState.Corrupt));
+                        this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.Corrupt));
                         throw;
                     }
 
@@ -469,7 +469,7 @@ namespace Kephas.Plugins
                             () => this.UninitializeDataAsync(pluginIdentity, context, cancellationToken)).PreserveThreadContext();
                         result.MergeAll(uninitWrappedResult.ReturnValue);
 
-                        this.PluginRepository.StorePluginData(new PluginData(pluginData.Identity, PluginState.PendingUninstallation));
+                        this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.PendingUninstallation));
 
                         pluginData = this.GetInstalledPluginData(pluginIdentity);
                         uninitializeComplete = pluginData.State == PluginState.PendingUninstallation;
@@ -481,7 +481,7 @@ namespace Kephas.Plugins
                     }
                     catch
                     {
-                        this.PluginRepository.StorePluginData(new PluginData(pluginData.Identity, PluginState.Corrupt));
+                        this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.Corrupt));
                         throw;
                     }
 
@@ -529,7 +529,7 @@ namespace Kephas.Plugins
                             context.Operation == PluginOperation.Enable ? SeverityLevel.Error : SeverityLevel.Warning);
                     }
 
-                    this.PluginRepository.StorePluginData(new PluginData(pluginData.Identity, PluginState.Enabled));
+                    this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.Enabled));
 
                     pluginData = this.GetInstalledPluginData(pluginIdentity);
 
@@ -572,7 +572,7 @@ namespace Kephas.Plugins
                             context.Operation == PluginOperation.Disable ? SeverityLevel.Error : SeverityLevel.Warning);
                     }
 
-                    this.PluginRepository.StorePluginData(new PluginData(pluginData.Identity, PluginState.Disabled));
+                    this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.Disabled));
 
                     pluginData = this.GetInstalledPluginData(pluginIdentity);
 

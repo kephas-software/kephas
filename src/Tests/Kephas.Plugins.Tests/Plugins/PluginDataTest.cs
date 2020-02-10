@@ -20,36 +20,61 @@ namespace Kephas.Tests.Plugins
     public class PluginDataTest
     {
         [Test]
+        public void PluginData_data_not_null()
+        {
+            var pluginData = new PluginData(new AppIdentity("Gigi.Belogea", "1.2.3"), PluginState.Disabled);
+            Assert.IsNotNull(pluginData.Data);
+            Assert.AreEqual(0, pluginData.Data.Count);
+        }
+
+        [Test]
         public void ToString_with_checksum()
         {
             var pluginData = new PluginData(new AppIdentity("Gigi.Belogea", "1.2.3"), PluginState.Disabled);
-            Assert.AreEqual("Gigi.Belogea:1.2.3,Disabled,-736467149", pluginData.ToString());
+            Assert.AreEqual("Gigi.Belogea:1.2.3\nDisabled\n\n274170507", pluginData.ToString());
+        }
+
+        [Test]
+        public void ToString_with_data_and_checksum()
+        {
+            var pluginData = new PluginData(new AppIdentity("Gigi.Belogea", "1.2.3"), PluginState.PendingInitialization)
+                    .ChangeData("my", "data");
+            Assert.AreEqual("Gigi.Belogea:1.2.3\nPendingInitialization\nmy:data\n1855999989", pluginData.ToString());
         }
 
         [Test]
         public void Parse_valid_checksum()
         {
-            var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3,Disabled,-736467149");
+            var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3\nDisabled\n\n274170507");
             Assert.AreEqual(new AppIdentity("Gigi.Belogea", "1.2.3"), pluginData.Identity);
             Assert.AreEqual(PluginState.Disabled, pluginData.State);
         }
 
         [Test]
+        public void Parse_valid_data_and_checksum()
+        {
+            var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3\nPendingInitialization\nmy:data\n1855999989");
+            Assert.AreEqual(new AppIdentity("Gigi.Belogea", "1.2.3"), pluginData.Identity);
+            Assert.AreEqual(PluginState.PendingInitialization, pluginData.State);
+            Assert.AreEqual(1, pluginData.Data.Count);
+        }
+
+        [Test]
         public void Parse_invalid_checksum()
         {
-            Assert.Throws<InvalidPluginDataException>(() => PluginData.Parse("Gigi.Belogea:1.2.3,Enabled,-736467149"));
+            Assert.Throws<InvalidPluginDataException>(() => PluginData.Parse("Gigi.Belogea:1.2.3\nEnabled\n\n274170507"));
         }
 
         [Test]
         public void Parse_invalid_app_identity_name()
         {
-            Assert.Throws<ArgumentException>(() => PluginData.Parse("Gigi/Belogea:1.2.3,Enabled,-736467149"));
+            Assert.Throws<ArgumentException>(() => PluginData.Parse("Gigi/Belogea:1.2.3\nEnabled\n\n274170507"));
         }
 
         [Test]
         public void Parse_invalid_app_identity_version()
         {
-            Assert.Throws<ArgumentException>(() => PluginData.Parse("GigiBelogea:1.2.3{dev},Enabled,-736467149"));
+            Assert.Throws<ArgumentException>(() => PluginData.Parse("GigiBelogea:1.2.3{dev}\nEnabled\n\n274170507"));
         }
     }
 }
