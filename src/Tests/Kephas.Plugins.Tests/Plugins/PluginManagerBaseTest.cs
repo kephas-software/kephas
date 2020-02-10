@@ -59,6 +59,7 @@ namespace Kephas.Tests.Plugins
 
                 Assert.IsNotNull(result);
                 Assert.AreEqual(PluginState.Enabled, result.ReturnValue.State);
+                Assert.AreEqual("p1:1.2.3.4\nEnabled\n-inst-undo-1:test|h:i|param&pipe;1|param\\n2\n-1439924665", result.ReturnValue.GetPluginData().ToString());
             }
         }
 
