@@ -45,7 +45,8 @@ namespace Kephas.Core.Tests.Licensing
                 "me",
                 DateTime.Parse("2020-01-12"),
                 DateTime.Parse("2021-01-11"),
-                new Dictionary<string, string> {
+                new Dictionary<string, string>
+                {
                     { "SubscriptionId", "987654321" },
                     { "Description", "Good boy, may receive one year for free" },
                 });

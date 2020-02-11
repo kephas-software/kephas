@@ -72,7 +72,7 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license check result.
         /// </returns>
-        public virtual ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext context = null)
+        public virtual ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext? context = null)
         {
             var license = this.GetLicenseData(appIdentity);
             if (license == null)
@@ -83,22 +83,22 @@ namespace Kephas.Licensing
             var result = new LicenseCheckResult(appIdentity, false);
             if (license.ValidFrom.HasValue && DateTime.Now.Date < license.ValidFrom.Value)
             {
-                return result.MergeMessage($"The license validity starts only on {license.ValidFrom}.");
+                return result.MergeMessage($"The license validity starts only on {license.ValidFrom:d}.");
             }
 
             if (license.ValidTo.HasValue && DateTime.Now.Date > license.ValidTo.Value)
             {
-                return result.MergeMessage($"The license expired on {license.ValidTo}.");
+                return result.MergeMessage($"The license expired on {license.ValidTo:d}.");
             }
 
             if (!this.IsMatch(license.AppId, appIdentity.Id))
             {
-                return result.MergeMessage($"The license was issued for app '{license.AppId}' not for the requested {appIdentity}.");
+                return result.MergeMessage($"The license was issued for app '{license.AppId}' not for the requested '{appIdentity}'.");
             }
 
             if (!this.IsVersionMatch(license.AppVersionRange, appIdentity.Version))
             {
-                return result.MergeMessage($"The license was issued for version range '{license.AppVersionRange}' not for the requested {appIdentity}.");
+                return result.MergeMessage($"The license was issued for version range '{license.AppVersionRange}' not for the requested '{appIdentity}'.");
             }
 
             return result.ReturnValue(true);

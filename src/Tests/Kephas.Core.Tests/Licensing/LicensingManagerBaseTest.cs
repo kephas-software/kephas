@@ -117,6 +117,96 @@ namespace Kephas.Core.Tests.Licensing
             Assert.AreEqual(1, result.Messages.Count);
         }
 
+        [Test]
+        public void CheckLicense_valid_period_open_end()
+        {
+            var licenseData = new LicenseData(
+                Guid.NewGuid().ToString(),
+                "my-app",
+                "1.0",
+                "standard",
+                "you",
+                "me",
+                DateTime.Now.Date,
+                null);
+            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
+            Assert.IsTrue(result.IsLicensed, "Should be licensed.");
+            Assert.AreEqual(0, result.Messages.Count);
+        }
+
+        [Test]
+        public void CheckLicense_invalid_period_open_end()
+        {
+            var licenseData = new LicenseData(
+                Guid.NewGuid().ToString(),
+                "my-app",
+                "1.0",
+                "standard",
+                "you",
+                "me",
+                DateTime.Now.Date.AddDays(1),
+                null);
+            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
+            Assert.IsFalse(result.IsLicensed, "Should not be licensed.");
+            Assert.AreEqual(1, result.Messages.Count);
+        }
+
+        [Test]
+        public void CheckLicense_valid_period_open_begin()
+        {
+            var licenseData = new LicenseData(
+                Guid.NewGuid().ToString(),
+                "my-app",
+                "1.0",
+                "standard",
+                "you",
+                "me",
+                null,
+                DateTime.Now.Date.AddDays(1));
+            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
+            Assert.IsTrue(result.IsLicensed, "Should be licensed.");
+            Assert.AreEqual(0, result.Messages.Count);
+        }
+
+        [Test]
+        public void CheckLicense_invalid_period_open_begin()
+        {
+            var licenseData = new LicenseData(
+                Guid.NewGuid().ToString(),
+                "my-app",
+                "1.0",
+                "standard",
+                "you",
+                "me",
+                null,
+                DateTime.Now.Date.AddDays(-1));
+            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
+            Assert.IsFalse(result.IsLicensed, "Should not be licensed.");
+            Assert.AreEqual(1, result.Messages.Count);
+        }
+
+        [Test]
+        public void CheckLicense_valid_period_all()
+        {
+            var licenseData = new LicenseData(
+                Guid.NewGuid().ToString(),
+                "my-app",
+                "1.0",
+                "standard",
+                "you",
+                "me",
+                DateTime.Now.Date.AddDays(-1),
+                DateTime.Now.Date.AddDays(1));
+            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
+            Assert.IsTrue(result.IsLicensed, "Should be licensed.");
+            Assert.AreEqual(0, result.Messages.Count);
+        }
+
         public class TestLicensingManager : LicensingManagerBase
         {
             public TestLicensingManager(Func<AppIdentity, LicenseData> licenseDataGetter)
