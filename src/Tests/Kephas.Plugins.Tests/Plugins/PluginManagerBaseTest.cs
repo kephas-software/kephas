@@ -64,21 +64,138 @@ namespace Kephas.Tests.Plugins
         }
 
         [Test]
+        public async Task InstallPluginAsync_p1_cannot_install()
+        {
+            using (var ctx = new PluginsTestContext())
+            {
+                var pluginManager = this.CreatePluginManager(
+                    ctx,
+                    canInstall: (d, c) => false);
+
+                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4")));
+            }
+        }
+
+        [Test]
+        public async Task InstallPluginAsync_p1_cannot_initialize()
+        {
+            using (var ctx = new PluginsTestContext())
+            {
+                var pluginManager = this.CreatePluginManager(
+                    ctx,
+                    canInitialize: (d, c) => false);
+
+                var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(PluginState.PendingInitialization, result.ReturnValue.State);
+                Assert.AreEqual("p1:1.2.3.4\nPendingInitialization\n\n881471263", result.ReturnValue.GetPluginData().ToString());
+            }
+        }
+
+        [Test]
+        public async Task InstallPluginAsync_p1_cannot_enable()
+        {
+            using (var ctx = new PluginsTestContext())
+            {
+                var pluginManager = this.CreatePluginManager(
+                    ctx,
+                    canEnable: (d, c) => false);
+
+                var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(PluginState.Disabled, result.ReturnValue.State);
+                Assert.AreEqual("p1:1.2.3.4\nDisabled\n\n1019128045", result.ReturnValue.GetPluginData().ToString());
+            }
+        }
+
+        [Test]
         public async Task UninstallPluginAsync_p1()
         {
             using (var ctx = new PluginsTestContext())
             {
-                var pluginManager = this.CreatePluginManager(ctx);
+                var callbackCalls = 0;
+                var pluginManager = this.CreatePluginManager(ctx, (p, pctx) => pctx.Transaction.AddCommand(new TestUndoCommand("h:i", "param|1", "param\n2")));
+
+                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
+                var uninstResult = await pluginManager.UninstallPluginAsync(new AppIdentity("p1"), pctx => pctx["callback"] = (Action)(() => callbackCalls++));
+
+                Assert.IsNotNull(uninstResult);
+                Assert.AreEqual(PluginState.None, uninstResult.ReturnValue.State);
+                Assert.AreEqual("p1:1.2.3.4\nNone\n\n90280241", uninstResult.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual(1, callbackCalls);
+            }
+        }
+
+        [Test]
+        public async Task UninstallPluginAsync_p1_not_installed()
+        {
+            using (var ctx = new PluginsTestContext())
+            {
+                var pluginManager = this.CreatePluginManager(
+                    ctx,
+                    canUninstall: (d, c) => false);
+
+                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1")));
+            }
+        }
+
+        [Test]
+        public async Task UninstallPluginAsync_p1_cannot_uninstall()
+        {
+            using (var ctx = new PluginsTestContext())
+            {
+                var pluginManager = this.CreatePluginManager(
+                    ctx,
+                    canUninstall: (d, c) => false);
 
                 var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
                 var uninstResult = await pluginManager.UninstallPluginAsync(new AppIdentity("p1"));
 
                 Assert.IsNotNull(uninstResult);
-                Assert.AreEqual(PluginState.None, uninstResult.ReturnValue.State);
+                Assert.AreEqual(PluginState.PendingUninstallation, uninstResult.ReturnValue.State);
+                Assert.AreEqual("p1:1.2.3.4\nPendingUninstallation\n\n397301541", uninstResult.ReturnValue.GetPluginData().ToString());
             }
         }
 
-        private IPluginManager CreatePluginManager(PluginsTestContext context, Action<IPlugin, IPluginContext> onInstall = null)
+        [Test]
+        public async Task UninstallPluginAsync_p1_cannot_uninitialize()
+        {
+            using (var ctx = new PluginsTestContext())
+            {
+                var pluginManager = this.CreatePluginManager(
+                    ctx,
+                    canUninitialize: (d, c) => false);
+
+                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
+                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1")));
+            }
+        }
+
+        [Test]
+        public async Task UninstallPluginAsync_p1_cannot_disable()
+        {
+            using (var ctx = new PluginsTestContext())
+            {
+                var pluginManager = this.CreatePluginManager(
+                    ctx,
+                    canDisable: (d, c) => false);
+
+                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
+                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1", "1.2.3.4")));
+            }
+        }
+
+        private TestPluginManager CreatePluginManager(
+            PluginsTestContext context,
+            Action<IPlugin, IPluginContext> onInstall = null,
+            Func<PluginData, IPluginContext, bool> canInstall = null,
+            Func<PluginData, IPluginContext, bool> canUninstall = null,
+            Func<PluginData, IPluginContext, bool> canInitialize = null,
+            Func<PluginData, IPluginContext, bool> canUninitialize = null,
+            Func<PluginData, IPluginContext, bool> canEnable = null,
+            Func<PluginData, IPluginContext, bool> canDisable = null)
         {
             var pluginsDataStore = new TestPluginRepository();
             var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginRepository: pluginsDataStore);
@@ -88,7 +205,13 @@ namespace Kephas.Tests.Plugins
                 this.CreateContextFactoryMock(() => new PluginContext(Substitute.For<ICompositionContext>())),
                 this.CreateEventHubMock(),
                 pluginsDataStore,
-                onInstall: onInstall);
+                onInstall: onInstall,
+                canInstall: canInstall,
+                canUninstall: canUninstall,
+                canInitialize: canInitialize,
+                canUninitialize: canUninitialize,
+                canEnable: canEnable,
+                canDisable: canDisable);
         }
 
         public class TestUndoCommand : UndoCommandBase
@@ -100,6 +223,8 @@ namespace Kephas.Tests.Plugins
 
             public override void Execute(IPluginContext context)
             {
+                var callback = context["callback"] as Action;
+                callback?.Invoke();
             }
         }
 
@@ -127,6 +252,12 @@ namespace Kephas.Tests.Plugins
         {
             private readonly PluginsTestContext ctx;
             private readonly Action<IPlugin, IPluginContext> onInstall;
+            private readonly Func<PluginData, IPluginContext, bool> canInstall;
+            private readonly Func<PluginData, IPluginContext, bool> canUninstall;
+            private readonly Func<PluginData, IPluginContext, bool> canInitialize;
+            private readonly Func<PluginData, IPluginContext, bool> canUninitialize;
+            private readonly Func<PluginData, IPluginContext, bool> canEnable;
+            private readonly Func<PluginData, IPluginContext, bool> canDisable;
 
             public TestPluginManager(
                 PluginsTestContext ctx,
@@ -135,11 +266,23 @@ namespace Kephas.Tests.Plugins
                 IEventHub eventHub,
                 IPluginRepository pluginRepository,
                 ILogManager logManager = null,
-                Action<IPlugin, IPluginContext> onInstall = null)
+                Action<IPlugin, IPluginContext> onInstall = null,
+                Func<PluginData, IPluginContext, bool> canInstall = null,
+                Func<PluginData, IPluginContext, bool> canUninstall = null,
+                Func<PluginData, IPluginContext, bool> canInitialize = null,
+                Func<PluginData, IPluginContext, bool> canUninitialize = null,
+                Func<PluginData, IPluginContext, bool> canEnable = null,
+                Func<PluginData, IPluginContext, bool> canDisable = null)
                 : base(appRuntime, contextFactory, eventHub, pluginRepository, logManager)
             {
                 this.ctx = ctx;
                 this.onInstall = onInstall;
+                this.canInstall = canInstall;
+                this.canUninstall = canUninstall;
+                this.canInitialize = canInitialize;
+                this.canUninitialize = canUninitialize;
+                this.canEnable = canEnable;
+                this.canDisable = canDisable;
             }
 
             public override Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
@@ -158,12 +301,50 @@ namespace Kephas.Tests.Plugins
                 pluginInfo.Version.Returns(pluginId.Version);
                 var plugin = Substitute.For<IPlugin>();
                 plugin.Id.Returns(pluginId.Id);
+                plugin.Identity.Returns(pluginId);
                 plugin.GetTypeInfo().Returns(pluginInfo);
                 plugin.Location.Returns(Path.Combine(this.ctx.PluginsLocation, pluginId.Id));
                 var pluginData = context?.PluginData ?? new PluginData(pluginId, PluginState.None);
                 plugin.GetPluginData().Returns(pluginData);
+                plugin.State.Returns(ci => pluginData.State);
                 this.onInstall?.Invoke(plugin, context);
                 return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>(plugin));
+            }
+
+            protected override bool CanInstallPlugin(PluginData pluginData, IPluginContext context)
+            {
+                return (this.canInstall?.Invoke(pluginData, context) ?? true)
+                    && base.CanInstallPlugin(pluginData, context);
+            }
+
+            protected override bool CanUninstallPlugin(PluginData pluginData, IPluginContext context)
+            {
+                return (this.canUninstall?.Invoke(pluginData, context) ?? true)
+                    && base.CanUninstallPlugin(pluginData, context);
+            }
+
+            protected override bool CanInitializePlugin(PluginData pluginData, IPluginContext context)
+            {
+                return (this.canInitialize?.Invoke(pluginData, context) ?? true)
+                    && base.CanInitializePlugin(pluginData, context);
+            }
+
+            protected override bool CanUninitializePlugin(PluginData pluginData, IPluginContext context)
+            {
+                return (this.canUninitialize?.Invoke(pluginData, context) ?? true)
+                    && base.CanUninitializePlugin(pluginData, context);
+            }
+
+            protected override bool CanEnablePlugin(PluginData pluginData, IPluginContext context)
+            {
+                return (this.canEnable?.Invoke(pluginData, context) ?? true)
+                    && base.CanEnablePlugin(pluginData, context);
+            }
+
+            protected override bool CanDisablePlugin(PluginData pluginData, IPluginContext context)
+            {
+                return (this.canDisable?.Invoke(pluginData, context) ?? true)
+                    && base.CanDisablePlugin(pluginData, context);
             }
         }
 

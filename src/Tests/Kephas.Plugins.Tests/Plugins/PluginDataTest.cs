@@ -76,5 +76,28 @@ namespace Kephas.Tests.Plugins
         {
             Assert.Throws<ArgumentException>(() => PluginData.Parse("GigiBelogea:1.2.3{dev}\nEnabled\n\n274170507"));
         }
+
+        [Test]
+        public void ChangeIdentity_different_casing()
+        {
+            var pluginData = new PluginData(new AppIdentity("Gigi.Belogea", "1.2.3-DEV"), PluginState.Enabled);
+            pluginData.ChangeIdentity(new AppIdentity("gigi.belogea", "1.2.3-dev"));
+            Assert.AreEqual(new AppIdentity("gigi.belogea", "1.2.3-dev"), pluginData.Identity);
+        }
+
+        [Test]
+        public void ChangeIdentity_different_values()
+        {
+            var pluginData = new PluginData(new AppIdentity("Gigi.Belogea", "1.2.3-DEV"), PluginState.Enabled);
+            Assert.Throws<InvalidPluginDataException>(() => pluginData.ChangeIdentity(new AppIdentity("gigi.belogea", "1.2.3")));
+        }
+
+        [Test]
+        public void ChangeIdentity_version_null()
+        {
+            var pluginData = new PluginData(new AppIdentity("Gigi.Belogea"), PluginState.Enabled);
+            pluginData.ChangeIdentity(new AppIdentity("gigi.belogea", "1.2.3-dev"));
+            Assert.AreEqual(new AppIdentity("gigi.belogea", "1.2.3-dev"), pluginData.Identity);
+        }
     }
 }
