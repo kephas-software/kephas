@@ -18,6 +18,7 @@ namespace Kephas.Cryptography
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.IO;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -26,26 +27,30 @@ namespace Kephas.Cryptography
     /// A symmetric encryption service base.
     /// </summary>
     /// <typeparam name="TAlgorithm">Type of the algorithm.</typeparam>
-    public abstract class SymmetricEncryptionServiceBase<TAlgorithm> : IEncryptionService, ISyncEncryptionService
+    public abstract class SymmetricEncryptionServiceBase<TAlgorithm> : IEncryptionService
+#if NETSTANDARD2_1
+#else
+        , ISyncEncryptionService
+#endif
        where TAlgorithm : SymmetricAlgorithm
     {
-        private readonly IContextFactory contextFactory;
+        private readonly Func<IEncryptionContext> contextCtor;
         private readonly Func<IEncryptionContext, TAlgorithm> algorithmCtor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SymmetricEncryptionServiceBase{TAlgorithm}"/>
         /// class.
         /// </summary>
-        /// <param name="contextFactory">The context factory.</param>
+        /// <param name="contextCtor">The context constructor.</param>
         /// <param name="algorithmCtor">The algorithm constructor.</param>
         protected SymmetricEncryptionServiceBase(
-            IContextFactory contextFactory,
+            Func<IEncryptionContext> contextCtor,
             Func<IEncryptionContext, TAlgorithm> algorithmCtor)
         {
-            Requires.NotNull(contextFactory, nameof(contextFactory));
+            Requires.NotNull(contextCtor, nameof(contextCtor));
             Requires.NotNull(algorithmCtor, nameof(algorithmCtor));
 
-            this.contextFactory = contextFactory;
+            this.contextCtor = contextCtor;
             this.algorithmCtor = algorithmCtor;
         }
 
@@ -169,9 +174,7 @@ namespace Kephas.Cryptography
         /// </returns>
         protected virtual IEncryptionContext CreateEncryptionContext(Action<IEncryptionContext> optionsConfig = null)
         {
-            var context = this.contextFactory.CreateContext<EncryptionContext>();
-            optionsConfig?.Invoke(context);
-            return context;
+            return this.contextCtor().Merge(optionsConfig);
         }
 
         /// <summary>

@@ -10,6 +10,7 @@
 
 namespace Kephas.Cryptography
 {
+    using System;
     using System.Security.Cryptography;
 
     using Kephas.Services;
@@ -25,7 +26,16 @@ namespace Kephas.Cryptography
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
         public AesEncryptionService(IContextFactory contextFactory)
-            : base(contextFactory, ctx => new AesManaged())
+            : base(() => contextFactory.CreateContext<EncryptionContext>(), ctx => new AesManaged())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AesEncryptionService"/> class.
+        /// </summary>
+        /// <param name="contextCtor">The context constructor.</param>
+        protected AesEncryptionService(Func<IEncryptionContext> contextCtor)
+            : base(contextCtor, ctx => new AesManaged())
         {
         }
     }

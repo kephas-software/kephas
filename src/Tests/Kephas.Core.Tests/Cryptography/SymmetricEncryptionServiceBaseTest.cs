@@ -16,6 +16,7 @@ namespace Kephas.Core.Tests.Cryptography
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Composition;
     using Kephas.Cryptography;
     using Kephas.Services;
@@ -86,18 +87,11 @@ namespace Kephas.Core.Tests.Cryptography
             private readonly Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor;
 
             public TestEncryptionService(IContextFactory contextFactory, Func<IEncryptionContext, SymmetricAlgorithm> algorithmCtor)
-                : base(contextFactory, algorithmCtor)
+                : base(() => contextFactory.CreateContext<EncryptionContext>(), algorithmCtor)
             {
                 this.algorithmCtor = algorithmCtor;
             }
 
-            /// <summary>
-            /// Creates the symmetric algorithm.
-            /// </summary>
-            /// <param name="encryptionContext">Context for the encryption.</param>
-            /// <returns>
-            /// The new symmetric algorithm.
-            /// </returns>
             protected override SymmetricAlgorithm CreateSymmetricAlgorithm(IEncryptionContext encryptionContext)
             {
                 return this.algorithmCtor(encryptionContext);
