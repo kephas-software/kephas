@@ -114,7 +114,9 @@ namespace Kephas.Plugins
         {
             Requires.NotNull(pluginIdentity, nameof(pluginIdentity));
 
-            if (!this.Identity.Id.Equals(pluginIdentity.Id, StringComparison.CurrentCultureIgnoreCase))
+            if (!this.Identity.Id.Equals(pluginIdentity.Id, StringComparison.CurrentCultureIgnoreCase)
+                || !(this.Identity.Version?.Equals(pluginIdentity.Version, StringComparison.CurrentCultureIgnoreCase)
+                    ?? true))
             {
                 throw new InvalidPluginDataException($"Cannot change identity from {this.Identity} to {pluginIdentity}, only casing differences are accepted.");
             }
