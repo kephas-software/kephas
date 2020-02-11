@@ -27,6 +27,8 @@ namespace Kephas.Serialization
     /// </summary>
     public static class SerializationExtensions
     {
+#if NETSTANDARD2_1
+#else
         /// <summary>
         /// Serializes the object with the provided options.
         /// </summary>
@@ -95,7 +97,7 @@ namespace Kephas.Serialization
         /// <param name="textReader">The text reader where from the serialized object should be read.</param>
         /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
-        /// The serialized object.
+        /// The deserialized object.
         /// </returns>
         public static object Deserialize(
             this ISerializationService serializationService,
@@ -118,27 +120,28 @@ namespace Kephas.Serialization
         /// Deserializes the object with the options provided in the serialization context.
         /// </summary>
         /// <param name="serializationService">The serialization service.</param>
-        /// <param name="obj">The object to be serialized.</param>
+        /// <param name="serializedObj">The serialized object.</param>
         /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         /// <returns>
-        /// The serialized object.
+        /// The deserialized object.
         /// </returns>
         public static object Deserialize(
             this ISerializationService serializationService,
-            string obj,
+            string serializedObj,
             Action<ISerializationContext> optionsConfig = null)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
             if (serializationService is ISyncSerializationService syncService)
             {
-                return syncService.Deserialize(obj, optionsConfig);
+                return syncService.Deserialize(serializedObj, optionsConfig);
             }
             else
             {
-                return serializationService.DeserializeAsync(obj, optionsConfig).GetResultNonLocking();
+                return serializationService.DeserializeAsync(serializedObj, optionsConfig).GetResultNonLocking();
             }
         }
+#endif
 
         /// <summary>
         /// Deserializes the object from the provided format asynchronously.
@@ -538,9 +541,6 @@ namespace Kephas.Serialization
         /// <returns>
         /// A Task promising the serialized object as a XML string.
         /// </returns>
-        /// <example>
-        /// .
-        /// </example>
         public static Task<string> XmlSerializeAsync(
             this ISerializationService serializationService,
             object obj,
@@ -567,6 +567,8 @@ namespace Kephas.Serialization
             return Serialize<XmlMediaType>(serializationService, obj, optionsConfig);
         }
 
+#if NETSTANDARD2_1
+#else
         /// <summary>
         /// Serializes the provided object.
         /// </summary>
@@ -665,5 +667,6 @@ namespace Kephas.Serialization
 
             return serializer.DeserializeAsync(serializedObject, context).GetResultNonLocking();
         }
+#endif
     }
 }
