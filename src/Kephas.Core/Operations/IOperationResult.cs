@@ -151,6 +151,7 @@ namespace Kephas.Operations
             Requires.NotNull(result, nameof(result));
 
             result.Elapsed = elapsed;
+            result.PercentCompleted = 1;
             result.OperationState = operationState ?? Kephas.Operations.OperationState.Completed;
 
             return result;
