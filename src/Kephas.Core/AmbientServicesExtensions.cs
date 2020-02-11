@@ -19,6 +19,7 @@ namespace Kephas
     using Kephas.Composition.Lite.Hosting;
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -657,6 +658,24 @@ namespace Kephas
             Requires.NotNull(configurationStore, nameof(configurationStore));
 
             ambientServices.Register(configurationStore);
+
+            return ambientServices;
+        }
+
+        /// <summary>
+        /// Sets the licensing manager to the ambient services.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="licensingManager">The licensing manager.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices WithLicensingManager(this IAmbientServices ambientServices, ILicensingManager licensingManager)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(licensingManager, nameof(licensingManager));
+
+            ambientServices.Register(licensingManager);
 
             return ambientServices;
         }
