@@ -21,10 +21,9 @@ namespace Kephas.Cryptography
         /// <summary>
         /// Initializes a new instance of the <see cref="EncryptionContext"/> class.
         /// </summary>
-        /// <param name="compositionContext">The composition context (optional).</param>
-        /// <param name="isThreadSafe">True if this object is thread safe (optional).</param>
-        public EncryptionContext(ICompositionContext compositionContext, bool isThreadSafe = false)
-            : base(compositionContext, isThreadSafe)
+        /// <param name="compositionContext">The composition context.</param>
+        public EncryptionContext(ICompositionContext compositionContext)
+            : base(compositionContext)
         {
         }
 
