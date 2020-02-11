@@ -71,21 +71,21 @@ namespace Kephas.Plugins.Application
         /// <param name="targetFramework">Optional. The target framework.</param>
         /// <param name="pluginRepository">Optional. The plugin repository.</param>
         public PluginsAppRuntime(
-            IAssemblyLoader assemblyLoader = null,
+            IAssemblyLoader? assemblyLoader = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
-            ILogManager logManager = null,
-            Func<AssemblyName, bool> assemblyFilter = null,
-            string appFolder = null,
-            IEnumerable<string> configFolders = null,
-            IEnumerable<string> licenseFolders = null,
-            string appId = null,
-            string appInstanceId = null,
-            string appVersion = null,
-            IExpando appArgs = null,
+            ILogManager? logManager = null,
+            Func<AssemblyName, bool>? assemblyFilter = null,
+            string? appFolder = null,
+            IEnumerable<string>? configFolders = null,
+            IEnumerable<string>? licenseFolders = null,
+            string? appId = null,
+            string? appInstanceId = null,
+            string? appVersion = null,
+            IExpando? appArgs = null,
             bool? enablePlugins = null,
-            string pluginsFolder = null,
-            string targetFramework = null,
-            IPluginRepository pluginRepository = null)
+            string? pluginsFolder = null,
+            string? targetFramework = null,
+            IPluginRepository? pluginRepository = null)
             : base(assemblyLoader, checkLicense, logManager, assemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
@@ -116,7 +116,7 @@ namespace Kephas.Plugins.Application
         /// <value>
         /// The target framework.
         /// </value>
-        public string TargetFramework { get; }
+        public string? TargetFramework { get; }
 
         /// <summary>
         /// Gets the plugin repository.
@@ -134,7 +134,7 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// A path indicating the indicated application location.
         /// </returns>
-        public override string GetAppLocation(AppIdentity appIdentity, bool throwOnNotFound = true)
+        public override string? GetAppLocation(AppIdentity appIdentity, bool throwOnNotFound = true)
         {
             var location = base.GetAppLocation(appIdentity, throwOnNotFound: false);
             if (location != null)
@@ -161,7 +161,7 @@ namespace Kephas.Plugins.Application
 
             return throwOnNotFound
                 ? throw new InvalidOperationException($"App '{appIdentity}' not found.")
-                : (string)null;
+                : (string?)null;
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// True to enable plugins, false to disable them.
         /// </returns>
-        protected virtual bool ComputeEnablePlugins(bool? enablePlugins, IExpando appArgs)
+        protected virtual bool ComputeEnablePlugins(bool? enablePlugins, IExpando? appArgs)
         {
             return enablePlugins ?? (bool?)appArgs?[EnablePluginsArgName] ?? true;
         }
@@ -256,7 +256,7 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// The calculated plugins folder.
         /// </returns>
-        protected virtual string ComputePluginsLocation(string rawPluginsFolder, IExpando appArgs)
+        protected virtual string ComputePluginsLocation(string? rawPluginsFolder, IExpando? appArgs)
         {
             var pluginsFolder = Path.Combine(this.GetAppLocation(), rawPluginsFolder ?? appArgs?[PluginsFolderArgName] as string ?? DefaultPluginsFolder);
             return Path.GetFullPath(pluginsFolder);
@@ -270,7 +270,7 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// The calculated target framework.
         /// </returns>
-        protected virtual string ComputeTargetFramework(string targetFramework, IExpando appArgs)
+        protected virtual string? ComputeTargetFramework(string? targetFramework, IExpando? appArgs)
         {
             return targetFramework ?? appArgs?[TargetFrameworkArgName] as string;
         }
@@ -295,7 +295,7 @@ namespace Kephas.Plugins.Application
             {
                 try
                 {
-                    var licenseState = this.LicensingManager.CheckLicense(pluginIdentity);
+                    var licenseState = this.CheckLicense(pluginIdentity, null);
                     if (!licenseState.IsLicensed)
                     {
                         this.Logger.Warn("Plugin '{plugin}' is not licensed, will not be loaded. Checker information: {messages}.", pluginIdentity, licenseState.Messages.Select(m => m.Message).ToArray());

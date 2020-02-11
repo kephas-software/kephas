@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application
 {
     using System;
@@ -43,17 +45,17 @@ namespace Kephas.Application
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public DynamicAppRuntime(
-            IAssemblyLoader assemblyLoader = null,
+            IAssemblyLoader? assemblyLoader = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
-            ILogManager logManager = null,
-            Func<AssemblyName, bool> defaultAssemblyFilter = null,
-            string appFolder = null,
-            IEnumerable<string> configFolders = null,
-            IEnumerable<string> licenseFolders = null,
-            string appId = null,
-            string appInstanceId = null,
-            string appVersion = null,
-            IExpando appArgs = null)
+            ILogManager? logManager = null,
+            Func<AssemblyName, bool>? defaultAssemblyFilter = null,
+            string? appFolder = null,
+            IEnumerable<string>? configFolders = null,
+            IEnumerable<string>? licenseFolders = null,
+            string? appId = null,
+            string? appInstanceId = null,
+            string? appVersion = null,
+            IExpando? appArgs = null)
             : base(assemblyLoader, checkLicense, logManager, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
         {
         }

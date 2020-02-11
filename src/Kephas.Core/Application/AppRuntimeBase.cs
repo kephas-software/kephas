@@ -162,15 +162,7 @@ namespace Kephas.Application
         /// <value>
         /// A function delegate that yields an ILicenseCheckResult.
         /// </value>
-        protected Func<AppIdentity, IContext, ILicenseCheckResult> CheckLicense { get; }
-
-        /// <summary>
-        /// Gets the manager for licensing.
-        /// </summary>
-        /// <value>
-        /// The licensing manager.
-        /// </value>
-        protected ILicensingManager LicensingManager { get; }
+        protected Func<AppIdentity, IContext?, ILicenseCheckResult> CheckLicense { get; }
 
         /// <summary>
         /// Gets the assembly filter.
