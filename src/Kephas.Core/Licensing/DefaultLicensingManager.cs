@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LicensingManagerBase.cs" company="Kephas Software SRL">
+// <copyright file="DefaultLicensingManager.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the licensing manager base class.
+//   Implements the default licensing manager class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -25,9 +25,9 @@ namespace Kephas.Licensing
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// A licensing manager base.
+    /// The default licensing manager.
     /// </summary>
-    public abstract class LicensingManagerBase : ILicensingManager
+    public class DefaultLicensingManager : ILicensingManager
 #if NETSTANDARD2_1
 #else
         , ISyncLicensingManager
@@ -36,29 +36,29 @@ namespace Kephas.Licensing
         private readonly Func<AppIdentity, LicenseData> licenseDataGetter;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LicensingManagerBase"/> class.
+        /// Initializes a new instance of the <see cref="DefaultLicensingManager"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="encryptionService">The encryption service.</param>
-        protected LicensingManagerBase(IAppRuntime appRuntime, IEncryptionService encryptionService)
+        public DefaultLicensingManager(IAppRuntime appRuntime, IEncryptionService encryptionService)
             : this(new LicenseRepository(appRuntime, encryptionService))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LicensingManagerBase"/> class.
+        /// Initializes a new instance of the <see cref="DefaultLicensingManager"/> class.
         /// </summary>
         /// <param name="licenseRepository">The license repository.</param>
-        protected LicensingManagerBase(ILicenseRepository licenseRepository)
+        public DefaultLicensingManager(ILicenseRepository licenseRepository)
             : this(appIdentity => licenseRepository.GetLicenseData(appIdentity))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LicensingManagerBase"/> class.
+        /// Initializes a new instance of the <see cref="DefaultLicensingManager"/> class.
         /// </summary>
         /// <param name="licenseDataGetter">The license data getter.</param>
-        protected LicensingManagerBase(Func<AppIdentity, LicenseData> licenseDataGetter)
+        public DefaultLicensingManager(Func<AppIdentity, LicenseData> licenseDataGetter)
         {
             Requires.NotNull(licenseDataGetter, nameof(licenseDataGetter));
 

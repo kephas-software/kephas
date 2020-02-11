@@ -16,6 +16,7 @@ namespace Kephas
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Licensing;
     using Kephas.Plugins.Application;
 
     /// <summary>
@@ -61,7 +62,7 @@ namespace Kephas
             return ambientServices.WithAppRuntime(
                 new PluginsAppRuntime(
                     ambientServices.AssemblyLoader,
-                    ambientServices.LicensingManager,
+                    (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
                     ambientServices.LogManager,
                     assemblyFilter,
                     appFolder,

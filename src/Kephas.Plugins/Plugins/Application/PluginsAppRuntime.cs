@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Plugins.Application
 {
     using System;
@@ -22,6 +24,7 @@ namespace Kephas.Plugins.Application
     using Kephas.Logging;
     using Kephas.Plugins.Resources;
     using Kephas.Reflection;
+    using Kephas.Services;
 
     /// <summary>
     /// The Plugins application runtime.
@@ -52,7 +55,7 @@ namespace Kephas.Plugins.Application
         /// Initializes a new instance of the <see cref="PluginsAppRuntime"/> class.
         /// </summary>
         /// <param name="assemblyLoader">Optional. The assembly loader.</param>
-        /// <param name="licensingManager">Optional. Manager for licensing.</param>
+        /// <param name="checkLicense">Optional. The check license delegate.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="assemblyFilter">Optional. A filter for loaded assemblies.</param>
         /// <param name="appFolder">Optional. The application location. If not specified, the current
@@ -69,7 +72,7 @@ namespace Kephas.Plugins.Application
         /// <param name="pluginRepository">Optional. The plugin repository.</param>
         public PluginsAppRuntime(
             IAssemblyLoader assemblyLoader = null,
-            ILicensingManager licensingManager = null,
+            Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
             ILogManager logManager = null,
             Func<AssemblyName, bool> assemblyFilter = null,
             string appFolder = null,
@@ -83,7 +86,7 @@ namespace Kephas.Plugins.Application
             string pluginsFolder = null,
             string targetFramework = null,
             IPluginRepository pluginRepository = null)
-            : base(assemblyLoader, licensingManager, logManager, assemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
+            : base(assemblyLoader, checkLicense, logManager, assemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);

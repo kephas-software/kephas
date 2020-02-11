@@ -15,6 +15,7 @@ namespace Kephas.Application
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Services;
@@ -59,7 +60,7 @@ namespace Kephas.Application
 
             var appRuntime = new DynamicAppRuntime(
                 ambientServices.AssemblyLoader,
-                ambientServices.LicensingManager,
+                (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
                 ambientServices.LogManager,
                 assemblyFilter,
                 appFolder,
@@ -107,7 +108,7 @@ namespace Kephas.Application
 
             var appRuntime = new StaticAppRuntime(
                 ambientServices.AssemblyLoader,
-                ambientServices.LicensingManager,
+                (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
                 ambientServices.LogManager,
                 assemblyFilter,
                 appFolder,

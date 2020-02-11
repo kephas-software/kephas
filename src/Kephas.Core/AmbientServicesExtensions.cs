@@ -18,6 +18,7 @@ namespace Kephas
     using Kephas.Composition.Lite;
     using Kephas.Composition.Lite.Hosting;
     using Kephas.Configuration;
+    using Kephas.Cryptography;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Licensing;
     using Kephas.Logging;
@@ -681,11 +682,33 @@ namespace Kephas
         }
 
         /// <summary>
+        /// Sets the default licensing manager to the ambient services.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="encryptionService">The encryption service.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices WithDefaultLicensingManager(this IAmbientServices ambientServices, IEncryptionService encryptionService)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+            Requires.NotNull(encryptionService, nameof(encryptionService));
+
+            const string LicenseRepositoryKey = "__LicenseRepository";
+            ambientServices.Register(new DefaultLicensingManager(appid =>
+                ((ambientServices[LicenseRepositoryKey] as ILicenseRepository)
+                    ?? (ILicenseRepository)(ambientServices[LicenseRepositoryKey] = new LicenseRepository(ambientServices.AppRuntime, encryptionService)))
+                        .GetLicenseData(appid)));
+
+            return ambientServices;
+        }
+
+        /// <summary>
         /// Sets the log manager to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="logManager">The log manager.</param>
-        /// <param name="replaceDefault">Optional. True to replace the <see cref="Loggable.DefaultLogManager"/>.</param>
+        /// <param name="replaceDefault">Optional. True to replace the <see cref="LoggingHelper.DefaultLogManager"/>.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
@@ -771,8 +794,10 @@ namespace Kephas
         /// Sets the Lite composition container to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="containerBuilderConfig">The container builder configuration.</param>
+        /// <param name="containerBuilderConfig">Optional. The container builder configuration.</param>
+        /// <returns>
         /// This <paramref name="ambientServices"/>.
+        /// </returns>
         public static IAmbientServices WithLiteCompositionContainer(this IAmbientServices ambientServices, Action<LiteCompositionContainerBuilder> containerBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));

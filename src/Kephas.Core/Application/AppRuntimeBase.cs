@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application
 {
     using System;
@@ -80,11 +82,11 @@ namespace Kephas.Application
             new ConcurrentDictionary<object, IEnumerable<Assembly>>();
 
         private string appLocation;
-        private string appFolder;
+        private string? appFolder;
         private string[] configLocations;
         private string[] licenseLocations;
-        private IEnumerable<string> configFolders;
-        private IEnumerable<string> licenseFolders;
+        private IEnumerable<string>? configFolders;
+        private IEnumerable<string>? licenseFolders;
         private ILogger logger;
         private bool isDisposed = false; // To detect redundant calls
 
@@ -92,7 +94,7 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
         /// <param name="assemblyLoader">Optional. The assembly loader.</param>
-        /// <param name="licensingManager">Optional. Manager for licensing.</param>
+        /// <param name="checkLicense">Optional. The check license delegate.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
         ///                                     assemblies.</param>
@@ -101,28 +103,28 @@ namespace Kephas.Application
         /// <param name="configFolders">Optional. The configuration folders relative to the application
         ///                             location.</param>
         /// <param name="licenseFolders">Optional. The license folders relative to the application
-        ///                             location.</param>
+        ///                              location.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         protected AppRuntimeBase(
-            IAssemblyLoader assemblyLoader = null,
-            ILicensingManager licensingManager = null,
-            ILogManager logManager = null,
-            Func<AssemblyName, bool> defaultAssemblyFilter = null,
-            string appFolder = null,
-            IEnumerable<string> configFolders = null,
-            IEnumerable<string> licenseFolders = null,
-            string appId = null,
-            string appInstanceId = null,
-            string appVersion = null,
-            IExpando appArgs = null)
+            IAssemblyLoader? assemblyLoader = null,
+            Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
+            ILogManager? logManager = null,
+            Func<AssemblyName, bool>? defaultAssemblyFilter = null,
+            string? appFolder = null,
+            IEnumerable<string>? configFolders = null,
+            IEnumerable<string>? licenseFolders = null,
+            string? appId = null,
+            string? appInstanceId = null,
+            string? appVersion = null,
+            IExpando? appArgs = null)
             : base(isThreadSafe: true)
         {
             this.logManager = logManager ?? new NullLogManager();
             this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
-            this.LicensingManager = licensingManager ?? new NullLicensingManager();
+            this.CheckLicense = checkLicense ?? ((appid, ctx) => new LicenseCheckResult(appid, true));
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appFolder = appFolder;
             this.configFolders = configFolders;
@@ -153,6 +155,14 @@ namespace Kephas.Application
         /// The assembly loader.
         /// </value>
         protected IAssemblyLoader AssemblyLoader { get; }
+
+        /// <summary>
+        /// Gets the check license delegate.
+        /// </summary>
+        /// <value>
+        /// A function delegate that yields an ILicenseCheckResult.
+        /// </value>
+        protected Func<AppIdentity, IContext, ILicenseCheckResult> CheckLicense { get; }
 
         /// <summary>
         /// Gets the manager for licensing.
@@ -232,7 +242,7 @@ namespace Kephas.Application
         /// <returns>
         /// A path indicating the indicated application location.
         /// </returns>
-        public virtual string GetAppLocation(AppIdentity appIdentity, bool throwOnNotFound = true)
+        public virtual string? GetAppLocation(AppIdentity appIdentity, bool throwOnNotFound = true)
         {
             if (appIdentity == null || appIdentity.Equals(this.GetAppIdentity()))
             {
@@ -241,7 +251,7 @@ namespace Kephas.Application
 
             return throwOnNotFound
                 ? throw new InvalidOperationException($"App '{appIdentity}' not found.")
-                : (string)null;
+                : (string?)null;
         }
 
         /// <summary>
@@ -279,14 +289,14 @@ namespace Kephas.Application
         /// <returns>
         /// An enumeration of application assemblies.
         /// </returns>
-        public virtual IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool> assemblyFilter = null)
+        public virtual IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool>? assemblyFilter = null)
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
             // TODO The assemblies from the current domain do not consider the not loaded
             // but required referenced assemblies. Therefore load all the references recursively.
             // This could be optimized somehow.
-            assemblyFilter = assemblyFilter ?? this.AssemblyFilter;
+            assemblyFilter ??= this.AssemblyFilter;
             var assemblies = this.assemblyResolutionCache.GetOrAdd(
                 (object)assemblyFilter ?? this,
                 _ => this.ComputeAppAssemblies(assemblyFilter));
@@ -362,7 +372,7 @@ namespace Kephas.Application
         /// <param name="appId">Identifier for the application.</param>
         /// <param name="appInstanceId">Identifier for the application instance.</param>
         /// <param name="appVersion">The application version.</param>
-        protected virtual void InitializeAppProperties(Assembly entryAssembly, string appId, string appInstanceId, string appVersion)
+        protected virtual void InitializeAppProperties(Assembly entryAssembly, string? appId, string? appInstanceId, string? appVersion)
         {
             this[AppIdKey] = appId = this.GetAppId(entryAssembly, appId);
             this[AppInstanceIdKey] = string.IsNullOrEmpty(appInstanceId) ? $"{appId}-{Guid.NewGuid():N}" : appInstanceId;
@@ -478,7 +488,7 @@ namespace Kephas.Application
         /// <returns>
         /// The application identifier.
         /// </returns>
-        protected virtual string GetAppId(Assembly entryAssembly, string appId)
+        protected virtual string GetAppId(Assembly entryAssembly, string? appId)
         {
             if (!string.IsNullOrEmpty(appId))
             {
@@ -567,12 +577,11 @@ namespace Kephas.Application
             return assemblies;
         }
 
-
         /// <summary>
         /// Initializes the service, ensuring that the assembly resolution is properly handled.
         /// </summary>
         /// <param name="context">Optional. An optional context for initialization.</param>
-        protected virtual void InitializeCore(IContext context = null)
+        protected virtual void InitializeCore(IContext? context = null)
         {
             AppDomain.CurrentDomain.AssemblyResolve += this.HandleAssemblyResolveRaw;
         }
@@ -605,7 +614,7 @@ namespace Kephas.Application
             return true;
         }
 
-        private Assembly TryLoadAssembly(AssemblyName n)
+        private Assembly? TryLoadAssembly(AssemblyName n)
         {
             try
             {
@@ -618,7 +627,7 @@ namespace Kephas.Application
             }
         }
 
-        private string ComputeAppLocation(string appFolder)
+        private string ComputeAppLocation(string? appFolder)
         {
             if (!string.IsNullOrEmpty(appFolder))
             {
@@ -629,7 +638,7 @@ namespace Kephas.Application
             return assembly.GetLocation();
         }
 
-        private string[] ComputeConfigLocations(IEnumerable<string> configFolders)
+        private string[] ComputeConfigLocations(IEnumerable<string>? configFolders)
         {
             if (configFolders == null)
             {
@@ -644,7 +653,7 @@ namespace Kephas.Application
                 : locations.Distinct().ToArray();
         }
 
-        private string[] ComputeLicenseLocations(IEnumerable<string> licenseFolders)
+        private string[] ComputeLicenseLocations(IEnumerable<string>? licenseFolders)
         {
             if (licenseFolders == null)
             {

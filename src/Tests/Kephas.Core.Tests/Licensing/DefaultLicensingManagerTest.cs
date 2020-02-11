@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LicensingManagerBaseTest.cs" company="Kephas Software SRL">
+// <copyright file="LicensingManagerTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,7 +20,7 @@ namespace Kephas.Core.Tests.Licensing
     using NUnit.Framework;
 
     [TestFixture]
-    public class LicensingManagerBaseTest
+    public class DefaultLicensingManagerTest
     {
         [Test]
         public async Task CheckLicenseAsync_identity_equal()
@@ -32,7 +32,7 @@ namespace Kephas.Core.Tests.Licensing
                 "standard",
                 "you",
                 "me");
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = await licensingManager.CheckLicenseAsync(new AppIdentity("my-app", "1.0"));
             Assert.IsTrue(result.IsLicensed, "Should be licensed.");
             Assert.AreEqual(0, result.Messages.Count);
@@ -48,7 +48,7 @@ namespace Kephas.Core.Tests.Licensing
                 "standard",
                 "you",
                 "me");
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
             Assert.IsTrue(result.IsLicensed, "Should be licensed.");
             Assert.AreEqual(0, result.Messages.Count);
@@ -64,7 +64,7 @@ namespace Kephas.Core.Tests.Licensing
                 "standard",
                 "you",
                 "me");
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
             Assert.IsTrue(result.IsLicensed, "Should be licensed.");
             Assert.AreEqual(0, result.Messages.Count);
@@ -80,7 +80,7 @@ namespace Kephas.Core.Tests.Licensing
                 "standard",
                 "you",
                 "me");
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
             Assert.IsFalse(result.IsLicensed, "Should not be licensed.");
             Assert.AreEqual(1, result.Messages.Count);
@@ -96,7 +96,7 @@ namespace Kephas.Core.Tests.Licensing
                 "standard",
                 "you",
                 "me");
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.5"));
             Assert.IsTrue(result.IsLicensed, "Should be licensed.");
             Assert.AreEqual(0, result.Messages.Count);
@@ -112,7 +112,7 @@ namespace Kephas.Core.Tests.Licensing
                 "standard",
                 "you",
                 "me");
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.5"));
             Assert.IsFalse(result.IsLicensed, "Should not be licensed.");
             Assert.AreEqual(1, result.Messages.Count);
@@ -128,7 +128,7 @@ namespace Kephas.Core.Tests.Licensing
                 "standard",
                 "you",
                 "me");
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.5"));
             Assert.IsFalse(result.IsLicensed, "Should not be licensed.");
             Assert.AreEqual(1, result.Messages.Count);
@@ -146,7 +146,7 @@ namespace Kephas.Core.Tests.Licensing
                 "me",
                 DateTime.Now.Date,
                 null);
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
             Assert.IsTrue(result.IsLicensed, "Should be licensed.");
             Assert.AreEqual(0, result.Messages.Count);
@@ -164,7 +164,7 @@ namespace Kephas.Core.Tests.Licensing
                 "me",
                 DateTime.Now.Date.AddDays(1),
                 null);
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
             Assert.IsFalse(result.IsLicensed, "Should not be licensed.");
             Assert.AreEqual(1, result.Messages.Count);
@@ -182,7 +182,7 @@ namespace Kephas.Core.Tests.Licensing
                 "me",
                 null,
                 DateTime.Now.Date.AddDays(1));
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
             Assert.IsTrue(result.IsLicensed, "Should be licensed.");
             Assert.AreEqual(0, result.Messages.Count);
@@ -200,7 +200,7 @@ namespace Kephas.Core.Tests.Licensing
                 "me",
                 null,
                 DateTime.Now.Date.AddDays(-1));
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
             Assert.IsFalse(result.IsLicensed, "Should not be licensed.");
             Assert.AreEqual(1, result.Messages.Count);
@@ -218,18 +218,10 @@ namespace Kephas.Core.Tests.Licensing
                 "me",
                 DateTime.Now.Date.AddDays(-1),
                 DateTime.Now.Date.AddDays(1));
-            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var licensingManager = new DefaultLicensingManager(_ => licenseData);
             var result = licensingManager.CheckLicense(new AppIdentity("my-app", "1.0"));
             Assert.IsTrue(result.IsLicensed, "Should be licensed.");
             Assert.AreEqual(0, result.Messages.Count);
-        }
-
-        public class TestLicensingManager : LicensingManagerBase
-        {
-            public TestLicensingManager(Func<AppIdentity, LicenseData> licenseDataGetter)
-                : base(licenseDataGetter)
-            {
-            }
         }
     }
 }

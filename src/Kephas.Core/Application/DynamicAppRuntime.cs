@@ -21,6 +21,7 @@ namespace Kephas.Application
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Services;
 
     /// <summary>
     /// An application application runtime loading dynamically assemblies from the application localtion.
@@ -31,7 +32,7 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="DynamicAppRuntime"/> class.
         /// </summary>
         /// <param name="assemblyLoader">Optional. The assembly loader.</param>
-        /// <param name="licensingManager">Optional. Manager for licensing.</param>
+        /// <param name="checkLicense">Optional. The check license delegate.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="defaultAssemblyFilter">Optional. The default assembly filter.</param>
         /// <param name="appFolder">Optional. The application location.</param>
@@ -43,7 +44,7 @@ namespace Kephas.Application
         /// <param name="appArgs">Optional. The application arguments.</param>
         public DynamicAppRuntime(
             IAssemblyLoader assemblyLoader = null,
-            ILicensingManager licensingManager = null,
+            Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
             ILogManager logManager = null,
             Func<AssemblyName, bool> defaultAssemblyFilter = null,
             string appFolder = null,
@@ -53,7 +54,7 @@ namespace Kephas.Application
             string appInstanceId = null,
             string appVersion = null,
             IExpando appArgs = null)
-            : base(assemblyLoader, licensingManager, logManager, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
+            : base(assemblyLoader, checkLicense, logManager, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
         {
         }
 
