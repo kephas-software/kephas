@@ -22,6 +22,7 @@ namespace Kephas.Licensing
     using Kephas.Diagnostics.Contracts;
     using Kephas.Operations;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A licensing manager base.
@@ -115,7 +116,7 @@ namespace Kephas.Licensing
         /// </returns>
         public virtual Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(this.CheckLicense(appIdentity));
+            return ((Func<ILicenseCheckResult>)(() => this.CheckLicense(appIdentity))).AsAsync();
         }
 
         /// <summary>
