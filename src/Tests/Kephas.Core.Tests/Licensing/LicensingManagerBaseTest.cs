@@ -13,6 +13,7 @@
 namespace Kephas.Core.Tests.Licensing
 {
     using System;
+    using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Licensing;
@@ -21,6 +22,22 @@ namespace Kephas.Core.Tests.Licensing
     [TestFixture]
     public class LicensingManagerBaseTest
     {
+        [Test]
+        public async Task CheckLicenseAsync_identity_equal()
+        {
+            var licenseData = new LicenseData(
+                Guid.NewGuid().ToString(),
+                "my-app",
+                "1.0",
+                "standard",
+                "you",
+                "me");
+            var licensingManager = new TestLicensingManager(_ => licenseData);
+            var result = await licensingManager.CheckLicenseAsync(new AppIdentity("my-app", "1.0"));
+            Assert.IsTrue(result.IsLicensed, "Should be licensed.");
+            Assert.AreEqual(0, result.Messages.Count);
+        }
+
         [Test]
         public void CheckLicense_identity_equal()
         {

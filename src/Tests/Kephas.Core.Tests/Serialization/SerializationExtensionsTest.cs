@@ -172,6 +172,17 @@
             return serializer;
         }
 
+#if NETCOREAPP3_1
+        private ISerializer CreateStringSyncDeserializerMock(string content)
+        {
+            var serializer = Substitute.For<ISerializer>(/*Behavior.Strict*/);
+            serializer.Deserialize(
+                    Arg.Any<string>(),
+                    Arg.Is<ISerializationContext>(c => c != null))
+                .Returns(ci => new TestEntity { Name = content });
+            return serializer;
+        }
+#else
         private ISerializer CreateStringSyncDeserializerMock(string content)
         {
             var serializer = Substitute.For<ISerializer, ISyncSerializer>(/*Behavior.Strict*/);
@@ -181,6 +192,7 @@
                 .Returns(ci => new TestEntity { Name = content });
             return serializer;
         }
+#endif
 
         private ISerializer CreateStringSerializerMock(string result)
         {
@@ -190,6 +202,12 @@
                     Arg.Is<ISerializationContext>(c => c != null),
                     Arg.Any<CancellationToken>())
                 .Returns(ci => Task.FromResult(result));
+#if NETCOREAPP3_1
+            serializer.Serialize(
+                    Arg.Any<object>(),
+                    Arg.Is<ISerializationContext>(c => c != null))
+                .Returns(ci => result);
+#endif
             return serializer;
         }
 
