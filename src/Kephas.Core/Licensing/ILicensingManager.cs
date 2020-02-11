@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Licensing
 {
     using System.Threading;
@@ -32,7 +34,7 @@ namespace Kephas.Licensing
         /// <returns>
         /// An asynchronous result that yields the license check result.
         /// </returns>
-        Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext context = null, CancellationToken cancellationToken = default);
+        Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default);
 
 #if NETSTANDARD2_1
         /// <summary>
@@ -43,7 +45,7 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license check result.
         /// </returns>
-        ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext context = null)
+        ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext? context = null)
         {
             return this.CheckLicenseAsync(appIdentity, context).GetResultNonLocking();
         }
@@ -65,7 +67,7 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license check result.
         /// </returns>
-        ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext context = null);
+        ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext? context = null);
     }
 
     /// <summary>
@@ -82,7 +84,7 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license check result.
         /// </returns>
-        public static ILicenseCheckResult CheckLicense(this ILicensingManager licensingManager, AppIdentity appIdentity, IContext context = null)
+        public static ILicenseCheckResult CheckLicense(this ILicensingManager licensingManager, AppIdentity appIdentity, IContext? context = null)
         {
             Requires.NotNull(licensingManager, nameof(licensingManager));
 

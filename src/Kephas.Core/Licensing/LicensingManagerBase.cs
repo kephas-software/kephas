@@ -8,10 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Licensing
 {
     using System;
-    using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -25,46 +27,82 @@ namespace Kephas.Licensing
     /// A licensing manager base.
     /// </summary>
     public abstract class LicensingManagerBase : ILicensingManager
+#if NETSTANDARD2_1
+#else
+        , ISyncLicensingManager
+#endif
     {
+        private readonly Func<AppIdentity, LicenseData> licenseDataGetter;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LicensingManagerBase"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="encryptionService">The encryption service.</param>
-        /// <param name="licenseRepository">Optional. The license repository.</param>
-        protected LicensingManagerBase(IAppRuntime appRuntime, IEncryptionService encryptionService, ILicenseRepository licenseRepository = null)
+        protected LicensingManagerBase(IAppRuntime appRuntime, IEncryptionService encryptionService)
+            : this(new LicenseRepository(appRuntime, encryptionService))
         {
-            Requires.NotNull(appRuntime, nameof(appRuntime));
-            Requires.NotNull(encryptionService, nameof(encryptionService));
-
-            this.AppRuntime = appRuntime;
-            this.EncryptionService = encryptionService;
-            this.LicenseRepository = licenseRepository ?? new LicenseRepository(appRuntime, encryptionService);
         }
 
         /// <summary>
-        /// Gets the application runtime.
+        /// Initializes a new instance of the <see cref="LicensingManagerBase"/> class.
         /// </summary>
-        /// <value>
-        /// The application runtime.
-        /// </value>
-        protected IAppRuntime AppRuntime { get; }
+        /// <param name="licenseRepository">The license repository.</param>
+        protected LicensingManagerBase(ILicenseRepository licenseRepository)
+            : this(appIdentity => licenseRepository.GetLicenseData(appIdentity))
+        {
+        }
 
         /// <summary>
-        /// Gets the encryption service.
+        /// Initializes a new instance of the <see cref="LicensingManagerBase"/> class.
         /// </summary>
-        /// <value>
-        /// The encryption service.
-        /// </value>
-        protected IEncryptionService EncryptionService { get; }
+        /// <param name="licenseDataGetter">The license data getter.</param>
+        protected LicensingManagerBase(Func<AppIdentity, LicenseData> licenseDataGetter)
+        {
+            Requires.NotNull(licenseDataGetter, nameof(licenseDataGetter));
+
+            this.licenseDataGetter = licenseDataGetter;
+        }
 
         /// <summary>
-        /// Gets the license repository.
+        /// Checks the license for the provided application identity.
         /// </summary>
-        /// <value>
-        /// The license repository.
-        /// </value>
-        protected ILicenseRepository LicenseRepository { get; }
+        /// <param name="appIdentity">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The license check result.
+        /// </returns>
+        public virtual ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext context = null)
+        {
+            var license = this.GetLicenseData(appIdentity);
+            if (license == null)
+            {
+                return new LicenseCheckResult(appIdentity, false);
+            }
+
+            var result = new LicenseCheckResult(appIdentity, false);
+            if (license.ValidFrom.HasValue && DateTime.Now.Date < license.ValidFrom.Value)
+            {
+                return result.MergeMessage($"The license validity starts only on {license.ValidFrom}.");
+            }
+
+            if (license.ValidTo.HasValue && DateTime.Now.Date > license.ValidTo.Value)
+            {
+                return result.MergeMessage($"The license expired on {license.ValidTo}.");
+            }
+
+            if (!this.IsMatch(license.AppId, appIdentity.Id))
+            {
+                return result.MergeMessage($"The license was issued for app '{license.AppId}' not for the requested {appIdentity}.");
+            }
+
+            if (!this.IsVersionMatch(license.AppVersionRange, appIdentity.Version))
+            {
+                return result.MergeMessage($"The license was issued for version range '{license.AppVersionRange}' not for the requested {appIdentity}.");
+            }
+
+            return result.ReturnValue(true);
+        }
 
         /// <summary>
         /// Checks the license for the provided application identity asynchronously.
@@ -75,37 +113,9 @@ namespace Kephas.Licensing
         /// <returns>
         /// An asynchronous result that yields the check license result.
         /// </returns>
-        public virtual Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext context = null, CancellationToken cancellationToken = default)
+        public virtual Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
         {
-            var license = this.GetLicenseData(appIdentity);
-            if (license == null)
-            {
-                return Task.FromResult<ILicenseCheckResult>(new LicenseCheckResult(appIdentity, false));
-            }
-
-            var result = new LicenseCheckResult(appIdentity, false);
-            if (license.ValidFrom.HasValue && DateTime.Now.Date < license.ValidFrom.Value)
-            {
-                return Task.FromResult<ILicenseCheckResult>(
-                    result.MergeMessage($"The license validity starts only on {license.ValidFrom}."));
-            }
-
-            if (license.ValidTo.HasValue && DateTime.Now.Date > license.ValidTo.Value)
-            {
-                return Task.FromResult<ILicenseCheckResult>(
-                    result.MergeMessage($"The license expired on {license.ValidTo}."));
-            }
-
-            if (!string.IsNullOrEmpty(license.AppId) && !license.AppId.Equals(appIdentity.Id, StringComparison.OrdinalIgnoreCase))
-            {
-                return Task.FromResult<ILicenseCheckResult>(
-                    result.MergeMessage($"The license was issued for app '{license.AppId}' not for the requested {appIdentity}."));
-            }
-
-            // TODO check version, too
-
-            result.ReturnValue = true;
-            return Task.FromResult<ILicenseCheckResult>(result);
+            return Task.FromResult(this.CheckLicense(appIdentity));
         }
 
         /// <summary>
@@ -115,6 +125,68 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license data.
         /// </returns>
-        protected virtual LicenseData GetLicenseData(AppIdentity appIdentity) => this.LicenseRepository.GetLicenseData(appIdentity);
+        protected virtual LicenseData GetLicenseData(AppIdentity appIdentity) => this.licenseDataGetter(appIdentity);
+
+        private bool IsVersionMatch(string versionRange, string version)
+        {
+            var dashPos = versionRange.IndexOf("-");
+            var minVersionString = dashPos < 0 ? versionRange : versionRange.Substring(0, dashPos);
+            var maxVersionString = dashPos < 0 ? versionRange : versionRange.Substring(dashPos + 1);
+            var minVersion = this.GetReleaseVersion(minVersionString, 0);
+            var maxVersion = string.IsNullOrEmpty(maxVersionString) ? null : this.GetReleaseVersion(maxVersionString, short.MaxValue);
+            var versionToCheck = string.IsNullOrEmpty(version) ? null : this.GetReleaseVersion(version, 0);
+
+            if (minVersion != null && (versionToCheck == null || versionToCheck < minVersion))
+            {
+                return false;
+            }
+
+            if (maxVersion != null && (versionToCheck == null || versionToCheck > maxVersion))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private Version? GetReleaseVersion(string version, short wildCardReplacement)
+        {
+            var dashPos = version.IndexOf("-");
+            var releaseVersionString = dashPos < 0 ? version : version.Substring(0, dashPos);
+            if (releaseVersionString.EndsWith(".*"))
+            {
+                releaseVersionString = releaseVersionString.Substring(0, releaseVersionString.Length - 2);
+            }
+            else if (releaseVersionString.EndsWith("*"))
+            {
+                releaseVersionString = releaseVersionString.Substring(0, releaseVersionString.Length - 1);
+            }
+
+            var dotCount = releaseVersionString.Count(c => c == '.');
+            for (var i = 0; i < 3 - dotCount; i++)
+            {
+                releaseVersionString += $".{wildCardReplacement}";
+            }
+
+            return string.IsNullOrEmpty(releaseVersionString) ? null : Version.Parse(releaseVersionString);
+        }
+
+        private bool IsMatch(string pattern, string value)
+        {
+            if (pattern.EndsWith("*"))
+            {
+                var firstPart = pattern.Substring(0, pattern.Length - 1);
+                if (value.Length < firstPart.Length)
+                {
+                    return false;
+                }
+
+                return firstPart.Equals(value.Substring(0, firstPart.Length), StringComparison.OrdinalIgnoreCase);
+            }
+            else
+            {
+                return pattern.Equals(value, StringComparison.OrdinalIgnoreCase);
+            }
+        }
     }
 }
