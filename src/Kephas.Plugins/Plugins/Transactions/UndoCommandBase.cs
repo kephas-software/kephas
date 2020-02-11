@@ -11,10 +11,12 @@
 namespace Kephas.Plugins.Transactions
 {
     using System;
-    using System.Collections.Generic;
+    using System.Collections.Concurrent;
     using System.Linq;
     using System.Text;
     using System.Threading;
+
+    using Kephas.Reflection;
 
     /// <summary>
     /// An undo command base.
@@ -26,15 +28,23 @@ namespace Kephas.Plugins.Transactions
         /// </summary>
         public const string KeyPart = "-undo-";
 
+        /// <summary>
+        /// The command activators.
+        /// </summary>
+        protected static readonly ConcurrentDictionary<string, Func<string[], UndoCommandBase>> Activators =
+            new ConcurrentDictionary<string, Func<string[], UndoCommandBase>>();
+
         private const char SplitSeparatorChar = '|';
 
-        private static readonly IDictionary<string, Func<string[], UndoCommandBase>> Activators =
-            new Dictionary<string, Func<string[], UndoCommandBase>>()
-            {
-                    { MoveFileUndoCommand.CommandName, args => new MoveFileUndoCommand(args) },
-            };
-
         private static int index = 0;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="UndoCommandBase"/> class.
+        /// </summary>
+        static UndoCommandBase()
+        {
+            Activators.TryAdd(MoveFileUndoCommand.CommandName, args => new MoveFileUndoCommand(args));
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UndoCommandBase"/> class.
@@ -46,6 +56,8 @@ namespace Kephas.Plugins.Transactions
             this.Index = Interlocked.Increment(ref index);
             this.Name = name;
             this.Args = args;
+
+            Activators.TryAdd(name, ctorargs => (UndoCommandBase)this.GetType().AsRuntimeTypeInfo().CreateInstance(new object[] { ctorargs }));
         }
 
         /// <summary>
