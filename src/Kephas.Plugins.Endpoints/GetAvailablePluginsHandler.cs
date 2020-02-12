@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GetAvailablePluginsMessageHandler.cs" company="Kephas Software SRL">
+// <copyright file="GetAvailablePluginsHandler.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -23,17 +23,17 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A get available plugins handler.
     /// </summary>
-    public class GetAvailablePluginsMessageHandler : MessageHandlerBase<GetAvailablePluginsMessage, GetAvailablePluginsResponseMessage>
+    public class GetAvailablePluginsHandler : MessageHandlerBase<GetAvailablePluginsMessage, GetAvailablePluginsResponseMessage>
     {
         private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GetAvailablePluginsMessageHandler"/> class.
+        /// Initializes a new instance of the <see cref="GetAvailablePluginsHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">Manager for plugins.</param>
         /// <param name="appContext">Context for the application.</param>
-        public GetAvailablePluginsMessageHandler(IPluginManager pluginManager, IAppContext appContext)
+        public GetAvailablePluginsHandler(IPluginManager pluginManager, IAppContext appContext)
         {
             this.pluginManager = pluginManager;
             this.appContext = appContext;

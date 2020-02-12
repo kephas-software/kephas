@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InstallPluginMessageHandler.cs" company="Kephas Software SRL">
+// <copyright file="EnableMessageHandler.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the install plugin message handler class.
+//   Implements the enable plugin message handler class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -22,19 +22,19 @@ namespace Kephas.Plugins.Endpoints
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// An install plugin message handler.
+    /// An enable plugin message handler.
     /// </summary>
-    public class InstallPluginMessageHandler : MessageHandlerBase<InstallPluginMessage, ResponseMessage>
+    public class EnableMessageHandler : MessageHandlerBase<EnablePluginMessage, ResponseMessage>
     {
         private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InstallPluginMessageHandler"/> class.
+        /// Initializes a new instance of the <see cref="EnableMessageHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">Manager for plugins.</param>
         /// <param name="appContext">Context for the application.</param>
-        public InstallPluginMessageHandler(IPluginManager pluginManager, IAppContext appContext)
+        public EnableMessageHandler(IPluginManager pluginManager, IAppContext appContext)
         {
             this.pluginManager = pluginManager;
             this.appContext = appContext;
@@ -49,22 +49,18 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(InstallPluginMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<ResponseMessage> ProcessAsync(EnablePluginMessage message, IMessagingContext context, CancellationToken token)
         {
-            this.appContext.Logger.Info("Installing plugin {plugin} {version}...", message.Id, message.Version);
+            this.appContext.Logger.Info("Enabling plugin {plugin}...", message.Id);
 
-            var result = await this.pluginManager.InstallPluginAsync(new AppIdentity(message.Id, message.Version), ctx => ctx.Merge(context), token).PreserveThreadContext();
+            var result = await this.pluginManager.EnablePluginAsync(new AppIdentity(message.Id), ctx => ctx.Merge(context), token).PreserveThreadContext();
 
-            var plugin = result.ReturnValue;
-            var pluginId = plugin?.GetTypeInfo().Name ?? message.Id;
-            var pluginVersion = plugin?.GetTypeInfo().Version ?? message.Version;
-
-            this.appContext.Logger.Info("Plugin {plugin} {version} ({state}) installed in {pluginPath}. Elapsed: {elapsed:c}.", pluginId, pluginVersion, plugin?.State, plugin?.Location, result.Elapsed);
+            this.appContext.Logger.Info("Plugin {plugin} enabled.", message.Id);
 
             return new ResponseMessage
-                {
-                    Message = $"Plugin {pluginId} {pluginVersion} ({plugin?.State}) installed in {plugin?.Location}. Elapsed: {result.Elapsed:c}.",
-                };
+            {
+                Message = $"Plugin {message.Id} enabled.",
+            };
         }
     }
 }

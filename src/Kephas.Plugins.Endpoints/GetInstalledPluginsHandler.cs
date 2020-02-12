@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GetInstalledPluginsMessageHandler.cs" company="Kephas Software SRL">
+// <copyright file="GetInstalledPluginsHandler.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,15 +20,15 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A get installed plugins message handler.
     /// </summary>
-    public class GetInstalledPluginsMessageHandler : MessageHandlerBase<GetInstalledPluginsMessage, GetInstalledPluginsResponseMessage>
+    public class GetInstalledPluginsHandler : MessageHandlerBase<GetInstalledPluginsMessage, GetInstalledPluginsResponseMessage>
     {
         private readonly IPluginManager pluginManager;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GetInstalledPluginsMessageHandler"/> class.
+        /// Initializes a new instance of the <see cref="GetInstalledPluginsHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">Manager for plugins.</param>
-        public GetInstalledPluginsMessageHandler(IPluginManager pluginManager)
+        public GetInstalledPluginsHandler(IPluginManager pluginManager)
         {
             this.pluginManager = pluginManager;
         }

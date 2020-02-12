@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnablePluginMessageHandler.cs" company="Kephas Software SRL">
+// <copyright file="UpdatePluginHandler.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the enable plugin message handler class.
+//   Implements the update plugin message handler class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -22,19 +22,19 @@ namespace Kephas.Plugins.Endpoints
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// An enable plugin message handler.
+    /// An update plugin message handler.
     /// </summary>
-    public class EnablePluginMessageHandler : MessageHandlerBase<EnablePluginMessage, ResponseMessage>
+    public class UpdatePluginHandler : MessageHandlerBase<UpdatePluginMessage, ResponseMessage>
     {
         private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnablePluginMessageHandler"/> class.
+        /// Initializes a new instance of the <see cref="UpdatePluginHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">Manager for plugins.</param>
         /// <param name="appContext">Context for the application.</param>
-        public EnablePluginMessageHandler(IPluginManager pluginManager, IAppContext appContext)
+        public UpdatePluginHandler(IPluginManager pluginManager, IAppContext appContext)
         {
             this.pluginManager = pluginManager;
             this.appContext = appContext;
@@ -49,17 +49,21 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(EnablePluginMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<ResponseMessage> ProcessAsync(UpdatePluginMessage message, IMessagingContext context, CancellationToken token)
         {
-            this.appContext.Logger.Info("Enabling plugin {plugin}...", message.Id);
+            this.appContext.Logger.Info("Updating plugin {plugin} to version {version}...", message.Id, message.Version);
 
-            var result = await this.pluginManager.EnablePluginAsync(new AppIdentity(message.Id), ctx => ctx.Merge(context), token).PreserveThreadContext();
+            var result = await this.pluginManager.UpdatePluginAsync(new AppIdentity(message.Id, message.Version), ctx => ctx.Merge(context), token).PreserveThreadContext();
 
-            this.appContext.Logger.Info("Plugin {plugin} enabled.", message.Id);
+            var plugin = result.ReturnValue;
+            var pluginId = plugin?.GetTypeInfo().Name ?? message.Id;
+            var pluginVersion = plugin?.GetTypeInfo().Version ?? message.Version;
+
+            this.appContext.Logger.Info("Plugin {plugin} updated to version {version} in {pluginPath}. Elapsed: {elapsed:c}.", pluginId, pluginVersion, plugin?.Location, result.Elapsed);
 
             return new ResponseMessage
             {
-                Message = $"Plugin {message.Id} enabled.",
+                Message = $"Plugin {pluginId} ({pluginVersion}) updated in {plugin?.Location}. Elapsed: {result.Elapsed:c}.",
             };
         }
     }

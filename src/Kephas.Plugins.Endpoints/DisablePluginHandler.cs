@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DisablePluginMessageHandler.cs" company="Kephas Software SRL">
+// <copyright file="DisablePluginHandler.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -24,17 +24,17 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A disable plugin message handler.
     /// </summary>
-    public class DisablePluginMessageHandler : MessageHandlerBase<DisablePluginMessage, ResponseMessage>
+    public class DisablePluginHandler : MessageHandlerBase<DisablePluginMessage, ResponseMessage>
     {
         private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DisablePluginMessageHandler"/> class.
+        /// Initializes a new instance of the <see cref="DisablePluginHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">Manager for plugins.</param>
         /// <param name="appContext">Context for the application.</param>
-        public DisablePluginMessageHandler(IPluginManager pluginManager, IAppContext appContext)
+        public DisablePluginHandler(IPluginManager pluginManager, IAppContext appContext)
         {
             this.pluginManager = pluginManager;
             this.appContext = appContext;

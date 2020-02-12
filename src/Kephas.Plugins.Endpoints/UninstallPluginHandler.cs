@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UninstallPluginMessageHandler.cs" company="Kephas Software SRL">
+// <copyright file="UninstallPluginHandler.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,17 +25,17 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An uninstall plugin message handler.
     /// </summary>
-    public class UninstallPluginMessageHandler : MessageHandlerBase<UninstallPluginMessage, ResponseMessage>
+    public class UninstallPluginHandler : MessageHandlerBase<UninstallPluginMessage, ResponseMessage>
     {
         private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UninstallPluginMessageHandler"/> class.
+        /// Initializes a new instance of the <see cref="UninstallPluginHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">Manager for plugins.</param>
         /// <param name="appContext">Context for the application.</param>
-        public UninstallPluginMessageHandler(IPluginManager pluginManager, IAppContext appContext)
+        public UninstallPluginHandler(IPluginManager pluginManager, IAppContext appContext)
         {
             this.pluginManager = pluginManager;
             this.appContext = appContext;
