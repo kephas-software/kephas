@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Plugins
 {
     using System;
@@ -24,22 +26,25 @@ namespace Kephas.Plugins
     {
         private const int MissingPartsInvalidCode = 1;
         private const int ParseStateInvalidCode = 2;
-        private const int ParseChecksumInvalidCode = 3;
-        private const int ChecksumInvalidCode = 4;
+        private const int ParseKindInvalidCode = 3;
+        private const int ParseChecksumInvalidCode = 4;
+        private const int ChecksumInvalidCode = 100;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginData"/> class.
         /// </summary>
         /// <param name="identity">The plugin identity.</param>
         /// <param name="state">The plugin state.</param>
+        /// <param name="kind">Optional. The plugin kind.</param>
         /// <param name="data">Optional. The additional data associated with the plugin.</param>
-        public PluginData(AppIdentity identity, PluginState state, IDictionary<string, string> data = null)
+        public PluginData(AppIdentity identity, PluginState state, PluginKind kind = PluginKind.Embedded, IDictionary<string, string?>? data = null)
         {
             Requires.NotNull(identity, nameof(identity));
 
             this.Identity = identity;
             this.State = state;
-            this.Data = data ?? new Dictionary<string, string>();
+            this.Kind = kind;
+            this.Data = data ?? new Dictionary<string, string?>();
         }
 
         /// <summary>
@@ -59,12 +64,20 @@ namespace Kephas.Plugins
         public PluginState State { get; private set; }
 
         /// <summary>
+        /// Gets the plugin kind.
+        /// </summary>
+        /// <value>
+        /// The plugin kind.
+        /// </value>
+        public PluginKind Kind { get; private set; }
+
+        /// <summary>
         /// Gets additional data associated with the license.
         /// </summary>
         /// <value>
         /// The additional data associated with the license.
         /// </value>
-        public IDictionary<string, string> Data { get; }
+        public IDictionary<string, string?> Data { get; }
 
         /// <summary>
         /// Parses the value and returns valid plugin data.
@@ -90,14 +103,19 @@ namespace Kephas.Plugins
                 throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseStateInvalidCode}).");
             }
 
-            var data = splits.Length > 3 ? DataParse(splits.Skip(2).Take(splits.Length - 3)) : null;
+            if (!Enum.TryParse<PluginKind>(splits[2], out var kind))
+            {
+                throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseKindInvalidCode}).");
+            }
+
+            var data = splits.Length > 3 ? DataParse(splits.Skip(3).Take(splits.Length - 4)) : null;
 
             if (!int.TryParse(splits[splits.Length - 1], out var checksum))
             {
                 throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseChecksumInvalidCode}).");
             }
 
-            var pluginData = new PluginData(appId, state, data);
+            var pluginData = new PluginData(appId, state, kind, data);
             pluginData.Validate(checksum);
 
             return pluginData;
@@ -139,6 +157,19 @@ namespace Kephas.Plugins
         }
 
         /// <summary>
+        /// Changes the kind of this instance with the provided changed state.
+        /// </summary>
+        /// <param name="kind">The plugin kind.</param>
+        /// <returns>
+        /// This <see cref="PluginData"/>.
+        /// </returns>
+        public PluginData ChangeKind(PluginKind kind)
+        {
+            this.Kind = kind;
+            return this;
+        }
+
+        /// <summary>
         /// Changes the data value of this instance with the provided new value.
         /// </summary>
         /// <param name="key">The data entry key.</param>
@@ -160,12 +191,12 @@ namespace Kephas.Plugins
         /// </returns>
         public override string ToString()
         {
-            return $"{this.Identity}\n{this.State}\n{DataToString(this.Data)}\n{this.GetChecksum()}";
+            return $"{this.Identity}\n{this.State}\n{this.Kind}\n{DataToString(this.Data)}\n{this.GetChecksum()}";
         }
 
-        private static IDictionary<string, string> DataParse(IEnumerable<string> values)
+        private static IDictionary<string, string?> DataParse(IEnumerable<string> values)
         {
-            var data = new Dictionary<string, string>();
+            var data = new Dictionary<string, string?>();
             foreach (var value in values)
             {
                 if (string.IsNullOrEmpty(value))
@@ -187,7 +218,7 @@ namespace Kephas.Plugins
             return data;
         }
 
-        private static string DataToString(IDictionary<string, string> data)
+        private static string DataToString(IDictionary<string, string?> data)
         {
             if (data == null || data.Count == 0)
             {
@@ -211,13 +242,15 @@ namespace Kephas.Plugins
         {
             var identityChecksum = this.GetChecksum(this.Identity.ToString());
             var stateChecksum = this.GetChecksum(this.State.ToString());
+            var kindChecksum = this.GetChecksum(this.Kind.ToString());
             var dataChecksum = this.GetChecksum(DataToString(this.Data));
 
             unchecked
             {
                 return identityChecksum
                     + (stateChecksum << 1)
-                    + (dataChecksum << 2);
+                    + (kindChecksum << 2)
+                    + (dataChecksum << 3);
             }
         }
 

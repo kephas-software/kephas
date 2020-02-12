@@ -25,7 +25,7 @@ namespace Kephas.Licensing
     public sealed class LicenseData : ICloneable, IIdentifiable
     {
         private const int ParseChecksumInvalidCode = 3;
-        private const int ChecksumInvalidCode = 4;
+        private const int ChecksumInvalidCode = 100;
         private const string DateTimeFormat = "yyyy-MM-dd";
 
         /// <summary>
