@@ -126,10 +126,10 @@ namespace Kephas.Licensing
         public string LicensedBy { get; }
 
         /// <summary>
-        /// Gets the entity that licensed the application.
+        /// Gets the entity the license is assigned to.
         /// </summary>
         /// <value>
-        /// The entity that licensed the application.
+        /// The entity the license is assigned to.
         /// </value>
         public string LicensedTo { get; }
 
