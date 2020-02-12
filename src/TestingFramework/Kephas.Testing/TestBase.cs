@@ -12,6 +12,8 @@ namespace Kephas.Testing
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
@@ -19,6 +21,7 @@ namespace Kephas.Testing
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
+    using Kephas.Cryptography;
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -26,6 +29,7 @@ namespace Kephas.Testing
     using Kephas.Serialization.Composition;
     using Kephas.Services;
     using NSubstitute;
+    using NSubstitute.Core;
 
     /// <summary>
     /// Base class for tests.
@@ -208,6 +212,49 @@ namespace Kephas.Testing
                     });
 
             return eventHub;
+        }
+
+        /// <summary>
+        /// Creates an encryption service mock.
+        /// </summary>
+        /// <returns>
+        /// The new encryption service mock.
+        /// </returns>
+        protected virtual IEncryptionService CreateEncryptionServiceMock()
+        {
+#if NETCOREAPP3_1
+            var encryptionService = Substitute.For<IEncryptionService>();
+
+            encryptionService.WhenForAnyArgs(s => s.Encrypt(null, null, null))
+                .Do(this.ReverseBytes);
+            encryptionService.WhenForAnyArgs(s => s.Decrypt(null, null, null))
+                .Do(this.ReverseBytes);
+#else
+            var encryptionService = Substitute.For<IEncryptionService, ISyncEncryptionService>();
+
+            var syncEncryptionService = (ISyncEncryptionService)encryptionService;
+            syncEncryptionService.WhenForAnyArgs(s => s.Encrypt(null, null, null))
+                .Do(this.ReverseBytes);
+            syncEncryptionService.WhenForAnyArgs(s => s.Decrypt(null, null, null))
+                .Do(this.ReverseBytes);
+#endif
+            encryptionService.EncryptAsync(null, null, null, default)
+                .ReturnsForAnyArgs(Task.FromResult(0))
+                .AndDoes(this.ReverseBytes);
+            encryptionService.DecryptAsync(null, null, null, default)
+                .ReturnsForAnyArgs(Task.FromResult(0))
+                .AndDoes(this.ReverseBytes);
+
+            return encryptionService;
+        }
+
+        private void ReverseBytes(CallInfo ci)
+        {
+            var inputStream = ci.ArgAt<Stream>(0);
+            var outputStream = ci.ArgAt<Stream>(1);
+            var inputArray = ((MemoryStream)inputStream).ToArray();
+            var outputArray = inputArray.Reverse().ToArray();
+            outputStream.Write(outputArray, 0, outputArray.Length);
         }
     }
 }
