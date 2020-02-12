@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="License.cs" company="Kephas Software SRL">
+// <copyright file="LicenseData.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,6 +7,8 @@
 //   Implements the license class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+#nullable enable
 
 namespace Kephas.Licensing
 {
@@ -47,7 +49,7 @@ namespace Kephas.Licensing
             string licensedBy,
             DateTime? validFrom = null,
             DateTime? validTo = null,
-            IDictionary<string, string> data = null)
+            IDictionary<string, string?>? data = null)
         {
             Requires.NotNullOrEmpty(id, nameof(id));
             Requires.NotNullOrEmpty(appId, nameof(appId));
@@ -64,7 +66,7 @@ namespace Kephas.Licensing
             this.LicensedBy = licensedBy;
             this.ValidFrom = validFrom;
             this.ValidTo = validTo;
-            this.Data = data ?? new Dictionary<string, string>();
+            this.Data = data ?? new Dictionary<string, string?>();
         }
 
         /// <summary>
@@ -145,7 +147,7 @@ namespace Kephas.Licensing
         /// <value>
         /// The additional data associated with the license.
         /// </value>
-        public IDictionary<string, string> Data { get; }
+        public IDictionary<string, string?> Data { get; }
 
         /// <summary>
         /// Parses the license data from the provided string.
@@ -154,7 +156,7 @@ namespace Kephas.Licensing
         /// <returns>
         /// A LicenseData.
         /// </returns>
-        public static LicenseData Parse(string value)
+        public static LicenseData? Parse(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -232,9 +234,9 @@ namespace Kephas.Licensing
             throw new ArgumentException($"The provided date '{value}' has an invalid format.");
         }
 
-        private static IDictionary<string, string> DataParse(IEnumerable<string> values)
+        private static IDictionary<string, string?> DataParse(IEnumerable<string> values)
         {
-            var data = new Dictionary<string, string>();
+            var data = new Dictionary<string, string?>();
             foreach (var value in values)
             {
                 if (string.IsNullOrEmpty(value))
@@ -256,7 +258,7 @@ namespace Kephas.Licensing
             return data;
         }
 
-        private static string DataToString(IDictionary<string, string> data)
+        private static string DataToString(IDictionary<string, string?> data)
         {
             if (data == null || data.Count == 0)
             {
@@ -292,7 +294,7 @@ namespace Kephas.Licensing
             }
         }
 
-        private int GetChecksum(string str)
+        private int GetChecksum(string? str)
         {
             if (string.IsNullOrEmpty(str))
             {
