@@ -732,6 +732,7 @@ namespace Kephas.Plugins
         /// Determines whether the plugin can be initialized.
         /// </summary>
         /// <param name="pluginData">Information describing the plugin.</param>
+        /// <param name="context">The context.</param>
         /// <returns>
         /// True if the plugin can be initialized, false if not.
         /// </returns>
