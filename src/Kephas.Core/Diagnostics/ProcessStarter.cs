@@ -44,8 +44,9 @@ namespace Kephas.Diagnostics
         /// <summary>
         /// Starts the process asynchronously.
         /// </summary>
-        /// <param name="config">(Optional) Callback to configure the process before start.</param>
-        /// <param name="cancellationToken">(Optional) The cancellation token.</param>
+        /// <exception cref="ProcessStartException">Thrown when the Process Start error condition occurs.</exception>
+        /// <param name="config">Optional. Callback to configure the process before start.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result.
         /// </returns>

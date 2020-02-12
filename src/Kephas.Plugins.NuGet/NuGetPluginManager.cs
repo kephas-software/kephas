@@ -154,13 +154,16 @@ namespace Kephas.Plugins.NuGet
                 var currentFramework = this.AppRuntime.GetAppFramework();
                 var nugetFramework = NuGetFramework.ParseFolder(currentFramework);
 
-                var (pluginPackageIdentity, packageReaders) = await this.GetPackageReadersAsync(pluginIdentity, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
+                var (pluginPackageIdentity, pluginPackageReader, packageReaders) = await this.GetPackageReadersAsync(pluginIdentity, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
                 pluginIdentity = new AppIdentity(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
 
                 var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginIdentity);
                 context.PluginIdentity(pluginIdentity);
                 var pluginData = context.PluginData ?? this.GetInstalledPluginData(pluginIdentity);
                 pluginData.ChangeIdentity(pluginIdentity);
+
+                var pluginKind = await this.GetPluginKindAsync(pluginPackageReader, cancellationToken).PreserveThreadContext();
+                pluginData.ChangeKind(pluginKind);
 
                 var pluginLocation = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
                 if (!Directory.Exists(pluginLocation))
@@ -386,6 +389,38 @@ namespace Kephas.Plugins.NuGet
         }
 
         /// <summary>
+        /// Gets the plugin kind asynchronously based on the package tags.
+        /// </summary>
+        /// <param name="packageReader">The package reader.</param>
+        /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the plugin kind.
+        /// </returns>
+        protected virtual async Task<PluginKind> GetPluginKindAsync(PackageReaderBase packageReader, CancellationToken cancellationToken)
+        {
+            var nuspecReader = await packageReader.GetNuspecReaderAsync(cancellationToken).PreserveThreadContext();
+            var tags = nuspecReader.GetTags()?
+                    .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(t => t.ToLower())
+                    .ToList();
+            if (tags == null)
+            {
+                return PluginKind.Embedded;
+            }
+
+            foreach (var kind in Enum.GetValues(typeof(PluginKind)).OfType<PluginKind>())
+            {
+                var kindString = kind.ToString().ToLower();
+                if (tags.Contains(kindString))
+                {
+                    return kind;
+                }
+            }
+
+            return PluginKind.Embedded;
+        }
+
+        /// <summary>
         /// Gets the packages folder.
         /// </summary>
         /// <param name="defaultPackagesFolder">Optional. The default packages folder.</param>
@@ -586,11 +621,11 @@ namespace Kephas.Plugins.NuGet
             return result.MergeMessage($"Content of {packageId} installed successfully.");
         }
 
-        private async Task<(PackageIdentity pluginPackageIdentity, IList<(PackageIdentity packageId, PackageReaderBase packageReader)> packageReaders)> GetPackageReadersAsync(AppIdentity plugin, IList<SourceRepository> repositories, SourceCacheContext cacheContext, NuGetFramework nugetFramework, CancellationToken cancellationToken)
+        private async Task<(PackageIdentity pluginPackageIdentity, PackageReaderBase pluginPackageReader, IList<(PackageIdentity packageId, PackageReaderBase packageReader)> packageReaders)> GetPackageReadersAsync(AppIdentity pluginIdentity, IList<SourceRepository> repositories, SourceCacheContext cacheContext, NuGetFramework nugetFramework, CancellationToken cancellationToken)
         {
             var packagesFolder = this.GetPackagesFolder();
 
-            var pluginPackageIdentity = this.ToPackageIdentity(plugin);
+            var pluginPackageIdentity = this.ToPackageIdentity(pluginIdentity);
             var downloadResult = await this.DownloadPackageAsync(pluginPackageIdentity, packagesFolder, repositories, cacheContext, cancellationToken).PreserveThreadContext();
             if (downloadResult.Status != DownloadResourceResultStatus.Available)
             {
@@ -610,7 +645,7 @@ namespace Kephas.Plugins.NuGet
 
             var resolverContext = new PackageResolverContext(
                 this.pluginsSettings.ResolverDependencyBehavior,
-                new[] { plugin.Id },
+                new[] { pluginIdentity.Id },
                 Enumerable.Empty<string>(),
                 Enumerable.Empty<PackageReference>(),
                 Enumerable.Empty<PackageIdentity>(),
@@ -633,7 +668,7 @@ namespace Kephas.Plugins.NuGet
 
             // get the right casing of the package ID, the provided casing might not be the right one.
             pluginPackageIdentity = dependenciesToInstall.FirstOrDefault(d => d.Equals(pluginPackageIdentity)) ?? pluginPackageIdentity;
-            return (pluginPackageIdentity, packageReaders);
+            return (pluginPackageIdentity, downloadResult.PackageReader, packageReaders);
         }
 
         private string ExtractPackageFile(string sourceFile, string targetPath, string subFolder, bool flatten)
