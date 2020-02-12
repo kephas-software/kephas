@@ -59,7 +59,7 @@ namespace Kephas.Tests.Plugins
 
                 Assert.IsNotNull(result);
                 Assert.AreEqual(PluginState.Enabled, result.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nEnabled\n-inst-undo-1:test|h:i|param&pipe;1|param\\n2\n-1439924665", result.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual("p1:1.2.3.4\nEnabled\nEmbedded\n-inst-undo-1:test|h:i|param&pipe;1|param\\n2\n139272387", result.ReturnValue.GetPluginData().ToString());
             }
         }
 
@@ -89,7 +89,7 @@ namespace Kephas.Tests.Plugins
 
                 Assert.IsNotNull(result);
                 Assert.AreEqual(PluginState.PendingInitialization, result.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nPendingInitialization\n\n881471263", result.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual("p1:1.2.3.4\nPendingInitialization\nEmbedded\n\n-374817233", result.ReturnValue.GetPluginData().ToString());
             }
         }
 
@@ -106,7 +106,7 @@ namespace Kephas.Tests.Plugins
 
                 Assert.IsNotNull(result);
                 Assert.AreEqual(PluginState.Disabled, result.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nDisabled\n\n1019128045", result.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual("p1:1.2.3.4\nDisabled\nEmbedded\n\n-237160451", result.ReturnValue.GetPluginData().ToString());
             }
         }
 
@@ -123,7 +123,7 @@ namespace Kephas.Tests.Plugins
 
                 Assert.IsNotNull(uninstResult);
                 Assert.AreEqual(PluginState.None, uninstResult.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nNone\n\n90280241", uninstResult.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual("p1:1.2.3.4\nNone\nEmbedded\n\n-1166008255", uninstResult.ReturnValue.GetPluginData().ToString());
                 Assert.AreEqual(1, callbackCalls);
             }
         }
@@ -155,7 +155,7 @@ namespace Kephas.Tests.Plugins
 
                 Assert.IsNotNull(uninstResult);
                 Assert.AreEqual(PluginState.PendingUninstallation, uninstResult.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nPendingUninstallation\n\n397301541", uninstResult.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual("p1:1.2.3.4\nPendingUninstallation\nEmbedded\n\n-858986955", uninstResult.ReturnValue.GetPluginData().ToString());
             }
         }
 

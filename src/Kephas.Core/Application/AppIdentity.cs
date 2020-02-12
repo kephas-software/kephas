@@ -168,9 +168,10 @@ namespace Kephas.Application
                 return false;
             }
 
-            if (id.IndexOfAny(InvalidChars) >= 0)
+            var invalidCharPos = id.IndexOfAny(InvalidChars);
+            if (invalidCharPos >= 0)
             {
-                message = $"The app ID '{id}' may not contain '{string.Join("', '", InvalidChars)}'.";
+                message = $"The app ID '{id}' may not contain '{id[invalidCharPos]}'. Not allowed characters: '{string.Join(string.Empty, InvalidChars)}'.";
                 return false;
             }
 
@@ -192,9 +193,10 @@ namespace Kephas.Application
                 return false;
             }
 
-            if (version.IndexOfAny(InvalidChars) >= 0)
+            var invalidCharPos = version.IndexOfAny(InvalidChars);
+            if (invalidCharPos >= 0)
             {
-                message = $"The app version '{version}' may not contain: '{string.Join("', '", InvalidChars)}'.";
+                message = $"The app version '{version}' may not contain '{version[invalidCharPos]}'. Not allowed characters: '{string.Join(string.Empty, InvalidChars)}'.";
                 return false;
             }
 
