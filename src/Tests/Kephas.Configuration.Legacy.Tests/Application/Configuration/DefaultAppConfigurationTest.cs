@@ -28,7 +28,7 @@ namespace Kephas.Core.Tests.Application.Configuration
             Assert.AreSame(value, service["hello"]);
         }
 
-#if NETCOREAPP2_2
+#if NETCOREAPP3_1 || NETCOREAPP2_2
         [Ignore("Find a way to access the assembly config file.")]
 #endif
         [Test]
@@ -40,7 +40,7 @@ namespace Kephas.Core.Tests.Application.Configuration
             Assert.AreEqual("myOtherValue", settings["MyOtherSetting"]);
         }
 
-#if NETCOREAPP2_2
+#if NETCOREAPP3_1 || NETCOREAPP2_2
         [Ignore("Find a way to access the assembly config file.")]
 #endif
         [Test]
@@ -55,7 +55,7 @@ namespace Kephas.Core.Tests.Application.Configuration
             Assert.AreEqual("myNewValue", settings["MySettings"]);
         }
 
-#if NETCOREAPP2_2
+#if NETCOREAPP3_1 || NETCOREAPP2_2
         [Ignore("Find a way to access the assembly config file.")]
 #endif
         [Test]
@@ -67,7 +67,7 @@ namespace Kephas.Core.Tests.Application.Configuration
             Assert.AreEqual("myOtherValue", settings.MyOtherSetting);
         }
 
-#if NETCOREAPP2_2
+#if NETCOREAPP3_1 || NETCOREAPP2_2
         [Ignore("Find a way to access the assembly config file.")]
 #endif
         [Test]

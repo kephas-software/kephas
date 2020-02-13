@@ -13,11 +13,11 @@ namespace Kephas.Reflection
     using System;
     using System.IO;
     using System.Reflection;
-
-    using Kephas.Services;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_1 || NETSTANDARD2_0
     using System.Runtime.Loader;
 #endif
+
+    using Kephas.Services;
 
     /// <summary>
     /// The default assembly loader.
@@ -30,7 +30,7 @@ namespace Kephas.Reflection
         /// </summary>
         public DefaultAssemblyLoader()
         {
-#if NETSTANDARD2_0
+#if NETSTANDARD2_1 || NETSTANDARD2_0
             AssemblyLoadContext.Default.Resolving += this.TryResolveAssembly;
 #else
             AppDomain.CurrentDomain.AssemblyResolve += this.TryResolveAssembly;
@@ -58,14 +58,14 @@ namespace Kephas.Reflection
         /// </returns>
         public Assembly LoadAssemblyFromPath(string assemblyFilePath)
         {
-#if NETSTANDARD2_0
+#if NETSTANDARD2_1 || NETSTANDARD2_0
             return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFilePath);
 #else
             return Assembly.LoadFile(assemblyFilePath);
 #endif
         }
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_1 || NETSTANDARD2_0
         /// <summary>
         /// Tries to resolve the assembly.
         /// </summary>

@@ -69,6 +69,28 @@ namespace Kephas.Scripting
 #if NETSTANDARD2_1
 #else
     /// <summary>
+    /// Interface for synchronous language service.
+    /// </summary>
+    public interface ISyncLanguageService
+    {
+        /// <summary>
+        /// Executes the script.
+        /// </summary>
+        /// <param name="script">The script to be interpreted/executed.</param>
+        /// <param name="scriptGlobals">Optional. The script globals.</param>
+        /// <param name="args">Optional. The arguments.</param>
+        /// <param name="executionContext">Optional. The execution context.</param>
+        /// <returns>
+        /// A promise of the execution result.
+        /// </returns>
+        object Execute(
+            IScript script,
+            IScriptGlobals scriptGlobals = null,
+            IExpando args = null,
+            IContext executionContext = null);
+    }
+
+    /// <summary>
     /// Extension methods for <see cref="ILanguageService"/>.
     /// </summary>
     public static class LanguageServiceExtensions

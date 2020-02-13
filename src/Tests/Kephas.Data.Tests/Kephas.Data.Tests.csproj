@@ -1,15 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp2.2;net45</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1;netcoreapp2.2;net461;net45</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.2'">
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
-    </ItemGroup>
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net461' or '$(TargetFramework)'=='net45'">
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
 
     <ItemGroup>
       <None Remove="stylecop.json" />
@@ -33,9 +39,18 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)'=='net45'">
-        <Reference Include="System.ComponentModel.DataAnnotations" />
-    </ItemGroup>
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net45' or '$(TargetFramework)'=='net461'">
+            <ItemGroup>
+                <Reference Include="System.ComponentModel.DataAnnotations" />
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
 
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
