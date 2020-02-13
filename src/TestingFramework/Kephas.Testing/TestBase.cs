@@ -222,7 +222,7 @@ namespace Kephas.Testing
         /// </returns>
         protected virtual IEncryptionService CreateEncryptionServiceMock()
         {
-#if NETCOREAPP3_1
+#if NETSTANDARD2_1
             var encryptionService = Substitute.For<IEncryptionService>();
 
             encryptionService.WhenForAnyArgs(s => s.Encrypt(null, null, null))

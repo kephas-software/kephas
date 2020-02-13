@@ -89,7 +89,7 @@
         <Otherwise>
             <ItemGroup>
                 <PackageReference Include="System.ComponentModel" Version="4.3.0" />
-                <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
+                <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
                 <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
                 <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
                 <PackageReference Include="System.Reflection" Version="4.3.0" />
