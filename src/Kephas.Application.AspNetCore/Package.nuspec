@@ -7,7 +7,10 @@
         <authors>Kephas Software SRL</authors>
         <owners>Kephas Software SRL</owners>
         <description>Provides the infrastructure for the Kephas Framework integration with ASP.NET Core.</description>
-        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
+        <releaseNotes>
+            Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+        </releaseNotes>
         <summary>Provides the infrastructure for the Kephas Framework integration with ASP.NET Core.</summary>
         <language>en-US</language>
         <projectUrl>https://github.com/kephas-software/kephas</projectUrl>
@@ -18,11 +21,12 @@
         <tags>kephas asp.net</tags>
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group targetFramework=".NETStandard2.0">
+            <group>
                 <dependency id="Kephas.Application" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Extensions.Configuration" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Extensions.DependencyInjection" version="$refversion$" exclude="Build,Analyzers" />
+                <dependency id="Kephas.Extensions.Logging" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.AspNetCore.Hosting.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Extensions.Options" version="2.2.0" exclude="Build,Analyzers" />
@@ -30,7 +34,9 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.1\Kephas.Application.AspNetCore.dll" target="lib\netstandard2.1" />
+        <file src="bin\$configuration$\netstandard2.1\Kephas.Application.AspNetCore.pdb" target="lib\netstandard2.1" />
+        <file src="bin\$configuration$\netstandard2.1\Kephas.Application.AspNetCore.xml" target="lib\netstandard2.1" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Application.AspNetCore.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Application.AspNetCore.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Application.AspNetCore.xml" target="lib\netstandard2.0" />
