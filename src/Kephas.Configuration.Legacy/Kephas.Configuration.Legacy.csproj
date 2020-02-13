@@ -76,17 +76,22 @@
         <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1' or '$(TargetFramework)'=='netstandard2.0'">
-        <PackageReference Include="System.Dynamic.Runtime" version="4.3.0" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework)'=='net461' or '$(TargetFramework)'=='net45'">
-        <Reference Include="System" />
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Core" />
-        <Reference Include="Microsoft.CSharp" />
-    </ItemGroup>
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net45' or '$(TargetFramework)'=='net461'">
+            <ItemGroup>
+                <Reference Include="System" />
+                <Reference Include="System.Configuration" />
+                <Reference Include="System.Core" />
+                <Reference Include="Microsoft.CSharp" />
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="System.Dynamic.Runtime" version="4.3.0" />
+                <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

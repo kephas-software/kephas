@@ -7,9 +7,15 @@
         <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1' or '$(TargetFramework)'=='netcoreapp2.2'">
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
-    </ItemGroup>
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net461' or '$(TargetFramework)'=='net45'">
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
 
     <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
         <DefineConstants>NETCOREAPP3_1</DefineConstants>
