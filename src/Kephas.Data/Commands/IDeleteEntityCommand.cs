@@ -16,7 +16,11 @@ namespace Kephas.Data.Commands
     /// Contract for delete entity commands.
     /// </summary>
     [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
-    public interface IDeleteEntityCommand : IDataCommand<IDeleteEntityContext, IDataCommandResult>, ISyncDataCommand
+    public interface IDeleteEntityCommand : IDataCommand<IDeleteEntityContext, IDataCommandResult>
+#if NETSTANDARD2_1
+#else
+        , ISyncDataCommand<IDeleteEntityContext, IDataCommandResult>
+#endif
     {
     }
 }

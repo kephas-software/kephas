@@ -11,16 +11,19 @@
 namespace Kephas.Data.Commands
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Resources;
     using Kephas.Logging;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base implementation of a <see cref="IDeleteEntityCommand"/>.
     /// </summary>
     [DataContextType(typeof(DataContextBase))]
-    public class DeleteEntityCommand : SyncDataCommandBase<IDeleteEntityContext, IDataCommandResult>, IDeleteEntityCommand
+    public class DeleteEntityCommand : DataCommandBase<IDeleteEntityContext, IDataCommandResult>, IDeleteEntityCommand
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteEntityCommand"/> class.
@@ -29,6 +32,19 @@ namespace Kephas.Data.Commands
         public DeleteEntityCommand(ILogManager logManager = null)
             : base(logManager)
         {
+        }
+
+        /// <summary>
+        /// Executes the data command asynchronously.
+        /// </summary>
+        /// <param name="operationContext">The operation context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// A promise of a <see cref="T:IDataCommandResult" />.
+        /// </returns>
+        public override Task<IDataCommandResult> ExecuteAsync(IDeleteEntityContext operationContext, CancellationToken cancellationToken = default)
+        {
+            return ((Func<IDataCommandResult>)(() => this.Execute(operationContext))).AsAsync();
         }
 
         /// <summary>

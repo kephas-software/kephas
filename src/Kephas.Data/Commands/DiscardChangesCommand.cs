@@ -10,17 +10,21 @@
 
 namespace Kephas.Data.Commands
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Data.Capabilities;
     using Kephas.Logging;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base implementation of a <see cref="IDiscardChangesCommand"/>.
     /// </summary>
     [DataContextType(typeof(DataContextBase))]
-    public class DiscardChangesCommand : SyncDataCommandBase<IDiscardChangesContext, IDataCommandResult>, IDiscardChangesCommand
+    public class DiscardChangesCommand : DataCommandBase<IDiscardChangesContext, IDataCommandResult>, IDiscardChangesCommand
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DiscardChangesCommand"/> class.
@@ -56,6 +60,19 @@ namespace Kephas.Data.Commands
             }
 
             return DataCommandResult.Success;
+        }
+
+        /// <summary>
+        /// Executes the data command asynchronously.
+        /// </summary>
+        /// <param name="operationContext">The operation context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// A promise of a <see cref="T:Kephas.Data.Commands.IDataCommandResult" />.
+        /// </returns>
+        public override Task<IDataCommandResult> ExecuteAsync(IDiscardChangesContext operationContext, CancellationToken cancellationToken = default)
+        {
+            return ((Func<IDataCommandResult>)(() => this.Execute(operationContext))).AsAsync();
         }
 
         /// <summary>
