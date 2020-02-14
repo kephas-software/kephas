@@ -11,7 +11,6 @@
 namespace Kephas.Application.AspNetCore
 {
     using Kephas.Application;
-
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -35,7 +34,7 @@ namespace Kephas.Application.AspNetCore
         /// <value>
         /// The hosting environment.
         /// </value>
-        IHostingEnvironment HostingEnvironment { get; }
+        IWebHostEnvironment HostEnvironment { get; }
 
         /// <summary>
         /// Gets the ASP.NET configuration.

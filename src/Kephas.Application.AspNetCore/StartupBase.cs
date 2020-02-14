@@ -26,10 +26,10 @@ namespace Kephas.Application.AspNetCore
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
-
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Hosting;
 
     using LogLevel = Kephas.Logging.LogLevel;
     using Strings = Kephas.Resources.Strings;
@@ -52,10 +52,10 @@ namespace Kephas.Application.AspNetCore
         /// <param name="config">The configuration.</param>
         /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        protected StartupBase(IHostingEnvironment env, IConfiguration config, IAmbientServices ambientServices = null, string[] appArgs = null)
+        protected StartupBase(IWebHostEnvironment env, IConfiguration config, IAmbientServices ambientServices = null, string[] appArgs = null)
             : base(ambientServices)
         {
-            this.HostingEnvironment = env;
+            this.HostEnvironment = env;
             this.Configuration = config;
             this.appArgs = appArgs;
         }
@@ -66,7 +66,7 @@ namespace Kephas.Application.AspNetCore
         /// <value>
         /// The hosting environment.
         /// </value>
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostEnvironment { get; }
 
         /// <summary>
         /// Gets the configuration.
@@ -111,7 +111,7 @@ namespace Kephas.Application.AspNetCore
         /// <param name="appLifetime">The application lifetime.</param>
         public virtual void Configure(
             IApplicationBuilder app,
-            IApplicationLifetime appLifetime)
+            IHostApplicationLifetime appLifetime)
         {
             this.AmbientServices
                 .Register(app)
@@ -154,7 +154,7 @@ namespace Kephas.Application.AspNetCore
         protected override IAppContext CreateAppContext(IAmbientServices ambientServices)
         {
             var appContext = new AspNetAppContext(
-                this.HostingEnvironment,
+                this.HostEnvironment,
                 this.Configuration,
                 this.AmbientServices,
                 appArgs: ambientServices.GetService<IAppArgs>());

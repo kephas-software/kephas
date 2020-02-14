@@ -8,11 +8,10 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-
+    using Microsoft.Extensions.Hosting;
     using Serilog;
 
     public class Startup : Kephas.Application.AspNetCore.StartupBase
@@ -22,7 +21,7 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         /// </summary>
         /// <param name="env">The environment.</param>
         /// <param name="config">The configuration.</param>
-        public Startup(IHostingEnvironment env, IConfiguration config)
+        public Startup(IWebHostEnvironment env, IConfiguration config)
             : base(env, config)
         {
         }
@@ -36,7 +35,7 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         /// </returns>
         public override IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddRazorPages();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -54,9 +53,9 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="appLifetime">The application lifetime.</param>
-        public override void Configure(IApplicationBuilder app, IApplicationLifetime appLifetime)
+        public override void Configure(IApplicationBuilder app, IHostApplicationLifetime appLifetime)
         {
-            var env = this.HostingEnvironment;
+            var env = this.HostEnvironment;
 
             if (env.IsDevelopment())
             {
@@ -72,11 +71,17 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                endpoints
+                    .MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
+
+                endpoints
+                    .MapRazorPages();
             });
 
             app.UseSpa(spa =>

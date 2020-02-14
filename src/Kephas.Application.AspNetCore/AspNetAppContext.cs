@@ -12,7 +12,6 @@ namespace Kephas.Application.AspNetCore
 {
     using Kephas;
     using Kephas.Application;
-
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -25,21 +24,21 @@ namespace Kephas.Application.AspNetCore
         /// <summary>
         /// Initializes a new instance of the <see cref="AspNetAppContext"/> class.
         /// </summary>
-        /// <param name="hostingEnvironment">The hosting environment.</param>
+        /// <param name="hostEnvironment">The host environment.</param>
         /// <param name="configuration">The ASP.NET configuration.</param>
         /// <param name="ambientServices">Optional. The ambient services. If not provided then
         ///                               a new instance of <see cref="AmbientServices"/> will be created and used.</param>
         /// <param name="appRuntime">Optional. The application runtime.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public AspNetAppContext(
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostEnvironment,
             IConfiguration configuration,
             IAmbientServices ambientServices = null,
             IAppRuntime appRuntime = null,
             IAppArgs appArgs = null)
             : base(ambientServices, appRuntime, appArgs)
         {
-            this.HostingEnvironment = hostingEnvironment;
+            this.HostEnvironment = hostEnvironment;
             this.Configuration = configuration;
         }
 
@@ -57,7 +56,7 @@ namespace Kephas.Application.AspNetCore
         /// <value>
         /// The hosting environment.
         /// </value>
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostEnvironment { get; }
 
         /// <summary>
         /// Gets the ASP.NET configuration.

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;netcoreapp2.2</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>..\..\Kephas.snk</AssemblyOriginatorKeyFile>
@@ -25,14 +25,6 @@
         <DefineConstants>NETCOREAPP3_1</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.2|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NETCOREAPP2_2</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.2|AnyCPU'">
-        <DefineConstants>NETCOREAPP2_2</DefineConstants>
-    </PropertyGroup>
-
     <ItemGroup>
       <None Remove="stylecop.json" />
     </ItemGroup>
@@ -49,6 +41,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -64,18 +57,5 @@
     <ItemGroup>
         <None Include="..\..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
-
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='net45' or '$(TargetFramework)'=='net461'">
-            <ItemGroup>
-                <Reference Include="System.ComponentModel.DataAnnotations" />
-            </ItemGroup>
-        </When>
-        <Otherwise>
-            <ItemGroup>
-                <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
-            </ItemGroup>
-        </Otherwise>
-    </Choose>
 
 </Project>
