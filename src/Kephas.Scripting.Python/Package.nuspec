@@ -6,13 +6,12 @@
         <title>Kephas.Scripting.Python</title>
         <authors>Kephas Software SRL</authors>
         <owners>Kephas Software SRL</owners>
-        <description>
-            Provides the infrastructure for executing Python scripts.
+        <description>Provides the infrastructure for Python script execution.</description>
+        <releaseNotes>
             Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
-        </description>
-        <releaseNotes>Please check the https://github.com/kephas-software/kephas/releases for the change log.</releaseNotes>
-        <summary>Provides the infrastructure for executing Python scripts.</summary>
+        </releaseNotes>
+        <summary>Provides the infrastructure for Python script execution.</summary>
         <language>en-US</language>
         <projectUrl>https://github.com/kephas-software/kephas</projectUrl>
         <iconUrl>http://kephas-framework.com/favicon.png</iconUrl>
@@ -22,19 +21,7 @@
         <tags>kephas scripting python</tags>
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group targetFramework=".NETFramework4.5">
-                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="IronPython" version="2.7.10-candidate1" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.CSharp" version="4.6.0" exclude="Build,Analyzers" />
-            </group>
-            <group targetFramework=".NETStandard2.0">
-                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="IronPython" version="2.7.10-candidate1" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.CSharp" version="4.6.0" exclude="Build,Analyzers" />
-            </group>
-            <group targetFramework=".NETStandard2.1">
+            <group>
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Scripting" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="IronPython" version="2.7.10-candidate1" exclude="Build,Analyzers" />
@@ -43,13 +30,15 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="**\*.cs" target="src"/>
         <file src="bin\$configuration$\netstandard2.1\Kephas.Scripting.Python.dll" target="lib\netstandard2.1" />
         <file src="bin\$configuration$\netstandard2.1\Kephas.Scripting.Python.pdb" target="lib\netstandard2.1" />
         <file src="bin\$configuration$\netstandard2.1\Kephas.Scripting.Python.xml" target="lib\netstandard2.1" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.Python.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.Python.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.Python.xml" target="lib\netstandard2.0" />
+        <file src="bin\$configuration$\net461\Kephas.Scripting.Python.dll" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Scripting.Python.pdb" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Scripting.Python.xml" target="lib\net461" />
         <file src="bin\$configuration$\net45\Kephas.Scripting.Python.dll" target="lib\net45" />
         <file src="bin\$configuration$\net45\Kephas.Scripting.Python.pdb" target="lib\net45" />
         <file src="bin\$configuration$\net45\Kephas.Scripting.Python.xml" target="lib\net45" />

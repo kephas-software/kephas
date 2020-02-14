@@ -51,7 +51,6 @@
             </group>
         </dependencies>
         <frameworkAssemblies>
-            <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETFramework4.5, .NETFramework4.6.1" />
             <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.5, .NETFramework4.6.1" />
             <frameworkAssembly assemblyName="System.Core" targetFramework=".NETFramework4.5, .NETFramework4.6.1" />
             <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.5, .NETFramework4.6.1" />

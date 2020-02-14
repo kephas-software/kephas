@@ -21,20 +21,16 @@
         <tags>kephas redis</tags>
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group targetFramework=".NETFramework4.6.1">
+            <group>
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="Kephas.Messaging" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="StackExchange.Redis" version="2.0.601" exclude="Build,Analyzers" />
-            </group>
-            <group targetFramework=".NETStandard2.0">
-                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="Kephas.Messaging" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="StackExchange.Redis" version="2.0.601" exclude="Build,Analyzers" />
             </group>
         </dependencies>
     </metadata>
     <files>
-        <file src="**\*.cs" target="src"/>
+        <file src="bin\$configuration$\netstandard2.1\Kephas.Redis.dll" target="lib\netstandard2.1" />
+        <file src="bin\$configuration$\netstandard2.1\Kephas.Redis.pdb" target="lib\netstandard2.1" />
+        <file src="bin\$configuration$\netstandard2.1\Kephas.Redis.xml" target="lib\netstandard2.1" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Redis.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Redis.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Redis.xml" target="lib\netstandard2.0" />
