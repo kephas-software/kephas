@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netcoreapp3.1;netcoreapp2.2;net461;net45</TargetFrameworks>
@@ -10,7 +10,7 @@
         </When>
         <Otherwise>
             <ItemGroup>
-                <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
+                <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
             </ItemGroup>
         </Otherwise>
     </Choose>

@@ -10,7 +10,7 @@
         </When>
         <Otherwise>
             <ItemGroup>
-                <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
+                <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
             </ItemGroup>
         </Otherwise>
     </Choose>
