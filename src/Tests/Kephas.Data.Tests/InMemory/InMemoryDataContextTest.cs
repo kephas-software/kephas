@@ -87,6 +87,12 @@ namespace Kephas.Data.Tests.InMemory
                 Arg.Any<ISerializationContext>(),
                 Arg.Any<CancellationToken>()).Returns(Task.FromResult((object)new[] { "mama", "papa" }));
 
+#if NETCOREAPP3_1
+            serializer.Deserialize(
+                Arg.Any<string>(),
+                Arg.Any<ISerializationContext>()).Returns((object)new[] { "mama", "papa" });
+#endif
+
             var dataContext = this.CreateInMemoryDataContext(serializer: serializer);
 
             dataContext.Initialize(this.GetDataInitializationContext(dataContext, new DataContextSettings("InitialData=dummy-will-be-mocked")));

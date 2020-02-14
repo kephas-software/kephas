@@ -86,7 +86,7 @@ namespace Kephas.Core.Tests.Reflection
             object dateTime = new DateTime();
             var date = typeInfo.GetValue(dateTime, "Date");
 
-#if NET45
+#if NET45 || NET461
             Assert.IsEmpty(log.ToString());
 #else
             Assert.AreEqual("Trace Cannot compute getter delegate for {typeName}.{methodName}, falling back to reflection.-System.DateTime" + Environment.NewLine, log.ToString());
