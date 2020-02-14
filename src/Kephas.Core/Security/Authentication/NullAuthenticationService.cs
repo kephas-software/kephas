@@ -21,7 +21,11 @@ namespace Kephas.Security.Authentication
     /// A null security service.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class NullAuthenticationService : IAuthenticationService, ISyncAuthenticationService
+    public class NullAuthenticationService : IAuthenticationService
+#if NETSTANDARD2_1
+#else
+        , ISyncAuthenticationService
+#endif
     {
         /// <summary>
         /// Authenticates the user asynchronously.

@@ -66,6 +66,85 @@ namespace Kephas.Security.Authentication
             IIdentity identity,
             Action<IContext> optionsConfig = null,
             CancellationToken cancellationToken = default);
+
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Authenticates the user.
+        /// </summary>
+        /// <param name="credentials">The credentials.</param>
+        /// <param name="authConfig">Optional. The authentication configuration.</param>
+        /// <returns>
+        /// The identity.
+        /// </returns>
+        IIdentity Authenticate(ICredentials credentials, Action<IAuthenticationContext> authConfig = null)
+        {
+            return this.AuthenticateAsync(credentials, authConfig).GetResultNonLocking();
+        }
+
+        /// <summary>
+        /// Gets the identity for the provided token.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The identity.
+        /// </returns>
+        IIdentity GetIdentity(object token, Action<IContext> optionsConfig = null)
+        {
+            return this.GetIdentityAsync(token, optionsConfig).GetResultNonLocking();
+        }
+
+        /// <summary>
+        /// Gets a token for the provided identity.
+        /// </summary>
+        /// <param name="identity">The identity.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The token.
+        /// </returns>
+        object GetToken(IIdentity identity, Action<IContext> optionsConfig = null)
+        {
+            return this.GetTokenAsync(identity, optionsConfig).GetResultNonLocking();
+        }
+#endif
+    }
+
+#if NETSTANDARD2_1
+#else
+    /// <summary>
+    /// Interface for a synchronous authentication service.
+    /// </summary>
+    public interface ISyncAuthenticationService
+    {
+        /// <summary>
+        /// Authenticates the user.
+        /// </summary>
+        /// <param name="credentials">The credentials.</param>
+        /// <param name="authConfig">Optional. The authentication configuration.</param>
+        /// <returns>
+        /// The identity.
+        /// </returns>
+        IIdentity Authenticate(ICredentials credentials, Action<IAuthenticationContext> authConfig = null);
+
+        /// <summary>
+        /// Gets the identity for the provided token.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The identity.
+        /// </returns>
+        IIdentity GetIdentity(object token, Action<IContext> optionsConfig = null);
+
+        /// <summary>
+        /// Gets a token for the provided identity.
+        /// </summary>
+        /// <param name="identity">The identity.</param>
+        /// <param name="optionsConfig">Optional. The options configuration.</param>
+        /// <returns>
+        /// The token.
+        /// </returns>
+        object GetToken(IIdentity identity, Action<IContext> optionsConfig = null);
     }
 
     /// <summary>
@@ -145,4 +224,6 @@ namespace Kephas.Security.Authentication
             return authenticationService.GetTokenAsync(identity, optionsConfig).GetResultNonLocking();
         }
     }
+#endif
+
 }

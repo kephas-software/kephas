@@ -42,6 +42,52 @@ namespace Kephas.Security.Authorization
             object scope = null,
             Action<IAuthorizationContext> authConfig = null,
             CancellationToken cancellationToken = default);
+
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Query whether the authorization context has the requested permissions.
+        /// </summary>
+        /// <param name="executionContext">The context for the execution to be authorized.</param>
+        /// <param name="permissions">The permissions.</param>
+        /// <param name="scope">Optional. The authorization scope.</param>
+        /// <param name="authConfig">Optional. The authorization configuration.</param>
+        /// <returns>
+        /// True if permission is granted, false if not.
+        /// </returns>
+        bool Authorize(
+            IContext executionContext,
+            IEnumerable<object> permissions,
+            object scope = null,
+            Action<IAuthorizationContext> authConfig = null)
+        {
+            return this.AuthorizeAsync(executionContext, permissions, authConfig).GetResultNonLocking();
+        }
+#endif
+    }
+
+#if NETSTANDARD2_1
+#else
+
+    /// <summary>
+    /// Interface providing synchronous methods for the authorization service.
+    /// </summary>
+    public interface ISyncAuthorizationService
+    {
+        /// <summary>
+        /// Query whether the authorization context has the requested permissions.
+        /// </summary>
+        /// <param name="executionContext">The context for the execution to be authorized.</param>
+        /// <param name="permissions">The permissions.</param>
+        /// <param name="scope">Optional. The authorization scope.</param>
+        /// <param name="authConfig">Optional. The authorization configuration.</param>
+        /// <returns>
+        /// True if permission is granted, false if not.
+        /// </returns>
+        bool Authorize(
+            IContext executionContext,
+            IEnumerable<object> permissions,
+            object scope = null,
+            Action<IAuthorizationContext> authConfig = null);
     }
 
     /// <summary>
@@ -77,4 +123,5 @@ namespace Kephas.Security.Authorization
             return authorizationService.AuthorizeAsync(executionContext, permissions, scope, authConfig).GetResultNonLocking();
         }
     }
+#endif
 }
