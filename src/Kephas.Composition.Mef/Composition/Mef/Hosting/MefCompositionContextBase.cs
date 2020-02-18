@@ -74,6 +74,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
         public virtual T GetExport<T>(string serviceName = null)
+            where T : class
         {
             this.AssertNotDisposed();
 
@@ -91,6 +92,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
         public virtual IEnumerable<T> GetExports<T>()
+            where T : class
         {
             this.AssertNotDisposed();
 
@@ -126,6 +128,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
         public virtual T TryGetExport<T>(string serviceName = null)
+            where T : class
         {
             this.AssertNotDisposed();
 

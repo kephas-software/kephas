@@ -88,10 +88,11 @@ namespace Kephas.Composition.Autofac.Metadata
                 .ForDelegate((c, p) =>
                     {
                         var lifetimeScope = c.GetLifetimeScope();
-                        return new ExportFactory<T>(() => (T)lifetimeScope.ResolveComponent(valueRegistration, p));
+                        var request = new ResolveRequest(valueService, valueRegistration, p);
+                        return new ExportFactory<T>(() => (T)lifetimeScope.ResolveComponent(request));
                     })
                 .As(providedService)
-                .Targeting(valueRegistration)
+                .Targeting(valueRegistration, isAdapterForIndividualComponent: false)
                 .InheritRegistrationOrderFrom(valueRegistration);
 
             return rb.CreateRegistration();

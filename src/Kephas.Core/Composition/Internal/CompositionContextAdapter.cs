@@ -64,6 +64,7 @@ namespace Kephas.Composition.Internal
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
         public T GetExport<T>(string serviceName = null)
+            where T : class
         {
             return (T)this.serviceProvider.GetService(typeof(T));
         }
@@ -76,6 +77,7 @@ namespace Kephas.Composition.Internal
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
         public IEnumerable<T> GetExports<T>()
+            where T : class
         {
             var collectionType = typeof(IEnumerable<>).MakeGenericType(typeof(T));
             return (IEnumerable<T>)this.serviceProvider.GetService(collectionType);
@@ -105,6 +107,7 @@ namespace Kephas.Composition.Internal
         /// provided contract was not found.
         /// </returns>
         public T TryGetExport<T>(string serviceName = null)
+            where T : class
         {
             return (T)this.serviceProvider.GetService(typeof(T));
         }

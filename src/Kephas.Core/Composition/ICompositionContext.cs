@@ -50,7 +50,8 @@ namespace Kephas.Composition
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        T GetExport<T>(string serviceName = null);
+        T GetExport<T>(string serviceName = null)
+            where T : class;
 
         /// <summary>
         /// Resolves the specified contract type returning multiple instances.
@@ -59,7 +60,8 @@ namespace Kephas.Composition
         /// <returns>
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
-        IEnumerable<T> GetExports<T>();
+        IEnumerable<T> GetExports<T>()
+            where T : class;
 
         /// <summary>
         /// Tries to resolve the specified contract type.
@@ -77,7 +79,8 @@ namespace Kephas.Composition
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        T TryGetExport<T>(string serviceName = null);
+        T TryGetExport<T>(string serviceName = null)
+            where T : class;
 
         /// <summary>
         /// Creates a new scoped composition context.

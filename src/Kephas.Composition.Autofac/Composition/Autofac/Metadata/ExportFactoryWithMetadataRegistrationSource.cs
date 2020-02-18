@@ -90,13 +90,17 @@ namespace Kephas.Composition.Autofac.Metadata
                     {
                         var lifetimeScope = c.GetLifetimeScope();
                         return new ExportFactory<T, TMetadata>(
-                            () => (T)lifetimeScope.ResolveComponent(valueRegistration, p),
+                            () =>
+                            {
+                                var request = new ResolveRequest(valueService, valueRegistration, p);
+                                return (T)lifetimeScope.ResolveComponent(request);
+                            },
                             (TMetadata)typeof(TMetadata)
                                 .AsRuntimeTypeInfo()
                                 .CreateInstance(new object[] { valueRegistration.Target.Metadata }));
                     })
                 .As(providedService)
-                .Targeting(valueRegistration)
+                .Targeting(valueRegistration, isAdapterForIndividualComponent: false)
                 .InheritRegistrationOrderFrom(valueRegistration);
 
             return rb.CreateRegistration();

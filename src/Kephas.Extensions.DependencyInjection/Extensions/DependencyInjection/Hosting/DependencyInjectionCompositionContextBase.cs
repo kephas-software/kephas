@@ -73,6 +73,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
         public T GetExport<T>(string serviceName = null)
+            where T : class
         {
             return this.ServiceProvider.GetRequiredService<T>();
         }
@@ -85,6 +86,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
         public IEnumerable<T> GetExports<T>()
+            where T : class
         {
             return this.ServiceProvider.GetServices<T>();
         }
@@ -113,6 +115,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// provided contract was not found.
         /// </returns>
         public T TryGetExport<T>(string serviceName = null)
+            where T : class
         {
             return this.ServiceProvider.GetService<T>();
         }

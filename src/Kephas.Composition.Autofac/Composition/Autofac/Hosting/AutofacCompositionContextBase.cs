@@ -75,6 +75,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
         public T GetExport<T>(string serviceName = null)
+            where T : class
         {
             this.AssertNotDisposed();
 
@@ -89,6 +90,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// An enumeration of objects implementing <typeparamref name="T" />.
         /// </returns>
         public IEnumerable<T> GetExports<T>()
+            where T : class
         {
             this.AssertNotDisposed();
 
@@ -126,6 +128,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// provided contract was not found.
         /// </returns>
         public T TryGetExport<T>(string serviceName = null)
+            where T : class
         {
             this.AssertNotDisposed();
 
