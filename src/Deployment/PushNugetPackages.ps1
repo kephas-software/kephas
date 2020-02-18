@@ -11,6 +11,7 @@ $packages = @(
     "Kephas.Composition.Mef",
     "Kephas.Configuration.Legacy",
     "Kephas.Core",
+    "Kephas.Core.Endpoints",
     "Kephas.Data",
     "Kephas.Data.Client",
     "Kephas.Data.Endpoints",
