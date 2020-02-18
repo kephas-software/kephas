@@ -35,5 +35,13 @@ namespace Kephas.Cryptography
         /// The salt.
         /// </value>
         public byte[] Salt { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the service should use the default salt.
+        /// </summary>
+        /// <value>
+        /// True if use the default salt, false if not.
+        /// </value>
+        public bool UseDefaultSalt { get; set; }
     }
 }

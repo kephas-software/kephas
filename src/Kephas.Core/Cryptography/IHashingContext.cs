@@ -25,6 +25,14 @@ namespace Kephas.Cryptography
         /// The salt.
         /// </value>
         byte[] Salt { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the service should use the default salt.
+        /// </summary>
+        /// <value>
+        /// True if use the default salt, false if not.
+        /// </value>
+        bool UseDefaultSalt { get; set; }
     }
 
     /// <summary>
@@ -48,6 +56,25 @@ namespace Kephas.Cryptography
             Requires.NotNull(salt, nameof(salt));
 
             hashingContext.Salt = salt;
+
+            return hashingContext;
+        }
+
+        /// <summary>
+        /// Sets a value indicating whether to use the default salt.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="hashingContext">The hashing context.</param>
+        /// <param name="value">True to use the default salt, false otherwise.</param>
+        /// <returns>
+        /// This <paramref name="hashingContext"/>.
+        /// </returns>
+        public static TContext UseDefaultSalt<TContext>(this TContext hashingContext, bool value)
+            where TContext : class, IHashingContext
+        {
+            Requires.NotNull(hashingContext, nameof(hashingContext));
+
+            hashingContext.UseDefaultSalt = value;
 
             return hashingContext;
         }
