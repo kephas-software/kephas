@@ -1,14 +1,16 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ThreadContextAwaiter.cs" company="Kephas Software SRL">
+// <copyright file="ValueThreadContextAwaiter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Awaiter preserving the context.
+//   Implements the value thread context awaiter class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 #nullable enable
+
+#if NETSTANDARD2_1
 
 namespace Kephas.Threading.Tasks
 {
@@ -18,19 +20,17 @@ namespace Kephas.Threading.Tasks
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
-    using Kephas.Diagnostics.Contracts;
-
     /// <summary>
-    /// Awaiter preserving the thread context.
+    /// Value awaiter preserving the thread context.
     /// </summary>
     /// <typeparam name="TResult">Type of the result.</typeparam>
     [DebuggerStepThrough]
-    public class ThreadContextAwaiter<TResult> : INotifyCompletion, ICriticalNotifyCompletion
+    public class ValueThreadContextAwaiter<TResult> : INotifyCompletion, ICriticalNotifyCompletion
     {
         /// <summary>
         /// The awaiter.
         /// </summary>
-        private readonly ConfiguredTaskAwaitable<TResult>.ConfiguredTaskAwaiter awaiter;
+        private readonly ConfiguredValueTaskAwaitable<TResult>.ConfiguredValueTaskAwaiter awaiter;
 
         /// <summary>
         /// Thread context for the server.
@@ -38,14 +38,12 @@ namespace Kephas.Threading.Tasks
         private readonly ThreadContext threadContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThreadContextAwaiter{TResult}"/> class.
+        /// Initializes a new instance of the <see cref="ValueThreadContextAwaiter{TResult}"/> class.
         /// </summary>
-        /// <param name="task">The task.</param>
-        public ThreadContextAwaiter(Task<TResult> task)
+        /// <param name="valueTask">The value task.</param>
+        public ValueThreadContextAwaiter(ValueTask<TResult> valueTask)
         {
-            Requires.NotNull(task, nameof(task));
-
-            var configuredTaskAwaitable = task.ConfigureAwait(false);
+            var configuredTaskAwaitable = valueTask.ConfigureAwait(false);
             this.awaiter = configuredTaskAwaitable.GetAwaiter();
             this.threadContext = new ThreadContextBuilder().CreateThreadContext();
         }
@@ -65,7 +63,6 @@ namespace Kephas.Threading.Tasks
         public void OnCompleted(Action continuation)
         {
             this.threadContext.Store();
-            // ReSharper disable once ImpureMethodCallOnReadonlyValueField
             this.awaiter.OnCompleted(continuation);
         }
 
@@ -76,7 +73,6 @@ namespace Kephas.Threading.Tasks
         public void UnsafeOnCompleted(Action continuation)
         {
             this.threadContext.Store();
-            // ReSharper disable once ImpureMethodCallOnReadonlyValueField
             this.awaiter.UnsafeOnCompleted(continuation);
         }
 
@@ -86,7 +82,7 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// The awaiter.
         /// </returns>
-        public ThreadContextAwaiter<TResult> GetAwaiter() => this;
+        public ValueThreadContextAwaiter<TResult> GetAwaiter() => this;
 
         /// <summary>
         /// Notifies the awaiter to get the result.
@@ -104,24 +100,22 @@ namespace Kephas.Threading.Tasks
     }
 
     /// <summary>
-    /// Awaiter preserving the thread context.
+    /// Value awaiter preserving the thread context.
     /// </summary>
     [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "Reviewed. Suppression is OK here.")]
     [DebuggerStepThrough]
-    public class ThreadContextAwaiter : INotifyCompletion, ICriticalNotifyCompletion
+    public class ValueThreadContextAwaiter : INotifyCompletion, ICriticalNotifyCompletion
     {
-        private readonly ConfiguredTaskAwaitable.ConfiguredTaskAwaiter awaiter;
+        private readonly ConfiguredValueTaskAwaitable.ConfiguredValueTaskAwaiter awaiter;
         private readonly ThreadContext threadContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThreadContextAwaiter"/> class.
+        /// Initializes a new instance of the <see cref="ValueThreadContextAwaiter"/> class.
         /// </summary>
-        /// <param name="task">The task.</param>
-        public ThreadContextAwaiter(Task task)
+        /// <param name="valueTask">The task.</param>
+        public ValueThreadContextAwaiter(ValueTask valueTask)
         {
-            Requires.NotNull(task, nameof(task));
-
-            var configuredTaskAwaitable = task.ConfigureAwait(false);
+            var configuredTaskAwaitable = valueTask.ConfigureAwait(false);
             this.awaiter = configuredTaskAwaitable.GetAwaiter();
             this.threadContext = new ThreadContextBuilder().CreateThreadContext();
         }
@@ -162,7 +156,7 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// The awaiter.
         /// </returns>
-        public ThreadContextAwaiter GetAwaiter() => this;
+        public ValueThreadContextAwaiter GetAwaiter() => this;
 
         /// <summary>
         /// Notifies the awaiter to get the result.
@@ -171,7 +165,9 @@ namespace Kephas.Threading.Tasks
         public void GetResult()
         {
             this.threadContext.Restore();
+            // ReSharper disable once ImpureMethodCallOnReadonlyValueField
             this.awaiter.GetResult();
         }
     }
 }
+#endif

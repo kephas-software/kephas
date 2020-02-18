@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Threading.Tasks
 {
     using System;
@@ -41,12 +43,8 @@ namespace Kephas.Threading.Tasks
         /// <value>
         /// A successfully completed task.
         /// </value>
-        public static Task CompletedTask { get; } =
-#if NET45
-            Task.FromResult(0);
-#else
-            Task.CompletedTask;
-#endif
+        [Obsolete("Use instead Task.CompletedTask.")]
+        public static Task CompletedTask { get; } = Task.CompletedTask;
 
         /// <summary>
         /// Waits the task avoiding the current thread to be locked.
@@ -145,6 +143,54 @@ namespace Kephas.Threading.Tasks
             return default;
         }
 
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Waits the task avoiding the current thread to be locked.
+        /// </summary>
+        /// <param name="valueTask">The value task.</param>
+        /// <param name="timeout">The timeout (optional). The default value is <see cref="DefaultTimeout"/>.</param>
+        /// <param name="waitMilliseconds">The milliseconds used to wait until checking again the state of the task (optional). The default value is <see cref="DefaultWaitMilliseconds"/>.</param>
+        /// <param name="throwOnTimeout">If set to <c>true</c> an exception is thrown on timeout.</param>
+        /// <returns>
+        ///   <c>true</c> if the task completed execution within the allotted time; otherwise, <c>false</c>.
+        /// </returns>
+        /// <remarks>
+        /// It is a bad practice to run synchronously tasks meant to be async "by birth".
+        /// However, if there is no other chance than waiting for a task to complete synchronously,
+        /// DO NOT USE task.Wait(), because there are situations when it deadlocks the thread.
+        /// An option would be to use task.ConfigureAwait(false).Wait(), but all the tasks down
+        /// the task chain must be exactly the same way configured, which may not not be always the case.
+        /// An alternative implementation might be the one provided below, but this must be tried if it really works:
+        /// http://stackoverflow.com/questions/5095183/how-would-i-run-an-async-taskt-method-synchronously.
+        /// For more information see also http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html
+        /// and http://blogs.msdn.com/b/pfxteam/archive/2012/04/13/10293638.aspx.
+        /// </remarks>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool WaitNonLocking(this ValueTask valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null, bool throwOnTimeout = true)
+        {
+            return WaitNonLocking(valueTask.AsTask(), timeout, waitMilliseconds, throwOnTimeout);
+        }
+
+        /// <summary>
+        /// Waits the task avoiding the current thread to be locked.
+        /// </summary>
+        /// <typeparam name="T">The return type.</typeparam>
+        /// <param name="valueTask">The value task.</param>
+        /// <param name="timeout">Optional. The timeout. The default value is <see cref="DefaultTimeout"/>.</param>
+        /// <param name="waitMilliseconds">
+        /// Optional. The milliseconds used to wait until checking again the state of the task. The default value is
+        /// <see cref="DefaultWaitMilliseconds"/>.</param>
+        /// <param name="throwOnTimeout">Optional. If set to <c>true</c> an exception is thrown on timeout.</param>
+        /// <returns>
+        /// The task result.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetResultNonLocking<T>(this ValueTask<T> valueTask, TimeSpan? timeout = null, int? waitMilliseconds = null, bool throwOnTimeout = true)
+        {
+            return GetResultNonLocking(valueTask.AsTask(), timeout, waitMilliseconds, throwOnTimeout);
+        }
+#endif
+
         /// <summary>
         /// Gets a task awaiter preserving the current context upon continuation.
         /// </summary>
@@ -187,6 +233,47 @@ namespace Kephas.Threading.Tasks
 
             return new ThreadContextAwaiter(task);
         }
+
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Gets a task awaiter preserving the current context upon continuation.
+        /// </summary>
+        /// <remarks>
+        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called),
+        /// but it can be configured to preserve some thread properties.
+        /// This awaiter is useful on the server, where <c>await</c> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.
+        /// </remarks>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="task">The task.</param>
+        /// <returns>
+        /// A <see cref="ThreadContextAwaiter{TResult}"/>.
+        /// </returns>
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueThreadContextAwaiter<TResult> PreserveThreadContext<TResult>(this ValueTask<TResult> task)
+        {
+            return new ValueThreadContextAwaiter<TResult>(task);
+        }
+
+        /// <summary>
+        /// Gets a task awaiter preserving the current context upon continuation.
+        /// </summary>
+        /// <remarks>
+        /// The returned awaiter does not continue on the captured context (<see cref="Task.ConfigureAwait"/><c>(false)</c> is called),
+        /// but it can be configured to preserve some thread properties.
+        /// This awaiter is useful on the server, where <c>await</c> should not continue on the starting thread (like the UI does), but properties like the current culture should be preserved.
+        /// </remarks>
+        /// <param name="valueTask">The value task.</param>
+        /// <returns>
+        /// A <see cref="ThreadContextAwaiter"/>.
+        /// </returns>
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ValueThreadContextAwaiter PreserveThreadContext(this ValueTask valueTask)
+        {
+            return new ValueThreadContextAwaiter(valueTask);
+        }
+#endif
 
         /// <summary>
         /// Configures a timeout for the provided task. If the task ends within the indicated time,
