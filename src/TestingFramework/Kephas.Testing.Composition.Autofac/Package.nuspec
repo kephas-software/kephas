@@ -26,7 +26,7 @@
                 <dependency id="Kephas.Composition.Autofac" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
                 <dependency id="Kephas.Testing" version="$refversion$" exclude="Build,Analyzers" />
-                <dependency id="Autofac" version="4.9.4" exclude="Build,Analyzers" />
+                <dependency id="Autofac" version="5.1.2" exclude="Build,Analyzers" />
             </group>
         </dependencies>
     </metadata>
