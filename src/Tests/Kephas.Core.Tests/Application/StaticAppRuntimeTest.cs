@@ -120,7 +120,7 @@ namespace Kephas.Core.Tests.Application
 #if NET461
             Assert.AreEqual("net461", appFramework);
 #else
-            Assert.AreEqual("netcoreapp1.0", appFramework);
+            Assert.AreEqual("netcoreapp2.1", appFramework);
 #endif
         }
     }
