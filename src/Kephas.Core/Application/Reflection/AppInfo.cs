@@ -40,11 +40,7 @@ namespace Kephas.Application.Reflection
             this.FullName = this.Name = identity.Id;
             this.Version = identity.Version;
             this.Description = description;
-#if NET45
-            this.Tags = tags ?? new string[0];
-#else
             this.Tags = tags ?? Array.Empty<string>();
-#endif
         }
 
         /// <summary>

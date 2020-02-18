@@ -58,7 +58,7 @@ namespace Kephas.Application
         /// </remarks>
         public virtual Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Kephas.Application
         /// </returns>
         public virtual Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Kephas.Application
         /// </returns>
         public virtual Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Kephas.Application
         /// </returns>
         public virtual Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -97,7 +97,7 @@ namespace Kephas.Data.Behaviors
         {
             this.BeforePersist(entity, entityEntry, operationContext);
 
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Kephas.Data.Behaviors
         {
             this.AfterPersist(entity, entityEntry, operationContext);
 
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Kephas.Data.Behaviors
         {
             this.Initialize(entity, entityEntry, operationContext);
 
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>

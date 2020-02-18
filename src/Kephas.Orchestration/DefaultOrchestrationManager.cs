@@ -179,7 +179,7 @@ namespace Kephas.Orchestration
             if (this.timer == null)
             {
                 // not properly initialized, possibly abnormal program termination.
-                return TaskHelper.CompletedTask;
+                return Task.CompletedTask;
             }
 
             this.timer.Dispose();
@@ -188,7 +188,7 @@ namespace Kephas.Orchestration
             this.appStoppedSubscription?.Dispose();
             this.appHeartbeatSubscription?.Dispose();
 
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -331,7 +331,7 @@ namespace Kephas.Orchestration
         /// </returns>
         protected virtual Task InitializeLiveAppsAsync(CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace Kephas.Orchestration
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)
             {
-                return TaskHelper.CompletedTask;
+                return Task.CompletedTask;
             }
 
             if (appEvent.AppInfo.AppId == this.AppRuntime.GetAppId() && appEvent.AppInfo.AppInstanceId == this.AppRuntime.GetAppInstanceId())
@@ -376,7 +376,7 @@ namespace Kephas.Orchestration
             }
 
             this.LiveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -395,11 +395,11 @@ namespace Kephas.Orchestration
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)
             {
-                return TaskHelper.CompletedTask;
+                return Task.CompletedTask;
             }
 
             this.LiveApps.TryRemove(appKey, out _);
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -416,11 +416,11 @@ namespace Kephas.Orchestration
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)
             {
-                return TaskHelper.CompletedTask;
+                return Task.CompletedTask;
             }
 
             this.LiveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>

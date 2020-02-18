@@ -64,7 +64,7 @@ namespace Kephas.Application
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Kephas.Application
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Kephas.Application
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace Kephas.Application
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

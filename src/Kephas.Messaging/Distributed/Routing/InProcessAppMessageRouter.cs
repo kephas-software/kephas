@@ -284,7 +284,7 @@ namespace Kephas.Messaging.Distributed.Routing
                     }
                 });
 
-                return TaskHelper.CompletedTask;
+                return Task.CompletedTask;
             }
         }
     }

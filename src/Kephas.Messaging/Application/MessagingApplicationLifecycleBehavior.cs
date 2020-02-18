@@ -75,7 +75,7 @@ namespace Kephas.Messaging.Application
         /// </returns>
         public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Kephas.Messaging.Application
         /// </returns>
         public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>

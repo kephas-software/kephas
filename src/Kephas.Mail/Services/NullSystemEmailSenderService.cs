@@ -34,7 +34,7 @@ namespace Kephas.Mail.Services
             IContext context = null,
             CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>

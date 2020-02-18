@@ -14,6 +14,7 @@ namespace Kephas.Application
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas;
     using Kephas.Application.Resources;
     using Kephas.Logging;
@@ -135,7 +136,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -148,7 +149,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

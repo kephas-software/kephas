@@ -259,7 +259,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// </returns>
         protected virtual Task InitializeCoreAsync(IContext context, CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>

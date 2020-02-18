@@ -99,7 +99,7 @@ namespace Kephas.Interaction
                 (e, ctx, token) =>
                     {
                         callback((TEvent)e, ctx);
-                        return TaskHelper.CompletedTask;
+                        return Task.CompletedTask;
                     });
         }
     }

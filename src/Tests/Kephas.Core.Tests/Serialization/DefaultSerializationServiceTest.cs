@@ -325,7 +325,7 @@ namespace Kephas.Core.Tests.Serialization
             var serializationService = this.CreateSerializationServiceForJson(serializer);
             var writer = new StringWriter();
             serializer.SerializeAsync("123", writer, Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => TaskHelper.CompletedTask)
+                .Returns(ci => Task.CompletedTask)
                 .AndDoes(ci => writer.Write(234));
 
             serializationService.Serialize("123", writer);
@@ -386,7 +386,7 @@ namespace Kephas.Core.Tests.Serialization
             var serializationService = this.CreateSerializationServiceForJson(serializer);
             var writer = new StringWriter();
             serializer.SerializeAsync("123", writer, Arg.Any<ISerializationContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => TaskHelper.CompletedTask)
+                .Returns(ci => Task.CompletedTask)
                 .AndDoes(ci => writer.Write(234));
 
             await serializationService.SerializeAsync("123", writer);

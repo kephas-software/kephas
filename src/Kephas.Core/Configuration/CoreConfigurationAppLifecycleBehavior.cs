@@ -51,7 +51,7 @@ namespace Kephas.Configuration
                 var settings = this.coreConfiguration.Settings;
                 if (settings == null)
                 {
-                    return TaskHelper.CompletedTask;
+                    return Task.CompletedTask;
                 }
 
                 if (settings.Task != null)
@@ -65,7 +65,7 @@ namespace Kephas.Configuration
                 this.Logger.Error(ex, "Error while trying to set core default values.");
             }
 
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Kephas.Configuration
         /// </returns>
         public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Kephas.Configuration
         /// </returns>
         public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Kephas.Configuration
         /// </returns>
         public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

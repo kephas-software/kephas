@@ -103,7 +103,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual Task RunAttendedAsync(CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>

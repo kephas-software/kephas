@@ -368,8 +368,6 @@ namespace Kephas.Core.Tests
             Assert.AreSame(typeof(int), service.Metadata["Type"]);
         }
 
-#if NET45
-#else
         [Test]
         public void GetService_lazy_with_metadata()
         {
@@ -394,7 +392,6 @@ namespace Kephas.Core.Tests
             Assert.AreSame(typeof(string), service.Metadata["ValueType"]);
             Assert.AreSame(typeof(int), service.Metadata["Type"]);
         }
-#endif
 
         [Test]
         public void GetService_two_levels()

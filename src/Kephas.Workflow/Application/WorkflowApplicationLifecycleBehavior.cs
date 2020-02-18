@@ -37,7 +37,7 @@ namespace Kephas.Workflow.Application
         {
             RuntimeTypeInfo.RegisterFactory(new WorkflowTypeInfoFactory());
 
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Kephas.Workflow.Application
         /// </returns>
         public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Kephas.Workflow.Application
         /// </returns>
         public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Kephas.Workflow.Application
         /// </returns>
         public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

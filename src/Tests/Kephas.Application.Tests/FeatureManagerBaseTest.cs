@@ -21,8 +21,6 @@ namespace Kephas.Application.Tests
 
     using NUnit.Framework;
 
-    using TaskHelper = Threading.Tasks.TaskHelper;
-
     [TestFixture]
     public class FeatureManagerBaseTest
     {
@@ -96,7 +94,7 @@ namespace Kephas.Application.Tests
                     throw exception;
                 }
 
-                return TaskHelper.CompletedTask;
+                return Task.CompletedTask;
             }
 
             protected override Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
@@ -106,7 +104,7 @@ namespace Kephas.Application.Tests
                     throw exception;
                 }
 
-                return TaskHelper.CompletedTask;
+                return Task.CompletedTask;
             }
         }
     }

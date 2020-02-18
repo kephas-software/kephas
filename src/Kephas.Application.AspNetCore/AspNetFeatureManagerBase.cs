@@ -47,7 +47,7 @@ namespace Kephas.Application.AspNetCore
         /// </returns>
         protected virtual Task InitializeCoreAsync(IAspNetAppContext appContext, CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Kephas.Application.AspNetCore
         /// </returns>
         protected virtual Task FinalizeCoreAsync(IAspNetAppContext appContext, CancellationToken cancellationToken)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

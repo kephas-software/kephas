@@ -310,12 +310,12 @@ namespace Kephas.Messaging.Tests
             var beforelist = new List<int>();
             var afterlist = new List<int>();
             var f1 = this.CreateBehaviorFactory(
-                (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; },
-                (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; },
+                (c, t) => { beforelist.Add(1); return Task.CompletedTask; },
+                (c, t) => { afterlist.Add(1); return Task.CompletedTask; },
                 processingPriority: 2);
             var f2 = this.CreateBehaviorFactory(
-                (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; },
-                (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; },
+                (c, t) => { beforelist.Add(2); return Task.CompletedTask; },
+                (c, t) => { afterlist.Add(2); return Task.CompletedTask; },
                 processingPriority: 1);
 
             var processor = this.CreateMessageProcessor(new[] { f1, f2 }, handler, message);
@@ -343,12 +343,12 @@ namespace Kephas.Messaging.Tests
             var beforelist = new List<int>();
             var afterlist = new List<int>();
             var f1 = this.CreateBehaviorFactory(
-                (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; },
-                (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; },
+                (c, t) => { beforelist.Add(1); return Task.CompletedTask; },
+                (c, t) => { afterlist.Add(1); return Task.CompletedTask; },
                 messageType: typeof(PingMessage));
             var f2 = this.CreateBehaviorFactory(
-                (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; },
-                (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; });
+                (c, t) => { beforelist.Add(2); return Task.CompletedTask; },
+                (c, t) => { afterlist.Add(2); return Task.CompletedTask; });
 
             var processor = this.CreateMessageProcessor(new[] { f1, f2 }, handler, message);
             var result = await processor.ProcessAsync(message, null, default);
@@ -373,23 +373,23 @@ namespace Kephas.Messaging.Tests
             var beforelist = new List<int>();
             var afterlist = new List<int>();
             var f1 = this.CreateBehaviorFactory(
-                (c, t) => { beforelist.Add(1); return TaskHelper.CompletedTask; },
-                (c, t) => { afterlist.Add(1); return TaskHelper.CompletedTask; },
+                (c, t) => { beforelist.Add(1); return Task.CompletedTask; },
+                (c, t) => { afterlist.Add(1); return Task.CompletedTask; },
                 messageType: typeof(IdentifiedMessage2),
                 messageId: "hi");
             var f2 = this.CreateBehaviorFactory(
-                (c, t) => { beforelist.Add(2); return TaskHelper.CompletedTask; },
-                (c, t) => { afterlist.Add(2); return TaskHelper.CompletedTask; },
+                (c, t) => { beforelist.Add(2); return Task.CompletedTask; },
+                (c, t) => { afterlist.Add(2); return Task.CompletedTask; },
                 messageType: typeof(IdentifiedMessage2),
                 messageId: "hello");
             var f3 = this.CreateBehaviorFactory(
-                (c, t) => { beforelist.Add(3); return TaskHelper.CompletedTask; },
-                (c, t) => { afterlist.Add(3); return TaskHelper.CompletedTask; },
+                (c, t) => { beforelist.Add(3); return Task.CompletedTask; },
+                (c, t) => { afterlist.Add(3); return Task.CompletedTask; },
                 messageType: typeof(IdentifiedMessage2),
                 messageIdMatching: MessageIdMatching.All);
             var f4 = this.CreateBehaviorFactory(
-                (c, t) => { beforelist.Add(4); return TaskHelper.CompletedTask; },
-                (c, t) => { afterlist.Add(4); return TaskHelper.CompletedTask; },
+                (c, t) => { beforelist.Add(4); return Task.CompletedTask; },
+                (c, t) => { afterlist.Add(4); return Task.CompletedTask; },
                 messageType: typeof(IMessage),
                 messageTypeMatching: MessageTypeMatching.TypeOrHierarchy,
                 messageIdMatching: MessageIdMatching.All);
@@ -421,8 +421,8 @@ namespace Kephas.Messaging.Tests
             var beforelist = new List<Exception>();
             var afterlist = new List<Exception>();
             var f1 = this.CreateBehaviorFactory(
-                (c, t) => { beforelist.Add(c.Exception); return TaskHelper.CompletedTask; },
-                (c, t) => { afterlist.Add(c.Exception); return TaskHelper.CompletedTask; });
+                (c, t) => { beforelist.Add(c.Exception); return Task.CompletedTask; },
+                (c, t) => { afterlist.Add(c.Exception); return Task.CompletedTask; });
 
             var processor = this.CreateMessageProcessor(new[] { f1 }, handler, message);
             InvalidOperationException thrownException = null;
@@ -512,8 +512,8 @@ namespace Kephas.Messaging.Tests
             Priority overridePriority = Priority.Normal)
         {
             messageType = messageType ?? typeof(IMessage);
-            beforeFunc = beforeFunc ?? ((c, t) => TaskHelper.CompletedTask);
-            afterFunc = afterFunc ?? ((c, t) => TaskHelper.CompletedTask);
+            beforeFunc = beforeFunc ?? ((c, t) => Task.CompletedTask);
+            afterFunc = afterFunc ?? ((c, t) => Task.CompletedTask);
             var behavior = Substitute.For<IMessagingBehavior>();
             behavior.BeforeProcessAsync(Arg.Any<IMessagingContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => beforeFunc(ci.Arg<IMessagingContext>(), ci.Arg<CancellationToken>()));

@@ -63,7 +63,7 @@ namespace Kephas.Model.Application
         /// </returns>
         public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Kephas.Model.Application
         /// </returns>
         public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Kephas.Model.Application
         /// </returns>
         public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

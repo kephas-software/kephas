@@ -73,7 +73,7 @@ namespace Kephas.Messaging.Behaviors
         /// </returns>
         public virtual Task BeforeProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Kephas.Messaging.Behaviors
         /// </remarks>
         public virtual Task AfterProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

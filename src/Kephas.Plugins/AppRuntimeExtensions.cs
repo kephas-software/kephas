@@ -54,11 +54,7 @@ namespace Kephas
                 return pluginsAppRuntime.GetPluginsInstallationLocations();
             }
 
-#if NET45
-            return new string[0];
-#else
             return Array.Empty<string>();
-#endif
         }
 
         /// <summary>
@@ -75,11 +71,7 @@ namespace Kephas
                 return pluginsAppRuntime.GetInstalledPlugins();
             }
 
-#if NET45
-            return new PluginData[0];
-#else
             return Enumerable.Empty<PluginData>();
-#endif
         }
 
         /// <summary>

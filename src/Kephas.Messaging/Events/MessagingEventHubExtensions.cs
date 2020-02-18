@@ -84,7 +84,7 @@ namespace Kephas.Messaging.Events
                 (e, ctx, token) =>
                 {
                     callback((TEvent)e, ctx);
-                    return TaskHelper.CompletedTask;
+                    return Task.CompletedTask;
                 });
         }
 

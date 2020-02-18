@@ -37,7 +37,7 @@ namespace Kephas.Application
                 .WithStoreAction(StoreThreadCulture)
                 .WithRestoreAction(RestoreThreadCulture);
 
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Kephas.Application
         /// </returns>
         public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Kephas.Application
         /// </returns>
         public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Kephas.Application
         /// </returns>
         public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -85,13 +85,8 @@ namespace Kephas.Application
         /// <param name="threadContext">Context for the server threading.</param>
         private static void StoreThreadCulture(ThreadContext threadContext)
         {
-#if !NET45
             threadContext.CurrentCulture = CultureInfo.CurrentCulture;
             threadContext.CurrentUICulture = CultureInfo.CurrentUICulture;
-#else
-            threadContext.CurrentCulture = Thread.CurrentThread.CurrentCulture;
-            threadContext.CurrentUICulture = Thread.CurrentThread.CurrentUICulture;
-#endif
         }
 
         /// <summary>
@@ -100,7 +95,6 @@ namespace Kephas.Application
         /// <param name="threadContext">Context for the server threading.</param>
         private static void RestoreThreadCulture(ThreadContext threadContext)
         {
-#if !NET45
             if (threadContext.CurrentCulture != null)
             {
                 CultureInfo.CurrentCulture = threadContext.CurrentCulture;
@@ -110,17 +104,6 @@ namespace Kephas.Application
             {
                 CultureInfo.CurrentUICulture = threadContext.CurrentUICulture;
             }
-#else
-            if (threadContext.CurrentCulture != null)
-            {
-                Thread.CurrentThread.CurrentCulture = threadContext.CurrentCulture;
-            }
-
-            if (threadContext.CurrentUICulture != null)
-            {
-                Thread.CurrentThread.CurrentUICulture = threadContext.CurrentUICulture;
-            }
-#endif
         }
     }
 }
