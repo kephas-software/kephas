@@ -40,8 +40,5 @@
         <file src="bin\$configuration$\net461\Kephas.Data.MongoDB.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Data.MongoDB.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Data.MongoDB.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net452\Kephas.Data.MongoDB.dll" target="lib\net452" />
-        <file src="bin\$configuration$\net452\Kephas.Data.MongoDB.pdb" target="lib\net452" />
-        <file src="bin\$configuration$\net452\Kephas.Data.MongoDB.xml" target="lib\net452" />
     </files>
 </package>

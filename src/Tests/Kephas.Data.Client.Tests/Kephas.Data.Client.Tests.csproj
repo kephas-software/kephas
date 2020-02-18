@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp3.1;netcoreapp2.2;net461;net45</TargetFrameworks>
+        <TargetFrameworks>netcoreapp3.1;netcoreapp2.2;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <Choose>
-        <When Condition="'$(TargetFramework)'=='net461' or '$(TargetFramework)'=='net45'">
+        <When Condition="'$(TargetFramework)'=='net461'">
         </When>
         <Otherwise>
             <ItemGroup>
@@ -38,12 +38,6 @@
         <ProjectReference Include="..\..\Kephas.Data.Client\Kephas.Data.Client.csproj" />
         <ProjectReference Include="..\..\Kephas.Data\Kephas.Data.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="NSubstitute">
-            <HintPath>..\..\..\Packages\NSubstitute.3.1.0\lib\net45\NSubstitute.dll</HintPath>
-        </Reference>
     </ItemGroup>
 
 </Project>

@@ -45,10 +45,10 @@ namespace Kephas.Services
             if (service is IInitializable syncService)
             {
                 syncService.Initialize(context);
-                return TaskHelper.CompletedTask;
+                return Task.CompletedTask;
             }
 
-            return TaskHelper.CompletedTask;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -88,26 +88,33 @@ namespace Kephas.Services
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public static Task FinalizeAsync(object service, IContext context = null, CancellationToken cancellationToken = default)
+        public static async Task FinalizeAsync(object service, IContext context = null, CancellationToken cancellationToken = default)
         {
             if (service is IAsyncFinalizable asyncService)
             {
-                return asyncService.FinalizeAsync(context, cancellationToken);
+                await asyncService.FinalizeAsync(context, cancellationToken).PreserveThreadContext();
+                return;
             }
 
             if (service is IFinalizable syncService)
             {
                 syncService.Finalize(context);
-                return TaskHelper.CompletedTask;
+                return;
             }
+
+#if NETSTANDARD2_1
+            if (service is IAsyncDisposable asyncDisposableService)
+            {
+                await asyncDisposableService.DisposeAsync().PreserveThreadContext();
+                return;
+            }
+#endif
 
             if (service is IDisposable disposableService)
             {
                 disposableService.Dispose();
-                return TaskHelper.CompletedTask;
+                return;
             }
-
-            return TaskHelper.CompletedTask;
         }
 
         /// <summary>
@@ -131,6 +138,13 @@ namespace Kephas.Services
             {
                 syncService.Finalize(context);
             }
+#if NETSTANDARD2_1
+            else if (service is IAsyncDisposable asyncDisposableService)
+            {
+                asyncDisposableService.DisposeAsync().WaitNonLocking();
+                return;
+            }
+#endif
             else if (service is IDisposable disposableService)
             {
                 disposableService.Dispose();

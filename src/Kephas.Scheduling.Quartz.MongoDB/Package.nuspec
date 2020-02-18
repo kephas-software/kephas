@@ -42,8 +42,5 @@
         <file src="bin\$configuration$\net461\Kephas.Scheduling.Quartz.MongoDB.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Scheduling.Quartz.MongoDB.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Scheduling.Quartz.MongoDB.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net452\Kephas.Scheduling.Quartz.MongoDB.dll" target="lib\net452" />
-        <file src="bin\$configuration$\net452\Kephas.Scheduling.Quartz.MongoDB.pdb" target="lib\net452" />
-        <file src="bin\$configuration$\net452\Kephas.Scheduling.Quartz.MongoDB.xml" target="lib\net452" />
     </files>
 </package>

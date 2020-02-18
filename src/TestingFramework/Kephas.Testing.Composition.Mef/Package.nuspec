@@ -40,8 +40,5 @@
         <file src="bin\$configuration$\net461\Kephas.Testing.Composition.Mef.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Testing.Composition.Mef.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Testing.Composition.Mef.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net45\Kephas.Testing.Composition.Mef.dll" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Testing.Composition.Mef.pdb" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Testing.Composition.Mef.xml" target="lib\net45" />
     </files>
 </package>

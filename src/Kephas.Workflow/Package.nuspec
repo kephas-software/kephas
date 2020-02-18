@@ -21,9 +21,6 @@
         <tags>kephas workflow activity</tags>
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <dependencies>
-            <group targetFramework=".NETFramework4.5">
-                <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
-            </group>
             <group targetFramework=".NETFramework4.6.1">
                 <dependency id="Kephas.Core" version="$refversion$" exclude="Build,Analyzers" />
             </group>
@@ -37,7 +34,7 @@
             </group>
         </dependencies>
         <frameworkAssemblies>
-            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.5, .NETFramework4.6.1" />
+            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.6.1" />
         </frameworkAssemblies>
     </metadata>
     <files>
@@ -50,8 +47,5 @@
         <file src="bin\$configuration$\net461\Kephas.Workflow.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Workflow.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Workflow.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net45\Kephas.Workflow.dll" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Workflow.pdb" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Workflow.xml" target="lib\net45" />
     </files>
 </package>

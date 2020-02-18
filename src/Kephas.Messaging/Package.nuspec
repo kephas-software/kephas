@@ -37,8 +37,5 @@
         <file src="bin\$configuration$\net461\Kephas.Messaging.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Messaging.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Messaging.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net45\Kephas.Messaging.dll" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Messaging.pdb" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Messaging.xml" target="lib\net45" />
     </files>
 </package>

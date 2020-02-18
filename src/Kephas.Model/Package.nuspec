@@ -37,8 +37,5 @@
         <file src="bin\$configuration$\net461\Kephas.Model.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Model.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Model.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net45\Kephas.Model.dll" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Model.pdb" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Model.xml" target="lib\net45" />
     </files>
 </package>

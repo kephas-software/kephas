@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;netstandard2.0;net461;net45</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Description>Provides infrastructure for console applications based on Kephas Framework.</Description>
@@ -28,38 +28,23 @@
 
         <NeutralLanguage>en</NeutralLanguage>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+        <DefineConstants>KEPHAS</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_1</DefineConstants>
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+        <DefineConstants>$(DefineConstants);TRACE;DEBUG</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
-        <DefineConstants>NETSTANDARD2_1</DefineConstants>
+    <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
+        <DefineConstants>$(DefineConstants);NETSTANDARD2_1</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0</DefineConstants>
+    <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+        <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-        <DefineConstants>NETSTANDARD2_0</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NET461</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
+    <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
         <DefineConstants>NET461</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-        <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-        <DefineConstants>NET45</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
@@ -77,7 +62,7 @@
     </ItemGroup>
 
     <Choose>
-        <When Condition="'$(TargetFramework)'=='net461' or '$(TargetFramework)'=='net45'">
+        <When Condition="'$(TargetFramework)'=='net461'">
             <ItemGroup>
                 <Reference Include="System.ComponentModel.DataAnnotations" />
             </ItemGroup>

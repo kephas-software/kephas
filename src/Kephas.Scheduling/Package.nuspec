@@ -37,8 +37,5 @@
         <file src="bin\$configuration$\net461\Kephas.Scheduling.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Scheduling.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Scheduling.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net45\Kephas.Scheduling.dll" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Scheduling.pdb" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Scheduling.xml" target="lib\net45" />
     </files>
 </package>

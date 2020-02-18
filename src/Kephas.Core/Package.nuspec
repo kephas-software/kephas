@@ -21,10 +21,6 @@
         <repository type="github" url="https://github.com/kephas-software/kephas" />
         <tags>kephas core</tags>
         <dependencies>
-            <group targetFramework=".NETFramework4.5">
-                <dependency id="System.Runtime" version="4.3.0" exclude="Build,Analyzers" />
-                <dependency id="System.ValueTuple" version="4.3.0" exclude="Build,Analyzers" />
-            </group>
             <group targetFramework=".NETFramework4.6.1">
                 <dependency id="System.Runtime" version="4.3.0" exclude="Build,Analyzers" />
                 <dependency id="System.ValueTuple" version="4.3.0" exclude="Build,Analyzers" />
@@ -51,9 +47,9 @@
             </group>
         </dependencies>
         <frameworkAssemblies>
-            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.5, .NETFramework4.6.1" />
-            <frameworkAssembly assemblyName="System.Core" targetFramework=".NETFramework4.5, .NETFramework4.6.1" />
-            <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.5, .NETFramework4.6.1" />
+            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.6.1" />
+            <frameworkAssembly assemblyName="System.Core" targetFramework=".NETFramework4.6.1" />
+            <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.6.1" />
         </frameworkAssemblies>
     </metadata>
     <files>
@@ -66,8 +62,5 @@
         <file src="bin\$configuration$\net461\Kephas.Core.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Core.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Core.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net45\Kephas.Core.dll" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Core.pdb" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Core.xml" target="lib\net45" />
     </files>
 </package>

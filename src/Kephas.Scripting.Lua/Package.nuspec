@@ -38,8 +38,5 @@
         <file src="bin\$configuration$\net461\Kephas.Scripting.Lua.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Scripting.Lua.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Scripting.Lua.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net45\Kephas.Scripting.Lua.dll" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Scripting.Lua.pdb" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Scripting.Lua.xml" target="lib\net45" />
     </files>
 </package>

@@ -32,7 +32,7 @@
             </group>
         </dependencies>
         <frameworkAssemblies>
-            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.5, .NETFramework4.6.1" />
+            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.6.1" />
         </frameworkAssemblies>
     </metadata>
     <files>
@@ -45,8 +45,5 @@
         <file src="bin\$configuration$\net461\Kephas.TextProcessing.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.TextProcessing.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.TextProcessing.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net45\Kephas.TextProcessing.dll" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.TextProcessing.pdb" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.TextProcessing.xml" target="lib\net45" />
     </files>
 </package>

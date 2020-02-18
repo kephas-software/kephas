@@ -41,8 +41,5 @@
         <file src="bin\$configuration$\net461\Kephas.Scheduling.Quartz.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Scheduling.Quartz.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Scheduling.Quartz.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net452\Kephas.Scheduling.Quartz.dll" target="lib\net452" />
-        <file src="bin\$configuration$\net452\Kephas.Scheduling.Quartz.pdb" target="lib\net452" />
-        <file src="bin\$configuration$\net452\Kephas.Scheduling.Quartz.xml" target="lib\net452" />
     </files>
 </package>

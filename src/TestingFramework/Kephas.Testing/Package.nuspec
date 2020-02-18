@@ -39,8 +39,5 @@
         <file src="bin\$configuration$\net461\Kephas.Testing.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Testing.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Testing.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net45\Kephas.Testing.dll" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Testing.pdb" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Testing.xml" target="lib\net45" />
     </files>
 </package>

@@ -36,8 +36,5 @@
         <file src="bin\$configuration$\net461\Kephas.Mail.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Mail.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Mail.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net45\Kephas.Mail.dll" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Mail.pdb" target="lib\net45" />
-        <file src="bin\$configuration$\net45\Kephas.Mail.xml" target="lib\net45" />
     </files>
 </package>

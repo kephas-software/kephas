@@ -38,8 +38,5 @@
         <file src="bin\$configuration$\net461\Kephas.Data.LLBLGen.dll" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Data.LLBLGen.pdb" target="lib\net461" />
         <file src="bin\$configuration$\net461\Kephas.Data.LLBLGen.xml" target="lib\net461" />
-        <file src="bin\$configuration$\net452\Kephas.Data.LLBLGen.dll" target="lib\net452" />
-        <file src="bin\$configuration$\net452\Kephas.Data.LLBLGen.pdb" target="lib\net452" />
-        <file src="bin\$configuration$\net452\Kephas.Data.LLBLGen.xml" target="lib\net452" />
     </files>
 </package>
