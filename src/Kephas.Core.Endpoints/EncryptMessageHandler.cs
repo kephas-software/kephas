@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.IntegrationServices.Endpoints
+namespace Kephas.Core.Endpoints
 {
     using System;
     using System.Threading;
@@ -43,7 +43,7 @@ namespace Kephas.IntegrationServices.Endpoints
         public override Task<EncryptResponseMessage> ProcessAsync(EncryptMessage message, IMessagingContext context, CancellationToken token)
         {
             var key = string.IsNullOrWhiteSpace(message.Key) ? null : Convert.FromBase64String(message.Key);
-            var encrypted = this.encryptionService.Encrypt(message.Value, ctx => ctx.Key(key));
+            var encrypted = encryptionService.Encrypt(message.Value, ctx => ctx.Key(key));
             return Task.FromResult(new EncryptResponseMessage { Encrypted = encrypted });
         }
     }

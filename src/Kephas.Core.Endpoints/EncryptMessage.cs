@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.IntegrationServices.Endpoints
+namespace Kephas.Core.Endpoints
 {
     using System.ComponentModel.DataAnnotations;
 
