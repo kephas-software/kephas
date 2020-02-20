@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Activation
 {
     using System.Collections.Concurrent;
@@ -25,11 +27,6 @@ namespace Kephas.Activation
     /// </summary>
     public abstract class ActivatorBase : IActivator
     {
-        /// <summary>
-        /// An empty list of types.
-        /// </summary>
-        private static readonly IEnumerable<ITypeInfo> EmptyTypes = new ITypeInfo[0];
-
         /// <summary>
         /// The implementation type map.
         /// </summary>
@@ -50,8 +47,8 @@ namespace Kephas.Activation
         /// </returns>
         public virtual object CreateInstance(
             ITypeInfo typeInfo,
-            IEnumerable<object> args = null,
-            IContext activationContext = null)
+            IEnumerable<object>? args = null,
+            IContext? activationContext = null)
         {
             var implementationType = this.GetImplementationType(typeInfo, activationContext);
             if (implementationType == null)
@@ -71,9 +68,9 @@ namespace Kephas.Activation
         /// <returns>
         /// The implementation type for the provided <see cref="ITypeInfo"/>.
         /// </returns>
-        public virtual ITypeInfo GetImplementationType(
+        public virtual ITypeInfo? GetImplementationType(
             ITypeInfo abstractType,
-            IContext activationContext = null,
+            IContext? activationContext = null,
             bool throwOnNotFound = true)
         {
             var implementationType = this.implementationTypeMap.GetOrAdd(
@@ -100,7 +97,7 @@ namespace Kephas.Activation
         /// <returns>
         /// An enumeration of implementation types.
         /// </returns>
-        protected virtual IEnumerable<ITypeInfo> GetImplementationTypes() => EmptyTypes;
+        protected virtual IEnumerable<ITypeInfo> GetImplementationTypes() => Enumerable.Empty<ITypeInfo>();
 
         /// <summary>
         /// Tries to get the native type information.
@@ -109,7 +106,7 @@ namespace Kephas.Activation
         /// <returns>
         /// A TypeInfo.
         /// </returns>
-        protected virtual TypeInfo TryGetTypeInfo(ITypeInfo abstractType)
+        protected virtual TypeInfo? TryGetTypeInfo(ITypeInfo abstractType)
         {
             return (abstractType as IRuntimeTypeInfo)?.TypeInfo;
         }
@@ -125,11 +122,11 @@ namespace Kephas.Activation
         /// </returns>
         protected virtual ITypeInfo ComputeImplementationType(
             ITypeInfo abstractType,
-            IContext activationContext = null,
+            IContext? activationContext = null,
             bool throwOnNotFound = true)
         {
             var runtimeTypeInfo = this.TryGetTypeInfo(abstractType);
-            if (runtimeTypeInfo.IsAbstract || runtimeTypeInfo.IsInterface)
+            if (runtimeTypeInfo != null && (runtimeTypeInfo.IsAbstract || runtimeTypeInfo.IsInterface))
             {
                 var runtimeType = runtimeTypeInfo.AsType();
                 var entityType = this.GetImplementationTypes().FirstOrDefault(

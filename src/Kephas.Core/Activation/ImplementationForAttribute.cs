@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Activation
 {
     using System;
@@ -26,11 +28,6 @@ namespace Kephas.Activation
     public class ImplementationForAttribute : Attribute
     {
         /// <summary>
-        /// An empty list of types.
-        /// </summary>
-        private static readonly Type[] EmptyTypes = new Type[0];
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ImplementationForAttribute"/> class.
         /// </summary>
         /// <param name="abstractType">The model type associated to the attributed type.</param>
@@ -40,7 +37,7 @@ namespace Kephas.Activation
             Requires.NotNull(abstractType, nameof(abstractType));
 
             this.AbstractType = abstractType;
-            this.AbstractTypeParts = abstractTypeParts ?? EmptyTypes;
+            this.AbstractTypeParts = abstractTypeParts ?? Array.Empty<Type>();
         }
 
         /// <summary>
