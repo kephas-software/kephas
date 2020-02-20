@@ -81,13 +81,13 @@ namespace Kephas.Application
         private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache =
             new ConcurrentDictionary<object, IEnumerable<Assembly>>();
 
-        private string appLocation;
+        private string? appLocation;
         private string? appFolder;
-        private string[] configLocations;
-        private string[] licenseLocations;
+        private string[]? configLocations;
+        private string[]? licenseLocations;
         private IEnumerable<string>? configFolders;
         private IEnumerable<string>? licenseFolders;
-        private ILogger logger;
+        private ILogger? logger;
         private bool isDisposed = false; // To detect redundant calls
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace Kephas.Application
         /// <returns>
         /// The resolved assembly -or- <c>null</c>.
         /// </returns>
-        protected virtual Assembly HandleAssemblyResolve(AppDomain appDomain, ResolveEventArgs args)
+        protected virtual Assembly? HandleAssemblyResolve(AppDomain appDomain, ResolveEventArgs args)
         {
             var assemblyFullName = args.Name;
             if (!this.IsCodeAssembly(assemblyFullName))
@@ -660,6 +660,6 @@ namespace Kephas.Application
                 : locations.Distinct().ToArray();
         }
 
-        private Assembly HandleAssemblyResolveRaw(object s, ResolveEventArgs e) => this.HandleAssemblyResolve(s as AppDomain ?? AppDomain.CurrentDomain, e);
+        private Assembly? HandleAssemblyResolveRaw(object s, ResolveEventArgs e) => this.HandleAssemblyResolve(s as AppDomain ?? AppDomain.CurrentDomain, e);
     }
 }
