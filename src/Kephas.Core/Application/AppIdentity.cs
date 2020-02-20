@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application
 {
     using System;
@@ -29,7 +31,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="id">The app ID.</param>
         /// <param name="version">Optional. The version.</param>
-        public AppIdentity(string id, string version = null)
+        public AppIdentity(string id, string? version = null)
         {
             if (!this.IsValidId(id, out var message))
             {
@@ -61,7 +63,7 @@ namespace Kephas.Application
         /// <value>
         /// The version.
         /// </value>
-        public string Version { get; }
+        public string? Version { get; }
 
         /// <summary>
         /// Gets the identifier for this instance.
@@ -100,7 +102,7 @@ namespace Kephas.Application
         /// <returns>
         /// True if match, false if not.
         /// </returns>
-        public bool IsMatch(AppIdentity other)
+        public bool IsMatch(AppIdentity? other)
         {
             return other != null
                 && this.Id.Equals(other.Id, StringComparison.OrdinalIgnoreCase)
@@ -115,7 +117,7 @@ namespace Kephas.Application
         /// true if the current object is equal to the <paramref name="other">other</paramref> parameter;
         /// otherwise, false.
         /// </returns>
-        public bool Equals(AppIdentity other)
+        public bool Equals(AppIdentity? other)
         {
             return other != null && this.ToString() == other.ToString();
         }
@@ -127,7 +129,7 @@ namespace Kephas.Application
         /// <returns>
         /// true if the specified object  is equal to the current object; otherwise, false.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return base.Equals(obj) || this.Equals(obj as AppIdentity);
         }
@@ -154,7 +156,7 @@ namespace Kephas.Application
             return string.IsNullOrEmpty(this.Version) ? this.Id : $"{this.Id}{ItemSeparatorChar}{this.Version}";
         }
 
-        private bool IsValidId(string id, out string message)
+        private bool IsValidId(string? id, out string? message)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -179,7 +181,7 @@ namespace Kephas.Application
             return true;
         }
 
-        private bool IsValidVersion(string version, out string message)
+        private bool IsValidVersion(string? version, out string? message)
         {
             if (string.IsNullOrEmpty(version))
             {

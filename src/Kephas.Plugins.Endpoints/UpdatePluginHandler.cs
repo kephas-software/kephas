@@ -57,7 +57,7 @@ namespace Kephas.Plugins.Endpoints
 
             var plugin = result.ReturnValue;
             var pluginId = plugin?.GetTypeInfo().Name ?? message.Id;
-            var pluginVersion = plugin?.GetTypeInfo().Version ?? message.Version;
+            var pluginVersion = plugin?.GetTypeInfo().Identity.Version ?? message.Version;
 
             this.appContext.Logger.Info("Plugin {plugin} updated to version {version} in {pluginPath}. Elapsed: {elapsed:c}.", pluginId, pluginVersion, plugin?.Location, result.Elapsed);
 

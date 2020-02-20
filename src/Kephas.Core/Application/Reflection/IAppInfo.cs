@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application.Reflection
 {
     using System.Collections.Generic;
@@ -28,14 +30,6 @@ namespace Kephas.Application.Reflection
         AppIdentity Identity { get; }
 
         /// <summary>
-        /// Gets the plugin version.
-        /// </summary>
-        /// <value>
-        /// The plugin version.
-        /// </value>
-        string Version { get; }
-
-        /// <summary>
         /// Gets the tags.
         /// </summary>
         /// <value>
@@ -49,7 +43,7 @@ namespace Kephas.Application.Reflection
         /// <value>
         /// The application description.
         /// </value>
-        string Description { get; }
+        string? Description { get; }
 
         /// <summary>
         /// Gets the application parameters.

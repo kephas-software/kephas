@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application
 {
     using System;
@@ -40,7 +42,7 @@ namespace Kephas.Application
         /// <returns>
         /// A path indicating the indicated application location.
         /// </returns>
-        string GetAppLocation(AppIdentity appIdentity, bool throwOnNotFound = true);
+        string GetAppLocation(AppIdentity? appIdentity, bool throwOnNotFound = true);
 
         /// <summary>
         /// Gets the application bin directories from where application is loaded.
@@ -73,7 +75,7 @@ namespace Kephas.Application
         /// <returns>
         /// An enumeration of application assemblies.
         /// </returns>
-        IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool> assemblyFilter = null);
+        IEnumerable<Assembly> GetAppAssemblies(Func<AssemblyName, bool>? assemblyFilter = null);
 
         /// <summary>
         /// Gets the application's underlying .NET framework identifier.
@@ -113,7 +115,7 @@ namespace Kephas.Application
         /// The identifier of the application.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetAppId(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppIdKey] as string;
+        public static string? GetAppId(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppIdKey] as string;
 
         /// <summary>
         /// Gets the version of the application.
@@ -123,7 +125,7 @@ namespace Kephas.Application
         /// The version of the application.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetAppVersion(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppVersionKey] as string;
+        public static string? GetAppVersion(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppVersionKey] as string;
 
         /// <summary>
         /// Gets the application identity.
@@ -133,7 +135,7 @@ namespace Kephas.Application
         /// The application identity.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static AppIdentity GetAppIdentity(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppIdentityKey] as AppIdentity;
+        public static AppIdentity? GetAppIdentity(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppIdentityKey] as AppIdentity;
 
         /// <summary>
         /// Gets the identifier of the application instance.
@@ -143,7 +145,7 @@ namespace Kephas.Application
         /// The identifier of the application instance.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetAppInstanceId(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppInstanceIdKey] as string;
+        public static string? GetAppInstanceId(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppInstanceIdKey] as string;
 
         /// <summary>
         /// Gets the full path of the file or folder name. If the name is a relative path, it will be made relative to the application location.

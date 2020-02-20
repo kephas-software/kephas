@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application.Reflection
 {
     /// <summary>
@@ -20,17 +22,17 @@ namespace Kephas.Application.Reflection
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="versionRange">The version range.</param>
-        public AppDependency(string name, string versionRange = null)
+        public AppDependency(string name, string? versionRange = null)
         {
             this.Name = name;
             this.VersionRange = versionRange;
         }
 
         /// <summary>
-        /// Gets the name of the referenced plugin.
+        /// Gets the name of the referenced app.
         /// </summary>
         /// <value>
-        /// The name of the referenced plugin.
+        /// The name of the referenced app.
         /// </value>
         public string Name { get; }
 
@@ -40,6 +42,6 @@ namespace Kephas.Application.Reflection
         /// <value>
         /// The version range.
         /// </value>
-        public string VersionRange { get; }
+        public string? VersionRange { get; }
     }
 }

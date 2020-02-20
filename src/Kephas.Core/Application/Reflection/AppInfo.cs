@@ -8,11 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application.Reflection
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
+    using System.Linq;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
@@ -23,22 +25,18 @@ namespace Kephas.Application.Reflection
     /// </summary>
     public class AppInfo : DynamicTypeInfo, IAppInfo
     {
-        private static readonly IEnumerable<object> EmptyAnnotations = new ReadOnlyCollection<object>(new List<object>());
-        private static readonly IEnumerable<IParameterInfo> EmptyParameters = new ReadOnlyCollection<IParameterInfo>(new List<IParameterInfo>());
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AppInfo"/> class.
         /// </summary>
         /// <param name="identity">The app identity.</param>
         /// <param name="description">Optional. The description.</param>
         /// <param name="tags">Optional. The tags.</param>
-        public AppInfo(AppIdentity identity, string description = null, string[] tags = null)
+        public AppInfo(AppIdentity identity, string? description = null, string[]? tags = null)
         {
             Requires.NotNull(identity, nameof(AppIdentity));
 
             this.Identity = identity;
             this.FullName = this.Name = identity.Id;
-            this.Version = identity.Version;
             this.Description = description;
             this.Tags = tags ?? Array.Empty<string>();
         }
@@ -50,7 +48,7 @@ namespace Kephas.Application.Reflection
         /// <param name="version">Optional. The version.</param>
         /// <param name="description">Optional. The description.</param>
         /// <param name="tags">Optional. The tags.</param>
-        public AppInfo(string name, string version = null, string description = null, string[] tags = null)
+        public AppInfo(string name, string? version = null, string? description = null, string[]? tags = null)
             : this(new AppIdentity(name, version), description, tags)
         {
         }
@@ -64,20 +62,12 @@ namespace Kephas.Application.Reflection
         public AppIdentity Identity { get; }
 
         /// <summary>
-        /// Gets the application version.
-        /// </summary>
-        /// <value>
-        /// The application version.
-        /// </value>
-        public string Version { get; }
-
-        /// <summary>
         /// Gets the application description.
         /// </summary>
         /// <value>
         /// The description.
         /// </value>
-        public string Description { get; }
+        public string? Description { get; }
 
         /// <summary>
         /// Gets the tags.
@@ -93,7 +83,7 @@ namespace Kephas.Application.Reflection
         /// <value>
         /// The application parameters.
         /// </value>
-        IEnumerable<IParameterInfo> IAppInfo.Parameters => EmptyParameters;
+        IEnumerable<IParameterInfo> IAppInfo.Parameters => Enumerable.Empty<IParameterInfo>();
 
         /// <summary>
         /// Gets the dependencies.

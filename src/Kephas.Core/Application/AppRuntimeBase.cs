@@ -399,7 +399,7 @@ namespace Kephas.Application
 
                 if (assembly == null)
                 {
-                    var fileName = $"{args.Name}.dll";
+                    var fileName = $"{name}.dll";
                     var appBinLocations = this.GetAppBinLocations();
                     foreach (var binLocation in appBinLocations)
                     {

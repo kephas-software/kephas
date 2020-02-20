@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application
 {
     using System;
@@ -18,7 +20,6 @@ namespace Kephas.Application
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
-    using Kephas.Services;
 
     /// <summary>
     /// Extension methods for the <see cref="IAmbientServices"/>.
@@ -47,14 +48,14 @@ namespace Kephas.Application
         /// </returns>
         public static IAmbientServices WithDynamicAppRuntime(
             this IAmbientServices ambientServices,
-            Func<AssemblyName, bool> assemblyFilter = null,
-            string appFolder = null,
-            IEnumerable<string> configFolders = null,
-            IEnumerable<string> licenseFolders = null,
-            string appId = null,
-            string appInstanceId = null,
-            string appVersion = null,
-            Action<DynamicAppRuntime> config = null)
+            Func<AssemblyName, bool>? assemblyFilter = null,
+            string? appFolder = null,
+            IEnumerable<string>? configFolders = null,
+            IEnumerable<string>? licenseFolders = null,
+            string? appId = null,
+            string? appInstanceId = null,
+            string? appVersion = null,
+            Action<DynamicAppRuntime>? config = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
@@ -95,14 +96,14 @@ namespace Kephas.Application
         /// </returns>
         public static IAmbientServices WithStaticAppRuntime(
             this IAmbientServices ambientServices,
-            Func<AssemblyName, bool> assemblyFilter = null,
-            string appFolder = null,
-            IEnumerable<string> configFolders = null,
-            IEnumerable<string> licenseFolders = null,
-            string appId = null,
-            string appInstanceId = null,
-            string appVersion = null,
-            Action<StaticAppRuntime> config = null)
+            Func<AssemblyName, bool>? assemblyFilter = null,
+            string? appFolder = null,
+            IEnumerable<string>? configFolders = null,
+            IEnumerable<string>? licenseFolders = null,
+            string? appId = null,
+            string? appInstanceId = null,
+            string? appVersion = null,
+            Action<StaticAppRuntime>? config = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 

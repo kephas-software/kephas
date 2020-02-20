@@ -298,7 +298,7 @@ namespace Kephas.Tests.Plugins
                 var pluginInfo = Substitute.For<IAppInfo>();
                 pluginInfo.Identity.Returns(pluginId);
                 pluginInfo.Name.Returns(pluginId.Id);
-                pluginInfo.Version.Returns(pluginId.Version);
+
                 var plugin = Substitute.For<IPlugin>();
                 plugin.Id.Returns(pluginId.Id);
                 plugin.Identity.Returns(pluginId);

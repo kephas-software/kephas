@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application.Reflection
 {
     /// <summary>
@@ -15,5 +17,20 @@ namespace Kephas.Application.Reflection
     /// </summary>
     public interface IAppDependency
     {
+        /// <summary>
+        /// Gets the name of the referenced app.
+        /// </summary>
+        /// <value>
+        /// The name of the referenced app.
+        /// </value>
+        string Name { get; }
+
+        /// <summary>
+        /// Gets the version range.
+        /// </summary>
+        /// <value>
+        /// The version range.
+        /// </value>
+        string? VersionRange { get; }
     }
 }
