@@ -99,7 +99,7 @@ namespace Kephas.Core.Tests.Application
 
             Assert.AreEqual(2, configLocations.Count());
 
-            if(RuntimeEnvironment.IsWindows())
+            if (RuntimeEnvironment.IsWindows())
             {
                 Assert.IsTrue(configLocations.Any(l => l.EndsWith("\\my\\config") && !l.Contains("..")));
                 Assert.IsTrue(configLocations.Any(l => l.EndsWith("\\root\\config")));
@@ -120,7 +120,7 @@ namespace Kephas.Core.Tests.Application
 #if NET461
             Assert.AreEqual("net461", appFramework);
 #else
-            Assert.AreEqual("netcoreapp2.1", appFramework);
+            Assert.IsTrue(appFramework.StartsWith("netcoreapp"), "Expected a .NET Core app framework.");
 #endif
         }
     }
