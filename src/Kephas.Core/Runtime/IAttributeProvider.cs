@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Runtime
 {
     using System;
@@ -28,8 +30,25 @@ namespace Kephas.Runtime
         /// </returns>
         IEnumerable<TAttribute> GetAttributes<TAttribute>()
             where TAttribute : Attribute;
+
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Gets the single attribute of the provided type.
+        /// </summary>
+        /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
+        /// <returns>
+        /// The attribute of the provided type.
+        /// </returns>
+        public TAttribute? GetAttribute<TAttribute>()
+            where TAttribute : Attribute
+        {
+            return this.GetAttributes<TAttribute>().SingleOrDefault();
+        }
+#endif
     }
 
+#if NETSTANDARD2_1
+#else
     /// <summary>
     /// Provides extension methods for <see cref="IAttributeProvider"/>.
     /// </summary>
@@ -43,10 +62,11 @@ namespace Kephas.Runtime
         /// <returns>
         /// The attribute of the provided type.
         /// </returns>
-        public static TAttribute GetAttribute<TAttribute>(this IAttributeProvider attributeProvider)
+        public static TAttribute? GetAttribute<TAttribute>(this IAttributeProvider? attributeProvider)
             where TAttribute : Attribute
         {
             return attributeProvider?.GetAttributes<TAttribute>().SingleOrDefault();
         }
     }
+#endif
 }

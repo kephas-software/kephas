@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Reflection
 {
     using System;
@@ -28,20 +30,8 @@ namespace Kephas.Reflection
         /// </summary>
         internal static readonly TypeInfo ObjectTypeInfo = IntrospectionExtensions.GetTypeInfo(typeof(object));
 
-        /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> for the provided <see cref="TypeInfo"/> instance.
-        /// </summary>
-        /// <param name="typeInfo">The type information instance.</param>
-        /// <returns>
-        /// The provided <see cref="TypeInfo"/>'s associated <see cref="IRuntimeTypeInfo"/>.
-        /// </returns>
-        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this TypeInfo typeInfo)
-        {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
-
-            return RuntimeTypeInfo.GetRuntimeType(typeInfo);
-        }
-
+#if NETSTANDARD2_1
+#else
         /// <summary>
         /// Gets the <see cref="Type"/> for the provided <see cref="ITypeInfo"/> instance.
         /// </summary>
@@ -54,7 +44,7 @@ namespace Kephas.Reflection
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
             // TODO optimize
-            Type type = null;
+            Type? type = null;
             if (typeInfo is IRuntimeTypeInfo runtimeEntityType)
             {
                 type = runtimeEntityType.Type;
@@ -75,33 +65,6 @@ namespace Kephas.Reflection
             }
 
             return type;
-        }
-
-        /// <summary>
-        /// Gets the type wrapped by the <see cref="Nullable{T}"/> or,
-        /// if the type is not a nullable type, the type itself.
-        /// </summary>
-        /// <param name="typeInfo">The type to be checked.</param>
-        /// <returns>A <see cref="Type"/> instance.</returns>
-        public static TypeInfo GetNonNullableType(this TypeInfo typeInfo)
-        {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
-
-            return IsNullableType(typeInfo) ? IntrospectionExtensions.GetTypeInfo(typeInfo.GenericTypeArguments[0]) : typeInfo;
-        }
-
-        /// <summary>
-        /// Indicates whether the type is an instance of the generic <see cref="Nullable{T}"/> type.
-        /// </summary>
-        /// <param name="typeInfo">The type to check.</param>
-        /// <returns>
-        ///   <c>true</c> if the type is nullable; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsNullableType(this TypeInfo typeInfo)
-        {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
-
-            return typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         /// <summary>
@@ -147,6 +110,60 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Gets the model element's own members, excluding those declared by the base element or mixins.
+        /// </summary>
+        /// <param name="typeInfo">The type information.</param>
+        /// <returns>The members declared exclusively at the type level.</returns>
+        public static IEnumerable<IElementInfo> GetDeclaredMembers(this ITypeInfo typeInfo)
+        {
+            Requires.NotNull(typeInfo, nameof(typeInfo));
+
+            return typeInfo.Members.Where(m => m.DeclaringContainer == typeInfo);
+        }
+#endif
+
+        /// <summary>
+        /// Gets the <see cref="IRuntimeTypeInfo"/> for the provided <see cref="TypeInfo"/> instance.
+        /// </summary>
+        /// <param name="typeInfo">The type information instance.</param>
+        /// <returns>
+        /// The provided <see cref="TypeInfo"/>'s associated <see cref="IRuntimeTypeInfo"/>.
+        /// </returns>
+        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this TypeInfo typeInfo)
+        {
+            Requires.NotNull(typeInfo, nameof(typeInfo));
+
+            return RuntimeTypeInfo.GetRuntimeType(typeInfo);
+        }
+
+        /// <summary>
+        /// Gets the type wrapped by the <see cref="Nullable{T}"/> or,
+        /// if the type is not a nullable type, the type itself.
+        /// </summary>
+        /// <param name="typeInfo">The type to be checked.</param>
+        /// <returns>A <see cref="Type"/> instance.</returns>
+        public static TypeInfo GetNonNullableType(this TypeInfo typeInfo)
+        {
+            Requires.NotNull(typeInfo, nameof(typeInfo));
+
+            return IsNullableType(typeInfo) ? IntrospectionExtensions.GetTypeInfo(typeInfo.GenericTypeArguments[0]) : typeInfo;
+        }
+
+        /// <summary>
+        /// Indicates whether the type is an instance of the generic <see cref="Nullable{T}"/> type.
+        /// </summary>
+        /// <param name="typeInfo">The type to check.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is nullable; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsNullableType(this TypeInfo typeInfo)
+        {
+            Requires.NotNull(typeInfo, nameof(typeInfo));
+
+            return typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
+        /// <summary>
         /// A TypeInfo extension method that gets the base constructed generic of a provided type.
         /// The base can be either an interface or a class.
         /// </summary>
@@ -161,7 +178,7 @@ namespace Kephas.Reflection
         /// Assert.AreSame(type, typeof(IEnumerable&lt;char&gt;).GetTypeInfo());
         /// </code>
         /// </example>
-        public static TypeInfo GetBaseConstructedGenericOf(this TypeInfo typeInfo, TypeInfo openGenericTypeInfo)
+        public static TypeInfo? GetBaseConstructedGenericOf(this TypeInfo typeInfo, TypeInfo openGenericTypeInfo)
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
             Requires.NotNull(openGenericTypeInfo, nameof(openGenericTypeInfo));
@@ -226,18 +243,6 @@ namespace Kephas.Reflection
             }
 
             return qualifiedFullName;
-        }
-
-        /// <summary>
-        /// Gets the model element's own members, excluding those declared by the base element or mixins.
-        /// </summary>
-        /// <param name="typeInfo">The type information.</param>
-        /// <returns>The members declared exclusively at the type level.</returns>
-        public static IEnumerable<IElementInfo> GetDeclaredMembers(this ITypeInfo typeInfo)
-        {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
-
-            return typeInfo.Members.Where(m => m.DeclaringContainer == typeInfo);
         }
     }
 }

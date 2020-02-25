@@ -8,10 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Reflection
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -65,7 +70,7 @@ namespace Kephas.Reflection
         /// <value>
         /// The generic type definition.
         /// </value>
-        ITypeInfo GenericTypeDefinition { get; }
+        ITypeInfo? GenericTypeDefinition { get; }
 
         /// <summary>
         /// Gets the properties.
@@ -91,25 +96,101 @@ namespace Kephas.Reflection
         /// <returns>
         /// The requested member, or <c>null</c>.
         /// </returns>
-        IElementInfo GetMember(string name, bool throwIfNotFound = true);
+        IElementInfo? GetMember(string name, bool throwIfNotFound = true);
 
         /// <summary>
         /// Creates an instance with the provided arguments (if any).
         /// </summary>
-        /// <param name="args">The arguments.</param>
+        /// <param name="args">Optional. The arguments.</param>
         /// <returns>
         /// The new instance.
         /// </returns>
-        object CreateInstance(IEnumerable<object> args = null);
+        object CreateInstance(IEnumerable<object>? args = null);
 
         /// <summary>
         /// Constructs a generic type baed on the provided type arguments.
         /// </summary>
         /// <param name="typeArguments">The type arguments.</param>
-        /// <param name="constructionContext">The construction context (optional).</param>
+        /// <param name="constructionContext">Optional. The construction context.</param>
         /// <returns>
         /// A constructed <see cref="ITypeInfo"/>.
         /// </returns>
-        ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext constructionContext = null);
+        ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null);
+
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Gets the <see cref="Type"/> for the provided <see cref="ITypeInfo"/> instance.
+        /// </summary>
+        /// <returns>
+        /// The provided <see cref="ITypeInfo"/>'s associated <see cref="Type"/>.
+        /// </returns>
+        public Type AsType()
+        {
+            // TODO optimize
+            Type? type = null;
+            if (this is IRuntimeTypeInfo runtimeEntityType)
+            {
+                type = runtimeEntityType.Type;
+            }
+            else if (this is IAggregatedElementInfo aggregate)
+            {
+                type = aggregate.Parts.OfType<Type>().FirstOrDefault();
+                if (type == null)
+                {
+                    type = aggregate.Parts.OfType<IRuntimeTypeInfo>().FirstOrDefault()?.Type;
+                }
+            }
+
+            if (type == null)
+            {
+                // TODO localization
+                throw new InvalidCastException($"No type could be identified for {this}.");
+            }
+
+            return type;
+        }
+
+        /// <summary>
+        /// Indicates whether the <see cref="ITypeInfo"/> is a generic type.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the type is generic, either closed or open; <c>false</c> if not.
+        /// </returns>
+        public bool IsGenericType()
+        {
+            return this.GenericTypeArguments?.Count > 0 || this.GenericTypeParameters?.Count > 0;
+        }
+
+        /// <summary>
+        /// Indicates whether the <see cref="ITypeInfo"/> is a generic type definition (aka open generic).
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the type is a generic type definition; <c>false</c> if not.
+        /// </returns>
+        public bool IsGenericTypeDefinition()
+        {
+            return this.GenericTypeParameters?.Count > 0 && this.GenericTypeDefinition == null;
+        }
+
+        /// <summary>
+        /// Indicates whether the <see cref="ITypeInfo"/> is a generic type definition (aka open generic).
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if the type is a generic type definition; <c>false</c> if not.
+        /// </returns>
+        public bool IsConstructedGenericType()
+        {
+            return this.GenericTypeArguments?.Count > 0 && this.GenericTypeDefinition != null;
+        }
+
+        /// <summary>
+        /// Gets the model element's own members, excluding those declared by the base element or mixins.
+        /// </summary>
+        /// <returns>The members declared exclusively at the type level.</returns>
+        public IEnumerable<IElementInfo> GetDeclaredMembers()
+        {
+            return this.Members.Where(m => m.DeclaringContainer == this);
+        }
+#endif
     }
 }
