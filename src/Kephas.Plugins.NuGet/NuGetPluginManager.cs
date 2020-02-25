@@ -93,6 +93,7 @@ namespace Kephas.Plugins.NuGet
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            var result = new OperationResult<IEnumerable<IAppInfo>>();
             var availablePackages = new HashSet<IPackageSearchMetadata>();
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
@@ -103,13 +104,13 @@ namespace Kephas.Plugins.NuGet
                         {
                             cancellationToken.ThrowIfCancellationRequested();
 
-                            var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>().PreserveThreadContext();
-                            var searchFilter = new SearchFilter(includePrerelease: searchContext.IncludePrerelease);
-                            searchFilter.OrderBy = SearchOrderBy.Id;
-                            searchFilter.IncludeDelisted = false;
-
                             try
                             {
+                                var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>().PreserveThreadContext();
+                                var searchFilter = new SearchFilter(includePrerelease: searchContext.IncludePrerelease);
+                                searchFilter.OrderBy = SearchOrderBy.Id;
+                                searchFilter.IncludeDelisted = false;
+
                                 var packages = await searchResource.SearchAsync(
                                     searchContext.SearchTerm ?? this.pluginsSettings.SearchTerm ?? "plugin",
                                     searchFilter,
@@ -122,15 +123,16 @@ namespace Kephas.Plugins.NuGet
                             }
                             catch (Exception ex)
                             {
+                                result.MergeMessage($"Could not access source repository '{sourceRepository.PackageSource.Source}'.");
                                 this.Logger.Warn(ex, "Could not access source repository '{repository}'.", sourceRepository.PackageSource.Source);
                             }
                         }
                     }
                 }).PreserveThreadContext();
 
-            var result = new OperationResult<IEnumerable<IAppInfo>>(availablePackages.Select(this.ToPluginInfo))
-                                .MergeMessages(opResult)
-                                .Complete(opResult.Elapsed);
+            result.ReturnValue(availablePackages.Select(this.ToPluginInfo))
+                .MergeMessages(opResult)
+                .Complete(opResult.Elapsed);
             return result;
         }
 
@@ -733,8 +735,15 @@ namespace Kephas.Plugins.NuGet
             var downloadResources = new List<DownloadResource>();
             foreach (var sourceRepository in repositories)
             {
-                var downloadResource = await sourceRepository.GetResourceAsync<DownloadResource>(cancellationToken).PreserveThreadContext();
-                downloadResources.Add(downloadResource);
+                try
+                {
+                    var downloadResource = await sourceRepository.GetResourceAsync<DownloadResource>(cancellationToken).PreserveThreadContext();
+                    downloadResources.Add(downloadResource);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Warn(ex, "Could not get the download resource for repository {repository}.", sourceRepository.PackageSource.Source);
+                }
             }
 
             return downloadResources;
