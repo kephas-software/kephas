@@ -55,6 +55,35 @@ namespace Kephas.Workflow.Model.Elements
         public IEnumerable<IParameterInfo> Parameters => this.Members.OfType<IParameterInfo>();
 
         /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        IEnumerable<object> IAggregatedElementInfo.Parts => this.Parts;
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
+
+        /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
+
+        /// <summary>
+        /// Gets the enumeration of properties.
+        /// </summary>
+        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
+
+        /// <summary>
         /// Executes the asynchronous operation.
         /// </summary>
         /// <param name="activity">The activity.</param>
