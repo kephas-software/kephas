@@ -43,9 +43,9 @@ namespace Kephas.Application.Console.Endpoints
         /// <returns>The response promise.</returns>
         public override Task<HelpResponseMessage> ProcessAsync(HelpMessage message, IMessagingContext context, CancellationToken token)
         {
-            var commandTypes = this.commandRegistry.GetCommandTypes().ToList();
+            var matchingCommandTypes = this.commandRegistry.GetCommandTypes(message.Command).ToList();
 
-            var commands = commandTypes.ToDictionary(
+            var commands = matchingCommandTypes.ToDictionary(
                 t => t.Name.EndsWith("Message")
                          ? t.Name.Substring(0, t.Name.Length - "Message".Length)
                          : t.Name.EndsWith("Event")
@@ -55,14 +55,6 @@ namespace Kephas.Application.Console.Endpoints
             var commandList = commands.ToList();
 
             var response = new HelpResponseMessage();
-
-            commands = string.IsNullOrEmpty(message.Command)
-                           ? commands
-                           : commands.Where(
-                                   kv => kv.Key.StartsWith(
-                                       message.Command,
-                                       StringComparison.InvariantCultureIgnoreCase))
-                               .ToDictionary(kv => kv.Key, kv => kv.Value);
 
             if (commands.Count > 1)
             {
@@ -75,7 +67,7 @@ namespace Kephas.Application.Console.Endpoints
                 response.Command = commands.Select(t => t.Key).Single();
                 var localization = cmd.Value.GetLocalization();
                 response.Description = localization.Description;
-                response.Parameters = cmd.Value.Properties.Select(p => $"{p.Name} ({p.ValueType}): {p.GetLocalization().Description}").ToArray();
+                response.Parameters = cmd.Value.Properties.Select(p => $"{p.Name} ({this.GetFormattedTypeName(p.ValueType)}): {p.GetLocalization().Description}").ToArray();
             }
             else
             {
@@ -84,6 +76,18 @@ namespace Kephas.Application.Console.Endpoints
             }
 
             return Task.FromResult(response);
+        }
+
+        private string GetFormattedTypeName(ITypeInfo typeInfo)
+        {
+            var type = typeInfo.AsType();
+            var nonNullableType = type.GetNonNullableType();
+            if (type == nonNullableType)
+            {
+                return $"{type}";
+            }
+
+            return $"{nonNullableType}?";
         }
     }
 }
