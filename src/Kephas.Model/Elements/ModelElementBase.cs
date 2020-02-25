@@ -18,13 +18,12 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Configuration;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
-    using Kephas.Reflection;
 
     /// <summary>
     /// Base abstract class for model elements.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract (the model interface).</typeparam>
-    public abstract class ModelElementBase<TModelContract> : NamedElementBase<TModelContract>, IModelElement, IElementInfo
+    public abstract class ModelElementBase<TModelContract> : NamedElementBase<TModelContract>, IModelElement
         where TModelContract : IModelElement
     {
         /// <summary>

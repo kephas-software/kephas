@@ -8,9 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Data.Model.Elements
 {
+    using System;
     using System.Linq;
+
     using Kephas.Collections;
     using Kephas.Data.Model.Resources;
     using Kephas.Diagnostics.Contracts;
@@ -23,14 +27,6 @@ namespace Kephas.Data.Model.Elements
     /// </summary>
     public class Key : ModelElementBase<IKey>, IKey
     {
-        /// <summary>
-        /// The empty key properties.
-        /// </summary>
-        private static readonly IProperty[] EmptyKeyProperties = new IProperty[0];
-
-        /// <summary>
-        /// The key properties.
-        /// </summary>
         private string[] keyPropertyNames;
 
         /// <summary>
@@ -46,7 +42,6 @@ namespace Kephas.Data.Model.Elements
             Requires.NotNullOrEmpty(keyProperties, nameof(keyProperties));
 
             this.Kind = kind;
-            this.KeyProperties = EmptyKeyProperties;
             this.keyPropertyNames = keyProperties;
         }
 
@@ -64,7 +59,7 @@ namespace Kephas.Data.Model.Elements
         /// <value>
         /// The key properties.
         /// </value>
-        public IProperty[] KeyProperties { get; private set; }
+        public IProperty[] KeyProperties { get; private set; } = Array.Empty<IProperty>();
 
         /// <summary>
         /// Called when the construction is complete.
@@ -80,7 +75,7 @@ namespace Kephas.Data.Model.Elements
                 throw new ModelConstructionException(string.Format(Strings.Key_ContainerPropertiesEmpty_Exception, this, this.DeclaringContainer));
             }
 
-            var missingProperties = this.keyPropertyNames.Where(n => containerProperties.TryGetValue(n) == null).ToArray();
+            var missingProperties = this.keyPropertyNames.Where(n => !containerProperties.TryGetValue(n, out _)).ToArray();
             if (missingProperties.Length > 0)
             {
                 throw new ModelConstructionException(string.Format(Strings.Key_MissingContainerProperties_Exception, this, this.DeclaringContainer, string.Join("', '", missingProperties)));
