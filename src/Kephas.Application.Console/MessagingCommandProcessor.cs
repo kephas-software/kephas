@@ -134,8 +134,8 @@ namespace Kephas.Application.Console
         /// <param name="value">The value.</param>
         protected virtual void SetPropertyValue(IMessage message, IPropertyInfo propInfo, object value)
         {
-            var propValueType = (propInfo.ValueType as IRuntimeTypeInfo).Type;
-            var convertedValue = Convert.ChangeType(value, propValueType);
+            var propValueType = propInfo.ValueType.AsType();
+            var convertedValue = Convert.ChangeType(value, propValueType.GetNonNullableType());
             propInfo.SetValue(message, convertedValue);
         }
 
