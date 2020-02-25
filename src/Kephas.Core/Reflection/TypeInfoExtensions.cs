@@ -71,7 +71,7 @@ namespace Kephas.Reflection
             if (type == null)
             {
                 // TODO localization
-                throw new InvalidOperationException($"No type could be identified for {typeInfo}.");
+                throw new InvalidCastException($"No type could be identified for {typeInfo}.");
             }
 
             return type;
