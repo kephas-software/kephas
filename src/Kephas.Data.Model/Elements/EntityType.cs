@@ -66,12 +66,9 @@ namespace Kephas.Data.Model.Elements
         /// </value>
         IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
 
-#if NETSTANDARD2_1
-#else
         /// <summary>
         /// Gets the enumeration of properties.
         /// </summary>
         IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
-#endif
     }
 }
