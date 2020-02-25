@@ -84,7 +84,6 @@ namespace Kephas.Model.Elements
         /// The classifier properties.
         /// </value>
         public IEnumerable<IProperty> Properties => this.Members.OfType<IProperty>();
-
         /// <summary>
         /// Gets the classifier methods.
         /// </summary>
@@ -93,6 +92,13 @@ namespace Kephas.Model.Elements
         /// </value>
         public IEnumerable<IMethod> Methods => this.Members.OfType<IMethod>();
 
+#if NETSTANDARD2_1
+#else
+        /// <summary>
+        /// Gets the enumeration of properties.
+        /// </summary>
+        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
+
         /// <summary>
         /// Gets the members.
         /// </summary>
@@ -100,6 +106,17 @@ namespace Kephas.Model.Elements
         /// The members.
         /// </value>
         IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
+
+        /// <summary>
+        /// Gets a member by the provided name.
+        /// </summary>
+        /// <param name="name">The member name.</param>
+        /// <param name="throwIfNotFound">True to throw if the requested member is not found.</param>
+        /// <returns>
+        /// The requested member, or <c>null</c>.
+        /// </returns>
+        IElementInfo? ITypeInfo.GetMember(string name, bool throwIfNotFound) => this.GetMember(name, throwIfNotFound);
+#endif
 
         /// <summary>
         /// Gets a value indicating whether this classifier is a mixin.
@@ -182,11 +199,6 @@ namespace Kephas.Model.Elements
         public ITypeInfo? GenericTypeDefinition { get; private set; }
 
         /// <summary>
-        /// Gets the enumeration of properties.
-        /// </summary>
-        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
-
-        /// <summary>
         /// Indicates whether this classifier is an aspect of the provided classifier.
         /// </summary>
         /// <param name="classifier">The classifier.</param>
@@ -207,19 +219,6 @@ namespace Kephas.Model.Elements
             }
 
             return this.isAspectOf(classifier);
-        }
-
-        /// <summary>
-        /// Gets a member by the provided name.
-        /// </summary>
-        /// <param name="name">The member name.</param>
-        /// <param name="throwIfNotFound">True to throw if the requested member is not found.</param>
-        /// <returns>
-        /// The requested member, or <c>null</c>.
-        /// </returns>
-        IElementInfo? ITypeInfo.GetMember(string name, bool throwIfNotFound)
-        {
-            return this.GetMember(name, throwIfNotFound);
         }
 
         /// <summary>

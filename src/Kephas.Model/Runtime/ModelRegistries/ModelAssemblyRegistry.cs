@@ -131,7 +131,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// </summary>
         /// <param name="types">The types.</param>
         /// <param name="collectedTypes">List of collected types.</param>
-        /// <param name="attr"></param>
+        /// <param name="attr">The model assembly attribute.</param>
         private void AddModelTypes(HashSet<Type> types, IEnumerable<Type> collectedTypes, ModelAssemblyAttribute attr)
         {
             var nonExcludedTypes = collectedTypes.Where(t => !t.IsExcludedFromModel()).ToList();

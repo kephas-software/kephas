@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Model
 {
     using System.Collections.Generic;
@@ -76,6 +78,24 @@ namespace Kephas.Model
         /// The declaring container element.
         /// </value>
         new IModelElement? DeclaringContainer { get; }
+
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
+
+        /// <summary>
+        /// Gets the parent element declaring this element.
+        /// </summary>
+        /// <value>
+        /// The declaring element.
+        /// </value>
+        IElementInfo? IElementInfo.DeclaringContainer => this.DeclaringContainer;
+#endif
 
         /// <summary>
         /// Gets the model space.

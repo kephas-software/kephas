@@ -100,6 +100,8 @@ namespace Kephas.Model.Elements
         /// </value>
         public abstract IEnumerable<IAnnotation> Annotations { get; }
 
+#if NETSTANDARD2_1
+#else
         /// <summary>
         /// Gets the parent element declaring this element.
         /// </summary>
@@ -115,6 +117,7 @@ namespace Kephas.Model.Elements
         /// The element annotations.
         /// </value>
         IEnumerable<object> IElementInfo.Annotations => this.Annotations;
+#endif
 
         /// <summary>
         /// Gets the parts of an aggregated element.

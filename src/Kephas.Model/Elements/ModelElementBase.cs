@@ -113,15 +113,17 @@ namespace Kephas.Model.Elements
         /// <param name="constructionContext">Context for the construction.</param>
         protected override void OnCompleteConstruction(IModelConstructionContext constructionContext)
         {
+            var declaredMembers = ((IModelElement)this).GetDeclaredMembers();
+
             // invoke all members which are element configurators
-            var configurators = this.GetDeclaredMembers().OfType<IElementConfigurator>().ToList();
+            var configurators = declaredMembers.OfType<IElementConfigurator>().ToList();
             foreach (var configurator in configurators)
             {
                 configurator.Configure(constructionContext, this);
             }
 
             // Complete construction for declared members
-            foreach (var declaredMember in this.GetDeclaredMembers())
+            foreach (var declaredMember in declaredMembers)
             {
                 (declaredMember as IConstructibleElement)?.CompleteConstruction(constructionContext);
             }

@@ -13,6 +13,7 @@
 namespace Kephas.Data.Model.Elements
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Kephas.Collections;
@@ -21,6 +22,7 @@ namespace Kephas.Data.Model.Elements
     using Kephas.Model;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Definition class for entity keys.
@@ -60,6 +62,22 @@ namespace Kephas.Data.Model.Elements
         /// The key properties.
         /// </value>
         public IProperty[] KeyProperties { get; private set; } = Array.Empty<IProperty>();
+
+        /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        IEnumerable<object> IAggregatedElementInfo.Parts => this.Parts;
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
 
         /// <summary>
         /// Called when the construction is complete.

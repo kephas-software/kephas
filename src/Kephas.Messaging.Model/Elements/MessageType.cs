@@ -12,8 +12,11 @@
 
 namespace Kephas.Messaging.Model.Elements
 {
+    using System.Collections.Generic;
+
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Classifier for DTOs used in messaging.
@@ -29,5 +32,37 @@ namespace Kephas.Messaging.Model.Elements
             : base(constructionContext, name)
         {
         }
+
+        /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        IEnumerable<object> IAggregatedElementInfo.Parts => this.Parts;
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
+
+        /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
+
+#if NETSTANDARD2_1
+#else
+        /// <summary>
+        /// Gets the enumeration of properties.
+        /// </summary>
+        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
+#endif
     }
 }

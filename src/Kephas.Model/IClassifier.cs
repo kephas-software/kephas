@@ -13,7 +13,7 @@
 namespace Kephas.Model
 {
     using System.Collections.Generic;
-
+    using System.Linq;
     using Kephas.Reflection;
 
     /// <summary>
@@ -51,6 +51,49 @@ namespace Kephas.Model
         /// </value>
         IModelProjection? Projection { get; }
 
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Gets the classifier properties.
+        /// </summary>
+        /// <value>
+        /// The classifier properties.
+        /// </value>
+        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Members.OfType<IPropertyInfo>();
+
+        /// <summary>
+        /// Gets the classifier properties.
+        /// </summary>
+        /// <value>
+        /// The classifier properties.
+        /// </value>
+        new IEnumerable<IProperty> Properties => this.Members.OfType<IProperty>();
+
+        /// <summary>
+        /// Gets the classifier methods.
+        /// </summary>
+        /// <value>
+        /// The classifier methods.
+        /// </value>
+        IEnumerable<IMethod> Methods => this.Members.OfType<IMethod>();
+
+        /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
+
+        /// <summary>
+        /// Gets a member by the provided name.
+        /// </summary>
+        /// <param name="name">The member name.</param>
+        /// <param name="throwIfNotFound">True to throw if the requested member is not found.</param>
+        /// <returns>
+        /// The requested member, or <c>null</c>.
+        /// </returns>
+        IElementInfo? ITypeInfo.GetMember(string name, bool throwIfNotFound) => this.GetMember(name, throwIfNotFound);
+#else
         /// <summary>
         /// Gets the classifier properties.
         /// </summary>
@@ -66,6 +109,7 @@ namespace Kephas.Model
         /// The classifier methods.
         /// </value>
         IEnumerable<IMethod> Methods { get; }
+#endif
 
         /// <summary>
         /// Gets a value indicating whether this classifier is a mixin.

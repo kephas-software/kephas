@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Model
 {
     using System.Collections.Generic;
@@ -35,9 +37,22 @@ namespace Kephas.Model
         /// <param name="qualifiedName">The qualified name of the member.</param>
         /// <param name="throwOnNotFound">If set to <c>true</c> and the member is not found, an exception occurs; otherwise <c>null</c> is returned if the member is not found.</param>
         /// <returns>The member with the provided qualified name or <c>null</c>.</returns>
-        INamedElement GetMember(string qualifiedName, bool throwOnNotFound = true);
+        INamedElement? GetMember(string qualifiedName, bool throwOnNotFound = true);
+
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Gets the model element's own members, excluding those declared by the base element or mixins.
+        /// </summary>
+        /// <returns>The members declared exclusively at the element level.</returns>
+        IEnumerable<INamedElement> GetDeclaredMembers()
+        {
+            return this.Members.Where(m => m.DeclaringContainer == this);
+        }
+#endif
     }
 
+#if NETSTANDARD2_1
+#else
     /// <summary>
     /// Extensions for <see cref="IModelElement"/>.
     /// </summary>
@@ -57,4 +72,5 @@ namespace Kephas.Model
             return modelElement.Members.Where(m => m.DeclaringContainer == modelElement);
         }
     }
+#endif
 }

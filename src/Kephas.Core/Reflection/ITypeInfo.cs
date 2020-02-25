@@ -124,7 +124,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The provided <see cref="ITypeInfo"/>'s associated <see cref="Type"/>.
         /// </returns>
-        public Type AsType()
+        Type AsType()
         {
             // TODO optimize
             Type? type = null;
@@ -156,7 +156,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// <c>true</c> if the type is generic, either closed or open; <c>false</c> if not.
         /// </returns>
-        public bool IsGenericType()
+        bool IsGenericType()
         {
             return this.GenericTypeArguments?.Count > 0 || this.GenericTypeParameters?.Count > 0;
         }
@@ -167,7 +167,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// <c>true</c> if the type is a generic type definition; <c>false</c> if not.
         /// </returns>
-        public bool IsGenericTypeDefinition()
+        bool IsGenericTypeDefinition()
         {
             return this.GenericTypeParameters?.Count > 0 && this.GenericTypeDefinition == null;
         }
@@ -178,7 +178,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// <c>true</c> if the type is a generic type definition; <c>false</c> if not.
         /// </returns>
-        public bool IsConstructedGenericType()
+        bool IsConstructedGenericType()
         {
             return this.GenericTypeArguments?.Count > 0 && this.GenericTypeDefinition != null;
         }
@@ -187,7 +187,7 @@ namespace Kephas.Reflection
         /// Gets the model element's own members, excluding those declared by the base element or mixins.
         /// </summary>
         /// <returns>The members declared exclusively at the type level.</returns>
-        public IEnumerable<IElementInfo> GetDeclaredMembers()
+        IEnumerable<IElementInfo> GetDeclaredMembers()
         {
             return this.Members.Where(m => m.DeclaringContainer == this);
         }

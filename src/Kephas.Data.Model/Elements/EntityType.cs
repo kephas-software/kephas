@@ -17,6 +17,7 @@ namespace Kephas.Data.Model.Elements
 
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Classifier for entities, either persisted or used by the client tier.
@@ -40,5 +41,37 @@ namespace Kephas.Data.Model.Elements
         /// The entity keys.
         /// </value>
         public IEnumerable<IKey> Keys => this.Members.OfType<IKey>();
+
+        /// <summary>
+        /// Gets the parts of an aggregated element.
+        /// </summary>
+        /// <value>
+        /// The parts.
+        /// </value>
+        IEnumerable<object> IAggregatedElementInfo.Parts => this.Parts;
+
+        /// <summary>
+        /// Gets the element annotations.
+        /// </summary>
+        /// <value>
+        /// The element annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
+
+        /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
+
+#if NETSTANDARD2_1
+#else
+        /// <summary>
+        /// Gets the enumeration of properties.
+        /// </summary>
+        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
+#endif
     }
 }

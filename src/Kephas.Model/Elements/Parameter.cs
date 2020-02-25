@@ -27,7 +27,7 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// Type of the property.
         /// </summary>
-        private ITypeInfo valueType;
+        private ITypeInfo? valueType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Parameter"/> class.
