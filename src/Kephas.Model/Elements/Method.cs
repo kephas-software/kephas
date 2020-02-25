@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Model.Elements
 {
     using System;
@@ -27,12 +29,12 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// Type of the return value.
         /// </summary>
-        private ITypeInfo returnType;
+        private ITypeInfo? returnType;
 
         /// <summary>
         /// The runtime method info.
         /// </summary>
-        private IRuntimeMethodInfo runtimeMethodInfo;
+        private IRuntimeMethodInfo? runtimeMethodInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Method"/> class.
@@ -70,7 +72,7 @@ namespace Kephas.Model.Elements
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result.</returns>
-        public object Invoke(object instance, IEnumerable<object> args)
+        public object? Invoke(object instance, IEnumerable<object> args)
         {
             var runtimeMethod = this.TryGetRuntimeMethodInfo();
             if (runtimeMethod == null)

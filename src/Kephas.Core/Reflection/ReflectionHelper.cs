@@ -28,24 +28,17 @@ namespace Kephas.Reflection
         /// <summary>
         /// The empty type infos.
         /// </summary>
-        internal static readonly IReadOnlyList<ITypeInfo> EmptyTypeInfos;
+        internal static readonly IReadOnlyList<ITypeInfo> EmptyTypeInfos = Array.Empty<ITypeInfo>();
 
-        private static readonly Func<AssemblyName, bool> isSystemAssemblyFunc = assemblyName =>
+        private static readonly Func<AssemblyName, bool> IsSystemAssemblyFuncValue = assemblyName =>
             {
                 var assemblyFullName = assemblyName.FullName;
-                return assemblyFullName.StartsWith("System") || assemblyFullName.StartsWith("mscorlib")
-                                                             || assemblyFullName.StartsWith("Microsoft")
-                                                             || assemblyFullName.StartsWith("vshost32")
-                                                             || assemblyFullName.StartsWith("Mono");
+                return assemblyFullName.StartsWith("System")
+                    || assemblyFullName.StartsWith("mscorlib")
+                    || assemblyFullName.StartsWith("Microsoft")
+                    || assemblyFullName.StartsWith("vshost32")
+                    || assemblyFullName.StartsWith("Mono");
             };
-
-        /// <summary>
-        /// Initializes static members of the <see cref="ReflectionHelper"/> class.
-        /// </summary>
-        static ReflectionHelper()
-        {
-            EmptyTypeInfos = new ReadOnlyCollection<ITypeInfo>(new List<ITypeInfo>());
-        }
 
         /// <summary>
         /// Gets or sets the function to check whether an assembly is a system assembly.
@@ -53,7 +46,7 @@ namespace Kephas.Reflection
         /// <value>
         /// A function delegate that yields a bool.
         /// </value>
-        public static Func<AssemblyName, bool> IsSystemAssemblyFunc { get; set; } = isSystemAssemblyFunc;
+        public static Func<AssemblyName, bool> IsSystemAssemblyFunc { get; set; } = IsSystemAssemblyFuncValue;
 
         /// <summary>
         /// Indicates whether the identifier is private.

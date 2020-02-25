@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Model.Elements
 {
     using System.Linq;
@@ -22,15 +24,8 @@ namespace Kephas.Model.Elements
     /// </summary>
     public class Property : ModelElementBase<IProperty>, IProperty
     {
-        /// <summary>
-        /// Type of the property.
-        /// </summary>
-        private ITypeInfo propertyType;
-
-        /// <summary>
-        /// The runtime property info.
-        /// </summary>
-        private IRuntimePropertyInfo runtimePropertyInfo;
+        private ITypeInfo? valueType;
+        private IRuntimePropertyInfo? runtimePropertyInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Property"/> class.
@@ -50,8 +45,8 @@ namespace Kephas.Model.Elements
         /// </value>
         public ITypeInfo ValueType
         {
-            get => this.propertyType ?? (this.propertyType = this.ComputeValueType());
-            protected internal set => this.propertyType = value;
+            get => this.valueType ?? (this.valueType = this.ComputeValueType());
+            protected internal set => this.valueType = value;
         }
 
         /// <summary>
@@ -75,7 +70,7 @@ namespace Kephas.Model.Elements
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
-        public void SetValue(object obj, object value)
+        public void SetValue(object obj, object? value)
         {
             var runtimeProperty = this.TryGetRuntimePropertyInfo();
             if (runtimeProperty == null)
@@ -95,7 +90,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The value.
         /// </returns>
-        public object GetValue(object obj)
+        public object? GetValue(object obj)
         {
             var runtimeProperty = this.TryGetRuntimePropertyInfo();
             if (runtimeProperty == null)

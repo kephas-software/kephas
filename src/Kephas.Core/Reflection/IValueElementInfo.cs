@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Reflection
 {
     /// <summary>
@@ -28,7 +30,7 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
-        void SetValue(object obj, object value);
+        void SetValue(object obj, object? value);
 
         /// <summary>
         /// Gets the value from the specified object.
@@ -37,6 +39,6 @@ namespace Kephas.Reflection
         /// <returns>
         /// The value.
         /// </returns>
-        object GetValue(object obj);
+        object? GetValue(object obj);
     }
 }

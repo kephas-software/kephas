@@ -595,7 +595,6 @@ namespace Kephas.Tests.Composition.Mef
 
         public class DefaultConstructorAppService : IConstructorAppService
         {
-
         }
 
         public class SingleConstructorAppService : IConstructorAppService

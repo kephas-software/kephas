@@ -31,17 +31,17 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// The empty classifier enumeration.
         /// </summary>
-        public static readonly IReadOnlyList<IClassifier> EmptyClassifiers = new ReadOnlyCollection<IClassifier>(new List<IClassifier>());
+        public static readonly IReadOnlyList<IClassifier> EmptyClassifiers = Array.Empty<IClassifier>();
 
         /// <summary>
         /// The empty model element enumeration.
         /// </summary>
-        public static readonly IReadOnlyList<IModelElement> EmptyModelElements = new ReadOnlyCollection<IModelElement>(new List<IModelElement>());
+        public static readonly IReadOnlyList<IModelElement> EmptyModelElements = Array.Empty<IModelElement>();
 
         /// <summary>
         /// The empty annotations.
         /// </summary>
-        public static readonly IReadOnlyList<IAnnotation> EmptyAnnotations = new ReadOnlyCollection<IAnnotation>(new List<IAnnotation>());
+        public static readonly IReadOnlyList<IAnnotation> EmptyAnnotations = Array.Empty<IAnnotation>();
 
         /// <summary>
         /// The name discriminators.

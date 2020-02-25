@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Reflection
 {
     using System;
@@ -74,7 +76,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The resolved assembly or <c>null</c>.
         /// </returns>
-        protected virtual Assembly TryResolveAssembly(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
+        protected virtual Assembly? TryResolveAssembly(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
         {
             return null;
         }
@@ -87,7 +89,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The resolved assembly or <c>null</c>.
         /// </returns>
-        protected virtual Assembly TryResolveAssembly(object sender, ResolveEventArgs args)
+        protected virtual Assembly? TryResolveAssembly(object sender, ResolveEventArgs args)
         {
             var parentLocation = args.RequestingAssembly?.GetLocation();
             if (parentLocation == null)

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Model.Elements
 {
     using System.Collections.Generic;
@@ -16,12 +18,13 @@ namespace Kephas.Model.Elements
     using Kephas.Model.Configuration;
     using Kephas.Model.Construction;
     using Kephas.Model.Construction.Internal;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Base abstract class for model elements.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract (the model interface).</typeparam>
-    public abstract class ModelElementBase<TModelContract> : NamedElementBase<TModelContract>, IModelElement
+    public abstract class ModelElementBase<TModelContract> : NamedElementBase<TModelContract>, IModelElement, IElementInfo
         where TModelContract : IModelElement
     {
         /// <summary>
@@ -68,10 +71,9 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The member with the provided qualified name or <c>null</c>.
         /// </returns>
-        public virtual INamedElement GetMember(string qualifiedName, bool throwOnNotFound = true)
+        public virtual INamedElement? GetMember(string qualifiedName, bool throwOnNotFound = true)
         {
-            INamedElement element;
-            if (this.members.TryGetValue(qualifiedName, out element))
+            if (this.members.TryGetValue(qualifiedName, out var element))
             {
                 return element;
             }

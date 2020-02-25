@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Model.Elements
 {
     using System;
@@ -86,7 +88,7 @@ namespace Kephas.Model.Elements
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
-        public void SetValue(object obj, object value)
+        public void SetValue(object obj, object? value)
         {
             throw new NotSupportedException();
         }
@@ -98,7 +100,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The value.
         /// </returns>
-        public object GetValue(object obj)
+        public object? GetValue(object obj)
         {
             throw new NotSupportedException();
         }

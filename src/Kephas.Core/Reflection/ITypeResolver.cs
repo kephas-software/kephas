@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Reflection
 {
     using System;
@@ -28,6 +30,6 @@ namespace Kephas.Reflection
         /// <returns>
         /// A Type.
         /// </returns>
-        Type ResolveType(string typeName, bool throwOnNotFound = true);
+        Type? ResolveType(string typeName, bool throwOnNotFound = true);
     }
 }

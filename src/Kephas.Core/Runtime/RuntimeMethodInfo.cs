@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Runtime
 {
     using System;
@@ -31,14 +33,9 @@ namespace Kephas.Runtime
         private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimeMethodInfo = new RuntimeTypeInfo(typeof(RuntimeMethodInfo));
 
         /// <summary>
-        /// The members.
-        /// </summary>
-        private IDictionary<string, IRuntimeElementInfo> members;
-
-        /// <summary>
         /// The parameters.
         /// </summary>
-        private IDictionary<string, IRuntimeParameterInfo> parameters;
+        private IDictionary<string, IRuntimeParameterInfo>? parameters;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeMethodInfo"/> class.
@@ -102,7 +99,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.DeclaringType);
+        public IElementInfo? DeclaringContainer => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.DeclaringType);
 
         /// <summary>
         /// Gets the method info.
@@ -149,7 +146,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The <see cref="object" />.
         /// </returns>
-        public object Invoke(object instance, IEnumerable<object> args)
+        public object? Invoke(object instance, IEnumerable<object> args)
         {
             return this.MethodInfo.Invoke(instance, args.ToArray());
         }
@@ -255,17 +252,6 @@ namespace Kephas.Runtime
         private IDictionary<string, IRuntimeParameterInfo> GetParameters()
         {
             return this.parameters ?? (this.parameters = this.CreateParameterInfos(this.MethodInfo));
-        }
-
-        /// <summary>
-        /// Gets the members, initializing them if necessary.
-        /// </summary>
-        /// <returns>
-        /// The members.
-        /// </returns>
-        private IDictionary<string, IRuntimeElementInfo> GetMembers()
-        {
-            return this.members ?? (this.members = CreateMemberInfos(this.Parameters));
         }
     }
 }

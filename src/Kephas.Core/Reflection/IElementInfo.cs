@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Reflection
 {
     using System.Collections.Generic;
@@ -50,6 +52,6 @@ namespace Kephas.Reflection
         /// <value>
         /// The declaring element.
         /// </value>
-        IElementInfo DeclaringContainer { get; }
+        IElementInfo? DeclaringContainer { get; }
     }
 }

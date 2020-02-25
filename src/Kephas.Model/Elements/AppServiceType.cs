@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Model.Elements
 {
     using System;
@@ -89,7 +91,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The type of the contract.
         /// </value>
-        public Type ContractType { get; private set; }
+        public Type? ContractType { get; private set; }
 
         /// <summary>
         /// Gets the service instance.
@@ -128,7 +130,7 @@ namespace Kephas.Model.Elements
         /// </summary>
         /// <param name="args">The arguments.</param>
         /// <returns>The new instance.</returns>
-        public override object CreateInstance(IEnumerable<object> args = null)
+        public override object CreateInstance(IEnumerable<object>? args = null)
         {
             if (this.AllowMultiple)
             {
@@ -166,7 +168,7 @@ namespace Kephas.Model.Elements
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="baseTypes">List of base types.</param>
         /// <returns>The calculated base classifier.</returns>
-        protected override IClassifier ComputeBaseClassifier(IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> baseTypes)
+        protected override IClassifier? ComputeBaseClassifier(IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> baseTypes)
         {
             // no base classifier, only mixins.
             return null;

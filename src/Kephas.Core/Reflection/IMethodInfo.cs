@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Reflection
 {
     using System.Collections.Generic;
@@ -39,6 +41,6 @@ namespace Kephas.Reflection
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result.</returns>
-        object Invoke(object instance, IEnumerable<object> args);
+        object? Invoke(object instance, IEnumerable<object> args);
     }
 }

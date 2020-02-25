@@ -75,7 +75,7 @@ namespace Kephas.Model
         /// <value>
         /// The declaring container element.
         /// </value>
-        new IModelElement DeclaringContainer { get; }
+        new IModelElement? DeclaringContainer { get; }
 
         /// <summary>
         /// Gets the model space.

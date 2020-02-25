@@ -30,7 +30,7 @@ namespace Kephas.Model.Elements
     /// Base abstract class for classifiers.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract (the model interface).</typeparam>
-    public abstract class ClassifierBase<TModelContract> : ModelElementBase<TModelContract>, IClassifier
+    public abstract class ClassifierBase<TModelContract> : ModelElementBase<TModelContract>, IClassifier, ITypeInfo
         where TModelContract : IClassifier
     {
         /// <summary>
@@ -217,7 +217,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The requested member, or <c>null</c>.
         /// </returns>
-        IElementInfo ITypeInfo.GetMember(string name, bool throwIfNotFound)
+        IElementInfo? ITypeInfo.GetMember(string name, bool throwIfNotFound)
         {
             return this.GetMember(name, throwIfNotFound);
         }

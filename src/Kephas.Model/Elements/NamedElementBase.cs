@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Model.Elements
 {
     using System;
@@ -28,7 +30,7 @@ namespace Kephas.Model.Elements
     /// Base class for named elements.
     /// </summary>
     /// <typeparam name="TModelContract">The type of the model contract (the interface).</typeparam>
-    public abstract class NamedElementBase<TModelContract> : Expando, INamedElement, IConstructibleElement
+    public abstract class NamedElementBase<TModelContract> : Expando, INamedElement, IConstructibleElement, IElementInfo, IAggregatedElementInfo
         where TModelContract : INamedElement
     {
         /// <summary>
@@ -104,7 +106,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The declaring element.
         /// </value>
-        IElementInfo IElementInfo.DeclaringContainer => this.DeclaringContainer;
+        IElementInfo? IElementInfo.DeclaringContainer => this.DeclaringContainer;
 
         /// <summary>
         /// Gets the element annotations.
@@ -162,7 +164,7 @@ namespace Kephas.Model.Elements
         /// /:MyModel:MyCompany:Contacts:Main:Domain/Contact/Name/@Required: identifies the Required attribute of the Name member of the Contact classifier within the :MyModel:MyCompany:Contacts:Main:Domain projection.
         /// </para>
         /// </example>
-        public string FullName { get; private set; }
+        public string FullName { get; private set; } = string.Empty;
 
         /// <summary>
         /// Gets the container element.
@@ -170,7 +172,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The container element.
         /// </value>
-        public virtual IModelElement DeclaringContainer { get; private set; }
+        public virtual IModelElement? DeclaringContainer { get; private set; }
 
         /// <summary>
         /// Gets the model space.
@@ -262,7 +264,7 @@ namespace Kephas.Model.Elements
             catch (Exception exception)
             {
                 // TODO localization
-                this.Logger.Error(exception, $"Errors during construction of {this}.");
+                this.Logger.Error(exception, "Errors during construction of {modelElement}.", this);
                 this.ConstructionMonitor.Fault(exception);
             }
         }
