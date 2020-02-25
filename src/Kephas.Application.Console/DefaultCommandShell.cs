@@ -190,10 +190,5 @@ namespace Kephas.Application.Console
                                        cancellationToken: cancellationToken).PreserveThreadContext();
             this.Console.WriteLine(serializedResult);
         }
-
-        private void Stop()
-        {
-            this.Logger.Info("Cancellation received, shell is stopped.");
-        }
     }
 }

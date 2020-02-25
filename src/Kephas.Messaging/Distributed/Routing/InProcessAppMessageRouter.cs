@@ -173,9 +173,9 @@ namespace Kephas.Messaging.Distributed.Routing
                 }
                 else
                 {
-                    foreach (var group in groups)
+                    foreach (var (channelName, recipients) in groups)
                     {
-                        await this.PublishAsync(brokeredMessage.Clone(group.recipients.ToList()), group.channelName).PreserveThreadContext();
+                        await this.PublishAsync(brokeredMessage.Clone(recipients.ToList()), channelName).PreserveThreadContext();
                     }
                 }
             }

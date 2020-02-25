@@ -98,34 +98,34 @@ namespace Kephas.Plugins.NuGet
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
                 {
-                    using (var cacheContext = new SourceCacheContext())
+                    using var cacheContext = new SourceCacheContext();
+                    foreach (var sourceRepository in repositories)
                     {
-                        foreach (var sourceRepository in repositories)
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        try
                         {
-                            cancellationToken.ThrowIfCancellationRequested();
+                            var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>().PreserveThreadContext();
+                            var searchFilter = new SearchFilter(includePrerelease: searchContext.IncludePrerelease)
+                                                    {
+                                                        OrderBy = SearchOrderBy.Id,
+                                                        IncludeDelisted = false,
+                                                    };
 
-                            try
-                            {
-                                var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>().PreserveThreadContext();
-                                var searchFilter = new SearchFilter(includePrerelease: searchContext.IncludePrerelease);
-                                searchFilter.OrderBy = SearchOrderBy.Id;
-                                searchFilter.IncludeDelisted = false;
+                            var packages = await searchResource.SearchAsync(
+                                searchContext.SearchTerm ?? this.pluginsSettings.SearchTerm ?? "plugin",
+                                searchFilter,
+                                searchContext.Skip,
+                                searchContext.Take,
+                                this.nativeLogger,
+                                cancellationToken).PreserveThreadContext();
 
-                                var packages = await searchResource.SearchAsync(
-                                    searchContext.SearchTerm ?? this.pluginsSettings.SearchTerm ?? "plugin",
-                                    searchFilter,
-                                    searchContext.Skip,
-                                    searchContext.Take,
-                                    this.nativeLogger,
-                                    cancellationToken).PreserveThreadContext();
-
-                                availablePackages.AddRange(packages);
-                            }
-                            catch (Exception ex)
-                            {
-                                result.MergeMessage($"Could not access source repository '{sourceRepository.PackageSource.Source}'.");
-                                this.Logger.Warn(ex, "Could not access source repository '{repository}'.", sourceRepository.PackageSource.Source);
-                            }
+                            availablePackages.AddRange(packages);
+                        }
+                        catch (Exception ex)
+                        {
+                            result.MergeMessage($"Could not access source repository '{sourceRepository.PackageSource.Source}'.");
+                            this.Logger.Warn(ex, "Could not access source repository '{repository}'.", sourceRepository.PackageSource.Source);
                         }
                     }
                 }).PreserveThreadContext();
@@ -148,61 +148,60 @@ namespace Kephas.Plugins.NuGet
         protected override async Task<IOperationResult<IPlugin>> InstallPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken = default)
         {
             var repositories = this.GetSourceRepositories();
-            using (var cacheContext = new SourceCacheContext())
+            using var cacheContext = new SourceCacheContext();
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var result = new OperationResult<IPlugin>();
+            var currentFramework = this.AppRuntime.GetAppFramework();
+            var nugetFramework = NuGetFramework.ParseFolder(currentFramework);
+
+            var (pluginPackageIdentity, pluginPackageReader, packageReaders) = await this.GetPackageReadersAsync(pluginIdentity, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
+            pluginIdentity = new AppIdentity(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
+
+            var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginIdentity);
+            context.PluginIdentity(pluginIdentity);
+            var pluginData = context.PluginData ?? this.GetInstalledPluginData(pluginIdentity);
+            pluginData.ChangeIdentity(pluginIdentity);
+
+            var pluginKind = await this.GetPluginKindAsync(pluginPackageReader, cancellationToken).PreserveThreadContext();
+            pluginData.ChangeKind(pluginKind);
+
+            var pluginLocation = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
+            if (!Directory.Exists(pluginLocation))
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var result = new OperationResult<IPlugin>();
-                var currentFramework = this.AppRuntime.GetAppFramework();
-                var nugetFramework = NuGetFramework.ParseFolder(currentFramework);
-
-                var (pluginPackageIdentity, pluginPackageReader, packageReaders) = await this.GetPackageReadersAsync(pluginIdentity, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
-                pluginIdentity = new AppIdentity(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
-
-                var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginIdentity);
-                context.PluginIdentity(pluginIdentity);
-                var pluginData = context.PluginData ?? this.GetInstalledPluginData(pluginIdentity);
-                pluginData.ChangeIdentity(pluginIdentity);
-
-                var pluginKind = await this.GetPluginKindAsync(pluginPackageReader, cancellationToken).PreserveThreadContext();
-                pluginData.ChangeKind(pluginKind);
-
-                var pluginLocation = Path.Combine(this.AppRuntime.GetPluginsLocation(), pluginPackageIdentity.Id);
-                if (!Directory.Exists(pluginLocation))
-                {
-                    Directory.CreateDirectory(pluginLocation);
-                }
-
-                try
-                {
-                    var frameworkReducer = new FrameworkReducer();
-                    foreach (var (packageId, packageReader) in packageReaders)
-                    {
-                        result.MergeMessages(
-                            await this.InstallBinAsync(pluginData, pluginLocation, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
-                            .PreserveThreadContext());
-                        result.MergeMessages(
-                            await this.InstallContentAsync(pluginData, pluginLocation, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
-                            .PreserveThreadContext());
-                    }
-
-                    result.MergeMessages(
-                        await this.InstallConfigAsync(pluginData, pluginLocation, context, cancellationToken)
-                        .PreserveThreadContext());
-
-                    result.MergeMessages(
-                        await this.InstallDataAsync(pluginData, pluginLocation, context, cancellationToken)
-                        .PreserveThreadContext());
-                }
-                catch
-                {
-                    Directory.Delete(pluginLocation, recursive: true);
-                    throw;
-                }
-
-                result.ReturnValue = new Plugin(pluginInfo, pluginData) { Location = pluginLocation };
-                return result;
+                Directory.CreateDirectory(pluginLocation);
             }
+
+            try
+            {
+                var frameworkReducer = new FrameworkReducer();
+                foreach (var (packageId, packageReader) in packageReaders)
+                {
+                    result.MergeMessages(
+                        await this.InstallBinAsync(pluginData, pluginLocation, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
+                        .PreserveThreadContext());
+                    result.MergeMessages(
+                        await this.InstallContentAsync(pluginData, pluginLocation, context, packageId, nugetFramework, frameworkReducer, packageReader, cancellationToken)
+                        .PreserveThreadContext());
+                }
+
+                result.MergeMessages(
+                    await this.InstallConfigAsync(pluginData, pluginLocation, context, cancellationToken)
+                    .PreserveThreadContext());
+
+                result.MergeMessages(
+                    await this.InstallDataAsync(pluginData, pluginLocation, context, cancellationToken)
+                    .PreserveThreadContext());
+            }
+            catch
+            {
+                Directory.Delete(pluginLocation, recursive: true);
+                throw;
+            }
+
+            result.ReturnValue = new Plugin(pluginInfo, pluginData) { Location = pluginLocation };
+            return result;
         }
 
         /// <summary>
@@ -431,7 +430,7 @@ namespace Kephas.Plugins.NuGet
         /// </returns>
         protected virtual string GetPackagesFolder(string defaultPackagesFolder = null)
         {
-            defaultPackagesFolder = defaultPackagesFolder ?? DefaultPackagesFolder;
+            defaultPackagesFolder ??= DefaultPackagesFolder;
             if (string.IsNullOrEmpty(this.pluginsSettings.PackagesFolder))
             {
                 var settings = this.GetSettings();

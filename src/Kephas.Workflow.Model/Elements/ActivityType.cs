@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Workflow.Model.Elements
 {
     using System.Collections.Generic;
@@ -42,7 +44,7 @@ namespace Kephas.Workflow.Model.Elements
         /// <value>
         /// The type of the return value.
         /// </value>
-        public ITypeInfo ReturnType { get; protected set; }
+        public ITypeInfo? ReturnType { get; protected set; }
 
         /// <summary>
         /// Gets the parameters for controlling the activity.
@@ -65,8 +67,8 @@ namespace Kephas.Workflow.Model.Elements
         /// </returns>
         public virtual Task<object> ExecuteAsync(
             IActivity activity,
-            object target,
-            IExpando arguments,
+            object? target,
+            IExpando? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default)
         {

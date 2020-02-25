@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Model
 {
     using System.Collections.Generic;
@@ -47,7 +49,7 @@ namespace Kephas.Model
         /// <value>
         /// The projection.
         /// </value>
-        IModelProjection Projection { get; }
+        IModelProjection? Projection { get; }
 
         /// <summary>
         /// Gets the classifier properties.
@@ -63,7 +65,7 @@ namespace Kephas.Model
         /// <value>
         /// The classifier methods.
         /// </value>
-        new IEnumerable<IMethod> Methods { get; }
+        IEnumerable<IMethod> Methods { get; }
 
         /// <summary>
         /// Gets a value indicating whether this classifier is a mixin.
@@ -79,7 +81,7 @@ namespace Kephas.Model
         /// <value>
         /// The base classifier.
         /// </value>
-        IClassifier BaseClassifier { get; }
+        IClassifier? BaseClassifier { get; }
 
         /// <summary>
         /// Gets the base mixins.
@@ -112,6 +114,6 @@ namespace Kephas.Model
         /// <param name="qualifiedName">The qualified name of the member.</param>
         /// <param name="throwOnNotFound">If set to <c>true</c> and the member is not found, an exception occurs; otherwise <c>null</c> is returned if the member is not found.</param>
         /// <returns>The member with the provided qualified name or <c>null</c>.</returns>
-        new INamedElement GetMember(string qualifiedName, bool throwOnNotFound = true);
+        new INamedElement? GetMember(string qualifiedName, bool throwOnNotFound = true);
     }
 }

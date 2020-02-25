@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Workflow.Reflection
 {
     using System.Collections.Generic;
@@ -28,7 +30,7 @@ namespace Kephas.Workflow.Reflection
         /// <value>
         /// The return type of the method.
         /// </value>
-        ITypeInfo ReturnType { get; }
+        ITypeInfo? ReturnType { get; }
 
         /// <summary>
         /// Gets the method parameters.
@@ -51,8 +53,8 @@ namespace Kephas.Workflow.Reflection
         /// </returns>
         Task<object> ExecuteAsync(
             IActivity activity,
-            object target,
-            IExpando arguments,
+            object? target,
+            IExpando? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default);
     }

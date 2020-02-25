@@ -211,10 +211,10 @@ namespace Kephas.Messaging.Redis.Routing
                 }
                 else
                 {
-                    foreach (var group in groups)
+                    foreach (var (channelName, recipients) in groups)
                     {
-                        var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage.Clone(group.recipients), ctx => ctx.IncludeTypeInfo(true)).PreserveThreadContext();
-                        await this.PublishAsync(serializedMessage, group.channelName, brokeredMessage.IsOneWay).PreserveThreadContext();
+                        var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage.Clone(recipients), ctx => ctx.IncludeTypeInfo(true)).PreserveThreadContext();
+                        await this.PublishAsync(serializedMessage, channelName, brokeredMessage.IsOneWay).PreserveThreadContext();
                     }
                 }
             }

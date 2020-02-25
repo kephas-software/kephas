@@ -1,12 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Entity.cs" company="Kephas Software SRL">
+// <copyright file="EntityType.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the entity class.
+//   Implements the entity type class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+#nullable enable
 
 namespace Kephas.Data.Model.Elements
 {
@@ -21,11 +23,6 @@ namespace Kephas.Data.Model.Elements
     /// </summary>
     public class EntityType : ClassifierBase<IEntityType>, IEntityType
     {
-        /// <summary>
-        /// The empty keys array.
-        /// </summary>
-        public static readonly IKey[] EmptyKeys = new IKey[0];
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityType" /> class.
         /// </summary>

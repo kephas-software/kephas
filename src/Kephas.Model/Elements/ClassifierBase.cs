@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Model.Elements
 {
     using System;
@@ -52,7 +54,7 @@ namespace Kephas.Model.Elements
         /// <summary>
         /// The function indicating whether this classifier is an aspect of other classifiers.
         /// </summary>
-        private Func<IClassifier, bool> isAspectOf;
+        private Func<IClassifier, bool>? isAspectOf;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClassifierBase{TModelContract}" /> class.
@@ -73,7 +75,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The projection.
         /// </value>
-        public IModelProjection Projection { get; protected internal set; } // TODO set the projection
+        public IModelProjection? Projection { get; protected internal set; } // TODO set the projection
 
         /// <summary>
         /// Gets the classifier properties.
@@ -117,7 +119,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The base classifier.
         /// </value>
-        public IClassifier BaseClassifier { get; private set; }
+        public IClassifier? BaseClassifier { get; private set; }
 
         /// <summary>
         /// Gets the base mixins.
@@ -145,7 +147,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The namespace of the type.
         /// </value>
-        public string Namespace => this.Projection?.FullName;
+        public string Namespace => this.Projection?.FullName ?? string.Empty;
 
         /// <summary>
         /// Gets the bases of this <see cref="ITypeInfo"/>. They include the real base and also the implemented interfaces.
@@ -161,7 +163,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The generic arguments.
         /// </value>
-        public IReadOnlyList<ITypeInfo> GenericTypeParameters { get; private set; }
+        public IReadOnlyList<ITypeInfo> GenericTypeParameters { get; private set; } = Array.Empty<ITypeInfo>();
 
         /// <summary>
         /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type arguments of a closed generic type.
@@ -169,7 +171,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The generic arguments.
         /// </value>
-        public IReadOnlyList<ITypeInfo> GenericTypeArguments { get; private set; }
+        public IReadOnlyList<ITypeInfo> GenericTypeArguments { get; private set; } = Array.Empty<ITypeInfo>();
 
         /// <summary>
         /// Gets a <see cref="ITypeInfo"/> object that represents a generic type definition from which the current generic type can be constructed.
@@ -177,7 +179,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The generic type definition.
         /// </value>
-        public ITypeInfo GenericTypeDefinition { get; private set; }
+        public ITypeInfo? GenericTypeDefinition { get; private set; }
 
         /// <summary>
         /// Gets the enumeration of properties.
@@ -227,7 +229,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The new instance.
         /// </returns>
-        public virtual object CreateInstance(IEnumerable<object> args = null)
+        public virtual object CreateInstance(IEnumerable<object>? args = null)
         {
             throw new ActivationException(string.Format(Strings.ClassifierBase_CannotInstantiateAbstractTypeInfo_Exception, this, typeof(ITypeInfo), this));
         }
@@ -240,7 +242,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// A constructed <see cref="ITypeInfo"/>.
         /// </returns>
-        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext constructionContext = null)
+        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null)
         {
             // TODO redirect generic type creation through ModelSpace
             throw new NotImplementedException();
@@ -274,7 +276,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// A function.
         /// </returns>
-        protected virtual Func<IClassifier, bool> ComputeIsAspectOf()
+        protected virtual Func<IClassifier, bool>? ComputeIsAspectOf()
         {
             var aspectAnnotation = this.Members.OfType<AspectAnnotation>().FirstOrDefault();
             return aspectAnnotation?.IsAspectOf;
@@ -345,7 +347,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The calculated base classifier.
         /// </returns>
-        protected virtual IClassifier ComputeBaseClassifier(
+        protected virtual IClassifier? ComputeBaseClassifier(
             IModelConstructionContext constructionContext,
             IEnumerable<ITypeInfo> baseTypes)
         {
@@ -512,7 +514,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The resolved member or <c>null</c>.
         /// </returns>
-        private INamedElement TryResolveConflictingMembers(IList<INamedElement> conflictingMembers)
+        private INamedElement? TryResolveConflictingMembers(IList<INamedElement> conflictingMembers)
         {
             var resolvedMember = conflictingMembers[0];
             for (var i = 1; i < conflictingMembers.Count; i++)
