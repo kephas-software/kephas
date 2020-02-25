@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application.Console
 {
     using System.Collections.Generic;
@@ -24,10 +26,11 @@ namespace Kephas.Application.Console
         /// <summary>
         /// Gets the command types.
         /// </summary>
+        /// <param name="commandPattern">Optional. A pattern specifying the command types to retrieve.</param>
         /// <returns>
         /// The command types.
         /// </returns>
-        IEnumerable<ITypeInfo> GetCommandTypes();
+        IEnumerable<ITypeInfo> GetCommandTypes(string? commandPattern = null);
 
         /// <summary>
         /// Resolves the command type.

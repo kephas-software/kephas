@@ -8,12 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Application.Console
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas;
     using Kephas.Application.Console.Resources;
     using Kephas.Messaging;
@@ -30,7 +33,7 @@ namespace Kephas.Application.Console
     {
         private readonly IAppRuntime appRuntime;
         private readonly ITypeLoader typeLoader;
-        private IList<ITypeInfo> commandTypes;
+        private IList<ITypeInfo>? commandTypes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultCommandRegistry"/> class.
@@ -46,15 +49,24 @@ namespace Kephas.Application.Console
         /// <summary>
         /// Gets the command types.
         /// </summary>
+        /// <param name="commandPattern">Optional. A pattern specifying the command types to retrieve.</param>
         /// <returns>
         /// The command types.
         /// </returns>
-        public IEnumerable<ITypeInfo> GetCommandTypes()
+        public IEnumerable<ITypeInfo> GetCommandTypes(string? commandPattern = null)
         {
-            return this.commandTypes ?? (this.commandTypes = this.appRuntime.GetAppAssemblies()
-                                                                            .SelectMany(a => this.typeLoader.GetLoadableExportedTypes(a).Where(this.IsMessageType))
-                                                                            .Select(t => (ITypeInfo)t.AsRuntimeTypeInfo())
-                                                                            .ToList());
+            this.commandTypes ??= this.appRuntime.GetAppAssemblies()
+                                            .SelectMany(a => this.typeLoader.GetLoadableExportedTypes(a).Where(this.IsMessageType))
+                                            .Select(t => (ITypeInfo)t.AsRuntimeTypeInfo())
+                                            .ToList()
+                                            .AsReadOnly();
+
+            if (string.IsNullOrEmpty(commandPattern))
+            {
+                return this.commandTypes;
+            }
+
+            return this.commandTypes.Where(c => c.Name.StartsWith(commandPattern, StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>
@@ -66,25 +78,24 @@ namespace Kephas.Application.Console
         /// </returns>
         public ITypeInfo ResolveCommandType(string command)
         {
-            var commandTypes = this.GetCommandTypes();
-            var commandType = (commandTypes.SingleOrDefault(m => m.Name.Equals(command, StringComparison.InvariantCultureIgnoreCase))
-                               ?? commandTypes.SingleOrDefault(m => m.Name.Equals(command + "Message", StringComparison.InvariantCultureIgnoreCase)))
-                              ?? commandTypes.SingleOrDefault(m => m.Name.Equals(command + "Event", StringComparison.InvariantCultureIgnoreCase));
+            var matchingCommandTypes = this.GetCommandTypes(command).ToList();
+            var commandType = (matchingCommandTypes.SingleOrDefault(m => m.Name.Equals(command, StringComparison.InvariantCultureIgnoreCase))
+                               ?? matchingCommandTypes.SingleOrDefault(m => m.Name.Equals(command + "Message", StringComparison.InvariantCultureIgnoreCase)))
+                              ?? matchingCommandTypes.SingleOrDefault(m => m.Name.Equals(command + "Event", StringComparison.InvariantCultureIgnoreCase));
 
             if (commandType == null)
             {
-                var commands = this.commandTypes.Where(m => m.Name.StartsWith(command, StringComparison.InvariantCultureIgnoreCase)).ToList();
-                if (commands.Count == 0)
+                if (matchingCommandTypes.Count == 0)
                 {
-                    throw new InvalidOperationException(Strings.DefaultCommandRegistry_CommandNotFound.FormatWith(command));
+                    throw new KeyNotFoundException(Strings.DefaultCommandRegistry_CommandNotFound.FormatWith(command));
                 }
 
-                if (commands.Count > 1)
+                if (matchingCommandTypes.Count > 1)
                 {
-                    throw new AmbiguousMatchException(Strings.DefaultCommandRegistry_AmbiguousCommandName.FormatWith(command, string.Join("', '", commands.Select(m => m.Name))));
+                    throw new AmbiguousMatchException(Strings.DefaultCommandRegistry_AmbiguousCommandName.FormatWith(command, string.Join("', '", matchingCommandTypes.Select(m => m.Name))));
                 }
 
-                commandType = commands[0];
+                commandType = matchingCommandTypes[0];
             }
 
             return commandType;
