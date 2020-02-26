@@ -298,7 +298,18 @@ namespace Kephas.Plugins
                                 .PreserveThreadContext();
                             result.MergeAll(uninstWrappedResult.ReturnValue);
 
-                            this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.None));
+                            try
+                            {
+                                this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.None));
+                            }
+                            catch (DirectoryNotFoundException)
+                            {
+                                // OK, plugin directory removed
+                            }
+                            catch (Exception ex)
+                            {
+                                result.MergeException(ex);
+                            }
 
                             pluginData = this.GetInstalledPluginData(pluginIdentity);
                             uninstallComplete = pluginData.State == PluginState.None;
