@@ -91,7 +91,7 @@ namespace Kephas.Core.Tests.Reflection
 #else
             Assert.AreEqual("Trace Cannot compute getter delegate for {typeName}.{methodName}, falling back to reflection.-System.DateTime" + Environment.NewLine, log.ToString());
 #endif
-            Assert.AreEqual(dateTime, date);
+            Assert.AreEqual(((DateTime)dateTime).Date, date);
         }
 
         [Test]
