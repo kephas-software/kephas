@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AspNetConfigurationProvider.cs" company="Kephas Software SRL">
+// <copyright file="OptionsSettingsProviderBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -13,10 +13,8 @@ namespace Kephas.Extensions.Configuration.Providers
     using System;
 
     using Kephas;
-    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Configuration.Providers;
-    using Kephas.Graphs;
     using Kephas.Services;
 
     using Microsoft.Extensions.Options;
@@ -24,8 +22,7 @@ namespace Kephas.Extensions.Configuration.Providers
     /// <summary>
     /// Settings provider based on the <see cref="IOptions{TOptions}"/> service.
     /// </summary>
-    [ProcessingPriority(Priority.BelowNormal)]
-    public class OptionsSettingsProvider : ISettingsProvider
+    public abstract class OptionsSettingsProviderBase : ISettingsProvider
     {
         /// <summary>
         /// Context for the composition.
@@ -33,10 +30,10 @@ namespace Kephas.Extensions.Configuration.Providers
         private readonly ICompositionContext compositionContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OptionsSettingsProvider"/> class.
+        /// Initializes a new instance of the <see cref="OptionsSettingsProviderBase"/> class.
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
-        public OptionsSettingsProvider(ICompositionContext compositionContext)
+        public OptionsSettingsProviderBase(ICompositionContext compositionContext)
         {
             this.compositionContext = compositionContext;
         }
@@ -51,7 +48,7 @@ namespace Kephas.Extensions.Configuration.Providers
         public object GetSettings(Type settingsType)
         {
             var options = this.compositionContext.GetExport(typeof(IOptions<>).MakeGenericType(settingsType));
-            return options.GetPropertyValue(nameof(IOptions<Graph>.Value));
+            return options.GetPropertyValue(nameof(IOptions<CoreSettings>.Value));
         }
     }
 }
