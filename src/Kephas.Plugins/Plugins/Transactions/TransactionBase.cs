@@ -64,7 +64,7 @@ namespace Kephas.Plugins.Transactions
                     }
                     catch (Exception ex)
                     {
-                        result.MergeException(ex);
+                        result.MergeException(new PluginOperationException($"Error while executing rollback command '{undoCommand}': {ex.Message}.", ex));
                     }
                 }
             });
