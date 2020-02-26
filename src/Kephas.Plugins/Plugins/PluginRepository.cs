@@ -73,7 +73,7 @@ namespace Kephas.Plugins
             var pluginLocation = this.pluginLocationResolver(pluginData.Identity);
             if (string.IsNullOrEmpty(pluginLocation))
             {
-                throw new InvalidOperationException($"A plugin location could not be resolved for '{pluginData.Identity}'");
+                throw new DirectoryNotFoundException($"A plugin location could not be resolved for '{pluginData.Identity}'");
             }
 
             var pluginDataFile = Path.Combine(pluginLocation, PluginDataFileName);
