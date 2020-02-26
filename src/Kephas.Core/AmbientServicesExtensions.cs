@@ -695,7 +695,7 @@ namespace Kephas
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
             const string LicenseRepositoryKey = "__LicenseRepository";
-            ambientServices.Register(new DefaultLicensingManager(appid =>
+            ambientServices.Register<ILicensingManager>(new DefaultLicensingManager(appid =>
                 ((ambientServices[LicenseRepositoryKey] as ILicenseRepository)
                     ?? (ILicenseRepository)(ambientServices[LicenseRepositoryKey] = new LicenseRepository(ambientServices.AppRuntime, encryptionService)))
                         .GetLicenseData(appid)));
