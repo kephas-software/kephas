@@ -10,6 +10,7 @@
 
 namespace Kephas.Plugins.Endpoints
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using Kephas.Application;
@@ -71,6 +72,6 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The plugins.
         /// </value>
-        public AppIdentity[] Plugins { get; set; }
+        public IDictionary<string, string> Plugins { get; set; }
     }
 }
