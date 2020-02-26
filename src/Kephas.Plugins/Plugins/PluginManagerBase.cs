@@ -192,7 +192,7 @@ namespace Kephas.Plugins
 
                             if (installComplete)
                             {
-                                this.Logger.Info("Plugin {plugin} successfully installed, awaiting initialization. Elapsed: {elapsed:c}.", pluginIdentity, installWrappedResult.Elapsed);
+                                this.Logger.Info("Plugin {plugin} successfully installed, awaiting initialization. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, installWrappedResult.Elapsed, result.Messages, result.Exceptions);
                             }
                         }
 
@@ -316,7 +316,7 @@ namespace Kephas.Plugins
 
                             if (uninstallComplete)
                             {
-                                this.Logger.Info("Plugin {plugin} successfully uninstalled. Elapsed: {elapsed:c}.", pluginIdentity, uninstWrappedResult.Elapsed);
+                                this.Logger.Info("Plugin {plugin} successfully uninstalled. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, uninstWrappedResult.Elapsed, result.Messages, result.Exceptions);
                             }
                         }
                     }
@@ -389,7 +389,7 @@ namespace Kephas.Plugins
                             initializeComplete = pluginData.State == PluginState.Disabled;
                             if (initializeComplete)
                             {
-                                this.Logger.Info("Plugin {plugin} successfully initialized. Elapsed: {elapsed:c}.", pluginIdentity, initWrappedResult.Elapsed);
+                                this.Logger.Info("Plugin {plugin} successfully initialized. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, initWrappedResult.Elapsed, result.Messages, result.Exceptions);
                             }
                         }
                         catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
@@ -528,7 +528,7 @@ namespace Kephas.Plugins
                     }
                 }).PreserveThreadContext();
 
-            this.Logger.Info("Plugin {plugin} successfully uninitialized. Elapsed: {elapsed:c}.", pluginIdentity, opResult.Elapsed);
+            this.Logger.Info("Plugin {plugin} successfully uninitialized, awaiting uninstallation. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
 
             result
                 .MergeAll(opResult)
@@ -581,7 +581,7 @@ namespace Kephas.Plugins
                     }
                 }).PreserveThreadContext();
 
-            this.Logger.Info("Plugin {plugin} successfully enabled. Elapsed: {elapsed:c}.", pluginIdentity, opResult.Elapsed);
+            this.Logger.Info("Plugin {plugin} successfully enabled. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
 
             return result
                 .MergeAll(opResult)
@@ -630,7 +630,7 @@ namespace Kephas.Plugins
                     }
                 }).PreserveThreadContext();
 
-            this.Logger.Warn("Plugin {plugin} successfully disabled. Elapsed: {elapsed:c}.", pluginIdentity, opResult.Elapsed);
+            this.Logger.Warn("Plugin {plugin} successfully disabled. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
 
             return result
                 .MergeAll(opResult)
@@ -682,7 +682,7 @@ namespace Kephas.Plugins
                     return instResult.ReturnValue;
                 }).PreserveThreadContext();
 
-            this.Logger.Warn("Plugin {plugin} successfully updated. Elapsed: {elapsed:c}.", pluginIdentity, opResult.Elapsed);
+            this.Logger.Warn("Plugin {plugin} successfully updated. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
 
             return result
                 .MergeAll(opResult)
