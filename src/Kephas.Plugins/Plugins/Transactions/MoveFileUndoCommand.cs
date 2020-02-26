@@ -19,7 +19,7 @@ namespace Kephas.Plugins.Transactions
         /// <summary>
         /// Name of the command.
         /// </summary>
-        public const string CommandName = "rename";
+        public const string CommandName = "move";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MoveFileUndoCommand"/> class.

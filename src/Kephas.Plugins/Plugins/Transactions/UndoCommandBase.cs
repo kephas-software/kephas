@@ -128,26 +128,25 @@ namespace Kephas.Plugins.Transactions
 
         private static string Escape(string value)
         {
-            var sb = new StringBuilder(value);
-            sb.Replace("\\", "\\\\")
+            var sb = new StringBuilder(value)
+                .Replace("&", "&amp;")
+                .Replace("\\", "&bs;")
+                .Replace(SplitSeparatorChar.ToString(), "&pipe;")
                 .Replace("\n", "\\n")
                 .Replace("\r", "\\r")
-                .Replace("\t", "\\t")
-                .Replace("&", "&amp;")
-                .Replace(SplitSeparatorChar.ToString(), "&pipe;");
+                .Replace("\t", "\\t");
             return sb.ToString();
         }
 
         private static string Unescape(string escapedValue)
         {
-            var sb = new StringBuilder(escapedValue);
-            sb
-                .Replace("&pipe;", SplitSeparatorChar.ToString())
-                .Replace("&amp;", "&")
+            var sb = new StringBuilder(escapedValue)
                 .Replace("\\t", "\t")
                 .Replace("\\r", "\r")
                 .Replace("\\n", "\n")
-                .Replace("\\\\", "\\");
+                .Replace("&pipe;", SplitSeparatorChar.ToString())
+                .Replace("&bs;", "\\")
+                .Replace("&amp;", "&");
             return sb.ToString();
         }
     }
