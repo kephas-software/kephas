@@ -22,6 +22,7 @@
         <tags>kephas application</tags>
         <dependencies>
             <group>
+                <dependency id="Kephas.Collections" version="$refversion$" />
                 <dependency id="Kephas.Core" version="$refversion$" />
             </group>
         </dependencies>

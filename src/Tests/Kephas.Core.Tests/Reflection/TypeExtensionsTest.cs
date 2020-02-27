@@ -12,7 +12,6 @@ namespace Kephas.Core.Tests.Reflection
 {
     using System.Collections.Generic;
 
-    using Kephas.Graphs;
     using Kephas.Reflection;
 
     using NUnit.Framework;
@@ -66,10 +65,10 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void GetBaseConstructedGenericOf_class()
         {
-            var type = typeof(UnorientedGraph<string>);
-            var constructedGenericType = type.GetBaseConstructedGenericOf(typeof(Graph<>));
+            var type = typeof(TestDerivedGeneric<string>);
+            var constructedGenericType = type.GetBaseConstructedGenericOf(typeof(TestGeneric<>));
 
-            Assert.AreSame(constructedGenericType, typeof(Graph<string>));
+            Assert.AreSame(constructedGenericType, typeof(TestGeneric<string>));
         }
         
         [Test]
@@ -103,5 +102,8 @@ namespace Kephas.Core.Tests.Reflection
 
             Assert.IsTrue(type.IsDictionary());
         }
+
+        public class TestGeneric<T> { }
+        public class TestDerivedGeneric<T> : TestGeneric<T> { }
     }
 }

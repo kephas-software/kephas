@@ -15,7 +15,7 @@ namespace Kephas.Core.Tests.Reflection
     using System.Linq;
     using System.Reflection;
     using System.Text;
-    using Kephas.Graphs;
+
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -137,10 +137,13 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void GetBaseConstructedGenericOf_class()
         {
-            var typeInfo = typeof(UnorientedGraph<string>).GetTypeInfo();
-            var constructedGenericType = typeInfo.GetBaseConstructedGenericOf(typeof(Graph<>).GetTypeInfo());
+            var typeInfo = typeof(TestDerivedGeneric<string>).GetTypeInfo();
+            var constructedGenericType = typeInfo.GetBaseConstructedGenericOf(typeof(TestGeneric<>).GetTypeInfo());
 
-            Assert.AreSame(constructedGenericType, typeof(Graph<string>).GetTypeInfo());
+            Assert.AreSame(constructedGenericType, typeof(TestGeneric<string>).GetTypeInfo());
         }
+
+        public class TestGeneric<T> { }
+        public class TestDerivedGeneric<T> : TestGeneric<T> { }
     }
 }

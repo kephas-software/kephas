@@ -7,6 +7,7 @@ $packages = @(
     "Kephas.Application.AspNetCore",
     "Kephas.Application.Console",
     "Kephas.CodeAnalysis",
+    "Kephas.Collections",
     "Kephas.Composition.Autofac",
     "Kephas.Composition.Mef",
     "Kephas.Configuration.Legacy",
