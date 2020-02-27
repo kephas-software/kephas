@@ -33,20 +33,20 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
     public class MessagingModelRegistry : IRuntimeModelRegistry
     {
         private readonly IAppRuntime appRuntime;
-        private readonly ITypeLoader typeLoader;
+        private readonly IAssemblyLoader assemblyLoader;
         private readonly TypeInfo markerInterface = typeof(IMessage).GetTypeInfo();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingModelRegistry"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="typeLoader">The type loader.</param>
-        public MessagingModelRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
+        /// <param name="assemblyLoader">The type loader.</param>
+        public MessagingModelRegistry(IAppRuntime appRuntime, IAssemblyLoader assemblyLoader)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
 
             this.appRuntime = appRuntime;
-            this.typeLoader = typeLoader;
+            this.assemblyLoader = assemblyLoader;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Kephas.Messaging.Model.Runtime.ModelRegistries
             var types = new HashSet<Type>();
             foreach (var assembly in assemblies)
             {
-                types.AddRange(this.typeLoader.GetLoadableExportedTypes(assembly).Where(
+                types.AddRange(this.assemblyLoader.GetExportedTypes(assembly).Where(
                     t =>
                         {
                             var ti = t.GetTypeInfo();

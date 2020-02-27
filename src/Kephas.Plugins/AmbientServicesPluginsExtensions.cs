@@ -61,7 +61,6 @@ namespace Kephas
 
             return ambientServices.WithAppRuntime(
                 new PluginsAppRuntime(
-                    ambientServices.AssemblyLoader,
                     (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
                     ambientServices.LogManager,
                     assemblyFilter,

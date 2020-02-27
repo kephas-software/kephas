@@ -70,8 +70,8 @@ namespace Kephas.Composition.Hosting
             this.AppRuntime = ambientServices.GetService<IAppRuntime>();
             this.AssertRequiredService(this.AppRuntime);
 
-            this.TypeLoader = ambientServices.GetService<ITypeLoader>();
-            this.AssertRequiredService(this.TypeLoader);
+            this.AssemblyLoader = ambientServices.GetService<IAssemblyLoader>();
+            this.AssertRequiredService(this.AssemblyLoader);
 
             this.Logger = this.LogManager.GetLogger(this.GetType());
 
@@ -89,12 +89,12 @@ namespace Kephas.Composition.Hosting
         public ILogManager LogManager { get; }
 
         /// <summary>
-        /// Gets the type loader.
+        /// Gets the assembly loader.
         /// </summary>
         /// <value>
-        /// The type loader.
+        /// The assembly loader.
         /// </value>
-        public ITypeLoader TypeLoader { get; }
+        protected IAssemblyLoader AssemblyLoader { get; }
 
         /// <summary>
         /// Gets the application runtime.
@@ -526,7 +526,7 @@ namespace Kephas.Composition.Hosting
         private IList<Type> GetCompositionParts(IEnumerable<Assembly> assemblies)
         {
             var parts = assemblies
-                .SelectMany(a => this.TypeLoader.GetLoadableExportedTypes(a))
+                .SelectMany(a => this.AssemblyLoader.GetExportedTypes(a))
                 .Where(ConventionsBuilderExtensions.IsPartCandidate)
                 .ToList();
             if (this.CompositionParts != null)

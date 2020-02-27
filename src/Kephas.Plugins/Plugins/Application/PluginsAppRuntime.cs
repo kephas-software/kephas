@@ -54,7 +54,6 @@ namespace Kephas.Plugins.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginsAppRuntime"/> class.
         /// </summary>
-        /// <param name="assemblyLoader">Optional. The assembly loader.</param>
         /// <param name="checkLicense">Optional. The check license delegate.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="assemblyFilter">Optional. A filter for loaded assemblies.</param>
@@ -71,7 +70,6 @@ namespace Kephas.Plugins.Application
         /// <param name="targetFramework">Optional. The target framework.</param>
         /// <param name="pluginRepository">Optional. The plugin repository.</param>
         public PluginsAppRuntime(
-            IAssemblyLoader? assemblyLoader = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
             ILogManager? logManager = null,
             Func<AssemblyName, bool>? assemblyFilter = null,
@@ -86,7 +84,7 @@ namespace Kephas.Plugins.Application
             string? pluginsFolder = null,
             string? targetFramework = null,
             IPluginRepository? pluginRepository = null)
-            : base(assemblyLoader, checkLicense, logManager, assemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
+            : base(checkLicense, logManager, assemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);
@@ -178,7 +176,7 @@ namespace Kephas.Plugins.Application
             if (this.EnablePlugins)
             {
                 var pluginsDirectories = this.GetPluginsInstallationLocations();
-                appDirectories.AddRange(pluginsDirectories.Where(this.CanLoadPlugin));
+                appDirectories.AddRange(pluginsDirectories.Where(this.CanLoadEmbeddedPlugin));
             }
 
             this.Logger.Info(Strings.PluginsAppRuntime_LoadingApplicationFolders_Message, appDirectories, this.EnablePlugins ? "enabled" : "disabled");
@@ -276,14 +274,14 @@ namespace Kephas.Plugins.Application
         }
 
         /// <summary>
-        /// Determine if the indicated plugin can be loaded. Load only licensed plugins in
+        /// Determine if the indicated embedded plugin can be loaded. Load only licensed embedded plugins in
         /// <see cref="PluginState.PendingInitialization"/> and <see cref="PluginState.Enabled"/> states.
         /// </summary>
         /// <param name="pluginFolder">Pathname of the plugin folder.</param>
         /// <returns>
         /// True if we can load plugin, false if not.
         /// </returns>
-        protected virtual bool CanLoadPlugin(string pluginFolder)
+        protected virtual bool CanLoadEmbeddedPlugin(string pluginFolder)
         {
             var pluginId = Path.GetFileName(pluginFolder);
             var pluginIdentity = new AppIdentity(pluginId);

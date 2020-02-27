@@ -79,6 +79,7 @@ namespace Kephas.Application
         protected const string AssemblyFileExtension = ".dll";
 
         private readonly ILogManager logManager;
+
         private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache =
             new ConcurrentDictionary<object, IEnumerable<Assembly>>();
 
@@ -94,7 +95,6 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
-        /// <param name="assemblyLoader">Optional. The assembly loader.</param>
         /// <param name="checkLicense">Optional. The check license delegate.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
@@ -110,7 +110,6 @@ namespace Kephas.Application
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         protected AppRuntimeBase(
-            IAssemblyLoader? assemblyLoader = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
             ILogManager? logManager = null,
             Func<AssemblyName, bool>? defaultAssemblyFilter = null,
@@ -124,7 +123,7 @@ namespace Kephas.Application
             : base(isThreadSafe: true)
         {
             this.logManager = logManager ?? new NullLogManager();
-            this.AssemblyLoader = assemblyLoader ?? new DefaultAssemblyLoader();
+            this.AssemblyLoader = new DefaultAssemblyLoader();
             this.CheckLicense = checkLicense ?? ((appid, ctx) => new LicenseCheckResult(appid, true));
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appFolder = appFolder;
@@ -150,14 +149,6 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the assembly loader.
-        /// </summary>
-        /// <value>
-        /// The assembly loader.
-        /// </value>
-        protected IAssemblyLoader AssemblyLoader { get; }
-
-        /// <summary>
         /// Gets the check license delegate.
         /// </summary>
         /// <value>
@@ -172,6 +163,14 @@ namespace Kephas.Application
         /// The assembly filter.
         /// </value>
         protected Func<AssemblyName, bool> AssemblyFilter { get; }
+
+        /// <summary>
+        /// Gets the assembly loader.
+        /// </summary>
+        /// <value>
+        /// The assembly loader.
+        /// </value>
+        protected IAssemblyLoader AssemblyLoader { get; }
 
         /// <summary>
         /// Gets the initialization monitor.
@@ -235,7 +234,7 @@ namespace Kephas.Application
         /// <returns>
         /// A path indicating the indicated application location.
         /// </returns>
-        public virtual string? GetAppLocation(AppIdentity appIdentity, bool throwOnNotFound = true)
+        public virtual string? GetAppLocation(AppIdentity? appIdentity, bool throwOnNotFound = true)
         {
             if (appIdentity == null || appIdentity.Equals(this.GetAppIdentity()))
             {
@@ -321,6 +320,30 @@ namespace Kephas.Application
         }
 
         /// <summary>
+        /// Attempts to load an assembly.
+        /// </summary>
+        /// <param name="assemblyName">The name of the assembly to be loaded.</param>
+        /// <returns>
+        /// The resolved assembly reference.
+        /// </returns>
+        public Assembly LoadAssemblyFromName(AssemblyName assemblyName)
+        {
+            return AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyName);
+        }
+
+        /// <summary>
+        /// Attempts to load an assembly.
+        /// </summary>
+        /// <param name="assemblyFilePath">The file path of the assembly to be loaded.</param>
+        /// <returns>
+        /// The resolved assembly reference.
+        /// </returns>
+        public Assembly LoadAssemblyFromPath(string assemblyFilePath)
+        {
+            return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFilePath);
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
         /// resources.
         /// </summary>
@@ -344,11 +367,7 @@ namespace Kephas.Application
 
             if (this.InitializationMonitor.IsCompleted)
             {
-#if NETSTANDARD2_1 || NETSTANDARD2_0
-                AssemblyLoadContext.Default.Resolving -= this.HandleAssemblyResolveRaw;
-#else
-                AppDomain.CurrentDomain.AssemblyResolve -= this.HandleAssemblyResolveRaw;
-#endif
+                AssemblyLoadContext.Default.Resolving -= this.HandleAssemblyResolving;
             }
 
             this.isDisposed = true;
@@ -377,14 +396,14 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Handles the assembly resolve event.
+        /// Handles the <see cref="AssemblyLoadContext.Resolving"/> event.
         /// </summary>
-        /// <param name="appAssemblies">The application assemblies.</param>
+        /// <param name="loadContext">Context for the load.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns>
         /// The resolved assembly -or- <c>null</c>.
         /// </returns>
-        protected virtual Assembly? HandleAssemblyResolve(IEnumerable<Assembly> appAssemblies, AssemblyName assemblyName)
+        protected virtual Assembly? HandleAssemblyResolving(AssemblyLoadContext loadContext, AssemblyName assemblyName)
         {
             var assemblyFullName = assemblyName.FullName;
             if (!this.IsCodeAssembly(assemblyFullName))
@@ -392,13 +411,15 @@ namespace Kephas.Application
                 return null;
             }
 
+            var appAssemblies = this.GetAppAssembliesRaw();
             var assembly = appAssemblies.FirstOrDefault(a => a.FullName == assemblyFullName);
             if (assembly == null)
             {
                 var name = assemblyName.Name;
                 var version = assemblyName.Version;
                 var publicKeyToken = assemblyName.GetPublicKeyToken();
-                assembly = appAssemblies.FirstOrDefault(a => this.IsAssemblyMatch(a.GetName(), name, version, publicKeyToken));
+                bool? match;
+                (assembly, match) = appAssemblies.Select(a => (assembly: a, match: this.IsAssemblyMatch(a.GetName(), name, version, publicKeyToken))).FirstOrDefault(m => m.match != false);
 
                 if (assembly == null)
                 {
@@ -414,10 +435,16 @@ namespace Kephas.Application
                         }
                     }
                 }
+                else if (match == null)
+                {
+                    // a match only by name is not accepted.
+                    this.Logger.Warn("The best match for assembly '{assembly}' is '{resolvedAssembly}', which is not acceptable.", assemblyFullName, assembly);
+                    assembly = null;
+                }
 
                 if (assembly != null)
                 {
-                    this.Logger.Warn("Assembly '{assembly}' was resolved using {resolvedAssembly}", assemblyFullName, assembly);
+                    this.Logger.Warn("Assembly '{assembly}' was resolved using '{resolvedAssembly}'.", assemblyFullName, assembly);
                 }
             }
 
@@ -432,11 +459,22 @@ namespace Kephas.Application
         /// <param name="version">The version.</param>
         /// <param name="publicKeyToken">The public key token.</param>
         /// <returns>
-        /// True if assembly match, false if not.
+        /// True if assembly match, false if not, <c>null</c> if the assembly matches the name but not the version or public key token.
         /// </returns>
-        protected virtual bool IsAssemblyMatch(AssemblyName assemblyName, string name, Version version, byte[] publicKeyToken)
+        protected virtual bool? IsAssemblyMatch(AssemblyName assemblyName, string name, Version version, byte[] publicKeyToken)
         {
-            return assemblyName.Name == name && EqualArray(assemblyName.GetPublicKeyToken(), publicKeyToken);
+            if (assemblyName.Name != name)
+            {
+                return false;
+            }
+
+            // TODO: what if the assembly matches the name, but not the version or the public key token?
+            if (EqualArray(assemblyName.GetPublicKeyToken(), publicKeyToken))
+            {
+                return true;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -531,7 +569,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual IEnumerable<Assembly> ComputeAppAssemblies(Func<AssemblyName, bool> assemblyFilter)
         {
-            var loadedAssemblies = this.AssemblyLoader.GetAssemblies().ToList();
+            var loadedAssemblies = this.GetAppAssembliesRaw().ToList();
 
             // when computing the assemblies, use the Name and not the FullName
             // because for some obscure reasons it is possible to have the same
@@ -567,11 +605,7 @@ namespace Kephas.Application
         /// <param name="context">Optional. An optional context for initialization.</param>
         protected virtual void InitializeCore(IContext? context = null)
         {
-#if NETSTANDARD2_1 || NETSTANDARD2_0
-            AssemblyLoadContext.Default.Resolving += this.HandleAssemblyResolveRaw;
-#else
-            AppDomain.CurrentDomain.AssemblyResolve += this.HandleAssemblyResolveRaw;
-#endif
+            AssemblyLoadContext.Default.Resolving += this.HandleAssemblyResolving;
         }
 
         private static bool EqualArray(byte[] s1, byte[] s2)
@@ -602,11 +636,17 @@ namespace Kephas.Application
             return true;
         }
 
+        private IEnumerable<Assembly> GetAppAssembliesRaw()
+        {
+            // TODO AssemblyLoadContext.Default.Assemblies;
+            return AppDomain.CurrentDomain.GetAssemblies();
+        }
+
         private Assembly? TryLoadAssembly(AssemblyName n)
         {
             try
             {
-                return this.AssemblyLoader.LoadAssemblyFromName(n);
+                return this.LoadAssemblyFromName(n);
             }
             catch (Exception ex)
             {
@@ -655,11 +695,5 @@ namespace Kephas.Application
                 ? new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultLicenseFolder)) }
                 : locations.Distinct().ToArray();
         }
-
-#if NETSTANDARD2_1 || NETSTANDARD2_0
-        private Assembly? HandleAssemblyResolveRaw(AssemblyLoadContext s, AssemblyName an) => this.HandleAssemblyResolve(AppDomain.CurrentDomain.GetAssemblies(), an);
-#else
-        private Assembly? HandleAssemblyResolveRaw(object s, ResolveEventArgs e) => this.HandleAssemblyResolve((s as AppDomain ?? AppDomain.CurrentDomain).GetAssemblies(), new AssemblyName(e.Name));
-#endif
     }
 }

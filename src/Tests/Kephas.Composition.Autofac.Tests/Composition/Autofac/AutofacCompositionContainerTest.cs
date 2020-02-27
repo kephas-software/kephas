@@ -78,8 +78,8 @@ namespace Kephas.Tests.Composition.Autofac
         {
             var ambientServices = new AmbientServices();
             var container = this.CreateContainerWithBuilder(ambientServices);
-            var containerExport = container.GetExport(typeof(ITypeLoader));
-            var ambientExport = container.GetExport(typeof(ITypeLoader));
+            var containerExport = container.GetExport(typeof(IAssemblyLoader));
+            var ambientExport = container.GetExport(typeof(IAssemblyLoader));
 
             Assert.IsNotNull(containerExport);
             Assert.AreSame(ambientExport, containerExport);

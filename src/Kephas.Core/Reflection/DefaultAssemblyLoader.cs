@@ -14,51 +14,79 @@ namespace Kephas.Reflection
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using System.Runtime.Loader;
 
-    using Kephas.Services;
+    using Kephas.Logging;
+    using Kephas.Resources;
 
     /// <summary>
     /// The default assembly loader.
     /// </summary>
-    [OverridePriority(Priority.Low)]
-    public class DefaultAssemblyLoader : IAssemblyLoader
+    public class DefaultAssemblyLoader : Loggable, IAssemblyLoader
     {
         /// <summary>
-        /// Gets the loaded assemblies.
+        /// Initializes a new instance of the <see cref="DefaultAssemblyLoader"/> class.
         /// </summary>
-        /// <returns>
-        /// The loaded assemblies.
-        /// </returns>
-        public IEnumerable<Assembly> GetAssemblies()
+        /// <param name="logManager">Optional. Manager for log.</param>
+        public DefaultAssemblyLoader(ILogManager? logManager = null)
+            : base(logManager)
         {
-            // TODO AssemblyLoadContext.Default.Assemblies;
-            return AppDomain.CurrentDomain.GetAssemblies();
         }
 
         /// <summary>
-        /// Attempts to load an assembly.
+        /// Gets the loadable exported types from the provided assembly.
         /// </summary>
-        /// <param name="assemblyName">The name of the assembly to be loaded.</param>
+        /// <param name="assembly">The assembly containing the types.</param>
         /// <returns>
-        /// The resolved assembly reference.
+        /// An enumeration of types.
         /// </returns>
-        public Assembly LoadAssemblyFromName(AssemblyName assemblyName)
+        public IEnumerable<Type> GetExportedTypes(Assembly assembly)
         {
-            return AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyName);
+            // for more information check also:
+            // http://stackoverflow.com/questions/7889228/how-to-prevent-reflectiontypeloadexception-when-calling-assembly-gettypes
+            try
+            {
+                return assembly.IsDynamic ? new Type[0] : assembly.ExportedTypes;
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                this.Logger.Error(e, Strings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
+                return e.Types.Where(t => t != null);
+            }
+            catch (TypeLoadException tle)
+            {
+                this.Logger.Error(tle, Strings.DefaultTypeLoader_GetLoadableExportedTypes_TypeLoadException, tle.TypeName, assembly);
+
+                return this.GetLoadableDefinedTypes(assembly);
+            }
+            catch (Exception e)
+            {
+                this.Logger.Error(e, Strings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
+
+                return this.GetLoadableDefinedTypes(assembly);
+            }
         }
 
         /// <summary>
-        /// Attempts to load an assembly.
+        /// Gets the loadable defined types in the assembly.
         /// </summary>
-        /// <param name="assemblyFilePath">The file path of the assembly to be loaded.</param>
+        /// <param name="assembly">The assembly to act on.</param>
         /// <returns>
-        /// The resolved assembly reference.
+        /// An enumeration of types.
         /// </returns>
-        public Assembly LoadAssemblyFromPath(string assemblyFilePath)
+        private IEnumerable<Type> GetLoadableDefinedTypes(Assembly assembly)
         {
-            return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFilePath);
+            try
+            {
+                return assembly.DefinedTypes.Where(t => t.IsPublic).Select(t => t.AsType());
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                this.Logger.Error(e, Strings.DefaultTypeLoader_GetLoadableDefinedTypes_ReflectionTypeLoadException, assembly);
+                return e.Types.Where(t => t != null);
+            }
         }
     }
 }

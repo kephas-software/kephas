@@ -42,7 +42,7 @@ namespace Kephas.Application
         /// <returns>
         /// A path indicating the indicated application location.
         /// </returns>
-        string GetAppLocation(AppIdentity? appIdentity, bool throwOnNotFound = true);
+        string? GetAppLocation(AppIdentity? appIdentity, bool throwOnNotFound = true);
 
         /// <summary>
         /// Gets the application bin directories from where application is loaded.
@@ -100,6 +100,24 @@ namespace Kephas.Application
         /// The host name.
         /// </returns>
         string GetHostName();
+
+        /// <summary>
+        /// Attempts to load an assembly from its given assembly name.
+        /// </summary>
+        /// <param name="assemblyName">The name of the assembly to be loaded.</param>
+        /// <returns>
+        /// The resolved assembly reference.
+        /// </returns>
+        Assembly LoadAssemblyFromName(AssemblyName assemblyName);
+
+        /// <summary>
+        /// Attempts to load an assembly.
+        /// </summary>
+        /// <param name="assemblyFilePath">The file path of the assembly to be loaded.</param>
+        /// <returns>
+        /// The resolved assembly reference.
+        /// </returns>
+        Assembly LoadAssemblyFromPath(string assemblyFilePath);
     }
 
     /// <summary>

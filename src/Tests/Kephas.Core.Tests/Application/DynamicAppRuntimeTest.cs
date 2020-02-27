@@ -23,7 +23,7 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void GetAppAssemblies_filter()
         {
-            var appEnv = new DynamicAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
+            var appEnv = new DynamicAppRuntime();
             ((IInitializable)appEnv).Initialize();
             var assemblies = appEnv.GetAppAssemblies(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
             var assemblyList = assemblies.ToList();
@@ -35,7 +35,7 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void GetAppAssemblies_no_filter()
         {
-            var appEnv = new DynamicAppRuntime(assemblyLoader: new DefaultAssemblyLoader());
+            var appEnv = new DynamicAppRuntime();
             ((IInitializable)appEnv).Initialize();
             var assemblies = appEnv.GetAppAssemblies();
             var assemblyList = assemblies.ToList();

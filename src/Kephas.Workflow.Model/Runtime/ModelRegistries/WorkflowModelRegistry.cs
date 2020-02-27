@@ -29,27 +29,21 @@ namespace Kephas.Workflow.Model.Runtime.ModelRegistries
     /// </summary>
     public class WorkflowModelRegistry : IRuntimeModelRegistry
     {
-        /// <summary>
-        /// The application runtime.
-        /// </summary>
         private readonly IAppRuntime appRuntime;
-
-        /// <summary>
-        /// The type loader.
-        /// </summary>
-        private readonly ITypeLoader typeLoader;
+        private readonly IAssemblyLoader assemblyLoader;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkflowModelRegistry"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="typeLoader">The type loader.</param>
-        public WorkflowModelRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
+        /// <param name="assemblyLoader">The type loader.</param>
+        public WorkflowModelRegistry(IAppRuntime appRuntime, IAssemblyLoader assemblyLoader)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
+            Requires.NotNull(assemblyLoader, nameof(assemblyLoader));
 
             this.appRuntime = appRuntime;
-            this.typeLoader = typeLoader;
+            this.assemblyLoader = assemblyLoader;
         }
 
         /// <summary>
@@ -67,7 +61,7 @@ namespace Kephas.Workflow.Model.Runtime.ModelRegistries
             var markerInterface = typeof(IActivity).GetTypeInfo();
             foreach (var assembly in assemblies)
             {
-                types.AddRange(this.typeLoader.GetLoadableExportedTypes(assembly).Where(
+                types.AddRange(this.assemblyLoader.GetExportedTypes(assembly).Where(
                     t =>
                         {
                             var ti = t.GetTypeInfo();

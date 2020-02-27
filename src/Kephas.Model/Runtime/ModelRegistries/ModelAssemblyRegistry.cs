@@ -39,7 +39,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// <summary>
         /// The type loader.
         /// </summary>
-        private readonly ITypeLoader typeLoader;
+        private readonly IAssemblyLoader assemblyLoader;
 
         /// <summary>
         /// The model assembly attribute provider.
@@ -50,16 +50,16 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// Initializes a new instance of the <see cref="ModelAssemblyRegistry"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="typeLoader">The type loader.</param>
+        /// <param name="assemblyLoader">The type loader.</param>
         /// <param name="modelAssemblyAttributeProvider">The model assembly attribute provider.</param>
-        public ModelAssemblyRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader, IModelAssemblyAttributeProvider modelAssemblyAttributeProvider)
+        public ModelAssemblyRegistry(IAppRuntime appRuntime, IAssemblyLoader assemblyLoader, IModelAssemblyAttributeProvider modelAssemblyAttributeProvider)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
-            Requires.NotNull(typeLoader, nameof(typeLoader));
+            Requires.NotNull(assemblyLoader, nameof(assemblyLoader));
             Requires.NotNull(modelAssemblyAttributeProvider, nameof(modelAssemblyAttributeProvider));
 
             this.appRuntime = appRuntime;
-            this.typeLoader = typeLoader;
+            this.assemblyLoader = assemblyLoader;
             this.modelAssemblyAttributeProvider = modelAssemblyAttributeProvider;
         }
 
@@ -87,7 +87,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
                 var assembly = kv.Key;
 
                 var attrs = kv.Value;
-                var assemblyTypes = this.typeLoader.GetLoadableExportedTypes(assembly).ToList();
+                var assemblyTypes = this.assemblyLoader.GetExportedTypes(assembly).ToList();
                 foreach (var attr in attrs)
                 {
                     var filterSet = false;

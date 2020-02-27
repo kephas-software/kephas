@@ -32,18 +32,18 @@ namespace Kephas.Application.Console
     public class DefaultCommandRegistry : ICommandRegistry
     {
         private readonly IAppRuntime appRuntime;
-        private readonly ITypeLoader typeLoader;
+        private readonly IAssemblyLoader assemblyLoader;
         private IList<ITypeInfo>? commandTypes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultCommandRegistry"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="typeLoader">The type loader.</param>
-        public DefaultCommandRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
+        /// <param name="assemblyLoader">The assembly loader.</param>
+        public DefaultCommandRegistry(IAppRuntime appRuntime, IAssemblyLoader assemblyLoader)
         {
             this.appRuntime = appRuntime;
-            this.typeLoader = typeLoader;
+            this.assemblyLoader = assemblyLoader;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Kephas.Application.Console
         public IEnumerable<ITypeInfo> GetCommandTypes(string? commandPattern = null)
         {
             this.commandTypes ??= this.appRuntime.GetAppAssemblies()
-                                            .SelectMany(a => this.typeLoader.GetLoadableExportedTypes(a).Where(this.IsMessageType))
+                                            .SelectMany(a => this.assemblyLoader.GetExportedTypes(a).Where(this.IsMessageType))
                                             .Select(t => (ITypeInfo)t.AsRuntimeTypeInfo())
                                             .ToList()
                                             .AsReadOnly();

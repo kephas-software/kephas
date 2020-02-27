@@ -60,7 +60,6 @@ namespace Kephas.Application
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var appRuntime = new DynamicAppRuntime(
-                ambientServices.AssemblyLoader,
                 (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
                 ambientServices.LogManager,
                 assemblyFilter,
@@ -108,7 +107,6 @@ namespace Kephas.Application
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var appRuntime = new StaticAppRuntime(
-                ambientServices.AssemblyLoader,
                 (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
                 ambientServices.LogManager,
                 assemblyFilter,

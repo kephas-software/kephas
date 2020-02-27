@@ -45,7 +45,6 @@ namespace Kephas.Application
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public DynamicAppRuntime(
-            IAssemblyLoader? assemblyLoader = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
             ILogManager? logManager = null,
             Func<AssemblyName, bool>? defaultAssemblyFilter = null,
@@ -56,7 +55,7 @@ namespace Kephas.Application
             string? appInstanceId = null,
             string? appVersion = null,
             IExpando? appArgs = null)
-            : base(assemblyLoader, checkLicense, logManager, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
+            : base(checkLicense, logManager, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
         {
         }
 
@@ -91,7 +90,7 @@ namespace Kephas.Application
                                             .Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()))
                                             .Where(f => assemblyFilter(this.GetAssemblyNameFromAssemblyFileName(f)));
                 assemblies.AddRange(assemblyFilesToLoad
-                                        .Select(f => this.AssemblyLoader.LoadAssemblyFromPath(Path.Combine(directory, f)))
+                                        .Select(f => this.LoadAssemblyFromPath(Path.Combine(directory, f)))
                                         .Where(a => assemblyFilter(a.GetName())));
             }
         }

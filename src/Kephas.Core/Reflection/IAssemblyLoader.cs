@@ -12,6 +12,7 @@
 
 namespace Kephas.Reflection
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
@@ -21,29 +22,12 @@ namespace Kephas.Reflection
     public interface IAssemblyLoader
     {
         /// <summary>
-        /// Attempts to load an assembly from its given assembly name.
+        /// Gets the loadable exported types from the provided assembly.
         /// </summary>
-        /// <param name="assemblyName">The name of the assembly to be loaded.</param>
+        /// <param name="assembly">The assembly containing the types.</param>
         /// <returns>
-        /// The resolved assembly reference.
+        /// An enumeration of types.
         /// </returns>
-        Assembly LoadAssemblyFromName(AssemblyName assemblyName);
-
-        /// <summary>
-        /// Attempts to load an assembly.
-        /// </summary>
-        /// <param name="assemblyFilePath">The file path of the assembly to be loaded.</param>
-        /// <returns>
-        /// The resolved assembly reference.
-        /// </returns>
-        Assembly LoadAssemblyFromPath(string assemblyFilePath);
-
-        /// <summary>
-        /// Gets the loaded assemblies.
-        /// </summary>
-        /// <returns>
-        /// The loaded assemblies.
-        /// </returns>
-        IEnumerable<Assembly> GetAssemblies();
+        IEnumerable<Type> GetExportedTypes(Assembly assembly);
     }
 }
