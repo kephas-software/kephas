@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Conversion
+#nullable enable
+
+namespace Kephas.CodeAnalysis.Conversion
 {
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Reflection;
 
     /// <summary>

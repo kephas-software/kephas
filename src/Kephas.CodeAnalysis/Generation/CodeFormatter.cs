@@ -8,7 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Generation
+#nullable enable
+
+namespace Kephas.CodeAnalysis.Generation
 {
     /// <summary>
     /// A code formatter.

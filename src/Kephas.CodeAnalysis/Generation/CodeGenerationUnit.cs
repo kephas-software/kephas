@@ -8,7 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Generation
+#nullable enable
+
+namespace Kephas.CodeAnalysis.Generation
 {
     using System.Text;
 
@@ -21,7 +23,7 @@ namespace Kephas.Generation
         /// Initializes a new instance of the <see cref="CodeGenerationUnit"/> class.
         /// </summary>
         /// <param name="text">The text builder (optional).</param>
-        public CodeGenerationUnit(StringBuilder text = null)
+        public CodeGenerationUnit(StringBuilder? text = null)
         {
             this.Text = text ?? new StringBuilder();
         }
@@ -32,7 +34,7 @@ namespace Kephas.Generation
         /// <value>
         /// The name of the output.
         /// </value>
-        public string OutputName { get; set; }
+        public string? OutputName { get; set; }
 
         /// <summary>
         /// Gets or sets the full pathname of the output file.
@@ -40,7 +42,7 @@ namespace Kephas.Generation
         /// <value>
         /// The full pathname of the output file.
         /// </value>
-        public string OutputPath { get; set; }
+        public string? OutputPath { get; set; }
 
         /// <summary>
         /// Gets the text builder.

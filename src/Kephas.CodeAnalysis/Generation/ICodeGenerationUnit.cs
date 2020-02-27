@@ -8,7 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Generation
+#nullable enable
+
+namespace Kephas.CodeAnalysis.Generation
 {
     using System.Text;
 
@@ -23,7 +25,7 @@ namespace Kephas.Generation
         /// <value>
         /// The name of the output.
         /// </value>
-        string OutputName { get; set; }
+        string? OutputName { get; set; }
 
         /// <summary>
         /// Gets or sets the full pathname of the output file.
@@ -31,7 +33,7 @@ namespace Kephas.Generation
         /// <value>
         /// The full pathname of the output file.
         /// </value>
-        string OutputPath { get; set; }
+        string? OutputPath { get; set; }
 
         /// <summary>
         /// Gets the text builder.

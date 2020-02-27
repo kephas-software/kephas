@@ -8,7 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Generation
+#nullable enable
+
+namespace Kephas.CodeAnalysis.Generation
 {
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
@@ -28,7 +30,7 @@ namespace Kephas.Generation
         public CodeGenerationContext(
             ICompositionContext compositionContext,
             ICodeGenerator codeGenerator,
-            ICodeFormatter codeFormatter = null)
+            ICodeFormatter? codeFormatter = null)
             : base(compositionContext)
         {
             Requires.NotNull(codeGenerator, nameof(codeGenerator));

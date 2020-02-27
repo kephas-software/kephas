@@ -192,7 +192,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Plugins.Endpoints", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Packaging", "Kephas.Packaging\Kephas.Packaging.csproj", "{2EF2476A-98CB-408E-90B4-22C8A747454D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.Endpoints", "Kephas.Core.Endpoints\Kephas.Core.Endpoints.csproj", "{DB9CE923-A171-4087-A475-83351E20AF05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core.Endpoints", "Kephas.Core.Endpoints\Kephas.Core.Endpoints.csproj", "{DB9CE923-A171-4087-A475-83351E20AF05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Collections", "Kephas.Collections\Kephas.Collections.csproj", "{A02D0A02-A204-46A8-BD0E-7432390557EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -528,6 +530,10 @@ Global
 		{DB9CE923-A171-4087-A475-83351E20AF05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB9CE923-A171-4087-A475-83351E20AF05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB9CE923-A171-4087-A475-83351E20AF05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A02D0A02-A204-46A8-BD0E-7432390557EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A02D0A02-A204-46A8-BD0E-7432390557EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A02D0A02-A204-46A8-BD0E-7432390557EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A02D0A02-A204-46A8-BD0E-7432390557EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

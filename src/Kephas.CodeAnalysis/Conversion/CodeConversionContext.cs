@@ -8,7 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Conversion
+#nullable enable
+
+namespace Kephas.CodeAnalysis.Conversion
 {
     using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.1;netstandard2.0;net462</TargetFrameworks>
@@ -11,14 +11,14 @@
         <Product>Kephas Framework</Product>
         <AssemblyVersion>7.5.0.0</AssemblyVersion>
         <FileVersion>7.5.0.0</FileVersion>
-        <Description>Provides a common infrastructure for code analysis, conversion, and generation.</Description>
+        <Description>Provides extensions to collection classes, like PartialOrderedSet and Graph.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-2020</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageTags>kephas code analysis</PackageTags>
+        <PackageTags>kephas collections</PackageTags>
         <PackageReleaseNotes>
             Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
@@ -27,6 +27,7 @@
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
 
+        <RootNamespace>Kephas</RootNamespace>
         <NeutralLanguage>en</NeutralLanguage>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
         <DefineConstants>KEPHAS</DefineConstants>
@@ -49,11 +50,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="stylecop.json" />
+        <None Remove="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="stylecop.json" />
+        <AdditionalFiles Include="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
@@ -66,8 +67,8 @@
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 

@@ -10,7 +10,7 @@
 
 namespace Kephas.CodeAnalysis.Tests.Generation
 {
-    using Kephas.Generation;
+    using Kephas.CodeAnalysis.Generation;
 
     using NUnit.Framework;
 

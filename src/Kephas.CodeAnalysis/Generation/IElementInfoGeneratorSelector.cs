@@ -1,23 +1,25 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IElementInfoGeneratorProvider.cs" company="Kephas Software SRL">
+// <copyright file="IElementInfoGeneratorSelector.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IElementInfoGeneratorProvider interface.
+//   Declares the IElementInfoGeneratorSelector interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Generation
+#nullable enable
+
+namespace Kephas.CodeAnalysis.Generation
 {
     using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
-    /// Interface for element information generator provider.
+    /// Service for selecting the appropriate <see cref="IElementInfoGenerator"/>.
     /// </summary>
     [SingletonAppServiceContract]
-    public interface IElementInfoGeneratorProvider
+    public interface IElementInfoGeneratorSelector
     {
         /// <summary>
         /// Gets the <see cref="IElementInfoGenerator"/> for the provided <see cref="IElementInfo"/>.

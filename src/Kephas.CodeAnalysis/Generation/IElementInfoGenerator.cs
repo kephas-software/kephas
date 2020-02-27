@@ -8,7 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Generation
+#nullable enable
+
+namespace Kephas.CodeAnalysis.Generation
 {
     using System.Text;
     using System.Threading;
@@ -20,7 +22,7 @@ namespace Kephas.Generation
     /// <summary>
     /// Interface for element information generator.
     /// </summary>
-    [SingletonAppServiceContract]
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IElementInfoGenerator
     {
         /// <summary>
@@ -39,7 +41,7 @@ namespace Kephas.Generation
         /// <param name="text">The text builder.</param>
         /// <param name="elementInfo">The <see cref="IElementInfo"/> to be generated.</param>
         /// <param name="codeGenerationContext">Context for the code generation.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of an enumeration of <see cref="ICodeGenerationUnit"/>s.
         /// </returns>
