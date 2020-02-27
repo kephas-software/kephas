@@ -33,8 +33,8 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Mail.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Mail.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Mail.xml" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\net461\Kephas.Mail.dll" target="lib\net461" />
-        <file src="bin\$configuration$\net461\Kephas.Mail.pdb" target="lib\net461" />
-        <file src="bin\$configuration$\net461\Kephas.Mail.xml" target="lib\net461" />
+        <file src="bin\$configuration$\net462\Kephas.Mail.dll" target="lib\net462" />
+        <file src="bin\$configuration$\net462\Kephas.Mail.pdb" target="lib\net462" />
+        <file src="bin\$configuration$\net462\Kephas.Mail.xml" target="lib\net462" />
     </files>
 </package>

@@ -13,11 +13,9 @@
 namespace Kephas.Reflection
 {
     using System;
-    using System.IO;
+    using System.Collections.Generic;
     using System.Reflection;
-#if NETSTANDARD2_1 || NETSTANDARD2_0
     using System.Runtime.Loader;
-#endif
 
     using Kephas.Services;
 
@@ -28,15 +26,15 @@ namespace Kephas.Reflection
     public class DefaultAssemblyLoader : IAssemblyLoader
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultAssemblyLoader"/> class.
+        /// Gets the loaded assemblies.
         /// </summary>
-        public DefaultAssemblyLoader()
+        /// <returns>
+        /// The loaded assemblies.
+        /// </returns>
+        public IEnumerable<Assembly> GetAssemblies()
         {
-#if NETSTANDARD2_1 || NETSTANDARD2_0
-            AssemblyLoadContext.Default.Resolving += this.TryResolveAssembly;
-#else
-            AppDomain.CurrentDomain.AssemblyResolve += this.TryResolveAssembly;
-#endif
+            // TODO AssemblyLoadContext.Default.Assemblies;
+            return AppDomain.CurrentDomain.GetAssemblies();
         }
 
         /// <summary>
@@ -46,9 +44,9 @@ namespace Kephas.Reflection
         /// <returns>
         /// The resolved assembly reference.
         /// </returns>
-        public Assembly LoadAssembly(AssemblyName assemblyName)
+        public Assembly LoadAssemblyFromName(AssemblyName assemblyName)
         {
-            return Assembly.Load(assemblyName);
+            return AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyName);
         }
 
         /// <summary>
@@ -60,52 +58,7 @@ namespace Kephas.Reflection
         /// </returns>
         public Assembly LoadAssemblyFromPath(string assemblyFilePath)
         {
-#if NETSTANDARD2_1 || NETSTANDARD2_0
             return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFilePath);
-#else
-            return Assembly.LoadFile(assemblyFilePath);
-#endif
         }
-
-#if NETSTANDARD2_1 || NETSTANDARD2_0
-        /// <summary>
-        /// Tries to resolve the assembly.
-        /// </summary>
-        /// <param name="assemblyLoadContext">Context for the assembly load.</param>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <returns>
-        /// The resolved assembly or <c>null</c>.
-        /// </returns>
-        protected virtual Assembly? TryResolveAssembly(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
-        {
-            return null;
-        }
-#else
-        /// <summary>
-        /// Tries to resolve the assembly.
-        /// </summary>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="args">Arguments for resolving the assembly.</param>
-        /// <returns>
-        /// The resolved assembly or <c>null</c>.
-        /// </returns>
-        protected virtual Assembly? TryResolveAssembly(object sender, ResolveEventArgs args)
-        {
-            var parentLocation = args.RequestingAssembly?.GetLocation();
-            if (parentLocation == null)
-            {
-                return null;
-            }
-
-            var fileName = new AssemblyName(args.Name).Name + ".dll";
-            var filePath = Path.Combine(parentLocation, fileName);
-            if (!File.Exists(filePath))
-            {
-                return null;
-            }
-
-            return this.LoadAssemblyFromPath(filePath);
-        }
-#endif
     }
 }

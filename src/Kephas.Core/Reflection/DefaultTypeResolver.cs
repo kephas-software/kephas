@@ -89,15 +89,15 @@ namespace Kephas.Reflection
                 var qualifiedName = new QualifiedFullName(typeName);
                 if (qualifiedName.AssemblyName == null)
                 {
-                    type = this.GetAllAssemblies()
+                    type = this.assemblyLoader.GetAssemblies()
                         .Select(asm => asm.GetType(qualifiedName.TypeName, throwOnError: false))
                         .FirstOrDefault(t => t != null);
                     return type;
                 }
 
                 var assemblyName = qualifiedName.AssemblyName.Name;
-                var assembly = this.GetAllAssemblies().FirstOrDefault(a => a.GetName().Name == assemblyName)
-                               ?? this.assemblyLoader.LoadAssembly(qualifiedName.AssemblyName);
+                var assembly = this.assemblyLoader.GetAssemblies().FirstOrDefault(a => a.GetName().Name == assemblyName)
+                               ?? this.assemblyLoader.LoadAssemblyFromName(qualifiedName.AssemblyName);
 
                 type = assembly?.GetType(qualifiedName.TypeName, throwOnError: false);
                 return type;
@@ -107,17 +107,6 @@ namespace Kephas.Reflection
                 this.Logger.Warn(ex, Strings.DefaultTypeResolver_ResolveTypeCore_Exception, typeName);
                 return null;
             }
-        }
-
-        /// <summary>
-        /// Gets all application assemblies.
-        /// </summary>
-        /// <returns>
-        /// An enumeration of assemblies.
-        /// </returns>
-        protected virtual IEnumerable<Assembly> GetAllAssemblies()
-        {
-            return AppDomain.CurrentDomain.GetAssemblies();
         }
     }
 }

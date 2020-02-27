@@ -33,8 +33,8 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Scripting.xml" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\net461\Kephas.Scripting.dll" target="lib\net461" />
-        <file src="bin\$configuration$\net461\Kephas.Scripting.pdb" target="lib\net461" />
-        <file src="bin\$configuration$\net461\Kephas.Scripting.xml" target="lib\net461" />
+        <file src="bin\$configuration$\net462\Kephas.Scripting.dll" target="lib\net462" />
+        <file src="bin\$configuration$\net462\Kephas.Scripting.pdb" target="lib\net462" />
+        <file src="bin\$configuration$\net462\Kephas.Scripting.xml" target="lib\net462" />
     </files>
 </package>

@@ -20,6 +20,7 @@ namespace Kephas.Application
     using System.Net;
     using System.Net.Sockets;
     using System.Reflection;
+    using System.Runtime.Loader;
     using System.Runtime.Versioning;
 
     using Kephas.Collections;
@@ -343,7 +344,11 @@ namespace Kephas.Application
 
             if (this.InitializationMonitor.IsCompleted)
             {
+#if NETSTANDARD2_1 || NETSTANDARD2_0
+                AssemblyLoadContext.Default.Resolving -= this.HandleAssemblyResolveRaw;
+#else
                 AppDomain.CurrentDomain.AssemblyResolve -= this.HandleAssemblyResolveRaw;
+#endif
             }
 
             this.isDisposed = true;
@@ -374,24 +379,22 @@ namespace Kephas.Application
         /// <summary>
         /// Handles the assembly resolve event.
         /// </summary>
-        /// <param name="appDomain">The application domain.</param>
-        /// <param name="args">Resolve event information.</param>
+        /// <param name="appAssemblies">The application assemblies.</param>
+        /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns>
         /// The resolved assembly -or- <c>null</c>.
         /// </returns>
-        protected virtual Assembly? HandleAssemblyResolve(AppDomain appDomain, ResolveEventArgs args)
+        protected virtual Assembly? HandleAssemblyResolve(IEnumerable<Assembly> appAssemblies, AssemblyName assemblyName)
         {
-            var assemblyFullName = args.Name;
+            var assemblyFullName = assemblyName.FullName;
             if (!this.IsCodeAssembly(assemblyFullName))
             {
                 return null;
             }
 
-            var appAssemblies = appDomain.GetAssemblies();
             var assembly = appAssemblies.FirstOrDefault(a => a.FullName == assemblyFullName);
             if (assembly == null)
             {
-                var assemblyName = new AssemblyName(args.Name);
                 var name = assemblyName.Name;
                 var version = assemblyName.Version;
                 var publicKeyToken = assemblyName.GetPublicKeyToken();
@@ -414,7 +417,7 @@ namespace Kephas.Application
 
                 if (assembly != null)
                 {
-                    this.Logger.Warn("Assembly '{assembly}' requested by '{requestingAssembly}' was resolved using {resolvedAssembly}", assemblyFullName, args.RequestingAssembly, assembly);
+                    this.Logger.Warn("Assembly '{assembly}' was resolved using {resolvedAssembly}", assemblyFullName, assembly);
                 }
             }
 
@@ -508,17 +511,6 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the loaded assemblies.
-        /// </summary>
-        /// <returns>
-        /// The loaded assemblies.
-        /// </returns>
-        protected virtual IList<Assembly> GetLoadedAssemblies()
-        {
-            return AppDomain.CurrentDomain.GetAssemblies().ToList();
-        }
-
-        /// <summary>
         /// Gets the referenced assemblies.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
@@ -539,7 +531,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual IEnumerable<Assembly> ComputeAppAssemblies(Func<AssemblyName, bool> assemblyFilter)
         {
-            var loadedAssemblies = this.GetLoadedAssemblies();
+            var loadedAssemblies = this.AssemblyLoader.GetAssemblies().ToList();
 
             // when computing the assemblies, use the Name and not the FullName
             // because for some obscure reasons it is possible to have the same
@@ -575,7 +567,11 @@ namespace Kephas.Application
         /// <param name="context">Optional. An optional context for initialization.</param>
         protected virtual void InitializeCore(IContext? context = null)
         {
+#if NETSTANDARD2_1 || NETSTANDARD2_0
+            AssemblyLoadContext.Default.Resolving += this.HandleAssemblyResolveRaw;
+#else
             AppDomain.CurrentDomain.AssemblyResolve += this.HandleAssemblyResolveRaw;
+#endif
         }
 
         private static bool EqualArray(byte[] s1, byte[] s2)
@@ -610,7 +606,7 @@ namespace Kephas.Application
         {
             try
             {
-                return this.AssemblyLoader.LoadAssembly(n);
+                return this.AssemblyLoader.LoadAssemblyFromName(n);
             }
             catch (Exception ex)
             {
@@ -660,6 +656,10 @@ namespace Kephas.Application
                 : locations.Distinct().ToArray();
         }
 
-        private Assembly? HandleAssemblyResolveRaw(object s, ResolveEventArgs e) => this.HandleAssemblyResolve(s as AppDomain ?? AppDomain.CurrentDomain, e);
+#if NETSTANDARD2_1 || NETSTANDARD2_0
+        private Assembly? HandleAssemblyResolveRaw(AssemblyLoadContext s, AssemblyName an) => this.HandleAssemblyResolve(AppDomain.CurrentDomain.GetAssemblies(), an);
+#else
+        private Assembly? HandleAssemblyResolveRaw(object s, ResolveEventArgs e) => this.HandleAssemblyResolve((s as AppDomain ?? AppDomain.CurrentDomain).GetAssemblies(), new AssemblyName(e.Name));
+#endif
     }
 }

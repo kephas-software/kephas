@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <Choose>
-        <When Condition="'$(TargetFramework)'=='net461'">
+        <When Condition="'$(TargetFramework)'=='net462'">
         </When>
         <Otherwise>
             <ItemGroup>
