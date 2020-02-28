@@ -25,7 +25,7 @@ namespace Kephas.Runtime
     /// </summary>
     public sealed class RuntimeAssemblyInfo : Expando, IRuntimeAssemblyInfo
     {
-        private static readonly IAssemblyLoader AssemblyLoader = new DefaultAssemblyLoader(null);
+        private static readonly ITypeLoader TypeLoader = new DefaultTypeLoader(null);
         private static readonly ConcurrentDictionary<Assembly, IRuntimeAssemblyInfo> RuntimeAssemblyInfosCache = new ConcurrentDictionary<Assembly, IRuntimeAssemblyInfo>();
         private static Func<Assembly, IRuntimeAssemblyInfo> createRuntimeAssemblyInfoFunc = a => new RuntimeAssemblyInfo(a);
 
@@ -156,7 +156,7 @@ namespace Kephas.Runtime
         /// </returns>
         private static IList<ITypeInfo> CreateTypeInfos(Assembly assembly)
         {
-            var types = AssemblyLoader.GetExportedTypes(assembly);
+            var types = TypeLoader.GetExportedTypes(assembly);
             return types.Select(t => (ITypeInfo)RuntimeTypeInfo.GetRuntimeType(t)).ToList();
         }
 

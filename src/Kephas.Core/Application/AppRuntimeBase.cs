@@ -123,7 +123,7 @@ namespace Kephas.Application
             : base(isThreadSafe: true)
         {
             this.logManager = logManager ?? new NullLogManager();
-            this.AssemblyLoader = new DefaultAssemblyLoader();
+            this.TypeLoader = new DefaultTypeLoader();
             this.CheckLicense = checkLicense ?? ((appid, ctx) => new LicenseCheckResult(appid, true));
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appFolder = appFolder;
@@ -165,12 +165,12 @@ namespace Kephas.Application
         protected Func<AssemblyName, bool> AssemblyFilter { get; }
 
         /// <summary>
-        /// Gets the assembly loader.
+        /// Gets the type loader.
         /// </summary>
         /// <value>
-        /// The assembly loader.
+        /// The type loader.
         /// </value>
-        protected IAssemblyLoader AssemblyLoader { get; }
+        protected ITypeLoader TypeLoader { get; }
 
         /// <summary>
         /// Gets the initialization monitor.

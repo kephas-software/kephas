@@ -23,7 +23,6 @@ namespace Kephas.Model.Runtime.ModelRegistries
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Reflection;
     using Kephas.Reflection;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Registry reading the <see cref="ModelAssemblyAttribute"/> and providing the types
@@ -31,35 +30,24 @@ namespace Kephas.Model.Runtime.ModelRegistries
     /// </summary>
     public class ModelAssemblyRegistry : IRuntimeModelRegistry
     {
-        /// <summary>
-        /// The application runtime.
-        /// </summary>
         private readonly IAppRuntime appRuntime;
-
-        /// <summary>
-        /// The type loader.
-        /// </summary>
-        private readonly IAssemblyLoader assemblyLoader;
-
-        /// <summary>
-        /// The model assembly attribute provider.
-        /// </summary>
+        private readonly ITypeLoader typeLoader;
         private readonly IModelAssemblyAttributeProvider modelAssemblyAttributeProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelAssemblyRegistry"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="assemblyLoader">The type loader.</param>
+        /// <param name="typeLoader">The type loader.</param>
         /// <param name="modelAssemblyAttributeProvider">The model assembly attribute provider.</param>
-        public ModelAssemblyRegistry(IAppRuntime appRuntime, IAssemblyLoader assemblyLoader, IModelAssemblyAttributeProvider modelAssemblyAttributeProvider)
+        public ModelAssemblyRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader, IModelAssemblyAttributeProvider modelAssemblyAttributeProvider)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
-            Requires.NotNull(assemblyLoader, nameof(assemblyLoader));
+            Requires.NotNull(typeLoader, nameof(typeLoader));
             Requires.NotNull(modelAssemblyAttributeProvider, nameof(modelAssemblyAttributeProvider));
 
             this.appRuntime = appRuntime;
-            this.assemblyLoader = assemblyLoader;
+            this.typeLoader = typeLoader;
             this.modelAssemblyAttributeProvider = modelAssemblyAttributeProvider;
         }
 
@@ -87,7 +75,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
                 var assembly = kv.Key;
 
                 var attrs = kv.Value;
-                var assemblyTypes = this.assemblyLoader.GetExportedTypes(assembly).ToList();
+                var assemblyTypes = this.typeLoader.GetExportedTypes(assembly).ToList();
                 foreach (var attr in attrs)
                 {
                     var filterSet = false;

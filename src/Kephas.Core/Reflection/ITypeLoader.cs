@@ -19,7 +19,7 @@ namespace Kephas.Reflection
     /// <summary>
     /// Interface for loading assemblies.
     /// </summary>
-    public interface IAssemblyLoader
+    public interface ITypeLoader
     {
         /// <summary>
         /// Gets the loadable exported types from the provided assembly.

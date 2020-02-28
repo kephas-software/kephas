@@ -17,6 +17,7 @@ namespace Kephas.Reflection
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Resources;
@@ -28,7 +29,7 @@ namespace Kephas.Reflection
     [OverridePriority(Priority.Low)]
     public class DefaultTypeResolver : Loggable, ITypeResolver
     {
-        private readonly IAppRuntime appRuntime;
+        private readonly Func<IEnumerable<Assembly>> getAppAssemblies;
         private readonly ConcurrentDictionary<string, Type> typeCache = new ConcurrentDictionary<string, Type>();
 
         /// <summary>
@@ -36,12 +37,26 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="logManager">Optional. The log manager.</param>
+        [CompositionConstructor]
         public DefaultTypeResolver(IAppRuntime appRuntime, ILogManager logManager = null)
             : base(logManager)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
 
-            this.appRuntime = appRuntime;
+            this.getAppAssemblies = () => appRuntime.GetAppAssemblies();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultTypeResolver"/> class.
+        /// </summary>
+        /// <param name="getAppAssemblies">The get application assemblies.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        public DefaultTypeResolver(Func<IEnumerable<Assembly>> getAppAssemblies, ILogManager logManager = null)
+            : base(logManager)
+        {
+            Requires.NotNull(getAppAssemblies, nameof(getAppAssemblies));
+
+            this.getAppAssemblies = getAppAssemblies;
         }
 
         /// <summary>
@@ -83,16 +98,15 @@ namespace Kephas.Reflection
                 var qualifiedName = new QualifiedFullName(typeName);
                 if (qualifiedName.AssemblyName == null)
                 {
-                    type = this.appRuntime.GetAppAssemblies()
+                    type = this.getAppAssemblies()
                         .Select(asm => asm.GetType(qualifiedName.TypeName, throwOnError: false))
                         .FirstOrDefault(t => t != null);
                     return type;
                 }
 
                 var assemblyName = qualifiedName.AssemblyName.Name;
-                var assembly = this.appRuntime.GetAppAssemblies().FirstOrDefault(a => a.GetName().Name == assemblyName)
-                               ?? this.appRuntime.LoadAssemblyFromName(qualifiedName.AssemblyName);
-
+                var assembly = this.getAppAssemblies()
+                    .FirstOrDefault(a => a.GetName().Name == assemblyName);
                 type = assembly?.GetType(qualifiedName.TypeName, throwOnError: false);
                 return type;
             }

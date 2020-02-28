@@ -57,7 +57,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task SerializeAsync()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>()) ;
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>()) ;
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
             {
@@ -72,7 +72,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public void Serialize()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
                           {
@@ -87,7 +87,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task SerializeAsync_indented()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
             {
@@ -106,7 +106,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public void Serialize_indented()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
                           {
@@ -125,7 +125,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task SerializeAsync_with_type_info()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
             {
@@ -143,7 +143,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public void Serialize_with_type_info()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
             {
@@ -161,7 +161,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task SerializeAsync_no_type_info()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
             {
@@ -179,7 +179,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public void Serialize_no_type_info()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new TestEntity
             {
@@ -197,7 +197,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task SerializeAsync_Expando()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new ExpandoEntity
             {
@@ -211,7 +211,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task DeserializeAsync_untyped()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
@@ -226,7 +226,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public void Deserialize_untyped()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
             var obj = serializer.Deserialize(serializedObj);
@@ -241,7 +241,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task DeserializeAsync_dictionary()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
             var obj = await serializer.DeserializeAsync(serializedObj, new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
@@ -256,7 +256,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public void Deserialize_dictionary()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""hi"":""there"",""my"":""friend""}";
             var obj = serializer.Deserialize(serializedObj, new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { RootObjectType = typeof(IDictionary<string, object>) });
@@ -271,7 +271,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task DeserializeAsync_with_serialized_types()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
@@ -287,7 +287,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public void Deserialize_with_serialized_types()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
             var obj = serializer.Deserialize(serializedObj);
@@ -303,7 +303,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task DeserializeAsync_with_serialized_types_expando()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.Json.Tests"",""description"":""John Doe""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
@@ -318,7 +318,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task DeserializeAsync_with_in_string_provided_type_no_assembly_name()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity"",""name"":""John Doe""}";
             var context = Substitute.For<ISerializationContext>();
@@ -337,7 +337,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task DeserializeAsync_with_in_string_provided_type()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe""}";
             var context = Substitute.For<ISerializationContext>();
@@ -356,7 +356,7 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task DeserializeAsync_with_runtime_provided_type()
         {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), Substitute.For<ILogManager>());
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
             var serializedObj = @"{""name"":""John Doe""}";
             var context = Substitute.For<ISerializationContext>();

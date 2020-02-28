@@ -19,6 +19,7 @@ namespace Kephas
     using Kephas.Dynamic;
     using Kephas.Licensing;
     using Kephas.Logging;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Contract interface for ambient services.
@@ -48,6 +49,14 @@ namespace Kephas
         /// The application runtime.
         /// </value>
         IAppRuntime AppRuntime { get; }
+
+        /// <summary>
+        /// Gets the type loader.
+        /// </summary>
+        /// <value>
+        /// The type loader.
+        /// </value>
+        ITypeLoader TypeLoader { get; }
 
         /// <summary>
         /// Gets the log manager.

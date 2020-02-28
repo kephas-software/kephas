@@ -54,7 +54,7 @@ namespace Kephas.Core.Tests
         {
             var ambientServices = new AmbientServices(registerDefaultServices: false)
                 .Register(Substitute.For<ILogManager>())
-                .Register(Substitute.For<IAssemblyLoader>())
+                .Register(Substitute.For<ITypeLoader>())
                 .Register(Substitute.For<IAppRuntime>());
             var compositionContext = Substitute.For<ICompositionContext>();
             ambientServices.WithCompositionContainer<TestCompositionContainerBuilder>(

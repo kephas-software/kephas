@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultAssemblyLoader.cs" company="Kephas Software SRL">
+// <copyright file="DefaultTypeLoader.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,21 +16,20 @@ namespace Kephas.Reflection
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.Loader;
 
     using Kephas.Logging;
     using Kephas.Resources;
 
     /// <summary>
-    /// The default assembly loader.
+    /// The default type loader.
     /// </summary>
-    public class DefaultAssemblyLoader : Loggable, IAssemblyLoader
+    public class DefaultTypeLoader : Loggable, ITypeLoader
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultAssemblyLoader"/> class.
+        /// Initializes a new instance of the <see cref="DefaultTypeLoader"/> class.
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public DefaultAssemblyLoader(ILogManager? logManager = null)
+        public DefaultTypeLoader(ILogManager? logManager = null)
             : base(logManager)
         {
         }

@@ -81,8 +81,8 @@ namespace Kephas.Tests.Composition.Mef
         {
             var ambientServices = new AmbientServices();
             var container = this.CreateContainerWithBuilder(ambientServices);
-            var containerExport = container.GetExport(typeof(IAssemblyLoader));
-            var ambientExport = container.GetExport(typeof(IAssemblyLoader));
+            var containerExport = container.GetExport(typeof(ITypeLoader));
+            var ambientExport = container.GetExport(typeof(ITypeLoader));
 
             Assert.IsNotNull(containerExport);
             Assert.AreSame(ambientExport, containerExport);

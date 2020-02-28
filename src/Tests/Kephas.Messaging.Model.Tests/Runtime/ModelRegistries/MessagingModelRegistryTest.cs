@@ -40,7 +40,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
                 .GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { this.GetType().Assembly });
 
-            var typeLoader = Substitute.For<IAssemblyLoader>();
+            var typeLoader = Substitute.For<ITypeLoader>();
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(PingMessage) });
 
             var registry = new MessagingModelRegistry(appRuntime, typeLoader);
@@ -57,7 +57,7 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
                 .GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { this.GetType().Assembly });
 
-            var typeLoader = Substitute.For<IAssemblyLoader>();
+            var typeLoader = Substitute.For<ITypeLoader>();
             typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(ExcludedMessage) });
 
             var registry = new MessagingModelRegistry(appRuntime, typeLoader);

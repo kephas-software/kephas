@@ -10,6 +10,7 @@
 
 namespace Kephas.Serialization.Json
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -168,7 +169,7 @@ namespace Kephas.Serialization.Json
         private static DefaultJsonSerializerSettingsProvider CreateDefaultInstance()
         {
             var defaultInstance =
-                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(new DefaultAssemblyLoader()), LoggingHelper.DefaultLogManager);
+                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), LoggingHelper.DefaultLogManager);
 
             return defaultInstance;
         }

@@ -64,7 +64,7 @@ namespace Kephas
                 this
                     .Register<IConfigurationStore, DefaultConfigurationStore>()
                     .Register<ILogManager, NullLogManager>()
-                    .Register<IAssemblyLoader, DefaultAssemblyLoader>()
+                    .Register<ITypeLoader, DefaultTypeLoader>()
                     .Register<ILicensingManager, NullLicensingManager>()
                     .Register<IAppRuntime>(this.CreateDefaultInitializedAppRuntime)
 
@@ -103,12 +103,12 @@ namespace Kephas
         public ICompositionContext CompositionContainer => this.GetService<ICompositionContext>();
 
         /// <summary>
-        /// Gets the assembly loader.
+        /// Gets the type loader.
         /// </summary>
         /// <value>
-        /// The assembly loader.
+        /// The type loader.
         /// </value>
-        public IAssemblyLoader AssemblyLoader => this.GetService<IAssemblyLoader>();
+        public ITypeLoader TypeLoader => this.GetService<ITypeLoader>();
 
         /// <summary>
         /// Gets the application runtime.

@@ -11,6 +11,8 @@
 namespace Kephas.Core.Tests.Reflection
 {
     using System;
+    using System.Collections.Generic;
+    using System.Reflection;
     using System.Text;
 
     using Kephas.Logging;
@@ -26,8 +28,8 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void ResolveType_DotNet_Native()
         {
-            var loader = Substitute.For<IAssemblyLoader>();
-            var resolver = new DefaultTypeResolver(loader);
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            var resolver = new DefaultTypeResolver(getAssemblies);
             var type = resolver.ResolveType("System.String");
             Assert.AreEqual(typeof(string), type);
         }
@@ -35,8 +37,8 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void ResolveType_AssemblyQualifiedName()
         {
-            var loader = Substitute.For<IAssemblyLoader>();
-            var resolver = new DefaultTypeResolver(loader);
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            var resolver = new DefaultTypeResolver(getAssemblies);
             var type = resolver.ResolveType(this.GetType().AssemblyQualifiedName);
             Assert.AreEqual(this.GetType(), type);
         }
@@ -44,16 +46,16 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void ResolveType_NotFound_Exception()
         {
-            var loader = Substitute.For<IAssemblyLoader>();
-            var resolver = new DefaultTypeResolver(loader);
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            var resolver = new DefaultTypeResolver(getAssemblies);
             Assert.That(() => resolver.ResolveType("bla bla", throwOnNotFound: true), Throws.InstanceOf<TypeLoadException>());
         }
 
         [Test]
         public void ResolveType_other_assembly_with_assembly_name()
         {
-            var loader = Substitute.For<IAssemblyLoader>();
-            var resolver = new DefaultTypeResolver(loader);
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            var resolver = new DefaultTypeResolver(getAssemblies);
             var type = resolver.ResolveType("Kephas.IAmbientServices, Kephas.Core");
             Assert.AreSame(typeof(IAmbientServices), type);
         }
@@ -61,8 +63,8 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void ResolveType_other_assembly_without_assembly_name()
         {
-            var loader = Substitute.For<IAssemblyLoader>();
-            var resolver = new DefaultTypeResolver(loader);
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            var resolver = new DefaultTypeResolver(getAssemblies);
             var type = resolver.ResolveType("Kephas.Interaction.ISignal");
             Assert.AreEqual("Kephas.Interaction.ISignal", type.FullName);
         }
@@ -70,8 +72,8 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void ResolveType_other_assembly_generic_without_assembly_name()
         {
-            var loader = Substitute.For<IAssemblyLoader>();
-            var resolver = new DefaultTypeResolver(loader);
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            var resolver = new DefaultTypeResolver(getAssemblies);
             var type = resolver.ResolveType("Kephas.Services.Behaviors.IServiceBehaviorContext`1[[Kephas.Interaction.ISignal]]");
             Assert.AreEqual("IServiceBehaviorContext`1", type.Name);
             Assert.AreEqual("ISignal", type.GenericTypeArguments[0].Name);
@@ -80,7 +82,7 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void ResolveType_NotFound_Exception_not_thrown_no_log_if_no_assembly_name()
         {
-            var loader = Substitute.For<IAssemblyLoader>();
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
 
             var sb = new StringBuilder();
 
@@ -88,7 +90,7 @@ namespace Kephas.Core.Tests.Reflection
             logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<string>(), Arg.Any<object[]>()))
                 .Do(ci => sb.Append(ci.Arg<LogLevel>()).Append(":").Append(ci.Arg<string>()));
 
-            var resolver = new DefaultTypeResolver(loader) { Logger = logger };
+            var resolver = new DefaultTypeResolver(getAssemblies) { Logger = logger };
 
             var type = resolver.ResolveType("bla bla", throwOnNotFound: false);
             Assert.IsNull(type);
@@ -100,15 +102,13 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void ResolveType_NotFound_Exception_not_thrown_log_if_bad_assembly_name()
         {
-            var loader = new DefaultAssemblyLoader();
-
             var sb = new StringBuilder();
 
             var logger = Substitute.For<ILogger<DefaultTypeResolver>>();
             logger.When(l => l.Log(Arg.Any<LogLevel>(), Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<object[]>()))
                 .Do(ci => sb.Append(ci.Arg<LogLevel>()).Append(":").Append(ci.Arg<string>()).Append(ci.Arg<object[]>()[0]));
 
-            var resolver = new DefaultTypeResolver(loader) { Logger = logger };
+            var resolver = new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()) { Logger = logger };
 
             var type = resolver.ResolveType("bla, bla", throwOnNotFound: false);
             Assert.IsNull(type);

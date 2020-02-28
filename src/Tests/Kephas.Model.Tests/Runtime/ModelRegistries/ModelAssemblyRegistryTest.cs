@@ -61,7 +61,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             appRuntime.GetAppAssemblies(Arg.Any<Func<AssemblyName, bool>>())
                 .Returns(new[] { typeof(ModelAssemblyRegistry).GetTypeInfo().Assembly });
 
-            var registry = new ModelAssemblyRegistry(appRuntime, new DefaultAssemblyLoader(null), new DefaultModelAssemblyAttributeProvider());
+            var registry = new ModelAssemblyRegistry(appRuntime, new DefaultTypeLoader(null), new DefaultModelAssemblyAttributeProvider());
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<Type>().ToList();
             Assert.IsTrue(types.All(t => t.Name.EndsWith("Dimension") || t.Name.EndsWith("DimensionElement")));
@@ -78,7 +78,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             attrProvider.GetModelAssemblyAttributes(Arg.Any<Assembly>()).Returns(
                 new List<ModelAssemblyAttribute> { new ModelAssemblyAttribute(typeof(ExcludedType)) });
 
-            var registry = new ModelAssemblyRegistry(appRuntime, new DefaultAssemblyLoader(null), attrProvider);
+            var registry = new ModelAssemblyRegistry(appRuntime, new DefaultTypeLoader(null), attrProvider);
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<Type>().ToList();
             Assert.AreEqual(0, types.Count);
