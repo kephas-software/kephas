@@ -14,6 +14,7 @@ namespace Kephas.Tests.Plugins.Application
     using System.Collections.Concurrent;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.Plugins;
@@ -97,6 +98,32 @@ namespace Kephas.Tests.Plugins.Application
             Assert.AreEqual(Path.Combine(binFolder, "myPlugins", "p1"), binFolders[1]);
 
             Directory.Delete(appLocation, recursive: true);
+        }
+
+        [Test]
+        public void LoadAssemblyFromName_common_dependencies()
+        {
+            var pluginRepository = new TestPluginRepository();
+
+            var tempFolder = Assembly.GetExecutingAssembly().Location;
+#if NET462
+            var appLocation = Path.Combine(tempFolder, "net462");
+#else
+            var appLocation = Path.Combine(tempFolder, "netstandard2.0");
+#endif
+
+            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "PluginsFolder", pluginRepository: pluginRepository);
+            var binFolders = appRuntime.GetAppBinLocations().ToList();
+
+            var binFolder = appRuntime.GetAppLocation();
+            Assert.AreEqual(2, binFolders.Count);
+            Assert.AreEqual(binFolder, binFolders[0]);
+            Assert.AreEqual(Path.Combine(binFolder, "myPlugins", "p1"), binFolders[1]);
+
+            appRuntime.LoadAssemblyFromName(new AssemblyName("TestConsumerLibrary1"));
+            appRuntime.LoadAssemblyFromName(new AssemblyName("TestConsumerLibrary2"));
+
+            var appAssemblies = appRuntime.GetAppAssemblies().OrderBy(a => a.FullName).ToList();
         }
 
         [Test]

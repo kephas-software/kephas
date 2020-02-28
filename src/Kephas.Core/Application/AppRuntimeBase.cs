@@ -20,7 +20,6 @@ namespace Kephas.Application
     using System.Net;
     using System.Net.Sockets;
     using System.Reflection;
-    using System.Runtime.Loader;
     using System.Runtime.Versioning;
 
     using Kephas.Collections;
@@ -32,6 +31,11 @@ namespace Kephas.Application
     using Kephas.Resources;
     using Kephas.Services;
     using Kephas.Services.Transitions;
+
+#if NET462
+#else
+    using System.Runtime.Loader;
+#endif
 
     /// <summary>
     /// An application application runtime providing only assemblies loaded by the runtime.
@@ -328,7 +332,11 @@ namespace Kephas.Application
         /// </returns>
         public Assembly LoadAssemblyFromName(AssemblyName assemblyName)
         {
+#if NET462
+            return Assembly.Load(assemblyName);
+#else
             return AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyName);
+#endif
         }
 
         /// <summary>
@@ -340,7 +348,11 @@ namespace Kephas.Application
         /// </returns>
         public Assembly LoadAssemblyFromPath(string assemblyFilePath)
         {
+#if NET462
+            return Assembly.LoadFile(assemblyFilePath);
+#else
             return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFilePath);
+#endif
         }
 
         /// <summary>
@@ -367,7 +379,11 @@ namespace Kephas.Application
 
             if (this.InitializationMonitor.IsCompleted)
             {
+#if NET462
+                AppDomain.CurrentDomain.AssemblyResolve -= this.HandleAssemblyResolve;
+#else
                 AssemblyLoadContext.Default.Resolving -= this.HandleAssemblyResolving;
+#endif
             }
 
             this.isDisposed = true;
@@ -395,8 +411,21 @@ namespace Kephas.Application
             this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? (entryAssembly?.GetName().Version.ToString() ?? "0.0.0.0") : appVersion;
         }
 
+#if NET462
         /// <summary>
-        /// Handles the <see cref="AssemblyLoadContext.Resolving"/> event.
+        /// Handles the AppDomain.CurrentDomain.AssemblyResolve event.
+        /// </summary>
+        /// <param name="sender">Source of the event.</param>
+        /// <param name="args">Resolve event information.</param>
+        /// <returns>
+        /// The resolved assembly -or- <c>null</c>.
+        /// </returns>
+        protected virtual Assembly? HandleAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var assemblyName = new AssemblyName(args.Name);
+#else
+        /// <summary>
+        /// Handles the AssemblyLoadContext.Resolving event.
         /// </summary>
         /// <param name="loadContext">Context for the load.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
@@ -405,6 +434,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual Assembly? HandleAssemblyResolving(AssemblyLoadContext loadContext, AssemblyName assemblyName)
         {
+#endif
             var assemblyFullName = assemblyName.FullName;
             if (!this.IsCodeAssembly(assemblyFullName))
             {
@@ -424,16 +454,32 @@ namespace Kephas.Application
                 if (assembly == null)
                 {
                     var fileName = $"{name}.dll";
-                    var appBinLocations = this.GetAppBinLocations();
-                    foreach (var binLocation in appBinLocations)
+#if NET462
+                    if (!string.IsNullOrEmpty(args.RequestingAssembly?.Location))
                     {
-                        var filePath = Path.Combine(binLocation, fileName);
+                        var filePath = Path.Combine(args.RequestingAssembly.Location, fileName);
                         if (File.Exists(filePath))
                         {
-                            assembly = Assembly.LoadFrom(filePath);
-                            break;
+                            assembly = Assembly.LoadFile(filePath);
                         }
                     }
+
+                    if (assembly == null)
+                    {
+#endif
+                        var appBinLocations = this.GetAppBinLocations();
+                        foreach (var binLocation in appBinLocations)
+                        {
+                            var filePath = Path.Combine(binLocation, fileName);
+                            if (File.Exists(filePath))
+                            {
+                                assembly = Assembly.LoadFile(filePath);
+                                break;
+                            }
+                        }
+#if NET462
+                    }
+#endif
                 }
                 else if (match == null)
                 {
@@ -605,7 +651,11 @@ namespace Kephas.Application
         /// <param name="context">Optional. An optional context for initialization.</param>
         protected virtual void InitializeCore(IContext? context = null)
         {
+#if NET462
+            AppDomain.CurrentDomain.AssemblyResolve -= this.HandleAssemblyResolve;
+#else
             AssemblyLoadContext.Default.Resolving += this.HandleAssemblyResolving;
+#endif
         }
 
         private static bool EqualArray(byte[] s1, byte[] s2)

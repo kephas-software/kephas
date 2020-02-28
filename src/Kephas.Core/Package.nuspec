@@ -22,7 +22,6 @@
         <tags>kephas core</tags>
         <dependencies>
             <group>
-                <dependency id="System.Runtime.Loader" version="4.3.0" exclude="Build,Analyzers" />
                 <dependency id="System.ValueTuple" version="4.3.0" exclude="Build,Analyzers" />
             </group>
             <group targetFramework=".NETFramework4.6.2">
@@ -34,6 +33,7 @@
                 <dependency id="System.Diagnostics.Contracts" version="4.3.0" exclude="Build,Analyzers" />
                 <dependency id="System.Dynamic.Runtime" version="4.3.0" exclude="Build,Analyzers" />
                 <dependency id="System.Reflection" version="4.3.0" exclude="Build,Analyzers" />
+                <dependency id="System.Runtime.Loader" version="4.3.0" exclude="Build,Analyzers" />
                 <dependency id="System.Security.Principal" version="4.3.0" exclude="Build,Analyzers" />
             </group>
             <group targetFramework=".NETStandard2.1">
@@ -42,6 +42,7 @@
                 <dependency id="System.Diagnostics.Contracts" version="4.3.0" exclude="Build,Analyzers" />
                 <dependency id="System.Dynamic.Runtime" version="4.3.0" exclude="Build,Analyzers" />
                 <dependency id="System.Reflection" version="4.3.0" exclude="Build,Analyzers" />
+                <dependency id="System.Runtime.Loader" version="4.3.0" exclude="Build,Analyzers" />
                 <dependency id="System.Security.Principal" version="4.3.0" exclude="Build,Analyzers" />
             </group>
         </dependencies>
