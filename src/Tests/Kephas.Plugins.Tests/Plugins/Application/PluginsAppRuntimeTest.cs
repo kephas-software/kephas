@@ -17,8 +17,10 @@ namespace Kephas.Tests.Plugins.Application
     using System.Reflection;
     using Kephas.Application;
     using Kephas.Dynamic;
+    using Kephas.IO;
     using Kephas.Plugins;
     using Kephas.Plugins.Application;
+    using Kephas.Services;
     using NUnit.Framework;
 
     [TestFixture]
@@ -105,25 +107,39 @@ namespace Kephas.Tests.Plugins.Application
         {
             var pluginRepository = new TestPluginRepository();
 
-            var tempFolder = Assembly.GetExecutingAssembly().Location;
+            var thisFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 #if NET462
-            var appLocation = Path.Combine(tempFolder, "net462");
+            var thisAppLocation = Path.Combine(thisFolder, "net462");
 #else
-            var appLocation = Path.Combine(tempFolder, "netstandard2.0");
+            var thisAppLocation = Path.Combine(thisFolder, "netstandard2.0");
 #endif
 
-            var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "PluginsFolder", pluginRepository: pluginRepository);
-            var binFolders = appRuntime.GetAppBinLocations().ToList();
+            var tempFolder = Path.GetFullPath(Path.GetTempPath());
+            var appLocation = Path.Combine(tempFolder, "_unit_test_" + Guid.NewGuid().ToString());
+            Directory.CreateDirectory(Path.Combine(appLocation, "PluginsFolder"));
+            FileSystem.CopyDirectory(Path.Combine(thisAppLocation, "PluginsFolder"), Path.Combine(appLocation, "PluginsFolder"));
 
-            var binFolder = appRuntime.GetAppLocation();
-            Assert.AreEqual(2, binFolders.Count);
-            Assert.AreEqual(binFolder, binFolders[0]);
-            Assert.AreEqual(Path.Combine(binFolder, "myPlugins", "p1"), binFolders[1]);
+            pluginRepository.StorePluginData(new PluginData(new AppIdentity("TestConsumerLibrary1"), PluginState.Enabled));
+            pluginRepository.StorePluginData(new PluginData(new AppIdentity("TestConsumerLibrary2"), PluginState.Enabled));
 
-            appRuntime.LoadAssemblyFromName(new AssemblyName("TestConsumerLibrary1"));
-            appRuntime.LoadAssemblyFromName(new AssemblyName("TestConsumerLibrary2"));
+            using (var appRuntime = new PluginsAppRuntime(appFolder: appLocation, pluginsFolder: "PluginsFolder", pluginRepository: pluginRepository))
+            {
+                ServiceHelper.Initialize(appRuntime);
 
-            var appAssemblies = appRuntime.GetAppAssemblies().OrderBy(a => a.FullName).ToList();
+                var binFolders = appRuntime.GetAppBinLocations().ToList();
+
+                var binFolder = appRuntime.GetAppLocation();
+                Assert.AreEqual(3, binFolders.Count);
+                Assert.AreEqual(binFolder, binFolders[0]);
+
+                var appAssemblies = appRuntime.GetAppAssemblies().OrderBy(a => a.FullName).ToList();
+                Assert.AreEqual(1, appAssemblies.Count(a => a.GetName().Name == "TestClassLibrary"));
+                Assert.AreEqual(1, appAssemblies.Count(a => a.GetName().Name == "TestConsumerLibrary1"));
+                Assert.AreEqual(1, appAssemblies.Count(a => a.GetName().Name == "TestConsumerLibrary2"));
+            }
+
+            // TODO cannot delete the directories anymore, the assemblies are loaded.
+            // Directory.Delete(appLocation, recursive: true);
         }
 
         [Test]

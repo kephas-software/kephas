@@ -460,7 +460,7 @@ namespace Kephas.Application
                         var filePath = Path.Combine(args.RequestingAssembly.Location, fileName);
                         if (File.Exists(filePath))
                         {
-                            assembly = Assembly.LoadFile(filePath);
+                            assembly = this.LoadAssemblyFromPath(filePath);
                         }
                     }
 
@@ -473,7 +473,7 @@ namespace Kephas.Application
                             var filePath = Path.Combine(binLocation, fileName);
                             if (File.Exists(filePath))
                             {
-                                assembly = Assembly.LoadFile(filePath);
+                                assembly = this.LoadAssemblyFromPath(filePath);
                                 break;
                             }
                         }
@@ -484,13 +484,13 @@ namespace Kephas.Application
                 else if (match == null)
                 {
                     // a match only by name is not accepted.
-                    this.Logger.Warn("The best match for assembly '{assembly}' is '{resolvedAssembly}', which is not acceptable.", assemblyFullName, assembly);
+                    this.Logger.Warn("The best match for assembly '{assembly}' is '{resolvedAssembly}' from '{assemblyLocation}', which is not acceptable.", assemblyFullName, assembly, assembly.Location);
                     assembly = null;
                 }
 
                 if (assembly != null)
                 {
-                    this.Logger.Warn("Assembly '{assembly}' was resolved using '{resolvedAssembly}'.", assemblyFullName, assembly);
+                    this.Logger.Info("Assembly '{assembly}' was resolved using '{resolvedAssembly}' from '{assemblyLocation}'.", assemblyFullName, assembly, assembly.Location);
                 }
             }
 

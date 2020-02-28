@@ -107,7 +107,12 @@ namespace Kephas.Reflection
                 var assemblyName = qualifiedName.AssemblyName.Name;
                 var assembly = this.getAppAssemblies()
                     .FirstOrDefault(a => a.GetName().Name == assemblyName);
-                type = assembly?.GetType(qualifiedName.TypeName, throwOnError: false);
+                if (assembly == null)
+                {
+                    throw new TypeLoadException($"Assembly '{assemblyName}' not found.");
+                }
+
+                type = assembly.GetType(qualifiedName.TypeName, throwOnError: false);
                 return type;
             }
             catch (Exception ex)
