@@ -363,6 +363,11 @@ namespace Kephas.Tests.Plugins
                 return (this.canDisable?.Invoke(pluginData, context) ?? true)
                     && base.CanDisablePlugin(pluginData, context);
             }
+
+            protected override Task<IOperationResult> DownloadPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
+            {
+                return Task.FromResult<IOperationResult>(new OperationResult());
+            }
         }
 
         public class PluginsTestContext : IDisposable

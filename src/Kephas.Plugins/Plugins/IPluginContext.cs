@@ -55,6 +55,11 @@ namespace Kephas.Plugins
         /// An enum constant representing the update option.
         /// </summary>
         Update,
+
+        /// <summary>
+        /// An enum constant representing the download option.
+        /// </summary>
+        Download,
     }
 
     /// <summary>

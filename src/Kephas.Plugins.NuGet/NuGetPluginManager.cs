@@ -51,6 +51,22 @@ namespace Kephas.Plugins.NuGet
         /// </summary>
         public const string DefaultPackagesFolder = ".packages";
 
+        /// <summary>
+        /// The packages folder context key.
+        /// </summary>
+        protected const string PackagesFolderContextKey = "PackagesFolder";
+
+        /// <summary>
+        /// The repositories context key.
+        /// </summary>
+        protected const string RepositoriesContextKey = "Repositories";
+
+        /// <summary>
+        /// Source cache context key.
+        /// </summary>
+        protected const string SourceCacheContextKey = "SourceCacheContext";
+
+
         // check the following resource for documentation
         // https://martinbjorkstrom.com/posts/2018-09-19-revisiting-nuget-client-libraries
 
@@ -107,10 +123,10 @@ namespace Kephas.Plugins.NuGet
                         {
                             var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>().PreserveThreadContext();
                             var searchFilter = new SearchFilter(includePrerelease: searchContext.IncludePrerelease)
-                                                    {
-                                                        OrderBy = SearchOrderBy.Id,
-                                                        IncludeDelisted = false,
-                                                    };
+                            {
+                                OrderBy = SearchOrderBy.Id,
+                                IncludeDelisted = false,
+                            };
 
                             var packages = await searchResource.SearchAsync(
                                 searchContext.SearchTerm ?? this.pluginsSettings.SearchTerm ?? "plugin",
@@ -133,6 +149,49 @@ namespace Kephas.Plugins.NuGet
             result.ReturnValue(availablePackages.Select(this.ToPluginInfo))
                 .MergeMessages(opResult)
                 .Complete(opResult.Elapsed);
+            return result;
+        }
+
+        /// <summary>
+        /// Downloads the plugin asynchronously (core implementation).
+        /// </summary>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="context">Plugin context for controlling the operation.</param>
+        /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the download operation result.
+        /// </returns>
+        protected override async Task<IOperationResult> DownloadPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
+        {
+            var packagesFolder = context[PackagesFolderContextKey] as string ?? this.GetPackagesFolder();
+            var repositories = context[RepositoriesContextKey] as IList<SourceRepository> ?? this.GetSourceRepositories();
+            var ownsCacheContext = false;
+            if (!(context[SourceCacheContextKey] is SourceCacheContext cacheContext))
+            {
+                cacheContext = new SourceCacheContext();
+                ownsCacheContext = true;
+            }
+
+            var result = new OperationResult();
+            try
+            {
+                var pluginPackageIdentity = this.ToPackageIdentity(pluginIdentity);
+                var downloadResult = await this.DownloadPackageAsync(pluginPackageIdentity, packagesFolder, repositories, cacheContext, cancellationToken).PreserveThreadContext();
+                if (downloadResult.Status != DownloadResourceResultStatus.Available)
+                {
+                    throw new InvalidOperationException($"Plugin package {pluginPackageIdentity} not available ({downloadResult.Status}).");
+                }
+
+                result.ReturnValue = downloadResult;
+            }
+            finally
+            {
+                if (ownsCacheContext)
+                {
+                    cacheContext.Dispose();
+                }
+            }
+
             return result;
         }
 
@@ -626,12 +685,15 @@ namespace Kephas.Plugins.NuGet
         {
             var packagesFolder = this.GetPackagesFolder();
 
+            var opResult = await this.DownloadPluginAsync(
+                pluginIdentity,
+                ctx => ctx.Set(PackagesFolderContextKey, packagesFolder)
+                          .Set(RepositoriesContextKey, repositories)
+                          .Set(SourceCacheContextKey, cacheContext),
+                cancellationToken).PreserveThreadContext();
+
+            var downloadResult = (DownloadResourceResult)opResult.ReturnValue;
             var pluginPackageIdentity = this.ToPackageIdentity(pluginIdentity);
-            var downloadResult = await this.DownloadPackageAsync(pluginPackageIdentity, packagesFolder, repositories, cacheContext, cancellationToken).PreserveThreadContext();
-            if (downloadResult.Status != DownloadResourceResultStatus.Available)
-            {
-                throw new InvalidOperationException($"Plugin package {pluginPackageIdentity} not available ({downloadResult.Status}).");
-            }
 
             var dependencies = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
             await this.GetPackageDependenciesAsync(

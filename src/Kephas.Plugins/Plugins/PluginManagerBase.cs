@@ -131,14 +131,59 @@ namespace Kephas.Plugins
         /// <summary>
         /// Gets the plugin state.
         /// </summary>
-        /// <param name="pluginId">The plugin identity.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
         /// <returns>
         /// The plugin state.
         /// </returns>
-        public virtual PluginState GetPluginState(AppIdentity pluginId)
+        public virtual PluginState GetPluginState(AppIdentity pluginIdentity)
         {
-            return this.PluginRepository.GetPluginData(pluginId).State;
+            return this.PluginRepository.GetPluginData(pluginIdentity).State;
         }
+
+        /// <summary>
+        /// Downloads the plugin asynchronously.
+        /// </summary>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the download operation result.
+        /// </returns>
+        public virtual async Task<IOperationResult> DownloadPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        {
+            var result = new OperationResult();
+            var opResult = await Profiler.WithStopwatchAsync(
+                async () =>
+                {
+                    using var downloadContext = this.CreatePluginContext(ctx => ctx.Merge(options)
+                        .Operation(PluginOperation.Download, overwrite: false))
+                        .PluginIdentity(pluginIdentity);
+
+                    var downloadWrappedResult = await Profiler.WithStopwatchAsync(
+                        () => this.DownloadPluginCoreAsync(pluginIdentity, downloadContext, cancellationToken)).PreserveThreadContext();
+                    result.MergeAll(downloadWrappedResult.ReturnValue);
+
+                    return downloadWrappedResult.ReturnValue.ReturnValue;
+                }).PreserveThreadContext();
+
+            this.Logger.Info("Plugin {plugin} successfully downloaded. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
+
+            return result
+                .MergeAll(opResult)
+                .MergeMessage($"Plugin {pluginIdentity} successfully downloaded. Elapsed: {opResult.Elapsed:c}.")
+                .Complete(opResult.Elapsed);
+        }
+
+        /// <summary>
+        /// Downloads the plugin asynchronously (core implementation).
+        /// </summary>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="context">Plugin context for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the download operation result.
+        /// </returns>
+        protected abstract Task<IOperationResult> DownloadPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken);
 
         /// <summary>
         /// Installs the plugin asynchronously.
@@ -660,6 +705,14 @@ namespace Kephas.Plugins
                     {
                         throw new ArgumentNullException(nameof(pluginIdentity.Version), $"Please provide the version to which the plugin {pluginIdentity} should be updated.");
                     }
+
+                    // first try to download the plugin, and only if it suceeds then go on with uninstallation and then installation
+                    var dlResult = await this.DownloadPluginAsync(
+                        pluginIdentity,
+                        ctx => ctx.Merge(options)
+                                  .Operation(PluginOperation.Update)
+                                  .PluginIdentity(pluginIdentity),
+                        cancellationToken).PreserveThreadContext();
 
                     var pluginDataBefore = this.GetInstalledPluginData(new AppIdentity(pluginIdentity.Id));
 
