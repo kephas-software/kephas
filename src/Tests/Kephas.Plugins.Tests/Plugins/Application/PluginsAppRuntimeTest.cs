@@ -108,8 +108,8 @@ namespace Kephas.Tests.Plugins.Application
             var pluginRepository = new TestPluginRepository();
 
             var thisFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-#if NET462
-            var thisAppLocation = Path.Combine(thisFolder, "net462");
+#if NET461
+            var thisAppLocation = Path.Combine(thisFolder, "net461");
 #else
             var thisAppLocation = Path.Combine(thisFolder, "netstandard2.0");
 #endif

@@ -75,10 +75,6 @@ namespace Kephas.Core.Tests
         {
             private ICompositionContext compositionContext;
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="CompositionContainerBuilderBase{TBuilder}"/> class.
-            /// </summary>
-            /// <param name="context">The context.</param>
             public TestCompositionContainerBuilder(ICompositionRegistrationContext context)
                 : base(context)
             {

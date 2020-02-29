@@ -34,7 +34,7 @@
             </group>
         </dependencies>
         <frameworkAssemblies>
-            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.6.2" />
+            <frameworkAssembly assemblyName="System.ComponentModel.DataAnnotations" targetFramework=".NETFramework4.6.1" />
         </frameworkAssemblies>
     </metadata>
     <files>
@@ -44,8 +44,8 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Data.Model.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Data.Model.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Data.Model.xml" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\net462\Kephas.Data.Model.dll" target="lib\net462" />
-        <file src="bin\$configuration$\net462\Kephas.Data.Model.pdb" target="lib\net462" />
-        <file src="bin\$configuration$\net462\Kephas.Data.Model.xml" target="lib\net462" />
+        <file src="bin\$configuration$\net461\Kephas.Data.Model.dll" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Data.Model.pdb" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Data.Model.xml" target="lib\net461" />
     </files>
 </package>

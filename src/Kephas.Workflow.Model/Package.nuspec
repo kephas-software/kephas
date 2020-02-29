@@ -35,8 +35,8 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Workflow.Model.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Workflow.Model.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Workflow.Model.xml" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\net462\Kephas.Workflow.Model.dll" target="lib\net462" />
-        <file src="bin\$configuration$\net462\Kephas.Workflow.Model.pdb" target="lib\net462" />
-        <file src="bin\$configuration$\net462\Kephas.Workflow.Model.xml" target="lib\net462" />
+        <file src="bin\$configuration$\net461\Kephas.Workflow.Model.dll" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Workflow.Model.pdb" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Workflow.Model.xml" target="lib\net461" />
     </files>
 </package>

@@ -37,8 +37,8 @@
         <file src="bin\$configuration$\netstandard2.0\Kephas.Testing.Composition.Mef.dll" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Testing.Composition.Mef.pdb" target="lib\netstandard2.0" />
         <file src="bin\$configuration$\netstandard2.0\Kephas.Testing.Composition.Mef.xml" target="lib\netstandard2.0" />
-        <file src="bin\$configuration$\net462\Kephas.Testing.Composition.Mef.dll" target="lib\net462" />
-        <file src="bin\$configuration$\net462\Kephas.Testing.Composition.Mef.pdb" target="lib\net462" />
-        <file src="bin\$configuration$\net462\Kephas.Testing.Composition.Mef.xml" target="lib\net462" />
+        <file src="bin\$configuration$\net461\Kephas.Testing.Composition.Mef.dll" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Testing.Composition.Mef.pdb" target="lib\net461" />
+        <file src="bin\$configuration$\net461\Kephas.Testing.Composition.Mef.xml" target="lib\net461" />
     </files>
 </package>

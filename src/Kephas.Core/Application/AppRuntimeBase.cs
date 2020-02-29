@@ -32,7 +32,7 @@ namespace Kephas.Application
     using Kephas.Services;
     using Kephas.Services.Transitions;
 
-#if NET462
+#if NET461
 #else
     using System.Runtime.Loader;
 #endif
@@ -332,7 +332,7 @@ namespace Kephas.Application
         /// </returns>
         public Assembly LoadAssemblyFromName(AssemblyName assemblyName)
         {
-#if NET462
+#if NET461
             return Assembly.Load(assemblyName);
 #else
             return AssemblyLoadContext.Default.LoadFromAssemblyName(assemblyName);
@@ -348,7 +348,7 @@ namespace Kephas.Application
         /// </returns>
         public Assembly LoadAssemblyFromPath(string assemblyFilePath)
         {
-#if NET462
+#if NET461
             return Assembly.LoadFile(assemblyFilePath);
 #else
             return AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyFilePath);
@@ -379,7 +379,7 @@ namespace Kephas.Application
 
             if (this.InitializationMonitor.IsCompleted)
             {
-#if NET462
+#if NET461
                 AppDomain.CurrentDomain.AssemblyResolve -= this.HandleAssemblyResolve;
 #else
                 AssemblyLoadContext.Default.Resolving -= this.HandleAssemblyResolving;
@@ -411,7 +411,7 @@ namespace Kephas.Application
             this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? (entryAssembly?.GetName().Version.ToString() ?? "0.0.0.0") : appVersion;
         }
 
-#if NET462
+#if NET461
         /// <summary>
         /// Handles the AppDomain.CurrentDomain.AssemblyResolve event.
         /// </summary>
@@ -454,7 +454,7 @@ namespace Kephas.Application
                 if (assembly == null)
                 {
                     var fileName = $"{name}.dll";
-#if NET462
+#if NET461
                     if (!string.IsNullOrEmpty(args.RequestingAssembly?.Location))
                     {
                         var filePath = Path.Combine(args.RequestingAssembly.Location, fileName);
@@ -477,7 +477,7 @@ namespace Kephas.Application
                                 break;
                             }
                         }
-#if NET462
+#if NET461
                     }
 #endif
                 }
@@ -651,7 +651,7 @@ namespace Kephas.Application
         /// <param name="context">Optional. An optional context for initialization.</param>
         protected virtual void InitializeCore(IContext? context = null)
         {
-#if NET462
+#if NET461
             AppDomain.CurrentDomain.AssemblyResolve -= this.HandleAssemblyResolve;
 #else
             AssemblyLoadContext.Default.Resolving += this.HandleAssemblyResolving;

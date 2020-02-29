@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;netstandard2.0;net462</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <AssemblyName>Kephas.Data.MongoDB</AssemblyName>
@@ -45,8 +45,8 @@
         <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TargetFramework)'=='net462'">
-        <DefineConstants>$(DefineConstants);NET462</DefineConstants>
+    <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
+        <DefineConstants>$(DefineConstants);NET461</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
