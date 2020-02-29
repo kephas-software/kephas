@@ -187,6 +187,23 @@ namespace Kephas.Tests.Plugins
             }
         }
 
+        [Test]
+        public async Task UpdatePluginAsync_p1()
+        {
+            using (var ctx = new PluginsTestContext())
+            {
+                var pluginManager = this.CreatePluginManager(ctx);
+
+                var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
+
+                result = await pluginManager.UpdatePluginAsync(new AppIdentity("p1", "2.0.0.0"));
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(PluginState.Enabled, result.ReturnValue.State);
+                Assert.AreEqual("p1:1.2.3.4\nEnabled\nEmbedded\n\n-1236731413", result.ReturnValue.GetPluginData().ToString());
+            }
+        }
+
         private TestPluginManager CreatePluginManager(
             PluginsTestContext context,
             Action<IPlugin, IPluginContext> onInstall = null,

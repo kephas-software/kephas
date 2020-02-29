@@ -661,7 +661,7 @@ namespace Kephas.Plugins
                         throw new ArgumentNullException(nameof(pluginIdentity.Version), $"Please provide the version to which the plugin {pluginIdentity} should be updated.");
                     }
 
-                    var pluginDataBefore = this.GetInstalledPluginData(pluginIdentity);
+                    var pluginDataBefore = this.GetInstalledPluginData(new AppIdentity(pluginIdentity.Id));
 
                     Action<IPluginContext> updateOptions = ctx =>
                         ctx.Merge(options)
