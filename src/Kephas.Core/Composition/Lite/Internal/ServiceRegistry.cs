@@ -15,6 +15,7 @@ namespace Kephas.Composition.Lite.Internal
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.Collections;
     using Kephas.Resources;
 

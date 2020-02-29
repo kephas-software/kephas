@@ -23,10 +23,10 @@ namespace Kephas.Composition.Internal
     /// </summary>
     internal class ServiceProviderAdapter : IServiceProvider
     {
-        private static MethodInfo ToEnumerableMethod = ReflectionHelper.GetGenericMethodOf(
+        private static readonly MethodInfo ToEnumerableMethod = ReflectionHelper.GetGenericMethodOf(
             _ => ((ServiceProviderAdapter)null).ToEnumerable<int>(null));
 
-        private static MethodInfo ToListMethod = ReflectionHelper.GetGenericMethodOf(
+        private static readonly MethodInfo ToListMethod = ReflectionHelper.GetGenericMethodOf(
             _ => ((ServiceProviderAdapter)null).ToList<int>(null));
 
         /// <summary>

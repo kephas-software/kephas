@@ -10,8 +10,9 @@
 
 namespace Kephas.Composition.Lite
 {
-    using Kephas.Composition;
     using System;
+
+    using Kephas.Composition;
 
     /// <summary>
     /// Interface for service registration builder.

@@ -30,7 +30,7 @@ namespace Kephas.Application
         /// Adds the dynamic application runtime to the ambient services.
         /// </summary>
         /// <remarks>
-        /// It uses the <see cref="IAssemblyLoader"/> and <see cref="ILogManager"/> services from the
+        /// It uses the <see cref="ITypeLoader"/> and <see cref="ILogManager"/> services from the
         /// ambient services to configure the application runtime. Make sure that these services are
         /// properly configured before using this method.
         /// </remarks>
@@ -77,7 +77,7 @@ namespace Kephas.Application
         /// Adds the static application runtime to the ambient services.
         /// </summary>
         /// <remarks>
-        /// It uses the <see cref="IAssemblyLoader"/> and <see cref="ILogManager"/> services from the
+        /// It uses the <see cref="ITypeLoader"/> and <see cref="ILogManager"/> services from the
         /// ambient services to configure the application runtime. Make sure that these services are
         /// properly configured before using this method.
         /// </remarks>

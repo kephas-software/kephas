@@ -12,6 +12,7 @@ namespace Kephas.Composition.Lite.Conventions
 {
     using System;
     using System.Collections.Generic;
+
     using Kephas.Composition.Conventions;
 
     /// <summary>

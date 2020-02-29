@@ -13,6 +13,7 @@ namespace Kephas.Composition.Lite.Internal
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using Kephas.Composition;
     using Kephas.Reflection;
     using Kephas.Services.Composition;

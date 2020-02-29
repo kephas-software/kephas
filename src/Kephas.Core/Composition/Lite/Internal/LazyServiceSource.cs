@@ -14,6 +14,7 @@ namespace Kephas.Composition.Lite.Internal
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -35,7 +36,7 @@ namespace Kephas.Composition.Lite.Internal
 
         public override object GetService(IAmbientServices parent, Type serviceType)
         {
-            var descriptors = GetServiceDescriptors(parent, serviceType);
+            var descriptors = this.GetServiceDescriptors(parent, serviceType);
             var (_, factory) = descriptors.SingleOrDefault();
             if (factory == null)
             {
@@ -52,7 +53,7 @@ namespace Kephas.Composition.Lite.Internal
         {
             var innerType = serviceType.GetGenericArguments()[0];
             var getService = GetServiceMethod.MakeGenericMethod(innerType);
-            return GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, tuple.serviceInfo, tuple.fn));
+            return this.GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, tuple.serviceInfo, tuple.fn));
         }
 
         private static Lazy<T> GetService<T>(IServiceInfo serviceInfo, Func<object> factory)

@@ -79,7 +79,7 @@ namespace Kephas.Composition.Lite.Internal
 
         public void Add(ServiceInfo serviceInfo)
         {
-            serviceInfos.Add(serviceInfo);
+            this.serviceInfos.Add(serviceInfo);
         }
 
         public object GetService(IAmbientServices ambientServices)
