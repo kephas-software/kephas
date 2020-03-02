@@ -25,8 +25,10 @@ namespace Kephas.Collections
         /// <param name = "values">The data values.</param>
         /// <param name = "action">The action to be performed.</param>
         /// <example>
+        /// <code>
         ///   var values = new[] { "1", "2", "3" };
         ///   values.ConvertList&lt;string, int&gt;().ForEach(Console.WriteLine);
+        /// </code>
         /// </example>
         /// <remarks>
         ///   This method was intended to return the passed values to provide method chaining. Howver due to defered execution the compiler would actually never run the entire code at all.

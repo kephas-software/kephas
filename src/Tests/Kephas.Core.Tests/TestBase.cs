@@ -115,6 +115,6 @@ namespace Kephas.Core.Tests
             return serializationService;
         }
 
-        public interface IContextFactoryAware { public IContextFactory ContextFactory { get; } }
+        public interface IContextFactoryAware { IContextFactory ContextFactory { get; } }
     }
 }

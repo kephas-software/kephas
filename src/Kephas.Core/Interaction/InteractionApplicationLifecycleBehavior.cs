@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Interaction
+namespace Kephas.Interaction
 {
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Interaction;
+    using Kephas.Application;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// An interaction application lifecycle behavior.
@@ -45,7 +44,7 @@ namespace Kephas.Application.Interaction
         /// </returns>
         public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return ServiceHelper.InitializeAsync(this.eventHub, appContext);
+            return ServiceHelper.InitializeAsync(this.eventHub, appContext, cancellationToken);
         }
 
         /// <summary>

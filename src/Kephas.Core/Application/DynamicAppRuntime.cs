@@ -33,7 +33,6 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicAppRuntime"/> class.
         /// </summary>
-        /// <param name="assemblyLoader">Optional. The assembly loader.</param>
         /// <param name="checkLicense">Optional. The check license delegate.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="defaultAssemblyFilter">Optional. The default assembly filter.</param>

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Extensions.Hosting
+namespace Kephas.Extensions.Hosting.Application
 {
     using System;
     using System.Threading;

@@ -35,7 +35,7 @@ namespace Kephas.Application.Reflection
         /// <value>
         /// The tags.
         /// </value>
-        public string[] Tags { get; }
+        string[] Tags { get; }
 
         /// <summary>
         /// Gets the application description.

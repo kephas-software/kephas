@@ -27,7 +27,6 @@
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
 
         <NeutralLanguage>en</NeutralLanguage>
-        <RootNamespace>Kephas</RootNamespace>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
         <DefineConstants>KEPHAS</DefineConstants>
     </PropertyGroup>

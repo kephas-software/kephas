@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Extensions.Hosting.Application;
+
 namespace Kephas.Extensions.Hosting
 {
     using System.Threading;
