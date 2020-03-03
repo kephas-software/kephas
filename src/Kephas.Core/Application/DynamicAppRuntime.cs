@@ -33,8 +33,8 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicAppRuntime"/> class.
         /// </summary>
+        /// <param name="getLogger">Optional. The get logger delegate.</param>
         /// <param name="checkLicense">Optional. The check license delegate.</param>
-        /// <param name="logManager">Optional. Manager for log.</param>
         /// <param name="defaultAssemblyFilter">Optional. The default assembly filter.</param>
         /// <param name="appFolder">Optional. The application location.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
@@ -44,8 +44,8 @@ namespace Kephas.Application
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         public DynamicAppRuntime(
+            Func<string, ILogger>? getLogger = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
-            ILogManager? logManager = null,
             Func<AssemblyName, bool>? defaultAssemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
@@ -54,7 +54,7 @@ namespace Kephas.Application
             string? appInstanceId = null,
             string? appVersion = null,
             IExpando? appArgs = null)
-            : base(checkLicense, logManager, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
+            : base(getLogger, checkLicense, defaultAssemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
         {
         }
 

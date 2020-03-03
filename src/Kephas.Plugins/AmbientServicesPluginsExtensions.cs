@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas
 {
     using System;
@@ -40,29 +42,30 @@ namespace Kephas
         /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
         /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
         /// <param name="targetFramework">Optional. The target framework.</param>
+        /// <param name="config">Optional. The application runtime configuration callback.</param>
         /// <returns>
         /// The provided ambient services.
         /// </returns>
         public static IAmbientServices WithPluginsAppRuntime(
             this IAmbientServices ambientServices,
-            Func<AssemblyName, bool> assemblyFilter = null,
-            string appFolder = null,
-            IEnumerable<string> configFolders = null,
-            IEnumerable<string> licenseFolders = null,
-            string appId = null,
-            string appInstanceId = null,
-            string appVersion = null,
-            IExpando appArgs = null,
+            Func<AssemblyName, bool>? assemblyFilter = null,
+            string? appFolder = null,
+            IEnumerable<string>? configFolders = null,
+            IEnumerable<string>? licenseFolders = null,
+            string? appId = null,
+            string? appInstanceId = null,
+            string? appVersion = null,
+            IExpando? appArgs = null,
             bool? enablePlugins = null,
-            string pluginsFolder = null,
-            string targetFramework = null)
+            string? pluginsFolder = null,
+            string? targetFramework = null,
+            Action<PluginsAppRuntime>? config = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices.WithAppRuntime(
-                new PluginsAppRuntime(
+            var appRuntime = new PluginsAppRuntime(
+                    name => ambientServices.LogManager.GetLogger(name),
                     (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
-                    ambientServices.LogManager,
                     assemblyFilter,
                     appFolder,
                     configFolders,
@@ -73,7 +76,9 @@ namespace Kephas
                     appArgs,
                     enablePlugins,
                     pluginsFolder,
-                    targetFramework));
+                    targetFramework);
+            config?.Invoke(appRuntime);
+            return ambientServices.WithAppRuntime(appRuntime);
         }
     }
 }

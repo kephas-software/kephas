@@ -44,7 +44,7 @@ namespace Kephas.Application
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="config">Optional. The application runtime configuration callback.</param>
         /// <returns>
-        /// The provided ambient services builder.
+        /// The provided ambient services.
         /// </returns>
         public static IAmbientServices WithDynamicAppRuntime(
             this IAmbientServices ambientServices,
@@ -60,8 +60,8 @@ namespace Kephas.Application
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var appRuntime = new DynamicAppRuntime(
+                name => ambientServices.LogManager.GetLogger(name),
                 (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
-                ambientServices.LogManager,
                 assemblyFilter,
                 appFolder,
                 configFolders,
@@ -91,7 +91,7 @@ namespace Kephas.Application
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="config">Optional. The application runtime configuration callback.</param>
         /// <returns>
-        /// The provided ambient services builder.
+        /// The provided ambient services.
         /// </returns>
         public static IAmbientServices WithStaticAppRuntime(
             this IAmbientServices ambientServices,
@@ -107,8 +107,8 @@ namespace Kephas.Application
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             var appRuntime = new StaticAppRuntime(
+                name => ambientServices.LogManager.GetLogger(name),
                 (appid, ctx) => ambientServices.LicensingManager.CheckLicense(appid, ctx),
-                ambientServices.LogManager,
                 assemblyFilter,
                 appFolder,
                 configFolders,

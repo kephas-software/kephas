@@ -54,8 +54,8 @@ namespace Kephas.Plugins.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginsAppRuntime"/> class.
         /// </summary>
+        /// <param name="getLogger">Optional. The get logger delegate.</param>
         /// <param name="checkLicense">Optional. The check license delegate.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="assemblyFilter">Optional. A filter for loaded assemblies.</param>
         /// <param name="appFolder">Optional. The application location. If not specified, the current
         ///                           application location is considered.</param>
@@ -70,8 +70,8 @@ namespace Kephas.Plugins.Application
         /// <param name="targetFramework">Optional. The target framework.</param>
         /// <param name="pluginRepository">Optional. The plugin repository.</param>
         public PluginsAppRuntime(
+            Func<string, ILogger>? getLogger = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
-            ILogManager? logManager = null,
             Func<AssemblyName, bool>? assemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
@@ -84,7 +84,7 @@ namespace Kephas.Plugins.Application
             string? pluginsFolder = null,
             string? targetFramework = null,
             IPluginRepository? pluginRepository = null)
-            : base(checkLicense, logManager, assemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
+            : base(getLogger, checkLicense, assemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);
@@ -132,7 +132,7 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// A path indicating the indicated application location.
         /// </returns>
-        public override string? GetAppLocation(AppIdentity appIdentity, bool throwOnNotFound = true)
+        public override string? GetAppLocation(AppIdentity? appIdentity, bool throwOnNotFound = true)
         {
             var location = base.GetAppLocation(appIdentity, throwOnNotFound: false);
             if (location != null)

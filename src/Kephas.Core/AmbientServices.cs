@@ -233,7 +233,7 @@ namespace Kephas
         /// </returns>
         protected virtual IAppRuntime CreateDefaultInitializedAppRuntime()
         {
-            var appRuntime = new StaticAppRuntime((appid, ctx) => this.LicensingManager.CheckLicense(appid, ctx), this.LogManager);
+            var appRuntime = new StaticAppRuntime(name => this.LogManager.GetLogger(name), (appid, ctx) => this.LicensingManager.CheckLicense(appid, ctx));
             ServiceHelper.Initialize(appRuntime);
             return appRuntime;
         }

@@ -40,7 +40,7 @@ namespace Kephas.Application
     /// <summary>
     /// An application application runtime providing only assemblies loaded by the runtime.
     /// </summary>
-    public abstract class AppRuntimeBase : Expando, IAppRuntime, ILoggable, IInitializable, IDisposable
+    public abstract class AppRuntimeBase : Expando, IAppRuntime, IInitializable, IDisposable
     {
         /// <summary>
         /// The default configuration folder.
@@ -82,8 +82,7 @@ namespace Kephas.Application
         /// </summary>
         protected const string AssemblyFileExtension = ".dll";
 
-        private readonly ILogManager logManager;
-
+        private readonly Func<string, ILogger> getLogger;
         private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache =
             new ConcurrentDictionary<object, IEnumerable<Assembly>>();
 
@@ -93,14 +92,13 @@ namespace Kephas.Application
         private string[]? licenseLocations;
         private IEnumerable<string>? configFolders;
         private IEnumerable<string>? licenseFolders;
-        private ILogger? logger;
         private bool isDisposed = false; // To detect redundant calls
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppRuntimeBase"/> class.
         /// </summary>
+        /// <param name="getLogger">Optional. The get logger delegate.</param>
         /// <param name="checkLicense">Optional. The check license delegate.</param>
-        /// <param name="logManager">Optional. The log manager.</param>
         /// <param name="defaultAssemblyFilter">Optional. A default filter applied when loading
         ///                                     assemblies.</param>
         /// <param name="appFolder">Optional. The application folder. If not specified, the current
@@ -114,8 +112,8 @@ namespace Kephas.Application
         /// <param name="appVersion">Optional. The application version.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         protected AppRuntimeBase(
+            Func<string, ILogger>? getLogger = null,
             Func<AppIdentity, IContext?, ILicenseCheckResult>? checkLicense = null,
-            ILogManager? logManager = null,
             Func<AssemblyName, bool>? defaultAssemblyFilter = null,
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
@@ -126,7 +124,7 @@ namespace Kephas.Application
             IExpando? appArgs = null)
             : base(isThreadSafe: true)
         {
-            this.logManager = logManager ?? new NullLogManager();
+            this.getLogger = getLogger ?? (name => NullLogManager.GetNullLogger(name));
             this.TypeLoader = new DefaultTypeLoader();
             this.CheckLicense = checkLicense ?? ((appid, ctx) => new LicenseCheckResult(appid, true));
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
@@ -141,16 +139,12 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets or sets the logger.
+        /// Gets the logger.
         /// </summary>
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger Logger
-        {
-            get => this.logger ?? (this.logger = this.GetLogger());
-            protected internal set => this.logger = value;
-        }
+        protected virtual ILogger Logger => this.getLogger(this.GetType().FullName);
 
         /// <summary>
         /// Gets the check license delegate.
@@ -390,14 +384,6 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <returns>
-        /// The logger.
-        /// </returns>
-        protected virtual ILogger GetLogger() => this.logManager.GetLogger(this.GetType());
-
-        /// <summary>
         /// Initializes the application properties: AppId, AppInstanceId, and AppVersion.
         /// </summary>
         /// <param name="entryAssembly">The entry assembly.</param>
@@ -530,7 +516,7 @@ namespace Kephas.Application
         /// <returns>
         /// True if code assembly, false if not.
         /// </returns>
-        protected virtual bool IsCodeAssembly(string assemblyName)
+        protected virtual bool IsCodeAssembly(string? assemblyName)
         {
             return !string.IsNullOrEmpty(assemblyName) && !assemblyName.Contains(".resources,");
         }
