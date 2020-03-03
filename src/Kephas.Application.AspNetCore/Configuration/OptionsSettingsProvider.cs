@@ -13,6 +13,7 @@ namespace Kephas.Application.AspNetCore.Configuration
     using Kephas.Composition;
     using Kephas.Extensions.Configuration.Providers;
     using Kephas.Services;
+    using Microsoft.Extensions.Options;
 
     /// <summary>
     /// Settings provider based on the <see cref="IOptions{TOptions}"/> service.

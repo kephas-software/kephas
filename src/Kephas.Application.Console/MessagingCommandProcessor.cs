@@ -20,7 +20,6 @@ namespace Kephas.Application.Console
     using Kephas.Dynamic;
     using Kephas.Messaging;
     using Kephas.Reflection;
-    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

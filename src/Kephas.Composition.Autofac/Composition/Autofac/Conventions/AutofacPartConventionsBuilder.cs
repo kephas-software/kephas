@@ -136,7 +136,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// </example>
         IPartConventionsBuilder IPartConventionsBuilder.AllowMultiple(bool value)
         {
-            // By default autofac allows multiple registrations
+            // By default Autofac allows multiple registrations
             return this;
         }
     }

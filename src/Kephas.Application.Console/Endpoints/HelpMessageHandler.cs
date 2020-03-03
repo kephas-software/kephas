@@ -10,10 +10,10 @@
 
 namespace Kephas.Application.Console.Endpoints
 {
-    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Application.Console.Resources;
     using Kephas.Messaging;
     using Kephas.Reflection;

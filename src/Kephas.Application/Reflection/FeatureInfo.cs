@@ -14,7 +14,6 @@ namespace Kephas.Application.Reflection
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using Kephas.Application;
     using Kephas.Application.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -97,7 +96,7 @@ namespace Kephas.Application.Reflection
         /// <summary>
         /// Gets the full name of the <see cref="FeatureInfo"/>.
         /// </summary>
-        string IElementInfo.FullName => Name;
+        string IElementInfo.FullName => this.Name;
 
         /// <summary>
         /// Gets the annotations of the <see cref="FeatureInfo"/>.
@@ -158,8 +157,8 @@ namespace Kephas.Application.Reflection
         /// </returns>
         public override string ToString()
         {
-            var deps = string.Join(", ", Dependencies ?? new string[0]);
-            return $"{Name}({deps})";
+            var deps = string.Join(", ", this.Dependencies ?? new string[0]);
+            return $"{this.Name}({deps})";
         }
 
         /// <summary>

@@ -17,7 +17,6 @@ namespace Kephas.Application
     using Kephas.Application.Composition;
     using Kephas.Logging;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for feature lifecycle behaviors.

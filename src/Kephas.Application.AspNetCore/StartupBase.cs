@@ -11,7 +11,6 @@
 namespace Kephas.Application.AspNetCore
 {
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas;
@@ -22,7 +21,6 @@ namespace Kephas.Application.AspNetCore
     using Kephas.Extensions.Configuration;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
-    using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;

@@ -13,8 +13,6 @@ namespace Kephas.Application.Console.Tests.Application
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Application.Console.Application;
     using Kephas.Interaction;
     using Kephas.Operations;
     using Kephas.Reflection;

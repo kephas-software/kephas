@@ -38,7 +38,7 @@ namespace Kephas.Composition.Autofac
         /// <returns>
         /// A handle allowing the created part to be accessed then released.
         /// </returns>
-        public IExport<TService> CreateExport()
+        public virtual IExport<TService> CreateExport()
         {
             return new Export<TService>(() => Tuple.Create(this.servicePromise.Value, (Action)(() => { })));
         }
@@ -62,16 +62,33 @@ namespace Kephas.Composition.Autofac
     /// <typeparam name="TMetadata">Type of the metadata.</typeparam>
     public class AutofacExportFactory<TService, TMetadata> : AutofacExportFactory<TService>, IExportFactory<TService, TMetadata>
     {
-        public AutofacExportFactory(Lazy<TService> servicePromise)
+        private readonly Lazy<TService, TMetadata> servicePromise;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutofacExportFactory{TService,TMetadata}"/> class.
+        /// class.
+        /// </summary>
+        /// <param name="servicePromise">The service promise.</param>
+        public AutofacExportFactory(Lazy<TService, TMetadata> servicePromise)
             : base(servicePromise)
         {
+            this.servicePromise = servicePromise;
         }
 
+        /// <summary>
+        /// The metadata.
+        /// </summary>
         public TMetadata Metadata { get; }
 
+        /// <summary>
+        /// Create an instance of the exported part.
+        /// </summary>
+        /// <returns>
+        /// A handle allowing the created part to be accessed then released.
+        /// </returns>
         public new IExport<TService, TMetadata> CreateExport()
         {
-            throw new NotImplementedException();
+            return new Export<TService, TMetadata>(() => Tuple.Create(this.servicePromise.Value, (Action)(() => { })), this.servicePromise.Metadata);
         }
     }
 }

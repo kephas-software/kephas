@@ -14,7 +14,6 @@ namespace Kephas.Sets
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Graphs;
