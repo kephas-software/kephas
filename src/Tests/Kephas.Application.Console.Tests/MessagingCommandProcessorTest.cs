@@ -141,7 +141,7 @@ namespace Kephas.Application.Console.Tests
             Assert.IsInstanceOf<ResponseMessage>(response);
 
             var typedResponse = (ResponseMessage)response;
-            Assert.AreEqual("LogLevel: Warning", typedResponse.Message);
+            Assert.AreEqual("Log level: Warning", typedResponse.Message);
         }
 
         public class NullableParamMessage : IMessage
