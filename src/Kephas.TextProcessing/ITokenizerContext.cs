@@ -25,6 +25,6 @@ namespace Kephas.TextProcessing
         /// <value>
         /// A function delegate that yields a string.
         /// </value>
-        public Func<string, string> Transformation { get; set; }
+        Func<string, string> Transformation { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The language.
         /// </value>
-        public string Language { get; set; }
+        string Language { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the media.
@@ -31,7 +31,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The type of the media.
         /// </value>
-        public string MediaType { get; set; }
+        string MediaType { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the orientation should be auto detected.
@@ -39,6 +39,6 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// True if the orientation should be auto detected, false otherwise.
         /// </value>
-        public bool? DetectOrientation { get; set; }
+        bool? DetectOrientation { get; set; }
     }
 }
