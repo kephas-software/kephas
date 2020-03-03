@@ -15,16 +15,16 @@ namespace Kephas.Cryptography
     using Kephas.Services;
 
     /// <summary>
-    /// A null hashing service.
+    /// A SHA-256 hashing service.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class SHA256HashingService : HashingServiceBase
+    public class Sha256HashingService : HashingServiceBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SHA256HashingService"/> class.
+        /// Initializes a new instance of the <see cref="Sha256HashingService"/> class.
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
-        public SHA256HashingService(IContextFactory contextFactory)
+        public Sha256HashingService(IContextFactory contextFactory)
             : base(contextFactory)
         {
         }

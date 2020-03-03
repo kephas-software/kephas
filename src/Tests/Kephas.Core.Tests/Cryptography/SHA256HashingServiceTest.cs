@@ -21,13 +21,13 @@ namespace Kephas.Core.Tests.Cryptography
     using NUnit.Framework;
 
     [TestFixture]
-    public class SHA256HashingServiceTest : TestBase
+    public class Sha256HashingServiceTest : TestBase
     {
         [Test]
         [TestCase("other", "2SmKENGwc1g33EvYXaxkGw887yekfl1TpU8vP1svz/o=")]
         public void Hash(string value, string hash)
         {
-            var hashingService = new SHA256HashingService(Substitute.For<IContextFactory>());
+            var hashingService = new Sha256HashingService(Substitute.For<IContextFactory>());
             var valueBytes = Encoding.UTF8.GetBytes(value);
             var hashBytes = hashingService.Hash(valueBytes);
             var hashString = Convert.ToBase64String(hashBytes);
@@ -39,7 +39,7 @@ namespace Kephas.Core.Tests.Cryptography
         public void Hash_with_salt(string value, string salt, string hash)
         {
             var contextFactory = this.CreateContextFactory(() => new HashingContext(Substitute.For<ICompositionContext>()));
-            var hashingService = new SHA256HashingService(contextFactory);
+            var hashingService = new Sha256HashingService(contextFactory);
             var valueBytes = Encoding.UTF8.GetBytes(value);
             var saltBytes = Encoding.UTF8.GetBytes(salt);
             var hashBytes = hashingService.Hash(valueBytes, saltBytes);
