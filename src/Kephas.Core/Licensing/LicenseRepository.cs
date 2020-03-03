@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Licensing
 {
     using System.Collections.Generic;
@@ -46,22 +48,15 @@ namespace Kephas.Licensing
         /// The license data or <c>null</c>, if a license could not be found for the requesting
         /// application.
         /// </returns>
-        public LicenseData GetLicenseData(AppIdentity appIdentity)
+        public LicenseData? GetLicenseData(AppIdentity appIdentity)
         {
             var probingFileNames = new[] { $"{LicenseFileName}.lic", $"{appIdentity?.Id ?? LicenseFileName}.lic" };
-            foreach (var licenseLocation in this.GetLicenseLocations(appIdentity))
-            {
-                foreach (var probingFileName in probingFileNames)
-                {
-                    var licenseFilePath = Path.Combine(licenseLocation, probingFileName);
-                    if (File.Exists(licenseFilePath))
-                    {
-                        return this.GetLicenseData(licenseFilePath);
-                    }
-                }
-            }
-
-            return null;
+            return (from licenseLocation in this.GetLicenseLocations(appIdentity)
+                from probingFileName in probingFileNames
+                select Path.Combine(licenseLocation, probingFileName)
+                into licenseFilePath
+                where File.Exists(licenseFilePath)
+                select this.GetLicenseData(licenseFilePath)).FirstOrDefault();
         }
 
         /// <summary>
@@ -90,8 +85,13 @@ namespace Kephas.Licensing
                 : new[] { this.appRuntime.GetFullPath(AppRuntimeBase.DefaultLicenseFolder) };
         }
 
-        private LicenseData GetLicenseData(string licenseFilePath)
+        private LicenseData? GetLicenseData(string licenseFilePath)
         {
+            if (!File.Exists(licenseFilePath))
+            {
+                return null;
+            }
+
             var encryptedLicenseString = File.ReadAllText(licenseFilePath);
             var licenseString = this.encryptionService.Decrypt(encryptedLicenseString);
             return LicenseData.Parse(licenseString);

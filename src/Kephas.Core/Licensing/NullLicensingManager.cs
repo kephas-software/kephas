@@ -8,8 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Licensing
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -31,9 +34,23 @@ namespace Kephas.Licensing
         /// <returns>
         /// An asynchronous result that yields the check license result.
         /// </returns>
-        public Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appId, IContext context = null, CancellationToken cancellationToken = default)
+        public Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appId, IContext? context = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<ILicenseCheckResult>(new LicenseCheckResult(appId, true));
+        }
+
+        /// <summary>
+        /// Gets the license for the provided application identity asynchronously.
+        /// </summary>
+        /// <param name="appIdentity">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the license data.
+        /// </returns>
+        public virtual Task<LicenseData?> GetLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<LicenseData?>(this.GetLicenseData(appIdentity));
         }
 
 #if NETSTANDARD2_1
@@ -45,10 +62,34 @@ namespace Kephas.Licensing
         /// <returns>
         /// The licensing state.
         /// </returns>
-        public ILicenseCheckResult CheckLicense(AppIdentity appId, IContext context = null)
+        public ILicenseCheckResult CheckLicense(AppIdentity appId, IContext? context = null)
         {
             return new LicenseCheckResult(appId, true);
         }
+
+        /// <summary>
+        /// Gets the license for the provided application identity.
+        /// </summary>
+        /// <param name="appIdentity">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The license data.
+        /// </returns>
+        public LicenseData? GetLicense(AppIdentity appIdentity, IContext? context = null)
+        {
+            return this.GetLicenseData(appIdentity);
+        }
 #endif
+
+        private LicenseData? GetLicenseData(AppIdentity appIdentity)
+        {
+            return new LicenseData(
+                Guid.NewGuid().ToString(),
+                appIdentity.Id,
+                "*",
+                "<null>",
+                "<null>",
+                "<null>");
+        }
     }
 }

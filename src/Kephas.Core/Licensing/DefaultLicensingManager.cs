@@ -33,7 +33,7 @@ namespace Kephas.Licensing
         , ISyncLicensingManager
 #endif
     {
-        private readonly Func<AppIdentity, LicenseData> licenseDataGetter;
+        private readonly Func<AppIdentity, LicenseData?> licenseDataGetter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultLicensingManager"/> class.
@@ -50,7 +50,7 @@ namespace Kephas.Licensing
         /// </summary>
         /// <param name="licenseRepository">The license repository.</param>
         public DefaultLicensingManager(ILicenseRepository licenseRepository)
-            : this(appIdentity => licenseRepository.GetLicenseData(appIdentity))
+            : this(licenseRepository.GetLicenseData)
         {
         }
 
@@ -58,7 +58,7 @@ namespace Kephas.Licensing
         /// Initializes a new instance of the <see cref="DefaultLicensingManager"/> class.
         /// </summary>
         /// <param name="licenseDataGetter">The license data getter.</param>
-        public DefaultLicensingManager(Func<AppIdentity, LicenseData> licenseDataGetter)
+        public DefaultLicensingManager(Func<AppIdentity, LicenseData?> licenseDataGetter)
         {
             Requires.NotNull(licenseDataGetter, nameof(licenseDataGetter));
 
@@ -78,31 +78,37 @@ namespace Kephas.Licensing
             var license = this.GetLicenseData(appIdentity);
             if (license == null)
             {
-                return new LicenseCheckResult(appIdentity, false);
+                return new LicenseCheckResult(appIdentity, false)
+                    .MergeMessage("Missing license.");
             }
 
             var result = new LicenseCheckResult(appIdentity, false);
             if (license.ValidFrom.HasValue && DateTime.Now.Date < license.ValidFrom.Value)
             {
-                return result.MergeMessage($"The license validity starts only on {license.ValidFrom:d}.");
+                return result
+                    .MergeMessage($"The license validity starts only on {license.ValidFrom:d}.");
             }
 
             if (license.ValidTo.HasValue && DateTime.Now.Date > license.ValidTo.Value)
             {
-                return result.MergeMessage($"The license expired on {license.ValidTo:d}.");
+                return result
+                    .MergeMessage($"The license expired on {license.ValidTo:d}.");
             }
 
             if (!this.IsMatch(license.AppId, appIdentity.Id))
             {
-                return result.MergeMessage($"The license was issued for app '{license.AppId}' not for the requested '{appIdentity}'.");
+                return result
+                    .MergeMessage($"The license was issued for app '{license.AppId}' not for the requested '{appIdentity}'.");
             }
 
             if (!this.IsVersionMatch(license.AppVersionRange, appIdentity.Version))
             {
-                return result.MergeMessage($"The license was issued for version range '{license.AppVersionRange}' not for the requested '{appIdentity}'.");
+                return result
+                    .MergeMessage($"The license was issued for version range '{license.AppVersionRange}' not for the requested '{appIdentity}'.");
             }
 
-            return result.ReturnValue(true);
+            return result.ReturnValue(true)
+                .MergeMessage("Valid license.");
         }
 
         /// <summary>
@@ -116,17 +122,45 @@ namespace Kephas.Licensing
         /// </returns>
         public virtual Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
         {
-            return ((Func<ILicenseCheckResult>)(() => this.CheckLicense(appIdentity))).AsAsync();
+            return ((Func<ILicenseCheckResult>)(() => this.CheckLicense(appIdentity))).AsAsync(cancellationToken: cancellationToken);
         }
 
         /// <summary>
-        /// Gets the license data.
+        /// Gets the license for the provided application identity.
+        /// </summary>
+        /// <param name="appIdentity">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The license data.
+        /// </returns>
+        public virtual LicenseData? GetLicense(AppIdentity appIdentity, IContext? context = null)
+        {
+            return this.GetLicenseData(appIdentity);
+        }
+
+        /// <summary>
+        /// Gets the license for the provided application identity asynchronously.
+        /// </summary>
+        /// <param name="appIdentity">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the license data.
+        /// </returns>
+        public virtual Task<LicenseData?> GetLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
+        {
+            return ((Func<LicenseData?>)(() => this.GetLicense(appIdentity))).AsAsync(cancellationToken: cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the license data. This is the main extensibility point
+        /// when overriding the license retrieval.
         /// </summary>
         /// <param name="appIdentity">Identifier for the application.</param>
         /// <returns>
         /// The license data.
         /// </returns>
-        protected virtual LicenseData GetLicenseData(AppIdentity appIdentity) => this.licenseDataGetter(appIdentity);
+        protected virtual LicenseData? GetLicenseData(AppIdentity appIdentity) => this.licenseDataGetter(appIdentity);
 
         private bool IsVersionMatch(string versionRange, string version)
         {

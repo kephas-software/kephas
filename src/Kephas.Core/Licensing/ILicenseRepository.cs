@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Licensing
 {
     using Kephas.Application;
@@ -24,7 +26,7 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license data or <c>null</c>, if a license could not be found for the requesting application.
         /// </returns>
-        LicenseData GetLicenseData(AppIdentity appIdentity);
+        LicenseData? GetLicenseData(AppIdentity appIdentity);
 
         /// <summary>
         /// Stores the license data, making it persistable among multiple application runs.

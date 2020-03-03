@@ -36,6 +36,17 @@ namespace Kephas.Licensing
         /// </returns>
         Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Gets the license for the provided application identity asynchronously.
+        /// </summary>
+        /// <param name="appIdentity">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the license data.
+        /// </returns>
+        Task<LicenseData?> GetLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default);
+
 #if NETSTANDARD2_1
         /// <summary>
         /// Checks the license for the provided application identity.
@@ -49,6 +60,19 @@ namespace Kephas.Licensing
         {
             return this.CheckLicenseAsync(appIdentity, context).GetResultNonLocking();
         }
+
+        /// <summary>
+        /// Gets the license for the provided application identity.
+        /// </summary>
+        /// <param name="appIdentity">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The license data.
+        /// </returns>
+        LicenseData? GetLicense(AppIdentity appIdentity, IContext? context = null)
+        {
+            return this.GetLicenseAsync(appIdentity, context).GetResultNonLocking();
+        }
 #endif
     }
 
@@ -60,7 +84,7 @@ namespace Kephas.Licensing
     public interface ISyncLicensingManager
     {
         /// <summary>
-        /// Checks the license for the provided application identity asynchronously.
+        /// Checks the license for the provided application identity.
         /// </summary>
         /// <param name="appIdentity">Identifier for the application.</param>
         /// <param name="context">Optional. The context.</param>
@@ -68,6 +92,16 @@ namespace Kephas.Licensing
         /// The license check result.
         /// </returns>
         ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext? context = null);
+
+        /// <summary>
+        /// Gets the license for the provided application identity.
+        /// </summary>
+        /// <param name="appIdentity">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The license data.
+        /// </returns>
+        LicenseData? GetLicense(AppIdentity appIdentity, IContext? context = null);
     }
 
     /// <summary>
@@ -94,6 +128,27 @@ namespace Kephas.Licensing
             }
 
             return licensingManager.CheckLicenseAsync(appIdentity, context).GetResultNonLocking();
+        }
+
+        /// <summary>
+        /// Gets the license for the provided application identity.
+        /// </summary>
+        /// <param name="licensingManager">The licensing manager.</param>
+        /// <param name="appIdentity">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The license data.
+        /// </returns>
+        public static LicenseData? GetLicense(this ILicensingManager licensingManager, AppIdentity appIdentity, IContext? context = null)
+        {
+            Requires.NotNull(licensingManager, nameof(licensingManager));
+
+            if (licensingManager is ISyncLicensingManager syncLicensingManager)
+            {
+                return syncLicensingManager.GetLicense(appIdentity, context);
+            }
+
+            return licensingManager.GetLicenseAsync(appIdentity, context).GetResultNonLocking();
         }
     }
 #endif

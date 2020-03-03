@@ -172,7 +172,11 @@ namespace Kephas.Licensing
             var licensedBy = splits.Length > 5 ? splits[5] : null;
             var validFrom = splits.Length > 6 ? DateTimeParse(splits[6]) : null;
             var validTo = splits.Length > 7 ? DateTimeParse(splits[7]) : null;
+#if NETSTANDARD2_1
+            var checksumString = splits.Length > 8 ? splits[^1] : null;
+#else
             var checksumString = splits.Length > 8 ? splits[splits.Length - 1] : null;
+#endif
             var data = splits.Length > 9 ? DataParse(splits.Skip(8).Take(splits.Length - 9)) : null;
 
             if (checksumString == null || !int.TryParse(checksumString, out var checksum))
@@ -303,10 +307,10 @@ namespace Kephas.Licensing
 
             unchecked
             {
-                int hash1 = (5381 << 16) + 5381;
-                int hash2 = hash1;
+                var hash1 = (5381 << 16) + 5381;
+                var hash2 = hash1;
 
-                for (int i = 0; i < str.Length; i += 2)
+                for (var i = 0; i < str.Length; i += 2)
                 {
                     hash1 = ((hash1 << 5) + hash1) ^ str[i];
                     if (i == str.Length - 1)
