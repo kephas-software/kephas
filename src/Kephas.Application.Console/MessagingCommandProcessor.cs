@@ -137,7 +137,7 @@ namespace Kephas.Application.Console
             var propValueType = propInfo.ValueType.AsType();
             var propBaseType = propValueType.GetNonNullableType();
             var convertedValue = propBaseType.IsEnum
-                ? Enum.Parse(propBaseType, (string)value)
+                ? Enum.Parse(propBaseType, (string)value, ignoreCase: true)
                 : Convert.ChangeType(value, propBaseType);
             propInfo.SetValue(message, convertedValue);
         }

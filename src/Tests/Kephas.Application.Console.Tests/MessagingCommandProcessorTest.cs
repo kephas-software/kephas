@@ -136,7 +136,7 @@ namespace Kephas.Application.Console.Tests
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
             handlerRegistry.RegisterHandler<EnumMessage>((msg, ctx) => new ResponseMessage { Message = $"Log level: {msg.LogLevel}" });
 
-            var response = await processor.ProcessAsync("enum", new Expando { ["LogLevel"] = "Warning" });
+            var response = await processor.ProcessAsync("enum", new Expando { ["LogLevel"] = "warning" });
 
             Assert.IsInstanceOf<ResponseMessage>(response);
 
