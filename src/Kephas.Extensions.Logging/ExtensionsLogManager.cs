@@ -10,6 +10,9 @@
 
 namespace Kephas.Extensions.Logging
 {
+    using System;
+    using System.Collections.Concurrent;
+
     using Kephas.Logging;
     using Microsoft.Extensions.Logging;
 
@@ -18,8 +21,9 @@ namespace Kephas.Extensions.Logging
     /// <summary>
     /// Manager for extensions logs.
     /// </summary>
-    public class ExtensionsLogManager : ILogManager
+    public class ExtensionsLogManager : ILogManager, IDisposable
     {
+        private readonly ConcurrentDictionary<string, ILogger> loggers = new ConcurrentDictionary<string, ILogger>();
         private readonly ILoggerFactory loggerFactory;
 
         /// <summary>
@@ -45,7 +49,38 @@ namespace Kephas.Extensions.Logging
         /// </returns>
         public ILogger GetLogger(string loggerName)
         {
+            return this.loggers.GetOrAdd(loggerName, this.CreateLogger);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// Creates the logger.
+        /// </summary>
+        /// <param name="loggerName">Name of the logger.</param>
+        /// <returns>A logger with the provided name.</returns>
+        protected virtual ILogger CreateLogger(string loggerName)
+        {
             return new ExtensionsLogger(this.loggerFactory.CreateLogger(loggerName));
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the Kephas.Logging.NLog.NLogManager and optionally
+        /// releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            this.loggers.Clear();
+            this.loggerFactory.Dispose();
         }
     }
 }
