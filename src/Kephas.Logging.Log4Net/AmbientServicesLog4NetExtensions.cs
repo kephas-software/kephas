@@ -21,7 +21,7 @@ namespace Kephas.Logging.Log4Net
         /// Sets the NLog log manager to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="replaceDefault">Optional. True to replace <see cref="Loggable.DefaultLogManager"/>.</param>
+        /// <param name="replaceDefault">Optional. True to replace <see cref="LoggingHelper.DefaultLogManager"/>.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>

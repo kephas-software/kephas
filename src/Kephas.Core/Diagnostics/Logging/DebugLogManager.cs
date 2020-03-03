@@ -40,6 +40,11 @@ namespace Kephas.Diagnostics.Logging
         }
 
         /// <summary>
+        /// Gets or sets the minimum level.
+        /// </summary>
+        public LogLevel MinimumLevel { get; set; } = LogLevel.Trace;
+
+        /// <summary>
         /// Gets the logger with the provided name.
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>
@@ -48,7 +53,7 @@ namespace Kephas.Diagnostics.Logging
         /// </returns>
         public ILogger GetLogger(string loggerName)
         {
-            return this.loggers.GetOrAdd(loggerName, name => new DebugLogger(name, this.logCallback));
+            return this.loggers.GetOrAdd(loggerName, name => new DebugLogger(name, this.logCallback, () => this.MinimumLevel));
         }
 
         /// <summary>
@@ -56,25 +61,21 @@ namespace Kephas.Diagnostics.Logging
         /// </summary>
         internal class DebugLogger : ILogger
         {
-            /// <summary>
-            /// The name.
-            /// </summary>
             private readonly string name;
-
-            /// <summary>
-            /// The log callback.
-            /// </summary>
             private readonly Action<string, string, object, Exception> logCallback;
+            private readonly Func<LogLevel> logLevelGetter;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DebugLogger"/> class.
             /// </summary>
             /// <param name="name">The name.</param>
             /// <param name="logCallback">The log callback.</param>
-            public DebugLogger(string name, Action<string, string, object, Exception> logCallback)
+            /// <param name="logLevelGetter">Getter function for the log level.</param>
+            public DebugLogger(string name, Action<string, string, object, Exception> logCallback, Func<LogLevel> logLevelGetter)
             {
                 this.name = name;
                 this.logCallback = logCallback;
+                this.logLevelGetter = logLevelGetter;
             }
 
             /// <summary>
@@ -86,7 +87,7 @@ namespace Kephas.Diagnostics.Logging
             /// </returns>
             public bool IsEnabled(LogLevel level)
             {
-                return true;
+                return level <= this.logLevelGetter();
             }
 
             /// <summary>

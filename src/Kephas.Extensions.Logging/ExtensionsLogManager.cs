@@ -32,6 +32,11 @@ namespace Kephas.Extensions.Logging
         }
 
         /// <summary>
+        /// Gets or sets the minimum level.
+        /// </summary>
+        public Kephas.Logging.LogLevel MinimumLevel { get; set; } = Kephas.Logging.LogLevel.Trace;
+
+        /// <summary>
         /// Gets the logger with the provided name.
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>
@@ -40,7 +45,7 @@ namespace Kephas.Extensions.Logging
         /// </returns>
         public ILogger GetLogger(string loggerName)
         {
-            throw new System.NotImplementedException();
+            return new ExtensionsLogger(this.loggerFactory.CreateLogger(loggerName));
         }
     }
 }

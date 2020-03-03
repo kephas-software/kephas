@@ -26,6 +26,11 @@ namespace Kephas.Logging
         private static readonly NullLogger DefaultNullLogger = new NullLogger();
 
         /// <summary>
+        /// Gets or sets the minimum level.
+        /// </summary>
+        public LogLevel MinimumLevel { get; set; }
+
+        /// <summary>
         /// Gets a NULL logger for the provided name.
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>

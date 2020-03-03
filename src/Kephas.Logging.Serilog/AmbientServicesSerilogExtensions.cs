@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Serilog.Core;
+
 namespace Kephas.Logging.Serilog
 {
     using global::Serilog;
@@ -24,15 +26,16 @@ namespace Kephas.Logging.Serilog
         /// </summary>
         /// <param name="ambientServices">The ambient services builder.</param>
         /// <param name="configuration">Optional. The logger configuration.</param>
-        /// <param name="replaceDefault">Optional. True to replace <see cref="Loggable.DefaultLogManager"/>.</param>
+        /// <param name="levelSwitch">Optional.The logging level switch.</param>
+        /// <param name="replaceDefault">Optional. True to replace <see cref="LoggingHelper.DefaultLogManager"/>.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, LoggerConfiguration configuration = null, bool replaceDefault = true)
+        public static IAmbientServices WithSerilogManager(this IAmbientServices ambientServices, LoggerConfiguration? configuration = null, LoggingLevelSwitch? levelSwitch = null, bool replaceDefault = true)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices.WithLogManager(new SerilogManager(configuration), replaceDefault);
+            return ambientServices.WithLogManager(new SerilogManager(configuration, levelSwitch), replaceDefault);
         }
     }
 }

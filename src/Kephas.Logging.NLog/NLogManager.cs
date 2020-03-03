@@ -22,16 +22,32 @@ namespace Kephas.Logging.NLog
     public class NLogManager : ILogManager, IDisposable
     {
         private readonly ConcurrentDictionary<string, Logging.ILogger> loggers = new ConcurrentDictionary<string, Logging.ILogger>();
-        private LogFactory logFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NLogManager"/> class.
         /// </summary>
         /// <param name="configuration">Optional. The configuration.</param>
-        public NLogManager(LoggingConfiguration configuration = null)
+        public NLogManager(LoggingConfiguration? configuration = null)
         {
-            this.logFactory = new LogFactory(configuration ?? LogManager.Configuration);
+            this.LogFactory = new LogFactory(configuration ?? LogManager.Configuration);
         }
+
+        /// <summary>
+        /// Gets or sets the minimum level.
+        /// </summary>
+        public global::Kephas.Logging.LogLevel MinimumLevel
+        {
+            get => ToLogLevel(this.LogFactory.GlobalThreshold);
+            set => this.LogFactory.GlobalThreshold = ToNLogLevel(value);
+        }
+
+        /// <summary>
+        /// Gets the log factory.
+        /// </summary>
+        /// <value>
+        /// The log factory.
+        /// </value>
+        protected LogFactory LogFactory { get; }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
@@ -55,13 +71,72 @@ namespace Kephas.Logging.NLog
         }
 
         /// <summary>
+        /// Converts the log level to NLog log level.
+        /// </summary>
+        /// <param name="level">The log level.</param>
+        /// <returns>The NLog log level.</returns>
+        protected internal static Logging.LogLevel ToLogLevel(LogLevel level)
+        {
+            if (level == LogLevel.Fatal)
+            {
+                return Logging.LogLevel.Fatal;
+            }
+
+            if (level == LogLevel.Error)
+            {
+                return Logging.LogLevel.Error;
+            }
+
+            if (level == LogLevel.Warn)
+            {
+                return Logging.LogLevel.Warning;
+            }
+
+            if (level == LogLevel.Info)
+            {
+                return Logging.LogLevel.Info;
+            }
+
+            if (level == LogLevel.Debug)
+            {
+                return Logging.LogLevel.Debug;
+            }
+
+            if (level == LogLevel.Trace)
+            {
+                return Logging.LogLevel.Trace;
+            }
+
+            return Logging.LogLevel.Trace;
+        }
+
+        /// <summary>
+        /// Converts the log level to NLog log level.
+        /// </summary>
+        /// <param name="level">The log level.</param>
+        /// <returns>The NLog log level.</returns>
+        protected internal static LogLevel ToNLogLevel(Logging.LogLevel level)
+        {
+            return level switch
+            {
+                Logging.LogLevel.Fatal => LogLevel.Fatal,
+                Logging.LogLevel.Error => LogLevel.Error,
+                Logging.LogLevel.Warning => LogLevel.Warn,
+                Logging.LogLevel.Info => LogLevel.Info,
+                Logging.LogLevel.Debug => LogLevel.Debug,
+                Logging.LogLevel.Trace => LogLevel.Trace,
+                _ => LogLevel.Off
+            };
+        }
+
+        /// <summary>
         /// Creates the logger.
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>
         /// <returns>A logger with the provided name.</returns>
         protected virtual Logging.ILogger CreateLogger(string loggerName)
         {
-            var nlogger = this.logFactory.GetLogger(loggerName);
+            var nlogger = this.LogFactory.GetLogger(loggerName);
             return new NLogger(nlogger);
         }
 
@@ -74,7 +149,7 @@ namespace Kephas.Logging.NLog
         protected virtual void Dispose(bool disposing)
         {
             this.loggers.Clear();
-            this.logFactory.Dispose();
+            this.LogFactory.Dispose();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Kephas.Logging.Log4Net.Internal
     /// </summary>
     internal class StructuredLogEntryProvider
     {
-        private Regex structuredMessage = new Regex("\\{[^\\{]*\\}", RegexOptions.Compiled);
+        private readonly Regex structuredMessage = new Regex("\\{[^\\{]*\\}", RegexOptions.Compiled);
 
         /// <summary>
         /// Gets the log entry.
@@ -31,7 +31,7 @@ namespace Kephas.Logging.Log4Net.Internal
         /// <returns>
         /// The log entry.
         /// </returns>
-        public (string message, object[] positionalArgs, IDictionary<string, object> namedArgs) GetLogEntry(string messageFormat, params object[] args)
+        public (string message, object[]? positionalArgs, IDictionary<string, object>? namedArgs) GetLogEntry(string messageFormat, params object[] args)
         {
             if (args == null || args.Length == 0)
             {
@@ -67,7 +67,7 @@ namespace Kephas.Logging.Log4Net.Internal
                         ? value?.ToString()
                         : value is IFormattable formattableValue
                             ? formattableValue.ToString(format, CultureInfo.CurrentCulture)
-                            : value.ToString();
+                            : value?.ToString();
                 var indexToDelete = match.Index + offset;
                 offset = offset + (stringValue?.Length ?? 0) - match.Value.Length;
                 messageBuilder.Remove(indexToDelete, match.Value.Length);

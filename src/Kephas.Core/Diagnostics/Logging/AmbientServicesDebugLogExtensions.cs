@@ -25,7 +25,7 @@ namespace Kephas.Diagnostics.Logging
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="logCallback">Optional. The log callback.</param>
-        /// <param name="replaceDefault">Optional. True to replace <see cref="Loggable.DefaultLogManager"/>.</param>
+        /// <param name="replaceDefault">Optional. True to replace <see cref="LoggingHelper.DefaultLogManager"/>.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>

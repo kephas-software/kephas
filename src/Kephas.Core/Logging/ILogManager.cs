@@ -20,6 +20,11 @@ namespace Kephas.Logging
     public interface ILogManager
     {
         /// <summary>
+        /// Gets or sets the global minimum level.
+        /// </summary>
+        LogLevel MinimumLevel { get; set; }
+
+        /// <summary>
         /// Gets the logger with the provided name.
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>

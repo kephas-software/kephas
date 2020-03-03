@@ -15,6 +15,7 @@ namespace Kephas.Logging.Serilog
 
     using global::Serilog;
     using global::Serilog.Core;
+    using global::Serilog.Events;
 
     /// <summary>
     /// The Serilog log manager.
@@ -22,19 +23,38 @@ namespace Kephas.Logging.Serilog
     public class SerilogManager : ILogManager, IDisposable
     {
         private readonly LoggerConfiguration configuration;
+        private readonly LoggingLevelSwitch levelSwitch;
         private readonly ConcurrentDictionary<string, global::Kephas.Logging.ILogger> loggers = new ConcurrentDictionary<string, global::Kephas.Logging.ILogger>();
-
-        private Logger rootLogger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SerilogManager"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        public SerilogManager(LoggerConfiguration configuration)
+        /// <param name="configuration">Optional. The configuration.</param>
+        /// <param name="levelSwitch">Optional. The logging level switch.</param>
+        public SerilogManager(LoggerConfiguration? configuration = null, LoggingLevelSwitch? levelSwitch = null)
         {
             this.configuration = configuration ?? new LoggerConfiguration();
-            this.rootLogger = this.configuration.CreateLogger();
+            this.levelSwitch = levelSwitch ?? new LoggingLevelSwitch();
+            this.configuration.MinimumLevel.ControlledBy(this.levelSwitch);
+            this.RootLogger = this.configuration.CreateLogger();
         }
+
+        /// <summary>
+        /// Gets or sets the minimum level.
+        /// </summary>
+        public LogLevel MinimumLevel
+        {
+            get => ToLogLevel(this.levelSwitch.MinimumLevel);
+            set => this.levelSwitch.MinimumLevel = ToLogEventLevel(value);
+        }
+
+        /// <summary>
+        /// Gets the root logger.
+        /// </summary>
+        /// <value>
+        /// The root logger.
+        /// </value>
+        protected Logger RootLogger { get; }
 
         /// <summary>
         /// Gets the logger with the provided name.
@@ -56,6 +76,44 @@ namespace Kephas.Logging.Serilog
         }
 
         /// <summary>
+        /// Converts the log level to Serilog log level.
+        /// </summary>
+        /// <param name="level">The log level.</param>
+        /// <returns>The Serilog log level.</returns>
+        protected internal static LogEventLevel ToLogEventLevel(LogLevel level)
+        {
+            return level switch
+            {
+                LogLevel.Fatal => LogEventLevel.Fatal,
+                LogLevel.Error => LogEventLevel.Error,
+                LogLevel.Warning => LogEventLevel.Warning,
+                LogLevel.Info => LogEventLevel.Information,
+                LogLevel.Debug => LogEventLevel.Debug,
+                LogLevel.Trace => LogEventLevel.Verbose,
+                _ => LogEventLevel.Verbose
+            };
+        }
+
+        /// <summary>
+        /// Converts the Serilog log level to log level.
+        /// </summary>
+        /// <param name="level">The Serilog log level.</param>
+        /// <returns>The log level.</returns>
+        protected internal static LogLevel ToLogLevel(LogEventLevel level)
+        {
+            return level switch
+            {
+                LogEventLevel.Fatal => LogLevel.Fatal,
+                LogEventLevel.Error => LogLevel.Error,
+                LogEventLevel.Warning => LogLevel.Warning,
+                LogEventLevel.Information => LogLevel.Info,
+                LogEventLevel.Debug => LogLevel.Debug,
+                LogEventLevel.Verbose => LogLevel.Trace,
+                _ => LogLevel.Trace
+            };
+        }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
         /// resources.
         /// </summary>
@@ -64,7 +122,7 @@ namespace Kephas.Logging.Serilog
         protected virtual void Dispose(bool disposing)
         {
             this.loggers.Clear();
-            this.rootLogger.Dispose();
+            this.RootLogger.Dispose();
         }
 
         /// <summary>
@@ -74,7 +132,7 @@ namespace Kephas.Logging.Serilog
         /// <returns>A logger with the provided name.</returns>
         protected virtual global::Kephas.Logging.ILogger CreateLogger(string loggerName)
         {
-            var logger = new SerilogLogger(loggerName, this.rootLogger);
+            var logger = new SerilogLogger(loggerName, this.RootLogger);
             return logger;
         }
     }

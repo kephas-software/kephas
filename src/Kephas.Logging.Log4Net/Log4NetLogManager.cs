@@ -38,6 +38,11 @@ namespace Kephas.Logging.Log4Net
         }
 
         /// <summary>
+        /// Gets or sets the minimum level.
+        /// </summary>
+        public LogLevel MinimumLevel { get; set; }
+
+        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
         /// resources.
         /// </summary>
@@ -56,6 +61,65 @@ namespace Kephas.Logging.Log4Net
         public ILogger GetLogger(string loggerName)
         {
             return this.loggers.GetOrAdd(loggerName, this.CreateLogger);
+        }
+
+        /// <summary>
+        /// Converts the log level to the log4net log level.
+        /// </summary>
+        /// <param name="logLevel">The log level.</param>
+        /// <returns>The log4net log level.</returns>
+        protected internal static log4net.Core.Level ToLevel(LogLevel logLevel)
+        {
+            return logLevel switch
+            {
+                LogLevel.Fatal => log4net.Core.Level.Critical,
+                LogLevel.Error => log4net.Core.Level.Error,
+                LogLevel.Warning => log4net.Core.Level.Warn,
+                LogLevel.Info => log4net.Core.Level.Info,
+                LogLevel.Debug => log4net.Core.Level.Debug,
+                LogLevel.Trace => log4net.Core.Level.Trace,
+                _ => log4net.Core.Level.Off
+            };
+        }
+
+        /// <summary>
+        /// Converts the log4net log level to log level.
+        /// </summary>
+        /// <param name="level">The log4net log level.</param>
+        /// <returns>The log level.</returns>
+        protected internal static LogLevel ToLogLevel(log4net.Core.Level level)
+        {
+            if (level == log4net.Core.Level.Critical)
+            {
+                return Logging.LogLevel.Fatal;
+            }
+
+            if (level == log4net.Core.Level.Error)
+            {
+                return Logging.LogLevel.Error;
+            }
+
+            if (level == log4net.Core.Level.Warn)
+            {
+                return Logging.LogLevel.Warning;
+            }
+
+            if (level == log4net.Core.Level.Info)
+            {
+                return Logging.LogLevel.Info;
+            }
+
+            if (level == log4net.Core.Level.Debug)
+            {
+                return Logging.LogLevel.Debug;
+            }
+
+            if (level == log4net.Core.Level.Trace)
+            {
+                return Logging.LogLevel.Trace;
+            }
+
+            return Logging.LogLevel.Trace;
         }
 
         /// <summary>

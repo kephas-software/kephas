@@ -42,7 +42,7 @@ namespace Kephas.Logging.NLog
         /// </returns>
         public bool IsEnabled(Logging.LogLevel level)
         {
-            return this.logger.IsEnabled(this.ToLogLevel(level));
+            return this.logger.IsEnabled(NLogManager.ToNLogLevel(level));
         }
 
         /// <summary>
@@ -59,35 +59,14 @@ namespace Kephas.Logging.NLog
         {
             if (exception == null)
             {
-                this.logger.Log(this.ToLogLevel(level), messageFormat, args);
+                this.logger.Log(NLogManager.ToNLogLevel(level), messageFormat, args);
             }
             else
             {
-                this.logger.Log(this.ToLogLevel(level), exception, messageFormat, args);
+                this.logger.Log(NLogManager.ToNLogLevel(level), exception, messageFormat, args);
             }
 
             return true;
-        }
-
-        private LogLevel ToLogLevel(Logging.LogLevel level)
-        {
-            switch (level)
-            {
-                case Logging.LogLevel.Fatal:
-                    return LogLevel.Fatal;
-                case Logging.LogLevel.Error:
-                    return LogLevel.Error;
-                case Logging.LogLevel.Warning:
-                    return LogLevel.Warn;
-                case Logging.LogLevel.Info:
-                    return LogLevel.Info;
-                case Logging.LogLevel.Debug:
-                    return LogLevel.Debug;
-                case Logging.LogLevel.Trace:
-                    return LogLevel.Trace;
-                default:
-                    return LogLevel.Off;
-            }
         }
     }
 }

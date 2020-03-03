@@ -36,7 +36,7 @@ namespace Kephas.Extensions.Logging
         /// </para>
         /// <para>
         /// WARNING: Do not use both <see cref="WithExtensionsLogManager"/> and <see cref="ConfigureExtensionsLogging"/> methods
-        /// as this might generate StackOverflow exception!
+        /// as this might generate StackOverflow exception.
         /// </para>
         /// </remarks>
         /// <param name="ambientServices">The ambientServices to act on.</param>
@@ -67,11 +67,11 @@ namespace Kephas.Extensions.Logging
         /// </para>
         /// <para>
         /// WARNING: Do not use both <see cref="WithExtensionsLogManager"/> and <see cref="ConfigureExtensionsLogging"/> methods
-        /// as this might generate StackOverflow exception!
+        /// as this might generate StackOverflow exception.
         /// </para>
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="replaceDefault">Optional. True to replace <see cref="Loggable.DefaultLogManager"/>.</param>
+        /// <param name="replaceDefault">Optional. True to replace <see cref="LoggingHelper.DefaultLogManager"/>.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>

@@ -71,32 +71,18 @@ namespace Kephas.Extensions.Logging
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Converts a logLevel to a log level.
-        /// </summary>
-        /// <param name="logLevel">Entry will be written on this level.</param>
-        /// <returns>
-        /// LogLevel as a Microsoft.Extensions.Logging.LogLevel.
-        /// </returns>
         private Microsoft.Extensions.Logging.LogLevel ToLogLevel(LogLevel logLevel)
         {
-            switch (logLevel)
+            return logLevel switch
             {
-                case LogLevel.Fatal:
-                    return Microsoft.Extensions.Logging.LogLevel.Critical;
-                case LogLevel.Error:
-                    return Microsoft.Extensions.Logging.LogLevel.Error;
-                case LogLevel.Warning:
-                    return Microsoft.Extensions.Logging.LogLevel.Warning;
-                case LogLevel.Info:
-                    return Microsoft.Extensions.Logging.LogLevel.Information;
-                case LogLevel.Debug:
-                    return Microsoft.Extensions.Logging.LogLevel.Debug;
-                case LogLevel.Trace:
-                    return Microsoft.Extensions.Logging.LogLevel.Trace;
-                default:
-                    return Microsoft.Extensions.Logging.LogLevel.Trace;
-            }
+                LogLevel.Fatal => Microsoft.Extensions.Logging.LogLevel.Critical,
+                LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
+                LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
+                LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
+                LogLevel.Debug => Microsoft.Extensions.Logging.LogLevel.Debug,
+                LogLevel.Trace => Microsoft.Extensions.Logging.LogLevel.Trace,
+                _ => Microsoft.Extensions.Logging.LogLevel.Trace
+            };
         }
     }
 }

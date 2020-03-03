@@ -41,7 +41,7 @@ namespace Kephas.Logging.Log4Net
         /// </returns>
         public bool IsEnabled(LogLevel level)
         {
-            return this.logger.IsEnabledFor(this.ToLevel(level));
+            return this.logger.IsEnabledFor(Log4NetLogManager.ToLevel(level));
         }
 
         /// <summary>
@@ -59,29 +59,8 @@ namespace Kephas.Logging.Log4Net
             var (message, positionalArgs, _) = this.entryProvider.GetLogEntry(messageFormat, args);
             message = positionalArgs == null || positionalArgs.Length == 0 ? message : string.Format(message, positionalArgs);
 
-            this.logger.Log(this.GetType(), this.ToLevel(level), message, exception);
+            this.logger.Log(this.GetType(), Log4NetLogManager.ToLevel(level), message, exception);
             return true;
-        }
-
-        private log4net.Core.Level ToLevel(LogLevel logLevel)
-        {
-            switch (logLevel)
-            {
-                case LogLevel.Fatal:
-                    return log4net.Core.Level.Critical;
-                case LogLevel.Error:
-                    return log4net.Core.Level.Error;
-                case LogLevel.Warning:
-                    return log4net.Core.Level.Warn;
-                case LogLevel.Info:
-                    return log4net.Core.Level.Info;
-                case LogLevel.Debug:
-                    return log4net.Core.Level.Debug;
-                case LogLevel.Trace:
-                    return log4net.Core.Level.Trace;
-                default:
-                    return log4net.Core.Level.Off;
-            }
         }
     }
 }

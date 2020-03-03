@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Description>Provides the log4net implementation of logging abstractions.</Description>

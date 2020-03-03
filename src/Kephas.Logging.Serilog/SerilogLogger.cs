@@ -27,7 +27,7 @@ namespace Kephas.Logging.Serilog
         /// </summary>
         /// <param name="loggerName">Name of the logger.</param>
         /// <param name="rootLogger">The root logger.</param>
-        internal SerilogLogger(string loggerName, Logger rootLogger)
+        protected internal SerilogLogger(string loggerName, Logger rootLogger)
         {
             this.logger = rootLogger.ForContext(Constants.SourceContextPropertyName, loggerName, false);
         }
@@ -37,7 +37,7 @@ namespace Kephas.Logging.Serilog
         /// </summary>
         /// <remarks>
         /// Note for implementors: the <paramref name="exception"/> may be <c>null</c>, so be cautious and handle this case too.
-        /// For example, the <see cref="LoggerExtensions.Log(ILogger, LogLevel, string, object[])"/> extension method passes a <c>null</c> exception.
+        /// For example, the <see cref="LoggerExtensions.Log(ILogger,LogLevel,string,object[])"/> extension method passes a <c>null</c> exception.
         /// </remarks>
         /// <param name="level">The logging level.</param>
         /// <param name="exception">The exception.</param>
@@ -50,11 +50,11 @@ namespace Kephas.Logging.Serilog
         {
             if (exception == null)
             {
-                this.logger.Write(this.ToLogEventLevel(level), messageFormat, args);
+                this.logger.Write(SerilogManager.ToLogEventLevel(level), messageFormat, args);
             }
             else
             {
-                this.logger.Write(this.ToLogEventLevel(level), exception, messageFormat, args);
+                this.logger.Write(SerilogManager.ToLogEventLevel(level), exception, messageFormat, args);
             }
 
             return true;
@@ -69,28 +69,7 @@ namespace Kephas.Logging.Serilog
         /// </returns>
         public bool IsEnabled(LogLevel level)
         {
-            return this.logger.IsEnabled(this.ToLogEventLevel(level));
-        }
-
-        private LogEventLevel ToLogEventLevel(LogLevel level)
-        {
-            switch (level)
-            {
-                case LogLevel.Fatal:
-                    return LogEventLevel.Fatal;
-                case LogLevel.Error:
-                    return LogEventLevel.Error;
-                case LogLevel.Warning:
-                    return LogEventLevel.Warning;
-                case LogLevel.Info:
-                    return LogEventLevel.Information;
-                case LogLevel.Debug:
-                    return LogEventLevel.Debug;
-                case LogLevel.Trace:
-                    return LogEventLevel.Verbose;
-                default:
-                    return LogEventLevel.Verbose;
-            }
+            return this.logger.IsEnabled(SerilogManager.ToLogEventLevel(level));
         }
     }
 }
