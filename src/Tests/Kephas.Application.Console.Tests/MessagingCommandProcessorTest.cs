@@ -18,6 +18,7 @@ namespace Kephas.Application.Console.Tests
 
     using Kephas.Application.Console.Endpoints;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Reflection;
@@ -119,9 +120,38 @@ namespace Kephas.Application.Console.Tests
             Assert.AreEqual("Start time: 2020-02-23T00:00:00", typedResponse.Message);
         }
 
+        [Test]
+        public async Task ProcessAsync_enum_param()
+        {
+            var registry = Substitute.For<ICommandRegistry>();
+            registry.GetCommandTypes(Arg.Any<string>()).Returns(
+                ci => new List<ITypeInfo>()
+                    {
+                        typeof(EnumMessage).AsRuntimeTypeInfo(),
+                    }.Where(t => string.IsNullOrEmpty(ci.Arg<string>()) || t.Name.StartsWith(ci.Arg<string>().Substring(0, 4), StringComparison.InvariantCultureIgnoreCase)));
+            registry.ResolveCommandType("enum").Returns(typeof(EnumMessage).AsRuntimeTypeInfo());
+
+            var container = this.CreateContainer(config: b => b.WithFactory<ICommandRegistry>(() => registry));
+            var processor = container.GetExport<ICommandProcessor>();
+            var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
+            handlerRegistry.RegisterHandler<EnumMessage>((msg, ctx) => new ResponseMessage { Message = $"Log level: {msg.LogLevel}" });
+
+            var response = await processor.ProcessAsync("enum", new Expando { ["LogLevel"] = "Warning" });
+
+            Assert.IsInstanceOf<ResponseMessage>(response);
+
+            var typedResponse = (ResponseMessage)response;
+            Assert.AreEqual("LogLevel: Warning", typedResponse.Message);
+        }
+
         public class NullableParamMessage : IMessage
         {
             public DateTime? StartTime { get; set; }
+        }
+
+        public class EnumMessage : IMessage
+        {
+            public LogLevel? LogLevel { get; set; }
         }
     }
 }

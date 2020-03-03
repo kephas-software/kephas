@@ -135,7 +135,10 @@ namespace Kephas.Application.Console
         protected virtual void SetPropertyValue(IMessage message, IPropertyInfo propInfo, object value)
         {
             var propValueType = propInfo.ValueType.AsType();
-            var convertedValue = Convert.ChangeType(value, propValueType.GetNonNullableType());
+            var propBaseType = propValueType.GetNonNullableType();
+            var convertedValue = propBaseType.IsEnum
+                ? Enum.Parse(propBaseType, (string)value)
+                : Convert.ChangeType(value, propBaseType);
             propInfo.SetValue(message, convertedValue);
         }
 
