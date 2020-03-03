@@ -8,10 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Plugins.Endpoints
 {
     using Kephas.Application;
     using Kephas.ComponentModel.DataAnnotations;
+    using Kephas.Licensing;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Plugins;
@@ -76,6 +79,22 @@ namespace Kephas.Plugins.Endpoints
         public string Version { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the plugin is licensed.
+        /// </summary>
+        /// <value>
+        /// A value indicating whether the plugin is licensed.
+        /// </value>
+        public bool IsLicensed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the license data.
+        /// </summary>
+        /// <value>
+        /// The license data.
+        /// </value>
+        public LicenseData? License { get; set; }
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         /// <returns>
@@ -83,7 +102,8 @@ namespace Kephas.Plugins.Endpoints
         /// </returns>
         public override string ToString()
         {
-            return $"{new AppIdentity(this.Id, this.Version)} ({this.State} in {this.Location})";
+            var licenseString = this.IsLicensed ? "licensed" : "not licensed";
+            return $"{new AppIdentity(this.Id, this.Version)} ({this.State} in {this.Location}/{licenseString})";
         }
     }
 }

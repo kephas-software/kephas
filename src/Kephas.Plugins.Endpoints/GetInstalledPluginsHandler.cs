@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Licensing;
+using Kephas.Services;
+
 namespace Kephas.Plugins.Endpoints
 {
     using System.Linq;
@@ -23,14 +26,17 @@ namespace Kephas.Plugins.Endpoints
     public class GetInstalledPluginsHandler : MessageHandlerBase<GetInstalledPluginsMessage, GetInstalledPluginsResponseMessage>
     {
         private readonly IPluginManager pluginManager;
+        private readonly ILicensingManager licensingManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetInstalledPluginsHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">Manager for plugins.</param>
-        public GetInstalledPluginsHandler(IPluginManager pluginManager)
+        /// <param name="licensingManager">The licensing manager.</param>
+        public GetInstalledPluginsHandler(IPluginManager pluginManager, ILicensingManager licensingManager)
         {
             this.pluginManager = pluginManager;
+            this.licensingManager = licensingManager;
         }
 
         /// <summary>
@@ -48,11 +54,11 @@ namespace Kephas.Plugins.Endpoints
 
             return new GetInstalledPluginsResponseMessage
             {
-                Plugins = plugins.Select(p => this.GetPluginData(p)).ToArray(),
+                Plugins = plugins.Select(p => this.GetPluginData(p, context)).ToArray(),
             };
         }
 
-        private PluginData GetPluginData(IPlugin plugin)
+        private PluginData GetPluginData(IPlugin plugin, IContext context)
         {
             return new PluginData
             {
@@ -60,6 +66,8 @@ namespace Kephas.Plugins.Endpoints
                 Version = plugin.Identity.Version,
                 Location = plugin.Location,
                 State = plugin.State,
+                IsLicensed = this.licensingManager.CheckLicense(plugin.Identity, context).IsLicensed,
+                License = this.licensingManager.GetLicense(plugin.Identity, context),
             };
         }
     }
