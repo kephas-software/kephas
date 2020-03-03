@@ -45,7 +45,10 @@ namespace Kephas.Core.Endpoints
         /// </returns>
         public override async Task<ResponseMessage> ProcessAsync(SetLogLevelMessage message, IMessagingContext context, CancellationToken token)
         {
+            this.Logger.Warn("Changing the minimum log level from {oldLogLevel} to {logLevel} by '{user}'.", this.logManager.MinimumLevel, message.MinimumLevel, context.Identity?.Name);
             this.logManager.MinimumLevel = message.MinimumLevel;
+            this.Logger.Warn("The minimum log level changed to {logLevel} by '{user}'.", this.logManager.MinimumLevel, context.Identity?.Name);
+
             return new ResponseMessage
             {
                 Message = $"The application's minimum log level was set to {this.logManager.MinimumLevel}.",
