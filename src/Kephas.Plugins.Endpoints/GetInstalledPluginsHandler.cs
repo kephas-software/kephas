@@ -60,13 +60,15 @@ namespace Kephas.Plugins.Endpoints
 
         private PluginData GetPluginData(IPlugin plugin, IContext context)
         {
+            var licenceCheckResult = this.licensingManager.CheckLicense(plugin.Identity, context);
             return new PluginData
             {
                 Id = plugin.Identity.Id,
                 Version = plugin.Identity.Version,
                 Location = plugin.Location,
                 State = plugin.State,
-                IsLicensed = this.licensingManager.CheckLicense(plugin.Identity, context).IsLicensed,
+                IsLicensed = licenceCheckResult.IsLicensed,
+                LicenseCheckMessage = licenceCheckResult.Messages?.FirstOrDefault()?.Message,
                 License = this.licensingManager.GetLicense(plugin.Identity, context),
             };
         }

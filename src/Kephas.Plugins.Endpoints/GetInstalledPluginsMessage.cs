@@ -52,7 +52,7 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The full pathname of the plugin folder.
         /// </value>
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
         /// <summary>
         /// Gets or sets the state.
@@ -68,7 +68,7 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The identifier.
         /// </value>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or sets the version.
@@ -76,7 +76,7 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The version.
         /// </value>
-        public string Version { get; set; }
+        public string? Version { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the plugin is licensed.
@@ -85,6 +85,14 @@ namespace Kephas.Plugins.Endpoints
         /// A value indicating whether the plugin is licensed.
         /// </value>
         public bool IsLicensed { get; set; }
+
+        /// <summary>
+        /// Gets or sets a message describing the license check result.
+        /// </summary>
+        /// <value>
+        /// A message describing the license check result.
+        /// </value>
+        public string? LicenseCheckMessage { get; set; }
 
         /// <summary>
         /// Gets or sets the license data.
@@ -103,7 +111,7 @@ namespace Kephas.Plugins.Endpoints
         public override string ToString()
         {
             var licenseString = this.IsLicensed ? "licensed" : "not licensed";
-            return $"{new AppIdentity(this.Id, this.Version)} ({this.State} in {this.Location}/{licenseString})";
+            return $"{new AppIdentity(this.Id ?? "<missing app-id>", this.Version)} ({this.State} in {this.Location}/{licenseString})";
         }
     }
 }
