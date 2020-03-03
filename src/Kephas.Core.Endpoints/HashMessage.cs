@@ -28,7 +28,7 @@ namespace Kephas.Core.Endpoints
         /// The value.
         /// </value>
         [Display(Description = "The value to be hashed.")]
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
         /// <summary>
         /// Gets or sets the salt.
@@ -37,7 +37,7 @@ namespace Kephas.Core.Endpoints
         /// The salt.
         /// </value>
         [Display(Description = "Optional. The salt used in hash. If not provided, a default salt will be used if UseDefaultSalt is set to true.")]
-        public string Salt { get; set; }
+        public string? Salt { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this object use default salt.
@@ -60,6 +60,6 @@ namespace Kephas.Core.Endpoints
         /// <value>
         /// The hash.
         /// </value>
-        public string Hash { get; set; }
+        public string? Hash { get; set; }
     }
 }

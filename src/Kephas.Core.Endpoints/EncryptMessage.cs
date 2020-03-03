@@ -28,7 +28,7 @@ namespace Kephas.Core.Endpoints
         /// The encrypted value.
         /// </value>
         [Display(Description = "The value to be encrypted.")]
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
         /// <summary>
         /// Gets or sets the key.
@@ -37,7 +37,7 @@ namespace Kephas.Core.Endpoints
         /// The key.
         /// </value>
         [Display(Description = "Optional. The key used in encryption. If not provided, a default key will be used.")]
-        public string Key { get; set; }
+        public string? Key { get; set; }
     }
 
     /// <summary>
@@ -51,6 +51,6 @@ namespace Kephas.Core.Endpoints
         /// <value>
         /// The encrypted value.
         /// </value>
-        public string Encrypted { get; set; }
+        public string? Encrypted { get; set; }
     }
 }

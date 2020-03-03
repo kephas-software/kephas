@@ -8,12 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Serilog.Core;
-
 namespace Kephas.Logging.Serilog
 {
     using global::Serilog;
-
+    using global::Serilog.Core;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
