@@ -737,6 +737,7 @@ namespace Kephas.Services.Composition
             // runtime added attributes may be used
             return typeInfo.IsClass
                    && !typeInfo.IsAbstract
+                   && !typeInfo.IsNestedPrivate
                    && typeInfo.AsRuntimeTypeInfo().GetAttribute<ExcludeFromCompositionAttribute>() == null;
         }
 
