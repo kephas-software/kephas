@@ -18,7 +18,7 @@ namespace Kephas.Application.Console.Endpoints
     /// <summary>
     /// A help message.
     /// </summary>
-    [TypeDisplay(Description = "Displays the available commands.")]
+    [TypeDisplay(Description = "Displays the available commands. Use 'help <command>' to display information about the requested command.")]
     public class HelpMessage : IMessage
     {
         /// <summary>
