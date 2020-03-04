@@ -134,7 +134,11 @@ namespace Kephas.Application.Configuration
             var sectionName = settingsType.Name;
             if (sectionName.EndsWith(SettingsEnding) && sectionName.Length > SettingsEnding.Length)
             {
+#if NETSTANDARD2_1
+                sectionName = sectionName[0..^SettingsEnding.Length];
+#else
                 sectionName = sectionName.Substring(0, sectionName.Length - SettingsEnding.Length);
+#endif
             }
 
             sectionName = sectionName.ToCamelCase();

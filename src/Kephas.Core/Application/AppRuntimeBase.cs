@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
-
 #nullable enable
 
 namespace Kephas.Application
@@ -22,6 +20,7 @@ namespace Kephas.Application
     using System.Net;
     using System.Net.Sockets;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Runtime.Versioning;
 
     using Kephas.Collections;
@@ -215,7 +214,7 @@ namespace Kephas.Application
         /// <returns>
         /// A path indicating the application location.
         /// </returns>
-        public virtual string GetAppLocation() => this.appLocation ?? (this.appLocation = this.ComputeAppLocation(this.appFolder));
+        public virtual string GetAppLocation() => this.appLocation ??= this.ComputeAppLocation(this.appFolder);
 
         /// <summary>
         /// Gets the location of the application with the indicated identity.
@@ -466,11 +465,11 @@ namespace Kephas.Application
                     this.Logger.Warn("The best match for assembly '{assembly}' is '{resolvedAssembly}' from '{assemblyLocation}', which is not acceptable.", assemblyFullName, assembly, assembly.Location);
                     assembly = null;
                 }
+            }
 
-                if (assembly != null)
-                {
-                    this.Logger.Info("Assembly '{assembly}' was resolved using '{resolvedAssembly}' from '{assemblyLocation}'.", assemblyFullName, assembly, assembly.Location);
-                }
+            if (assembly != null)
+            {
+                this.Logger.Info("Assembly '{assembly}' was resolved using '{resolvedAssembly}' from '{assemblyLocation}'.", assemblyFullName, assembly, assembly.Location);
             }
 
             return assembly;
@@ -580,7 +579,7 @@ namespace Kephas.Application
         /// <returns>
         /// An array of assembly name.
         /// </returns>
-        protected virtual AssemblyName[] GetReferencedAssemblies(Assembly assembly)
+        protected virtual IEnumerable<AssemblyName> GetReferencedAssemblies(Assembly assembly)
         {
             return assembly.GetReferencedAssemblies();
         }
@@ -607,12 +606,11 @@ namespace Kephas.Application
             while (assembliesToCheck.Count > 0)
             {
                 var assemblyRefsToLoad = new HashSet<AssemblyName>();
-                foreach (var assembly in assembliesToCheck)
+                foreach (var referencesToLoad in assembliesToCheck
+                    .Select(assembly => this.GetReferencedAssemblies(assembly)
+                    .Where(a => !loadedAssemblyRefs.Contains(a.Name) && assemblyFilter(a))
+                    .ToList()))
                 {
-                    var referencesToLoad =
-                        this.GetReferencedAssemblies(assembly)
-                            .Where(a => !loadedAssemblyRefs.Contains(a.Name) && assemblyFilter(a))
-                            .ToList();
                     loadedAssemblyRefs.AddRange(referencesToLoad.Select(an => an.Name));
                     assemblyRefsToLoad.AddRange(referencesToLoad);
                 }
@@ -688,11 +686,11 @@ namespace Kephas.Application
         {
             if (!string.IsNullOrEmpty(appFolder))
             {
-                return FileSystem.NormalizePath(Path.GetFullPath(appFolder));
+                return Path.GetFullPath(appFolder);
             }
 
             var assembly = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
-            return assembly.GetLocation();
+            return assembly.GetLocationDirectory();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

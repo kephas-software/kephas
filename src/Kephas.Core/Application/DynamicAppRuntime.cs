@@ -87,7 +87,7 @@ namespace Kephas.Application
                 var assemblyFiles = this.EnumerateFiles(directory, AssemblyFileSearchPattern).Select(Path.GetFileName);
                 var assemblyFilesToLoad = assemblyFiles
                                             .Where(f => !loadedAssemblyFiles.Contains(f.ToLowerInvariant()))
-                                            .Where(f => assemblyFilter(this.GetAssemblyNameFromAssemblyFileName(f)));
+                                            .Where(f => assemblyFilter(this.GetAssemblyName(f)));
                 assemblies.AddRange(assemblyFilesToLoad
                                         .Select(f => this.LoadAssemblyFromPath(Path.Combine(directory, f)))
                                         .Where(a => assemblyFilter(a.GetName())));
@@ -116,19 +116,23 @@ namespace Kephas.Application
         /// </returns>
         protected virtual string GetFileName(Assembly assembly)
         {
-            return Path.GetFileName(assembly.GetFilePath());
+            return Path.GetFileName(assembly.Location);
         }
 
         /// <summary>
         /// Gets the assembly name from the assembly file name.
         /// </summary>
-        /// <param name="f">The format string.</param>
+        /// <param name="assemblyFileName">The assembly file name.</param>
         /// <returns>
         /// The assembly name.
         /// </returns>
-        protected AssemblyName GetAssemblyNameFromAssemblyFileName(string f)
+        protected AssemblyName GetAssemblyName(string assemblyFileName)
         {
-            return new AssemblyName(f.Substring(0, f.Length - AssemblyFileExtension.Length));
+#if NETSTANDARD2_1
+            return new AssemblyName(assemblyFileName[..^AssemblyFileExtension.Length]);
+#else
+            return new AssemblyName(assemblyFileName.Substring(0, assemblyFileName.Length - AssemblyFileExtension.Length));
+#endif
         }
     }
 }

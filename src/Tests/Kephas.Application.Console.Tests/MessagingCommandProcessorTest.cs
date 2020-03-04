@@ -66,7 +66,7 @@ namespace Kephas.Application.Console.Tests
 
             var helpResponse = (HelpResponseMessage)response;
             Assert.AreEqual("Help", helpResponse.Command);
-            Assert.AreEqual("Displays the available commands.", helpResponse.Description);
+            Assert.AreEqual("Displays the available commands. Use 'help <command>' to display information about the requested command.", helpResponse.Description);
         }
 
         [Test]

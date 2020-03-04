@@ -136,13 +136,19 @@ namespace Kephas.Application.Reflection
 
             foreach (var ending in wellKnownEndings)
             {
-                if (name.EndsWith(ending))
+                if (!name.EndsWith(ending))
                 {
-                    var featureName = name.Substring(0, name.Length - ending.Length);
-                    if (!string.IsNullOrEmpty(featureName))
-                    {
-                        return new FeatureInfo(featureName, autoVersion);
-                    }
+                    continue;
+                }
+
+#if NETSTANDARD2_1
+                var featureName = name[..^ending.Length];
+#else
+                var featureName = name.Substring(0, name.Length - ending.Length);
+#endif
+                if (!string.IsNullOrEmpty(featureName))
+                {
+                    return new FeatureInfo(featureName, autoVersion);
                 }
             }
 
