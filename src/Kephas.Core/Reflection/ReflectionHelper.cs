@@ -269,39 +269,21 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
-        /// Gets the location for the provided assembly.
+        /// Gets the location directory for the provided assembly.
         /// </summary>
         /// <param name="assembly">The assembly to be checked.</param>
         /// <returns>
-        /// The assembly location.
+        /// The assembly location directory.
         /// </returns>
-        public static string GetLocation(this Assembly assembly)
+        public static string GetLocationDirectory(this Assembly assembly)
         {
-            if (assembly == null)
+            if (assembly == null || string.IsNullOrEmpty(assembly.Location))
             {
                 return null;
             }
 
-            var location = Path.GetDirectoryName(GetFilePath(assembly));
+            var location = Path.GetDirectoryName(assembly.Location);
             return location;
-        }
-
-        /// <summary>
-        /// Gets the file path to the loaded assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>
-        /// The file path of the loaded assembly.
-        /// </returns>
-        public static string GetFilePath(this Assembly assembly)
-        {
-            if (assembly == null)
-            {
-                return null;
-            }
-
-            var codebaseUri = new Uri(assembly.CodeBase);
-            return Uri.UnescapeDataString(codebaseUri.AbsolutePath);
         }
 
         /// <summary>
