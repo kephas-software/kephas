@@ -62,7 +62,7 @@ namespace Kephas.Application.Console
         /// </returns>
         public Task<object> ProcessAsync(string command, IExpando args = null, IContext context = null, CancellationToken cancellationToken = default)
         {
-            var message = this.CreateMessage(command, args = args ?? new Expando());
+            var message = this.CreateMessage(command, args ??= new Expando());
             return this.ProcessMessageAsync(message, args, context, cancellationToken);
         }
 
