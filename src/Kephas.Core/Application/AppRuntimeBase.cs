@@ -124,8 +124,7 @@ namespace Kephas.Application
             IExpando? appArgs = null)
             : base(isThreadSafe: true)
         {
-            this.getLogger = getLogger ?? (name => NullLogManager.GetNullLogger(name));
-            this.TypeLoader = new DefaultTypeLoader();
+            this.getLogger = getLogger ?? NullLogManager.GetNullLogger;
             this.CheckLicense = checkLicense ?? ((appid, ctx) => new LicenseCheckResult(appid, true));
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
             this.appFolder = appFolder;
@@ -161,14 +160,6 @@ namespace Kephas.Application
         /// The assembly filter.
         /// </value>
         protected Func<AssemblyName, bool> AssemblyFilter { get; }
-
-        /// <summary>
-        /// Gets the type loader.
-        /// </summary>
-        /// <value>
-        /// The type loader.
-        /// </value>
-        protected ITypeLoader TypeLoader { get; }
 
         /// <summary>
         /// Gets the initialization monitor.
@@ -262,7 +253,7 @@ namespace Kephas.Application
         /// <returns>
         /// The application configuration directories.
         /// </returns>
-        public IEnumerable<string> GetAppConfigLocations() => this.configLocations ?? (this.configLocations = this.ComputeConfigLocations(this.configFolders));
+        public IEnumerable<string> GetAppConfigLocations() => this.configLocations ??= this.ComputeConfigLocations(this.configFolders);
 
         /// <summary>
         /// Gets the application directories where license files are stored.
@@ -270,7 +261,7 @@ namespace Kephas.Application
         /// <returns>
         /// The application configuration directories.
         /// </returns>
-        public IEnumerable<string> GetAppLicenseLocations() => this.licenseLocations ?? (this.licenseLocations = this.ComputeLicenseLocations(this.licenseFolders));
+        public IEnumerable<string> GetAppLicenseLocations() => this.licenseLocations ??= this.ComputeLicenseLocations(this.licenseFolders);
 
         /// <summary>
         /// Gets the application assemblies.
