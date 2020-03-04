@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 #nullable enable
 
 namespace Kephas.Application
@@ -50,7 +52,7 @@ namespace Kephas.Application
         /// <summary>
         /// The default license folder.
         /// </summary>
-        public const string DefaultLicenseFolder = "License";
+        public const string DefaultLicenseFolder = "Licenses";
 
         /// <summary>
         /// The application identifier key.
@@ -693,33 +695,26 @@ namespace Kephas.Application
             return assembly.GetLocation();
         }
 
-        private string[] ComputeConfigLocations(IEnumerable<string>? configFolders)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private string[] ComputeConfigLocations(IEnumerable<string>? configFolders) =>
+            this.ComputeLocations(configFolders, DefaultConfigFolder);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private string[] ComputeLicenseLocations(IEnumerable<string>? licenseFolders) =>
+            this.ComputeLocations(licenseFolders, DefaultLicenseFolder);
+
+        private string[] ComputeLocations(IEnumerable<string>? folders, string defaultFolder)
         {
-            if (configFolders == null)
+            if (folders == null)
             {
-                return new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultConfigFolder)) };
+                return new[] { this.GetFullPath(defaultFolder) };
             }
 
             var locations = new List<string>();
-            locations.AddRange(this.GetAppBinLocations().SelectMany(l => configFolders.Select(f => FileSystem.NormalizePath(Path.GetFullPath(Path.IsPathRooted(f) ? f : Path.Combine(l, f))))));
+            locations.AddRange(folders.Select(this.GetFullPath));
 
             return locations.Count == 0
-                ? new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultConfigFolder)) }
-                : locations.Distinct().ToArray();
-        }
-
-        private string[] ComputeLicenseLocations(IEnumerable<string>? licenseFolders)
-        {
-            if (licenseFolders == null)
-            {
-                return new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultLicenseFolder)) };
-            }
-
-            var locations = new List<string>();
-            locations.AddRange(this.GetAppBinLocations().SelectMany(l => licenseFolders.Select(f => FileSystem.NormalizePath(Path.GetFullPath(Path.IsPathRooted(f) ? f : Path.Combine(l, f))))));
-
-            return locations.Count == 0
-                ? new[] { FileSystem.NormalizePath(this.GetFullPath(DefaultLicenseFolder)) }
+                ? new[] { this.GetFullPath(defaultFolder) }
                 : locations.Distinct().ToArray();
         }
     }

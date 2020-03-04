@@ -20,6 +20,7 @@ namespace Kephas.Application
     using System.Runtime.CompilerServices;
 
     using Kephas.Dynamic;
+    using Kephas.IO;
 
     /// <summary>
     /// Interface for abstracting away the runtime for the application.
@@ -166,18 +167,22 @@ namespace Kephas.Application
         public static string? GetAppInstanceId(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppInstanceIdKey] as string;
 
         /// <summary>
-        /// Gets the full path of the file or folder name. If the name is a relative path, it will be made relative to the application location.
+        /// Gets the full path of the file or folder. If the name is a relative path, it will be made relative to the application location.
         /// </summary>
         /// <param name="appRuntime">The app runtime to act on.</param>
-        /// <param name="fileName">Name of the file or folder.</param>
+        /// <param name="path">Relative or absolute path of the file or folder.</param>
         /// <returns>
-        /// The full path of the file or folder name.
+        /// The full path of the file or folder.
         /// </returns>
-        public static string GetFullPath(this IAppRuntime appRuntime, string fileName)
+        public static string GetFullPath(this IAppRuntime appRuntime, string? path)
         {
-            return string.IsNullOrEmpty(fileName)
-                ? appRuntime.GetAppLocation()
-                : Path.GetFullPath(Path.IsPathRooted(fileName) ? fileName : Path.Combine(appRuntime.GetAppLocation(), fileName));
+            if (string.IsNullOrEmpty(path))
+            {
+                return appRuntime.GetAppLocation();
+            }
+
+            path = FileSystem.NormalizePath(path);
+            return Path.GetFullPath(Path.IsPathRooted(path) ? path : Path.Combine(appRuntime.GetAppLocation(), path));
         }
     }
 }
