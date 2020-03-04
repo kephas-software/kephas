@@ -179,7 +179,7 @@ namespace Kephas.Plugins.Application
                 appDirectories.AddRange(pluginsDirectories.Where(this.CanLoadEmbeddedPlugin));
             }
 
-            this.Logger.Info(Strings.PluginsAppRuntime_LoadingApplicationFolders_Message, appDirectories, this.EnablePlugins ? "enabled" : "disabled");
+            this.Logger.Debug(Strings.PluginsAppRuntime_LoadingApplicationFolders_Message, appDirectories, this.EnablePlugins ? "enabled" : "disabled");
 
             return appDirectories;
         }
