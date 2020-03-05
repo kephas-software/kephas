@@ -37,6 +37,11 @@ namespace Kephas.Plugins
         Disabled,
 
         /// <summary>
+        /// The plugin is being prepared for uninstallation, it awaits uninitialization.
+        /// </summary>
+        PendingUninitialization,
+
+        /// <summary>
         /// The plugin specific data has been uninstalled, it awaits final removal of folders.
         /// </summary>
         PendingUninstallation,

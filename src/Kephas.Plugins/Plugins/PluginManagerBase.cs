@@ -175,17 +175,6 @@ namespace Kephas.Plugins
         }
 
         /// <summary>
-        /// Downloads the plugin asynchronously (core implementation).
-        /// </summary>
-        /// <param name="pluginIdentity">The plugin identity.</param>
-        /// <param name="context">Plugin context for controlling the operation.</param>
-        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
-        /// <returns>
-        /// An asynchronous result that yields the download operation result.
-        /// </returns>
-        protected abstract Task<IOperationResult> DownloadPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken);
-
-        /// <summary>
         /// Installs the plugin asynchronously.
         /// </summary>
         /// <param name="pluginIdentity">The plugin identity.</param>
@@ -202,7 +191,7 @@ namespace Kephas.Plugins
                 {
                     // set the plugin identity in the options with the value provided, which should include
                     // the version, too. Before installation, the version returned from the store is empty.
-                    Action<IPluginContext> installOptions = ctx =>
+                    void InstallOptions(IPluginContext ctx) =>
                         ctx.Merge(options)
                             .Operation(PluginOperation.Install, overwrite: false)
                             .PluginIdentity(pluginIdentity);
@@ -213,7 +202,7 @@ namespace Kephas.Plugins
                     var installComplete = false;
                     var initializeComplete = false;
                     using (var installContext = this.CreatePluginContext(options)
-                            .Merge(installOptions)
+                            .Merge((Action<IPluginContext>) InstallOptions)
                             .PluginData(pluginData)
                             .Transaction(new InstallTransaction(pluginData)))
                     {
@@ -230,7 +219,7 @@ namespace Kephas.Plugins
                                 .MergeMessages(installWrappedResult.ReturnValue)
                                 .MergeMessage($"Plugin {pluginIdentity} successfully installed, awaiting initialization. Elapsed: {installWrappedResult.Elapsed:c}.");
 
-                            this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.PendingInitialization));
+                            this.SetPluginState(pluginData, PluginState.PendingInitialization);
 
                             pluginData = this.GetInstalledPluginData(pluginIdentity);
                             installComplete = pluginData.State == PluginState.PendingInitialization;
@@ -249,7 +238,7 @@ namespace Kephas.Plugins
                             try
                             {
                                 result.MergeAll(
-                                    await this.InitializePluginAsync(pluginIdentity, installOptions, cancellationToken)
+                                    await this.InitializePluginAsync(pluginIdentity, InstallOptions, cancellationToken)
                                         .PreserveThreadContext());
                             }
                             catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
@@ -312,7 +301,9 @@ namespace Kephas.Plugins
                             .PluginData(pluginData)
                             .Transaction(new InstallTransaction(pluginData)))
                     {
-                        if (this.CanUninitializePlugin(pluginData, uninstallContext) || this.CanDisablePlugin(pluginData, uninstallContext))
+                        if (this.CanUninitializePlugin(pluginData, uninstallContext)
+                            || this.CanPrepareUninitializationPlugin(pluginData, uninstallContext)
+                            || this.CanDisablePlugin(pluginData, uninstallContext))
                         {
                             try
                             {
@@ -345,7 +336,7 @@ namespace Kephas.Plugins
 
                             try
                             {
-                                this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.None));
+                                this.SetPluginState(pluginData, PluginState.None);
                             }
                             catch (DirectoryNotFoundException)
                             {
@@ -428,7 +419,7 @@ namespace Kephas.Plugins
                                 .MergeAll(initWrappedResult.ReturnValue)
                                 .ReturnValue(plugin);
 
-                            this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.Disabled));
+                            this.SetPluginState(pluginData, PluginState.Disabled);
 
                             pluginData = this.GetInstalledPluginData(pluginIdentity);
                             initializeComplete = pluginData.State == PluginState.Disabled;
@@ -444,7 +435,7 @@ namespace Kephas.Plugins
                         }
                         catch
                         {
-                            this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.Corrupt));
+                            this.SetPluginState(pluginData, PluginState.Corrupt);
                             throw;
                         }
 
@@ -483,6 +474,102 @@ namespace Kephas.Plugins
         }
 
         /// <summary>
+        /// Prepares the uninitialization procedure of the plugin asynchronously.
+        /// </summary>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the prepare uninitialize operation result.
+        /// </returns>
+        public virtual async Task<IOperationResult<IPlugin>> PrepareUninitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        {
+            var result = new OperationResult<IPlugin>();
+            var prepareUninitializeComplete = false;
+            var opResult = await Profiler.WithStopwatchAsync(
+                async () =>
+                {
+                    var pluginData = this.GetInstalledPluginData(pluginIdentity);
+                    pluginIdentity = pluginData.Identity;
+
+                    void PrepareUninitializeOptions(IPluginContext ctx) =>
+                        ctx.Merge(options)
+                            .Operation(PluginOperation.PrepareUninitialization, overwrite: false)
+                            .PluginIdentity(pluginIdentity);
+
+                    using var prepareUninitializationContext = this.CreatePluginContext(PrepareUninitializeOptions)
+                        .PluginData(pluginData);
+
+                    if (this.CanDisablePlugin(pluginData, prepareUninitializationContext))
+                    {
+                        try
+                        {
+                            result.MergeAll(
+                                await this.DisablePluginAsync(pluginIdentity, PrepareUninitializeOptions, cancellationToken)
+                                    .PreserveThreadContext());
+                        }
+                        catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
+                        {
+                            result.MergeException(ex);
+                            if (ex is PluginOperationException pex)
+                            {
+                                result.MergeMessages(pex.Result);
+                            }
+                        }
+
+                        pluginData = this.GetInstalledPluginData(pluginIdentity);
+                    }
+
+                    var plugin = this.ToPlugin(pluginData);
+                    result.ReturnValue(plugin);
+
+                    prepareUninitializationContext
+                        .PluginData(pluginData)
+                        .Plugin(plugin);
+                    if (!this.CanPrepareUninitializationPlugin(pluginData, prepareUninitializationContext))
+                    {
+                        throw new PluginOperationException(
+                            $"Plugin {pluginIdentity} cannot be prepared for uninitialization. State '{pluginData.State}'.",
+                            result,
+                            prepareUninitializationContext.Operation == PluginOperation.PrepareUninitialization ? SeverityLevel.Error : SeverityLevel.Warning);
+                    }
+
+                    try
+                    {
+                        var uninitWrappedResult = await Profiler.WithStopwatchAsync(
+                            () => this.PrepareUninitializePluginCoreAsync(pluginIdentity, prepareUninitializationContext, cancellationToken)).PreserveThreadContext();
+                        result.MergeAll(uninitWrappedResult.ReturnValue);
+
+                        this.SetPluginState(pluginData, PluginState.PendingUninitialization);
+
+                        pluginData = this.GetInstalledPluginData(pluginIdentity);
+                        prepareUninitializeComplete = pluginData.State == PluginState.PendingUninitialization;
+                    }
+                    catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
+                    {
+                        // treat non-errors as ignorable, meaning that the plugin state is not changed to corrupt.
+                        throw;
+                    }
+                    catch
+                    {
+                        this.SetPluginState(pluginData, PluginState.Corrupt);
+                        throw;
+                    }
+
+                    return plugin;
+                }).PreserveThreadContext();
+
+            this.Logger.Info("Plugin {plugin} successfully prepared for uninitialization, awaiting uninitialization. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
+
+            result
+                .MergeAll(opResult)
+                .MergeMessage($"Plugin {pluginIdentity} successfully prepared for uninitialization. Elapsed: {opResult.Elapsed:c}.")
+                .Complete(opResult.Elapsed);
+
+            return result;
+        }
+
+        /// <summary>
         /// Uninitializes the plugin asynchronously.
         /// </summary>
         /// <param name="pluginIdentity">The plugin identity.</param>
@@ -501,76 +588,76 @@ namespace Kephas.Plugins
                     var pluginData = this.GetInstalledPluginData(pluginIdentity);
                     pluginIdentity = pluginData.Identity;
 
-                    Action<IPluginContext> uninitializeOptions = ctx => ctx
-                        .Merge(options)
-                        .Operation(PluginOperation.Uninitialize, overwrite: false)
-                        .PluginIdentity(pluginIdentity);
+                    void UninitializeOptions(IPluginContext ctx) =>
+                        ctx.Merge(options)
+                            .Operation(PluginOperation.Uninitialize, overwrite: false)
+                            .PluginIdentity(pluginIdentity);
 
-                    using (var uninitializeContext = this.CreatePluginContext(uninitializeOptions)
-                        .PluginData(pluginData))
+                    using var uninitializeContext = this.CreatePluginContext(UninitializeOptions)
+                        .PluginData(pluginData);
+
+                    if (this.CanPrepareUninitializationPlugin(pluginData, uninitializeContext)
+                        || this.CanDisablePlugin(pluginData, uninitializeContext))
                     {
-                        if (this.CanDisablePlugin(pluginData, uninitializeContext))
-                        {
-                            try
-                            {
-                                result.MergeAll(
-                                    await this.DisablePluginAsync(pluginIdentity, uninitializeOptions, cancellationToken)
-                                        .PreserveThreadContext());
-                            }
-                            catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
-                            {
-                                result.MergeException(ex);
-                                if (ex is PluginOperationException pex)
-                                {
-                                    result.MergeMessages(pex.Result);
-                                }
-                            }
-
-                            pluginData = this.GetInstalledPluginData(pluginIdentity);
-                        }
-
-                        var plugin = this.ToPlugin(pluginData);
-                        result.ReturnValue(plugin);
-
-                        uninitializeContext
-                            .PluginData(pluginData)
-                            .Plugin(plugin);
-                        if (!this.CanUninitializePlugin(pluginData, uninitializeContext))
-                        {
-                            throw new PluginOperationException(
-                                $"Plugin {pluginIdentity} cannot be uninitialized. State '{pluginData.State}'.",
-                                result,
-                                uninitializeContext.Operation == PluginOperation.Uninitialize ? SeverityLevel.Error : SeverityLevel.Warning);
-                        }
-
-                        await this.EventHub.PublishAsync(new UninitializingPluginSignal(pluginIdentity, uninitializeContext), uninitializeContext, cancellationToken).PreserveThreadContext();
-
                         try
                         {
-                            var uninitWrappedResult = await Profiler.WithStopwatchAsync(
-                                () => this.UninitializePluginCoreAsync(pluginIdentity, uninitializeContext, cancellationToken)).PreserveThreadContext();
-                            result.MergeAll(uninitWrappedResult.ReturnValue);
-
-                            this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.PendingUninstallation));
-
-                            pluginData = this.GetInstalledPluginData(pluginIdentity);
-                            uninitializeComplete = pluginData.State == PluginState.PendingUninstallation;
+                            result.MergeAll(
+                                await this.PrepareUninitializePluginAsync(pluginIdentity, UninitializeOptions, cancellationToken)
+                                    .PreserveThreadContext());
                         }
                         catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
                         {
-                            // treat non-errors as ignorable, meaning that the plugin state is not changed to corrupt.
-                            throw;
-                        }
-                        catch
-                        {
-                            this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.Corrupt));
-                            throw;
+                            result.MergeException(ex);
+                            if (ex is PluginOperationException pex)
+                            {
+                                result.MergeMessages(pex.Result);
+                            }
                         }
 
-                        await this.EventHub.PublishAsync(new UninitializedPluginSignal(pluginIdentity, uninitializeContext, result), uninitializeContext, cancellationToken).PreserveThreadContext();
-
-                        return plugin;
+                        pluginData = this.GetInstalledPluginData(pluginIdentity);
                     }
+
+                    var plugin = this.ToPlugin(pluginData);
+                    result.ReturnValue(plugin);
+
+                    uninitializeContext
+                        .PluginData(pluginData)
+                        .Plugin(plugin);
+                    if (!this.CanUninitializePlugin(pluginData, uninitializeContext))
+                    {
+                        throw new PluginOperationException(
+                            $"Plugin {pluginIdentity} cannot be uninitialized. State '{pluginData.State}'.",
+                            result,
+                            uninitializeContext.Operation == PluginOperation.Uninitialize ? SeverityLevel.Error : SeverityLevel.Warning);
+                    }
+
+                    await this.EventHub.PublishAsync(new UninitializingPluginSignal(pluginIdentity, uninitializeContext), uninitializeContext, cancellationToken).PreserveThreadContext();
+
+                    try
+                    {
+                        var uninitWrappedResult = await Profiler.WithStopwatchAsync(
+                            () => this.UninitializePluginCoreAsync(pluginIdentity, uninitializeContext, cancellationToken)).PreserveThreadContext();
+                        result.MergeAll(uninitWrappedResult.ReturnValue);
+
+                        this.SetPluginState(pluginData, PluginState.PendingUninstallation);
+
+                        pluginData = this.GetInstalledPluginData(pluginIdentity);
+                        uninitializeComplete = pluginData.State == PluginState.PendingUninstallation;
+                    }
+                    catch (Exception ex) when (ex is ISeverityQualifiedNotification qex && !qex.Severity.IsError())
+                    {
+                        // treat non-errors as ignorable, meaning that the plugin state is not changed to corrupt.
+                        throw;
+                    }
+                    catch
+                    {
+                        this.SetPluginState(pluginData, PluginState.Corrupt);
+                        throw;
+                    }
+
+                    await this.EventHub.PublishAsync(new UninitializedPluginSignal(pluginIdentity, uninitializeContext, result), uninitializeContext, cancellationToken).PreserveThreadContext();
+
+                    return plugin;
                 }).PreserveThreadContext();
 
             this.Logger.Info("Plugin {plugin} successfully uninitialized, awaiting uninstallation. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
@@ -598,32 +685,31 @@ namespace Kephas.Plugins
             var opResult = await Profiler.WithStopwatchAsync(
                 async () =>
                 {
-                    using (var enableContext = this.CreatePluginContext(ctx => ctx.Merge(options)
-                                 .Operation(PluginOperation.Enable, overwrite: false)))
+                    using var enableContext = this.CreatePluginContext(ctx => ctx.Merge(options)
+                        .Operation(PluginOperation.Enable, overwrite: false));
+
+                    var pluginData = this.GetInstalledPluginData(pluginIdentity);
+                    pluginIdentity = pluginData.Identity;
+
+                    enableContext.PluginData(pluginData);
+
+                    if (!this.CanEnablePlugin(pluginData, enableContext))
                     {
-                        var pluginData = this.GetInstalledPluginData(pluginIdentity);
-                        pluginIdentity = pluginData.Identity;
-
-                        enableContext.PluginData(pluginData);
-
-                        if (!this.CanEnablePlugin(pluginData, enableContext))
-                        {
-                            throw new PluginOperationException(
-                                $"Plugin {pluginIdentity} cannot be enabled. State '{pluginData.State}'.",
-                                result,
-                                enableContext.Operation == PluginOperation.Enable ? SeverityLevel.Error : SeverityLevel.Warning);
-                        }
-
-                        var enableWrappedResult = await Profiler.WithStopwatchAsync(
-                            () => this.EnablePluginCoreAsync(pluginIdentity, enableContext, cancellationToken)).PreserveThreadContext();
-                        result.MergeAll(enableWrappedResult.ReturnValue);
-
-                        this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.Enabled));
-
-                        pluginData = this.GetInstalledPluginData(pluginIdentity);
-
-                        return this.ToPlugin(pluginData);
+                        throw new PluginOperationException(
+                            $"Plugin {pluginIdentity} cannot be enabled. State '{pluginData.State}'.",
+                            result,
+                            enableContext.Operation == PluginOperation.Enable ? SeverityLevel.Error : SeverityLevel.Warning);
                     }
+
+                    var enableWrappedResult = await Profiler.WithStopwatchAsync(
+                        () => this.EnablePluginCoreAsync(pluginIdentity, enableContext, cancellationToken)).PreserveThreadContext();
+                    result.MergeAll(enableWrappedResult.ReturnValue);
+
+                    this.SetPluginState(pluginData, PluginState.Enabled);
+
+                    pluginData = this.GetInstalledPluginData(pluginIdentity);
+
+                    return this.ToPlugin(pluginData);
                 }).PreserveThreadContext();
 
             this.Logger.Info("Plugin {plugin} successfully enabled. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
@@ -649,30 +735,29 @@ namespace Kephas.Plugins
             var opResult = await Profiler.WithStopwatchAsync(
                 async () =>
                 {
-                    using (var disableContext = this.CreatePluginContext(ctx => ctx.Merge(options)
-                                .Operation(PluginOperation.Disable, overwrite: false)))
+                    using var disableContext = this.CreatePluginContext(ctx => ctx.Merge(options)
+                        .Operation(PluginOperation.Disable, overwrite: false));
+
+                    var pluginData = this.GetInstalledPluginData(pluginIdentity);
+                    pluginIdentity = pluginData.Identity;
+
+                    if (!this.CanDisablePlugin(pluginData, disableContext))
                     {
-                        var pluginData = this.GetInstalledPluginData(pluginIdentity);
-                        pluginIdentity = pluginData.Identity;
-
-                        if (!this.CanDisablePlugin(pluginData, disableContext))
-                        {
-                            throw new PluginOperationException(
-                                $"Plugin {pluginIdentity} cannot be disabled. State '{pluginData.State}'.",
-                                result,
-                                disableContext.Operation == PluginOperation.Disable ? SeverityLevel.Error : SeverityLevel.Warning);
-                        }
-
-                        var disableWrappedResult = await Profiler.WithStopwatchAsync(
-                            () => this.DisablePluginCoreAsync(pluginIdentity, disableContext, cancellationToken)).PreserveThreadContext();
-                        result.MergeAll(disableWrappedResult.ReturnValue);
-
-                        this.PluginRepository.StorePluginData(pluginData.ChangeState(PluginState.Disabled));
-
-                        pluginData = this.GetInstalledPluginData(pluginIdentity);
-
-                        return this.ToPlugin(pluginData);
+                        throw new PluginOperationException(
+                            $"Plugin {pluginIdentity} cannot be disabled. State '{pluginData.State}'.",
+                            result,
+                            disableContext.Operation == PluginOperation.Disable ? SeverityLevel.Error : SeverityLevel.Warning);
                     }
+
+                    var disableWrappedResult = await Profiler.WithStopwatchAsync(
+                        () => this.DisablePluginCoreAsync(pluginIdentity, disableContext, cancellationToken)).PreserveThreadContext();
+                    result.MergeAll(disableWrappedResult.ReturnValue);
+
+                    this.SetPluginState(pluginData, PluginState.Disabled);
+
+                    pluginData = this.GetInstalledPluginData(pluginIdentity);
+
+                    return this.ToPlugin(pluginData);
                 }).PreserveThreadContext();
 
             this.Logger.Warn("Plugin {plugin} successfully disabled. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
@@ -716,19 +801,19 @@ namespace Kephas.Plugins
 
                     var pluginDataBefore = this.GetInstalledPluginData(new AppIdentity(pluginIdentity.Id));
 
-                    Action<IPluginContext> updateOptions = ctx =>
+                    void UpdateOptions(IPluginContext ctx) =>
                         ctx.Merge(options)
                             .Operation(PluginOperation.Update, overwrite: false);
 
                     var uninstResult = await this.UninstallPluginAsync(
                         pluginDataBefore.Identity,
-                        ctx => ctx.Merge(updateOptions).PluginIdentity(pluginDataBefore.Identity),
+                        ctx => ctx.Merge((Action<IPluginContext>)UpdateOptions).PluginIdentity(pluginDataBefore.Identity),
                         cancellationToken).PreserveThreadContext();
                     result.MergeAll(uninstResult);
 
                     var instResult = await this.InstallPluginAsync(
                         pluginIdentity,
-                        ctx => ctx.Merge(updateOptions).PluginIdentity(pluginIdentity),
+                        ctx => ctx.Merge((Action<IPluginContext>)UpdateOptions).PluginIdentity(pluginIdentity),
                         cancellationToken).PreserveThreadContext();
                     result.MergeAll(instResult);
 
@@ -806,6 +891,19 @@ namespace Kephas.Plugins
         }
 
         /// <summary>
+        /// Determines whether the plugin can be prepared for uninitialization.
+        /// </summary>
+        /// <param name="pluginData">Information describing the plugin.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// True if the plugin can be prepared for uninitialization, false if not.
+        /// </returns>
+        protected virtual bool CanPrepareUninitializationPlugin(PluginData pluginData, IPluginContext context)
+        {
+            return pluginData.State == PluginState.Disabled;
+        }
+
+        /// <summary>
         /// Determines whether the plugin can be uninitialized.
         /// </summary>
         /// <param name="pluginData">Information describing the plugin.</param>
@@ -815,7 +913,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual bool CanUninitializePlugin(PluginData pluginData, IPluginContext context)
         {
-            return pluginData.State == PluginState.Disabled;
+            return pluginData.State == PluginState.PendingUninitialization;
         }
 
         /// <summary>
@@ -895,6 +993,17 @@ namespace Kephas.Plugins
         }
 
         /// <summary>
+        /// Downloads the plugin asynchronously (core implementation).
+        /// </summary>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="context">Plugin context for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the download operation result.
+        /// </returns>
+        protected abstract Task<IOperationResult> DownloadPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Enables the plugin asynchronously (core implementation).
         /// </summary>
         /// <param name="pluginIdentity">The plugin identity.</param>
@@ -932,6 +1041,20 @@ namespace Kephas.Plugins
         /// An asynchronous result.
         /// </returns>
         protected virtual Task<IOperationResult> InitializePluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
+        {
+            return Task.FromResult<IOperationResult>(new OperationResult());
+        }
+
+        /// <summary>
+        /// Prepares the plugin uninitialization asynchronously (core implementation).
+        /// </summary>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        protected virtual Task<IOperationResult> PrepareUninitializePluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult<IOperationResult>(new OperationResult());
         }
@@ -982,6 +1105,52 @@ namespace Kephas.Plugins
 
             return new OperationResult<IPlugin>(context.Plugin)
                 .MergeMessages(rollbackResult);
+        }
+
+        /// <summary>
+        /// Ensures that the assemblies probing path for the provided plugin is added.
+        /// </summary>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        protected virtual void EnsurePluginAssembliesProbingPathAdded(AppIdentity pluginIdentity)
+        {
+#if NET461
+#endif
+        }
+
+        /// <summary>
+        /// Ensures that the assemblies probing path for the provided plugin is removed.
+        /// </summary>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        protected virtual void EnsurePluginAssembliesProbingPathRemoved(AppIdentity pluginIdentity)
+        {
+#if NET461
+#endif
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the plugin state requires that binaries are loaded.
+        /// </summary>
+        /// <param name="state">The plugin state.</param>
+        /// <returns>A value indicating whether the plugin state requires that binaries are loaded.</returns>
+        private bool RequiresLoadedBinaries(PluginState state)
+        {
+            return state == PluginState.Enabled
+                   || state == PluginState.PendingInitialization
+                   || state == PluginState.PendingUninitialization;
+        }
+
+        private void SetPluginState(PluginData pluginData, PluginState state)
+        {
+            if (this.RequiresLoadedBinaries(state))
+            {
+                this.EnsurePluginAssembliesProbingPathAdded(pluginData.Identity);
+            }
+            else
+            {
+                this.EnsurePluginAssembliesProbingPathRemoved(pluginData.Identity);
+            }
+
+            this.PluginRepository.StorePluginData(pluginData.ChangeState(state));
         }
     }
 }

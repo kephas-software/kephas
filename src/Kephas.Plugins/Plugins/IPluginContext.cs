@@ -22,37 +22,42 @@ namespace Kephas.Plugins
     public enum PluginOperation
     {
         /// <summary>
-        /// An enum constant representing the install option.
+        /// The plugin is being installed.
         /// </summary>
         Install,
 
         /// <summary>
-        /// An enum constant representing the initialize option.
+        /// The plugin is being initialized.
         /// </summary>
         Initialize,
 
         /// <summary>
-        /// An enum constant representing the enable option.
+        /// The plugin is being enabled.
         /// </summary>
         Enable,
 
         /// <summary>
-        /// An enum constant representing the disable option.
+        /// The plugin is being disabled.
         /// </summary>
         Disable,
 
         /// <summary>
-        /// An enum constant representing the uninitialize option.
+        /// The plugin is being prepared for uninitialization.
+        /// </summary>
+        PrepareUninitialization,
+
+        /// <summary>
+        /// The plugin is being uninitialized.
         /// </summary>
         Uninitialize,
 
         /// <summary>
-        /// An enum constant representing the uninstall option.
+        /// The plugin is being uninstalled.
         /// </summary>
         Uninstall,
 
         /// <summary>
-        /// An enum constant representing the update option.
+        /// The plugin is being updated.
         /// </summary>
         Update,
 
