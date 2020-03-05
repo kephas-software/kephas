@@ -288,7 +288,9 @@ namespace Kephas.Plugins.Application
             var pluginData = this.PluginRepository.GetPluginData(pluginIdentity);
             pluginIdentity = pluginData.Identity;
 
-            var shouldLoadPlugin = (pluginData.State == PluginState.PendingInitialization || pluginData.State == PluginState.Enabled)
+            var shouldLoadPlugin = (pluginData.State == PluginState.PendingInitialization
+                                            || pluginData.State == PluginState.Enabled
+                                            || pluginData.State == PluginState.PendingUninitialization)
                                         && pluginData.Kind == PluginKind.Embedded;
             if (shouldLoadPlugin)
             {
