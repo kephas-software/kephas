@@ -469,7 +469,7 @@ namespace Kephas.Application
 
             if (assembly != null)
             {
-                this.Logger.Info("Assembly '{assembly}' was resolved using '{resolvedAssembly}' from '{assemblyLocation}'.", assemblyFullName, assembly, assembly.Location);
+                this.Logger.Debug("Assembly '{assembly}' was resolved using '{resolvedAssembly}' from '{assemblyLocation}'.", assemblyFullName, assembly, assembly.Location);
             }
 
             return assembly;
