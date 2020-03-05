@@ -53,7 +53,8 @@ namespace Kephas.Plugins.Endpoints
             this.appContext.Logger.Info("Retrieving {count} packages for {search}...", message.Take, message.SearchTerm ?? "<all>");
 
             var result = await this.pluginManager.GetAvailablePluginsAsync(
-                f => f.SearchTerm(message.SearchTerm)
+                f => f.PluginIdentity(string.IsNullOrEmpty(message.Id) ? null : new AppIdentity(message.Id))
+                      .SearchTerm(message.SearchTerm)
                       .IncludePrerelease(message.IncludePrerelease)
                       .Skip(message.Skip)
                       .Take(message.Take),
