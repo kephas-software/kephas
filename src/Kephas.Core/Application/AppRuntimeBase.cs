@@ -629,7 +629,7 @@ namespace Kephas.Application
         protected virtual void InitializeCore(IContext? context = null)
         {
 #if NET461
-            AppDomain.CurrentDomain.AssemblyResolve -= this.HandleAssemblyResolve;
+            AppDomain.CurrentDomain.AssemblyResolve += this.HandleAssemblyResolve;
 #else
             AssemblyLoadContext.Default.Resolving += this.HandleAssemblyResolving;
 #endif

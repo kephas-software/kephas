@@ -202,7 +202,7 @@ namespace Kephas.Plugins
                     var installComplete = false;
                     var initializeComplete = false;
                     using (var installContext = this.CreatePluginContext(options)
-                            .Merge((Action<IPluginContext>) InstallOptions)
+                            .Merge((Action<IPluginContext>)InstallOptions)
                             .PluginData(pluginData)
                             .Transaction(new InstallTransaction(pluginData)))
                     {
@@ -1113,8 +1113,6 @@ namespace Kephas.Plugins
         /// <param name="pluginIdentity">The plugin identity.</param>
         protected virtual void EnsurePluginAssembliesProbingPathAdded(AppIdentity pluginIdentity)
         {
-#if NET461
-#endif
         }
 
         /// <summary>
@@ -1123,8 +1121,6 @@ namespace Kephas.Plugins
         /// <param name="pluginIdentity">The plugin identity.</param>
         protected virtual void EnsurePluginAssembliesProbingPathRemoved(AppIdentity pluginIdentity)
         {
-#if NET461
-#endif
         }
 
         /// <summary>

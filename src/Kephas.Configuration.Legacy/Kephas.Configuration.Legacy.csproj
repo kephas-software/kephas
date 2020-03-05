@@ -71,7 +71,7 @@
         </When>
         <Otherwise>
             <ItemGroup>
-                <PackageReference Include="System.Dynamic.Runtime" version="4.3.0" />
+                <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
                 <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
             </ItemGroup>
         </Otherwise>

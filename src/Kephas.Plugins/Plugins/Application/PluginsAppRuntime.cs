@@ -176,7 +176,7 @@ namespace Kephas.Plugins.Application
             if (this.EnablePlugins)
             {
                 var pluginsDirectories = this.GetPluginsInstallationLocations();
-                appDirectories.AddRange(pluginsDirectories.Where(this.CanLoadEmbeddedPlugin));
+                appDirectories.AddRange(pluginsDirectories.Where(this.CanLoadEmbeddedPluginBinaries));
             }
 
             this.Logger.Debug(Strings.PluginsAppRuntime_LoadingApplicationFolders_Message, appDirectories, this.EnablePlugins ? "enabled" : "disabled");
@@ -274,14 +274,14 @@ namespace Kephas.Plugins.Application
         }
 
         /// <summary>
-        /// Determine if the indicated embedded plugin can be loaded. Load only licensed embedded plugins in
-        /// <see cref="PluginState.PendingInitialization"/> and <see cref="PluginState.Enabled"/> states.
+        /// Determine if the indicated embedded plugin binaries can be loaded. Load only licensed embedded plugins in
+        /// <see cref="PluginState.PendingInitialization"/>, <see cref="PluginState.PendingUninitialization"/>, and <see cref="PluginState.Enabled"/> states.
         /// </summary>
         /// <param name="pluginFolder">Pathname of the plugin folder.</param>
         /// <returns>
         /// True if we can load plugin, false if not.
         /// </returns>
-        protected virtual bool CanLoadEmbeddedPlugin(string pluginFolder)
+        protected virtual bool CanLoadEmbeddedPluginBinaries(string pluginFolder)
         {
             var pluginId = Path.GetFileName(pluginFolder);
             var pluginIdentity = new AppIdentity(pluginId);
@@ -312,6 +312,27 @@ namespace Kephas.Plugins.Application
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Initializes the service, ensuring that the assembly resolution is properly handled.
+        /// </summary>
+        /// <param name="context">Optional. An optional context for initialization.</param>
+        protected override void InitializeCore(IContext? context = null)
+        {
+            base.InitializeCore(context);
+
+            this.EnsureProbingPath();
+        }
+
+        /// <summary>
+        /// Ensures that the probing path for assembly loading is properly set.
+        /// </summary>
+        protected virtual void EnsureProbingPath()
+        {
+#if NET461
+            AppDomain.CurrentDomain.SetupInformation.PrivateBinPath = string.Join(";", this.GetAppBinLocations());
+#endif
         }
     }
 }
