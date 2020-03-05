@@ -69,7 +69,7 @@ namespace Kephas.Plugins.Endpoints
         /// The search term.
         /// </value>
         [Display(Description = "Optional. The search term.")]
-        public string SearchTerm { get; set; }
+        public string? SearchTerm { get; set; }
     }
 
     /// <summary>
@@ -83,6 +83,6 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The plugins.
         /// </value>
-        public IDictionary<string, string> Plugins { get; set; }
+        public IDictionary<string, string>? Plugins { get; set; }
     }
 }
