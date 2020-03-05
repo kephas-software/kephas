@@ -70,9 +70,9 @@ namespace Kephas.Plugins.NuGet
         // check the following resource for documentation
         // https://martinbjorkstrom.com/posts/2018-09-19-revisiting-nuget-client-libraries
 
+        private readonly PluginsSettings pluginsSettings;
+        private readonly global::NuGet.Common.ILogger nativeLogger;
         private ISettings settings;
-        private PluginsSettings pluginsSettings;
-        private global::NuGet.Common.ILogger nativeLogger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NuGetPluginManager"/> class.
@@ -121,7 +121,7 @@ namespace Kephas.Plugins.NuGet
 
                         try
                         {
-                            var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>().PreserveThreadContext();
+                            var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>(cancellationToken).PreserveThreadContext();
                             var searchFilter = new SearchFilter(includePrerelease: searchContext.IncludePrerelease)
                             {
                                 OrderBy = SearchOrderBy.Id,
@@ -204,7 +204,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result that yields the plugin data.
         /// </returns>
-        protected override async Task<IOperationResult<IPlugin>> InstallPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken = default)
+        protected override async Task<IOperationResult<IPlugin>> InstallPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
         {
             var repositories = this.GetSourceRepositories();
             using var cacheContext = new SourceCacheContext();
@@ -468,16 +468,10 @@ namespace Kephas.Plugins.NuGet
                 return PluginKind.Embedded;
             }
 
-            foreach (var kind in Enum.GetValues(typeof(PluginKind)).OfType<PluginKind>())
-            {
-                var kindString = kind.ToString().ToLower();
-                if (tags.Contains(kindString))
-                {
-                    return kind;
-                }
-            }
-
-            return PluginKind.Embedded;
+            return (from kind in Enum.GetValues(typeof(PluginKind)).OfType<PluginKind>()
+                let kindString = kind.ToString().ToLower()
+                where tags.Contains(kindString)
+                select kind).FirstOrDefault();
         }
 
         /// <summary>
@@ -531,7 +525,7 @@ namespace Kephas.Plugins.NuGet
         {
             if (this.settings == null)
             {
-                string root = this.GetSettingsFolderPath();
+                var root = this.GetSettingsFolderPath();
                 this.settings = new Settings(root);
             }
 
