@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Plugins.Endpoints
 {
     using System.Collections.Generic;
@@ -21,18 +23,9 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A get available plugins message.
     /// </summary>
-    [TypeDisplay(Description = "Gets the available plugins.")]
+    [TypeDisplay(Description = "Gets the available plugins. If a plugin ID is provided, the available versions are retrieved.")]
     public class GetAvailablePluginsMessage : IMessage
     {
-        /// <summary>
-        /// Gets or sets the search term.
-        /// </summary>
-        /// <value>
-        /// The search term.
-        /// </value>
-        [Display(Description = "Optional. The search term.")]
-        public string SearchTerm { get; set; }
-
         /// <summary>
         /// Gets or sets a value indicating whether the prerelease should be included.
         /// </summary>
@@ -41,6 +34,15 @@ namespace Kephas.Plugins.Endpoints
         /// </value>
         [Display(Description = "Optional. Value indicating whether the prerelease packages should be included.")]
         public bool IncludePrerelease { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the plugin ID.
+        /// </summary>
+        /// <value>
+        /// The plugin ID.
+        /// </value>
+        [Display(Description = "Optional. Value indicating the plugin ID. If the ID is provided, the available versions are retrieved.")]
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or sets the number of packages to skip.
@@ -59,6 +61,15 @@ namespace Kephas.Plugins.Endpoints
         /// </value>
         [Display(Description = "Optional. Value indicating the number of packages to take (default: 20).")]
         public int Take { get; set; } = 20;
+
+        /// <summary>
+        /// Gets or sets the search term.
+        /// </summary>
+        /// <value>
+        /// The search term.
+        /// </value>
+        [Display(Description = "Optional. The search term.")]
+        public string SearchTerm { get; set; }
     }
 
     /// <summary>

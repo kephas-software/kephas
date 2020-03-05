@@ -60,13 +60,20 @@ namespace Kephas.Plugins.Endpoints
                 cancellationToken: token).PreserveThreadContext();
             var plugins = result.ReturnValue;
 
-            var searchTerm = message.SearchTerm ?? "<all>";
-            this.appContext.Logger.Info("Retrieved {count} packages for {search}. Elapsed: {elapsed:c}.", plugins.Count(), searchTerm, result.Elapsed);
+            var searchTerm = string.IsNullOrEmpty(message.SearchTerm)
+                ? string.Empty
+                : $" for search term '{message.SearchTerm}'";
+            var packageString = string.IsNullOrEmpty(message.Id)
+                ? "packages"
+                : $"'{message.Id}' package versions";
+            this.appContext.Logger.Info($"Retrieved {{count}} plugin {packageString}. Elapsed: {{elapsed:c}}.", plugins.Count(), result.Elapsed);
 
             return new GetAvailablePluginsResponseMessage
                 {
-                    Message = $"Retrieved {plugins.Count()} packages for {searchTerm}. Elapsed: {result.Elapsed:c}.",
-                    Plugins = plugins.ToDictionary(p => p.Identity.Id, p => p.Identity.Version),
+                    Message = $"Retrieved {plugins.Count()} plugin packages{searchTerm}. Elapsed: {result.Elapsed:c}.",
+                    Plugins = string.IsNullOrEmpty(message.Id)
+                        ? plugins.ToDictionary(p => p.Identity.Id, p => p.Identity.Version)
+                        : plugins.ToDictionary(p => p.Identity.Version, p => string.Empty),
                 };
         }
     }

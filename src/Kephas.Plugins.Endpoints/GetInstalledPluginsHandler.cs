@@ -8,17 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Licensing;
-using Kephas.Services;
-
 namespace Kephas.Plugins.Endpoints
 {
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Licensing;
     using Kephas.Messaging;
     using Kephas.Plugins;
+    using Kephas.Services;
 
     /// <summary>
     /// A get installed plugins message handler.

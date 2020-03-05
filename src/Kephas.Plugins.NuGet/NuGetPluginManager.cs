@@ -66,7 +66,6 @@ namespace Kephas.Plugins.NuGet
         /// </summary>
         protected const string SourceCacheContextKey = "SourceCacheContext";
 
-
         // check the following resource for documentation
         // https://martinbjorkstrom.com/posts/2018-09-19-revisiting-nuget-client-libraries
 
@@ -110,7 +109,7 @@ namespace Kephas.Plugins.NuGet
             cancellationToken.ThrowIfCancellationRequested();
 
             var result = new OperationResult<IEnumerable<IAppInfo>>();
-            var availablePackages = new HashSet<IPackageSearchMetadata>();
+            var availablePlugins = new HashSet<IAppInfo>();
             var opResult = await Profiler.WithInfoStopwatchAsync(
                 async () =>
                 {
@@ -121,22 +120,40 @@ namespace Kephas.Plugins.NuGet
 
                         try
                         {
-                            var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>(cancellationToken).PreserveThreadContext();
-                            var searchFilter = new SearchFilter(includePrerelease: searchContext.IncludePrerelease)
+                            if (searchContext.PluginIdentity != null)
                             {
-                                OrderBy = SearchOrderBy.Id,
-                                IncludeDelisted = false,
-                            };
+                                var findResource = await sourceRepository.GetResourceAsync<FindPackageByIdResource>(cancellationToken).PreserveThreadContext();
+                                var versions = await findResource.GetAllVersionsAsync(
+                                    searchContext.PluginIdentity.Id,
+                                    cacheContext,
+                                    this.nativeLogger,
+                                    cancellationToken).PreserveThreadContext();
 
-                            var packages = await searchResource.SearchAsync(
-                                searchContext.SearchTerm ?? this.pluginsSettings.SearchTerm ?? "plugin",
-                                searchFilter,
-                                searchContext.Skip,
-                                searchContext.Take,
-                                this.nativeLogger,
-                                cancellationToken).PreserveThreadContext();
+                                var query = versions
+                                    .Select(v => this.ToPluginInfo(searchContext.PluginIdentity, v))
+                                    .Skip(searchContext.Skip)
+                                    .Take(searchContext.Take);
+                                availablePlugins.AddRange(query);
+                            }
+                            else
+                            {
+                                var searchResource = await sourceRepository.GetResourceAsync<PackageSearchResource>(cancellationToken).PreserveThreadContext();
+                                var searchFilter = new SearchFilter(includePrerelease: searchContext.IncludePrerelease)
+                                {
+                                    OrderBy = SearchOrderBy.Id,
+                                    IncludeDelisted = false,
+                                };
 
-                            availablePackages.AddRange(packages);
+                                var packages = await searchResource.SearchAsync(
+                                    searchContext.SearchTerm ?? this.pluginsSettings.SearchTerm ?? "plugin",
+                                    searchFilter,
+                                    searchContext.Skip,
+                                    searchContext.Take,
+                                    this.nativeLogger,
+                                    cancellationToken).PreserveThreadContext();
+
+                                availablePlugins.AddRange(packages.Select(this.ToPluginInfo));
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -146,7 +163,7 @@ namespace Kephas.Plugins.NuGet
                     }
                 }).PreserveThreadContext();
 
-            result.ReturnValue(availablePackages.Select(this.ToPluginInfo))
+            result.ReturnValue(availablePlugins)
                 .MergeMessages(opResult)
                 .Complete(opResult.Elapsed);
             return result;
@@ -561,7 +578,7 @@ namespace Kephas.Plugins.NuGet
         }
 
         /// <summary>
-        /// Converts a searchMetadata to a plugin information.
+        /// Converts a search metadata to a plugin information.
         /// </summary>
         /// <param name="searchMetadata">The search metadata.</param>
         /// <returns>
@@ -575,6 +592,22 @@ namespace Kephas.Plugins.NuGet
                 new AppIdentity(searchMetadata.Identity.Id, searchMetadata.Identity.Version.ToString()),
                 searchMetadata.Description,
                 searchMetadata.Tags?.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+        }
+
+        /// <summary>
+        /// Converts a searchMetadata to a plugin information.
+        /// </summary>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="version">The package version.</param>
+        /// <returns>
+        /// NuGet version as an IAppInfo.
+        /// </returns>
+        protected virtual IAppInfo ToPluginInfo(AppIdentity pluginIdentity, NuGetVersion version)
+        {
+            return new PluginInfo(
+                this.AppRuntime,
+                this.PluginRepository,
+                new AppIdentity(pluginIdentity.Id, version.ToString()));
         }
 
         /// <summary>

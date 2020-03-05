@@ -22,7 +22,7 @@ namespace Kephas.Plugins.NuGet
         private readonly Kephas.Logging.ILogger logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NugetLogger"/> class.
+        /// Initializes a new instance of the <see cref="NuGetLogger"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
         public NuGetLogger(Kephas.Logging.ILogger logger)

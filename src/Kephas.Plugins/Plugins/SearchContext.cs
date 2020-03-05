@@ -8,8 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Plugins
 {
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Services;
 
@@ -33,7 +36,10 @@ namespace Kephas.Plugins
         /// <value>
         /// The search term.
         /// </value>
-        public string SearchTerm { get; set; }
+        public string? SearchTerm { get; set; }
+
+        /// <inheritdoc/>
+        public AppIdentity? PluginIdentity { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the prerelease versions should be included.

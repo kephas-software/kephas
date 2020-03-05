@@ -8,8 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Plugins
 {
+    using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
@@ -19,12 +22,12 @@ namespace Kephas.Plugins
     public interface ISearchContext : IContext
     {
         /// <summary>
-        /// Gets or sets the search term.
+        /// Gets or sets the plugin identity.
         /// </summary>
         /// <value>
-        /// The search term.
+        /// The plugin identity.
         /// </value>
-        string SearchTerm { get; set; }
+        AppIdentity? PluginIdentity { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the prerelease versions should be included.
@@ -49,6 +52,14 @@ namespace Kephas.Plugins
         /// The number of packages to take.
         /// </value>
         int Take { get; set; }
+
+        /// <summary>
+        /// Gets or sets the search term.
+        /// </summary>
+        /// <value>
+        /// The search term.
+        /// </value>
+        string? SearchTerm { get; set; }
     }
 
     /// <summary>
@@ -56,6 +67,25 @@ namespace Kephas.Plugins
     /// </summary>
     public static class SearchContextExtensions
     {
+        /// <summary>
+        /// Sets the search term.
+        /// </summary>
+        /// <typeparam name="TContext">Actual type of the search operation context.</typeparam>
+        /// <param name="searchContext">The search context.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <returns>
+        /// This <paramref name="searchContext"/>.
+        /// </returns>
+        public static TContext PluginIdentity<TContext>(this TContext searchContext, AppIdentity? pluginIdentity)
+            where TContext : class, ISearchContext
+        {
+            Requires.NotNull(searchContext, nameof(searchContext));
+
+            searchContext.PluginIdentity = pluginIdentity;
+
+            return searchContext;
+        }
+
         /// <summary>
         /// Sets the search term.
         /// </summary>
