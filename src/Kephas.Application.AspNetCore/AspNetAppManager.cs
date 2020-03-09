@@ -74,7 +74,7 @@ namespace Kephas.Application.AspNetCore
         }
 
         /// <summary>
-        /// Finaliyes the application asynchronously.
+        /// Finalizes the application asynchronously.
         /// </summary>
         /// <param name="appContext">       Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token.</param>

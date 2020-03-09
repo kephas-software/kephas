@@ -32,7 +32,7 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// A Task.
         /// </returns>
-        protected override sealed Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
+        protected sealed override Task InitializeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             return this.InitializeCoreAsync(GetAspNetAppContext(appContext), cancellationToken);
         }
@@ -58,7 +58,7 @@ namespace Kephas.Application.AspNetCore
         /// <returns>
         /// A Task.
         /// </returns>
-        protected override sealed Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
+        protected sealed override Task FinalizeCoreAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             return this.FinalizeCoreAsync(GetAspNetAppContext(appContext), cancellationToken);
         }
