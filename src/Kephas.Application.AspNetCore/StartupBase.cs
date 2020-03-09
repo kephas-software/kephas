@@ -26,7 +26,9 @@ namespace Kephas.Application.AspNetCore
     using Kephas.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
 
     using LogLevel = Kephas.Logging.LogLevel;
@@ -85,6 +87,8 @@ namespace Kephas.Application.AspNetCore
         {
             try
             {
+                serviceCollection.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
                 this.AmbientServices
                     .WithServiceCollection(serviceCollection)
                     .ConfigureExtensionsLogging()
