@@ -38,15 +38,6 @@ namespace Kephas.Threading.Tasks
         public static TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromSeconds(30);
 
         /// <summary>
-        /// Gets a task that has already completed successfully.
-        /// </summary>
-        /// <value>
-        /// A successfully completed task.
-        /// </value>
-        [Obsolete("Use instead Task.CompletedTask.")]
-        public static Task CompletedTask { get; } = Task.CompletedTask;
-
-        /// <summary>
         /// Waits the task avoiding the current thread to be locked.
         /// </summary>
         /// <param name="task">The task.</param>
