@@ -27,12 +27,12 @@ namespace Kephas.Plugins.Endpoints
     public class GetAvailablePluginsMessage : IMessage
     {
         /// <summary>
-        /// Gets or sets a value indicating whether the prerelease should be included.
+        /// Gets or sets a value indicating whether prerelease versions should be included or not.
         /// </summary>
         /// <value>
-        /// True if include prerelease, false if not.
+        /// True to include prerelease versions, false otherwise.
         /// </value>
-        [Display(Description = "Optional. Value indicating whether the prerelease packages should be included.")]
+        [Display(Description = "Optional. Value indicating whether prerelease versions should be included or not.")]
         public bool IncludePrerelease { get; set; } = false;
 
         /// <summary>
