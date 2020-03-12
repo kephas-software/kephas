@@ -22,7 +22,8 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A get installed plugins message handler.
     /// </summary>
-    public class GetInstalledPluginsHandler : MessageHandlerBase<GetInstalledPluginsMessage, GetInstalledPluginsResponseMessage>
+    public class
+        GetInstalledPluginsHandler : MessageHandlerBase<GetInstalledPluginsMessage, GetInstalledPluginsResponseMessage>
     {
         private readonly IPluginManager pluginManager;
         private readonly ILicensingManager licensingManager;
@@ -47,29 +48,36 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<GetInstalledPluginsResponseMessage> ProcessAsync(GetInstalledPluginsMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<GetInstalledPluginsResponseMessage> ProcessAsync(
+            GetInstalledPluginsMessage message,
+            IMessagingContext context,
+            CancellationToken token)
         {
             var plugins = this.pluginManager.GetInstalledPlugins();
 
             return new GetInstalledPluginsResponseMessage
             {
-                Plugins = plugins.Select(p => this.GetPluginData(p, context)).ToArray(),
+                Plugins = plugins.Select(p => this.GetPluginData(p, context, message.IncludeLicense)).ToArray(),
             };
         }
 
-        private PluginData GetPluginData(IPlugin plugin, IContext context)
+        private PluginData GetPluginData(IPlugin plugin, IContext context, bool includeLicense)
         {
-            var licenceCheckResult = this.licensingManager.CheckLicense(plugin.Identity, context);
-            return new PluginData
+            var pluginData = includeLicense ? new LicensePluginData() : new PluginData();
+            pluginData.Id = plugin.Identity.Id;
+            pluginData.Version = plugin.Identity.Version;
+            pluginData.State = plugin.State;
+            pluginData.Location = plugin.Location;
+
+            if (pluginData is LicensePluginData licensePluginData)
             {
-                Id = plugin.Identity.Id,
-                Version = plugin.Identity.Version,
-                Location = plugin.Location,
-                State = plugin.State,
-                IsLicensed = licenceCheckResult.IsLicensed,
-                LicenseCheckMessage = licenceCheckResult.Messages?.FirstOrDefault()?.Message,
-                License = this.licensingManager.GetLicense(plugin.Identity, context),
-            };
+                var licenceCheckResult = this.licensingManager.CheckLicense(plugin.Identity, context);
+                licensePluginData.IsLicensed = licenceCheckResult.IsLicensed;
+                licensePluginData.LicenseCheckMessage = licenceCheckResult.Messages?.FirstOrDefault()?.Message;
+                licensePluginData.License = this.licensingManager.GetLicense(plugin.Identity, context);
+            }
+
+            return pluginData;
         }
     }
 }

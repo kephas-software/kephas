@@ -8,10 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Plugins.Endpoints
 {
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     using Kephas.Application;
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Licensing;
@@ -25,6 +26,12 @@ namespace Kephas.Plugins.Endpoints
     [TypeDisplay(Description = "Gets the installed plugins.")]
     public class GetInstalledPluginsMessage : IMessage
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether license information should be included.
+        /// </summary>
+        [Display(Description = "Optional. Indicates whether license information should be included (default: true).")]
+        [DefaultValue(true)]
+        public bool IncludeLicense { get; set; } = true;
     }
 
     /// <summary>
@@ -79,6 +86,23 @@ namespace Kephas.Plugins.Endpoints
         public string? Version { get; set; }
 
         /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{new AppIdentity(this.Id ?? "<missing app-id>", this.Version)} ({this.State} in {this.Location})";
+        }
+    }
+
+    /// <summary>
+    /// Plugin data providing license information, too.
+    /// </summary>
+    public class LicensePluginData : PluginData
+    {
+        /// <summary>
         /// Gets or sets a value indicating whether the plugin is licensed.
         /// </summary>
         /// <value>
@@ -111,7 +135,7 @@ namespace Kephas.Plugins.Endpoints
         public override string ToString()
         {
             var licenseString = this.IsLicensed ? "licensed" : "not licensed";
-            return $"{new AppIdentity(this.Id ?? "<missing app-id>", this.Version)} ({this.State} in {this.Location}/{licenseString})";
+            return $"{base.ToString()})/{licenseString}";
         }
     }
 }
