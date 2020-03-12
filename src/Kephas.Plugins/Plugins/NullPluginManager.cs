@@ -35,7 +35,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the enable operation result.
         /// </returns>
-        public Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
@@ -49,7 +49,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the download operation result.
         /// </returns>
-        public Task<IOperationResult> DownloadPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> DownloadPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult>(new OperationResult().MergeException(new NotSupportedException()));
         }
@@ -63,7 +63,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the enable operation result.
         /// </returns>
-        public Task<IOperationResult<IPlugin>> EnablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> EnablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
@@ -76,7 +76,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the available plugins.
         /// </returns>
-        public Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext>? filter = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult<IEnumerable<IAppInfo>>>(new OperationResult<IEnumerable<IAppInfo>>(new IAppInfo[0]));
         }
@@ -113,7 +113,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the initialize operation result.
         /// </returns>
-        public Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
@@ -127,7 +127,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the operation result.
         /// </returns>
-        public Task<IOperationResult<IPlugin>> InstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> InstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
@@ -141,7 +141,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the uninitialize operation result.
         /// </returns>
-        public Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
@@ -155,7 +155,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the uninstall plugin.
         /// </returns>
-        public Task<IOperationResult<IPlugin>> UninstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> UninstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }
@@ -169,7 +169,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the update operation result.
         /// </returns>
-        public Task<IOperationResult<IPlugin>> UpdatePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public Task<IOperationResult<IPlugin>> UpdatePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IOperationResult<IPlugin>>(new OperationResult<IPlugin>().MergeException(new NotSupportedException()));
         }

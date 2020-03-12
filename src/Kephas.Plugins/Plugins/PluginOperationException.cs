@@ -25,7 +25,7 @@ namespace Kephas.Plugins
         /// </summary>
         /// <param name="result">Optional. The operation result.</param>
         /// <param name="severity">Optional. The severity.</param>
-        public PluginOperationException(IOperationResult result = null, SeverityLevel severity = SeverityLevel.Error)
+        public PluginOperationException(IOperationResult? result = null, SeverityLevel severity = SeverityLevel.Error)
         {
             this.Severity = severity;
             this.Result = result;
@@ -37,7 +37,7 @@ namespace Kephas.Plugins
         /// <param name="message">The message.</param>
         /// <param name="result">Optional. The operation result.</param>
         /// <param name="severity">Optional. The severity.</param>
-        public PluginOperationException(string message, IOperationResult result = null, SeverityLevel severity = SeverityLevel.Error)
+        public PluginOperationException(string message, IOperationResult? result = null, SeverityLevel severity = SeverityLevel.Error)
             : base(message)
         {
             this.Severity = severity;
@@ -51,7 +51,7 @@ namespace Kephas.Plugins
         /// <param name="inner">The inner exception.</param>
         /// <param name="result">Optional. The operation result.</param>
         /// <param name="severity">Optional. The severity.</param>
-        public PluginOperationException(string message, Exception inner, IOperationResult result = null, SeverityLevel severity = SeverityLevel.Error)
+        public PluginOperationException(string message, Exception inner, IOperationResult? result = null, SeverityLevel severity = SeverityLevel.Error)
             : base(message, inner)
         {
             this.Severity = severity;
@@ -72,6 +72,6 @@ namespace Kephas.Plugins
         /// <value>
         /// The operation result.
         /// </value>
-        public IOperationResult Result { get; }
+        public IOperationResult? Result { get; }
     }
 }

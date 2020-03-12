@@ -22,13 +22,13 @@ namespace Kephas.Plugins
     {
         private const string PluginDataFileName = ".plugindata";
 
-        private readonly Func<AppIdentity, string> pluginLocationResolver;
+        private readonly Func<AppIdentity, string?> pluginLocationResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginRepository"/> class.
         /// </summary>
         /// <param name="pluginLocationResolver">The plugin location resolver.</param>
-        public PluginRepository(Func<AppIdentity, string> pluginLocationResolver)
+        public PluginRepository(Func<AppIdentity, string?> pluginLocationResolver)
         {
             this.pluginLocationResolver = pluginLocationResolver;
         }

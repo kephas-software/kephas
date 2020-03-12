@@ -95,7 +95,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// This <paramref name="searchContext"/>.
         /// </returns>
-        public static TContext SearchTerm<TContext>(this TContext searchContext, string searchTerm)
+        public static TContext SearchTerm<TContext>(this TContext searchContext, string? searchTerm)
             where TContext : class, ISearchContext
         {
             Requires.NotNull(searchContext, nameof(searchContext));

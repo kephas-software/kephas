@@ -48,7 +48,7 @@ namespace Kephas.Plugins
             IAppRuntime appRuntime,
             IContextFactory contextFactory,
             IEventHub eventHub,
-            ILogManager logManager = null)
+            ILogManager? logManager = null)
             : this(appRuntime, contextFactory, eventHub, appRuntime.GetPluginRepository(), logManager)
         {
         }
@@ -66,7 +66,7 @@ namespace Kephas.Plugins
             IContextFactory contextFactory,
             IEventHub eventHub,
             IPluginRepository pluginRepository,
-            ILogManager logManager = null)
+            ILogManager? logManager = null)
             : base(logManager)
         {
             this.AppRuntime = appRuntime;
@@ -115,7 +115,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the available plugins.
         /// </returns>
-        public abstract Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default);
+        public abstract Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext>? filter = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the installed plugins.
@@ -149,7 +149,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the download operation result.
         /// </returns>
-        public virtual async Task<IOperationResult> DownloadPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> DownloadPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             var result = new OperationResult();
             var opResult = await Profiler.WithStopwatchAsync(
@@ -183,7 +183,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the install operation result.
         /// </returns>
-        public virtual async Task<IOperationResult<IPlugin>> InstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult<IPlugin>> InstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             var result = new OperationResult<IPlugin>();
             var opResult = await Profiler.WithStopwatchAsync(
@@ -275,7 +275,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the uninstall operation result.
         /// </returns>
-        public virtual async Task<IOperationResult<IPlugin>> UninstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult<IPlugin>> UninstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             var result = new OperationResult<IPlugin>();
             var uninstallComplete = false;
@@ -377,7 +377,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the initialize operation result.
         /// </returns>
-        public virtual async Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             var result = new OperationResult<IPlugin>();
             var opResult = await Profiler.WithStopwatchAsync(
@@ -482,7 +482,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the prepare uninitialize operation result.
         /// </returns>
-        public virtual async Task<IOperationResult<IPlugin>> PrepareUninitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult<IPlugin>> PrepareUninitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             var result = new OperationResult<IPlugin>();
             var prepareUninitializeComplete = false;
@@ -578,7 +578,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the uninitialize operation result.
         /// </returns>
-        public virtual async Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             var result = new OperationResult<IPlugin>();
             var uninitializeComplete = false;
@@ -679,7 +679,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the enable operation result.
         /// </returns>
-        public virtual async Task<IOperationResult<IPlugin>> EnablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult<IPlugin>> EnablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             var result = new OperationResult<IPlugin>();
             var opResult = await Profiler.WithStopwatchAsync(
@@ -729,7 +729,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the enable operation result.
         /// </returns>
-        public virtual async Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             var result = new OperationResult<IPlugin>();
             var opResult = await Profiler.WithStopwatchAsync(
@@ -777,7 +777,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the update operation result.
         /// </returns>
-        public async Task<IOperationResult<IPlugin>> UpdatePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default)
+        public async Task<IOperationResult<IPlugin>> UpdatePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default)
         {
             IOperationResult<IPlugin> result = new OperationResult<IPlugin>();
             var context = this.CreatePluginContext(options)
@@ -962,7 +962,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// The new plugin context.
         /// </returns>
-        protected virtual IPluginContext CreatePluginContext(Action<IPluginContext> options)
+        protected virtual IPluginContext CreatePluginContext(Action<IPluginContext>? options)
         {
             return this.ContextFactory.CreateContext<PluginContext>().Merge(options);
         }
@@ -974,7 +974,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// The new search context.
         /// </returns>
-        protected virtual ISearchContext CreateSearchContext(Action<ISearchContext> filter)
+        protected virtual ISearchContext CreateSearchContext(Action<ISearchContext>? filter)
         {
             return this.ContextFactory.CreateContext<SearchContext>().Merge(filter);
         }

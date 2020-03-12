@@ -29,7 +29,7 @@ namespace Kephas.Plugins.Reflection
         /// <param name="pluginIdentity">The plugin identity.</param>
         /// <param name="description">Optional. The description.</param>
         /// <param name="tags">Optional. The tags.</param>
-        internal PluginInfo(IAppRuntime appRuntime, IPluginRepository pluginRepository, AppIdentity pluginIdentity, string description = null, string[] tags = null)
+        internal PluginInfo(IAppRuntime appRuntime, IPluginRepository pluginRepository, AppIdentity pluginIdentity, string? description = null, string[]? tags = null)
             : base(pluginIdentity, description, tags)
         {
             this.AppRuntime = appRuntime;
@@ -59,7 +59,7 @@ namespace Kephas.Plugins.Reflection
         /// <returns>
         /// The new instance.
         /// </returns>
-        public override object CreateInstance(IEnumerable<object> args = null)
+        public override object CreateInstance(IEnumerable<object>? args = null)
         {
             if (args?.Any() ?? false)
             {

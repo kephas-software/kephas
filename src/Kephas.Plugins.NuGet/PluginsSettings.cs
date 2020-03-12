@@ -24,7 +24,7 @@ namespace Kephas.Plugins.NuGet
         /// <value>
         /// The full pathname of the NuGet configuration file.
         /// </value>
-        public string NuGetConfigPath { get; set; }
+        public string? NuGetConfigPath { get; set; }
 
         /// <summary>
         /// Gets or sets the pathname of the cached packages folder.
@@ -32,7 +32,7 @@ namespace Kephas.Plugins.NuGet
         /// <value>
         /// The pathname of the cached packages folder.
         /// </value>
-        public string PackagesFolder { get; set; }
+        public string? PackagesFolder { get; set; }
 
         /// <summary>
         /// Gets or sets the relative folder within the package containing the configuration files.
@@ -48,7 +48,7 @@ namespace Kephas.Plugins.NuGet
         /// <value>
         /// The search term used for identifying plugins.
         /// </value>
-        public string SearchTerm { get; set; }
+        public string? SearchTerm { get; set; }
 
         /// <summary>
         /// Gets or sets the resolver dependency behavior.

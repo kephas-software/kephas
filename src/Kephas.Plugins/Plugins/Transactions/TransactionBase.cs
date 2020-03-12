@@ -24,6 +24,9 @@ namespace Kephas.Plugins.Transactions
     /// A transaction base.
     /// </summary>
     public abstract class TransactionBase : ITransaction
+#if NET461
+        , ISyncTransaction
+#endif
     {
         private readonly PluginData pluginData;
 
@@ -46,7 +49,19 @@ namespace Kephas.Plugins.Transactions
         /// <returns>
         /// An asynchronous result that yields the <see cref="IOperationResult"/>.
         /// </returns>
-        public Task<IOperationResult> RollbackAsync(IPluginContext context, CancellationToken cancellationToken = default)
+        public virtual Task<IOperationResult> RollbackAsync(IPluginContext context, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(this.Rollback(context));
+        }
+
+        /// <summary>
+        /// Undoes the operations in the given context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>
+        /// An <see cref="IOperationResult"/>.
+        /// </returns>
+        public virtual IOperationResult Rollback(IPluginContext context)
         {
             var undoCommands = this.GetUndoCommands(this.pluginData);
 
@@ -57,8 +72,6 @@ namespace Kephas.Plugins.Transactions
                 {
                     try
                     {
-                        cancellationToken.ThrowIfCancellationRequested();
-
                         undoCommand.Execute(context);
                         this.pluginData.Data.Remove(key);
                     }
@@ -69,7 +82,7 @@ namespace Kephas.Plugins.Transactions
                 }
             });
 
-            return Task.FromResult<IOperationResult>(result.Complete(opResult.Elapsed));
+            return result.Complete(opResult.Elapsed);
         }
 
         /// <summary>
@@ -108,7 +121,7 @@ namespace Kephas.Plugins.Transactions
         {
             var cmdKeyPart = this.GetCommandKeyPart();
             var cmds = pluginData.Data.Keys
-                .Where(k => k.StartsWith(cmdKeyPart))
+                .Where(k => k.StartsWith(cmdKeyPart) && !string.IsNullOrEmpty(pluginData.Data[k]))
                 .Select(k =>
                 {
                     var cmd = UndoCommandBase.Parse(pluginData.Data[k]);

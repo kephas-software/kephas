@@ -35,7 +35,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the download operation result.
         /// </returns>
-        Task<IOperationResult> DownloadPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult> DownloadPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Installs the plugin asynchronously.
@@ -46,7 +46,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the install operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> InstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> InstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Uninstalls the plugin asynchronously.
@@ -57,7 +57,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the uninstall operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> UninstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> UninstallPluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Initializes the plugin asynchronously.
@@ -68,7 +68,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the initialize operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> InitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Uninitializes the plugin asynchronously.
@@ -79,7 +79,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the uninitialize operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> UninitializePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates the plugin asynchronously.
@@ -90,7 +90,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the update operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> UpdatePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> UpdatePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Enables the plugin asynchronously if the plugin was previously disabled.
@@ -101,7 +101,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the enable operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> EnablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> EnablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Disables the plugin asynchronously if the plugin was previously enabled.
@@ -112,7 +112,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the enable operation result.
         /// </returns>
-        Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext> options = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IPlugin>> DisablePluginAsync(AppIdentity pluginIdentity, Action<IPluginContext>? options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the plugin state.
@@ -139,6 +139,6 @@ namespace Kephas.Plugins
         /// <returns>
         /// An asynchronous result that yields the available plugins.
         /// </returns>
-        Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext>? filter = null, CancellationToken cancellationToken = default);
     }
 }

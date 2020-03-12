@@ -20,8 +20,8 @@ namespace Kephas.Plugins
     /// </summary>
     public class PluginContext : Context, IPluginContext
     {
-        private PluginData pluginData;
-        private AppIdentity pluginIdentity;
+        private PluginData? pluginData;
+        private AppIdentity? pluginIdentity;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginContext"/> class.
@@ -38,7 +38,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The plugin.
         /// </value>
-        public AppIdentity PluginIdentity
+        public AppIdentity? PluginIdentity
         {
             get => this.pluginIdentity ?? this.Plugin?.Identity ?? this.PluginData?.Identity;
             set => this.pluginIdentity = value;
@@ -59,7 +59,7 @@ namespace Kephas.Plugins
         /// <value>
         /// Information describing the plugin.
         /// </value>
-        public PluginData PluginData
+        public PluginData? PluginData
         {
             get => this.pluginData ?? this.Plugin?.GetPluginData();
             set => this.pluginData = value;
@@ -71,7 +71,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The plugin data.
         /// </value>
-        public IPlugin Plugin { get; set; }
+        public IPlugin? Plugin { get; set; }
 
         /// <summary>
         /// Gets or sets the operation transaction.
@@ -79,6 +79,6 @@ namespace Kephas.Plugins
         /// <value>
         /// The operation transaction.
         /// </value>
-        public ITransaction Transaction { get; set; }
+        public ITransaction? Transaction { get; set; }
     }
 }

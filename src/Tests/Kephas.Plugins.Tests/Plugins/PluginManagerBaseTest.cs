@@ -302,7 +302,7 @@ namespace Kephas.Tests.Plugins
                 this.canDisable = canDisable;
             }
 
-            public override Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
+            public override Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext>? filter = null, CancellationToken cancellationToken = default)
             {
                 var plugin1 = Substitute.For<IAppInfo>();
                 var plugin2 = Substitute.For<IAppInfo>();

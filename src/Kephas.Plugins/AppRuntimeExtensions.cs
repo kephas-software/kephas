@@ -30,7 +30,7 @@ namespace Kephas
         /// <returns>
         /// The plugins location.
         /// </returns>
-        public static string GetPluginsLocation(this IAppRuntime appRuntime)
+        public static string? GetPluginsLocation(this IAppRuntime appRuntime)
         {
             if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
             {
@@ -81,7 +81,7 @@ namespace Kephas
         /// <returns>
         /// The target framework.
         /// </returns>
-        public static string GetTargetFramework(this IAppRuntime appRuntime)
+        public static string? GetTargetFramework(this IAppRuntime appRuntime)
         {
             if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
             {
@@ -124,7 +124,7 @@ namespace Kephas
 
             if (!(appRuntime?[nameof(PluginsAppRuntime.PluginRepository)] is IPluginRepository pluginRepository))
             {
-                throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginRepository)} from {appRuntime.GetType()}.");
+                throw new PluginOperationException($"Cannot get the {nameof(PluginsAppRuntime.PluginRepository)} from {appRuntime?.GetType()}.");
             }
 
             return pluginRepository;

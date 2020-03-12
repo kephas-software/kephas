@@ -78,7 +78,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The plugin.
         /// </value>
-        AppIdentity PluginIdentity { get; set; }
+        AppIdentity? PluginIdentity { get; set; }
 
         /// <summary>
         /// Gets or sets the operation.
@@ -95,7 +95,7 @@ namespace Kephas.Plugins
         /// <value>
         /// Information describing the plugin.
         /// </value>
-        PluginData PluginData { get; set; }
+        PluginData? PluginData { get; set; }
 
         /// <summary>
         /// Gets or sets the plugin instance.
@@ -103,7 +103,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The plugin instance.
         /// </value>
-        IPlugin Plugin { get; set; }
+        IPlugin? Plugin { get; set; }
 
         /// <summary>
         /// Gets or sets the operation transaction.
@@ -111,7 +111,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The operation transaction.
         /// </value>
-        ITransaction Transaction { get; set; }
+        ITransaction? Transaction { get; set; }
     }
 
     /// <summary>

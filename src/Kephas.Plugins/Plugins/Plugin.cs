@@ -28,18 +28,18 @@ namespace Kephas.Plugins
     public class Plugin : Expando, IPlugin
     {
         private readonly IAppInfo pluginInfo;
-        private readonly PluginData pluginData;
+        private readonly PluginData? pluginData;
         private readonly IPluginRepository pluginRepository;
         private readonly IAppRuntime appRuntime;
         private PluginState? state;
-        private string location;
+        private string? location;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Plugin"/> class.
         /// </summary>
         /// <param name="pluginInfo">Information describing the plugin.</param>
         /// <param name="pluginData">Optional. Information describing the plugin.</param>
-        internal Plugin(PluginInfo pluginInfo, PluginData pluginData = null)
+        internal Plugin(PluginInfo pluginInfo, PluginData? pluginData = null)
         {
             Requires.NotNull(pluginInfo, nameof(pluginInfo));
 
@@ -55,7 +55,7 @@ namespace Kephas.Plugins
         /// <value>
         /// The full pathname of the installation folder.
         /// </value>
-        public string Location
+        public string? Location
         {
             get => this.location ?? this.appRuntime.GetAppLocation(this.Identity, throwOnNotFound: false);
             protected internal set => this.location = value;
@@ -136,7 +136,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
-        public override IDictionary<string, object> ToDictionary(Func<string, string> keyFunc = null, Func<object, object> valueFunc = null)
+        public override IDictionary<string, object> ToDictionary(Func<string, string>? keyFunc = null, Func<object, object>? valueFunc = null)
         {
             var dictionary = base.ToDictionary(keyFunc, valueFunc);
             var data = this.GetPluginData().Data;
@@ -185,7 +185,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// <c>true</c> if a value is found, <c>false</c> otherwise.
         /// </returns>
-        protected override bool TryGetValue(string key, out object value)
+        protected override bool TryGetValue(string key, out object? value)
         {
             var found = base.TryGetValue(key, out value);
             if (!found)

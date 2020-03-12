@@ -27,7 +27,7 @@ namespace Kephas.Plugins.Interaction
         /// <param name="context">The context.</param>
         /// <param name="result">The result.</param>
         /// <param name="message">Optional. The message.</param>
-        public UninitializedPluginSignal(AppIdentity pluginId, IPluginContext context, IOperationResult result, string message = null)
+        public UninitializedPluginSignal(AppIdentity pluginId, IPluginContext context, IOperationResult result, string? message = null)
         {
             this.PluginId = pluginId;
             this.Context = context;
@@ -65,7 +65,7 @@ namespace Kephas.Plugins.Interaction
         /// <value>
         /// The message.
         /// </value>
-        public string Message { get; }
+        public string? Message { get; }
 
         /// <summary>
         /// Gets the severity.

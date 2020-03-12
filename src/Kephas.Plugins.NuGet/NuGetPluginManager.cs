@@ -71,7 +71,7 @@ namespace Kephas.Plugins.NuGet
 
         private readonly PluginsSettings pluginsSettings;
         private readonly global::NuGet.Common.ILogger nativeLogger;
-        private ISettings settings;
+        private ISettings? settings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NuGetPluginManager"/> class.
@@ -86,7 +86,7 @@ namespace Kephas.Plugins.NuGet
             IContextFactory contextFactory,
             IEventHub eventHub,
             IConfiguration<PluginsSettings> pluginsConfig,
-            ILogManager logManager = null)
+            ILogManager? logManager = null)
             : base(appRuntime, contextFactory, eventHub, logManager)
         {
             this.nativeLogger = new NuGetLogger(this.Logger);
@@ -101,7 +101,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// An asynchronous result that yields the available plugins.
         /// </returns>
-        public override async Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext> filter = null, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext>? filter = null, CancellationToken cancellationToken = default)
         {
             var searchContext = this.CreateSearchContext(filter);
             var repositories = this.GetSourceRepositories();
@@ -332,7 +332,7 @@ namespace Kephas.Plugins.NuGet
                         var targetFileRaw = targetFile.Substring(0, targetFile.Length - extension.Length);
                         var renamedTargetFile = $"{targetFileRaw}-{DateTime.Now:yyyyMMddhhmmss}{extension}";
 
-                        context.Transaction.MoveFile(targetFile, renamedTargetFile);
+                        context.Transaction?.MoveFile(targetFile, renamedTargetFile);
 
                         File.Copy(configFile, targetFile);
 
@@ -498,7 +498,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// The packages folder.
         /// </returns>
-        protected virtual string GetPackagesFolder(string defaultPackagesFolder = null)
+        protected virtual string GetPackagesFolder(string? defaultPackagesFolder = null)
         {
             defaultPackagesFolder ??= DefaultPackagesFolder;
             if (string.IsNullOrEmpty(this.pluginsSettings.PackagesFolder))
@@ -846,7 +846,7 @@ namespace Kephas.Plugins.NuGet
 
         private async Task<DownloadResourceResult> DownloadPackageAsync(PackageIdentity packageId, string packagesFolder, IEnumerable<DownloadResource> downloadResources, PackageDownloadContext downloadContext, CancellationToken cancellationToken)
         {
-            DownloadResourceResult downloadResult = null;
+            DownloadResourceResult? downloadResult = null;
             if (packageId is SourcePackageDependencyInfo dependencyInfo)
             {
                 var downloadResource = await dependencyInfo.Source.GetResourceAsync<DownloadResource>(cancellationToken).PreserveThreadContext();
