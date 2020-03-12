@@ -9,7 +9,7 @@
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <AssemblyVersion>7.5.1.0</AssemblyVersion>
+        <AssemblyVersion>7.5.0.0</AssemblyVersion>
         <FileVersion>7.5.1.0</FileVersion>
         <Description>Provides the infrastructure for the Kephas Framework integration with ASP.NET Core.</Description>
         <Copyright>Copyright © Kephas Software SRL 2010-2020</Copyright>

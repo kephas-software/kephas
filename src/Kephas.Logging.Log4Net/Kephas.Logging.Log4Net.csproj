@@ -8,7 +8,7 @@
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Description>Provides the log4net implementation of logging abstractions.</Description>
         <Version>7.5.1</Version>
-        <AssemblyVersion>7.5.1.0</AssemblyVersion>
+        <AssemblyVersion>7.5.0.0</AssemblyVersion>
         <FileVersion>7.5.1.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
