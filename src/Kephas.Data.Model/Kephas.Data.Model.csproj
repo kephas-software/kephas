@@ -4,9 +4,9 @@
         <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <Version>7.5.0</Version>
-        <AssemblyVersion>7.5.0.0</AssemblyVersion>
-        <FileVersion>7.5.0.0</FileVersion>
+        <Version>7.5.1</Version>
+        <AssemblyVersion>7.5.1.0</AssemblyVersion>
+        <FileVersion>7.5.1.0</FileVersion>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
