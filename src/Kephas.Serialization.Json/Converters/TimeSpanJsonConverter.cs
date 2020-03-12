@@ -46,7 +46,13 @@ namespace Kephas.Serialization.Json.Converters
                 return null;
             }
 
-            return XmlConvert.ToTimeSpan(serializer.Deserialize<string>(reader));
+            var timeSpanString = serializer.Deserialize<string>(reader);
+            if (TimeSpan.TryParse(timeSpanString, out var timeSpan))
+            {
+                return timeSpan;
+            }
+
+            return XmlConvert.ToTimeSpan(timeSpanString);
         }
 
         /// <summary>
