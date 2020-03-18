@@ -18,7 +18,7 @@ namespace Kephas.Workflow
     /// An activity is an executable instance which receives a target, arguments, and an executing context upon execution.
     /// </summary>
     /// <remarks>
-    /// An activity instance may be executed only once. 
+    /// An activity instance may be executed only once.
     /// To execute an activity multiple times, create for each execution an instance and execute it.
     /// During the execution, it may be canceled or paused,
     /// and also debuggers may be attached to provide development support.
@@ -27,7 +27,7 @@ namespace Kephas.Workflow
     public interface IActivity : IOperationResult, IInstance<IActivityInfo>
     {
         /// <summary>
-        /// Gets the target against which the activity is executed.
+        /// Gets or sets the target against which the activity is executed.
         /// </summary>
         /// <remarks>
         /// The target is typically the activity's container instance. 
@@ -37,22 +37,22 @@ namespace Kephas.Workflow
         /// <value>
         /// The target.
         /// </value>
-        object Target { get; }
+        object Target { get; set; }
 
         /// <summary>
-        /// Gets the arguments for the execution.
+        /// Gets or sets the arguments for the execution.
         /// </summary>
         /// <value>
         /// The arguments.
         /// </value>
-        IExpando Arguments { get; }
+        IExpando Arguments { get; set; }
 
         /// <summary>
-        /// Gets the execution context.
+        /// Gets or sets the execution context.
         /// </summary>
         /// <value>
         /// The execution context.
         /// </value>
-        IActivityContext Context { get; }
+        IActivityContext Context { get; set; }
     }
 }

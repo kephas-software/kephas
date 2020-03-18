@@ -60,14 +60,17 @@ namespace Kephas.Workflow.Model.Runtime.ModelRegistries
             var assemblies = this.appRuntime.GetAppAssemblies();
 
             var types = new HashSet<Type>();
-            var markerInterface = typeof(IActivity).GetTypeInfo();
+            var activityMarkerInterface = typeof(IActivity).GetTypeInfo();
+            var stateMachineMarkerInterface = typeof(IStateMachine).GetTypeInfo();
             foreach (var assembly in assemblies)
             {
                 types.AddRange(this.typeLoader.GetExportedTypes(assembly).Where(
                     t =>
                         {
                             var ti = t.GetTypeInfo();
-                            return this.IsActivity(ti, markerInterface) && !ti.IsExcludedFromModel();
+                            return (this.IsWorkflowModelElement(ti, activityMarkerInterface)
+                                    || this.IsWorkflowModelElement(ti, stateMachineMarkerInterface))
+                                && !ti.IsExcludedFromModel();
                         }));
             }
 
@@ -75,14 +78,14 @@ namespace Kephas.Workflow.Model.Runtime.ModelRegistries
         }
 
         /// <summary>
-        /// Query if 'type' is activity.
+        /// Query if 'type' is a workflow element.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="markerInterface">The marker interface.</param>
         /// <returns>
-        /// True if the type is a activity, false if not.
+        /// True if the type is an activity, false if not.
         /// </returns>
-        private bool IsActivity(TypeInfo type, TypeInfo markerInterface)
+        private bool IsWorkflowModelElement(TypeInfo type, TypeInfo markerInterface)
         {
             return type.IsClass && !type.IsAbstract && markerInterface.IsAssignableFrom(type);
         }

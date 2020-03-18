@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ActivityType.cs" company="Kephas Software SRL">
+// <copyright file="StateMachineType.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the activity type class.
+//   Implements the state machine type class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,72 +21,60 @@ namespace Kephas.Workflow.Model.Elements
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Reflection;
+    using Kephas.Workflow;
     using Kephas.Workflow.Reflection;
 
     /// <summary>
-    /// Classifier for activities.
+    /// Classifier for state machines.
     /// </summary>
-    public class ActivityType : ClassifierBase<IActivityType>, IActivityType
+    public class StateMachineType : ClassifierBase<IStateMachineType>, IStateMachineType
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ActivityType"/> class.
+        /// Initializes a new instance of the <see cref="StateMachineType"/> class.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="name">The name.</param>
-        public ActivityType(IModelConstructionContext constructionContext, string name)
+        public StateMachineType(IModelConstructionContext constructionContext, string name)
             : base(constructionContext, name)
         {
         }
 
         /// <summary>
-        /// Gets or sets the type of the return value.
+        /// Gets the type of the state.
         /// </summary>
         /// <value>
-        /// The type of the return value.
+        /// The type of the state.
         /// </value>
-        public ITypeInfo? ReturnType { get; protected set; }
+        public ITypeInfo StateType { get; protected set; }
 
         /// <summary>
-        /// Gets the parameters for controlling the activity.
+        /// Gets the type of the target.
         /// </summary>
         /// <value>
-        /// The parameters.
+        /// The type of the target.
         /// </value>
-        public IEnumerable<IParameterInfo> Parameters => this.Members.OfType<IParameterInfo>();
+        public ITypeInfo TargetType { get; protected set; }
 
         /// <summary>
-        /// Gets the parts of an aggregated element.
+        /// Gets target state property.
         /// </summary>
         /// <value>
-        /// The parts.
+        /// The target state property.
         /// </value>
-        IEnumerable<object> IAggregatedElementInfo.Parts => this.Parts;
+        public IPropertyInfo TargetStateProperty { get; protected set; }
 
         /// <summary>
-        /// Gets the element annotations.
+        /// Gets the transitions.
         /// </summary>
         /// <value>
-        /// The element annotations.
+        /// The transitions.
         /// </value>
-        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
-
-        /// <summary>
-        /// Gets the members.
-        /// </summary>
-        /// <value>
-        /// The members.
-        /// </value>
-        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
-
-        /// <summary>
-        /// Gets the enumeration of properties.
-        /// </summary>
-        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
+        public IEnumerable<IActivityInfo> Transitions => this.Members.OfType<IActivityInfo>();
 
         /// <summary>
         /// Executes the asynchronous operation.
         /// </summary>
-        /// <param name="activity">The activity.</param>
+        /// <param name="transition">The transition.</param>
         /// <param name="target">Target for the.</param>
         /// <param name="arguments">The arguments.</param>
         /// <param name="context">The context.</param>
@@ -94,14 +82,9 @@ namespace Kephas.Workflow.Model.Elements
         /// <returns>
         /// An asynchronous result that yields the execution output.
         /// </returns>
-        public virtual Task<object> ExecuteAsync(
-            IActivity activity,
-            object? target,
-            IExpando? arguments,
-            IActivityContext context,
-            CancellationToken cancellationToken = default)
+        public Task<object> ExecuteAsync(IActivity transition, object target, IExpando arguments, IActivityContext context, CancellationToken cancellationToken = default)
         {
-            return activity.GetTypeInfo().ExecuteAsync(activity, target, arguments, context, cancellationToken);
+            return transition.GetTypeInfo().ExecuteAsync(transition, target, arguments, context, cancellationToken);
         }
 
         /// <summary>
@@ -112,8 +95,10 @@ namespace Kephas.Workflow.Model.Elements
         {
             base.OnCompleteConstruction(constructionContext);
 
-            var activityPart = this.Parts.OfType<IActivityInfo>().FirstOrDefault();
-            this.ReturnType = activityPart?.ReturnType;
+            var stateMachinePart = this.Parts.OfType<IStateMachineInfo>().FirstOrDefault();
+            this.StateType = stateMachinePart?.StateType;
+            this.TargetType = stateMachinePart?.TargetType;
+            this.TargetStateProperty = stateMachinePart?.TargetStateProperty;
         }
     }
 }

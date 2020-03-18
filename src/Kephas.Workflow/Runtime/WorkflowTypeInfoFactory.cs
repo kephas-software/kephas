@@ -33,6 +33,11 @@ namespace Kephas.Workflow.Runtime
                 return new RuntimeActivityInfo(type);
             }
 
+            if (typeof(IStateMachine).IsAssignableFrom(type))
+            {
+                return new RuntimeStateMachineInfo(type);
+            }
+
             return null;
         }
     }

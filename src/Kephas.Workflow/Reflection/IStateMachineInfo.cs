@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IActivityInfo.cs" company="Kephas Software SRL">
+// <copyright file="IStateMachineInfo.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IActivityInfo interface.
+//   Declares the IStateMachineInfo interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,34 +17,51 @@ namespace Kephas.Workflow.Reflection
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.Operations;
     using Kephas.Reflection;
 
     /// <summary>
-    /// Contract interface for activity metadata.
+    /// Contract interface for state machine metadata.
     /// </summary>
-    public interface IActivityInfo : ITypeInfo
+    public interface IStateMachineInfo : ITypeInfo
     {
         /// <summary>
-        /// Gets the return type of the method.
+        /// Gets the type of the state. Typically it is an enumeration.
         /// </summary>
         /// <value>
-        /// The return type of the method.
+        /// The type of the state.
         /// </value>
-        ITypeInfo? ReturnType { get; }
+        ITypeInfo StateType { get; }
 
         /// <summary>
-        /// Gets the activity parameters.
+        /// Gets the type of the target controlled by the state machine.
         /// </summary>
         /// <value>
-        /// The activity parameters.
+        /// The type of the target.
         /// </value>
-        IEnumerable<IParameterInfo> Parameters { get; }
+        ITypeInfo TargetType { get; }
 
         /// <summary>
-        /// Executes the activity asynchronously.
+        /// Gets the state property of the target storing the current state.
         /// </summary>
-        /// <param name="activity">The activity to execute.</param>
-        /// <param name="target">The activity target.</param>
+        /// <value>
+        /// The state property of the target storing the current state.
+        /// </value>
+        IPropertyInfo TargetStateProperty { get; }
+
+        /// <summary>
+        /// Gets the activities transitioning the target through different states.
+        /// </summary>
+        /// <value>
+        /// The transition activities.
+        /// </value>
+        IEnumerable<IActivityInfo> Transitions { get; }
+
+        /// <summary>
+        /// Executes the transition asynchronously.
+        /// </summary>
+        /// <param name="transition">The transition to execute.</param>
+        /// <param name="target">The state machine target.</param>
         /// <param name="arguments">The execution arguments.</param>
         /// <param name="context">The execution context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
@@ -52,7 +69,7 @@ namespace Kephas.Workflow.Reflection
         /// An asynchronous result that yields the output.
         /// </returns>
         Task<object> ExecuteAsync(
-            IActivity activity,
+            IActivity transition,
             object? target,
             IExpando? arguments,
             IActivityContext context,

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Workflow.Runtime
 {
     using System;
@@ -34,9 +36,9 @@ namespace Kephas.Workflow.Runtime
         private static readonly IDictionary<string, PropertyInfo> ActivityProperties =
             typeof(ActivityBase).GetProperties().ToDictionary(p => p.Name, p => p);
 
-        private IDictionary<string, IRuntimeParameterInfo> parameters;
+        private IDictionary<string, IRuntimeParameterInfo>? parameters;
 
-        private ITypeInfo returnType;
+        private ITypeInfo? returnType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeActivityInfo"/> class.
@@ -53,7 +55,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        public ITypeInfo ReturnType => this.returnType ?? (this.returnType = this.ComputeReturnType());
+        public ITypeInfo ReturnType => this.returnType ??= this.ComputeReturnType();
 
         /// <summary>
         /// Gets the method parameters.
@@ -81,6 +83,10 @@ namespace Kephas.Workflow.Runtime
             IActivityContext context,
             CancellationToken cancellationToken = default)
         {
+            activity.Target = target;
+            activity.Arguments = arguments;
+            activity.Context = context;
+
             if (activity is IOperation operation)
             {
                 return operation.Execute(context);
@@ -143,7 +149,7 @@ namespace Kephas.Workflow.Runtime
                             && p.GetIndexParameters().Length == 0
                             && !ActivityProperties.ContainsKey(p.Name));
 
-            return CreateMembers<PropertyInfo, IRuntimeParameterInfo>(type, runtimeMembers, memberTypeGetter);
+            return this.CreateMembers<PropertyInfo, IRuntimeParameterInfo>(type, runtimeMembers, memberTypeGetter);
         }
 
         /// <summary>
