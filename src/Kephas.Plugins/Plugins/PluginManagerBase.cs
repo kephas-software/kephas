@@ -926,7 +926,9 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual bool CanUninstallPlugin(PluginData pluginData, IPluginContext context)
         {
-            return pluginData.State == PluginState.PendingUninstallation || pluginData.State == PluginState.Corrupt;
+            return pluginData.State == PluginState.PendingUninstallation
+                || pluginData.State == PluginState.PendingInitialization
+                || pluginData.State == PluginState.Corrupt;
         }
 
         /// <summary>
@@ -1095,9 +1097,9 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual async Task<IOperationResult<IPlugin>> UninstallPluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
         {
-            var rollbackResult = await context.Transaction.RollbackAsync(context, cancellationToken).PreserveThreadContext();
+            var rollbackResult = await context.Transaction!.RollbackAsync(context, cancellationToken).PreserveThreadContext();
 
-            var pluginFolder = context.Plugin.Location;
+            var pluginFolder = context.Plugin!.Location;
             if (Directory.Exists(pluginFolder))
             {
                 Directory.Delete(pluginFolder, recursive: true);
