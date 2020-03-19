@@ -18,7 +18,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Contract for a dynamic <see cref="MethodInfo"/>.
     /// </summary>
-    public interface IRuntimeMethodInfo : IMethodInfo, IRuntimeElementInfo
+    public interface IRuntimeMethodInfo : IOperationInfo, IRuntimeElementInfo
     {
         /// <summary>
         /// Gets the return type of the method.

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas
 {
     using System.Dynamic;
@@ -28,7 +30,7 @@ namespace Kephas
         /// <param name="obj">The object.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="value">The value.</param>
-        public static void SetPropertyValue(this object obj, string propertyName, object value)
+        public static void SetPropertyValue(this object obj, string propertyName, object? value)
         {
             Requires.NotNull(obj, nameof(obj));
 
@@ -44,7 +46,7 @@ namespace Kephas
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the value could be set; otherwise <c>false</c>.</returns>
         /// <remarks>If the object passed is <c>null</c>, then <c>false</c> is returned.</remarks>
-        public static bool TrySetPropertyValue(this object obj, string propertyName, object value)
+        public static bool TrySetPropertyValue(this object? obj, string propertyName, object? value)
         {
             if (obj == null)
             {
@@ -61,7 +63,7 @@ namespace Kephas
         /// <param name="obj">The object.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>The property value.</returns>
-        public static object GetPropertyValue(this object obj, string propertyName)
+        public static object? GetPropertyValue(this object obj, string propertyName)
         {
             Requires.NotNull(obj, nameof(obj));
 
@@ -78,7 +80,7 @@ namespace Kephas
         /// <returns>
         /// A boolean value indicating whether the property is found.
         /// </returns>
-        public static bool TryGetPropertyValue(this object obj, string propertyName, out object value)
+        public static bool TryGetPropertyValue(this object obj, string propertyName, out object? value)
         {
             Requires.NotNull(obj, nameof(obj));
 
@@ -91,7 +93,7 @@ namespace Kephas
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <returns>A dynamic type information for the provided object.</returns>
-        public static IRuntimeTypeInfo GetRuntimeTypeInfo(this object obj)
+        public static IRuntimeTypeInfo? GetRuntimeTypeInfo(this object? obj)
         {
             return obj?.GetType().AsRuntimeTypeInfo();
         }
@@ -101,7 +103,7 @@ namespace Kephas
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <returns>A dynamic object wrapping the provided object.</returns>
-        public static dynamic ToDynamic(this object obj)
+        public static dynamic? ToDynamic(this object obj)
         {
             if (obj == null || obj is IDynamicMetaObjectProvider)
             {
@@ -116,11 +118,11 @@ namespace Kephas
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <returns>An <see cref="IExpando"/> wrapping the provided object. If the provided object is an expando, that object is returned.</returns>
-        public static IExpando ToExpando(this object obj)
+        public static IExpando? ToExpando(this object? obj)
         {
             if (obj == null || obj is IExpando)
             {
-                return (IExpando)obj;
+                return (IExpando?)obj;
             }
 
             return new Expando(obj);

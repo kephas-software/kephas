@@ -18,7 +18,7 @@ namespace Kephas.Reflection.Dynamic
     /// <summary>
     /// Information about the dynamic method.
     /// </summary>
-    public class DynamicMethodInfo : DynamicElementInfo, IMethodInfo
+    public class DynamicMethodInfo : DynamicElementInfo, IOperationInfo
     {
         /// <summary>
         /// Gets or sets the return type of the method.
@@ -42,7 +42,7 @@ namespace Kephas.Reflection.Dynamic
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result.</returns>
-        public object? Invoke(object instance, IEnumerable<object> args)
+        public object? Invoke(object instance, IEnumerable<object?> args)
         {
             // TODO localization
             throw new NotSupportedException();

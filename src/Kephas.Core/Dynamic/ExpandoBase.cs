@@ -263,10 +263,10 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-            IMethodInfo methodInfo;
+            IOperationInfo methodInfo;
             if (this.innerObject != null)
             {
-                methodInfo = (IMethodInfo)this.GetInnerObjectTypeInfo().GetMember(binder.Name, throwIfNotFound: false);
+                methodInfo = (IOperationInfo)this.GetInnerObjectTypeInfo().GetMember(binder.Name, throwIfNotFound: false);
                 if (methodInfo != null)
                 {
                     result = methodInfo.Invoke(this.innerObject, args);
@@ -274,7 +274,7 @@ namespace Kephas.Dynamic
                 }
             }
 
-            methodInfo = (IMethodInfo)this.GetThisTypeInfo().GetMember(binder.Name, throwIfNotFound: false);
+            methodInfo = (IOperationInfo)this.GetThisTypeInfo().GetMember(binder.Name, throwIfNotFound: false);
             if (methodInfo != null)
             {
                 result = methodInfo.Invoke(this.innerObject, args);

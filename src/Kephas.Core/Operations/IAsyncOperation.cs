@@ -8,6 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
+#if NETSTANDARD2_1
+#else
+
 namespace Kephas.Operations
 {
     using System.Threading;
@@ -28,6 +33,8 @@ namespace Kephas.Operations
         /// <returns>
         /// An object.
         /// </returns>
-        Task<object> ExecuteAsync(IContext context = null, CancellationToken cancellationToken = default);
+        Task<object?> ExecuteAsync(IContext? context = null, CancellationToken cancellationToken = default);
     }
 }
+
+#endif

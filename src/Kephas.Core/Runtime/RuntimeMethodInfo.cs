@@ -91,7 +91,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The method parameters.
         /// </value>
-        IEnumerable<IParameterInfo> IMethodInfo.Parameters => this.Parameters.Values;
+        IEnumerable<IParameterInfo> IOperationInfo.Parameters => this.Parameters.Values;
 
         /// <summary>
         /// Gets the parent element declaring this element.
@@ -120,7 +120,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        ITypeInfo IMethodInfo.ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
+        ITypeInfo IOperationInfo.ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
 
         /// <summary>
         /// Gets the return type of the method.
@@ -146,7 +146,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The <see cref="object" />.
         /// </returns>
-        public object? Invoke(object instance, IEnumerable<object> args)
+        public object? Invoke(object instance, IEnumerable<object?> args)
         {
             return this.MethodInfo.Invoke(instance, args.ToArray());
         }
@@ -201,25 +201,6 @@ namespace Kephas.Runtime
         protected override ITypeInfo GetThisTypeInfo()
         {
             return RuntimeTypeInfoOfRuntimeMethodInfo;
-        }
-
-        /// <summary>
-        /// Creates the member infos.
-        /// </summary>
-        /// <param name="fieldInfos">The field infos.</param>
-        /// <returns>
-        /// The new member infos.
-        /// </returns>
-        private static IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(
-            IDictionary<string, IRuntimeParameterInfo> fieldInfos)
-        {
-            var memberInfos = new Dictionary<string, IRuntimeElementInfo>();
-            foreach (var kv in fieldInfos)
-            {
-                memberInfos.Add(kv.Key, kv.Value);
-            }
-
-            return new ReadOnlyDictionary<string, IRuntimeElementInfo>(memberInfos);
         }
 
         /// <summary>

@@ -824,7 +824,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IDictionary<string, IRuntimeElementInfo> GetMembers()
         {
-            return this.members ?? (this.members = this.CreateMemberInfos());
+            return this.members ??= this.CreateMemberInfos();
         }
 
         /// <summary>
@@ -835,7 +835,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IDictionary<string, IRuntimeFieldInfo> GetFields()
         {
-            return this.fields ?? (this.fields = this.CreateFieldInfos(this.Type));
+            return this.fields ??= this.CreateFieldInfos(this.Type);
         }
 
         /// <summary>
@@ -846,7 +846,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IDictionary<string, IRuntimePropertyInfo> GetProperties()
         {
-            return this.properties ?? (this.properties = this.CreatePropertyInfos(this.Type));
+            return this.properties ??= this.CreatePropertyInfos(this.Type);
         }
 
         /// <summary>
@@ -857,7 +857,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IDictionary<string, ICollection<IRuntimeMethodInfo>> GetMethods()
         {
-            return this.methods ?? (this.methods = CreateMethodInfos(this.Type));
+            return this.methods ??= CreateMethodInfos(this.Type);
         }
 
         /// <summary>

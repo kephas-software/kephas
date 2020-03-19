@@ -15,9 +15,9 @@ namespace Kephas.Reflection
     using System.Collections.Generic;
 
     /// <summary>
-    /// Contract for method information.
+    /// Contract for operation information.
     /// </summary>
-    public interface IMethodInfo : IElementInfo
+    public interface IOperationInfo : IElementInfo
     {
         /// <summary>
         /// Gets the return type of the method.
@@ -41,6 +41,6 @@ namespace Kephas.Reflection
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result.</returns>
-        object? Invoke(object instance, IEnumerable<object> args);
+        object? Invoke(object instance, IEnumerable<object?> args);
     }
 }
