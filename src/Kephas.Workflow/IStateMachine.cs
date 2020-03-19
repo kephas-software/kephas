@@ -53,7 +53,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// An asynchronous result that yields the transition result.
         /// </returns>
-        public Task<object> TransitionAsync(ITransitionContext context, CancellationToken cancellationToken = default);
+        public Task<object?> TransitionAsync(ITransitionContext context, CancellationToken cancellationToken = default);
     }
 
     /// <summary>

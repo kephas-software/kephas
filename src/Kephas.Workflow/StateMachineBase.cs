@@ -16,11 +16,14 @@ namespace Kephas.Workflow
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Threading.Tasks;
     using Kephas.Workflow.Reflection;
 
     /// <summary>
@@ -28,14 +31,16 @@ namespace Kephas.Workflow
     /// </summary>
     /// <typeparam name="TTarget">Type of the target.</typeparam>
     /// <typeparam name="TState">Type of the state.</typeparam>
-    public abstract class StateMachineBase<TTarget, TState> : IStateMachine<TTarget, TState>
+    public abstract class StateMachineBase<TTarget, TState> : Loggable, IStateMachine<TTarget, TState>
         where TTarget : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StateMachineBase{TTarget, TState}"/> class.
         /// </summary>
         /// <param name="target">The target instance to control.</param>
-        protected StateMachineBase(TTarget target)
+        /// <param name="logManager">Optional. Manager for log.</param>
+        protected StateMachineBase(TTarget target, ILogManager? logManager = null)
+            : base(logManager)
         {
             Requires.NotNull(target, nameof(target));
 
@@ -98,7 +103,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// An asynchronous result that yields the transition result.
         /// </returns>
-        public Task<object?> TransitionAsync(ITransitionContext context, CancellationToken cancellationToken = default)
+        public async Task<object?> TransitionAsync(ITransitionContext context, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -109,35 +114,60 @@ namespace Kephas.Workflow
                 throw new InvalidTransitionException($"Cound not identify transition from '{this.CurrentState}' to '{context.To}'");
             }
 
+            try
+            {
+                var result = await this.TransitionCoreAsync(context, transitionInfo, cancellationToken).PreserveThreadContext();
+
+                this.GetTypeInfo().TargetStateProperty.SetValue(this.Target, transitionInfo.To);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Could not transition the state machine for {target} to '{state}' through '{transition}'.", this.Target, transitionInfo.To, transitionInfo.Name);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Transitions the state machine asynchronously.
+        /// </summary>
+        /// <param name="context">The transition context.</param>
+        /// <param name="transitionInfo">Information describing the transition.</param>
+        /// <param name="cancellationToken">A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the transition result.
+        /// </returns>
+        protected virtual Task<object?> TransitionCoreAsync(ITransitionContext context, ITransitionInfo transitionInfo, CancellationToken cancellationToken)
+        {
             var returnType = transitionInfo.ReturnType.AsType();
             if (returnType == typeof(Task))
             {
-                var task = (Task)transitionInfo.Invoke(this.Target, this.GetInvocationArguments(transitionInfo, context, cancellationToken))!;
+                var task = (Task)this.InvokeTransition(transitionInfo, context, cancellationToken)!;
                 return task.ContinueWith(t => (object?)null);
             }
 
             if (returnType.IsConstructedGenericOf(typeof(Task<>)))
             {
-                var task = (Task)transitionInfo.Invoke(this.Target, this.GetInvocationArguments(transitionInfo, context, cancellationToken))!;
+                var task = (Task)this.InvokeTransition(transitionInfo, context, cancellationToken)!;
                 return task.ContinueWith(t => t.GetPropertyValue(nameof(Task<int>.Result)));
             }
 
 #if NETSTANDARD2_1
             if (returnType == typeof(ValueTask))
             {
-                var valueTask = (ValueTask)transitionInfo.Invoke(this.Target, this.GetInvocationArguments(transitionInfo, context, cancellationToken))!;
+                var valueTask = (ValueTask)this.InvokeTransition(transitionInfo, context, cancellationToken)!;
                 return valueTask.AsTask().ContinueWith(t => (object?)null);
             }
 
             if (returnType.IsConstructedGenericOf(typeof(ValueTask<>)))
             {
-                var valueTaskObject = transitionInfo.Invoke(this.Target, this.GetInvocationArguments(transitionInfo, context, cancellationToken))!;
+                var valueTaskObject = this.InvokeTransition(transitionInfo, context, cancellationToken)!;
                 var task = (Task)valueTaskObject.GetRuntimeTypeInfo().Invoke(valueTaskObject, nameof(ValueTask<int>.AsTask), Array.Empty<object>());
                 return task.ContinueWith(t => t.GetPropertyValue(nameof(Task<int>.Result)));
             }
 #endif
-
-            return Task.FromResult(transitionInfo.Invoke(this.Target, this.GetInvocationArguments(transitionInfo, context, cancellationToken)));
+            return Task.FromResult(this.InvokeTransition(transitionInfo, context, cancellationToken));
         }
 
         /// <summary>
@@ -189,6 +219,12 @@ namespace Kephas.Workflow
             throw new AmbiguousMatchException($"Multiple transitions found from '{currentState}' to '{context.To}': '{string.Join("', '", matchingTransitions.Select(t => t.Name))}'.");
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private object? InvokeTransition(ITransitionInfo transitionInfo, ITransitionContext context, CancellationToken cancellationToken)
+        {
+            return transitionInfo.Invoke(this, this.GetInvocationArguments(transitionInfo, context, cancellationToken));
+        }
+
         private IEnumerable<object?> GetInvocationArguments(ITransitionInfo transitionInfo, ITransitionContext context, CancellationToken cancellationToken)
         {
             foreach (var paramInfo in transitionInfo.Parameters)
@@ -197,13 +233,14 @@ namespace Kephas.Workflow
                 {
                     yield return context.Arguments[paramInfo.Name];
                 }
-
-                if (paramInfo.ValueType.AsType() == typeof(CancellationToken))
+                else if (paramInfo.ValueType.AsType() == typeof(CancellationToken))
                 {
                     yield return cancellationToken;
                 }
-
-                yield return null;
+                else
+                {
+                    yield return null;
+                }
             }
         }
     }
