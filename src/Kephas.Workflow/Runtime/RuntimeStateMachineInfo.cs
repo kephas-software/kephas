@@ -116,6 +116,7 @@ namespace Kephas.Workflow.Runtime
             void AddTransitions(IDictionary<string, IRuntimeElementInfo> m)
             {
                 m.Where(kv => kv.Value is IRuntimeMethodInfo mi && mi.GetAttribute<TransitionAttribute>() != null)
+                    .ToList()
                     .ForEach(kv => m.Add($"{kv.Value.Name}#trans", new RuntimeTransitionMethodInfo(((IRuntimeMethodInfo)kv.Value).MethodInfo)));
 
                 membersConfig?.Invoke(m);

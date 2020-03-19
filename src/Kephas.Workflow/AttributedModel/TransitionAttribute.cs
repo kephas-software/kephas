@@ -12,6 +12,8 @@ namespace Kephas.Workflow.AttributedModel
 {
     using System;
 
+    using Kephas.Diagnostics.Contracts;
+
     /// <summary>
     /// Attribute for transition.
     /// </summary>
@@ -19,19 +21,47 @@ namespace Kephas.Workflow.AttributedModel
     public class TransitionAttribute : Attribute
     {
         /// <summary>
-        /// Gets or sets the source states.
+        /// Initializes a new instance of the <see cref="TransitionAttribute"/> class.
+        /// </summary>
+        /// <param name="from">The source state.</param>
+        /// <param name="to">The target state.</param>
+        public TransitionAttribute(object from, object to)
+        {
+            Requires.NotNull(from, nameof(from));
+            Requires.NotNull(to, nameof(to));
+
+            this.From = new[] { from };
+            this.To = to;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TransitionAttribute"/> class.
+        /// </summary>
+        /// <param name="from">The source state.</param>
+        /// <param name="to">The target state.</param>
+        public TransitionAttribute(object[] from, object to)
+        {
+            Requires.NotNullOrEmpty(from, nameof(from));
+            Requires.NotNull(to, nameof(to));
+
+            this.From = from;
+            this.To = to;
+        }
+
+        /// <summary>
+        /// Gets the source states.
         /// </summary>
         /// <value>
         /// The source states.
         /// </value>
-        public object[] From { get; set; }
+        public object[] From { get; }
 
         /// <summary>
-        /// Gets or sets the target state.
+        /// Gets the target state.
         /// </summary>
         /// <value>
         /// The target state.
         /// </value>
-        public object To { get; set; }
+        public object To { get; }
     }
 }
