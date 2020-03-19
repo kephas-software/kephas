@@ -17,7 +17,6 @@ namespace Kephas.Workflow.Reflection
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
-    using Kephas.Operations;
     using Kephas.Reflection;
 
     /// <summary>
@@ -50,29 +49,31 @@ namespace Kephas.Workflow.Reflection
         IPropertyInfo TargetStateProperty { get; }
 
         /// <summary>
-        /// Gets the activities transitioning the target through different states.
+        /// Gets the operations transitioning the target through different states.
         /// </summary>
         /// <value>
-        /// The transition activities.
+        /// The transition operations.
         /// </value>
-        IEnumerable<IActivityInfo> Transitions { get; }
+        IEnumerable<ITransitionInfo> Transitions { get; }
 
         /// <summary>
-        /// Executes the transition asynchronously.
+        /// Transitions the state machine asynchronously.
         /// </summary>
-        /// <param name="transition">The transition to execute.</param>
-        /// <param name="target">The state machine target.</param>
+        /// <param name="stateMachine">The state machine.</param>
+        /// <param name="targetState">State of the target.</param>
+        /// <param name="transitionInfo">Information describing the transition.</param>
         /// <param name="arguments">The execution arguments.</param>
         /// <param name="context">The execution context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// An asynchronous result that yields the output.
+        /// An asynchronous result that yields the transition result.
         /// </returns>
-        Task<object> ExecuteAsync(
-            IActivity transition,
-            object? target,
+        Task<object> TransitionAsync(
+            IStateMachine stateMachine,
+            object targetState,
+            ITransitionInfo? transitionInfo,
             IExpando? arguments,
-            IActivityContext context,
+            ITransitionContext context,
             CancellationToken cancellationToken = default);
     }
 }

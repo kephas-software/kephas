@@ -69,22 +69,23 @@ namespace Kephas.Workflow.Model.Elements
         /// <value>
         /// The transitions.
         /// </value>
-        public IEnumerable<IActivityInfo> Transitions => this.Members.OfType<IActivityInfo>();
+        public IEnumerable<ITransitionInfo> Transitions => this.Members.OfType<ITransitionInfo>();
 
         /// <summary>
-        /// Executes the asynchronous operation.
+        /// Transitions the state machine asynchronously.
         /// </summary>
-        /// <param name="transition">The transition.</param>
-        /// <param name="target">Target for the.</param>
+        /// <param name="stateMachine">The state machine.</param>
+        /// <param name="targetState">State of the target.</param>
+        /// <param name="transitionInfo">Information describing the transition.</param>
         /// <param name="arguments">The arguments.</param>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
-        /// An asynchronous result that yields the execution output.
+        /// An asynchronous result that yields the transition.
         /// </returns>
-        public Task<object> ExecuteAsync(IActivity transition, object target, IExpando arguments, IActivityContext context, CancellationToken cancellationToken = default)
+        public Task<object> TransitionAsync(IStateMachine stateMachine, object targetState, ITransitionInfo? transitionInfo, IExpando? arguments, ITransitionContext context, CancellationToken cancellationToken = default)
         {
-            return transition.GetTypeInfo().ExecuteAsync(transition, target, arguments, context, cancellationToken);
+            return stateMachine.GetTypeInfo().TransitionAsync(stateMachine, targetState, transitionInfo, arguments, context, cancellationToken);
         }
 
         /// <summary>

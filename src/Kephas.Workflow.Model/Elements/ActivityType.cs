@@ -44,7 +44,7 @@ namespace Kephas.Workflow.Model.Elements
         /// <value>
         /// The type of the return value.
         /// </value>
-        public ITypeInfo? ReturnType { get; protected set; }
+        public ITypeInfo ReturnType { get; protected set; }
 
         /// <summary>
         /// Gets the parameters for controlling the activity.
@@ -94,7 +94,7 @@ namespace Kephas.Workflow.Model.Elements
         /// <returns>
         /// An asynchronous result that yields the execution output.
         /// </returns>
-        public virtual Task<object> ExecuteAsync(
+        public virtual Task<object?> ExecuteAsync(
             IActivity activity,
             object? target,
             IExpando? arguments,
@@ -102,6 +102,24 @@ namespace Kephas.Workflow.Model.Elements
             CancellationToken cancellationToken = default)
         {
             return activity.GetTypeInfo().ExecuteAsync(activity, target, arguments, context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Executes the given operation and returns the result.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>
+        /// The execution result.
+        /// </returns>
+        object? IOperationInfo.Invoke(object instance, IEnumerable<object?> args)
+        {
+            if (!(instance is IActivity activity))
+            {
+                throw new WorkflowException($"Expected activity '{instance}' to invoke, instead received {instance?.GetType()}.");
+            }
+
+            return activity.GetTypeInfo().Invoke(instance, args);
         }
 
         /// <summary>

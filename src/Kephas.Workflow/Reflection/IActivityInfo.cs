@@ -12,7 +12,6 @@
 
 namespace Kephas.Workflow.Reflection
 {
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -22,24 +21,8 @@ namespace Kephas.Workflow.Reflection
     /// <summary>
     /// Contract interface for activity metadata.
     /// </summary>
-    public interface IActivityInfo : ITypeInfo
+    public interface IActivityInfo : ITypeInfo, IOperationInfo
     {
-        /// <summary>
-        /// Gets the return type of the method.
-        /// </summary>
-        /// <value>
-        /// The return type of the method.
-        /// </value>
-        ITypeInfo? ReturnType { get; }
-
-        /// <summary>
-        /// Gets the activity parameters.
-        /// </summary>
-        /// <value>
-        /// The activity parameters.
-        /// </value>
-        IEnumerable<IParameterInfo> Parameters { get; }
-
         /// <summary>
         /// Executes the activity asynchronously.
         /// </summary>
@@ -51,7 +34,7 @@ namespace Kephas.Workflow.Reflection
         /// <returns>
         /// An asynchronous result that yields the output.
         /// </returns>
-        Task<object> ExecuteAsync(
+        Task<object?> ExecuteAsync(
             IActivity activity,
             object? target,
             IExpando? arguments,

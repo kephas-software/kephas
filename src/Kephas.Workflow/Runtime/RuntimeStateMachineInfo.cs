@@ -17,12 +17,13 @@ namespace Kephas.Workflow.Runtime
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using Kephas.Collections;
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Threading.Tasks;
+    using Kephas.Workflow.AttributedModel;
     using Kephas.Workflow.Reflection;
 
     /// <summary>
@@ -73,37 +74,54 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The transition activities.
         /// </value>
-        public IEnumerable<IActivityInfo> Transitions => this.Members.OfType<IActivityInfo>();
+        public IEnumerable<ITransitionInfo> Transitions => this.Members.OfType<ITransitionInfo>();
 
         /// <summary>
-        /// Executes the transition asynchronously.
+        /// Transitions the state machine asynchronously.
         /// </summary>
-        /// <param name="transition">The transition to execute.</param>
-        /// <param name="target">The state machine target.</param>
+        /// <param name="stateMachine">The state machine.</param>
+        /// <param name="targetState">State of the target.</param>
+        /// <param name="transitionInfo">Information describing the transition.</param>
         /// <param name="arguments">The execution arguments.</param>
         /// <param name="context">The execution context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// An asynchronous result that yields the output.
+        /// An asynchronous result that yields the transition result.
         /// </returns>
-        public async Task<object> ExecuteAsync(IActivity transition, object? target, IExpando? arguments, IActivityContext context, CancellationToken cancellationToken = default)
+        public Task<object> TransitionAsync(IStateMachine stateMachine, object targetState, ITransitionInfo? transitionInfo, IExpando? arguments, ITransitionContext context, CancellationToken cancellationToken = default)
         {
-            transition.Target = target;
-            transition.Arguments = arguments;
-            transition.Context = context;
-
-            if (transition is IOperation operation)
+            context.To = targetState;
+            if (transitionInfo != null)
             {
-                return operation.Execute(context);
+                context.TransitionInfo = transitionInfo;
             }
 
-            if (transition is IAsyncOperation asyncOperation)
+            if (arguments != null)
             {
-                return await asyncOperation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
+                context.Arguments = arguments;
             }
 
-            // TODO localization
-            throw new NotImplementedException($"Either implement the {typeof(IOperation).Name} or {typeof(IAsyncOperation).Name} in the transition of type '{transition?.GetType()}', or provide a specialized type info.");
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Creates the member infos.
+        /// </summary>
+        /// <param name="membersConfig">Optional. The members configuration.</param>
+        /// <returns>
+        /// The new member infos.
+        /// </returns>
+        protected override IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(Action<IDictionary<string, IRuntimeElementInfo>> membersConfig = null)
+        {
+            void AddTransitions(IDictionary<string, IRuntimeElementInfo> m)
+            {
+                m.Where(kv => kv.Value is IRuntimeMethodInfo mi && mi.GetAttribute<TransitionAttribute>() != null)
+                    .ForEach(kv => m.Add($"{kv.Value.Name}#trans", new RuntimeTransitionMethodInfo(((IRuntimeMethodInfo)kv.Value).MethodInfo)));
+
+                membersConfig?.Invoke(m);
+            }
+
+            return base.CreateMemberInfos(AddTransitions);
         }
 
         private ITypeInfo? ComputeStateType()

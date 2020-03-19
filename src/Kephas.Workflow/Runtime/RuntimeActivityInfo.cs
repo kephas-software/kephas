@@ -76,10 +76,10 @@ namespace Kephas.Workflow.Runtime
         /// <returns>
         /// An asynchronous result that yields the output.
         /// </returns>
-        public virtual async Task<object> ExecuteAsync(
+        public virtual async Task<object?> ExecuteAsync(
             IActivity activity,
-            object target,
-            IExpando arguments,
+            object? target,
+            IExpando? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default)
         {
@@ -89,9 +89,17 @@ namespace Kephas.Workflow.Runtime
 
             if (activity is IOperation operation)
             {
+#if NETSTANDARD2_1
+                return await operation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
+#else
                 return operation.Execute(context);
+#endif
             }
 
+#if NETSTANDARD2_1
+            // TODO localization
+            throw new NotImplementedException($"Implement the {typeof(IOperation).Name} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+#else
             if (activity is IAsyncOperation asyncOperation)
             {
                 return await asyncOperation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
@@ -99,6 +107,36 @@ namespace Kephas.Workflow.Runtime
 
             // TODO localization
             throw new NotImplementedException($"Either implement the {typeof(IOperation).Name} or {typeof(IAsyncOperation).Name} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+#endif
+        }
+
+        /// <summary>
+        /// Executes the given operation.
+        /// </summary>
+        /// <param name="activity">The activity to execute.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>
+        /// An object.
+        /// </returns>
+        object? IOperationInfo.Invoke(object activity, IEnumerable<object?> args)
+        {
+            if (activity is IOperation operation)
+            {
+                return operation.Execute();
+            }
+
+#if NETSTANDARD2_1
+            // TODO localization
+            throw new NotImplementedException($"Implement the {typeof(IOperation).Name} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+#else
+            if (activity is IAsyncOperation asyncOperation)
+            {
+                return asyncOperation.ExecuteAsync().GetResultNonLocking();
+            }
+
+            // TODO localization
+            throw new NotImplementedException($"Either implement the {typeof(IOperation).Name} or {typeof(IAsyncOperation).Name} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+#endif
         }
 
         /// <summary>
