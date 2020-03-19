@@ -74,7 +74,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The transition activities.
         /// </value>
-        public IEnumerable<ITransitionInfo> Transitions => this.Members.OfType<ITransitionInfo>();
+        public IEnumerable<ITransitionInfo> Transitions => this.Members.Values.OfType<ITransitionInfo>();
 
         /// <summary>
         /// Transitions the state machine asynchronously.
