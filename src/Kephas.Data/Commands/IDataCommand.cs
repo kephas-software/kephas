@@ -19,7 +19,12 @@ namespace Kephas.Data.Commands
     /// <summary>
     /// Contract for data commands.
     /// </summary>
-    public interface IDataCommand : IAsyncOperation
+    public interface IDataCommand
+#if NETSTANDARD2_1
+        : IOperation
+#else
+        : IAsyncOperation
+#endif
     {
         /// <summary>
         /// Executes the data command asynchronously.

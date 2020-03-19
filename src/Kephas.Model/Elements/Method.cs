@@ -72,7 +72,7 @@ namespace Kephas.Model.Elements
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result.</returns>
-        public object? Invoke(object instance, IEnumerable<object> args)
+        public object? Invoke(object instance, IEnumerable<object?> args)
         {
             var runtimeMethod = this.TryGetRuntimeMethodInfo();
             if (runtimeMethod == null)
@@ -93,7 +93,7 @@ namespace Kephas.Model.Elements
         /// </returns>
         protected virtual ITypeInfo ComputeReturnType()
         {
-            var firstPart = this.TryGetFirstPart<IMethodInfo>();
+            var firstPart = this.TryGetFirstPart<IOperationInfo>();
             if (firstPart == null)
             {
                 throw new ModelException(string.Format(Strings.Property_MissingPartsToComputePropertyType_Exception, this.Name, this.DeclaringContainer));

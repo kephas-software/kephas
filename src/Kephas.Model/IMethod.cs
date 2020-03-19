@@ -15,7 +15,7 @@ namespace Kephas.Model
     /// <summary>
     /// Interface for method.
     /// </summary>
-    public interface IMethod : IModelElement, IMethodInfo
+    public interface IMethod : IModelElement, IOperationInfo
     {
     }
 }

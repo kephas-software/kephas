@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Data.Commands
 {
     using System;
@@ -78,6 +80,50 @@ namespace Kephas.Data.Commands
             return result;
         }
 
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Executes the asynchronous operation.
+        /// </summary>
+        /// <exception cref="DataException">Thrown when a Data error condition occurs.</exception>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token .</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        async Task<object?> IOperation.ExecuteAsync(IContext? context, CancellationToken cancellationToken)
+        {
+            if (!(context is TOperationContext typedOperationContext))
+            {
+                // TODO localization
+                throw new DataException($"{typeof(TOperationContext)} context expected, instead provided an {context?.GetType()}.");
+            }
+
+            this.EnsureInitialized(context);
+            var result = await this.ExecuteAsync(typedOperationContext, cancellationToken).PreserveThreadContext();
+            return result;
+        }
+
+        /// <summary>
+        /// Executes the operation.
+        /// </summary>
+        /// <exception cref="DataException">Thrown when a Data error condition occurs.</exception>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        object? IOperation.Execute(IContext? context)
+        {
+            if (!(context is TOperationContext typedOperationContext))
+            {
+                // TODO localization
+                throw new DataException($"{typeof(TOperationContext)} context expected, instead provided an {context?.GetType()}.");
+            }
+
+            this.EnsureInitialized(context);
+            var result = this.Execute(typedOperationContext);
+            return result;
+        }
+#else
         /// <summary>
         /// Executes the asynchronous operation.
         /// </summary>
@@ -100,8 +146,6 @@ namespace Kephas.Data.Commands
             return result;
         }
 
-#if NETSTANDARD2_1
-#else
         /// <summary>
         /// Executes the data command.
         /// </summary>
