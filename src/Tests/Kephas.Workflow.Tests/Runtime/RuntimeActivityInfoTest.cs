@@ -100,6 +100,7 @@ namespace Kephas.Workflow.Tests.Runtime
             var activityInfo = new RuntimeActivityInfo(typeof(TestActivity));
 #if NETCOREAPP3_1
             var activity = Substitute.For<ActivityBase, IOperation>();
+
             (activity as IOperation).ExecuteAsync(Arg.Any<IContext>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult<object>("success"));
 #else
             var activity = Substitute.For<ActivityBase, IAsyncOperation>();
