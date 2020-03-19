@@ -72,6 +72,30 @@ namespace Kephas.Workflow.Model.Elements
         public IEnumerable<ITransitionInfo> Transitions => this.Members.OfType<ITransitionInfo>();
 
         /// <summary>
+        /// Gets the annotations.
+        /// </summary>
+        /// <value>
+        /// The annotations.
+        /// </value>
+        IEnumerable<object> IElementInfo.Annotations => this.Annotations;
+
+        /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
+
+        /// <summary>
+        /// Gets the properties.
+        /// </summary>
+        /// <value>
+        /// The properties.
+        /// </value>
+        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
+
+        /// <summary>
         /// Transitions the state machine asynchronously.
         /// </summary>
         /// <param name="stateMachine">The state machine.</param>

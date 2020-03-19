@@ -125,7 +125,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The parts.
         /// </value>
-        IEnumerable<object> IAggregatedElementInfo.Parts => this.parts;
+        public IEnumerable<object> Parts => this.parts;
 
         /// <summary>
         /// Gets or sets the qualified name of the element.
@@ -208,14 +208,6 @@ namespace Kephas.Model.Elements
         /// The construction monitor.
         /// </value>
         protected InitializationMonitor<TModelContract> ConstructionMonitor { get; }
-
-        /// <summary>
-        /// Gets the parts of an aggregated element.
-        /// </summary>
-        /// <value>
-        /// The parts.
-        /// </value>
-        protected IEnumerable<object> Parts => this.parts;
 
         /// <summary>
         /// Returns a string that represents the current object.

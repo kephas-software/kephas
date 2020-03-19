@@ -28,8 +28,8 @@ namespace Kephas.Model
         /// The qualified name of the element.
         /// </value>
         /// <remarks>
-        /// The qualified name is unique within the container's members. 
-        /// Some elements have the qualified name the same as their name, 
+        /// The qualified name is unique within the container's members.
+        /// Some elements have the qualified name the same as their name,
         /// but others will use a discriminator prefix to avoid name collisions.
         /// For example, annotations use the "@" discriminator, dimensions use "^", and projections use ":".
         /// </remarks>
