@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-using Kephas.Workflow.Runtime;
-
 namespace Kephas.Workflow.Tests
 {
     using System.Threading;
@@ -18,7 +15,9 @@ namespace Kephas.Workflow.Tests
 
     using Kephas.Composition;
     using Kephas.Logging;
+    using Kephas.Runtime;
     using Kephas.Workflow.AttributedModel;
+    using Kephas.Workflow.Runtime;
     using NSubstitute;
     using NUnit.Framework;
 
