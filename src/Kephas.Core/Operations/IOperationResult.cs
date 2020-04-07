@@ -74,6 +74,22 @@ namespace Kephas.Operations
         /// The exceptions.
         /// </value>
         ICollection<Exception> Exceptions { get; }
+
+        /// <summary>
+        /// Gets the operation result awaiter.
+        /// </summary>
+        /// <returns>
+        /// The awaiter.
+        /// </returns>
+        OperationResultAwaiter GetAwaiter();
+
+        /// <summary>
+        /// Converts this object to a task.
+        /// </summary>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        Task AsTask();
     }
 
     /// <summary>
@@ -89,6 +105,22 @@ namespace Kephas.Operations
         /// The return value.
         /// </value>
         new TValue ReturnValue { get; set; }
+
+        /// <summary>
+        /// Gets the operation result awaiter.
+        /// </summary>
+        /// <returns>
+        /// The awaiter.
+        /// </returns>
+        new OperationResultAwaiter<TValue> GetAwaiter();
+
+        /// <summary>
+        /// Converts this object to a task.
+        /// </summary>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        new Task<TValue> AsTask();
     }
 
     /// <summary>

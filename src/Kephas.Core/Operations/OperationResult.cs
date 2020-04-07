@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Operations
 {
     using System;
@@ -16,6 +18,7 @@ namespace Kephas.Operations
     using System.ComponentModel;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
 
     using Kephas.Dynamic;
 
@@ -24,25 +27,11 @@ namespace Kephas.Operations
     /// </summary>
     public class OperationResult : Expando, IOperationResult
     {
-        /// <summary>
-        /// The return value.
-        /// </summary>
-        private object returnValue;
-
-        /// <summary>
-        /// The operation state.
-        /// </summary>
+        private object? returnValue;
         private OperationState operationState;
-
-        /// <summary>
-        /// The percent completed.
-        /// </summary>
         private float percentCompleted;
-
-        /// <summary>
-        /// The elapsed value.
-        /// </summary>
         private TimeSpan elapsed;
+        private OperationResultAwaiter? awaiter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationResult"/> class.
@@ -64,9 +53,28 @@ namespace Kephas.Operations
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="OperationResult"/> class.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        public OperationResult(Task task)
+            : this(OperationResultAwaiter.Create(task))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OperationResult"/> class.
+        /// </summary>
+        /// <param name="awaiter">The awaiter.</param>
+        protected OperationResult(OperationResultAwaiter awaiter)
+            : this()
+        {
+            this.awaiter = awaiter;
+        }
+
+        /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
         /// Gets or sets the return value.
@@ -74,10 +82,29 @@ namespace Kephas.Operations
         /// <value>
         /// The return value.
         /// </value>
-        public object ReturnValue
+        public object? ReturnValue
         {
-            get => this.returnValue;
-            set => this.SetProperty(ref this.returnValue, value);
+            get
+            {
+                if (this.awaiter != null)
+                {
+                    return this.awaiter.IsCompleted
+                        ? this.awaiter.GetResult()
+                        : throw new InvalidOperationException($"The awaited task did not complete execution.");
+                }
+
+                return this.returnValue;
+            }
+
+            set
+            {
+                if (this.awaiter != null)
+                {
+                    throw new InvalidOperationException($"Cannot set the return value when awaiting a task.");
+                }
+
+                this.SetProperty(ref this.returnValue, value);
+            }
         }
 
         /// <summary>
@@ -133,13 +160,62 @@ namespace Kephas.Operations
         public ICollection<Exception> Exceptions { get; }
 
         /// <summary>
-        /// Called when [property changed].
+        /// Gets the awaiter.
+        /// </summary>
+        /// <returns>
+        /// The awaiter.
+        /// </returns>
+        public OperationResultAwaiter GetAwaiter() => this.awaiter ?? this.CreateAwaiter();
+
+        /// <summary>
+        /// Converts this object to a task.
+        /// </summary>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public Task AsTask() => this.awaiter?.GetTask() ?? this.CreateTask();
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{this.OperationState} ({this.PercentCompleted:P1})";
+        }
+
+        /// <summary>
+        /// Called when a property changed.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
             var handler = this.PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Creates the operation result awaiter.
+        /// </summary>
+        /// <returns>
+        /// The operation result awaiter.
+        /// </returns>
+        protected virtual OperationResultAwaiter CreateAwaiter()
+        {
+            return new OperationResultAwaiter<object?>(Task.FromResult(this.ReturnValue));
+        }
+
+        /// <summary>
+        /// Creates the task representing this operation result.
+        /// </summary>
+        /// <returns>
+        /// The task representing this operation result.
+        /// </returns>
+        protected virtual Task CreateTask()
+        {
+            return Task.FromResult(this.ReturnValue);
         }
 
         /// <summary>
@@ -214,7 +290,7 @@ namespace Kephas.Operations
         /// Initializes a new instance of the <see cref="OperationResult{TValue}"/> class.
         /// </summary>
         public OperationResult()
-            : this(default)
+            : this((TValue)default)
         {
         }
 
@@ -224,6 +300,15 @@ namespace Kephas.Operations
         /// <param name="returnValue">The return value.</param>
         public OperationResult(TValue returnValue)
             : base(returnValue)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OperationResult{TValue}"/> class.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        public OperationResult(Task<TValue> task)
+            : base(new OperationResultAwaiter<TValue>(task))
         {
         }
 
@@ -238,5 +323,40 @@ namespace Kephas.Operations
             get => (TValue)base.ReturnValue;
             set => base.ReturnValue = value;
         }
+
+        /// <summary>
+        /// Gets the operation result awaiter.
+        /// </summary>
+        /// <returns>
+        /// The awaiter.
+        /// </returns>
+        public new OperationResultAwaiter<TValue> GetAwaiter() => (OperationResultAwaiter<TValue>)base.GetAwaiter();
+
+        /// <summary>
+        /// Converts this object to a task.
+        /// </summary>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        public new Task<TValue> AsTask() => (Task<TValue>)base.AsTask();
+
+        /// <summary>
+        /// Gets the default operation result awaiter.
+        /// </summary>
+        /// <returns>
+        /// The default operation result awaiter.
+        /// </returns>
+        protected override OperationResultAwaiter CreateAwaiter()
+        {
+            return new OperationResultAwaiter<TValue>(Task.FromResult(this.ReturnValue));
+        }
+
+        /// <summary>
+        /// Creates the task representing this operation result.
+        /// </summary>
+        /// <returns>
+        /// The task representing this operation result.
+        /// </returns>
+        protected override Task CreateTask() => Task.FromResult(this.ReturnValue);
     }
 }
