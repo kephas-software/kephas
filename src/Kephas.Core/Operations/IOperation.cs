@@ -55,4 +55,23 @@ namespace Kephas.Operations
         }
 #endif
     }
+
+#if NETSTANDARD2_1
+#else
+    /// <summary>
+    /// Defines the contract of an executable asynchronous operation.
+    /// </summary>
+    public interface IAsyncOperation
+    {
+        /// <summary>
+        /// Executes the operation asynchronously in the given context.
+        /// </summary>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An object.
+        /// </returns>
+        Task<object?> ExecuteAsync(IContext? context = null, CancellationToken cancellationToken = default);
+    }
+#endif
 }
