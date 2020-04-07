@@ -13,6 +13,8 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
     using System;
     using System.Collections.Generic;
 
+    using global::MongoDB.Bson;
+    using global::MongoDB.Bson.Serialization.Attributes;
     using global::Quartz;
     using global::Quartz.Impl.Triggers;
 
@@ -31,7 +33,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
         public int RepeatCount { get; set; }
 
-        //TODO [BsonRepresentation(BsonType.String)]
+        [BsonRepresentation(BsonType.String)]
         public IntervalUnit RepeatIntervalUnit { get; set; }
 
         public int RepeatInterval { get; set; }
@@ -75,7 +77,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
                 EndTimeOfDay = this.EndTimeOfDay ?? new TimeOfDay(23, 59, 59),
                 DaysOfWeek = (IReadOnlyCollection<DayOfWeek>)new HashSet<DayOfWeek>(this.DaysOfWeek),
                 TimesTriggered = this.TimesTriggered,
-                TimeZone = TimeZoneInfo.FindSystemTimeZoneById(this.TimeZone)
+                TimeZone = TimeZoneInfo.FindSystemTimeZoneById(this.TimeZone),
             };
             this.FillTrigger(trigger);
             return trigger;
