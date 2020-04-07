@@ -8,8 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Workflow
 {
+    using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Workflow.Reflection;
@@ -24,7 +27,7 @@ namespace Kephas.Workflow
     /// and also debuggers may be attached to provide development support.
     /// The state provide the flags during the execution.
     /// </remarks>
-    public interface IActivity : IOperationResult, IInstance<IActivityInfo>
+    public interface IActivity : IOperationResult, IInstance<IActivityInfo>, IIdentifiable
     {
         /// <summary>
         /// Gets or sets the target against which the activity is executed.
@@ -37,7 +40,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The target.
         /// </value>
-        object Target { get; set; }
+        object? Target { get; set; }
 
         /// <summary>
         /// Gets or sets the arguments for the execution.
@@ -45,7 +48,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The arguments.
         /// </value>
-        IExpando Arguments { get; set; }
+        IExpando? Arguments { get; set; }
 
         /// <summary>
         /// Gets or sets the execution context.
@@ -53,6 +56,6 @@ namespace Kephas.Workflow
         /// <value>
         /// The execution context.
         /// </value>
-        IActivityContext Context { get; set; }
+        IActivityContext? Context { get; set; }
     }
 }

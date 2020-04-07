@@ -8,8 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Workflow
 {
+    using System;
+
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Reflection;
@@ -31,7 +35,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The target.
         /// </value>
-        public object Target { get; set; }
+        public object? Target { get; set; }
 
         /// <summary>
         /// Gets or sets the arguments for the execution.
@@ -39,7 +43,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The arguments.
         /// </value>
-        public IExpando Arguments { get; set; }
+        public IExpando? Arguments { get; set; }
 
         /// <summary>
         /// Gets or sets the execution context.
@@ -47,7 +51,15 @@ namespace Kephas.Workflow
         /// <value>
         /// The execution context.
         /// </value>
-        public IActivityContext Context { get; set; }
+        public IActivityContext? Context { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier for this instance.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public object Id { get; protected set; } = Guid.NewGuid();
 
         /// <summary>
         /// Gets the type information for this instance.
