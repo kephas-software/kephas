@@ -49,15 +49,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="JobStore\Util\**" />
+      <EmbeddedResource Remove="JobStore\Util\**" />
+      <None Remove="JobStore\Util\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Remove="stylecop.json" />
     </ItemGroup>
 
     <ItemGroup>
       <AdditionalFiles Include="stylecop.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="JobStore\Util\" />
     </ItemGroup>
 
     <ItemGroup>
