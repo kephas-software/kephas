@@ -517,6 +517,27 @@ namespace Kephas.Threading.Tasks
         }
 
         /// <summary>
+        /// Gets the result type of a generic task type.
+        /// If the task does not return any result, <c>null</c> is returned.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <returns>
+        /// The result type.
+        /// </returns>
+        public static Type? GetResultType(this Task task)
+        {
+            Requires.NotNull(task, nameof(task));
+
+            var taskType = task.GetType();
+            if (taskType.IsConstructedGenericType)
+            {
+                return taskType.GetGenericArguments()[0];
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Ensures that the task completed successfully.
         /// </summary>
         /// <param name="task">The task.</param>
