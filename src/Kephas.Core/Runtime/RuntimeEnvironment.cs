@@ -11,6 +11,7 @@
 namespace Kephas.Runtime
 {
     using System;
+    using System.Runtime.InteropServices;
 
     /// <summary>
     /// Helper methods for interacting with the runtime environment.
@@ -20,7 +21,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// The library path environment variable.
         /// </summary>
-        public const string LibraryPathEnvVariable = "LD_LIBRARY_PATH";
+        public static readonly string LibraryPathEnvVariable = "LD_LIBRARY_PATH";
 
         /// <summary>
         /// The Windows path separator.
@@ -48,6 +49,47 @@ namespace Kephas.Runtime
         /// Gets the platform.
         /// </summary>
         public static PlatformID Platform => platform ?? (platform = ComputePlatform()).Value;
+
+        /// <summary>
+        /// Gets a value indicating whether the machine domain joined.
+        /// </summary>
+        /// <value>
+        /// True if the machine is domain joined, false if not.
+        /// </value>
+        public static bool IsDomainJoinedMachine => !Environment.MachineName.Equals(Environment.UserDomainName, StringComparison.OrdinalIgnoreCase);
+
+#if NET461
+#else
+        //
+        // Do not use the " { get; } = <expression> " pattern here. Having all the initialization happen in the type initializer
+        // means that one exception anywhere means all tests using PlatformDetection fail. If you feel a value is worth latching,
+        // do it in a way that failures don't cascade.
+        //
+
+        /// <summary>
+        /// Gets a value indicating whether the runtime is the full framework.
+        /// </summary>
+        /// <value>
+        /// True if the runtime is the full framework, false if not.
+        /// </value>
+        public static bool IsNetFull => RuntimeInformation.FrameworkDescription.StartsWith(".NET Framework", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Gets a value indicating whether the runtime is the .NET native.
+        /// </summary>
+        /// <value>
+        /// True if the runtime is the .NET native, false if not.
+        /// </value>
+        public static bool IsNetNative => RuntimeInformation.FrameworkDescription.StartsWith(".NET Native", StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Gets a value indicating whether the runtime is the .NET Core.
+        /// </summary>
+        /// <value>
+        /// True if the runtime is the .NET Core, false if not.
+        /// </value>
+        public static bool IsNetCore => RuntimeInformation.FrameworkDescription.StartsWith(".NET Core", StringComparison.OrdinalIgnoreCase);
+#endif
 
         /// <summary>
         /// Indicates wheter the application runs on the Mono runtime.
