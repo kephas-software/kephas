@@ -11,6 +11,7 @@
 namespace Kephas.Application
 {
     using System;
+    using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -59,6 +60,8 @@ namespace Kephas.Application
         {
             this.completionSource = new TaskCompletionSource<IOperationResult>();
 
+            var stopwatch = Stopwatch.StartNew();
+
             using (this.cancellationTokenSource)
             using (this.cancellationTokenSource.Token.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult())))
             using (this.shutdownSubscription)
@@ -71,11 +74,18 @@ namespace Kephas.Application
 
                         this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                        return (this.GetAttendedResult(), AppShutdownInstruction.Shutdown);
+                        return (this.GetAttendedResult(stopwatch.Elapsed), AppShutdownInstruction.Shutdown);
                     }
                     catch (OperationCanceledException)
                     {
-                        return (this.unattendedCompletion ? this.GetUnattendedResult() : this.GetAttendedResult(), AppShutdownInstruction.Shutdown);
+                        return (this.unattendedCompletion
+                                    ? this.GetUnattendedResult(stopwatch.Elapsed)
+                                    : this.GetAttendedResult(stopwatch.Elapsed),
+                                AppShutdownInstruction.Shutdown);
+                    }
+                    finally
+                    {
+                        stopwatch.Stop();
                     }
                 }
 
@@ -85,11 +95,15 @@ namespace Kephas.Application
 
                     this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                    return (this.GetUnattendedResult(), AppShutdownInstruction.Shutdown);
+                    return (this.GetUnattendedResult(stopwatch.Elapsed), AppShutdownInstruction.Shutdown);
                 }
                 catch (OperationCanceledException)
                 {
-                    return (this.GetUnattendedResult(), AppShutdownInstruction.Shutdown);
+                    return (this.GetUnattendedResult(stopwatch.Elapsed), AppShutdownInstruction.Shutdown);
+                }
+                finally
+                {
+                    stopwatch.Stop();
                 }
             }
         }
@@ -130,17 +144,23 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the unattended result.
         /// </summary>
+        /// <param name="elapsed">The elapsed time.</param>
         /// <returns>
         /// The unattended result.
         /// </returns>
-        protected virtual IOperationResult GetUnattendedResult() => new OperationResult() { OperationState = OperationState.Canceled };
+        protected virtual IOperationResult GetUnattendedResult(TimeSpan? elapsed = null)
+            => new OperationResult()
+                    .Complete(elapsed ?? TimeSpan.Zero, OperationState.Canceled);
 
         /// <summary>
         /// Gets the attended result.
         /// </summary>
+        /// <param name="elapsed">Optional. The elapsed time.</param>
         /// <returns>
         /// The attended result.
         /// </returns>
-        protected virtual IOperationResult GetAttendedResult() => new OperationResult() { OperationState = OperationState.Completed };
+        protected virtual IOperationResult GetAttendedResult(TimeSpan? elapsed = null)
+            => new OperationResult()
+                    .Complete(elapsed ?? TimeSpan.Zero, OperationState.Completed);
     }
 }
