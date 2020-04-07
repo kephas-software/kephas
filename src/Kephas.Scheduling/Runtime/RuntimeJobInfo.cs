@@ -8,10 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Scheduling.Runtime
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -40,25 +43,48 @@ namespace Kephas.Scheduling.Runtime
         /// <value>
         /// The job triggers.
         /// </value>
-        public IEnumerable<ITrigger> Triggers { get; }
+        public IEnumerable<ITrigger> Triggers { get; } = Enumerable.Empty<ITrigger>();
 
         /// <summary>
         /// Executes the job asynchronously.
         /// </summary>
         /// <param name="job">The job to execute.</param>
+        /// <param name="target">The job target.</param>
         /// <param name="arguments">The execution arguments.</param>
         /// <param name="context">The execution context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the output.
         /// </returns>
-        public async Task<object> ExecuteAsync(
+        public virtual Task<object?> ExecuteAsync(
             IJob job,
-            IExpando arguments,
+            object? target,
+            IExpando? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return base.ExecuteAsync(job, target, arguments, context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Executes the activity asynchronously.
+        /// </summary>
+        /// <param name="activity">The activity to execute.</param>
+        /// <param name="target">The activity target.</param>
+        /// <param name="arguments">The execution arguments.</param>
+        /// <param name="context">The execution context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the output.
+        /// </returns>
+        public override Task<object?> ExecuteAsync(IActivity activity, object? target, IExpando? arguments, IActivityContext context, CancellationToken cancellationToken = default)
+        {
+            if (activity is IJob job)
+            {
+                return this.ExecuteAsync(job, target, arguments, context, cancellationToken);
+            }
+
+            throw new ArgumentException($"The provided activity must be an {nameof(IJob)} to execute.", nameof(activity));
         }
     }
 }

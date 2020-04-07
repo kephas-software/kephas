@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Scheduling.Reflection
 {
     using System.Collections.Generic;
@@ -35,15 +37,17 @@ namespace Kephas.Scheduling.Reflection
         /// Executes the job asynchronously.
         /// </summary>
         /// <param name="job">The job to execute.</param>
+        /// <param name="target">The job target.</param>
         /// <param name="arguments">The execution arguments.</param>
         /// <param name="context">The execution context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result that yields the output.
         /// </returns>
-        Task<object> ExecuteAsync(
+        Task<object?> ExecuteAsync(
             IJob job,
-            IExpando arguments,
+            object? target,
+            IExpando? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default);
     }
