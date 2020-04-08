@@ -1,25 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IJobBehavior.cs" company="Kephas Software SRL">
+// <copyright file="CancelJobEvent.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the IJobBehavior interface.
+//   Implements the cancel job event class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Scheduling.Jobs;
-
-namespace Kephas.Scheduling.Behaviors
+namespace Kephas.Scheduling.InMemory
 {
-    using Kephas.Workflow.Behaviors;
-
     /// <summary>
-    /// Base contract for controlling the execution of jobs.
+    /// Event for cancelling jobs.
     /// </summary>
-    /// <typeparam name="TJob">Type of the job.</typeparam>
-    public interface IJobBehavior<TJob> : IActivityBehavior<TJob>
-        where TJob : IJob
+    public class CancelJobEvent
     {
+        /// <summary>
+        /// Gets or sets the identifier of the job to be canceled.
+        /// </summary>
+        public object JobId { get; set; }
     }
 }

@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scheduling
+namespace Kephas.Scheduling.Jobs
 {
     using Kephas.Operations;
 
@@ -18,11 +18,27 @@ namespace Kephas.Scheduling
     public interface IJobResult : IOperationResult
     {
         /// <summary>
-        /// Gets the job or its ID.
+        /// Gets the identifier of the job.
         /// </summary>
         /// <value>
-        /// The job or its ID.
+        /// The identifier of the job.
         /// </value>
-        object Job { get; }
+        object? JobId { get; }
+
+        /// <summary>
+        /// Gets the job.
+        /// </summary>
+        /// <value>
+        /// The job.
+        /// </value>
+        IJob? Job { get; }
+
+        /// <summary>
+        /// Gets the identifier of the trigger.
+        /// </summary>
+        /// <value>
+        /// The identifier of the trigger.
+        /// </value>
+        object? TriggerId { get; }
     }
 }

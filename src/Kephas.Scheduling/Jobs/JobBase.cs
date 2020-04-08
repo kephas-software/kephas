@@ -8,7 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scheduling
+using Kephas.Reflection;
+
+namespace Kephas.Scheduling.Jobs
 {
     using System;
 
@@ -21,12 +23,36 @@ namespace Kephas.Scheduling
     public abstract class JobBase : ActivityBase, IJob
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="JobBase"/> class.
+        /// </summary>
+        protected JobBase()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JobBase"/> class.
+        /// </summary>
+        /// <param name="jobId">The job identifier.</param>
+        protected JobBase(object jobId)
+        {
+            this.Id = jobId;
+        }
+
+        /// <summary>
         /// Gets the type information for this instance.
         /// </summary>
         /// <returns>
         /// The type information.
         /// </returns>
-        public new IJobInfo GetTypeInfo() => (IJobInfo)base.GetTypeInfo();
+        public new virtual IJobInfo GetTypeInfo() => (IJobInfo)base.GetTypeInfo();
+
+        /// <summary>
+        /// Gets the type information for this instance.
+        /// </summary>
+        /// <returns>
+        /// The type information.
+        /// </returns>
+        ITypeInfo IInstance.GetTypeInfo() => this.GetTypeInfo();
 
         /// <summary>
         /// Releases the unmanaged resources used by the Kephas.Scheduling.JobBase and optionally

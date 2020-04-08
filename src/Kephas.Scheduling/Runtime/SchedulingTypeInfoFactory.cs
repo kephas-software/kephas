@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Scheduling.Jobs;
+using Kephas.Scheduling.Triggers;
+
 namespace Kephas.Scheduling.Runtime
 {
     using System;

@@ -25,6 +25,17 @@ namespace Kephas.Scheduling.Application
     [OverridePriority(Priority.High - 100)]
     public class SchedulingApplicationLifecycleBehavior : IAppLifecycleBehavior
     {
+        private readonly IScheduler scheduler;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SchedulingApplicationLifecycleBehavior"/> class.
+        /// </summary>
+        /// <param name="scheduler">The scheduler.</param>
+        public SchedulingApplicationLifecycleBehavior(IScheduler scheduler)
+        {
+            this.scheduler = scheduler;
+        }
+
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
@@ -48,9 +59,9 @@ namespace Kephas.Scheduling.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public async Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            await ServiceHelper.InitializeAsync(this.scheduler, appContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -61,9 +72,9 @@ namespace Kephas.Scheduling.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public async Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            await ServiceHelper.FinalizeAsync(this.scheduler, appContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>

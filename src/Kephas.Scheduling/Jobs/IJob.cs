@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scheduling
+namespace Kephas.Scheduling.Jobs
 {
     using System;
 
