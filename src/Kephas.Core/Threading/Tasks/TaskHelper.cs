@@ -106,6 +106,11 @@ namespace Kephas.Threading.Tasks
                 throw taskException;
             }
 
+            if (task.IsCanceled)
+            {
+                throw new TaskCanceledException(task);
+            }
+
             return !timeoutOccurred;
         }
 
