@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Runtime
 {
     using System;
@@ -124,7 +126,7 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
         /// <param name="logger">Optional. The logger.</param>
-        internal RuntimeTypeInfo(TypeInfo typeInfo, ILogger logger = null)
+        internal RuntimeTypeInfo(TypeInfo typeInfo, ILogger? logger = null)
             : this(typeInfo.AsType(), typeInfo, logger)
         {
         }
@@ -134,7 +136,7 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="logger">Optional. The logger.</param>
-        protected internal RuntimeTypeInfo(Type type, ILogger logger = null)
+        protected internal RuntimeTypeInfo(Type type, ILogger? logger = null)
             : this(type, type.GetTypeInfo(), logger)
         {
         }
@@ -145,7 +147,7 @@ namespace Kephas.Runtime
         /// <param name="type">The type.</param>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
         /// <param name="logger">The logger.</param>
-        private RuntimeTypeInfo(Type type, TypeInfo typeInfo, ILogger logger)
+        private RuntimeTypeInfo(Type type, TypeInfo typeInfo, ILogger? logger)
             : base(isThreadSafe: true)
         {
             this.Type = type;
@@ -244,7 +246,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The bases.
         /// </value>
-        public IEnumerable<ITypeInfo> BaseTypes => this.baseTypes ?? (this.baseTypes = this.CreateBaseTypes(this.TypeInfo));
+        public IEnumerable<ITypeInfo> BaseTypes => this.baseTypes ??= this.CreateBaseTypes(this.TypeInfo);
 
         /// <summary>
         /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type parameters of a generic type definition (open generic).
@@ -252,7 +254,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The generic arguments.
         /// </value>
-        public IReadOnlyList<ITypeInfo> GenericTypeParameters => this.genericTypeParameters ?? (this.genericTypeParameters = this.CreateGenericTypeParameters(this.TypeInfo));
+        public IReadOnlyList<ITypeInfo> GenericTypeParameters => this.genericTypeParameters ??= this.CreateGenericTypeParameters(this.TypeInfo);
 
         /// <summary>
         /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type arguments of a closed generic type.
@@ -260,7 +262,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The generic arguments.
         /// </value>
-        public IReadOnlyList<ITypeInfo> GenericTypeArguments => this.genericTypeArguments ?? (this.genericTypeArguments = this.CreateGenericTypeArguments(this.TypeInfo));
+        public IReadOnlyList<ITypeInfo> GenericTypeArguments => this.genericTypeArguments ??= this.CreateGenericTypeArguments(this.TypeInfo);
 
         /// <summary>
         /// Gets a <see cref="ITypeInfo"/> object that represents a generic type definition from which the current generic type can be constructed.
@@ -268,7 +270,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The generic type definition.
         /// </value>
-        public ITypeInfo GenericTypeDefinition => this.genericTypeDefinition ?? (this.genericTypeDefinition = this.GetGenericTypeDefinition(this.TypeInfo));
+        public ITypeInfo GenericTypeDefinition => this.genericTypeDefinition ??= this.GetGenericTypeDefinition(this.TypeInfo);
 
         /// <summary>
         /// Gets the enumeration of properties.
@@ -297,7 +299,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => this.declaringContainer ?? (this.declaringContainer = RuntimeAssemblyInfo.GetRuntimeAssembly(this.TypeInfo.Assembly));
+        public IElementInfo DeclaringContainer => this.declaringContainer ??= RuntimeAssemblyInfo.GetRuntimeAssembly(this.TypeInfo.Assembly);
 
         /// <summary>
         /// Gets the type.
@@ -353,7 +355,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The logger.
         /// </value>
-        protected ILogger Logger { get; }
+        protected ILogger? Logger { get; }
 
         /// <summary>
         /// Registers a factory used to create <see cref="IRuntimeTypeInfo"/> instances.
@@ -387,7 +389,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The requested member, or <c>null</c>.
         /// </returns>
-        public IElementInfo GetMember(string name, bool throwIfNotFound = true)
+        public IElementInfo? GetMember(string name, bool throwIfNotFound = true)
         {
             if (this.Fields.TryGetValue(name, out IRuntimeFieldInfo fieldInfo))
             {
@@ -428,7 +430,7 @@ namespace Kephas.Runtime
         /// <remarks>
         /// If a property with the provided name is not found, an exception occurs.
         /// </remarks>
-        public object GetValue(object instance, string propertyName)
+        public object? GetValue(object? instance, string propertyName)
         {
             var dynamicProperty = this.GetProperty(propertyName);
             return dynamicProperty.GetValue(instance);
@@ -443,7 +445,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// A boolean value indicating whether the property is found.
         /// </returns>
-        public bool TryGetValue(object instance, string propertyName, out object value)
+        public bool TryGetValue(object? instance, string propertyName, out object? value)
         {
             Requires.NotNull(instance, nameof(instance));
 
@@ -461,7 +463,7 @@ namespace Kephas.Runtime
         /// <remarks>
         /// If a property with the provided name is not found, an exception occurs.
         /// </remarks>
-        public void SetValue(object instance, string propertyName, object value)
+        public void SetValue(object? instance, string propertyName, object? value)
         {
             var dynamicProperty = this.GetProperty(propertyName);
             dynamicProperty.SetValue(instance, value);
@@ -479,7 +481,7 @@ namespace Kephas.Runtime
         /// <remarks>
         /// If a property with the provided name is not found, the method just returns.
         /// </remarks>
-        public bool TrySetValue(object instance, string propertyName, object value)
+        public bool TrySetValue(object? instance, string propertyName, object? value)
         {
             if (instance == null)
             {
@@ -505,7 +507,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The invocation result.
         /// </returns>
-        public object Invoke(object instance, string methodName, IEnumerable<object> args)
+        public object Invoke(object? instance, string methodName, IEnumerable<object> args)
         {
             var matchingMethod = this.GetMatchingMethod(methodName, args);
             return matchingMethod.Invoke(instance, args);
@@ -519,7 +521,7 @@ namespace Kephas.Runtime
         /// <param name="args">The arguments.</param>
         /// <param name="result">The invocation result.</param>
         /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
-        public bool TryInvoke(object instance, string methodName, IEnumerable<object> args, out object result)
+        public bool TryInvoke(object? instance, string methodName, IEnumerable<object> args, out object? result)
         {
             Requires.NotNull(instance, nameof(instance));
 
@@ -541,7 +543,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The new instance.
         /// </returns>
-        public object CreateInstance(IEnumerable<object> args = null)
+        public virtual object CreateInstance(IEnumerable<object>? args = null)
         {
             if (this.instanceActivator == null)
             {
@@ -559,7 +561,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// A constructed <see cref="ITypeInfo"/>.
         /// </returns>
-        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext constructionContext = null)
+        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null)
         {
             var constructedType = this.TypeInfo.MakeGenericType(typeArguments.Cast<IRuntimeTypeInfo>().Select(t => t.Type).ToArray());
             return constructedType.AsRuntimeTypeInfo();
@@ -904,7 +906,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The runtime property.
         /// </returns>
-        private IRuntimePropertyInfo GetProperty(string propertyName, bool throwOnNotFound = true)
+        private IRuntimePropertyInfo? GetProperty(string propertyName, bool throwOnNotFound = true)
         {
             if (!this.GetProperties().TryGetValue(propertyName, out IRuntimePropertyInfo propertyInfo))
             {
@@ -927,7 +929,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The runtime method.
         /// </returns>
-        private IList<IRuntimeMethodInfo> GetMethods(string methodName, bool throwOnNotFound = true)
+        private IList<IRuntimeMethodInfo>? GetMethods(string methodName, bool throwOnNotFound = true)
         {
             if (!this.GetMethods().TryGetValue(methodName, out ICollection<IRuntimeMethodInfo> methodInfos))
             {
@@ -949,9 +951,9 @@ namespace Kephas.Runtime
         /// <param name="args">The arguments.</param>
         /// <param name="throwOnNotFound">If set to <c>true</c> an exception is thrown if the method is not found.</param>
         /// <returns>
-        /// A mathing method for the provided name and arguments.
+        /// A matching method for the provided name and arguments.
         /// </returns>
-        private IRuntimeMethodInfo GetMatchingMethod(string methodName, IEnumerable<object> args, bool throwOnNotFound = true)
+        private IRuntimeMethodInfo? GetMatchingMethod(string methodName, IEnumerable<object> args, bool throwOnNotFound = true)
         {
             var methodInfos = this.GetMethods(methodName, throwOnNotFound);
             if (methodInfos == null)

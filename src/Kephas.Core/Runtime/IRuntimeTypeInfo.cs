@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Runtime
 {
     using System;
@@ -43,7 +45,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The default value.
         /// </value>
-        object DefaultValue { get; }
+        object? DefaultValue { get; }
 
         /// <summary>
         /// Gets the runtime type kind.
@@ -96,7 +98,7 @@ namespace Kephas.Runtime
         /// <remarks>
         /// If a property with the provided name is not found, an exception occurs.
         /// </remarks>
-        object GetValue(object instance, string propertyName);
+        object? GetValue(object? instance, string propertyName);
 
         /// <summary>
         /// Gets the value of the property with the specified name.
@@ -107,7 +109,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// A boolean value indicating whether the property is found.
         /// </returns>
-        bool TryGetValue(object instance, string propertyName, out object value);
+        bool TryGetValue(object? instance, string propertyName, out object? value);
 
         /// <summary>
         /// Sets the value of the property with the specified name.
@@ -118,7 +120,7 @@ namespace Kephas.Runtime
         /// <remarks>
         /// If a property with the provided name is not found, an exception occurs.
         /// </remarks>
-        void SetValue(object instance, string propertyName, object value);
+        void SetValue(object? instance, string propertyName, object? value);
 
         /// <summary>
         /// Tries to set the value of the property with the specified name.
@@ -131,7 +133,7 @@ namespace Kephas.Runtime
         /// If a property with the provided name is not found, the method just returns.
         /// Also, the method just returns if the instance passed is <c>null</c>.
         /// </remarks>
-        bool TrySetValue(object instance, string propertyName, object value);
+        bool TrySetValue(object? instance, string propertyName, object? value);
 
         /// <summary>
         /// Invokes the specified method on the provided instance.
@@ -140,7 +142,7 @@ namespace Kephas.Runtime
         /// <param name="methodName">Name of the method.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result.</returns>
-        object Invoke(object instance, string methodName, IEnumerable<object> args);
+        object? Invoke(object? instance, string methodName, IEnumerable<object> args);
 
         /// <summary>
         /// Tries to invokes the specified method on the provided instance.
@@ -150,6 +152,6 @@ namespace Kephas.Runtime
         /// <param name="args">The arguments.</param>
         /// <param name="result">The invocation result.</param>
         /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
-        bool TryInvoke(object instance, string methodName, IEnumerable<object> args, out object result);
+        bool TryInvoke(object? instance, string methodName, IEnumerable<object> args, out object? result);
     }
 }
