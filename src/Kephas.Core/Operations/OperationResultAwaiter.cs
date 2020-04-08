@@ -13,6 +13,7 @@
 namespace Kephas.Operations
 {
     using System;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
@@ -25,6 +26,8 @@ namespace Kephas.Operations
     /// </summary>
     public class OperationResultAwaiter : ICriticalNotifyCompletion, INotifyCompletion
     {
+        private static readonly MethodInfo CreateMethodInfo = ReflectionHelper.GetGenericMethodOf(_ => Create<int>(null, null));
+
         private readonly Task task;
         private object? awaiter;
 
@@ -46,28 +49,6 @@ namespace Kephas.Operations
         /// <c>true</c> if this object is completed, <c>false</c> if not.
         /// </value>
         public virtual bool IsCompleted => this.GetAwaiter().IsCompleted;
-
-        /// <summary>
-        /// Creates a new <see cref="OperationResultAwaiter"/> from the provided task.
-        /// If the task returns a result, the appropriate <see cref="OperationResultAwaiter{TResult}"/> is created and returned.
-        /// </summary>
-        /// <param name="task">The task.</param>
-        /// <returns>
-        /// An OperationResultAwaiter.
-        /// </returns>
-        public static OperationResultAwaiter Create(Task task)
-        {
-            Requires.NotNull(task, nameof(task));
-
-            var taskResultType = task.GetResultType();
-            if (taskResultType == null)
-            {
-                return new OperationResultAwaiter(task);
-            }
-
-            var awaiterType = typeof(OperationResultAwaiter<>).MakeGenericType(taskResultType);
-            return (OperationResultAwaiter)awaiterType.AsRuntimeTypeInfo().CreateInstance(new object[] { task });
-        }
 
         /// <summary>
         /// Gets the awaiter.
@@ -101,6 +82,50 @@ namespace Kephas.Operations
         void INotifyCompletion.OnCompleted(Action continuation)
         {
             ((INotifyCompletion)this.GetAwaiterCore()).OnCompleted(continuation);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="OperationResultAwaiter"/> from the provided task. If the task
+        /// returns a result, the appropriate <see cref="OperationResultAwaiter{TResult}"/> is created
+        /// and returned.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <param name="updateState">The action to invoke when the operation completes.</param>
+        /// <returns>
+        /// An OperationResultAwaiter.
+        /// </returns>
+        internal static OperationResultAwaiter Create(Task task, Action<Task> updateState)
+        {
+            Requires.NotNull(task, nameof(task));
+
+            var taskResultType = task.GetResultType();
+            if (taskResultType == null)
+            {
+                updateState(task);
+                return new OperationResultAwaiter(task.ContinueWith(t => { updateState(t); t.WaitNonLocking(); }));
+            }
+
+            var createMethodInfo = CreateMethodInfo.MakeGenericMethod(taskResultType);
+            return (OperationResultAwaiter)createMethodInfo.Call(null, task, updateState);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="OperationResultAwaiter"/> from the provided task. If the task
+        /// returns a result, the appropriate <see cref="OperationResultAwaiter{TResult}"/> is created
+        /// and returned.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result.</typeparam>
+        /// <param name="task">The task.</param>
+        /// <param name="updateState">The action to invoke when the operation completes.</param>
+        /// <returns>
+        /// An OperationResultAwaiter.
+        /// </returns>
+        internal static OperationResultAwaiter<TResult> Create<TResult>(Task<TResult> task, Action<Task> updateState)
+        {
+            Requires.NotNull(task, nameof(task));
+
+            updateState(task);
+            return new OperationResultAwaiter<TResult>(task.ContinueWith(t => { updateState(t); return t.GetResultNonLocking(); }));
         }
 
         /// <summary>

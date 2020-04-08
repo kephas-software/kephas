@@ -57,18 +57,9 @@ namespace Kephas.Operations
         /// </summary>
         /// <param name="task">The task.</param>
         public OperationResult(Task task)
-            : this(OperationResultAwaiter.Create(task))
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OperationResult"/> class.
-        /// </summary>
-        /// <param name="awaiter">The awaiter.</param>
-        protected OperationResult(OperationResultAwaiter awaiter)
             : this()
         {
-            this.awaiter = awaiter;
+            this.SetAwaiter(OperationResultAwaiter.Create(task, this.UpdateInternalState));
         }
 
         /// <summary>
@@ -219,6 +210,50 @@ namespace Kephas.Operations
         }
 
         /// <summary>
+        /// Sets an awaiter.
+        /// </summary>
+        /// <remarks>
+        /// Should not be called outside of the constructor context.
+        /// </remarks>
+        /// <param name="awaiter">The awaiter.</param>
+        protected void SetAwaiter(OperationResultAwaiter awaiter)
+        {
+            this.awaiter = awaiter;
+        }
+
+        /// <summary>
+        /// Updates the internal state described by the provided task.
+        /// </summary>
+        /// <param name="t">A Task to process.</param>
+        protected void UpdateInternalState(Task t)
+        {
+            var opState = t.IsFaulted
+                ? OperationState.Failed
+                : t.IsCanceled
+                    ? OperationState.Canceled
+                    : t.Status == TaskStatus.RanToCompletion
+                        ? OperationState.Completed
+                        : t.Status == TaskStatus.Running
+                            ? OperationState.InProgress
+                            : OperationState.NotStarted;
+
+            if (opState == this.operationState)
+            {
+                return;
+            }
+
+            this.OperationState = opState;
+            if (t.Exception != null)
+            {
+                this.MergeException(t.Exception);
+            }
+            else if (this.OperationState == OperationState.Completed)
+            {
+                this.PercentCompleted = 1f;
+            }
+        }
+
+        /// <summary>
         /// Sets the property.
         /// </summary>
         /// <typeparam name="T">The field type.</typeparam>
@@ -308,8 +343,9 @@ namespace Kephas.Operations
         /// </summary>
         /// <param name="task">The task.</param>
         public OperationResult(Task<TValue> task)
-            : base(new OperationResultAwaiter<TValue>(task))
+            : this((TValue)default)
         {
+            this.SetAwaiter(OperationResultAwaiter.Create(task, this.UpdateInternalState));
         }
 
         /// <summary>

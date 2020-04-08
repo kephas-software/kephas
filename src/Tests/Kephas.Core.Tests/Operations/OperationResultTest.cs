@@ -10,6 +10,8 @@
 
 namespace Kephas.Core.Tests.Operations
 {
+    using System;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Operations;
@@ -18,6 +20,43 @@ namespace Kephas.Core.Tests.Operations
     [TestFixture]
     public class OperationResultTest
     {
+        [Test]
+        public async Task OperationResult_task_completion_sets_state()
+        {
+            var opResult = new OperationResult(Task.FromResult((object)12));
+            Assert.AreEqual(OperationState.Completed, opResult.OperationState);
+            Assert.AreEqual(1f, opResult.PercentCompleted);
+            Assert.AreEqual(12, opResult.ReturnValue);
+        }
+
+        [Test]
+        public async Task OperationResult_task_completion_sets_state_delay()
+        {
+            var opResult = new OperationResult(Task.Delay(100).ContinueWith(t => 12));
+            await opResult;
+            Assert.AreEqual(OperationState.Completed, opResult.OperationState);
+            Assert.AreEqual(1f, opResult.PercentCompleted);
+            Assert.AreEqual(12, opResult.ReturnValue);
+        }
+
+        [Test]
+        public async Task OperationResult_task_completion_sets_state_exception()
+        {
+            var opResult = new OperationResult(Task.FromException(new ArgumentException("arg")));
+            Assert.AreEqual(OperationState.Failed, opResult.OperationState);
+            Assert.AreEqual(0f, opResult.PercentCompleted);
+            Assert.Throws<ArgumentException>(() => { var _ = opResult.ReturnValue; });
+        }
+
+        [Test]
+        public async Task OperationResult_task_completion_sets_state_canceled()
+        {
+            var opResult = new OperationResult(Task.FromCanceled(new CancellationToken(true)));
+            Assert.AreEqual(OperationState.Canceled, opResult.OperationState);
+            Assert.AreEqual(0f, opResult.PercentCompleted);
+            Assert.Throws<TaskCanceledException>(() => { var _ = opResult.ReturnValue; });
+        }
+
         [Test]
         public async Task GetAwaiter_no_result()
         {
@@ -62,6 +101,43 @@ namespace Kephas.Core.Tests.Operations
     [TestFixture]
     public class OperationResultOfTValueTest
     {
+        [Test]
+        public async Task OperationResult_task_completion_sets_state()
+        {
+            var opResult = new OperationResult<int>(Task.FromResult(12));
+            Assert.AreEqual(OperationState.Completed, opResult.OperationState);
+            Assert.AreEqual(1f, opResult.PercentCompleted);
+            Assert.AreEqual(12, opResult.ReturnValue);
+        }
+
+        [Test]
+        public async Task OperationResult_task_completion_sets_state_delay()
+        {
+            var opResult = new OperationResult<int>(Task.Delay(100).ContinueWith(t => 12));
+            await opResult;
+            Assert.AreEqual(OperationState.Completed, opResult.OperationState);
+            Assert.AreEqual(1f, opResult.PercentCompleted);
+            Assert.AreEqual(12, opResult.ReturnValue);
+        }
+
+        [Test]
+        public async Task OperationResult_task_completion_sets_state_exception()
+        {
+            var opResult = new OperationResult<int>(Task.FromException<int>(new ArgumentException("arg")));
+            Assert.AreEqual(OperationState.Failed, opResult.OperationState);
+            Assert.AreEqual(0f, opResult.PercentCompleted);
+            Assert.Throws<ArgumentException>(() => { var _ = opResult.ReturnValue; });
+        }
+
+        [Test]
+        public async Task OperationResult_task_completion_sets_state_canceled()
+        {
+            var opResult = new OperationResult<int>(Task.FromCanceled<int>(new CancellationToken(true)));
+            Assert.AreEqual(OperationState.Canceled, opResult.OperationState);
+            Assert.AreEqual(0f, opResult.PercentCompleted);
+            Assert.Throws<TaskCanceledException>(() => { var _ = opResult.ReturnValue; });
+        }
+
         [Test]
         public async Task GetAwaiter_default_result()
         {
