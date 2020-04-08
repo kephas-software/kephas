@@ -21,12 +21,12 @@ namespace Kephas.Scheduling.Triggers
         /// <summary>
         /// The interval is calculated between the start of two subsequent jobs.
         /// </summary>
-        StartStart,
+        StartToStart,
 
         /// <summary>
         /// The interval is calculated between the end of the previous job and the start of the next job.
         /// </summary>
-        EndStart,
+        EndToStart,
     }
 
     /// <summary>

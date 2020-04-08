@@ -22,6 +22,8 @@ namespace Kephas.Scheduling.Triggers
     /// </summary>
     public abstract class TriggerBase : Expando, ITrigger, IInitializable, IDisposable
     {
+        private bool isDisposed = false;
+
         /// <summary>
         /// Occurs when the trigger is fired.
         /// </summary>
@@ -73,7 +75,14 @@ namespace Kephas.Scheduling.Triggers
         /// </summary>
         public void Dispose()
         {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
             this.Dispose(true);
+
+            this.isDisposed = true;
         }
 
         /// <summary>

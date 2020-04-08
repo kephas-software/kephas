@@ -11,6 +11,7 @@
 namespace Kephas.Scheduling.Triggers
 {
     using System;
+    using System.Runtime.CompilerServices;
     using System.Threading;
 
     using Kephas.Services;
@@ -22,6 +23,7 @@ namespace Kephas.Scheduling.Triggers
     {
         private Timer? timer;
         private int firedCount = 0;
+        private TimeSpan normalizedInterval;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerTrigger"/> class.
@@ -65,7 +67,7 @@ namespace Kephas.Scheduling.Triggers
         /// <value>
         /// The interval kind.
         /// </value>
-        public TimerIntervalKind IntervalKind { get; set; } = TimerIntervalKind.EndStart;
+        public TimerIntervalKind IntervalKind { get; set; } = TimerIntervalKind.EndToStart;
 
         /// <summary>
         /// Initializes the service.
@@ -79,6 +81,7 @@ namespace Kephas.Scheduling.Triggers
                 (this.EndTime.HasValue && this.EndTime <= DateTimeOffset.Now))
             {
                 this.Dispose();
+                return;
             }
 
             var startIn = this.StartTime.HasValue
@@ -89,12 +92,12 @@ namespace Kephas.Scheduling.Triggers
                 startIn = TimeSpan.Zero;
             }
 
-            var interval = this.GetNormalizedInterval();
+            this.normalizedInterval = this.GetNormalizedInterval();
             this.timer = new Timer(
                 s => this.HandleTimer(),
                 null,
                 startIn,
-                this.IntervalKind == TimerIntervalKind.EndStart ? Timeout.InfiniteTimeSpan : interval);
+                this.IntervalKind == TimerIntervalKind.EndToStart ? Timeout.InfiniteTimeSpan : this.normalizedInterval);
         }
 
         /// <summary>
@@ -105,33 +108,47 @@ namespace Kephas.Scheduling.Triggers
         ///                         release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            this.timer?.Dispose();
-            this.timer = null;
+            this.DisposeTimer();
 
             base.Dispose(disposing);
         }
 
         private void HandleTimer()
         {
+            Interlocked.Increment(ref this.firedCount);
+            if (this.HasReachedEndOfLife() || this.IntervalKind == TimerIntervalKind.EndToStart)
+            {
+                this.DisposeTimer();
+            }
+
             this.OnFire();
 
-            this.firedCount++;
-            if ((this.Count.HasValue && this.Count <= this.firedCount) ||
-                (this.EndTime.HasValue && this.EndTime.Value <= DateTimeOffset.Now) ||
-                this.GetNormalizedInterval() == Timeout.InfiniteTimeSpan)
+            if (this.HasReachedEndOfLife())
             {
                 this.Dispose();
             }
-            else if (this.IntervalKind == TimerIntervalKind.EndStart)
+            else if (this.IntervalKind == TimerIntervalKind.EndToStart)
             {
-                var startIn = this.GetNormalizedInterval();
-                this.timer?.Dispose();
                 this.timer = new Timer(
                     s => this.HandleTimer(),
                     null,
-                    startIn,
+                    this.normalizedInterval,
                     Timeout.InfiniteTimeSpan);
             }
+        }
+
+        private bool HasReachedEndOfLife()
+        {
+            return (this.Count.HasValue && this.Count <= this.firedCount) ||
+                    (this.EndTime.HasValue && this.EndTime.Value <= DateTimeOffset.Now) ||
+                    this.normalizedInterval == Timeout.InfiniteTimeSpan;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void DisposeTimer()
+        {
+            this.timer?.Dispose();
+            this.timer = null;
         }
 
         private TimeSpan GetNormalizedInterval()
