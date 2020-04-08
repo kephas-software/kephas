@@ -5,9 +5,9 @@
         <LangVersion>latest</LangVersion>
         <AssemblyName>Kephas.Mail</AssemblyName>
         <RootNamespace>Kephas.Mail</RootNamespace>
-        <Version>7.5.2</Version>
-        <AssemblyVersion>7.5.2.0</AssemblyVersion>
-        <FileVersion>7.5.2.0</FileVersion>
+        <Version>7.6.0</Version>
+        <AssemblyVersion>7.6.0.0</AssemblyVersion>
+        <FileVersion>7.6.0.0</FileVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Authors>Kephas Software SRL</Authors>

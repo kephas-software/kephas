@@ -5,9 +5,9 @@
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Description>Provides abstractions for packaging.</Description>
-        <Version>7.5.2</Version>
-        <AssemblyVersion>7.5.2.0</AssemblyVersion>
-        <FileVersion>7.5.2.0</FileVersion>
+        <Version>7.6.0</Version>
+        <AssemblyVersion>7.6.0.0</AssemblyVersion>
+        <FileVersion>7.6.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
