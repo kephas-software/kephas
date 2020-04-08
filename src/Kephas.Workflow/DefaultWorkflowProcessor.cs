@@ -70,54 +70,53 @@ namespace Kephas.Workflow
         {
             Requires.NotNull(activity, nameof(activity));
 
-            using (var context = this.CreateActivityContext(optionsConfig))
+            using var context = this.CreateActivityContext(optionsConfig);
+
+            var logger = context.Logger.Merge(this.Logger);
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            // resolve the activity type which will execute the activity
+            var activityInfo = this.GetActivityInfo(activity, context);
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            // resolve the arguments
+            var executionArgs = await this.GetExecutionArgumentsAsync(activityInfo, arguments, context, cancellationToken)
+                .PreserveThreadContext();
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            // get the behaviors for execution
+            var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(activityInfo, context);
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            //... TODO improve
+            await this.ApplyBeforeExecuteBehaviorsAsync(behaviors, context, cancellationToken).PreserveThreadContext();
+
+            //... TODO improve
+            try
             {
-                var logger = context.Logger.Merge(this.Logger);
-
-                cancellationToken.ThrowIfCancellationRequested();
-
-                // resolve the activity type which will execute the activity
-                var activityInfo = this.GetActivityInfo(activity, context);
-
-                cancellationToken.ThrowIfCancellationRequested();
-
-                // resolve the arguments
-                var executionArgs = await this.GetExecutionArgumentsAsync(activityInfo, arguments, context, cancellationToken)
-                                   .PreserveThreadContext();
-
-                cancellationToken.ThrowIfCancellationRequested();
-
-                // get the behaviors for execution
-                var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(activityInfo, context);
-
-                cancellationToken.ThrowIfCancellationRequested();
-
-                //... TODO improve
-                await this.ApplyBeforeExecuteBehaviorsAsync(behaviors, context, cancellationToken).PreserveThreadContext();
-
-                //... TODO improve
-                try
-                {
-                    var result = await activityInfo
-                                     .ExecuteAsync(activity, target, executionArgs, context, cancellationToken)
-                                     .PreserveThreadContext();
-                    context.Result = result;
-                }
-                catch (Exception ex)
-                {
-                    context.Exception = ex;
-                }
-
-                //... TODO improve
-                await this.ApplyAfterExecuteBehaviorsAsync(reversedBehaviors, context, cancellationToken).PreserveThreadContext();
-
-                if (context.Exception != null)
-                {
-                    throw context.Exception;
-                }
-
-                return context.Result;
+                var result = await activityInfo
+                    .ExecuteAsync(activity, target, executionArgs, context, cancellationToken)
+                    .PreserveThreadContext();
+                context.Result = result;
             }
+            catch (Exception ex)
+            {
+                context.Exception = ex;
+            }
+
+            //... TODO improve
+            await this.ApplyAfterExecuteBehaviorsAsync(reversedBehaviors, context, cancellationToken).PreserveThreadContext();
+
+            if (context.Exception != null)
+            {
+                throw context.Exception;
+            }
+
+            return context.Result;
         }
 
         /// <summary>

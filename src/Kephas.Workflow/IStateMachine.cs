@@ -12,9 +12,10 @@
 
 namespace Kephas.Workflow
 {
-    using Kephas.Workflow.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Kephas.Workflow.Reflection;
 
     /// <summary>
     /// A state machine controls a target, transitioning it through multiple states.
@@ -53,7 +54,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// An asynchronous result that yields the transition result.
         /// </returns>
-        public Task<object?> TransitionAsync(ITransitionContext context, CancellationToken cancellationToken = default);
+        Task<object?> TransitionAsync(ITransitionContext context, CancellationToken cancellationToken = default);
     }
 
     /// <summary>

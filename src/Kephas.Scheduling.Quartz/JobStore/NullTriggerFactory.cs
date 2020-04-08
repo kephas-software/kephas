@@ -11,7 +11,6 @@
 namespace Kephas.Scheduling.Quartz.JobStore
 {
     using Kephas.Scheduling.Quartz.JobStore.Model;
-    using Kephas.Scheduling.Triggers;
     using Kephas.Services;
 
     /// <summary>
