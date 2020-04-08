@@ -59,6 +59,34 @@ namespace Kephas.Scheduling.Tests.InMemory
         }
 
         [Test]
+        public async Task InitializeAsync_Enqueue_with_client()
+        {
+            var eventHub = new DefaultEventHub();
+            var workflowProcessor = Substitute.For<IWorkflowProcessor>();
+            var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
+
+            await scheduler.InitializeAsync();
+
+            var execution = 0;
+            var jobInfo = new RuntimeFuncJobInfo(() => execution++);
+
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+            await schedulerClient.EnqueueAsync(
+                jobInfo,
+                null,
+                null,
+                ctx => ctx.Trigger(new TimerTrigger { Count = 2, Interval = TimeSpan.FromMilliseconds(30) }));
+
+            await Task.Delay(150);
+            Assert.AreEqual(2, execution);
+
+            await scheduler.FinalizeAsync();
+        }
+
+        [Test]
         public async Task InitializeAsync_CancelTrigger()
         {
             var eventHub = new DefaultEventHub();
@@ -99,6 +127,40 @@ namespace Kephas.Scheduling.Tests.InMemory
         }
 
         [Test]
+        public async Task InitializeAsync_CancelTrigger_with_client()
+        {
+            var eventHub = new DefaultEventHub();
+            var workflowProcessor = Substitute.For<IWorkflowProcessor>();
+            var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
+
+            await scheduler.InitializeAsync();
+
+            var execution = 0;
+            var jobInfo = new RuntimeFuncJobInfo(() => execution++);
+
+            var triggerId = 1;
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+            await schedulerClient.EnqueueAsync(
+                jobInfo,
+                null,
+                null,
+                ctx => ctx.Trigger(new TimerTrigger(triggerId) { Count = null, Interval = TimeSpan.FromMilliseconds(30) }));
+
+            await Task.Delay(150);
+
+            await schedulerClient.CancelTriggerAsync(triggerId);
+
+            await Task.Delay(150);
+
+            Assert.LessOrEqual(execution, 7);
+
+            await scheduler.FinalizeAsync();
+        }
+
+        [Test]
         public async Task FinalizeAsync_disposes_all_triggers()
         {
             var eventHub = new DefaultEventHub();
@@ -120,6 +182,37 @@ namespace Kephas.Scheduling.Tests.InMemory
                     Options = ctx => ctx.Trigger(new TimerTrigger { Count = null, Interval = TimeSpan.FromMilliseconds(30) }),
                 },
                 null);
+
+            await Task.Delay(150);
+
+            await scheduler.FinalizeAsync();
+
+            await Task.Delay(150);
+
+            Assert.LessOrEqual(execution, 7);
+        }
+
+        [Test]
+        public async Task FinalizeAsync_disposes_all_triggers_with_client()
+        {
+            var eventHub = new DefaultEventHub();
+            var workflowProcessor = Substitute.For<IWorkflowProcessor>();
+            var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
+
+            await scheduler.InitializeAsync();
+
+            var execution = 0;
+            var jobInfo = new RuntimeFuncJobInfo(() => execution++);
+
+            workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
+                .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
+            await schedulerClient.EnqueueAsync(
+                jobInfo,
+                null,
+                null,
+                ctx => ctx.Trigger(new TimerTrigger { Count = null, Interval = TimeSpan.FromMilliseconds(30) }));
 
             await Task.Delay(150);
 
