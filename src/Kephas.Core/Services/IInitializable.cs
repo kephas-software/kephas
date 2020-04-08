@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Services
 {
     /// <summary>
@@ -19,6 +21,6 @@ namespace Kephas.Services
         /// Initializes the service.
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
-        void Initialize(IContext context = null);
+        void Initialize(IContext? context = null);
     }
 }

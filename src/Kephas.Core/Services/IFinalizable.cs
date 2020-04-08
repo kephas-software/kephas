@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Services
 {
     /// <summary>
@@ -19,6 +21,6 @@ namespace Kephas.Services
         /// Finalizes the service.
         /// </summary>
         /// <param name="context">An optional context for finalization.</param>
-        void Finalize(IContext context = null);
+        void Finalize(IContext? context = null);
     }
 }

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+#nullable enable
+
 namespace Kephas.Services
 {
     using System.Threading;
@@ -26,6 +28,6 @@ namespace Kephas.Services
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default);
+        Task FinalizeAsync(IContext? context = null, CancellationToken cancellationToken = default);
     }
 }
