@@ -13,10 +13,10 @@ namespace Kephas.Interaction
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Contract for the singleton application service handling in-process event publishing/subscribing.
