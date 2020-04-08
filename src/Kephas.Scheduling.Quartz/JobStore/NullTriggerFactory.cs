@@ -11,9 +11,8 @@
 namespace Kephas.Scheduling.Quartz.JobStore
 {
     using Kephas.Scheduling.Quartz.JobStore.Model;
+    using Kephas.Scheduling.Triggers;
     using Kephas.Services;
-
-    using ITrigger = Kephas.Scheduling.ITrigger;
 
     /// <summary>
     /// A null trigger factory.
