@@ -98,7 +98,7 @@ namespace Kephas.Workflow.Runtime
 
 #if NETSTANDARD2_1
             // TODO localization
-            throw new NotImplementedException($"Implement the {typeof(IOperation).Name} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+            throw new NotImplementedException($"Implement the {nameof(IOperation)} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
 #else
             if (activity is IAsyncOperation asyncOperation)
             {
@@ -106,7 +106,7 @@ namespace Kephas.Workflow.Runtime
             }
 
             // TODO localization
-            throw new NotImplementedException($"Either implement the {typeof(IOperation).Name} or {typeof(IAsyncOperation).Name} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+            throw new NotImplementedException($"Either implement the {nameof(IOperation)} or {nameof(IAsyncOperation)} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
 #endif
         }
 
@@ -127,7 +127,7 @@ namespace Kephas.Workflow.Runtime
 
 #if NETSTANDARD2_1
             // TODO localization
-            throw new NotImplementedException($"Implement the {typeof(IOperation).Name} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+            throw new NotImplementedException($"Implement the {nameof(IOperation)} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
 #else
             if (activity is IAsyncOperation asyncOperation)
             {
@@ -135,7 +135,7 @@ namespace Kephas.Workflow.Runtime
             }
 
             // TODO localization
-            throw new NotImplementedException($"Either implement the {typeof(IOperation).Name} or {typeof(IAsyncOperation).Name} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+            throw new NotImplementedException($"Either implement the {nameof(IOperation)} or {nameof(IAsyncOperation)} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
 #endif
         }
 
