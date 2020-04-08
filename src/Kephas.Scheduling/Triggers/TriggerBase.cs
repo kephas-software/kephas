@@ -58,18 +58,30 @@ namespace Kephas.Scheduling.Triggers
         /// </returns>
         ITypeInfo IInstance.GetTypeInfo() => this.GetTypeInfo();
 
-        /// <inheritdoc/>
-        public virtual void Initialize(IContext context = null)
+        /// <summary>
+        /// Initializes the service.
+        /// </summary>
+        /// <param name="context">Optional. An optional context for initialization.</param>
+        public virtual void Initialize(IContext? context = null)
         {
             this.IsEnabled = true;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
+        /// resources.
+        /// </summary>
         public void Dispose()
         {
             this.Dispose(true);
         }
 
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="TriggerBase"/> and
+        /// optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             this.IsEnabled = false;

@@ -13,6 +13,23 @@ namespace Kephas.Scheduling.Triggers
     using System;
 
     /// <summary>
+    /// Values that represent timer interval kinds.
+    /// </summary>
+    /// <seealso/>
+    public enum TimerIntervalKind
+    {
+        /// <summary>
+        /// The interval is calculated between the start of two subsequent jobs.
+        /// </summary>
+        StartStart,
+
+        /// <summary>
+        /// The interval is calculated between the end of the previous job and the start of the next job.
+        /// </summary>
+        EndStart,
+    }
+
+    /// <summary>
     /// The timer trigger interface.
     /// </summary>
     public interface ITimerTrigger : ITrigger
@@ -33,8 +50,17 @@ namespace Kephas.Scheduling.Triggers
         TimeSpan? Interval { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of times the trigger will fire.
+        /// Gets or sets the interval kind.
         /// </summary>
-        int Count { get; set; }
+        /// <value>
+        /// The interval kind.
+        /// </value>
+        TimerIntervalKind IntervalKind { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of times the trigger will fire.
+        /// If <code>null</code>, the trigger will fire forever.
+        /// </summary>
+        int? Count { get; set; }
     }
 }

@@ -11,6 +11,7 @@
 namespace Kephas.Scheduling.Triggers
 {
     using System;
+    using System.Threading;
 
     using Kephas.Services;
 
@@ -19,6 +20,9 @@ namespace Kephas.Scheduling.Triggers
     /// </summary>
     public class TimerTrigger : TriggerBase, ITimerTrigger
     {
+        private Timer? timer;
+        private int firedCount = 0;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerTrigger"/> class.
         /// </summary>
@@ -48,21 +52,93 @@ namespace Kephas.Scheduling.Triggers
         /// <summary>
         /// Gets or sets the interval at which the execution should be triggered.
         /// </summary>
-        public TimeSpan? Interval { get; set; }
+        public TimeSpan? Interval { get; set; } = TimeSpan.FromDays(1);
 
         /// <summary>
         /// Gets or sets the number of times the trigger will fire.
         /// </summary>
-        public int Count { get; set; } = 1;
+        public int? Count { get; set; } = 1;
 
+        /// <summary>
+        /// Gets or sets the interval kind.
+        /// </summary>
+        /// <value>
+        /// The interval kind.
+        /// </value>
+        public TimerIntervalKind IntervalKind { get; set; } = TimerIntervalKind.EndStart;
+
+        /// <summary>
+        /// Initializes the service.
+        /// </summary>
+        /// <param name="context">Optional. An optional context for initialization.</param>
         public override void Initialize(IContext? context = null)
         {
             base.Initialize(context);
+
+            if ((this.Count.HasValue && this.Count <= 0) ||
+                (this.EndTime.HasValue && this.EndTime <= DateTimeOffset.Now))
+            {
+                this.Dispose();
+            }
+
+            var startIn = this.StartTime.HasValue
+                ? this.StartTime.Value - DateTimeOffset.Now
+                : TimeSpan.Zero;
+            if (startIn < TimeSpan.Zero)
+            {
+                startIn = TimeSpan.Zero;
+            }
+
+            var interval = this.GetNormalizedInterval();
+            this.timer = new Timer(
+                s => this.HandleTimer(),
+                null,
+                startIn,
+                this.IntervalKind == TimerIntervalKind.EndStart ? Timeout.InfiniteTimeSpan : interval);
         }
 
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="TriggerBase"/> and optionally
+        /// releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to
+        ///                         release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
+            this.timer?.Dispose();
+            this.timer = null;
+
             base.Dispose(disposing);
+        }
+
+        private void HandleTimer()
+        {
+            this.OnFire();
+
+            this.firedCount++;
+            if ((this.Count.HasValue && this.Count <= this.firedCount) ||
+                (this.EndTime.HasValue && this.EndTime.Value <= DateTimeOffset.Now) ||
+                this.GetNormalizedInterval() == Timeout.InfiniteTimeSpan)
+            {
+                this.Dispose();
+            }
+            else if (this.IntervalKind == TimerIntervalKind.EndStart)
+            {
+                var startIn = this.GetNormalizedInterval();
+                this.timer?.Dispose();
+                this.timer = new Timer(
+                    s => this.HandleTimer(),
+                    null,
+                    startIn,
+                    Timeout.InfiniteTimeSpan);
+            }
+        }
+
+        private TimeSpan GetNormalizedInterval()
+        {
+            return this.Interval.HasValue && this.Interval.Value > TimeSpan.Zero
+                            ? this.Interval.Value
+                            : Timeout.InfiniteTimeSpan;
         }
     }
 }
