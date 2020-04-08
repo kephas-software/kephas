@@ -58,10 +58,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Properties\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 

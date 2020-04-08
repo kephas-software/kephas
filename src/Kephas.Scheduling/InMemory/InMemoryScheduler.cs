@@ -8,19 +8,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-using Kephas.Scheduling.Jobs;
-
 namespace Kephas.Scheduling.InMemory
 {
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Dynamic;
     using Kephas.Interaction;
     using Kephas.Logging;
+    using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Triggers;
     using Kephas.Services;
@@ -59,7 +59,7 @@ namespace Kephas.Scheduling.InMemory
             IEventHub eventHub,
             IContextFactory contextFactory,
             IWorkflowProcessor workflowProcessor,
-            ILogManager logManager = null)
+            ILogManager? logManager = null)
             : base(logManager)
         {
             this.eventHub = eventHub;
@@ -142,7 +142,7 @@ namespace Kephas.Scheduling.InMemory
 
             if (!this.activeTriggers.TryAdd(
                 trigger.Id,
-                (trigger, ct => this.StartJob(jobInfoObject, e.TriggerId, e.Target, e.Arguments, e.Options, ct))))
+                (trigger, ct => this.StartJob(jobInfoObject, e.Target, e.Arguments, e.Options, ct))))
             {
                 this.Logger.Warn("Cannot enqueue trigger with ID {triggerId}.", trigger.Id);
                 return;
@@ -159,7 +159,7 @@ namespace Kephas.Scheduling.InMemory
 
                 var cancellationSource = new CancellationTokenSource();
                 var jobResult = tuple.triggerAction(cancellationSource.Token);
-                if (!this.activeJobs.TryAdd(jobResult.JobId, (jobResult, cancellationSource)))
+                if (!this.activeJobs.TryAdd(jobResult.JobId!, (jobResult, cancellationSource)))
                 {
                     this.Logger.Warn("Cannot add the job with ID '{jobId}' to the list of active jobs.",
                         jobResult.JobId);
@@ -226,7 +226,6 @@ namespace Kephas.Scheduling.InMemory
         /// Starts the operation associated to the job.
         /// </summary>
         /// <param name="jobInfo">The job information.</param>
-        /// <param name="jobId">The job ID.</param>
         /// <param name="target">The target.</param>
         /// <param name="arguments">The arguments.</param>
         /// <param name="options">The options.</param>
@@ -234,18 +233,17 @@ namespace Kephas.Scheduling.InMemory
         /// <returns>The job result.</returns>
         protected virtual IJobResult StartJob(
             IJobInfo jobInfo,
-            object jobId,
             object? target,
             IExpando? arguments,
             Action<IActivityContext>? options,
             CancellationToken cancellationToken)
         {
-            var job = (IJob) jobInfo.CreateInstance();
+            var job = (IJob)jobInfo.CreateInstance();
             job.Target = target;
             job.Arguments = arguments;
 
             return new JobResult(
-                jobId,
+                job.Id,
                 this.workflowProcessor.ExecuteAsync(job, target, arguments, options, cancellationToken))
             {
                 Job = job,

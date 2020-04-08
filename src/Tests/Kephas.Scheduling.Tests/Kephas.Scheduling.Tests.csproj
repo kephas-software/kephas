@@ -41,6 +41,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Scheduling\Kephas.Scheduling.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 
     <ItemGroup>
