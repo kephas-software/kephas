@@ -24,6 +24,7 @@ namespace Kephas.Scheduling.InMemory
     using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Triggers;
     using Kephas.Services;
+    using Kephas.Services.Transitions;
     using Kephas.Workflow;
 
     /// <summary>
@@ -48,6 +49,8 @@ namespace Kephas.Scheduling.InMemory
                 = new ConcurrentDictionary<object, (IJobResult jobResult, CancellationTokenSource cancellationSource)
                 >();
 
+        private readonly FinalizationMonitor<IScheduler> finalizationMonitor;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryScheduler"/> class.
         /// </summary>
@@ -65,6 +68,7 @@ namespace Kephas.Scheduling.InMemory
             this.eventHub = eventHub;
             this.contextFactory = contextFactory;
             this.workflowProcessor = workflowProcessor;
+            this.finalizationMonitor = new FinalizationMonitor<IScheduler>(this.GetType());
         }
 
         /// <summary>
@@ -94,6 +98,8 @@ namespace Kephas.Scheduling.InMemory
         /// </returns>
         public Task FinalizeAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
+            this.finalizationMonitor.Start();
+
             this.subscriptions.ForEach(s => s.Dispose());
 
             // stop triggers
@@ -102,8 +108,7 @@ namespace Kephas.Scheduling.InMemory
                 var kv = this.activeTriggers.FirstOrDefault();
                 if (kv.Key != null)
                 {
-                    kv.Value.trigger.Dispose();
-                    this.activeTriggers.TryRemove(kv.Key, out _);
+                    this.HandleCancelTrigger(new CancelTriggerEvent { TriggerId = kv.Key }, context!);
                 }
             }
 
@@ -113,10 +118,11 @@ namespace Kephas.Scheduling.InMemory
                 var kv = this.activeJobs.FirstOrDefault();
                 if (kv.Key != null)
                 {
-                    kv.Value.cancellationSource.Cancel();
-                    this.activeJobs.TryRemove(kv.Key, out _);
+                    this.HandleCancelJob(new CancelJobEvent { JobId = kv.Key }, context!);
                 }
             }
+
+            this.finalizationMonitor.Complete();
 
             return Task.CompletedTask;
         }
@@ -128,6 +134,12 @@ namespace Kephas.Scheduling.InMemory
         /// <param name="context">The context.</param>
         protected virtual void HandleEnqueue(EnqueueEvent e, IContext context)
         {
+            if (!this.finalizationMonitor.IsNotStarted)
+            {
+                this.Logger.Warn("Finalization is started, enqueue requests are rejected.");
+                return;
+            }
+
             if (!(e.JobInfo is IJobInfo jobInfoObject))
             {
                 throw new ArgumentException(
@@ -177,6 +189,8 @@ namespace Kephas.Scheduling.InMemory
             trigger.Fire += OnTriggerOnFire;
             trigger.Disposed += OnTriggerOnDisposed;
 
+            this.Logger.Info("Enqueued job '{job}' with trigger '{trigger}'.", jobInfoObject, trigger);
+
             ServiceHelper.Initialize(trigger);
         }
 
@@ -187,13 +201,16 @@ namespace Kephas.Scheduling.InMemory
         /// <param name="context">The context.</param>
         protected virtual void HandleCancelTrigger(CancelTriggerEvent e, IContext context)
         {
+            this.Logger.Info("Cancelling trigger with ID '{triggerId}'...", e.TriggerId);
+
             if (!this.activeTriggers.TryRemove(e.TriggerId, out var tuple))
             {
-                this.Logger.Warn("Trigger with ID '{triggerId}' was already removed from the list of active triggers.",
-                    e.TriggerId);
+                this.Logger.Warn("Trigger with ID '{triggerId}' was already removed from the list of active triggers.", e.TriggerId);
             }
 
             tuple.trigger.Dispose();
+
+            this.Logger.Info("Trigger with ID '{triggerId}' is canceled.", e.TriggerId);
         }
 
         /// <summary>
@@ -203,13 +220,17 @@ namespace Kephas.Scheduling.InMemory
         /// <param name="context">The context.</param>
         protected virtual void HandleCancelJob(CancelJobEvent e, IContext context)
         {
+            this.Logger.Info("Cancelling job with ID '{jobId}'...", e.JobId);
+
             if (!this.activeJobs.TryRemove(e.JobId, out var tuple))
             {
-                this.Logger.Warn("Job with ID '{jobId}' was already removed from the list of active triggers.",
+                this.Logger.Warn("Job with ID '{jobId}' was already removed from the list of active jobs.",
                     e.JobId);
             }
 
             tuple.cancellationSource.Cancel();
+
+            this.Logger.Info("Job with ID '{jobId}' was signaled for cancellation.", e.JobId);
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ namespace Kephas.Services.Transitions
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
