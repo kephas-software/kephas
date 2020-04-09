@@ -52,14 +52,14 @@ namespace Kephas.Scheduling.Triggers
         public DateTimeOffset? EndTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the interval at which the execution should be triggered.
-        /// </summary>
-        public TimeSpan? Interval { get; set; } = TimeSpan.FromDays(1);
-
-        /// <summary>
         /// Gets or sets the number of times the trigger will fire.
         /// </summary>
         public int? Count { get; set; } = 1;
+
+        /// <summary>
+        /// Gets or sets the interval at which the execution should be triggered.
+        /// </summary>
+        public TimeSpan? Interval { get; set; } = TimeSpan.FromDays(1);
 
         /// <summary>
         /// Gets or sets the interval kind.
@@ -98,6 +98,26 @@ namespace Kephas.Scheduling.Triggers
                 null,
                 startIn,
                 this.IntervalKind == TimerIntervalKind.EndToStart ? Timeout.InfiniteTimeSpan : this.normalizedInterval);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var period = this.StartTime.HasValue || this.EndTime.HasValue
+                ? $" [{this.StartTime:s}-{this.EndTime:s}]"
+                : string.Empty;
+            var times = this.Count.HasValue
+                ? $" *{this.Count}"
+                : string.Empty;
+            var interval = this.Interval.HasValue
+                ? $" -{this.GetNormalizedInterval():c}"
+                : string.Empty;
+            return $"{this.GetType().Name}{this.Id}{period}{times}{interval}";
         }
 
         /// <summary>

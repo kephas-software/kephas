@@ -45,6 +45,12 @@ namespace Kephas.Scheduling.Triggers
         DateTimeOffset? EndTime { get; set; }
 
         /// <summary>
+        /// Gets or sets the number of times the trigger will fire.
+        /// If <code>null</code>, the trigger will fire forever.
+        /// </summary>
+        int? Count { get; set; }
+
+        /// <summary>
         /// Gets or sets the interval at which the execution should be triggered.
         /// </summary>
         TimeSpan? Interval { get; set; }
@@ -56,11 +62,5 @@ namespace Kephas.Scheduling.Triggers
         /// The interval kind.
         /// </value>
         TimerIntervalKind IntervalKind { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number of times the trigger will fire.
-        /// If <code>null</code>, the trigger will fire forever.
-        /// </summary>
-        int? Count { get; set; }
     }
 }
