@@ -117,7 +117,7 @@ namespace Kephas.Scheduling.Triggers
             var interval = this.Interval.HasValue
                 ? $" -{this.GetNormalizedInterval():c}"
                 : string.Empty;
-            return $"{this.GetType().Name}{this.Id}{period}{times}{interval}";
+            return $"{this.GetType().Name}:{this.Id}{period}{times}{interval}";
         }
 
         /// <summary>
