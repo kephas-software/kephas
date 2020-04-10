@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Operations
 {
     using System;
@@ -35,7 +33,7 @@ namespace Kephas.Operations
         /// <value>
         /// The return value.
         /// </value>
-        object? ReturnValue { get; set; }
+        object ReturnValue { get; set; }
 
         /// <summary>
         /// Gets or sets the state of the operation.
@@ -139,7 +137,7 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult ReturnValue<TResult>(this TResult result, object? returnValue)
+        public static TResult ReturnValue<TResult>(this TResult result, object returnValue)
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
@@ -279,7 +277,7 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeMessages<TResult>(this TResult result, IOperationResult? resultToMerge)
+        public static TResult MergeMessages<TResult>(this TResult result, IOperationResult resultToMerge)
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
@@ -329,7 +327,7 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeAll<TResult>(this TResult result, IOperationResult? resultToMerge)
+        public static TResult MergeAll<TResult>(this TResult result, IOperationResult resultToMerge)
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
