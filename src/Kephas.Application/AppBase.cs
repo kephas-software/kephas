@@ -11,6 +11,7 @@
 namespace Kephas.Application
 {
     using System;
+    using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -126,6 +127,9 @@ namespace Kephas.Application
                 }
                 catch
                 {
+#if DEBUG
+                    Debug.Assert(false, "Should not fail in finalizing prerequisites.");
+#endif
                     // TODO at this moment the loggers are disposed, do nothing
                 }
             }
@@ -136,6 +140,7 @@ namespace Kephas.Application
         /// </summary>
         protected virtual void FinalizePrerequisites()
         {
+            this.AmbientServices?.CompositionContainer.Dispose();
             this.AmbientServices?.Dispose();
         }
 
