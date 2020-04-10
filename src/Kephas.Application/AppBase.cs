@@ -40,12 +40,12 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Gets the ambient services.
+        /// Gets or sets the ambient services.
         /// </summary>
         /// <value>
         /// The ambient services.
         /// </value>
-        public IAmbientServices AmbientServices { get; }
+        public IAmbientServices AmbientServices { get; protected set; }
 
         /// <summary>
         /// Gets a context for the application.

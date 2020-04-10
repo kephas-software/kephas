@@ -43,8 +43,8 @@ namespace Kephas.Application.AspNetCore
     public abstract class StartupBase : AppBase
     {
         private readonly string[] appArgs;
+        private Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection;
         private Task bootstrapTask;
-        private Task shutdownTask;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StartupBase"/> class.
@@ -81,17 +81,33 @@ namespace Kephas.Application.AspNetCore
         /// Configures the DI services.
         /// </summary>
         /// <param name="serviceCollection">Collection of services.</param>
-        /// <returns>
-        /// An IServiceProvider.
-        /// </returns>
-        public virtual IServiceProvider ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection)
+        public virtual void ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection)
         {
             try
             {
                 serviceCollection.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            }
+            catch (Exception ex)
+            {
+                this.Log(LogLevel.Fatal, ex, Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception);
+                throw;
+            }
 
+            this.serviceCollection = serviceCollection;
+        }
+
+        /// <summary>
+        /// Configures the ambient services container.
+        /// </summary>
+        /// <param name="ambientServices">Optional. The ambient services.</param>
+        public virtual void ConfigureContainer(IAmbientServices ambientServices)
+        {
+            this.AmbientServices = ambientServices;
+
+            try
+            {
                 this.AmbientServices
-                    .WithServiceCollection(serviceCollection)
+                    .WithServiceCollection(this.serviceCollection)
                     .ConfigureExtensionsLogging()
                     .ConfigureExtensionsOptions()
                     .UseConfiguration(this.Configuration);
@@ -103,8 +119,6 @@ namespace Kephas.Application.AspNetCore
                 this.Log(LogLevel.Fatal, ex, Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception);
                 throw;
             }
-
-            return this.AmbientServices.CompositionContainer.ToServiceProvider();
         }
 
         /// <summary>

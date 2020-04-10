@@ -30,12 +30,11 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         /// Configures the DI services.
         /// </summary>
         /// <param name="services">Collection of services.</param>
-        /// <returns>
-        /// An IServiceProvider.
-        /// </returns>
-        public override IServiceProvider ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services
+                .AddRazorPages()
+                .AddNewtonsoftJson();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -43,8 +42,7 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            var serviceProvider = base.ConfigureServices(services);
-            return serviceProvider;
+            base.ConfigureServices(services);
         }
 
         /// <summary>

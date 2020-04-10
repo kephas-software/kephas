@@ -15,10 +15,12 @@ namespace Kephas.Application.AspNetCore
 
     using Kephas.Application;
     using Kephas.Operations;
+    using Kephas.Services;
 
     /// <summary>
     /// An ASP net application shutdown awaiter.
     /// </summary>
+    [OverridePriority(Priority.High)]
     public class AspNetAppShutdownAwaiter : IAppShutdownAwaiter
     {
         /// <summary>
