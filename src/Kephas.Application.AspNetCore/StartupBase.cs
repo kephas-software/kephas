@@ -44,6 +44,7 @@ namespace Kephas.Application.AspNetCore
     {
         private readonly string[] appArgs;
         private Task bootstrapTask;
+        private Task shutdownTask;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StartupBase"/> class.
@@ -139,7 +140,7 @@ namespace Kephas.Application.AspNetCore
             }
 
             // when the configurators are completed, start the bootstrapping procedure.
-            this.bootstrapTask = this.BootstrapAsync(this.appArgs);
+            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.BootstrapAsync(this.appArgs));
 
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopping" event.
