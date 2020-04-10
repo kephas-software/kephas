@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFrameworks>netcoreapp3.1;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
+
+        <RootNamespace>Kephas.Serialization.Json.Tests</RootNamespace>
     </PropertyGroup>
 
     <Choose>
@@ -39,7 +41,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Composition.Mef\Kephas.Composition.Mef.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\..\Kephas.Serialization.Json\Kephas.Serialization.Json.csproj" />
+        <ProjectReference Include="..\..\Kephas.Serialization.NewtonsoftJson\Kephas.Serialization.NewtonsoftJson.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Autofac\Kephas.Testing.Composition.Autofac.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Composition.Mef\Kephas.Testing.Composition.Mef.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />

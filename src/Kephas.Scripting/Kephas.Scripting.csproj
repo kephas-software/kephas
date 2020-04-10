@@ -73,10 +73,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Properties\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Update="Resources\Strings.Designer.cs">
         <DependentUpon>Strings.resx</DependentUpon>
         <DesignTime>True</DesignTime>
@@ -89,6 +85,10 @@
         <LastGenOutput>Strings.Designer.cs</LastGenOutput>
         <Generator>PublicResXFileCodeGenerator</Generator>
       </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Properties\" />
     </ItemGroup>
 
 </Project>

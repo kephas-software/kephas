@@ -55,7 +55,7 @@ $paths = @(
     "..\Kephas.Scripting.CSharp",
     "..\Kephas.Scripting.Lua",
     "..\Kephas.Scripting.Python",
-    "..\Kephas.Serialization.Json",
+    "..\Kephas.Serialization.NewtonsoftJson",
     "..\Kephas.TextProcessing",
     "..\Kephas.Workflow",
     "..\Kephas.Workflow.Model",

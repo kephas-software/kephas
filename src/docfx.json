@@ -336,7 +336,7 @@
                     "files": [
                         "*.csproj"
                     ],
-                    "cwd": "./Kephas.Serialization.Json",
+                    "cwd": "./Kephas.Serialization.NewtonsoftJson",
                     "exclude": [
                         "**/obj/**",
                         "**/bin/**",

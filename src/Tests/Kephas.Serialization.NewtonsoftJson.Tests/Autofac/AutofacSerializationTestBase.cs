@@ -20,7 +20,7 @@ namespace Kephas.Serialization.Json.Tests.Autofac
         {
             var assemblies = new List<Assembly>(base.GetDefaultConventionAssemblies())
                                 {
-                                    typeof(JsonSerializer).Assembly,      // Kephas.Serialization.Json
+                                    typeof(JsonSerializer).Assembly,      // Kephas.Serialization.NewtonsoftJson
                                 };
             return assemblies;
         }

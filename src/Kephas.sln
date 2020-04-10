@@ -56,7 +56,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Model", "K
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Client", "Kephas.Data.Client\Kephas.Data.Client.csproj", "{67D81331-1EB2-47BC-A1C8-9A5A4728B44C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.Json", "Kephas.Serialization.Json\Kephas.Serialization.Json.csproj", "{6994B12D-3937-4A94-865D-9C2B7A7B797C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.NewtonsoftJson", "Kephas.Serialization.NewtonsoftJson\Kephas.Serialization.NewtonsoftJson.csproj", "{6994B12D-3937-4A94-865D-9C2B7A7B797C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.CodeAnalysis", "Kephas.CodeAnalysis\Kephas.CodeAnalysis.csproj", "{E8FA7B4A-12DB-4200-A8D6-A2A84EAFD157}"
 EndProject
@@ -84,7 +84,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Tests", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Messaging.Model.Tests", "Tests\Kephas.Messaging.Model.Tests\Kephas.Messaging.Model.Tests.csproj", "{63ADACCD-032B-469E-99CB-C0BE91171B43}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.Json.Tests", "Tests\Kephas.Serialization.Json.Tests\Kephas.Serialization.Json.Tests.csproj", "{77FB04AC-B520-404A-8F9E-F7BFBC90423E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.NewtonsoftJson.Tests", "Tests\Kephas.Serialization.NewtonsoftJson.Tests\Kephas.Serialization.NewtonsoftJson.Tests.csproj", "{77FB04AC-B520-404A-8F9E-F7BFBC90423E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Data.Tests", "Tests\Kephas.Data.Tests\Kephas.Data.Tests.csproj", "{D8FF5DA9-8F27-4497-873E-6C2E64386B7B}"
 EndProject

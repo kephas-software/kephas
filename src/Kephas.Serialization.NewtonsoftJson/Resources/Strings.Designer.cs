@@ -10,7 +10,6 @@
 
 namespace Kephas.Serialization.Json.Resources {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -20,10 +19,10 @@ namespace Kephas.Serialization.Json.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings {
+    public class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -37,10 +36,10 @@ namespace Kephas.Serialization.Json.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Serialization.Json.Resources.Strings", typeof(Strings).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Serialization.Json.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -52,7 +51,7 @@ namespace Kephas.Serialization.Json.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -64,7 +63,7 @@ namespace Kephas.Serialization.Json.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Error on JSON serializing/deserializing {0}..
         /// </summary>
-        internal static string DefaultJsonSerializerSettingsProvider_ErrorOnSerializingMessage {
+        public static string DefaultJsonSerializerSettingsProvider_ErrorOnSerializingMessage {
             get {
                 return ResourceManager.GetString("DefaultJsonSerializerSettingsProvider_ErrorOnSerializingMessage", resourceCulture);
             }
@@ -73,7 +72,7 @@ namespace Kephas.Serialization.Json.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Exception when serializing an object of type {0}..
         /// </summary>
-        internal static string DefaultJsonSerializerSettingsProvider_ErrorOnSerializingObjectMessage {
+        public static string DefaultJsonSerializerSettingsProvider_ErrorOnSerializingObjectMessage {
             get {
                 return ResourceManager.GetString("DefaultJsonSerializerSettingsProvider_ErrorOnSerializingObjectMessage", resourceCulture);
             }
