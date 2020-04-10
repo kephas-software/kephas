@@ -116,7 +116,7 @@ namespace Kephas.Application.Console
         protected virtual bool HandleUnknownArgument(IMessage message, ITypeInfo messageType, int index, string name, object value)
         {
             var props = messageType.Properties.ToList();
-            if (index < props.Count && (value == null || (value is string stringValue && string.IsNullOrEmpty(stringValue))))
+            if (index < props.Count && (value == null || (value is bool boolValue && boolValue)))
             {
                 this.SetPropertyValue(message, props[index], name);
                 return true;
