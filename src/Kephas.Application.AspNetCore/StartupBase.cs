@@ -160,14 +160,22 @@ namespace Kephas.Application.AspNetCore
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopping" event.
             appLifetime.ApplicationStopping.Register(() => this.ShutdownAsync().WaitNonLocking());
-            appLifetime.ApplicationStopped.Register(() => base.FinalizePrerequisites());
+            appLifetime.ApplicationStopped.Register(() => this.FinalizeWebHostPrerequisites());
         }
 
         /// <summary>
         /// Finalize the prerequisites.
         /// </summary>
-        protected override void FinalizePrerequisites()
+        protected sealed override void FinalizePrerequisites()
         {
+        }
+
+        /// <summary>
+        /// Finalize the web host prerequisites.
+        /// </summary>
+        protected virtual void FinalizeWebHostPrerequisites()
+        {
+            base.FinalizePrerequisites();
         }
 
         /// <summary>

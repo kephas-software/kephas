@@ -17,7 +17,10 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         {
             return Host.CreateDefaultBuilder(args)
                     .UseServiceProviderFactory(new CompositionServiceProviderFactory(new AmbientServices()))
-                    .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
+                    .ConfigureWebHostDefaults(
+                        webBuilder => webBuilder
+                                        .UseUrls("http://*:5100", "https://*:5101")
+                                        .UseStartup<Startup>())
                     .ConfigureAppConfiguration(b => b.AddJsonFile("appSettings.json"));
         }
     }
