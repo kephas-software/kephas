@@ -11,6 +11,7 @@
 namespace Kephas.Application.AspNetCore
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas;
@@ -159,6 +160,14 @@ namespace Kephas.Application.AspNetCore
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopping" event.
             appLifetime.ApplicationStopping.Register(() => this.ShutdownAsync().WaitNonLocking());
+            appLifetime.ApplicationStopped.Register(() => base.FinalizePrerequisites());
+        }
+
+        /// <summary>
+        /// Finalize the prerequisites.
+        /// </summary>
+        protected override void FinalizePrerequisites()
+        {
         }
 
         /// <summary>

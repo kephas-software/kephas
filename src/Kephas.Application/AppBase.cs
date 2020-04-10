@@ -122,13 +122,21 @@ namespace Kephas.Application
             {
                 try
                 {
-                    this.AmbientServices?.Dispose();
+                    this.FinalizePrerequisites();
                 }
                 catch
                 {
                     // TODO at this moment the loggers are disposed, do nothing
                 }
             }
+        }
+
+        /// <summary>
+        /// Finalize the prerequisites.
+        /// </summary>
+        protected virtual void FinalizePrerequisites()
+        {
+            this.AmbientServices?.Dispose();
         }
 
         /// <summary>
