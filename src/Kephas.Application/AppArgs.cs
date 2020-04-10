@@ -84,22 +84,106 @@ namespace Kephas.Application
         {
             Requires.NotNull(appArgs, nameof(appArgs));
 
-            var cmdArgs = new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
-            var args = appArgs;
-            foreach (var arg in args)
+            var cmdArgs = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+            var key = string.Empty;
+            object value = null;
+            var expectedValue = false;
+
+            using var enumerator = appArgs.GetEnumerator();
+            while (enumerator.MoveNext())
             {
-                var argSplit = arg.Split(new[] { '=' }, new[] { '"' }).ToArray();
-                if (argSplit.Length == 0)
+                var currentArg = enumerator.Current;
+                var keyStartIndex = 0;
+
+                if (currentArg.StartsWith("--"))
                 {
-                    continue;
+                    keyStartIndex = 2;
+                }
+                else if (currentArg.StartsWith("-"))
+                {
+                    keyStartIndex = 1;
+                }
+                else if (currentArg.StartsWith("/"))
+                {
+                    // "/SomeSwitch" is equivalent to "--SomeSwitch"
+                    keyStartIndex = 1;
                 }
 
-                var key = argSplit[0].TrimStart('-', '/');
-                var value = argSplit.Length == 1 ? string.Empty : argSplit[1].Replace("\"", string.Empty);
-                cmdArgs[key] = value;
+                // if we received a new argument, but we expected a value, add the previous key with the value "true"
+                if (expectedValue)
+                {
+                    expectedValue = false;
+
+                    if (keyStartIndex > 0)
+                    {
+                        // set the previous key to true and continue with processing the current arg
+                        cmdArgs[key] = true;
+                    }
+                    else
+                    {
+                        cmdArgs[key] = Unescape(currentArg);
+                        continue;
+                    }
+                }
+
+                // currentArg starts a new argument
+                var separator = currentArg.IndexOf('=');
+
+                if (separator >= 0)
+                {
+                    // currentArg specifies a key with value
+                    key = Unescape(currentArg.Substring(keyStartIndex, separator - keyStartIndex));
+                    value = Unescape(currentArg.Substring(separator + 1));
+                }
+                else
+                {
+                    // currentArg specifies only a key
+                    // If there is no prefix in current argument, consider it as a key with value "true"
+                    if (keyStartIndex == 0)
+                    {
+                        key = Unescape(currentArg);
+                        value = true;
+                    }
+                    else
+                    {
+                        key = Unescape(currentArg.Substring(keyStartIndex));
+                        expectedValue = true;
+                    }
+                }
+
+                // Override value when key is duplicated. So we always have the last argument win.
+                if (!expectedValue)
+                {
+                    cmdArgs[key] = value;
+                }
+            }
+
+            if(expectedValue)
+            {
+                cmdArgs[key] = true;
             }
 
             return cmdArgs;
+        }
+
+        private static string Unescape(string value)
+        {
+#if NETSTANDARD2_1
+            if (value.StartsWith('"') && value.EndsWith('"'))
+            {
+                value = value[1..^1];
+                return value.Replace("\\\"", "\"");
+            }
+#else
+            if (value.StartsWith("\"") && value.EndsWith("\""))
+            {
+                value = value.Substring(1, value.Length - 2);
+                return value.Replace("\\\"", "\"");
+            }
+#endif
+
+            return value;
         }
     }
 }
