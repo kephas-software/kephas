@@ -62,6 +62,11 @@ namespace Kephas.Plugins.Transactions
         /// <param name="context">The context.</param>
         public override void Execute(IPluginContext context)
         {
+            if (File.Exists(this.SourceFile))
+            {
+                File.Delete(this.SourceFile);
+            }
+
             File.Move(this.TargetFile, this.SourceFile);
         }
     }
