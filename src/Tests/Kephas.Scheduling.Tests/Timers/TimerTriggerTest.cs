@@ -74,7 +74,7 @@ namespace Kephas.Scheduling.Tests.Timers
         [Test]
         public void ToString_Infinite_3_seconds_interval()
         {
-            var trigger = new TimerTrigger
+            var trigger = new TimerTrigger(144)
             {
                 Interval = TimeSpan.FromSeconds(3),
                 Count = null,
@@ -82,7 +82,7 @@ namespace Kephas.Scheduling.Tests.Timers
             };
 
             var triggerString = trigger.ToString();
-            Assert.AreEqual("TimerTrigger:78c4634d-ae5a-48be-9ce0-85de3e02821c -00:00:03", triggerString);
+            Assert.AreEqual("TimerTrigger:144 -00:00:03", triggerString);
         }
 
         private void AssertInterval(IList<long> fires, long milliseconds)

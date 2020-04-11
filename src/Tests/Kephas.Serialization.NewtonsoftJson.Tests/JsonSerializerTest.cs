@@ -273,7 +273,7 @@ namespace Kephas.Serialization.Json.Tests
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
-            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
+            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.NewtonsoftJson.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
 
             Assert.IsInstanceOf<TestEntity>(obj);
@@ -289,7 +289,7 @@ namespace Kephas.Serialization.Json.Tests
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
-            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.Json.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
+            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity, Kephas.Serialization.NewtonsoftJson.Tests"",""name"":""John Doe"",""personalSite"":""http://site.com/my-site""}";
             var obj = serializer.Deserialize(serializedObj);
 
             Assert.IsInstanceOf<TestEntity>(obj);
@@ -305,7 +305,7 @@ namespace Kephas.Serialization.Json.Tests
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
             var serializer = new JsonSerializer(settingsProvider);
-            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.Json.Tests"",""description"":""John Doe""}";
+            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity, Kephas.Serialization.NewtonsoftJson.Tests"",""description"":""John Doe""}";
             var obj = await serializer.DeserializeAsync(serializedObj);
 
             Assert.IsInstanceOf<ExpandoEntity>(obj);
