@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AspNetFeatureManager_InvalidAppContext_Exception" xml:space="preserve">
-    <value>The provided application context ({0}) is not an OWIN context (must implement {1}).</value>
+    <value>The provided application context ({0}) is not an ASP.NET Core context (must implement {1}).</value>
   </data>
 </root>

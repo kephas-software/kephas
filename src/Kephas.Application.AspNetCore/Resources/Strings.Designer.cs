@@ -61,7 +61,7 @@ namespace Kephas.Application.AspNetCore.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The provided application context ({0}) is not an OWIN context (must implement {1})..
+        ///   Looks up a localized string similar to The provided application context ({0}) is not an ASP.NET Core context (must implement {1})..
         /// </summary>
         internal static string AspNetFeatureManager_InvalidAppContext_Exception {
             get {
