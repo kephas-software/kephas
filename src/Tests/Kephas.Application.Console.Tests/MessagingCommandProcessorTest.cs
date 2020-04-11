@@ -60,7 +60,7 @@ namespace Kephas.Application.Console.Tests
             var container = this.CreateContainer();
             var processor = container.GetExport<ICommandProcessor>();
 
-            var response = await processor.ProcessAsync("help", new Expando { ["help"] = string.Empty });
+            var response = await processor.ProcessAsync("help", new Expando { ["help"] = true });
 
             Assert.IsInstanceOf<HelpResponseMessage>(response);
 
@@ -85,7 +85,7 @@ namespace Kephas.Application.Console.Tests
             var container = this.CreateContainer(config: b => b.WithFactory<ICommandRegistry>(() => registry));
             var processor = container.GetExport<ICommandProcessor>();
 
-            var response = await processor.ProcessAsync("help", new Expando { ["nullable-param"] = string.Empty });
+            var response = await processor.ProcessAsync("help", new Expando { ["nullable-param"] = true });
 
             Assert.IsInstanceOf<HelpResponseMessage>(response);
 
