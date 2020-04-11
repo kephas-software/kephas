@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Reflection;
-
 namespace Kephas.Scheduling.Jobs
 {
     using System;
@@ -44,15 +42,7 @@ namespace Kephas.Scheduling.Jobs
         /// <returns>
         /// The type information.
         /// </returns>
-        public new virtual IJobInfo GetTypeInfo() => (IJobInfo)base.GetTypeInfo();
-
-        /// <summary>
-        /// Gets the type information for this instance.
-        /// </summary>
-        /// <returns>
-        /// The type information.
-        /// </returns>
-        ITypeInfo IInstance.GetTypeInfo() => this.GetTypeInfo();
+        public new IJobInfo GetTypeInfo() => (IJobInfo)this.GetTypeInfoBase();
 
         /// <summary>
         /// Releases the unmanaged resources used by the Kephas.Scheduling.JobBase and optionally

@@ -67,7 +67,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// The type information.
         /// </returns>
-        public virtual IActivityInfo GetTypeInfo() => (IActivityInfo)this.GetRuntimeTypeInfo();
+        public virtual IActivityInfo GetTypeInfo() => (IActivityInfo)this.GetTypeInfoBase();
 
         /// <summary>
         /// Gets the type information for this instance.
@@ -75,6 +75,12 @@ namespace Kephas.Workflow
         /// <returns>
         /// The type information.
         /// </returns>
-        ITypeInfo IInstance.GetTypeInfo() => this.GetTypeInfo();
+        ITypeInfo IInstance.GetTypeInfo() => this.GetTypeInfoBase();
+
+        /// <summary>
+        /// Gets the type information (overridable implementation).
+        /// </summary>
+        /// <returns>The type information.</returns>
+        protected virtual ITypeInfo GetTypeInfoBase() => this.GetRuntimeTypeInfo();
     }
 }

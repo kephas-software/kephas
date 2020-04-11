@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Reflection;
+
 namespace Kephas.Scheduling.Jobs
 {
     using System;
@@ -80,14 +82,6 @@ namespace Kephas.Scheduling.Jobs
         }
 
         /// <summary>
-        /// Gets the type information for this instance.
-        /// </summary>
-        /// <returns>
-        /// The type information.
-        /// </returns>
-        public override IJobInfo GetTypeInfo() => this.lazyTypeInfo.Value;
-
-        /// <summary>
         /// Executes the operation in the given context.
         /// </summary>
         /// <param name="context">Optional. The context.</param>
@@ -107,5 +101,11 @@ namespace Kephas.Scheduling.Jobs
         /// </returns>
         public Task<object?> ExecuteAsync(IContext? context = null, CancellationToken cancellationToken = default)
             => this.asyncOperation(cancellationToken);
+
+        /// <summary>
+        /// Gets the type information.
+        /// </summary>
+        /// <returns>The type information.</returns>
+        protected override ITypeInfo GetTypeInfoBase() => this.lazyTypeInfo.Value;
     }
 }
