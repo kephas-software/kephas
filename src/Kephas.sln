@@ -29,7 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{B5E8C7E1-C334-4C6C-B7C1-61D4618B21E7}"
 	ProjectSection(SolutionItems) = preProject
-		Deployment\CreateNugetPackages.ps1 = Deployment\CreateNugetPackages.ps1
+		Deployment\Legacy.CreateNugetPackages.ps1 = Deployment\Legacy.CreateNugetPackages.ps1
+		Deployment\Legacy.PushNugetPackages.ps1 = Deployment\Legacy.PushNugetPackages.ps1
 		Deployment\NuGet.exe = Deployment\NuGet.exe
 		Deployment\PushNugetPackages.ps1 = Deployment\PushNugetPackages.ps1
 		Deployment\SignNugetPackages.ps1 = Deployment\SignNugetPackages.ps1
