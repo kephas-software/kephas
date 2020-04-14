@@ -3,16 +3,20 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
+        
+        <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+        
+        <Version>7.6.0-dev.5</Version>
+        <AssemblyVersion>7.6.0.0</AssemblyVersion>
+        <FileVersion>7.6.0.0</FileVersion>
+
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>7.6.0</Version>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <AssemblyVersion>7.6.0.0</AssemblyVersion>
-        <FileVersion>7.6.0.0</FileVersion>
         <Description>Provides a common infrastructure for all the other Kephas Framework components: ambient services, dynamic reflection, composition, application management, and others.</Description>
-        <Copyright>Copyright © Kephas Software SRL 2010-2020</Copyright>
+        <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
@@ -29,8 +33,14 @@
 
         <RootNamespace>Kephas</RootNamespace>
         <NeutralLanguage>en</NeutralLanguage>
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DefineConstants>KEPHAS</DefineConstants>
+
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -84,6 +94,10 @@
     </Choose>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
