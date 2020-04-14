@@ -7,7 +7,7 @@
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <Description>Provides the log4net implementation of logging abstractions.</Description>
-        <Version>7.6.0</Version>
+        <Version>7.6.0-dev.5</Version>
         <AssemblyVersion>7.6.0.0</AssemblyVersion>
         <FileVersion>7.6.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>

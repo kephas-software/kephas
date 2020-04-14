@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", 
 		Deployment\CreateNugetPackages.ps1 = Deployment\CreateNugetPackages.ps1
 		Deployment\NuGet.exe = Deployment\NuGet.exe
 		Deployment\PushNugetPackages.ps1 = Deployment\PushNugetPackages.ps1
+		Deployment\SignNugetPackages.ps1 = Deployment\SignNugetPackages.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Logging.Log4Net", "Kephas.Logging.Log4Net\Kephas.Logging.Log4Net.csproj", "{9617E81A-E96C-4EA9-8DA8-0518DA57C9B2}"
@@ -194,9 +195,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Packaging", "Kephas.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core.Endpoints", "Kephas.Core.Endpoints\Kephas.Core.Endpoints.csproj", "{DB9CE923-A171-4087-A475-83351E20AF05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Collections", "Kephas.Collections\Kephas.Collections.csproj", "{A02D0A02-A204-46A8-BD0E-7432390557EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Collections", "Kephas.Collections\Kephas.Collections.csproj", "{A02D0A02-A204-46A8-BD0E-7432390557EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Collections.Tests", "Tests\Kephas.Collections.Tests\Kephas.Collections.Tests.csproj", "{7AB2DB00-5F26-45A0-81DD-F258980F2AFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Collections.Tests", "Tests\Kephas.Collections.Tests\Kephas.Collections.Tests.csproj", "{7AB2DB00-5F26-45A0-81DD-F258980F2AFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
