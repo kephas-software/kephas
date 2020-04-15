@@ -62,7 +62,7 @@ namespace Kephas.Logging
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
         /// <param name="logManager">The log manager.</param>
-        protected Loggable(ILogManager logManager)
+        protected Loggable(ILogManager? logManager)
         {
             this.lazyLogger = new Lazy<ILogger>(
                 () => logManager?.GetLogger(this.GetType())

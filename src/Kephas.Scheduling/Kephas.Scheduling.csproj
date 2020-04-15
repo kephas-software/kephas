@@ -16,8 +16,11 @@
         <Description>
             Provides the infrastructure for scheduling tasks.
             Typically used areas and classes/interfaces/services:
-            - IPluginManager, IPlugin, PluginState.
-            - Interaction: InitializingPluginSignal, InitializedPluginSignal, UninitializingPluginSignal, UninitializedPluginSignal.
+            - IScheduler, ISchedulerClient.
+            - InMemory: InMemoryScheduler, InMemorySchedulerClient.
+            - Jobs: IJob, JobBase, IFuncJob, FuncJob.
+            - Behaviors: IJobBehavior, JobBehaviorBase.
+            - Triggers: ITrigger, TriggerBase, TimerTrigger.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>

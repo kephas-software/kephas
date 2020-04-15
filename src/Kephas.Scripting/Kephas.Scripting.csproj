@@ -16,8 +16,8 @@
         <Description>
             Provides the infrastructure for executing scripts.
             Typically used areas and classes/interfaces/services:
-            - IPluginManager, IPlugin, PluginState.
-            - Interaction: InitializingPluginSignal, InitializedPluginSignal, UninitializingPluginSignal, UninitializedPluginSignal.
+            - IScriptProcessor, IScriptingBehavior.
+            - AttributedModel: LanguageAttribute
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
