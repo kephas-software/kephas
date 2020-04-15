@@ -15,7 +15,7 @@
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
             Provides a common infrastructure for other framework components.
-            Typically used areas and classes/interfaces:
+            Typically used areas and classes/interfaces/services:
             - Ambient services: IAmbientServices, AmbientServices.
             - Dynamic reflection: RuntimeTypeInfo.
             - Composition/Dependency Injection: ICompositionContext, LiteCompositionContainerBuilder, IExportFactory.

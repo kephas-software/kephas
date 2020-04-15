@@ -3,33 +3,56 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Description>Provides abstractions for managing data: retrieving, persisting, querying, so on.</Description>
+        <Nullable>enable</Nullable>
+
         <Version>7.6.0-dev.5</Version>
         <AssemblyVersion>7.6.0.0</AssemblyVersion>
         <FileVersion>7.6.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <Copyright>Copyright © Kephas Software SRL 2010-2020</Copyright>
+
+        <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+        <Description>
+            Provides abstractions for managing data: retrieval, persistence, query.
+            Typically used areas and classes/interfaces/services:
+            - IDataSpace, IDataContext.
+            - Capabilities: CghangeState, IEntityEntry, EntityEntry.
+            - Conversion: IDataConversionService, IDataConverter, DataConverterBase.
+            - DataSources: IDataSourceService, IDataSourceProvider.
+            - Behaviors: IDataBehavior, DataBehaviorBase, QueryBehaviorBase.
+            - Analysis: IRefPropertiesProvider.
+            - Setup: IDataSetupManager, IDataInstaller.
+            - Validation: IOnValidateBehavior.
+
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+        </Description>
+        <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
+
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageTags>kephas data</PackageTags>
         <PackageReleaseNotes>
             Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </PackageReleaseNotes>
+        <PackageTags>kephas data</PackageTags>
+
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NeutralLanguage>en</NeutralLanguage>
+        <DefineConstants>KEPHAS</DefineConstants>
 
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-
-        <NeutralLanguage>en</NeutralLanguage>
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
-        <DefineConstants>KEPHAS</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">

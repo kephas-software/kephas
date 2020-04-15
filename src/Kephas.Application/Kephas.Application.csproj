@@ -15,7 +15,7 @@
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
             Provides an abstract infrastructure for applications based on Kephas Framework.
-            Typically used areas and classes/interfaces:
+            Typically used areas and classes/interfaces/services:
             - AppBase, IAppArgs, AppArgs.
             - IAppManager, DefaultAppManager.
             - IFeatureManager, FeatureManagerBase.

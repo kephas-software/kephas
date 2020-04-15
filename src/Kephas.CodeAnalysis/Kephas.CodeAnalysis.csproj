@@ -15,7 +15,7 @@
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
             Provides a common infrastructure for code analysis, conversion, and generation.
-            Typically used areas and classes/interfaces:
+            Typically used areas and classes/interfaces/services:
             - Conversion: ICodeConverter.
             - Generation: ICodeGenerator, IElementInfoGenerator, IElementInfoGeneratorSelector.
 
