@@ -133,7 +133,7 @@ namespace Kephas.Services
         /// <value>
         /// The context logger.
         /// </value>
-        public ILogger Logger { get; set; }
+        public ILogger? Logger { get; set; }
 
         /// <summary>
         /// Releases the unmanaged resources used by the Kephas.Services.Context and optionally releases

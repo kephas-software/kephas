@@ -29,7 +29,7 @@ namespace Kephas.Application
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly IEventSubscription shutdownSubscription;
         private bool unattendedCompletion = false;
-        private TaskCompletionSource<IOperationResult> completionSource;
+        private TaskCompletionSource<IOperationResult>? completionSource;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAppShutdownAwaiter"/> class.
@@ -129,7 +129,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual Task RunUnattendedAsync(CancellationToken cancellationToken)
         {
-            return this.completionSource.Task;
+            return this.completionSource?.Task ?? Task.CompletedTask;
         }
 
         /// <summary>

@@ -29,7 +29,7 @@ namespace Kephas.Logging
         /// <returns>
         /// The logger.
         /// </returns>
-        public static ILogger GetLogger(this Type type, IContext context = null)
+        public static ILogger GetLogger(this Type type, IContext? context = null)
         {
             Requires.NotNull(type, nameof(type));
 
@@ -48,7 +48,7 @@ namespace Kephas.Logging
         /// <returns>
         /// The logger.
         /// </returns>
-        public static ILogger GetLogger(this object obj, IContext context = null)
+        public static ILogger GetLogger(this object obj, IContext? context = null)
         {
             Requires.NotNull(obj, nameof(obj));
 

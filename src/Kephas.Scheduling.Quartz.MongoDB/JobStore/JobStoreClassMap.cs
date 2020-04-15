@@ -28,7 +28,7 @@ namespace Kephas.Scheduling.Quartz.MongoDB.JobStore
     {
         public static void RegisterClassMaps()
         {
-            BsonSerializer.RegisterGenericSerializerDefinition(typeof (ISet<>), typeof (SetSerializer<>));
+            BsonSerializer.RegisterGenericSerializerDefinition(typeof(ISet<>), typeof(SetSerializer<>));
             BsonSerializer.RegisterSerializer(new JobDataMapSerializer());
 
             BsonClassMap.RegisterClassMap<Key<JobKey>>(map =>

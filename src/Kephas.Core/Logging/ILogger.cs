@@ -13,6 +13,7 @@ namespace Kephas.Logging
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.ExceptionHandling;
     using Kephas.Services;
 
@@ -71,7 +72,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        bool Log(LogLevel level, Exception exception, string messageFormat, params object[] args);
+        bool Log(LogLevel level, Exception? exception, string messageFormat, params object[] args);
 
         /// <summary>
         /// Indicates whether logging at the indicated level is enabled.
@@ -105,7 +106,7 @@ namespace Kephas.Logging
         /// <returns>
         /// An aggregated logger.
         /// </returns>
-        public static ILogger Merge(this ILogger logger, params ILogger[] loggers)
+        public static ILogger Merge(this ILogger? logger, params ILogger[] loggers)
         {
             var validLoggers = loggers?.Where(l => l != null).ToList();
             if (validLoggers == null || validLoggers.Count == 0)
@@ -131,7 +132,7 @@ namespace Kephas.Logging
         /// <returns>
         /// The log level.
         /// </returns>
-        public static LogLevel GetLogLevel(this Exception exception)
+        public static LogLevel GetLogLevel(this Exception? exception)
         {
             if (exception is ISeverityQualifiedNotification severityQualifiedException)
             {
@@ -151,7 +152,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Log(this ILogger logger, LogLevel level, string messageFormat, params object[] args)
+        public static bool Log(this ILogger? logger, LogLevel level, string messageFormat, params object[] args)
         {
             return logger?.Log(level, null, messageFormat, args) ?? false;
         }
@@ -166,7 +167,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Log(this ILogger logger, Exception exception)
+        public static bool Log(this ILogger? logger, Exception exception)
         {
             var logLevel = GetLogLevel(exception);
             return logger?.Log(logLevel, exception, exception.Message) ?? false;
@@ -184,7 +185,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Log(this ILogger logger, Exception exception, string messageFormat, params object[] args)
+        public static bool Log(this ILogger? logger, Exception? exception, string messageFormat, params object[] args)
         {
             var logLevel = GetLogLevel(exception);
             return logger?.Log(logLevel, exception, messageFormat, args) ?? false;
@@ -200,7 +201,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Fatal(this ILogger logger, Exception exception, string messageFormat, params object[] args)
+        public static bool Fatal(this ILogger? logger, Exception? exception, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Fatal, exception, messageFormat, args) ?? false;
         }
@@ -214,7 +215,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Fatal(this ILogger logger, string messageFormat, params object[] args)
+        public static bool Fatal(this ILogger? logger, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Fatal, messageFormat, args) ?? false;
         }
@@ -229,7 +230,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Error(this ILogger logger, Exception exception, string messageFormat, params object[] args)
+        public static bool Error(this ILogger? logger, Exception exception, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Error, exception, messageFormat, args) ?? false;
         }
@@ -243,7 +244,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Error(this ILogger logger, string messageFormat, params object[] args)
+        public static bool Error(this ILogger? logger, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Error, messageFormat, args) ?? false;
         }
@@ -258,7 +259,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Warn(this ILogger logger, Exception exception, string messageFormat, params object[] args)
+        public static bool Warn(this ILogger? logger, Exception exception, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Warning, exception, messageFormat, args) ?? false;
         }
@@ -272,7 +273,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Warn(this ILogger logger, string messageFormat, params object[] args)
+        public static bool Warn(this ILogger? logger, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Warning, messageFormat, args) ?? false;
         }
@@ -287,7 +288,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Info(this ILogger logger, Exception exception, string messageFormat, params object[] args)
+        public static bool Info(this ILogger? logger, Exception exception, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Info, exception, messageFormat, args) ?? false;
         }
@@ -301,7 +302,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Info(this ILogger logger, string messageFormat, params object[] args)
+        public static bool Info(this ILogger? logger, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Info, messageFormat, args) ?? false;
         }
@@ -316,7 +317,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Debug(this ILogger logger, Exception exception, string messageFormat, params object[] args)
+        public static bool Debug(this ILogger? logger, Exception exception, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Debug, exception, messageFormat, args) ?? false;
         }
@@ -330,7 +331,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Debug(this ILogger logger, string messageFormat, params object[] args)
+        public static bool Debug(this ILogger? logger, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Debug, messageFormat, args) ?? false;
         }
@@ -345,7 +346,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Trace(this ILogger logger, Exception exception, string messageFormat, params object[] args)
+        public static bool Trace(this ILogger? logger, Exception exception, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Trace, exception, messageFormat, args) ?? false;
         }
@@ -359,7 +360,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Trace(this ILogger logger, string messageFormat, params object[] args)
+        public static bool Trace(this ILogger? logger, string messageFormat, params object[] args)
         {
             return logger?.Log(LogLevel.Trace, messageFormat, args) ?? false;
         }
@@ -371,7 +372,7 @@ namespace Kephas.Logging
         /// <returns>
         /// <c>true</c> if enabled, <c>false</c> if not.
         /// </returns>
-        public static bool IsFatalEnabled(this ILogger logger)
+        public static bool IsFatalEnabled(this ILogger? logger)
         {
             return logger?.IsEnabled(LogLevel.Fatal) ?? false;
         }
@@ -383,7 +384,7 @@ namespace Kephas.Logging
         /// <returns>
         /// <c>true</c> if enabled, <c>false</c> if not.
         /// </returns>
-        public static bool IsErrorEnabled(this ILogger logger)
+        public static bool IsErrorEnabled(this ILogger? logger)
         {
             return logger?.IsEnabled(LogLevel.Error) ?? false;
         }
@@ -395,7 +396,7 @@ namespace Kephas.Logging
         /// <returns>
         /// <c>true</c> if enabled, <c>false</c> if not.
         /// </returns>
-        public static bool IsWarningEnabled(this ILogger logger)
+        public static bool IsWarningEnabled(this ILogger? logger)
         {
             return logger?.IsEnabled(LogLevel.Warning) ?? false;
         }
@@ -407,7 +408,7 @@ namespace Kephas.Logging
         /// <returns>
         /// <c>true</c> if enabled, <c>false</c> if not.
         /// </returns>
-        public static bool IsInfoEnabled(this ILogger logger)
+        public static bool IsInfoEnabled(this ILogger? logger)
         {
             return logger?.IsEnabled(LogLevel.Info) ?? false;
         }
@@ -419,7 +420,7 @@ namespace Kephas.Logging
         /// <returns>
         /// <c>true</c> if enabled, <c>false</c> if not.
         /// </returns>
-        public static bool IsDebugEnabled(this ILogger logger)
+        public static bool IsDebugEnabled(this ILogger? logger)
         {
             return logger?.IsEnabled(LogLevel.Debug) ?? false;
         }
@@ -431,7 +432,7 @@ namespace Kephas.Logging
         /// <returns>
         /// <c>true</c> if enabled, <c>false</c> if not.
         /// </returns>
-        public static bool IsTraceEnabled(this ILogger logger)
+        public static bool IsTraceEnabled(this ILogger? logger)
         {
             return logger?.IsEnabled(LogLevel.Trace) ?? false;
         }

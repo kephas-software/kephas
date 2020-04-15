@@ -12,6 +12,7 @@ namespace Kephas.Application.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using System.Threading;
@@ -35,27 +36,28 @@ namespace Kephas.Application.Tests
     using NUnit.Framework;
 
     [TestFixture]
+    [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Tests")]
     public class DefaultAppManagerTest
     {
         [Test]
         public void Constructor_order_dependencies_with_processing_priority_with_cyclic_dependencies()
         {
-            var featureManager1 = CreateFeatureManager();
-            var featureManager2 = CreateFeatureManager();
-            var featureManager3 = CreateFeatureManager();
+            var featureManager1 = this.CreateFeatureManager();
+            var featureManager2 = this.CreateFeatureManager();
+            var featureManager3 = this.CreateFeatureManager();
 
             Assert.Throws<InvalidOperationException>(() =>
                 new DefaultAppManager(
                     Substitute.For<IAppRuntime>(),
-                    GetCompositionContext(),
-                    GetServiceBehaviorProvider(),
+                    this.GetCompositionContext(),
+                    this.GetServiceBehaviorProvider(),
                     new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                     new[]
                         {
-                            CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
-                            CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "1" }),
+                            this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
+                            this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "1" }),
                             // make the manager 3 with a lower priority than 1 and 2 which actually depend on it
-                            CreateFeatureManagerFactory(featureManager3, "3", "1.0", processingPriority: Priority.Low),
+                            this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", processingPriority: Priority.Low),
                         },
                     null));
         }
@@ -93,8 +95,8 @@ namespace Kephas.Application.Tests
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new[]
                     {
                         new ExportFactory<IAppLifecycleBehavior, AppServiceMetadata>(() => behavior1, new FeatureManagerMetadata(processingPriority: 2)),
@@ -135,8 +137,8 @@ namespace Kephas.Application.Tests
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -174,8 +176,8 @@ namespace Kephas.Application.Tests
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -198,20 +200,20 @@ namespace Kephas.Application.Tests
         {
             var order = new List<int>();
 
-            var featureManager1 = CreateFeatureManager(initialization: _ => order.Add(1));
-            var featureManager2 = CreateFeatureManager(initialization: _ => order.Add(2));
-            var featureManager3 = CreateFeatureManager(initialization: _ => order.Add(3));
+            var featureManager1 = this.CreateFeatureManager(initialization: _ => order.Add(1));
+            var featureManager2 = this.CreateFeatureManager(initialization: _ => order.Add(2));
+            var featureManager3 = this.CreateFeatureManager(initialization: _ => order.Add(3));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
-                        CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
-                        CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "3" }),
-                        CreateFeatureManagerFactory(featureManager3, "3", "1.0"),
+                        this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
+                        this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "3" }),
+                        this.CreateFeatureManagerFactory(featureManager3, "3", "1.0"),
                     },
                 null);
 
@@ -226,13 +228,13 @@ namespace Kephas.Application.Tests
         [Test]
         public async Task InitializeAppAsync_features_set_in_app_manifest()
         {
-            var featureManager1 = CreateFeatureManager();
-            var featureManager2 = CreateFeatureManager();
-            var featureManager3 = CreateFeatureManager();
+            var featureManager1 = this.CreateFeatureManager();
+            var featureManager2 = this.CreateFeatureManager();
+            var featureManager3 = this.CreateFeatureManager();
 
-            var factory1 = CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }, isRequired: true);
-            var factory2 = CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "3" }, isRequired: false);
-            var factory3 = CreateFeatureManagerFactory(featureManager3, "3", "1.0", isRequired: true);
+            var factory1 = this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }, isRequired: true);
+            var factory2 = this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "3" }, isRequired: false);
+            var factory3 = this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", isRequired: true);
 
             IEnumerable<IFeatureInfo> features = new List<IFeatureInfo>();
             var appRuntime = Substitute.For<IAppRuntime>();
@@ -241,8 +243,8 @@ namespace Kephas.Application.Tests
             appRuntime[ApplicationExtensions.FeaturesKey].Returns(features);
             var appManager = new DefaultAppManager(
                 appRuntime,
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[] { factory1, factory2, factory3 },
                 null);
@@ -262,13 +264,13 @@ namespace Kephas.Application.Tests
         {
             var order = new List<int>();
 
-            var featureManager1 = CreateFeatureManager(initialization: _ => order.Add(1));
-            var featureManager2 = CreateFeatureManager(initialization: _ => throw new InvalidOperationException("bad guy"));
-            var featureManager3 = CreateFeatureManager(initialization: _ => order.Add(3));
+            var featureManager1 = this.CreateFeatureManager(initialization: _ => order.Add(1));
+            var featureManager2 = this.CreateFeatureManager(initialization: _ => throw new InvalidOperationException("bad guy"));
+            var featureManager3 = this.CreateFeatureManager(initialization: _ => order.Add(3));
 
-            var factory1 = CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }, isRequired: true);
-            var factory2 = CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "3" }, isRequired: false);
-            var factory3 = CreateFeatureManagerFactory(featureManager3, "3", "1.0", isRequired: true);
+            var factory1 = this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }, isRequired: true);
+            var factory2 = this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "3" }, isRequired: false);
+            var factory3 = this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", isRequired: true);
 
             var sb = new StringBuilder();
             var logger = Substitute.For<ILogger<IAppManager>>();
@@ -278,8 +280,8 @@ namespace Kephas.Application.Tests
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[] { factory1, factory2, factory3 },
                 null);
@@ -305,9 +307,9 @@ namespace Kephas.Application.Tests
         {
             var order = new List<int>();
 
-            var featureManager1 = CreateFeatureManager(initialization: ci => throw new InvalidOperationException());
+            var featureManager1 = this.CreateFeatureManager(initialization: ci => throw new InvalidOperationException());
 
-            var factory1 = CreateFeatureManagerFactory(featureManager1, "1", "1.0", isRequired: true);
+            var factory1 = this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", isRequired: true);
 
             var sb = new StringBuilder();
             var logger = Substitute.For<ILogger<IAppManager>>();
@@ -317,8 +319,8 @@ namespace Kephas.Application.Tests
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[] { factory1 },
                 null);
@@ -349,18 +351,18 @@ namespace Kephas.Application.Tests
             featureManager2.InitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(0));
 
-            var behavior1 = CreateFeatureLifecycleBehavior(
+            var behavior1 = this.CreateFeatureLifecycleBehavior(
                 _ => order.Add("Before1"),
                 _ => order.Add("After1"));
 
-            var behavior2 = CreateFeatureLifecycleBehavior(
+            var behavior2 = this.CreateFeatureLifecycleBehavior(
                 _ => order.Add("Before2"),
                 _ => order.Add("After2"));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -391,26 +393,26 @@ namespace Kephas.Application.Tests
         {
             var order = new List<int>();
 
-            var finalizer1 = CreateFeatureManager(initialization: _ => order.Add(1));
-            var finalizer2 = CreateFeatureManager(initialization: _ => order.Add(2));
-            var finalizer3 = CreateFeatureManager(initialization: _ => order.Add(3));
+            var finalizer1 = this.CreateFeatureManager(initialization: _ => order.Add(1));
+            var finalizer2 = this.CreateFeatureManager(initialization: _ => order.Add(2));
+            var finalizer3 = this.CreateFeatureManager(initialization: _ => order.Add(3));
 
             var behaviors = new List<string>();
 
-            var behavior1 = CreateFeatureLifecycleBehavior(
+            var behavior1 = this.CreateFeatureLifecycleBehavior(
                     ci => behaviors.Add("BeforeInit 1"),
                     ci => behaviors.Add("AfterInit 1"));
-            var behavior2 = CreateFeatureLifecycleBehavior(
+            var behavior2 = this.CreateFeatureLifecycleBehavior(
                     ci => behaviors.Add("BeforeInit 2"),
                     ci => behaviors.Add("AfterInit 2"));
-            var behavior3 = CreateFeatureLifecycleBehavior(
+            var behavior3 = this.CreateFeatureLifecycleBehavior(
                     ci => behaviors.Add("BeforeInit 3"),
                     ci => behaviors.Add("AfterInit 3"));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -478,8 +480,8 @@ namespace Kephas.Application.Tests
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new[]
                     {
                         new ExportFactory<IAppLifecycleBehavior, AppServiceMetadata>(() => behavior1, new FeatureManagerMetadata(processingPriority: 2)),
@@ -520,8 +522,8 @@ namespace Kephas.Application.Tests
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -559,8 +561,8 @@ namespace Kephas.Application.Tests
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -583,14 +585,14 @@ namespace Kephas.Application.Tests
         {
             var order = new List<int>();
 
-            var finalizer1 = CreateFeatureManager(finalization: _ => order.Add(1));
-            var finalizer2 = CreateFeatureManager(finalization: _ => order.Add(2));
-            var finalizer3 = CreateFeatureManager(finalization: _ => order.Add(3));
+            var finalizer1 = this.CreateFeatureManager(finalization: _ => order.Add(1));
+            var finalizer2 = this.CreateFeatureManager(finalization: _ => order.Add(2));
+            var finalizer3 = this.CreateFeatureManager(finalization: _ => order.Add(3));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -613,26 +615,26 @@ namespace Kephas.Application.Tests
         {
             var order = new List<int>();
 
-            var finalizer1 = CreateFeatureManager(finalization: _ => order.Add(1));
-            var finalizer2 = CreateFeatureManager(finalization: _ => order.Add(2));
-            var finalizer3 = CreateFeatureManager(finalization: _ => order.Add(3));
+            var finalizer1 = this.CreateFeatureManager(finalization: _ => order.Add(1));
+            var finalizer2 = this.CreateFeatureManager(finalization: _ => order.Add(2));
+            var finalizer3 = this.CreateFeatureManager(finalization: _ => order.Add(3));
 
             var behaviors = new List<string>();
 
-            var behavior1 = CreateFeatureLifecycleBehavior(
+            var behavior1 = this.CreateFeatureLifecycleBehavior(
                     beforeFinalize: ci => behaviors.Add("BeforeFin 1"),
                     afterFinalize: ci => behaviors.Add("AfterFin 1"));
-            var behavior2 = CreateFeatureLifecycleBehavior(
+            var behavior2 = this.CreateFeatureLifecycleBehavior(
                     beforeFinalize: ci => behaviors.Add("BeforeFin 2"),
                     afterFinalize: ci => behaviors.Add("AfterFin 2"));
-            var behavior3 = CreateFeatureLifecycleBehavior(
+            var behavior3 = this.CreateFeatureLifecycleBehavior(
                     beforeFinalize: ci => behaviors.Add("BeforeFin 3"),
                     afterFinalize: ci => behaviors.Add("AfterFin 3"));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {
@@ -672,21 +674,21 @@ namespace Kephas.Application.Tests
         {
             var order = new List<string>();
 
-            var featureManager1 = CreateFeatureManager();
-            var featureManager2 = CreateFeatureManager();
+            var featureManager1 = this.CreateFeatureManager();
+            var featureManager2 = this.CreateFeatureManager();
 
-            var behavior1 = CreateFeatureLifecycleBehavior(
+            var behavior1 = this.CreateFeatureLifecycleBehavior(
                 beforeFinalize: _ => order.Add("Before1"),
                 afterFinalize: _ => order.Add("After1"));
 
-            var behavior2 = CreateFeatureLifecycleBehavior(
+            var behavior2 = this.CreateFeatureLifecycleBehavior(
                 beforeFinalize: _ => order.Add("Before2"),
                 afterFinalize: _ => order.Add("After2"));
 
             var appManager = new DefaultAppManager(
                 Substitute.For<IAppRuntime>(),
-                GetCompositionContext(),
-                GetServiceBehaviorProvider(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
                 new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
                 new[]
                     {

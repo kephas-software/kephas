@@ -33,7 +33,7 @@ namespace Kephas.Operations
         /// <value>
         /// The return value.
         /// </value>
-        object ReturnValue { get; set; }
+        object? ReturnValue { get; set; }
 
         /// <summary>
         /// Gets or sets the state of the operation.

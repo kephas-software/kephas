@@ -147,7 +147,7 @@ namespace Kephas.Workflow.Runtime
         /// <returns>
         /// A dictionary of properties.
         /// </returns>
-        protected override IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type, Func<PropertyInfo, bool> criteria = null)
+        protected override IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type, Func<PropertyInfo, bool>? criteria = null)
         {
             return base.CreatePropertyInfos(type, p => ActivityProperties.ContainsKey(p.Name));
         }
@@ -159,7 +159,7 @@ namespace Kephas.Workflow.Runtime
         /// <returns>
         /// The new member infos.
         /// </returns>
-        protected override IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(Action<IDictionary<string, IRuntimeElementInfo>> membersConfig = null)
+        protected override IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(Action<IDictionary<string, IRuntimeElementInfo>>? membersConfig = null)
         {
             void AddParameters(IDictionary<string, IRuntimeElementInfo> m)
             {

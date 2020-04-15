@@ -12,6 +12,7 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 {
     using System;
 
+    using global::MongoDB.Bson;
     using global::MongoDB.Bson.Serialization.Attributes;
 
     using global::Quartz;
@@ -57,19 +58,19 @@ namespace Kephas.Scheduling.Quartz.JobStore.Models
 
         public string Description { get; set; }
 
-        //TODO [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime? NextFireTime { get; set; }
 
-        //TODO [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime? PreviousFireTime { get; set; }
 
-        //TODO [BsonRepresentation(BsonType.String)]
+        [BsonRepresentation(BsonType.String)]
         public Model.TriggerState State { get; set; }
 
-        //TODO [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime StartTime { get; set; }
 
-        //TODO [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime? EndTime { get; set; }
 
         public string CalendarName { get; set; }

@@ -149,6 +149,5 @@ namespace Kephas.Workflow
 
             return context;
         }
-
     }
 }

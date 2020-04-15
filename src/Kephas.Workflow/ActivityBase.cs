@@ -28,7 +28,7 @@ namespace Kephas.Workflow
         /// Gets or sets the target against which the activity is executed.
         /// </summary>
         /// <remarks>
-        /// The target is typically the activity's container instance. 
+        /// The target is typically the activity's container instance.
         /// For example, a user entity may contain a ChangePassword activity,
         /// in which case the target is the user.
         /// </remarks>

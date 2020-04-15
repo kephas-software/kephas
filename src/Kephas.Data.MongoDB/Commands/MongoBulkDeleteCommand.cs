@@ -29,7 +29,7 @@ namespace Kephas.Data.MongoDB.Commands
         /// Initializes a new instance of the <see cref="MongoBulkDeleteCommand"/> class.
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public MongoBulkDeleteCommand(ILogManager logManager = null)
+        public MongoBulkDeleteCommand(ILogManager? logManager = null)
             : base(logManager)
         {
         }

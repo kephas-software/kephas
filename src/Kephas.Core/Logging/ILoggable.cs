@@ -23,6 +23,6 @@ namespace Kephas.Logging
         /// <value>
         /// The logger.
         /// </value>
-        ILogger Logger { get; }
+        ILogger? Logger { get; }
     }
 }
