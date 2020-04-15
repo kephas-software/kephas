@@ -37,11 +37,11 @@ namespace Kephas.Workflow
         /// <returns>
         /// An asynchronous result that yields the execute.
         /// </returns>
-        Task<object> ExecuteAsync(
+        Task<object?> ExecuteAsync(
             IActivity activity,
-            object target,
-            IExpando arguments,
-            Action<IActivityContext> optionsConfig = null,
+            object? target,
+            IExpando? arguments,
+            Action<IActivityContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
     }
 }

@@ -81,6 +81,6 @@ namespace Kephas.Workflow
         /// Gets the type information (overridable implementation).
         /// </summary>
         /// <returns>The type information.</returns>
-        protected virtual ITypeInfo GetTypeInfoBase() => this.GetRuntimeTypeInfo();
+        protected virtual ITypeInfo GetTypeInfoBase() => this.GetRuntimeTypeInfo()!;
     }
 }

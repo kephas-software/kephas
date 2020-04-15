@@ -391,5 +391,32 @@ namespace Kephas.Operations
             return result.Exceptions.Where(
                 e => e is ISeverityQualifiedNotification qex && qex.Severity == SeverityLevel.Warning);
         }
+
+        /// <summary>
+        /// Throws an exception if the result has errors.
+        /// </summary>
+        /// <param name="result">The operation result.</param>
+        public static void ThrowIfHasErrors(this IOperationResult result)
+        {
+            Requires.NotNull(result, nameof(result));
+
+            var exceptions = result.Exceptions.Where(
+                e => (e is ISeverityQualifiedNotification qex
+                      && (qex.Severity == SeverityLevel.Error || qex.Severity == SeverityLevel.Fatal))
+                     || !(e is ISeverityQualifiedNotification))
+                .ToList();
+
+            if (exceptions.Count == 0)
+            {
+                return;
+            }
+
+            if (exceptions.Count == 1)
+            {
+                throw exceptions[0];
+            }
+
+            throw new AggregateException(exceptions);
+        }
     }
 }

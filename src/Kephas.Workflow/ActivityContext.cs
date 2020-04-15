@@ -24,9 +24,10 @@ namespace Kephas.Workflow
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivityContext"/> class.
         /// </summary>
-        /// <param name="parentContext">Optional. Context for the parent.</param>
-        public ActivityContext(IActivityContext parentContext)
-            : base(parentContext)
+        /// <param name="parentContext">Context for the parent.</param>
+        /// <param name="isThreadSafe">Optional. True if is thread safe, false if not.</param>
+        public ActivityContext(IActivityContext parentContext, bool isThreadSafe = false)
+            : base(parentContext, isThreadSafe)
         {
             Requires.NotNull(parentContext, nameof(parentContext));
 
@@ -38,9 +39,12 @@ namespace Kephas.Workflow
         /// </summary>
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
-        public ActivityContext(ICompositionContext compositionContext, IWorkflowProcessor workflowProcessor)
-            : base(compositionContext)
+        /// <param name="isThreadSafe">Optional. True if is thread safe, false if not.</param>
+        public ActivityContext(ICompositionContext compositionContext, IWorkflowProcessor workflowProcessor, bool isThreadSafe = false)
+            : base(compositionContext, isThreadSafe)
         {
+            Requires.NotNull(workflowProcessor, nameof(workflowProcessor));
+
             this.WorkflowProcessor = workflowProcessor;
         }
 
@@ -58,7 +62,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The activity being executed.
         /// </value>
-        public IActivity Activity { get; set; }
+        public IActivity? Activity { get; set; }
 
         /// <summary>
         /// Gets or sets the execution result.
@@ -66,7 +70,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The execution result.
         /// </value>
-        public object Result { get; set; }
+        public object? Result { get; set; }
 
         /// <summary>
         /// Gets or sets the execution exception.
@@ -74,6 +78,14 @@ namespace Kephas.Workflow
         /// <value>
         /// The execution exception.
         /// </value>
-        public Exception Exception { get; set; }
+        public Exception? Exception { get; set; }
+
+        /// <summary>
+        /// Gets or sets the execution timeout.
+        /// </summary>
+        /// <value>
+        /// The execution timeout.
+        /// </value>
+        public TimeSpan? Timeout { get; set; }
     }
 }

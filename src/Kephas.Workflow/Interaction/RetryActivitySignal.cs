@@ -30,7 +30,7 @@ namespace Kephas.Workflow.Interaction
         /// <param name="activityContext">Optional. The activity context (in the parent hierarchy)
         ///                                from which the retry should continue.</param>
         /// <param name="maxRetryCount">Optional. The maximum number of retries.</param>
-        public RetryActivitySignal(IActivityContext activityContext = null, int? maxRetryCount = null)
+        public RetryActivitySignal(IActivityContext? activityContext = null, int? maxRetryCount = null)
             : this($"Signal {typeof(RetryActivitySignal).Name}.", activityContext, maxRetryCount)
         {
         }
@@ -46,7 +46,7 @@ namespace Kephas.Workflow.Interaction
         /// <param name="activityContext">Optional. The activity context (in the parent hierarchy)
         ///                                from which the retry should continue.</param>
         /// <param name="maxRetryCount">Optional. The maximum number of retries.</param>
-        public RetryActivitySignal(string message, IActivityContext activityContext = null, int? maxRetryCount = null)
+        public RetryActivitySignal(string message, IActivityContext? activityContext = null, int? maxRetryCount = null)
             : base(message)
         {
             this.ActivityContext = activityContext;
@@ -66,7 +66,7 @@ namespace Kephas.Workflow.Interaction
         /// If no execution context is specified, the current executed task should be retried. If no
         /// maximum retry count is specified, the retries are performed an unlimited number of times.
         /// </remarks>
-        public RetryActivitySignal(string message, Exception inner, IActivityContext activityContext = null, int? maxRetryCount = null)
+        public RetryActivitySignal(string message, Exception inner, IActivityContext? activityContext = null, int? maxRetryCount = null)
             : base(message, inner)
         {
             this.ActivityContext = activityContext;
@@ -80,7 +80,7 @@ namespace Kephas.Workflow.Interaction
         /// <value>
         /// The activity context.
         /// </value>
-        public IActivityContext ActivityContext { get; }
+        public IActivityContext? ActivityContext { get; }
 
         /// <summary>
         /// Gets the number of maximum retries.

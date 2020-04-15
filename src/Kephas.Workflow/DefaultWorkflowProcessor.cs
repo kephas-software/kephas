@@ -61,11 +61,11 @@ namespace Kephas.Workflow
         /// <returns>
         /// An asynchronous result that yields the execution result.
         /// </returns>
-        public async Task<object> ExecuteAsync(
+        public async Task<object?> ExecuteAsync(
             IActivity activity,
-            object target,
-            IExpando arguments,
-            Action<IActivityContext> optionsConfig = null,
+            object? target,
+            IExpando? arguments,
+            Action<IActivityContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(activity, nameof(activity));
@@ -98,8 +98,7 @@ namespace Kephas.Workflow
             //... TODO improve
             try
             {
-                var result = await activityInfo
-                    .ExecuteAsync(activity, target, executionArgs, context, cancellationToken)
+                var result = await this.ExecuteActivityAsync(activityInfo, activity, target, executionArgs, context, cancellationToken)
                     .PreserveThreadContext();
                 context.Result = result;
             }
@@ -120,13 +119,44 @@ namespace Kephas.Workflow
         }
 
         /// <summary>
+        /// Executes the activity asynchronously.
+        /// </summary>
+        /// <param name="activityInfo">Information describing the activity.</param>
+        /// <param name="activity">The activity to execute.</param>
+        /// <param name="target">The activity target.</param>
+        /// <param name="executionArgs">The execution arguments.</param>
+        /// <param name="context">The execution context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the execute activity.
+        /// </returns>
+        protected virtual async Task<object?> ExecuteActivityAsync(IActivityInfo activityInfo, IActivity activity, object? target, IExpando? executionArgs, IActivityContext context, CancellationToken cancellationToken)
+        {
+            var timeout = context.Timeout;
+            if (timeout.HasValue && timeout.Value > TimeSpan.Zero)
+            {
+                // TODO if the task times out should be canceled. Also, the delay task should be canceled.
+                var executeTask = activityInfo.ExecuteAsync(activity, target, executionArgs, context, cancellationToken);
+                var completedTask = await Task.WhenAny(executeTask, Task.Delay(timeout.Value)).PreserveThreadContext();
+                if (completedTask == executeTask)
+                {
+                    return executeTask.Result;
+                }
+
+                throw new TimeoutException();
+            }
+
+            return await activityInfo.ExecuteAsync(activity, target, executionArgs, context, cancellationToken).PreserveThreadContext();
+        }
+
+        /// <summary>
         /// Creates an activity context for the current processing.
         /// </summary>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
         /// <returns>
         /// The new activity context.
         /// </returns>
-        protected virtual IActivityContext CreateActivityContext(Action<IActivityContext> optionsConfig = null)
+        protected virtual IActivityContext CreateActivityContext(Action<IActivityContext>? optionsConfig = null)
         {
             var context = this.contextFactory.CreateContext<ActivityContext>();
             optionsConfig?.Invoke(context);

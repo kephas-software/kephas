@@ -11,6 +11,7 @@
 namespace Kephas.Workflow
 {
     using System;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
 
@@ -37,7 +38,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The activity being executed.
         /// </value>
-        IActivity Activity { get; set; }
+        IActivity? Activity { get; set; }
 
         /// <summary>
         /// Gets or sets the execution result.
@@ -48,7 +49,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The execution result.
         /// </value>
-        object Result { get; set; }
+        object? Result { get; set; }
 
         /// <summary>
         /// Gets or sets the execution exception.
@@ -56,7 +57,15 @@ namespace Kephas.Workflow
         /// <value>
         /// The execution exception.
         /// </value>
-        Exception Exception { get; set; }
+        Exception? Exception { get; set; }
+
+        /// <summary>
+        /// Gets or sets the execution timeout.
+        /// </summary>
+        /// <value>
+        /// The execution timeout.
+        /// </value>
+        TimeSpan? Timeout { get; set; }
     }
 
     /// <summary>
