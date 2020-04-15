@@ -62,6 +62,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="NuGet.Common" Version="5.4.0" />
         <PackageReference Include="NuGet.Configuration" Version="5.4.0" />
         <PackageReference Include="NuGet.Frameworks" Version="5.4.0" />
