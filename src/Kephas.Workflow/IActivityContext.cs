@@ -102,7 +102,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext Result<TContext>(this TContext context, object result)
+        public static TContext Result<TContext>(this TContext context, object? result)
             where TContext : class, IActivityContext
         {
             Requires.NotNull(context, nameof(context));
@@ -130,5 +130,25 @@ namespace Kephas.Workflow
 
             return context;
         }
+
+        /// <summary>
+        /// Sets the processing activity.
+        /// </summary>
+        /// <typeparam name="TContext">Type of the context.</typeparam>
+        /// <param name="context">The activity context.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <returns>
+        /// This <paramref name="context"/>.
+        /// </returns>
+        public static TContext Timeout<TContext>(this TContext context, TimeSpan? timeout)
+            where TContext : class, IActivityContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.Timeout = timeout;
+
+            return context;
+        }
+
     }
 }
