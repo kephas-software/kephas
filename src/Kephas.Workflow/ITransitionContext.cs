@@ -35,7 +35,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The target state.
         /// </value>
-        object To { get; set; }
+        object? To { get; set; }
 
         /// <summary>
         /// Gets or sets the arguments.

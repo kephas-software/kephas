@@ -133,20 +133,24 @@ namespace Kephas.Workflow
         protected virtual async Task<object?> ExecuteActivityAsync(IActivityInfo activityInfo, IActivity activity, object? target, IExpando? executionArgs, IActivityContext context, CancellationToken cancellationToken)
         {
             var timeout = context.Timeout;
-            if (timeout.HasValue && timeout.Value > TimeSpan.Zero)
+            if (!timeout.HasValue || timeout.Value <= TimeSpan.Zero)
             {
-                // TODO if the task times out should be canceled. Also, the delay task should be canceled.
-                var executeTask = activityInfo.ExecuteAsync(activity, target, executionArgs, context, cancellationToken);
-                var completedTask = await Task.WhenAny(executeTask, Task.Delay(timeout.Value)).PreserveThreadContext();
-                if (completedTask == executeTask)
-                {
-                    return executeTask.Result;
-                }
-
-                throw new TimeoutException();
+                return await activityInfo.ExecuteAsync(activity, target, executionArgs, context, cancellationToken).PreserveThreadContext();
             }
 
-            return await activityInfo.ExecuteAsync(activity, target, executionArgs, context, cancellationToken).PreserveThreadContext();
+            var cancelSource = new CancellationTokenSource(timeout.Value + TimeSpan.FromMilliseconds(100));
+            using var tokenRegistration = cancellationToken.Register(() => cancelSource.Cancel());
+
+            // allow the delay to expire first, so start it in the first place
+            var delayTask = Task.Delay(timeout.Value, cancelSource.Token);
+            var executeTask = activityInfo.ExecuteAsync(activity, target, executionArgs, context, cancelSource.Token);
+            var completedTask = await Task.WhenAny(executeTask, delayTask).PreserveThreadContext();
+            if (completedTask == executeTask)
+            {
+                return executeTask.Result;
+            }
+
+            throw new TimeoutException();
         }
 
         /// <summary>

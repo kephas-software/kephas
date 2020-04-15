@@ -44,7 +44,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The target state.
         /// </value>
-        public object To { get; set; }
+        public object? To { get; set; }
 
         /// <summary>
         /// Gets or sets the arguments.
@@ -52,7 +52,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The arguments.
         /// </value>
-        public IExpando Arguments { get; set; }
+        public IExpando? Arguments { get; set; }
 
         /// <summary>
         /// Gets or sets information describing the transition.
@@ -60,6 +60,6 @@ namespace Kephas.Workflow
         /// <value>
         /// Information describing the transition.
         /// </value>
-        public ITransitionInfo TransitionInfo { get; set; }
+        public ITransitionInfo? TransitionInfo { get; set; }
     }
 }
