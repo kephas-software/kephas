@@ -289,12 +289,15 @@ namespace Kephas.Operations
                 this.Enqueue(item);
             }
 
+#if NETSTANDARD2_1
+#else
             /// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</summary>
             /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</exception>
             void ICollection<T>.Clear()
             {
-                throw new NotSupportedException();
+                while (this.TryDequeue(out _)) { }
             }
+#endif
 
             /// <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"></see> contains a specific value.</summary>
             /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>

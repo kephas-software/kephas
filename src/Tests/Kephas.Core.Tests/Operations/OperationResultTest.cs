@@ -96,6 +96,16 @@ namespace Kephas.Core.Tests.Operations
 
             Assert.AreEqual(12, opResult.ReturnValue);
         }
+
+        [Test]
+        public void Exceptions_Clear()
+        {
+            var opResult = new OperationResult().MergeException(new InvalidOperationException());
+
+            CollectionAssert.IsNotEmpty(opResult.Exceptions);
+            opResult.Exceptions.Clear();
+            CollectionAssert.IsEmpty(opResult.Exceptions);
+        }
     }
 
     [TestFixture]
