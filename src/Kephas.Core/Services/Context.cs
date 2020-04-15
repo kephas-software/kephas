@@ -51,7 +51,7 @@ namespace Kephas.Services
             }
             else
             {
-                this.Identity = parentContext?.Identity;
+                this.Identity = parentContext.Identity;
             }
         }
 
