@@ -3,7 +3,11 @@ param (
     [string]$build = "Release"
 )
 
-$packages = @(
+function get-packagename([string]$pathname) {
+    return $pathname.Replace("..\", "").Replace("TestingFramework\", "")
+}
+
+$paths = @(
     "Kephas.Application",
     "Kephas.Application.AspNetCore",
     "Kephas.Application.Console",
@@ -51,13 +55,14 @@ $packages = @(
     "Kephas.TextProcessing",
     "Kephas.Workflow",
     "Kephas.Workflow.Model",
-    "Kephas.Testing",
-    "Kephas.Testing.Composition.Autofac",
-    "Kephas.Testing.Composition.Mef",
-    "Kephas.Testing.Model"
+    "TestingFramework\Kephas.Testing",
+    "TestingFramework\Kephas.Testing.Composition.Autofac",
+    "TestingFramework\Kephas.Testing.Composition.Mef",
+    "TestingFramework\Kephas.Testing.Model"
 )
 
-foreach ($package in $packages) {
-    $packagepath = "..\$package\bin\$build\$package.$version.nupkg"
+foreach ($path in $paths) {
+    $packagename = get-packagename $path
+    $packagepath = "..\$path\bin\$build\$packagename.$version.nupkg"
     .\NuGet.exe push $packagepath -Source https://api.nuget.org/v3/index.json 
 }
