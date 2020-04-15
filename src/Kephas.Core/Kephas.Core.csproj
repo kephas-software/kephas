@@ -22,7 +22,7 @@
             - Application management: IAppRuntime, StaticAppRuntime, DynamicAppRuntime, IAppLifecyclebehavior.
             - Serialization: ISerializationService.
             - Operations: IOperation, OperationResult.
-            - Services: SingletonAppServiceContractAttribute, AppServiceContractAttribute.
+            - Services: SingletonAppServiceContractAttribute, AppServiceContractAttribute, OverridePriorityAttribute, ProcessingPriorityAttribute.
             - Threading.Tasks: PreserveThreadContext extension method.
             - Logging: ILogManager, ILogger.
             - Cryptography: IEncryptionService, IHashingService.

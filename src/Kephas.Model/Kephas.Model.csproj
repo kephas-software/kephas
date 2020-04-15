@@ -3,32 +3,50 @@
     <PropertyGroup>
         <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
         <LangVersion>latest</LangVersion>
-        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <Description>Provides abstract multi-dimensional modeling artifacts like classifiers, value types, and other model elements.</Description>
+        <Nullable>enable</Nullable>
+
         <Version>7.6.0-dev.5</Version>
         <AssemblyVersion>7.6.0.0</AssemblyVersion>
         <FileVersion>7.6.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
-        <Copyright>Copyright © Kephas Software SRL 2010-2020</Copyright>
+
+        <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+        <Description>
+            Provides an abstract multi-dimensional modeling infrastructure, containing extensible model elements like dimensions, classifiers, and value types.
+            Typically used areas and classes/interfaces/services:
+            - IModelSpace, IClassifier, IAnnotation, IProperty, IMethod, IParameter.
+            - AttributedModel: AbstractAttribute, AspectAttribute, AspectForAttribute, MixinAttribute, ValueTypeAttribute.
+
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+        </Description>
+        <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
+
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
         <PackageIconUrl>http://kephas-framework.com/favicon.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
-        <PackageTags>kephas abstract model multi-dimensional</PackageTags>
         <PackageReleaseNotes>
-            Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+            Please check https://github.com/kephas-software/kephas/releases for the change log.
+            Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
+        <PackageTags>kephas abstract model multi-dimensional</PackageTags>
+
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NeutralLanguage>en</NeutralLanguage>
+        <DefineConstants>KEPHAS</DefineConstants>
 
         <SignAssembly>True</SignAssembly>
         <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
-
-        <NeutralLanguage>en</NeutralLanguage>
-        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
-        <DefineConstants>KEPHAS</DefineConstants>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
