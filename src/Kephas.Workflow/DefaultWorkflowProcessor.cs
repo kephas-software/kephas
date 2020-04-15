@@ -215,7 +215,7 @@ namespace Kephas.Workflow
         /// Gets the activity arguments asynchronously.
         /// </summary>
         /// <param name="activityInfo">Information describing the activity.</param>
-        /// <param name="input">The input.</param>
+        /// <param name="arguments">The arguments.</param>
         /// <param name="activityContext">Context for the activity.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
@@ -223,13 +223,13 @@ namespace Kephas.Workflow
         /// </returns>
         protected virtual Task<IExpando> GetExecutionArgumentsAsync(
             IActivityInfo activityInfo,
-            IExpando input,
+            IExpando? arguments,
             IActivityContext activityContext,
             CancellationToken cancellationToken)
         {
             // TODO gather the parameters from the activity info and add the default values
             // to the input, if not already specified.
-            return Task.FromResult(input);
+            return Task.FromResult(arguments ?? new Expando());
         }
 
         /// <summary>
