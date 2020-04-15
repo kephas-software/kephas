@@ -30,8 +30,8 @@
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>
-            Please check https://github.com/kephas-software/kephas/releases for the change log. Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
-            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+            Please check https://github.com/kephas-software/kephas/releases for the change log.
+            Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
         <PackageTags>kephas composition autofac</PackageTags>
 
