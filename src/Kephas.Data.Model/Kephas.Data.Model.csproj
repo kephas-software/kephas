@@ -17,7 +17,7 @@
             Provides a modeling API framework for data.
             Typically used areas and classes/interfaces/services:
             - IEntityType, IKey.
-            - Dimensions: Client, Domain.
+            - Dimensions: Client (area), Domain (area).
             - AttributedModel: EntityAssemblyAttribute, EntityTypeAttribute, KeyAttribute, NaturalKeyAttribute, PrimaryKeyAttribute.
             - Analysis: ModelRefPropertiesbehavior.
 
