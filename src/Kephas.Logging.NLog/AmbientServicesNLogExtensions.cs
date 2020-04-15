@@ -8,11 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Logging.NLog
+namespace Kephas
 {
-    using global::NLog;
     using global::NLog.Config;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
+    using Kephas.Logging.NLog;
 
     /// <summary>
     /// Extension methods for the <see cref="IAmbientServices"/>.

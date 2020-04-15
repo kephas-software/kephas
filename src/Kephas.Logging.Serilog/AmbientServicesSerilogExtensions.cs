@@ -8,11 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Logging.Serilog
+namespace Kephas
 {
     using global::Serilog;
     using global::Serilog.Core;
+
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
+    using Kephas.Logging.Serilog;
 
     /// <summary>
     /// Extension methods for the <see cref="IAmbientServices"/>.

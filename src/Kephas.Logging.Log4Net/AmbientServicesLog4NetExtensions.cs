@@ -8,9 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Logging.Log4Net
+namespace Kephas
 {
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging.Log4Net;
 
     /// <summary>
     /// Extension methods for the <see cref="IAmbientServices"/>.
