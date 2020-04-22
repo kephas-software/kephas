@@ -45,6 +45,7 @@ $paths = @(
     "Kephas.Plugins.NuGet",
     "Kephas.Redis",
     "Kephas.Scheduling",
+    "Kephas.Scheduling.Endpoints",
 #    "Kephas.Scheduling.Quartz",
 #    "Kephas.Scheduling.Quartz.MongoDB",
     "Kephas.Scripting",
