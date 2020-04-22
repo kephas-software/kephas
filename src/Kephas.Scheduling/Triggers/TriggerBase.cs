@@ -20,19 +20,19 @@ namespace Kephas.Scheduling.Triggers
     /// <summary>
     /// A trigger base.
     /// </summary>
-    public abstract class TriggerBase : Expando, ITrigger, IInitializable, IDisposable
+    public abstract class TriggerBase : Expando, ITrigger, IInitializable
     {
         private bool isDisposed = false;
 
         /// <summary>
         /// Occurs when the trigger is fired.
         /// </summary>
-        public event EventHandler Fire;
+        public event EventHandler? Fire;
 
         /// <summary>
         /// Occurs when the trigger reached its end of life.
         /// </summary>
-        public event EventHandler Disposed;
+        public event EventHandler? Disposed;
 
         /// <summary>
         /// Gets or sets a value indicating whether the trigger is enabled.
@@ -50,7 +50,7 @@ namespace Kephas.Scheduling.Triggers
         /// <returns>
         /// The type information.
         /// </returns>
-        public virtual ITriggerInfo GetTypeInfo() => (ITriggerInfo)this.GetRuntimeTypeInfo();
+        public virtual ITriggerInfo GetTypeInfo() => (ITriggerInfo)this.GetRuntimeTypeInfo()!;
 
         /// <summary>
         /// Gets type information.
@@ -59,6 +59,17 @@ namespace Kephas.Scheduling.Triggers
         /// The type information.
         /// </returns>
         ITypeInfo IInstance.GetTypeInfo() => this.GetTypeInfo();
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"{this.GetTypeInfo().Name} ({this.Id})";
+        }
 
         /// <summary>
         /// Initializes the service.
@@ -103,7 +114,10 @@ namespace Kephas.Scheduling.Triggers
         /// </summary>
         protected virtual void OnFire()
         {
-            this.Fire?.Invoke(this, EventArgs.Empty);
+            if (this.IsEnabled)
+            {
+                this.Fire?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>
