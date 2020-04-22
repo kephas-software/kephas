@@ -39,15 +39,14 @@ namespace Kephas.Scheduling.InMemory
         private readonly List<IEventSubscription> subscriptions = new List<IEventSubscription>();
 
         private readonly
-            ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationToken, IJobResult> triggerAction)>
-            activeTriggers
-                = new ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationToken, IJobResult> triggerAction)
-                >();
+            ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationToken, IJobResult> triggerAction)> activeTriggers
+                = new ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationToken, IJobResult> triggerAction)>();
 
         private readonly
             ConcurrentDictionary<object, (IJobResult jobResult, CancellationTokenSource cancellationSource)> activeJobs
-                = new ConcurrentDictionary<object, (IJobResult jobResult, CancellationTokenSource cancellationSource)
-                >();
+                = new ConcurrentDictionary<object, (IJobResult jobResult, CancellationTokenSource cancellationSource)>();
+
+        private readonly List<IJobInfo> scheduledJobs = new List<IJobInfo>();
 
         private readonly FinalizationMonitor<IScheduler> finalizationMonitor;
 
@@ -128,6 +127,29 @@ namespace Kephas.Scheduling.InMemory
         }
 
         /// <summary>
+        /// Gets the scheduled jobs.
+        /// </summary>
+        /// <returns>An enumeration of scheduled jobs.</returns>
+        public IEnumerable<IJobInfo> GetScheduledJobs()
+        {
+            lock (this.scheduledJobs)
+            {
+                return this.scheduledJobs.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Gets the running jobs.
+        /// </summary>
+        /// <returns>An enumeration of running jobs.</returns>
+        public IEnumerable<IJobResult> GetRunningJobs()
+        {
+            return this.activeJobs.Values
+                .Select(j => j.jobResult)
+                .ToList();
+        }
+
+        /// <summary>
         /// Handles the enqueue event.
         /// </summary>
         /// <param name="e">The event to process.</param>
@@ -152,6 +174,16 @@ namespace Kephas.Scheduling.InMemory
             var trigger = activityContext.Trigger()
                           ?? new TimerTrigger(e.TriggerId ?? Guid.NewGuid());
 
+            if (!jobInfoObject.AddTrigger(trigger))
+            {
+                this.Logger.Warn("Could not add trigger '{trigger}' to job '{job}'", trigger, jobInfoObject);
+            }
+
+            lock (this.scheduledJobs)
+            {
+                this.scheduledJobs.Add(jobInfoObject);
+            }
+
             if (!this.activeTriggers.TryAdd(
                 trigger.Id,
                 (trigger, ct => this.StartJob(jobInfoObject, e.Target, e.Arguments, e.Options, ct))))
@@ -173,7 +205,8 @@ namespace Kephas.Scheduling.InMemory
                 var jobResult = tuple.triggerAction(cancellationSource.Token);
                 if (!this.activeJobs.TryAdd(jobResult.JobId!, (jobResult, cancellationSource)))
                 {
-                    this.Logger.Warn("Cannot add the job with ID '{jobId}' to the list of active jobs.",
+                    this.Logger.Warn(
+                        "Cannot add the job with ID '{jobId}' to the list of active jobs.",
                         jobResult.JobId);
                 }
             }
@@ -181,9 +214,19 @@ namespace Kephas.Scheduling.InMemory
             void OnTriggerOnDisposed(object sender, EventArgs args)
             {
                 var triggerId = trigger.Id;
-                this.activeTriggers.TryRemove(triggerId, out _);
-                trigger.Fire -= OnTriggerOnFire;
-                trigger.Disposed -= OnTriggerOnDisposed;
+                if (this.activeTriggers.TryRemove(triggerId, out _))
+                {
+                    trigger.Fire -= OnTriggerOnFire;
+                    trigger.Disposed -= OnTriggerOnDisposed;
+                    jobInfoObject.RemoveTrigger(trigger);
+                    if (!jobInfoObject.Triggers.Any())
+                    {
+                        lock (this.scheduledJobs)
+                        {
+                            this.scheduledJobs.Remove(jobInfoObject);
+                        }
+                    }
+                }
             }
 
             trigger.Fire += OnTriggerOnFire;
