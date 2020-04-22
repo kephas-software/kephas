@@ -105,7 +105,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The new instance.
         /// </returns>
-        object CreateInstance(IEnumerable<object>? args = null);
+        object CreateInstance(IEnumerable<object?>? args = null);
 
         /// <summary>
         /// Constructs a generic type baed on the provided type arguments.

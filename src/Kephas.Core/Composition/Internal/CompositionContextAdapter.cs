@@ -37,7 +37,7 @@ namespace Kephas.Composition.Internal
         /// <returns>
         /// An object implementing <paramref name="contractType"/>.
         /// </returns>
-        public object GetExport(Type contractType, string serviceName = null)
+        public object GetExport(Type contractType, string? serviceName = null)
         {
             return this.serviceProvider.GetService(contractType);
         }
@@ -63,7 +63,7 @@ namespace Kephas.Composition.Internal
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public T GetExport<T>(string serviceName = null)
+        public T GetExport<T>(string? serviceName = null)
             where T : class
         {
             return (T)this.serviceProvider.GetService(typeof(T));
@@ -92,7 +92,7 @@ namespace Kephas.Composition.Internal
         /// An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public object TryGetExport(Type contractType, string serviceName = null)
+        public object TryGetExport(Type contractType, string? serviceName = null)
         {
             return this.serviceProvider.GetService(contractType);
         }
@@ -106,7 +106,7 @@ namespace Kephas.Composition.Internal
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public T TryGetExport<T>(string serviceName = null)
+        public T TryGetExport<T>(string? serviceName = null)
             where T : class
         {
             return (T)this.serviceProvider.GetService(typeof(T));

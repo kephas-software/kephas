@@ -29,6 +29,6 @@ namespace Kephas.Dynamic
         /// </value>
         /// <param name="key">The key.</param>
         /// <returns>The requested property value.</returns>
-        object this[string key] { get; set; }
+        object? this[string key] { get; set; }
     }
 }

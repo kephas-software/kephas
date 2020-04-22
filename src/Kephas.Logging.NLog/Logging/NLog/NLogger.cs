@@ -55,7 +55,7 @@ namespace Kephas.Logging.NLog
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public bool Log(Logging.LogLevel level, Exception exception, string messageFormat, params object[] args)
+        public bool Log(Logging.LogLevel level, Exception? exception, string messageFormat, params object?[] args)
         {
             if (exception == null)
             {
