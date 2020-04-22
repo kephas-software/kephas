@@ -80,6 +80,16 @@ namespace Kephas.Scheduling
     /// </summary>
     public static class SchedulerClientExtensions
     {
+        /// <summary>
+        /// Enqueues a new job asynchronously.
+        /// </summary>
+        /// <param name="scheduler">The scheduler to act on.</param>
+        /// <param name="operation">The operation.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
         public static Task<IJobResult> EnqueueAsync(
             this ISchedulerClient scheduler,
             Func<object?> operation,
@@ -89,6 +99,16 @@ namespace Kephas.Scheduling
             return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(operation), options, cancellationToken);
         }
 
+        /// <summary>
+        /// Enqueues a new job asynchronously.
+        /// </summary>
+        /// <param name="scheduler">The scheduler to act on.</param>
+        /// <param name="operation">The operation.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
         public static Task<IJobResult> EnqueueAsync(
             this ISchedulerClient scheduler,
             Action operation,
@@ -98,6 +118,16 @@ namespace Kephas.Scheduling
             return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(operation), options, cancellationToken);
         }
 
+        /// <summary>
+        /// Enqueues a new job asynchronously.
+        /// </summary>
+        /// <param name="scheduler">The scheduler to act on.</param>
+        /// <param name="asyncOperation">The asynchronous operation.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
         public static Task<IJobResult> EnqueueAsync(
             this ISchedulerClient scheduler,
             Func<CancellationToken, Task<object?>> asyncOperation,
@@ -107,6 +137,16 @@ namespace Kephas.Scheduling
             return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(asyncOperation), options, cancellationToken);
         }
 
+        /// <summary>
+        /// Enqueues a new job asynchronously.
+        /// </summary>
+        /// <param name="scheduler">The scheduler to act on.</param>
+        /// <param name="jobInfo">The job information.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
         private static Task<IJobResult> EnqueueAsync(
             this ISchedulerClient scheduler,
             RuntimeFuncJobInfo jobInfo,
