@@ -142,7 +142,7 @@ namespace Kephas.Runtime
         /// <param name="methodName">Name of the method.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result.</returns>
-        object? Invoke(object? instance, string methodName, IEnumerable<object> args);
+        object? Invoke(object? instance, string methodName, IEnumerable<object?> args);
 
         /// <summary>
         /// Tries to invokes the specified method on the provided instance.
@@ -152,6 +152,6 @@ namespace Kephas.Runtime
         /// <param name="args">The arguments.</param>
         /// <param name="result">The invocation result.</param>
         /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
-        bool TryInvoke(object? instance, string methodName, IEnumerable<object> args, out object? result);
+        bool TryInvoke(object? instance, string methodName, IEnumerable<object?> args, out object? result);
     }
 }

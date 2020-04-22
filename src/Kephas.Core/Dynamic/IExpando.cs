@@ -17,6 +17,7 @@ namespace Kephas.Dynamic
     using System.Dynamic;
     using System.Linq;
     using System.Runtime.CompilerServices;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -45,9 +46,9 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
-        IDictionary<string, object> ToDictionary(
-            Func<string, string> keyFunc = null,
-            Func<object, object> valueFunc = null);
+        IDictionary<string, object?> ToDictionary(
+            Func<string, string>? keyFunc = null,
+            Func<object?, object?>? valueFunc = null);
     }
 
     /// <summary>

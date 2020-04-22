@@ -59,6 +59,6 @@ namespace Kephas.Runtime
         /// <param name="args">The arguments.</param>
         /// <param name="result">The invocation result.</param>
         /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
-        bool TryInvoke(object instance, IEnumerable<object> args, out object result);
+        bool TryInvoke(object? instance, IEnumerable<object?> args, out object? result);
     }
 }

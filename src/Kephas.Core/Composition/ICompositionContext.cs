@@ -33,7 +33,7 @@ namespace Kephas.Composition
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>.</returns>
-        object GetExport(Type contractType, string serviceName = null);
+        object GetExport(Type contractType, string? serviceName = null);
 
         /// <summary>
         /// Resolves the specified contract type returning multiple instances.
@@ -50,7 +50,7 @@ namespace Kephas.Composition
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        T GetExport<T>(string serviceName = null)
+        T GetExport<T>(string? serviceName = null)
             where T : class;
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Kephas.Composition
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the provided contract was not found.</returns>
-        object TryGetExport(Type contractType, string serviceName = null);
+        object TryGetExport(Type contractType, string? serviceName = null);
 
         /// <summary>
         /// Tries to resolve the specified contract type.
@@ -79,7 +79,7 @@ namespace Kephas.Composition
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        T TryGetExport<T>(string serviceName = null)
+        T TryGetExport<T>(string? serviceName = null)
             where T : class;
 
         /// <summary>
@@ -297,13 +297,13 @@ namespace Kephas.Composition
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c>.
         /// </returns>
-        public static IExportFactory<T> TryGetExportFactory<T>(this ICompositionContext compositionContext)
+        public static IExportFactory<T>? TryGetExportFactory<T>(this ICompositionContext compositionContext)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
             var importerType = typeof(IExportFactoryImporter<>).MakeGenericType(typeof(T));
             var importer = (IExportFactoryImporter)compositionContext.TryGetExport(importerType);
-            return (IExportFactory<T>)importer?.ExportFactory;
+            return (IExportFactory<T>?)importer?.ExportFactory;
         }
 
         /// <summary>
@@ -315,13 +315,13 @@ namespace Kephas.Composition
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c>.
         /// </returns>
-        public static IExportFactory<T, TMetadata> TryGetExportFactory<T, TMetadata>(this ICompositionContext compositionContext)
+        public static IExportFactory<T, TMetadata>? TryGetExportFactory<T, TMetadata>(this ICompositionContext compositionContext)
         {
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
             var importerType = typeof(IExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
             var importer = (IExportFactoryImporter)compositionContext.TryGetExport(importerType);
-            return (IExportFactory<T, TMetadata>)importer?.ExportFactory;
+            return (IExportFactory<T, TMetadata>?)importer?.ExportFactory;
         }
 
         /// <summary>

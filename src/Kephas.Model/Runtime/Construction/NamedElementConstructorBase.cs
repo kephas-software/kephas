@@ -37,9 +37,9 @@ namespace Kephas.Model.Runtime.Construction
         /// The element name discriminator.
         /// </value>
         /// <remarks>
-        /// This dicriminator can be used as a suffix in the name to identify the element type.
+        /// This discriminator can be used as a suffix in the name to identify the element type.
         /// </remarks>
-        protected virtual string ElementNameDiscriminator => null;
+        protected virtual string? ElementNameDiscriminator => null;
 
         /// <summary>
         /// Tries to create an element information structure based on the provided runtime element
@@ -51,7 +51,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        public virtual INamedElement TryCreateModelElement(IModelConstructionContext constructionContext, object runtimeElement)
+        public virtual INamedElement? TryCreateModelElement(IModelConstructionContext constructionContext, object runtimeElement)
         {
             Requires.NotNull(constructionContext, nameof(constructionContext));
             Requires.NotNull(runtimeElement, nameof(runtimeElement));
@@ -84,7 +84,7 @@ namespace Kephas.Model.Runtime.Construction
         /// <returns>
         /// A string containing the name, or <c>null</c> if the name could not be computed.
         /// </returns>
-        public string TryComputeName(IModelConstructionContext constructionContext, object runtimeElement)
+        public string? TryComputeName(IModelConstructionContext constructionContext, object runtimeElement)
         {
             Requires.NotNull(constructionContext, nameof(constructionContext));
             Requires.NotNull(runtimeElement, nameof(runtimeElement));
@@ -133,7 +133,7 @@ namespace Kephas.Model.Runtime.Construction
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
-        protected virtual string TryComputeNameCore(object runtimeElement)
+        protected virtual string? TryComputeNameCore(object runtimeElement)
         {
             var memberInfo = runtimeElement as IElementInfo;
             if (memberInfo == null)
@@ -155,7 +155,7 @@ namespace Kephas.Model.Runtime.Construction
             {
                 if (memberInfo.Name.EndsWith(discriminator))
                 {
-                    nameBuilder.Remove(nameBuilder.Length - discriminator.Length, discriminator.Length);
+                    nameBuilder.Remove(nameBuilder.Length - discriminator!.Length, discriminator.Length);
                 }
             }
 

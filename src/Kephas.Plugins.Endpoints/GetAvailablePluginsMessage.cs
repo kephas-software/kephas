@@ -23,7 +23,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// A get available plugins message.
     /// </summary>
-    [TypeDisplay(Description = "Gets the available plugins. If a plugin ID is provided, the available versions are retrieved.")]
+    [DisplayInfo(Description = "Gets the available plugins. If a plugin ID is provided, the available versions are retrieved.")]
     public class GetAvailablePluginsMessage : IMessage
     {
         /// <summary>

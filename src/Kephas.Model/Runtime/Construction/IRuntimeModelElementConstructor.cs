@@ -28,7 +28,7 @@ namespace Kephas.Model.Runtime.Construction
         /// A new element information based on the provided runtime element information, or <c>null</c>
         /// if the runtime element information is not supported.
         /// </returns>
-        INamedElement TryCreateModelElement(IModelConstructionContext constructionContext, object runtimeElement);
+        INamedElement? TryCreateModelElement(IModelConstructionContext constructionContext, object runtimeElement);
 
         /// <summary>
         /// Tries to compute the name for the provided runtime element.
@@ -38,7 +38,7 @@ namespace Kephas.Model.Runtime.Construction
         /// <returns>
         /// A string containing the name, or <c>null</c> if the name could not be computed.
         /// </returns>
-        string TryComputeName(IModelConstructionContext constructionContext, object runtimeElement);
+        string? TryComputeName(IModelConstructionContext constructionContext, object runtimeElement);
     }
 
     /// <summary>
