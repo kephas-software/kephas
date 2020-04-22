@@ -775,7 +775,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithCompositionContainer<TContainerBuilder>(this IAmbientServices ambientServices, Action<TContainerBuilder> containerBuilderConfig = null)
+        public static IAmbientServices WithCompositionContainer<TContainerBuilder>(this IAmbientServices ambientServices, Action<TContainerBuilder>? containerBuilderConfig = null)
             where TContainerBuilder : ICompositionContainerBuilder
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
@@ -798,7 +798,7 @@ namespace Kephas
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithLiteCompositionContainer(this IAmbientServices ambientServices, Action<LiteCompositionContainerBuilder> containerBuilderConfig = null)
+        public static IAmbientServices WithLiteCompositionContainer(this IAmbientServices ambientServices, Action<LiteCompositionContainerBuilder>? containerBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 

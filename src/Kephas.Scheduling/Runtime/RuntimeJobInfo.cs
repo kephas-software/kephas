@@ -11,6 +11,7 @@
 namespace Kephas.Scheduling.Runtime
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -43,7 +44,31 @@ namespace Kephas.Scheduling.Runtime
         /// <value>
         /// The job triggers.
         /// </value>
-        public IEnumerable<ITrigger> Triggers { get; } = Enumerable.Empty<ITrigger>();
+        public IEnumerable<ITrigger> Triggers { get; } = new HashSet<ITrigger>();
+
+        /// <summary>
+        /// Adds a trigger to the collection of triggers.
+        /// </summary>
+        /// <param name="trigger">The trigger to add.</param>
+        /// <returns>
+        /// A value indicating whether the trigger was added to the collection.
+        /// </returns>
+        public bool AddTrigger(ITrigger trigger)
+        {
+            return ((HashSet<ITrigger>)this.Triggers).Add(trigger);
+        }
+
+        /// <summary>
+        /// Removes a trigger from the collection of triggers.
+        /// </summary>
+        /// <param name="trigger">The trigger to remove.</param>
+        /// <returns>
+        /// A value indicating whether the trigger was removed from the collection.
+        /// </returns>
+        public bool RemoveTrigger(ITrigger trigger)
+        {
+            return ((HashSet<ITrigger>)this.Triggers).Remove(trigger);
+        }
 
         /// <summary>
         /// Executes the job asynchronously.

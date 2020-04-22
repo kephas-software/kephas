@@ -48,7 +48,7 @@ namespace Kephas.Configuration
         /// <returns>
         /// The indexed item.
         /// </returns>
-        public object this[string key]
+        public object? this[string key]
         {
             get => this.GetValue(key);
             set => this.SetValue(key, value, syncSettingsMap: true);
@@ -84,7 +84,7 @@ namespace Kephas.Configuration
         /// <returns>
         /// The required settings or <c>null</c>.
         /// </returns>
-        public object TryGetSettings(Type settingsType)
+        public object? TryGetSettings(Type settingsType)
         {
             return this.TryGetOrAddSettings(settingsType, () => settingsType.AsRuntimeTypeInfo().CreateInstance());
         }
@@ -97,7 +97,7 @@ namespace Kephas.Configuration
         /// <returns>
         /// The required settings or <c>null</c>.
         /// </returns>
-        protected virtual object TryGetOrAddSettings(Type settingsType, Func<object> ctor)
+        protected virtual object? TryGetOrAddSettings(Type settingsType, Func<object> ctor)
         {
             if (settingsType == null)
             {
@@ -145,7 +145,7 @@ namespace Kephas.Configuration
         /// <returns>
         /// The aggregated value.
         /// </returns>
-        protected virtual object GetValue(string key)
+        protected virtual object? GetValue(string key)
         {
             return this.InternalStore[key];
         }
@@ -156,7 +156,7 @@ namespace Kephas.Configuration
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
         /// <param name="syncSettingsMap">True to synchronise the settings map.</param>
-        protected virtual void SetValue(string key, object value, bool syncSettingsMap)
+        protected virtual void SetValue(string key, object? value, bool syncSettingsMap)
         {
             // TODO synchronize with the settingsMap dictionary
             this.InternalStore[key] = value;

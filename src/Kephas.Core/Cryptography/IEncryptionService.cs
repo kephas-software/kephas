@@ -48,7 +48,7 @@ namespace Kephas.Cryptography
         Task EncryptAsync(
             Stream input,
             Stream output,
-            Action<IEncryptionContext> optionsConfig = null,
+            Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Kephas.Cryptography
         Task DecryptAsync(
             Stream input,
             Stream output,
-            Action<IEncryptionContext> optionsConfig = null,
+            Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
 
 #if NETSTANDARD2_1
@@ -77,7 +77,7 @@ namespace Kephas.Cryptography
         void Encrypt(
             Stream input,
             Stream output,
-            Action<IEncryptionContext> optionsConfig = null)
+            Action<IEncryptionContext>? optionsConfig = null)
         {
             this.EncryptAsync(input, output, optionsConfig).WaitNonLocking();
         }
@@ -91,7 +91,7 @@ namespace Kephas.Cryptography
         void Decrypt(
             Stream input,
             Stream output,
-            Action<IEncryptionContext> optionsConfig = null)
+            Action<IEncryptionContext>? optionsConfig = null)
         {
             this.DecryptAsync(input, output, optionsConfig).WaitNonLocking();
         }
@@ -114,7 +114,7 @@ namespace Kephas.Cryptography
         void Encrypt(
             Stream input,
             Stream output,
-            Action<IEncryptionContext> optionsConfig = null);
+            Action<IEncryptionContext>? optionsConfig = null);
 
         /// <summary>
         /// Decrypts the input stream and writes the decrypted content into the output stream.
@@ -125,7 +125,7 @@ namespace Kephas.Cryptography
         void Decrypt(
             Stream input,
             Stream output,
-            Action<IEncryptionContext> optionsConfig = null);
+            Action<IEncryptionContext>? optionsConfig = null);
     }
 #endif
 
@@ -147,7 +147,7 @@ namespace Kephas.Cryptography
             this IEncryptionService encryptionService,
             Stream input,
             Stream output,
-            Action<IEncryptionContext> optionsConfig = null)
+            Action<IEncryptionContext>? optionsConfig = null)
         {
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
@@ -172,7 +172,7 @@ namespace Kephas.Cryptography
             this IEncryptionService encryptionService,
             Stream input,
             Stream output,
-            Action<IEncryptionContext> optionsConfig = null)
+            Action<IEncryptionContext>? optionsConfig = null)
         {
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
@@ -200,7 +200,7 @@ namespace Kephas.Cryptography
         public static async Task<string> EncryptAsync(
             this IEncryptionService encryptionService,
             string input,
-            Action<IEncryptionContext> optionsConfig = null,
+            Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             var bytes = await EncryptAsync(encryptionService, Encoding.UTF8.GetBytes(input), optionsConfig, cancellationToken)
@@ -221,18 +221,17 @@ namespace Kephas.Cryptography
         public static async Task<byte[]> EncryptAsync(
             this IEncryptionService encryptionService,
             byte[] input,
-            Action<IEncryptionContext> optionsConfig = null,
+            Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
-            using (var inputStream = new MemoryStream(input))
-            using (var outputStream = new MemoryStream())
-            {
-                await encryptionService.EncryptAsync(inputStream, outputStream, optionsConfig, cancellationToken).PreserveThreadContext();
-                var outputBytes = outputStream.ToArray();
-                return outputBytes;
-            }
+            using var inputStream = new MemoryStream(input);
+            using var outputStream = new MemoryStream();
+
+            await encryptionService.EncryptAsync(inputStream, outputStream, optionsConfig, cancellationToken).PreserveThreadContext();
+            var outputBytes = outputStream.ToArray();
+            return outputBytes;
         }
 
         /// <summary>
@@ -247,7 +246,7 @@ namespace Kephas.Cryptography
         public static string Encrypt(
             this IEncryptionService encryptionService,
             string input,
-            Action<IEncryptionContext> optionsConfig = null)
+            Action<IEncryptionContext>? optionsConfig = null)
         {
             var bytes = Encrypt(encryptionService, Encoding.UTF8.GetBytes(input), optionsConfig);
             return Convert.ToBase64String(bytes);
@@ -265,17 +264,16 @@ namespace Kephas.Cryptography
         public static byte[] Encrypt(
             this IEncryptionService encryptionService,
             byte[] input,
-            Action<IEncryptionContext> optionsConfig = null)
+            Action<IEncryptionContext>? optionsConfig = null)
         {
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
-            using (var inputStream = new MemoryStream(input))
-            using (var outputStream = new MemoryStream())
-            {
-                encryptionService.Encrypt(inputStream, outputStream, optionsConfig);
-                var outputBytes = outputStream.ToArray();
-                return outputBytes;
-            }
+            using var inputStream = new MemoryStream(input);
+            using var outputStream = new MemoryStream();
+
+            encryptionService.Encrypt(inputStream, outputStream, optionsConfig);
+            var outputBytes = outputStream.ToArray();
+            return outputBytes;
         }
 
         /// <summary>
@@ -291,7 +289,7 @@ namespace Kephas.Cryptography
         public static async Task<string> DecryptAsync(
             this IEncryptionService encryptionService,
             string input,
-            Action<IEncryptionContext> optionsConfig = null,
+            Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             var bytes = await DecryptAsync(
@@ -316,18 +314,17 @@ namespace Kephas.Cryptography
         public static async Task<byte[]> DecryptAsync(
             this IEncryptionService encryptionService,
             byte[] input,
-            Action<IEncryptionContext> optionsConfig = null,
+            Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
-            using (var inputStream = new MemoryStream(input))
-            using (var outputStream = new MemoryStream())
-            {
-                await encryptionService.DecryptAsync(inputStream, outputStream, optionsConfig, cancellationToken).PreserveThreadContext();
-                var outputBytes = outputStream.ToArray();
-                return outputBytes;
-            }
+            using var inputStream = new MemoryStream(input);
+            using var outputStream = new MemoryStream();
+
+            await encryptionService.DecryptAsync(inputStream, outputStream, optionsConfig, cancellationToken).PreserveThreadContext();
+            var outputBytes = outputStream.ToArray();
+            return outputBytes;
         }
 
         /// <summary>
@@ -342,7 +339,7 @@ namespace Kephas.Cryptography
         public static string Decrypt(
             this IEncryptionService encryptionService,
             string input,
-            Action<IEncryptionContext> optionsConfig = null)
+            Action<IEncryptionContext>? optionsConfig = null)
         {
             var bytes = Decrypt(encryptionService, Convert.FromBase64String(input), optionsConfig);
             return Encoding.UTF8.GetString(bytes);
@@ -360,17 +357,16 @@ namespace Kephas.Cryptography
         public static byte[] Decrypt(
             this IEncryptionService encryptionService,
             byte[] input,
-            Action<IEncryptionContext> optionsConfig = null)
+            Action<IEncryptionContext>? optionsConfig = null)
         {
             Requires.NotNull(encryptionService, nameof(encryptionService));
 
-            using (var inputStream = new MemoryStream(input))
-            using (var outputStream = new MemoryStream())
-            {
-                encryptionService.Decrypt(inputStream, outputStream, optionsConfig);
-                var outputBytes = outputStream.ToArray();
-                return outputBytes;
-            }
+            using var inputStream = new MemoryStream(input);
+            using var outputStream = new MemoryStream();
+
+            encryptionService.Decrypt(inputStream, outputStream, optionsConfig);
+            var outputBytes = outputStream.ToArray();
+            return outputBytes;
         }
     }
 }

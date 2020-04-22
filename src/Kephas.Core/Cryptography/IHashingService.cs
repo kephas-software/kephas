@@ -31,7 +31,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The hashed value.
         /// </returns>
-        byte[] Hash(byte[] value, Action<IHashingContext> optionsConfig = null);
+        byte[] Hash(byte[] value, Action<IHashingContext>? optionsConfig = null);
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The hashed value.
         /// </returns>
-        public static byte[] Hash(this IHashingService hashingService, string value, Action<IHashingContext> optionsConfig = null)
+        public static byte[] Hash(this IHashingService hashingService, string value, Action<IHashingContext>? optionsConfig = null)
         {
             Requires.NotNull(hashingService, nameof(hashingService));
 

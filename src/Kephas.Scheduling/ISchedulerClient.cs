@@ -51,7 +51,7 @@ namespace Kephas.Scheduling
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Cancels the job asynchronously.
+        /// Cancels the running job asynchronously.
         /// </summary>
         /// <param name="jobId">The job identifier.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>

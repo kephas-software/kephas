@@ -49,7 +49,7 @@ namespace Kephas.Composition.Conventions
         /// </summary>
         /// <param name="conventionsBuilder">The conventions builder.</param>
         /// <returns>A part builder allowing further configuration of the part.</returns>
-        IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null);
+        IPartConventionsBuilder Export(Action<IExportConventionsBuilder>? conventionsBuilder = null);
 
         /// <summary>
         /// Select the interface on the part type that will be exported.
@@ -61,7 +61,7 @@ namespace Kephas.Composition.Conventions
         /// </returns>
         IPartConventionsBuilder ExportInterface(
             Type exportInterface,
-            Action<Type, IExportConventionsBuilder> exportConfiguration = null);
+            Action<Type, IExportConventionsBuilder>? exportConfiguration = null);
 
         /// <summary>
         /// Select which of the available constructors will be used to instantiate the part.
@@ -70,7 +70,7 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null);
+        IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null);
 
         /// <summary>
         /// Indicates that this service allows multiple registrations.

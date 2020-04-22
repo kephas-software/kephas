@@ -147,7 +147,7 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// The new instance.
         /// </returns>
-        public virtual object CreateInstance(IEnumerable<object> args = null)
+        public virtual object CreateInstance(IEnumerable<object?>? args = null)
         {
             return new Expando();
         }
@@ -160,7 +160,7 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// A constructed <see cref="ITypeInfo"/>.
         /// </returns>
-        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext constructionContext = null)
+        public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null)
         {
             throw new NotSupportedException();
         }

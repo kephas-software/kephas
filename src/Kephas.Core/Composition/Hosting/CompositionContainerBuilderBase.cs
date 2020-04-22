@@ -451,13 +451,13 @@ namespace Kephas.Composition.Hosting
         /// </summary>
         /// <param name="searchPattern">The search pattern.</param>
         /// <returns>The assemblies.</returns>
-        private IList<Assembly> GetAssemblies(string searchPattern = null)
+        private IList<Assembly> GetAssemblies(string? searchPattern = null)
         {
-            searchPattern = searchPattern ?? this.GetSettings()?.AssemblyFileNamePattern;
+            searchPattern ??= this.GetSettings()?.AssemblyFileNamePattern;
 
             this.Logger.Debug("{operation}. With assemblies matching pattern '{searchPattern}'.", nameof(this.GetAssemblies), searchPattern);
 
-            IList<Assembly> assemblies = null;
+            IList<Assembly>? assemblies = null;
 
             Profiler.WithDebugStopwatch(
                 () =>
@@ -477,7 +477,7 @@ namespace Kephas.Composition.Hosting
                 },
                 this.Logger);
 
-            return assemblies;
+            return assemblies!;
         }
 
         /// <summary>

@@ -8,18 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Scheduling.Jobs;
-using Kephas.Scheduling.Triggers;
-
-#nullable enable
-
 namespace Kephas.Scheduling.Reflection
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.Scheduling.Jobs;
+    using Kephas.Scheduling.Triggers;
     using Kephas.Workflow;
     using Kephas.Workflow.Reflection;
 
@@ -35,6 +33,24 @@ namespace Kephas.Scheduling.Reflection
         /// The job triggers.
         /// </value>
         IEnumerable<ITrigger> Triggers { get; }
+
+        /// <summary>
+        /// Adds a trigger to the collection of triggers.
+        /// </summary>
+        /// <param name="trigger">The trigger to add.</param>
+        /// <returns>
+        /// A value indicating whether the trigger was added to the collection.
+        /// </returns>
+        bool AddTrigger(ITrigger trigger);
+
+        /// <summary>
+        /// Removes a trigger from the collection of triggers.
+        /// </summary>
+        /// <param name="trigger">The trigger to remove.</param>
+        /// <returns>
+        /// A value indicating whether the trigger was removed from the collection.
+        /// </returns>
+        bool RemoveTrigger(ITrigger trigger);
 
         /// <summary>
         /// Executes the job asynchronously.

@@ -174,7 +174,7 @@ namespace Kephas.Application
         /// Initializes the service.
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
-        void IInitializable.Initialize(IContext context)
+        void IInitializable.Initialize(IContext? context)
         {
             this.InitializationMonitor.AssertIsNotStarted();
 

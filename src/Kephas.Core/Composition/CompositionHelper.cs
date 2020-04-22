@@ -49,7 +49,7 @@ namespace Kephas.Composition
             this IEnumerable<IExportFactory<TService, TServiceMetadata>> serviceFactories,
             Func<IExportFactory<TService, TServiceMetadata>, TKey> keyFunc,
             Func<IExportFactory<TService, TServiceMetadata>, TValue> valueFunc,
-            IEqualityComparer<TKey> keyComparer = null)
+            IEqualityComparer<TKey>? keyComparer = null)
             where TServiceMetadata : AppServiceMetadata
         {
             Requires.NotNull(serviceFactories, nameof(serviceFactories));
@@ -111,7 +111,7 @@ namespace Kephas.Composition
         public static IDictionary<TKey, IExportFactory<TService, TServiceMetadata>> ToPrioritizedDictionary<TService, TServiceMetadata, TKey>(
             this IEnumerable<IExportFactory<TService, TServiceMetadata>> serviceFactories,
             Func<IExportFactory<TService, TServiceMetadata>, TKey> keyFunc,
-            IEqualityComparer<TKey> keyComparer = null)
+            IEqualityComparer<TKey>? keyComparer = null)
             where TServiceMetadata : AppServiceMetadata
         {
             return serviceFactories.ToPrioritizedDictionary(keyFunc, f => f, keyComparer);

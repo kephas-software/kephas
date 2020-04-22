@@ -81,7 +81,7 @@ namespace Kephas.Dynamic
         /// This <paramref name="expando"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Merge<T, TContract>(this T expando, Action<TContract> optionsConfig)
+        public static T Merge<T, TContract>(this T expando, Action<TContract>? optionsConfig)
             where T : class, TContract
             where TContract : IExpando
         {

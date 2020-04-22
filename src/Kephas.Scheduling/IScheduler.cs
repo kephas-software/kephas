@@ -10,6 +10,10 @@
 
 namespace Kephas.Scheduling
 {
+    using System.Collections.Generic;
+
+    using Kephas.Scheduling.Jobs;
+    using Kephas.Scheduling.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -18,5 +22,16 @@ namespace Kephas.Scheduling
     [SingletonAppServiceContract]
     public interface IScheduler : IAsyncInitializable, IAsyncFinalizable
     {
+        /// <summary>
+        /// Gets the scheduled jobs.
+        /// </summary>
+        /// <returns>An enumeration of scheduled jobs.</returns>
+        IEnumerable<IJobInfo> GetScheduledJobs();
+
+        /// <summary>
+        /// Gets the running jobs.
+        /// </summary>
+        /// <returns>An enumeration of running jobs.</returns>
+        IEnumerable<IJobResult> GetRunningJobs();
     }
 }
