@@ -53,13 +53,13 @@ namespace Kephas.Extensions.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public bool Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
+        public bool Log(LogLevel level, Exception? exception, string messageFormat, params object?[] args)
         {
             this.logger.Log(this.ToLogLevel(level), default, messageFormat, exception, (msg, ex) => this.Format(msg, ex, args));
             return true;
         }
 
-        private string Format(string messageFormat, Exception exception, params object[] args)
+        private string Format(string messageFormat, Exception? exception, params object?[] args)
         {
             var sb = new StringBuilder();
             sb.AppendFormat(messageFormat, args);

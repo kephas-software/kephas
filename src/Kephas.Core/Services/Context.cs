@@ -90,7 +90,7 @@ namespace Kephas.Services
         /// <summary>
         /// Occurs when the identity changes.
         /// </summary>
-        public event EventHandler IdentityChanged;
+        public event EventHandler? IdentityChanged;
 
         /// <summary>
         /// Gets the ambient services.

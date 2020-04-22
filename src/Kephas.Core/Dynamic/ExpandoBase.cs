@@ -58,12 +58,12 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Value of object passed in.
         /// </summary>
-        private object innerObject;
+        private object? innerObject;
 
         /// <summary>
         /// The inner dictionary for dynamic values.
         /// </summary>
-        private IDictionary<string, object> innerDictionary;
+        private IDictionary<string, object?> innerDictionary;
 
         /// <summary>
         /// Cached dynamic type of the inner object.
@@ -91,7 +91,7 @@ namespace Kephas.Dynamic
         /// The inner dictionary for holding dynamic values (optional).
         /// If not provided, a new dictionary will be created.
         /// </param>
-        protected ExpandoBase(IDictionary<string, object> innerDictionary = null)
+        protected ExpandoBase(IDictionary<string, object?>? innerDictionary = null)
         {
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.InitializeExpando(null, innerDictionary);
@@ -106,11 +106,11 @@ namespace Kephas.Dynamic
         /// The inner dictionary for holding dynamic values (optional).
         /// If not provided, a new dictionary will be created.
         /// </param>
-        protected ExpandoBase(object innerObject, IDictionary<string, object> innerDictionary = null)
+        protected ExpandoBase(object innerObject, IDictionary<string, object?>? innerDictionary = null)
         {
             Requires.NotNull(innerObject, nameof(innerObject));
 
-            if (innerObject is IDictionary<string, object> innerObjectDictionary)
+            if (innerObject is IDictionary<string, object?> innerObjectDictionary)
             {
                 if (innerDictionary == null)
                 {
@@ -139,11 +139,11 @@ namespace Kephas.Dynamic
         /// </remarks>
         /// <param name="key">The key.</param>
         /// <returns>The <see cref="object" />.</returns>
-        public object this[string key]
+        public object? this[string key]
         {
             get
             {
-                this.TryGetValue(key, out object value);
+                this.TryGetValue(key, out var value);
                 return value;
             }
 
@@ -164,7 +164,7 @@ namespace Kephas.Dynamic
             if (this.innerObject != null)
             {
                 var typeInfo = this.GetInnerObjectTypeInfo();
-                foreach (var property in typeInfo.Properties)
+                foreach (var property in typeInfo!.Properties)
                 {
                     yield return property.Name;
                 }
@@ -196,7 +196,7 @@ namespace Kephas.Dynamic
             // First check for public properties via reflection
             if (this.innerObject != null)
             {
-                if (this.GetInnerObjectTypeInfo().Properties.Any(p => p.Name == memberName))
+                if (this.GetInnerObjectTypeInfo()!.Properties.Any(p => p.Name == memberName))
                 {
                     return true;
                 }
@@ -226,7 +226,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The <see cref="bool" />.
         /// </returns>
-        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        public override bool TryGetMember(GetMemberBinder binder, out object? result)
         {
             this.TryGetValue(binder.Name, out result);
             return true;
@@ -261,12 +261,12 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The <see cref="bool" />.
         /// </returns>
-        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object? result)
         {
-            IOperationInfo methodInfo;
+            IOperationInfo? methodInfo;
             if (this.innerObject != null)
             {
-                methodInfo = (IOperationInfo)this.GetInnerObjectTypeInfo().GetMember(binder.Name, throwIfNotFound: false);
+                methodInfo = (IOperationInfo?)this.GetInnerObjectTypeInfo()!.GetMember(binder.Name, throwIfNotFound: false);
                 if (methodInfo != null)
                 {
                     result = methodInfo.Invoke(this.innerObject, args);
@@ -274,7 +274,7 @@ namespace Kephas.Dynamic
                 }
             }
 
-            methodInfo = (IOperationInfo)this.GetThisTypeInfo().GetMember(binder.Name, throwIfNotFound: false);
+            methodInfo = (IOperationInfo?)this.GetThisTypeInfo().GetMember(binder.Name, throwIfNotFound: false);
             if (methodInfo != null)
             {
                 result = methodInfo.Invoke(this.innerObject, args);
@@ -305,14 +305,14 @@ namespace Kephas.Dynamic
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
-        public virtual IDictionary<string, object> ToDictionary(
-            Func<string, string> keyFunc = null,
-            Func<object, object> valueFunc = null)
+        public virtual IDictionary<string, object?> ToDictionary(
+            Func<string, string>? keyFunc = null,
+            Func<object?, object?>? valueFunc = null)
         {
             // add the properties in their overwrite order:
             // first, the values in the dictionary
-            var dictionary = keyFunc == null && valueFunc == null 
-                                 ? new Dictionary<string, object>(this.innerDictionary)
+            var dictionary = keyFunc == null && valueFunc == null
+                                 ? new Dictionary<string, object?>(this.innerDictionary)
                                  : this.innerDictionary.ToDictionary(
                                         kv => keyFunc == null ? kv.Key : keyFunc(kv.Key),
                                         kv => valueFunc == null ? kv.Value : valueFunc(kv.Value));
@@ -320,7 +320,7 @@ namespace Kephas.Dynamic
             // second, the values in the inner object
             if (this.innerObject != null)
             {
-                foreach (var prop in this.GetInnerObjectTypeInfo().Properties)
+                foreach (var prop in this.GetInnerObjectTypeInfo()!.Properties)
                 {
                     var propName = prop.Name;
                     var value = prop.GetValue(this.innerObject);
@@ -348,11 +348,11 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The <see cref="ITypeInfo"/> of the inner object.
         /// </returns>
-        protected virtual ITypeInfo GetInnerObjectTypeInfo()
+        protected virtual ITypeInfo? GetInnerObjectTypeInfo()
         {
             return this.innerObject == null
                        ? null
-                       : this.innerObjectTypeInfo ?? (this.innerObjectTypeInfo = this.innerObject.GetType().AsRuntimeTypeInfo());
+                       : this.innerObjectTypeInfo ??= this.innerObject.GetType().AsRuntimeTypeInfo();
         }
 
         /// <summary>
@@ -363,7 +363,7 @@ namespace Kephas.Dynamic
         /// </returns>
         protected virtual ITypeInfo GetThisTypeInfo()
         {
-            return this.thisTypeInfo ?? (this.thisTypeInfo = this.GetTypeInfo());
+            return this.thisTypeInfo ??= this.GetTypeInfo();
         }
 
         /// <summary>
@@ -379,9 +379,9 @@ namespace Kephas.Dynamic
         /// <returns>
         /// <c>true</c> if a value is found, <c>false</c> otherwise.
         /// </returns>
-        protected virtual bool TryGetValue(string key, out object value)
+        protected virtual bool TryGetValue(string key, out object? value)
         {
-            IPropertyInfo propInfo;
+            IPropertyInfo? propInfo;
 
             // first, check the properties in this object
             if (this != this.innerObject)
@@ -397,7 +397,7 @@ namespace Kephas.Dynamic
             // then, check the inner object
             if (this.innerObject != null)
             {
-                propInfo = this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false) as IPropertyInfo;
+                propInfo = this.GetInnerObjectTypeInfo()!.GetMember(key, throwIfNotFound: false) as IPropertyInfo;
                 if (propInfo != null)
                 {
                     value = propInfo.GetValue(this.innerObject);
@@ -427,9 +427,9 @@ namespace Kephas.Dynamic
         /// <returns>
         /// <c>true</c> if the value could be set, <c>false</c> otherwise.
         /// </returns>
-        protected virtual bool TrySetValue(string key, object value)
+        protected virtual bool TrySetValue(string key, object? value)
         {
-            IPropertyInfo propInfo;
+            IPropertyInfo? propInfo;
 
             // first, check the properties in this object
             if (this != this.innerObject)
@@ -450,7 +450,7 @@ namespace Kephas.Dynamic
             // then check the inner object
             if (this.innerObject != null)
             {
-                propInfo = this.GetInnerObjectTypeInfo().GetMember(key, throwIfNotFound: false) as IPropertyInfo;
+                propInfo = this.GetInnerObjectTypeInfo()!.GetMember(key, throwIfNotFound: false) as IPropertyInfo;
                 if (propInfo != null)
                 {
                     if (propInfo.CanWrite)
@@ -481,10 +481,10 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="instance">The instance.</param>
         /// <param name="dictionary">The inner dictionary.</param>
-        private void InitializeExpando(object instance, IDictionary<string, object> dictionary)
+        private void InitializeExpando(object? instance, IDictionary<string, object?>? dictionary)
         {
             this.innerObject = instance;
-            this.innerDictionary = dictionary ?? new Dictionary<string, object>();
+            this.innerDictionary = dictionary ?? new Dictionary<string, object?>();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Kephas.Diagnostics.Contracts
         [DebuggerStepThrough]
         [ContractArgumentValidator]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotNull<T>(T value, string parameterName)
+        public static void NotNull<T>(T? value, string parameterName)
             where T : class
         {
             if (value == null)
@@ -76,7 +76,7 @@ namespace Kephas.Diagnostics.Contracts
         [DebuggerStepThrough]
         [ContractArgumentValidator]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotNullOrEmpty(string value, string parameterName)
+        public static void NotNullOrEmpty(string? value, string parameterName)
         {
             NotNull(value, parameterName);
 
@@ -99,7 +99,7 @@ namespace Kephas.Diagnostics.Contracts
         [DebuggerStepThrough]
         [ContractArgumentValidator]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotNullOrEmpty<T>(IEnumerable<T> value, string parameterName)
+        public static void NotNullOrEmpty<T>(IEnumerable<T>? value, string parameterName)
         {
             NotNull(value, parameterName);
 
@@ -122,7 +122,7 @@ namespace Kephas.Diagnostics.Contracts
         [DebuggerStepThrough]
         [ContractArgumentValidator]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotNullOrEmpty<T>(ICollection<T> value, string parameterName)
+        public static void NotNullOrEmpty<T>(ICollection<T>? value, string parameterName)
         {
             NotNull(value, parameterName);
 
@@ -145,7 +145,7 @@ namespace Kephas.Diagnostics.Contracts
         [DebuggerStepThrough]
         [ContractArgumentValidator]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotNullOrEmpty<T>(T[] value, string parameterName)
+        public static void NotNullOrEmpty<T>(T[]? value, string parameterName)
         {
             NotNull(value, parameterName);
 

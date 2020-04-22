@@ -98,7 +98,7 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
-        /// Gets a dictionary baed on the <paramref name="isThreadSafe"/> flag.
+        /// Gets a dictionary based on the <paramref name="isThreadSafe"/> flag.
         /// </summary>
         /// <param name="innerObject">The instance to be extended.</param>
         /// <param name="isThreadSafe"><c>true</c> if the internal dictionary should be thread safe,
@@ -106,7 +106,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The dictionary.
         /// </returns>
-        private static IDictionary<string, object> GetDictionary(object innerObject, bool isThreadSafe)
+        private static IDictionary<string, object> GetDictionary(object? innerObject, bool isThreadSafe)
         {
             if (innerObject is IDictionary<string, object> innerDictionary)
             {

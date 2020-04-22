@@ -31,7 +31,7 @@ namespace Kephas.Logging
         /// There is no requirement that the loggers contain at least one element.
         /// </remarks>
         /// <param name="loggers">A variable-length parameters list containing loggers.</param>
-        public AggregateLogger(params ILogger[] loggers)
+        public AggregateLogger(params ILogger[]? loggers)
         {
             this.loggers = loggers ?? new ILogger[0];
         }
@@ -43,7 +43,7 @@ namespace Kephas.Logging
         /// There is no requirement that the loggers contain at least one element.
         /// </remarks>
         /// <param name="loggers">A variable-length parameters list containing loggers.</param>
-        public AggregateLogger(IEnumerable<ILogger> loggers)
+        public AggregateLogger(IEnumerable<ILogger>? loggers)
         {
             this.loggers = loggers ?? new ILogger[0];
         }
@@ -60,7 +60,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public bool Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
+        public bool Log(LogLevel level, Exception? exception, string messageFormat, params object?[] args)
         {
             var success = false;
             foreach (var logger in this.loggers)

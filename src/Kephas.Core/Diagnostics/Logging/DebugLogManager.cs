@@ -23,7 +23,7 @@ namespace Kephas.Diagnostics.Logging
         /// <summary>
         /// The log callback.
         /// </summary>
-        private readonly Action<string, string, object, Exception> logCallback;
+        private readonly Action<string, string, object, Exception?>? logCallback;
 
         /// <summary>
         /// The cached loggers.
@@ -34,7 +34,7 @@ namespace Kephas.Diagnostics.Logging
         /// Initializes a new instance of the <see cref="DebugLogManager"/> class.
         /// </summary>
         /// <param name="logCallback">The log callback (optional).</param>
-        public DebugLogManager(Action<string, string, object, Exception> logCallback = null)
+        public DebugLogManager(Action<string, string, object, Exception?>? logCallback = null)
         {
             this.logCallback = logCallback;
         }
@@ -62,7 +62,7 @@ namespace Kephas.Diagnostics.Logging
         internal class DebugLogger : ILogger
         {
             private readonly string name;
-            private readonly Action<string, string, object, Exception> logCallback;
+            private readonly Action<string, string, object, Exception?>? logCallback;
             private readonly Func<LogLevel> logLevelGetter;
 
             /// <summary>
@@ -71,7 +71,7 @@ namespace Kephas.Diagnostics.Logging
             /// <param name="name">The name.</param>
             /// <param name="logCallback">The log callback.</param>
             /// <param name="logLevelGetter">Getter function for the log level.</param>
-            public DebugLogger(string name, Action<string, string, object, Exception> logCallback, Func<LogLevel> logLevelGetter)
+            public DebugLogger(string name, Action<string, string, object, Exception?>? logCallback, Func<LogLevel> logLevelGetter)
             {
                 this.name = name;
                 this.logCallback = logCallback;
@@ -100,7 +100,7 @@ namespace Kephas.Diagnostics.Logging
             /// <returns>
             /// True if the log operation succeeded, false if it failed.
             /// </returns>
-            public bool Log(LogLevel level, Exception exception, string messageFormat, params object[] args)
+            public bool Log(LogLevel level, Exception? exception, string messageFormat, params object?[] args)
             {
                 return this.LogCore(level.ToString(), messageFormat, exception);
             }
@@ -114,7 +114,7 @@ namespace Kephas.Diagnostics.Logging
             /// <returns>
             /// True if the log operation succeeded, false if it failed.
             /// </returns>
-            private bool LogCore(string level, object message, Exception exception = null)
+            private bool LogCore(string level, object message, Exception? exception = null)
             {
                 if (this.logCallback == null)
                 {

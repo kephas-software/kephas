@@ -83,7 +83,7 @@ namespace Kephas.Reflection
         /// <exception cref="System.ArgumentException">Expected property expression.</exception>
         public static string GetPropertyName<T, TValue>(Expression<Func<T, TValue>> expression)
         {
-            MemberExpression memberExpression;
+            MemberExpression? memberExpression;
 
             // if the return value had to be cast to object, the body will be an UnaryExpression
             var unary = expression.Body as UnaryExpression;
@@ -114,7 +114,7 @@ namespace Kephas.Reflection
         /// <returns>The property name.</returns>
         public static string GetStaticPropertyName(Expression<Func<object>> expression)
         {
-            MemberExpression memberExpression;
+            MemberExpression? memberExpression;
 
             // if the return value had to be cast to object, the body will be an UnaryExpression
             var unary = expression.Body as UnaryExpression;
@@ -275,7 +275,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The assembly location directory.
         /// </returns>
-        public static string GetLocationDirectory(this Assembly assembly)
+        public static string? GetLocationDirectory(this Assembly assembly)
         {
             if (assembly == null || string.IsNullOrEmpty(assembly.Location))
             {
@@ -310,7 +310,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// The invocation result.
         /// </returns>
-        public static object Call(this MethodInfo methodInfo, object instance, params object[] arguments)
+        public static object Call(this MethodInfo methodInfo, object? instance, params object?[] arguments)
         {
             try
             {
