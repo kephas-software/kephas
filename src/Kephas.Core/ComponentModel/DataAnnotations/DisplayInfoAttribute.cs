@@ -1,45 +1,37 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TypeDisplayAttribute.cs" company="Kephas Software SRL">
+// <copyright file="DisplayInfoAttribute.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the type display attribute class.
+//   Implements the display info attribute class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Kephas.Reflection;
 
 namespace Kephas.ComponentModel.DataAnnotations
 {
     using System;
 
     using Kephas.Localization.Internal;
+    using Kephas.Reflection.Localization;
 
     /// <summary>
     /// Display attribute for types.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Enum, AllowMultiple = false)]
-    public class TypeDisplayAttribute : Attribute
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+    public class DisplayInfoAttribute : Attribute, IDisplayInfo
     {
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
         private readonly LocalizableString description = new LocalizableString(nameof(Description));
-
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
         private readonly LocalizableString name = new LocalizableString(nameof(Name));
+        private readonly LocalizableString shortName = new LocalizableString(nameof(ShortName));
+        private readonly LocalizableString prompt = new LocalizableString(nameof(Prompt));
 
         /// <summary>
         /// The resource type.
         /// </summary>
-        private Type resourceType;
+        private Type? resourceType;
 
         /// <summary>
         /// Gets or sets the resource type.
@@ -47,7 +39,7 @@ namespace Kephas.ComponentModel.DataAnnotations
         /// <value>
         /// The resource type.
         /// </value>
-        public Type ResourceType
+        public Type? ResourceType
         {
             get => this.resourceType;
             set
@@ -60,6 +52,8 @@ namespace Kephas.ComponentModel.DataAnnotations
                 this.resourceType = value;
                 this.name.ResourceType = value;
                 this.description.ResourceType = value;
+                this.shortName.ResourceType = value;
+                this.prompt.ResourceType = value;
             }
         }
 
@@ -104,6 +98,46 @@ namespace Kephas.ComponentModel.DataAnnotations
         }
 
         /// <summary>
+        /// Gets or sets the prompt.
+        /// </summary>
+        /// <value>
+        /// The prompt.
+        /// </value>
+        public string Prompt
+        {
+            get => this.prompt.Value;
+            set
+            {
+                if (this.prompt.Value == value)
+                {
+                    return;
+                }
+
+                this.prompt.Value = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the short name.
+        /// </summary>
+        /// <value>
+        /// The short name.
+        /// </value>
+        public string ShortName
+        {
+            get => this.shortName.Value;
+            set
+            {
+                if (this.shortName.Value == value)
+                {
+                    return;
+                }
+
+                this.shortName.Value = value;
+            }
+        }
+
+        /// <summary>
         /// Gets the localized name.
         /// </summary>
         /// <returns>
@@ -123,6 +157,28 @@ namespace Kephas.ComponentModel.DataAnnotations
         public string GetDescription()
         {
             return this.description.GetLocalizableValue();
+        }
+
+        /// <summary>
+        /// Gets the localized prompt.
+        /// </summary>
+        /// <returns>
+        /// The localized prompt.
+        /// </returns>
+        public string GetPrompt()
+        {
+            return this.prompt.GetLocalizableValue();
+        }
+
+        /// <summary>
+        /// Gets the localized short name.
+        /// </summary>
+        /// <returns>
+        /// The localized short name.
+        /// </returns>
+        public string GetShortName()
+        {
+            return this.shortName.GetLocalizableValue();
         }
     }
 }

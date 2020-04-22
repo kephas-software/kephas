@@ -16,7 +16,7 @@ namespace Kephas.Application.Console.Endpoints
     /// <summary>
     /// A quit message.
     /// </summary>
-    [TypeDisplay(Description = "Quits the application.")]
+    [DisplayInfo(Description = "Quits the application.")]
     public class QuitMessage : IMessage
     {
     }

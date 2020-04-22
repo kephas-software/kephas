@@ -18,7 +18,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An install plugin message.
     /// </summary>
-    [TypeDisplay(Description = "Installs the indicated plugin.")]
+    [DisplayInfo(Description = "Installs the indicated plugin.")]
     public class InstallPluginMessage : IMessage
     {
         /// <summary>

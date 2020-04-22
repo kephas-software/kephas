@@ -18,7 +18,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An enable plugin message.
     /// </summary>
-    [TypeDisplay(Description = "Enables the indicated plugin.")]
+    [DisplayInfo(Description = "Enables the indicated plugin.")]
     public class EnablePluginMessage : IMessage
     {
         /// <summary>

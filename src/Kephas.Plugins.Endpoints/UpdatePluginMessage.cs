@@ -19,7 +19,7 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An update plugin message.
     /// </summary>
-    [TypeDisplay(Description = "Updates the installed plugin with the indicated version. A typical usage is 'updateplugin all', which updates all installed plugins to the latest version.")]
+    [DisplayInfo(Description = "Updates the installed plugin with the indicated version. A typical usage is 'updateplugin all', which updates all installed plugins to the latest version.")]
     public class UpdatePluginMessage : IMessage
     {
         /// <summary>
