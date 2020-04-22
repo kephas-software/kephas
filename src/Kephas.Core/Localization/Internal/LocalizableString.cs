@@ -26,7 +26,7 @@ namespace Kephas.Localization.Internal
         /// <summary>
         /// The cached result.
         /// </summary>
-        private Func<string> cachedResult;
+        private Func<string>? cachedResult;
 
         /// <summary>
         /// The property value.
@@ -36,7 +36,7 @@ namespace Kephas.Localization.Internal
         /// <summary>
         /// The resource type.
         /// </summary>
-        private Type resourceType;
+        private Type? resourceType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalizableString"/> class.
@@ -74,7 +74,7 @@ namespace Kephas.Localization.Internal
         /// <value>
         /// The resource type.
         /// </value>
-        public Type ResourceType
+        public Type? ResourceType
         {
             get => this.resourceType;
             set
@@ -97,44 +97,48 @@ namespace Kephas.Localization.Internal
         /// </returns>
         public string GetLocalizableValue()
         {
-            if (this.cachedResult == null)
+            if (this.cachedResult != null)
             {
-                if (this.propertyValue == null || this.resourceType == null)
+                return this.cachedResult();
+            }
+
+            if (this.propertyValue == null || this.resourceType == null)
+            {
+                this.cachedResult = () => this.propertyValue;
+            }
+            else
+            {
+                var property = this.resourceType.GetRuntimeProperty(this.propertyValue);
+                var resourceStringNotAccessible = false;
+                if (!this.resourceType.GetTypeInfo().IsVisible || property == null || property.PropertyType != typeof(string))
                 {
-                    this.cachedResult = () => this.propertyValue;
+                    resourceStringNotAccessible = true;
                 }
                 else
                 {
-                    var property = this.resourceType.GetRuntimeProperty(this.propertyValue);
-                    var resourceStringNotAccessible = false;
-                    if (!this.resourceType.GetTypeInfo().IsVisible || property == null || property.PropertyType != typeof(string))
+                    var getMethod = property.GetMethod;
+                    if ((object)getMethod == null || !getMethod.IsPublic || !getMethod.IsStatic)
                     {
                         resourceStringNotAccessible = true;
                     }
-                    else
-                    {
-                        var getMethod = property.GetMethod;
-                        if ((object)getMethod == null || !getMethod.IsPublic || !getMethod.IsStatic)
-                        {
-                            resourceStringNotAccessible = true;
-                        }
-                    }
-                    if (resourceStringNotAccessible)
-                    {
-                        // TODO localize
-                        var exceptionMessage = string.Format(
-                            "Localization failed for {0}: cannot get {2} from {1}.",
-                            this.propertyName,
-                            this.resourceType.FullName,
-                            this.propertyValue);
-                        this.cachedResult = () => { throw new InvalidOperationException(exceptionMessage); };
-                    }
-                    else
-                    {
-                        this.cachedResult = () => (string)property.GetValue(null, null);
-                    }
+                }
+
+                if (resourceStringNotAccessible)
+                {
+                    // TODO localize
+                    var exceptionMessage = string.Format(
+                        "Localization failed for {0}: cannot get {2} from {1}.",
+                        this.propertyName,
+                        this.resourceType.FullName,
+                        this.propertyValue);
+                    this.cachedResult = () => throw new InvalidOperationException(exceptionMessage);
+                }
+                else
+                {
+                    this.cachedResult = () => (string)property.GetValue(null, null);
                 }
             }
+
             return this.cachedResult();
         }
 

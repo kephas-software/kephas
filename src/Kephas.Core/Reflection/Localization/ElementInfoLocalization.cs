@@ -13,6 +13,7 @@ namespace Kephas.Reflection.Localization
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Localization;
     using Kephas.Runtime;
@@ -22,15 +23,10 @@ namespace Kephas.Reflection.Localization
     /// </summary>
     public class ElementInfoLocalization : Localization, IElementInfoLocalization
     {
-        /// <summary>
-        /// The localized name.
-        /// </summary>
         private string name;
-
-        /// <summary>
-        /// The localized description.
-        /// </summary>
         private string description;
+        private string shortName;
+        private string prompt;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementInfoLocalization"/> class.
@@ -38,7 +34,7 @@ namespace Kephas.Reflection.Localization
         public ElementInfoLocalization()
         {
             // ReSharper disable once VirtualMemberCallInConstructor
-            this.DisplayAttribute = this.TryGetDisplayAttribute(null);
+            this.DisplayInfo = this.GetDisplayInfo(null);
         }
 
         /// <summary>
@@ -50,7 +46,7 @@ namespace Kephas.Reflection.Localization
             Requires.NotNull(elementInfo, nameof(elementInfo));
 
             // ReSharper disable once VirtualMemberCallInConstructor
-            this.DisplayAttribute = this.TryGetDisplayAttribute(elementInfo);
+            this.DisplayInfo = this.GetDisplayInfo(elementInfo);
         }
 
         /// <summary>
@@ -61,7 +57,9 @@ namespace Kephas.Reflection.Localization
         /// </value>
         public virtual string Name
         {
-            get => this.DisplayAttribute == null ? this.name : this.DisplayAttribute.GetName();
+            get => this.DisplayInfo == null
+                ? this.name
+                : this.DisplayInfo.GetName();
             set => this.name = value;
         }
 
@@ -73,35 +71,56 @@ namespace Kephas.Reflection.Localization
         /// </value>
         public virtual string Description
         {
-            get => this.DisplayAttribute == null ? this.description : this.DisplayAttribute.GetDescription();
+            get => this.DisplayInfo == null
+                ? this.description
+                : this.DisplayInfo.GetDescription();
             set => this.description = value;
         }
 
         /// <summary>
-        /// Gets the display attribute used to extract the localized values.
+        /// Gets or sets the localized short name.
         /// </summary>
-        protected DisplayAttribute DisplayAttribute { get; }
+        /// <remarks>
+        /// The short name can be used for example in column headers.
+        /// </remarks>
+        /// <value>
+        /// The localized short name.
+        /// </value>
+        public string ShortName
+        {
+            get => this.DisplayInfo == null
+                ? this.shortName
+                : this.DisplayInfo.GetShortName();
+            set => this.shortName = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the localized value that will be used to set the watermark for prompts in the UI.
+        /// </summary>
+        /// <value>
+        /// The localized value that will be used to set the watermark for prompts in the UI.
+        /// </value>
+        public string Prompt
+        {
+            get => this.DisplayInfo == null
+                ? this.prompt
+                : this.DisplayInfo.GetPrompt();
+            set => this.prompt = value;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDisplayInfo"/> used to extract the localized values.
+        /// </summary>
+        protected IDisplayInfo? DisplayInfo { get; }
 
         /// <summary>
         /// Tries to get the display attribute from the provided <see cref="IElementInfo"/>.
         /// </summary>
         /// <param name="elementInfo">Information describing the element.</param>
         /// <returns>
-        /// A DisplayAttribute or <c>null</c>.
+        /// A <see cref="IDisplayInfo"/> attribute or <c>null</c>.
         /// </returns>
-        protected virtual DisplayAttribute TryGetDisplayAttribute(IElementInfo elementInfo)
-        {
-            var elementAnnotations = elementInfo?.Annotations;
-            var displayAttribute = elementAnnotations?.OfType<DisplayAttribute>().FirstOrDefault();
-            if (displayAttribute == null)
-            {
-                displayAttribute = elementAnnotations
-                    ?.OfType<IAttributeProvider>()
-                    .Select(p => p.GetAttribute<DisplayAttribute>())
-                    .FirstOrDefault(a => a != null);
-            }
-
-            return displayAttribute;
-        }
+        protected virtual IDisplayInfo? GetDisplayInfo(IElementInfo? elementInfo) =>
+            elementInfo?.GetDisplayInfo();
     }
 }

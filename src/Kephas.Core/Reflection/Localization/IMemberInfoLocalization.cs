@@ -15,23 +15,5 @@ namespace Kephas.Reflection.Localization
     /// </summary>
     public interface IMemberInfoLocalization : IElementInfoLocalization
     {
-        /// <summary>
-        /// Gets the localized short name.
-        /// </summary>
-        /// <remarks>
-        /// The short name can be used for example in column headers.
-        /// </remarks>
-        /// <value>
-        /// The localized short name.
-        /// </value>
-        string ShortName { get; }
-
-        /// <summary>
-        /// Gets the localized value that will be used to set the watermark for prompts in the UI.
-        /// </summary>
-        /// <value>
-        /// The localized value that will be used to set the watermark for prompts in the UI.
-        /// </value>
-        string Prompt { get; }
     }
 }

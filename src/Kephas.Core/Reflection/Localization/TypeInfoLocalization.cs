@@ -11,12 +11,8 @@
 namespace Kephas.Reflection.Localization
 {
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Linq;
 
-    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Runtime;
 
     /// <summary>
     /// The type info localization.
@@ -67,40 +63,12 @@ namespace Kephas.Reflection.Localization
         public IDictionary<string, IMemberInfoLocalization> Members
         {
             get => this.members;
-            set
+            protected internal set
             {
                 Requires.NotNull(value, nameof(value));
 
                 this.members = value;
             }
-        }
-
-        /// <summary>
-        /// Tries to get the display attribute from the provided <see cref="IElementInfo"/>.
-        /// </summary>
-        /// <param name="elementInfo">Information describing the element.</param>
-        /// <returns>
-        /// A DisplayAttribute or <c>null</c>.
-        /// </returns>
-        protected override DisplayAttribute TryGetDisplayAttribute(IElementInfo elementInfo)
-        {
-            var typeAnnotations = elementInfo?.Annotations;
-            var typeDisplayAttribute = typeAnnotations?.OfType<TypeDisplayAttribute>().FirstOrDefault();
-            if (typeDisplayAttribute == null)
-            {
-                typeDisplayAttribute = typeAnnotations
-                    ?.OfType<IAttributeProvider>()
-                    .Select(p => p.GetAttribute<TypeDisplayAttribute>())
-                    .FirstOrDefault(a => a != null);
-            }
-
-            if (typeDisplayAttribute != null)
-            {
-                return new DisplayAttribute { ResourceType = typeDisplayAttribute.ResourceType, Name = typeDisplayAttribute.Name, Description = typeDisplayAttribute.Description };
-            }
-
-
-            return null;
         }
 
         /// <summary>
