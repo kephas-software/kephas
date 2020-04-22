@@ -90,7 +90,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => null;
+        public IElementInfo? DeclaringContainer => null;
 
         /// <summary>
         /// Gets the types declared in this assembly.
@@ -108,7 +108,7 @@ namespace Kephas.Runtime
         /// </returns>
         ICustomAttributeProvider IRuntimeElementInfo.GetUnderlyingElementInfo()
         {
-            return null;
+            return this.assembly;
         }
 
         /// <summary>
@@ -134,6 +134,15 @@ namespace Kephas.Runtime
         {
             return this.assembly.GetCustomAttributes<TAttribute>();
         }
+
+#if NETSTANDARD2_1
+#else
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        public IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
+#endif
 
         /// <summary>
         /// Gets the runtime assembly.
@@ -168,7 +177,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IEnumerable<ITypeInfo> GetTypes()
         {
-            return this.types ?? (this.types = CreateTypeInfos(this.assembly));
+            return this.types ??= CreateTypeInfos(this.assembly);
         }
     }
 }

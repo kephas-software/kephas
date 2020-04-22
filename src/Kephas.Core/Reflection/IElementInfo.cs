@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Reflection.Localization;
+
 #nullable enable
 
 namespace Kephas.Reflection
@@ -53,5 +55,19 @@ namespace Kephas.Reflection
         /// The declaring element.
         /// </value>
         IElementInfo? DeclaringContainer { get; }
+
+#if NETSTANDARD2_1
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
+#else
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        IDisplayInfo? GetDisplayInfo();
+#endif
     }
 }

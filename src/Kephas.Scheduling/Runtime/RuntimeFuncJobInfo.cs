@@ -22,15 +22,22 @@ namespace Kephas.Scheduling.Runtime
     /// </summary>
     public class RuntimeFuncJobInfo : RuntimeJobInfo
     {
-        private readonly Func<CancellationToken, Task<object?>> asyncOperation;
-        private readonly Func<object?> operation;
+        private readonly Func<CancellationToken, Task<object?>>? asyncOperation;
+        private readonly Func<object?>? operation;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeFuncJobInfo"/> class.
         /// </summary>
         /// <param name="operation">The operation.</param>
-        protected internal RuntimeFuncJobInfo(Action operation)
-            : this(() => { operation(); return null; })
+        /// <param name="name">Optional. The name.</param>
+        protected internal RuntimeFuncJobInfo(Action operation, string? name = null)
+            : this(
+                () =>
+                    {
+                        operation();
+                        return null;
+                    },
+                name)
         {
         }
 
@@ -38,7 +45,8 @@ namespace Kephas.Scheduling.Runtime
         /// Initializes a new instance of the <see cref="RuntimeFuncJobInfo"/> class.
         /// </summary>
         /// <param name="operation">The operation.</param>
-        protected internal RuntimeFuncJobInfo(Func<object?> operation)
+        /// <param name="name">Optional. The name.</param>
+        protected internal RuntimeFuncJobInfo(Func<object?> operation, string? name = null)
             : base(typeof(FuncJob))
         {
             this.operation = operation;
@@ -48,7 +56,8 @@ namespace Kephas.Scheduling.Runtime
         /// Initializes a new instance of the <see cref="RuntimeFuncJobInfo"/> class.
         /// </summary>
         /// <param name="asyncOperation">The async operation.</param>
-        protected internal RuntimeFuncJobInfo(Func<CancellationToken, Task<object?>> asyncOperation)
+        /// <param name="name">Optional. The name.</param>
+        protected internal RuntimeFuncJobInfo(Func<CancellationToken, Task<object?>> asyncOperation, string? name = null)
             : base(typeof(FuncJob))
         {
             this.asyncOperation = asyncOperation;
@@ -67,7 +76,7 @@ namespace Kephas.Scheduling.Runtime
             {
                 return this.asyncOperation != null
                     ? new FuncJob(this.asyncOperation, () => this)
-                    : new FuncJob(this.operation, () => this);
+                    : new FuncJob(this.operation!, () => this);
             }
 
             return base.CreateInstance(args);

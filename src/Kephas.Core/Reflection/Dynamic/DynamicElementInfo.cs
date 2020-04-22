@@ -14,8 +14,10 @@ namespace Kephas.Reflection.Dynamic
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Reflection.Localization;
     using Kephas.Runtime;
 
     /// <summary>
@@ -58,7 +60,15 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer { get; protected internal set; }
+        public IElementInfo? DeclaringContainer { get; protected internal set; }
+
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        public virtual IDisplayInfo? GetDisplayInfo()
+            => this[ElementInfoHelper.DisplayInfoKey] as IDisplayInfo
+               ?? (IDisplayInfo)(this[ElementInfoHelper.DisplayInfoKey] = new DisplayInfoAttribute());
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -82,7 +92,8 @@ namespace Kephas.Reflection.Dynamic
             where TAttribute : Attribute
         {
             var attributes = new List<TAttribute>(this.Annotations.OfType<TAttribute>());
-            attributes.AddRange(this.Annotations.OfType<IAttributeProvider>().SelectMany(a => a.GetAttributes<TAttribute>()));
+            attributes.AddRange(this.Annotations.OfType<IAttributeProvider>()
+                .SelectMany(a => a.GetAttributes<TAttribute>()));
             return attributes;
         }
 

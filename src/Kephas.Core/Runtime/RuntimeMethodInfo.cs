@@ -130,6 +130,15 @@ namespace Kephas.Runtime
         /// </value>
         public IRuntimeTypeInfo ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
 
+#if NETSTANDARD2_1
+#else
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        public IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
+#endif
+
         /// <summary>
         /// Gets the underlying member information.
         /// </summary>
@@ -146,7 +155,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The <see cref="object" />.
         /// </returns>
-        public object? Invoke(object instance, IEnumerable<object?> args)
+        public object? Invoke(object? instance, IEnumerable<object?> args)
         {
             return this.MethodInfo.Invoke(instance, args.ToArray());
         }
@@ -158,7 +167,7 @@ namespace Kephas.Runtime
         /// <param name="args">The arguments.</param>
         /// <param name="result">The invocation result.</param>
         /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
-        public bool TryInvoke(object instance, IEnumerable<object> args, out object result)
+        public bool TryInvoke(object? instance, IEnumerable<object?> args, out object? result)
         {
             try
             {

@@ -106,6 +106,15 @@ namespace Kephas.Runtime
         /// </value>
         ITypeInfo IValueElementInfo.ValueType => RuntimeTypeInfo.GetRuntimeType(this.FieldInfo.FieldType);
 
+#if NETSTANDARD2_1
+#else
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        public virtual IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
+#endif
+
         /// <summary>
         /// Gets the underlying member information.
         /// </summary>
@@ -120,7 +129,7 @@ namespace Kephas.Runtime
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
         /// <exception cref="System.MemberAccessException">Property value cannot be set.</exception>
-        public virtual void SetValue(object obj, object value)
+        public virtual void SetValue(object? obj, object? value)
         {
             throw new NotSupportedException();
         }
@@ -133,7 +142,7 @@ namespace Kephas.Runtime
         /// The value.
         /// </returns>
         /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
-        public virtual object GetValue(object obj)
+        public virtual object GetValue(object? obj)
         {
             throw new NotSupportedException();
         }

@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.ComponentModel.DataAnnotations;
+using Kephas.Reflection.Localization;
+
 #nullable enable
 
 namespace Kephas.Model.Elements
@@ -38,10 +41,8 @@ namespace Kephas.Model.Elements
         /// </summary>
         protected readonly ILogger Logger;
 
-        /// <summary>
-        /// The underlying element infos.
-        /// </summary>
         private readonly IList<object> parts;
+        private IDisplayInfo displayInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NamedElementBase{TModelContract}" /> class.
@@ -221,6 +222,12 @@ namespace Kephas.Model.Elements
         }
 
         /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        public IDisplayInfo? GetDisplayInfo() => this.displayInfo;
+
+        /// <summary>
         /// Gets the attribute of the provided type.
         /// </summary>
         /// <typeparam name="TAttribute">Type of the attribute.</typeparam>
@@ -253,6 +260,7 @@ namespace Kephas.Model.Elements
             try
             {
                 this.FullName = this.DeclaringContainer?.FullName + this.QualifiedFullName;
+                this.displayInfo = this.CreateDisplayInfo(constructionContext);
                 this.OnCompleteConstruction(constructionContext);
                 this.ConstructionMonitor.Complete();
             }
@@ -310,5 +318,17 @@ namespace Kephas.Model.Elements
         {
             Requires.NotNull(member, nameof(member));
         }
+
+        /// <summary>
+        /// Creates a new display information.
+        /// </summary>
+        /// <param name="constructionContext">The construction context.</param>
+        /// <returns>A new display information.</returns>
+        protected virtual IDisplayInfo CreateDisplayInfo(IModelConstructionContext constructionContext) =>
+            this.parts
+                .OfType<IElementInfo>()
+                .Select(p => p.GetDisplayInfo())
+                .FirstOrDefault(di => di != null)
+            ?? new DisplayInfoAttribute();
     }
 }

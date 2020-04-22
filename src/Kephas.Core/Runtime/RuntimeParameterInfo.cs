@@ -150,7 +150,7 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
-        public virtual void SetValue(object obj, object value)
+        public virtual void SetValue(object? obj, object? value)
         {
             if (obj is IIndexable indexableObj)
             {
@@ -158,7 +158,7 @@ namespace Kephas.Runtime
             }
             else
             {
-                obj.SetPropertyValue(this.Name, value);
+                obj?.SetPropertyValue(this.Name, value);
             }
         }
 
@@ -169,15 +169,24 @@ namespace Kephas.Runtime
         /// <returns>
         /// The value.
         /// </returns>
-        public virtual object GetValue(object obj)
+        public virtual object? GetValue(object? obj)
         {
             if (obj is IIndexable indexableObj)
             {
                 return indexableObj[this.Name];
             }
 
-            return obj.GetPropertyValue(this.Name);
+            return obj?.GetPropertyValue(this.Name);
         }
+
+#if NETSTANDARD2_1
+#else
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        public virtual IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
+#endif
 
         /// <summary>
         /// Gets the underlying member information.

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.ComponentModel.DataAnnotations;
+
 namespace Kephas.Application.Reflection
 {
     using System;
@@ -39,7 +41,7 @@ namespace Kephas.Application.Reflection
         /// <param name="version">Optional. The feature version.</param>
         /// <param name="isRequired">Optional. True if this feature is required, false if not.</param>
         /// <param name="dependencies">Optional. The feature dependencies.</param>
-        public FeatureInfo(string name, string version = null, bool isRequired = false, string[] dependencies = null)
+        public FeatureInfo(string name, string? version = null, bool isRequired = false, string[]? dependencies = null)
             : this(name, version == null ? null : new Version(version), isRequired, dependencies)
         {
         }
@@ -51,7 +53,7 @@ namespace Kephas.Application.Reflection
         /// <param name="version">Optional. The feature version.</param>
         /// <param name="isRequired">Optional. True if this feature is required, false if not.</param>
         /// <param name="dependencies">Optional. The feature dependencies.</param>
-        public FeatureInfo(string name, Version version = null, bool isRequired = false, string[] dependencies = null)
+        public FeatureInfo(string name, Version? version = null, bool isRequired = false, string[]? dependencies = null)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
@@ -106,7 +108,7 @@ namespace Kephas.Application.Reflection
         /// <summary>
         /// Gets the declaring container of the <see cref="FeatureInfo"/>.
         /// </summary>
-        IElementInfo IElementInfo.DeclaringContainer => null;
+        IElementInfo? IElementInfo.DeclaringContainer => null;
 
         /// <summary>
         /// Gets the <see cref="FeatureInfo"/> from the given metadata.
@@ -175,5 +177,13 @@ namespace Kephas.Application.Reflection
         /// The attribute of the provided type.
         /// </returns>
         IEnumerable<TAttribute> IAttributeProvider.GetAttributes<TAttribute>() => new TAttribute[0];
+
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        public virtual IDisplayInfo? GetDisplayInfo()
+            => this[ElementInfoHelper.DisplayInfoKey] as IDisplayInfo
+               ?? (IDisplayInfo)(this[ElementInfoHelper.DisplayInfoKey] = new DisplayInfoAttribute { Name = this.Name });
     }
 }

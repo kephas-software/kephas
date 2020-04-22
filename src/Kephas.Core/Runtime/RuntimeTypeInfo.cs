@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Runtime
 {
     using System;
@@ -21,6 +19,7 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Collections;
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
@@ -373,6 +372,16 @@ namespace Kephas.Runtime
             Factories.Insert(0, factory);
         }
 
+
+#if NETSTANDARD2_1
+#else
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        public virtual IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
+#endif
+
         /// <summary>
         /// Gets the underlying member information.
         /// </summary>
@@ -433,7 +442,7 @@ namespace Kephas.Runtime
         public object? GetValue(object? instance, string propertyName)
         {
             var dynamicProperty = this.GetProperty(propertyName);
-            return dynamicProperty.GetValue(instance);
+            return dynamicProperty!.GetValue(instance);
         }
 
         /// <summary>
@@ -466,7 +475,7 @@ namespace Kephas.Runtime
         public void SetValue(object? instance, string propertyName, object? value)
         {
             var dynamicProperty = this.GetProperty(propertyName);
-            dynamicProperty.SetValue(instance, value);
+            dynamicProperty!.SetValue(instance, value);
         }
 
         /// <summary>
@@ -507,10 +516,10 @@ namespace Kephas.Runtime
         /// <returns>
         /// The invocation result.
         /// </returns>
-        public object Invoke(object? instance, string methodName, IEnumerable<object> args)
+        public object? Invoke(object? instance, string methodName, IEnumerable<object?> args)
         {
             var matchingMethod = this.GetMatchingMethod(methodName, args);
-            return matchingMethod.Invoke(instance, args);
+            return matchingMethod!.Invoke(instance, args);
         }
 
         /// <summary>
@@ -521,7 +530,7 @@ namespace Kephas.Runtime
         /// <param name="args">The arguments.</param>
         /// <param name="result">The invocation result.</param>
         /// <returns>A boolean value indicating whether the invocation was successful or not.</returns>
-        public bool TryInvoke(object? instance, string methodName, IEnumerable<object> args, out object? result)
+        public bool TryInvoke(object? instance, string methodName, IEnumerable<object?> args, out object? result)
         {
             Requires.NotNull(instance, nameof(instance));
 
@@ -543,7 +552,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The new instance.
         /// </returns>
-        public virtual object CreateInstance(IEnumerable<object>? args = null)
+        public virtual object CreateInstance(IEnumerable<object?>? args = null)
         {
             if (this.instanceActivator == null)
             {
@@ -953,7 +962,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// A matching method for the provided name and arguments.
         /// </returns>
-        private IRuntimeMethodInfo? GetMatchingMethod(string methodName, IEnumerable<object> args, bool throwOnNotFound = true)
+        private IRuntimeMethodInfo? GetMatchingMethod(string methodName, IEnumerable<object?> args, bool throwOnNotFound = true)
         {
             var methodInfos = this.GetMethods(methodName, throwOnNotFound);
             if (methodInfos == null)

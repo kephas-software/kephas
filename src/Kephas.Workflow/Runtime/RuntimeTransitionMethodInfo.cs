@@ -156,6 +156,15 @@ namespace Kephas.Workflow.Runtime
         /// </value>
         public object To { get; private set; }
 
+#if NETSTANDARD2_1
+#else
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        public IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
+#endif
+
         /// <summary>
         /// Gets the underlying member information.
         /// </summary>
@@ -185,7 +194,7 @@ namespace Kephas.Workflow.Runtime
         /// <returns>
         /// The execution result.
         /// </returns>
-        public object? Invoke(object instance, IEnumerable<object?> args)
+        public object? Invoke(object? instance, IEnumerable<object?> args)
         {
             return this.MethodInfo.Invoke(instance, args.ToArray());
         }
@@ -224,7 +233,7 @@ namespace Kephas.Workflow.Runtime
 
         private IDictionary<string, IRuntimeParameterInfo> GetParameters()
         {
-            return this.parameters ?? (this.parameters = this.CreateParameterInfos(this.MethodInfo));
+            return this.parameters ??= this.CreateParameterInfos(this.MethodInfo);
         }
     }
 }
