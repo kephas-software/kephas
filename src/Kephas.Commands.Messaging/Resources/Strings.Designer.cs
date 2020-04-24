@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Kephas.Application.Console.Resources {
+namespace Kephas.Commands.Messaging.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Kephas.Application.Console.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Application.Console.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Commands.Messaging.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace Kephas.Application.Console.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please provide one command name to see the information about that command. Example: &apos;help &lt;command&gt;&apos;..
+        ///   Looks up a localized string similar to Multiple command types found for &apos;{0}&apos;: &apos;{1}&apos;..
         /// </summary>
-        internal static string MissingCommandName_Warning {
+        internal static string DefaultCommandRegistry_AmbiguousCommandName {
             get {
-                return ResourceManager.GetString("MissingCommandName_Warning", resourceCulture);
+                return ResourceManager.GetString("DefaultCommandRegistry_AmbiguousCommandName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No commands with the filter &apos;{0}*&apos; found..
+        ///   Looks up a localized string similar to Command type for &apos;{0}&apos; not found..
         /// </summary>
-        internal static string NoMatchingCommands_Warning {
+        internal static string DefaultCommandRegistry_CommandNotFound {
             get {
-                return ResourceManager.GetString("NoMatchingCommands_Warning", resourceCulture);
+                return ResourceManager.GetString("DefaultCommandRegistry_CommandNotFound", resourceCulture);
             }
         }
     }

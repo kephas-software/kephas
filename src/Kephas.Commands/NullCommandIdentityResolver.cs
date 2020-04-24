@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ICommandIdentityResolver.cs" company="Kephas Software SRL">
+// <copyright file="NullCommandIdentityResolver.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the ICommandIdentityResolver interface.
+//   Implements the null command identity resolver class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,10 +15,10 @@ namespace Kephas.Application.Console
     using Kephas.Services;
 
     /// <summary>
-    /// Singleton application service contract for the service resolving the executin command identity.
+    /// A null command identity resolver.
     /// </summary>
-    [SingletonAppServiceContract]
-    public interface ICommandIdentityResolver
+    [OverridePriority(Priority.Lowest)]
+    public class NullCommandIdentityResolver : ICommandIdentityResolver
     {
         /// <summary>
         /// Resolves the identity of the processing context.
@@ -27,6 +27,6 @@ namespace Kephas.Application.Console
         /// <returns>
         /// An IIdentity.
         /// </returns>
-        IIdentity ResolveIdentity(IContext context);
+        public IIdentity? ResolveIdentity(IContext? context) => null;
     }
 }

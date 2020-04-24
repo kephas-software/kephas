@@ -1,27 +1,26 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ICommandRegistry.cs" company="Kephas Software SRL">
+// <copyright file="NullCommandRegistry.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Declares the ICommandRegistry interface.
+//   Declares the NullCommandRegistry class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-#nullable enable
 
 namespace Kephas.Application.Console
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
-    /// Singleton application service contract for the service registering command types.
+    /// A null command registry.
     /// </summary>
-    [SingletonAppServiceContract]
-    public interface ICommandRegistry
+    [OverridePriority(Priority.Lowest)]
+    public class NullCommandRegistry : ICommandRegistry
     {
         /// <summary>
         /// Gets the command types.
@@ -30,15 +29,16 @@ namespace Kephas.Application.Console
         /// <returns>
         /// The command types.
         /// </returns>
-        IEnumerable<ITypeInfo> GetCommandTypes(string? commandPattern = null);
+        public IEnumerable<ITypeInfo> GetCommandTypes(string? commandPattern = null) => Enumerable.Empty<ITypeInfo>();
 
         /// <summary>
         /// Resolves the command type.
         /// </summary>
+        /// <exception cref="NullServiceException">Thrown always.</exception>
         /// <param name="command">The command.</param>
         /// <returns>
         /// An ITypeInfo.
         /// </returns>
-        ITypeInfo ResolveCommandType(string command);
+        public ITypeInfo ResolveCommandType(string command) => throw new NullServiceException(typeof(ICommandRegistry));
     }
 }

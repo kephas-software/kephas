@@ -18,7 +18,7 @@ namespace Kephas.Application.Console
     using System.Reflection;
 
     using Kephas;
-    using Kephas.Application.Console.Resources;
+    using Kephas.Commands.Messaging.Resources;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Model.AttributedModel;
@@ -29,18 +29,18 @@ namespace Kephas.Application.Console
     /// A default command registry.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultCommandRegistry : ICommandRegistry
+    public class MessagingCommandRegistry : ICommandRegistry
     {
         private readonly IAppRuntime appRuntime;
         private readonly ITypeLoader typeLoader;
         private IList<ITypeInfo>? commandTypes;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultCommandRegistry"/> class.
+        /// Initializes a new instance of the <see cref="MessagingCommandRegistry"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">The type loader.</param>
-        public DefaultCommandRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
+        public MessagingCommandRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
         {
             this.appRuntime = appRuntime;
             this.typeLoader = typeLoader;

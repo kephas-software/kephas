@@ -32,6 +32,6 @@ namespace Kephas.Application.Console
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        Task<object> ProcessAsync(string command, IExpando args = null, IContext context = null, CancellationToken cancellationToken = default);
+        Task<object?> ProcessAsync(string command, IExpando? args = null, IContext? context = null, CancellationToken cancellationToken = default);
     }
 }
