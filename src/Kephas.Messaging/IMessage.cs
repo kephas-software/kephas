@@ -43,21 +43,6 @@ namespace Kephas.Messaging
         }
 
         /// <summary>
-        /// Gets the content of the message.
-        /// </summary>
-        /// <remarks>
-        /// In case of a message envelope, it returns the contained message, otherwise the message itself.
-        /// </remarks>
-        /// <param name="message">The message to act on.</param>
-        /// <returns>
-        /// The message content.
-        /// </returns>
-        internal static object GetContent(this object message)
-        {
-            return message is IMessageEnvelope envelope ? envelope.GetContent() : message;
-        }
-
-        /// <summary>
         /// Converts the provided object to a message.
         /// </summary>
         /// <param name="data">The object to be converted.</param>
@@ -65,7 +50,7 @@ namespace Kephas.Messaging
         /// The object as an <see cref="IMessage"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static IMessage ToMessage(this object data)
+        public static IMessage? ToMessage(this object? data)
         {
             return data == null
                 ? null
@@ -82,13 +67,28 @@ namespace Kephas.Messaging
         /// The object as an <see cref="IEvent"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static IEvent ToEvent(this object data)
+        public static IEvent? ToEvent(this object? data)
         {
             return data == null
                 ? null
                 : data is IEvent @event
                     ? @event
                     : new EventEnvelope { Event = data };
+        }
+
+        /// <summary>
+        /// Gets the content of the message.
+        /// </summary>
+        /// <remarks>
+        /// In case of a message envelope, it returns the contained message, otherwise the message itself.
+        /// </remarks>
+        /// <param name="message">The message to act on.</param>
+        /// <returns>
+        /// The message content.
+        /// </returns>
+        internal static object GetContent(this object message)
+        {
+            return message is IMessageEnvelope envelope ? envelope.GetContent() : message;
         }
     }
 }
