@@ -137,7 +137,7 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult ReturnValue<TResult>(this TResult result, object returnValue)
+        public static TResult ReturnValue<TResult>(this TResult result, object? returnValue)
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
