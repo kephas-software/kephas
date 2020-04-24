@@ -29,7 +29,7 @@ namespace Kephas.Services
         /// <summary>
         /// The identity.
         /// </summary>
-        private IIdentity identity;
+        private IIdentity? identity;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
@@ -114,7 +114,7 @@ namespace Kephas.Services
         /// <newValue>
         /// The authenticated user.
         /// </newValue>
-        public IIdentity Identity
+        public IIdentity? Identity
         {
             get => this.identity;
             set
@@ -153,7 +153,7 @@ namespace Kephas.Services
         /// <returns>
         /// True if validation succeeds, false if it fails.
         /// </returns>
-        protected virtual bool ValidateIdentity(IIdentity currentValue, IIdentity newValue)
+        protected virtual bool ValidateIdentity(IIdentity? currentValue, IIdentity? newValue)
         {
             if (currentValue != null && currentValue != newValue)
             {

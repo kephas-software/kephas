@@ -48,7 +48,7 @@ namespace Kephas.Services
         /// <value>
         /// The authenticated identity.
         /// </value>
-        IIdentity Identity { get; set; }
+        IIdentity? Identity { get; set; }
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ namespace Kephas.Services
         /// This <paramref name="context"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TContext Set<TContext>(this TContext context, string key, object value)
+        public static TContext Set<TContext>(this TContext context, string key, object? value)
             where TContext : class, IContext
         {
             Requires.NotNull(context, nameof(context));
@@ -92,7 +92,7 @@ namespace Kephas.Services
         /// This <paramref name="context"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TContext Impersonate<TContext>(this TContext context, IContext parentContext)
+        public static TContext Impersonate<TContext>(this TContext context, IContext? parentContext)
             where TContext : class, IContext
         {
             if (parentContext != null)
@@ -112,7 +112,7 @@ namespace Kephas.Services
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext Impersonate<TContext>(this TContext context, IIdentity identity)
+        public static TContext Impersonate<TContext>(this TContext context, IIdentity? identity)
             where TContext : class, IContext
         {
             Requires.NotNull(context, nameof(context));

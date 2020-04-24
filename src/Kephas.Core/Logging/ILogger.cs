@@ -106,7 +106,7 @@ namespace Kephas.Logging
         /// <returns>
         /// An aggregated logger.
         /// </returns>
-        public static ILogger Merge(this ILogger? logger, params ILogger[] loggers)
+        public static ILogger? Merge(this ILogger? logger, params ILogger?[]? loggers)
         {
             var validLoggers = loggers?.Where(l => l != null).ToList();
             if (validLoggers == null || validLoggers.Count == 0)
@@ -116,11 +116,11 @@ namespace Kephas.Logging
 
             if (logger == null)
             {
-                return validLoggers.Count == 1 ? validLoggers[0] : new AggregateLogger(validLoggers);
+                return validLoggers.Count == 1 ? validLoggers[0] : new AggregateLogger(validLoggers!);
             }
 
             validLoggers.Add(logger);
-            return new AggregateLogger(validLoggers);
+            return new AggregateLogger(validLoggers!);
         }
 
         /// <summary>

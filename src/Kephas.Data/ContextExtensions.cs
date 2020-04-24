@@ -35,7 +35,7 @@ namespace Kephas.Data
         /// <returns>
         /// An enumeration of entity entry.
         /// </returns>
-        public static IEnumerable<IChangeStateTrackableEntityEntry> InitialData(this IContext context)
+        public static IEnumerable<IChangeStateTrackableEntityEntry>? InitialData(this IContext? context)
         {
             return context?[InitialDataConfigurationName] as IEnumerable<IChangeStateTrackableEntityEntry>;
         }

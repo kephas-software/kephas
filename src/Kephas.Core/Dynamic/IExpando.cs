@@ -104,7 +104,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The target expando object.
         /// </returns>
-        public static T Merge<T>(this T expando, object source)
+        public static T Merge<T>(this T expando, object? source)
             where T : IExpando
         {
             if (expando == null || source == null || (object)expando == source)
@@ -162,8 +162,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The lax value.
         /// </returns>
-        public static T GetLaxValue<T>(
-            this IIndexable expando, string member, T defaultValue = default)
+        public static T GetLaxValue<T>(this IIndexable expando, string member, T defaultValue = default)
         {
             Requires.NotNull(expando, nameof(expando));
 
