@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Console
+namespace Kephas.Commands.Messaging
 {
     using System.Threading;
     using System.Threading.Tasks;

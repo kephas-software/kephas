@@ -37,7 +37,7 @@ namespace Kephas.Serialization
         /// An asynchronous result.
         /// </returns>
         Task SerializeAsync(
-            object obj,
+            object? obj,
             TextWriter textWriter,
             ISerializationContext context,
             CancellationToken cancellationToken = default);
@@ -51,8 +51,8 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the serialized object.
         /// </returns>
-        Task<string> SerializeAsync(
-            object obj,
+        Task<string?> SerializeAsync(
+            object? obj,
             ISerializationContext context,
             CancellationToken cancellationToken = default);
 
@@ -65,7 +65,7 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        Task<object> DeserializeAsync(
+        Task<object?> DeserializeAsync(
             TextReader textReader,
             ISerializationContext context,
             CancellationToken cancellationToken = default);
@@ -79,7 +79,7 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        Task<object> DeserializeAsync(
+        Task<object?> DeserializeAsync(
             string serializedObj,
             ISerializationContext context,
             CancellationToken cancellationToken = default);
@@ -92,7 +92,7 @@ namespace Kephas.Serialization
         /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
         /// <param name="context">The context containing serialization options.</param>
         void Serialize(
-            object obj,
+            object? obj,
             TextWriter textWriter,
             ISerializationContext context)
         {
@@ -108,7 +108,7 @@ namespace Kephas.Serialization
         /// The serialized object.
         /// </returns>
         string Serialize(
-            object obj,
+            object? obj,
             ISerializationContext context)
         {
             return this.SerializeAsync(obj, context).GetResultNonLocking();
@@ -177,7 +177,7 @@ namespace Kephas.Serialization
         /// <param name="textWriter">The <see cref="TextWriter"/> used to write the object content.</param>
         /// <param name="context">The context containing serialization options.</param>
         void Serialize(
-            object obj,
+            object? obj,
             TextWriter textWriter,
             ISerializationContext context);
 
@@ -190,7 +190,7 @@ namespace Kephas.Serialization
         /// The serialized object.
         /// </returns>
         string Serialize(
-            object obj,
+            object? obj,
             ISerializationContext context);
 
         /// <summary>

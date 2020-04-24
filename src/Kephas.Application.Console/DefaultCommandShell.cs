@@ -14,6 +14,7 @@ namespace Kephas.Application.Console
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Commands;
     using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -84,7 +85,7 @@ namespace Kephas.Application.Console
 
                 this.WritePrompt();
 
-                string commandLine = null;
+                string? commandLine = null;
                 try
                 {
                     commandLine = await this.ReadCommandLineAsync(cancellationToken).PreserveThreadContext();
@@ -182,7 +183,7 @@ namespace Kephas.Application.Console
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task WriteCommandOutputAsync(object result, CancellationToken cancellationToken)
+        protected virtual async Task WriteCommandOutputAsync(object? result, CancellationToken cancellationToken)
         {
             var serializedResult = await this.serializationService.JsonSerializeAsync(
                                        result,

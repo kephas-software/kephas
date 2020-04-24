@@ -123,4 +123,10 @@
   <data name="DefaultCommandRegistry_CommandNotFound" xml:space="preserve">
     <value>Command type for '{0}' not found.</value>
   </data>
+  <data name="MissingCommandName_Warning" xml:space="preserve">
+    <value>Please provide one command name to see the information about that command. Example: 'help &lt;command&gt;'.</value>
+  </data>
+  <data name="NoMatchingCommands_Warning" xml:space="preserve">
+    <value>No commands with the filter '{0}*' found.</value>
+  </data>
 </root>

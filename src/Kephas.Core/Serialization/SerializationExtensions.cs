@@ -473,10 +473,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// The serialized object as a string in the specified format.
         /// </returns>
-        public static string Serialize<TMediaType>(
+        public static string? Serialize<TMediaType>(
             this ISerializationService serializationService,
-            object obj,
-            Action<ISerializationContext> optionsConfig = null)
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null)
             where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
@@ -505,10 +505,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// A Task promising the serialized object as a JSON string.
         /// </returns>
-        public static Task<string> JsonSerializeAsync(
+        public static Task<string?> JsonSerializeAsync(
             this ISerializationService serializationService,
-            object obj,
-            Action<ISerializationContext> optionsConfig = null,
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return SerializeAsync<JsonMediaType>(serializationService, obj, optionsConfig, cancellationToken);
@@ -523,10 +523,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// The serialized object as a JSON string.
         /// </returns>
-        public static string JsonSerialize(
+        public static string? JsonSerialize(
             this ISerializationService serializationService,
-            object obj,
-            Action<ISerializationContext> optionsConfig = null)
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null)
         {
             return Serialize<JsonMediaType>(serializationService, obj, optionsConfig);
         }
@@ -541,10 +541,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// A Task promising the serialized object as a XML string.
         /// </returns>
-        public static Task<string> XmlSerializeAsync(
+        public static Task<string?> XmlSerializeAsync(
             this ISerializationService serializationService,
-            object obj,
-            Action<ISerializationContext> optionsConfig = null,
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return SerializeAsync<XmlMediaType>(serializationService, obj, optionsConfig, cancellationToken);
@@ -559,10 +559,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// The serialized object as a XML string.
         /// </returns>
-        public static string XmlSerialize(
+        public static string? XmlSerialize(
             this ISerializationService serializationService,
-            object obj,
-            Action<ISerializationContext> optionsConfig = null)
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null)
         {
             return Serialize<XmlMediaType>(serializationService, obj, optionsConfig);
         }
@@ -578,7 +578,7 @@ namespace Kephas.Serialization
         /// <param name="context">The context containing serialization options.</param>
         public static void Serialize(
             this ISerializer serializer,
-            object obj,
+            object? obj,
             TextWriter textWriter,
             ISerializationContext context)
         {
@@ -605,7 +605,7 @@ namespace Kephas.Serialization
         /// </returns>
         public static string Serialize(
             this ISerializer serializer,
-            object obj,
+            object? obj,
             ISerializationContext context)
         {
             Requires.NotNull(serializer, nameof(serializer));

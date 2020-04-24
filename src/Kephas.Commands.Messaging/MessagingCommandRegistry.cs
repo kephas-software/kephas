@@ -10,14 +10,14 @@
 
 #nullable enable
 
-namespace Kephas.Application.Console
+namespace Kephas.Commands.Messaging
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
-    using Kephas;
+    using Kephas.Application;
     using Kephas.Commands.Messaging.Resources;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;

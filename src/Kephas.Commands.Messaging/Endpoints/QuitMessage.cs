@@ -8,11 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Console.Endpoints
-{
-    using Kephas.ComponentModel.DataAnnotations;
-    using Kephas.Messaging;
+using Kephas.ComponentModel.DataAnnotations;
+using Kephas.Messaging;
 
+namespace Kephas.Commands.Messaging.Endpoints
+{
     /// <summary>
     /// A quit message.
     /// </summary>

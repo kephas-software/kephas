@@ -8,11 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Console.Endpoints
+namespace Kephas.Commands.Messaging.Endpoints
 {
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Interaction;
     using Kephas.Messaging;
     using Kephas.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace Kephas.Application.Console.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<IMessage> ProcessAsync(QuitMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<IMessage?> ProcessAsync(QuitMessage message, IMessagingContext context, CancellationToken token)
         {
             await this.eventHub.PublishAsync(new ShutdownSignal("Shutdown triggered by user"), context).PreserveThreadContext();
             return null;

@@ -117,10 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MissingCommandName_Warning" xml:space="preserve">
-    <value>Please provide one command name to see the information about that command. Example: 'help &lt;command&gt;'.</value>
-  </data>
-  <data name="NoMatchingCommands_Warning" xml:space="preserve">
-    <value>No commands with the filter '{0}*' found.</value>
-  </data>
 </root>

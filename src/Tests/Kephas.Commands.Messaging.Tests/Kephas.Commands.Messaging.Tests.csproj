@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netcoreapp3.1;net461</TargetFrameworks>
@@ -44,7 +44,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
-        <ProjectReference Include="..\..\Kephas.Application.Console\Kephas.Application.Console.csproj" />
+        <ProjectReference Include="..\..\Kephas.Messaging\Kephas.Messaging.csproj" />
+        <ProjectReference Include="..\..\Kephas.Commands.Messaging\Kephas.Commands.Messaging.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 

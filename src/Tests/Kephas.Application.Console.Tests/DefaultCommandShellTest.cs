@@ -15,6 +15,7 @@ namespace Kephas.Application.Console.Tests
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Commands;
     using Kephas.Dynamic;
     using Kephas.Net.Mime;
     using Kephas.Serialization;

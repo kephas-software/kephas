@@ -8,19 +8,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Console.Tests
+namespace Kephas.Commands.Messaging.Tests
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
-    using Kephas.Commands;
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Lite.Hosting;
+    using Kephas.Messaging;
     using Kephas.Testing.Composition;
 
-    public abstract class ConsoleTestBase : CompositionTestBase
+    public abstract class CommandsTestBase : CompositionTestBase
     {
         public override ICompositionContext CreateContainer(IAmbientServices ambientServices = null, IEnumerable<Assembly> assemblies = null, IEnumerable<Type> parts = null, Action<LiteCompositionContainerBuilder> config = null)
         {
@@ -39,9 +40,10 @@ namespace Kephas.Application.Console.Tests
             var assemblies = base.GetDefaultConventionAssemblies().ToList();
             assemblies.AddRange(new[]
                         {
-                            typeof(IAppManager).Assembly,           // Kephas.Application
-                            typeof(ICommandProcessor).Assembly,     // Kephas.Commands
-                            typeof(IConsole).Assembly,              // Kephas.Application.Console
+                            typeof(IAppManager).Assembly,               // Kephas.Application
+                            typeof(IMessageProcessor).Assembly,         // Kephas.Messaging
+                            typeof(ICommandProcessor).Assembly,         // Kephas.Commands
+                            typeof(MessagingCommandProcessor).Assembly, // Kephas.Commands.Messaging
                         });
 
             return assemblies;

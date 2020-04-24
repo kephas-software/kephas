@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Console.Endpoints
+using System.ComponentModel.DataAnnotations;
+using Kephas.ComponentModel.DataAnnotations;
+using Kephas.Messaging;
+
+namespace Kephas.Commands.Messaging.Endpoints
 {
-    using System.ComponentModel.DataAnnotations;
-
-    using Kephas.ComponentModel.DataAnnotations;
-    using Kephas.Messaging;
-
     /// <summary>
     /// A help message.
     /// </summary>
@@ -42,7 +41,7 @@ namespace Kephas.Application.Console.Endpoints
         /// <value>
         /// The command.
         /// </value>
-        public object Command { get; set; }
+        public object? Command { get; set; }
 
         /// <summary>
         /// Gets or sets the description.
@@ -50,7 +49,7 @@ namespace Kephas.Application.Console.Endpoints
         /// <value>
         /// The description.
         /// </value>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// Gets or sets options for controlling the operation.

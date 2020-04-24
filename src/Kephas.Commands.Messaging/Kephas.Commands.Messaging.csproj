@@ -73,10 +73,24 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\Kephas.Commands\Kephas.Commands.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
     </ItemGroup>
+
+    <Choose>
+        <When Condition="'$(TargetFramework)'=='net461'">
+            <ItemGroup>
+                <Reference Include="System.ComponentModel.DataAnnotations" />
+            </ItemGroup>
+        </When>
+        <Otherwise>
+            <ItemGroup>
+                <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
+            </ItemGroup>
+        </Otherwise>
+    </Choose>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">

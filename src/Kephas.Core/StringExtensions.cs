@@ -115,7 +115,7 @@ namespace Kephas
         /// The formatted string.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string FormatWith(this string format, params object[] args)
+        public static string FormatWith(this string format, params object?[] args)
             => string.Format(format, args);
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Kephas
         /// A string.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string JoinWith(this string separator, params object[] args)
+        public static string JoinWith(this string separator, params object?[] args)
             => string.Join(separator, args);
     }
 }

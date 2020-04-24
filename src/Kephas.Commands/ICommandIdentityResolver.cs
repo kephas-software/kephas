@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Console
+namespace Kephas.Commands
 {
     using System.Security.Principal;
 

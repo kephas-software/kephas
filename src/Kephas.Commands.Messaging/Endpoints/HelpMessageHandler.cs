@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Console.Endpoints
+namespace Kephas.Commands.Messaging.Endpoints
 {
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Kephas.Application.Console.Resources;
+    using Kephas.Commands.Messaging.Resources;
     using Kephas.Messaging;
     using Kephas.Reflection;
 

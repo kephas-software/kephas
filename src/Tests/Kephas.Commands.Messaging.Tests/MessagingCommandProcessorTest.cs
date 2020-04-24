@@ -8,15 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Console.Tests
+namespace Kephas.Commands.Messaging.Tests
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Kephas.Application.Console.Endpoints;
+    using Kephas.Commands.Messaging.Endpoints;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging;
@@ -26,7 +25,7 @@ namespace Kephas.Application.Console.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessagingCommandProcessorTest : ConsoleTestBase
+    public class MessagingCommandProcessorTest : CommandsTestBase
     {
         [Test]
         public void Composition()
