@@ -15,6 +15,8 @@ $paths = @(
     "..\Kephas.Application.Console",
     "..\Kephas.CodeAnalysis",
     "..\Kephas.Collections",
+    "..\Kephas.Commands",
+    "..\Kephas.Commands.Messaging",
     "..\Kephas.Composition.Autofac",
     "..\Kephas.Composition.Mef",
     "..\Kephas.Core",
