@@ -63,7 +63,7 @@ namespace Kephas.Serialization.Json
         ///                            name of the serialized object.</param>
         /// <param name="typeName">[out] Specifies the <see cref="T:System.Type" /> name of the
         ///                        serialized object.</param>
-        public override void BindToName(Type serializedType, out string assemblyName, out string typeName)
+        public override void BindToName(Type serializedType, out string? assemblyName, out string typeName)
         {
             base.BindToName(serializedType, out _, out typeName);
             assemblyName = null;

@@ -97,7 +97,7 @@ namespace Kephas.Serialization.Json
 
         void ICollection<object>.CopyTo(object[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>

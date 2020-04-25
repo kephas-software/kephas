@@ -30,7 +30,7 @@ namespace Kephas.Serialization.Json
     /// </summary>
     public class DefaultJsonSerializerSettingsProvider : Loggable, IJsonSerializerSettingsProvider
     {
-        private static DefaultJsonSerializerSettingsProvider instance;
+        private static DefaultJsonSerializerSettingsProvider? instance;
         private readonly ICollection<JsonConverter> jsonConverters;
         private readonly ILogManager logManager;
 
@@ -43,7 +43,7 @@ namespace Kephas.Serialization.Json
         public DefaultJsonSerializerSettingsProvider(
             ITypeResolver typeResolver,
             ILogManager logManager,
-            ICollection<IJsonConverter> jsonConverters = null)
+            ICollection<IJsonConverter>? jsonConverters = null)
             : base(logManager)
         {
             Requires.NotNull(typeResolver, nameof(typeResolver));
@@ -65,7 +65,7 @@ namespace Kephas.Serialization.Json
         /// <value>
         /// The instance.
         /// </value>
-        public static DefaultJsonSerializerSettingsProvider Instance => instance ?? (instance = CreateDefaultInstance());
+        public static DefaultJsonSerializerSettingsProvider Instance => instance ??= CreateDefaultInstance();
 
         /// <summary>
         /// Gets the type resolver.
@@ -76,48 +76,44 @@ namespace Kephas.Serialization.Json
         public ITypeResolver TypeResolver { get; }
 
         /// <summary>
-        /// Gets the JSON serializer settings.
+        /// Configures the provided json serializer settings.
         /// </summary>
-        /// <returns>
-        /// The JSON serializer settings.
-        /// </returns>
-        public JsonSerializerSettings GetJsonSerializerSettings()
-        {
-            return this.GetJsonSerializerSettings(
+        /// <param name="settings">The serializer settings to configure.</param>
+        public void ConfigureJsonSerializerSettings(JsonSerializerSettings settings) =>
+            this.ConfigureJsonSerializerSettings(
+                settings,
                 camelCase: true,
-                thrownOnMissingMembers: true,
+                throwOnMissingMembers: true,
                 converters: this.jsonConverters);
-        }
 
         /// <summary>
-        /// Gets the json serializer settings.
+        /// Configures the json serializer settings.
         /// </summary>
-        /// <param name="camelCase">If set to <c>true</c> the ccamel case will be used for properties.</param>
-        /// <param name="thrownOnMissingMembers">If set to <c>true</c> [thrown on missing members].</param>
+        /// <param name="serializerSettings">The serializer settings to configure.</param>
+        /// <param name="camelCase">If set to <c>true</c> the camel case will be used for properties.</param>
+        /// <param name="throwOnMissingMembers">If set to <c>true</c> the serializer will throw on missing members.</param>
         /// <param name="converters">The json converters.</param>
         /// <returns>
-        /// The json serializer settings.
+        /// The provided json serializer settings.
         /// </returns>
-        protected virtual JsonSerializerSettings GetJsonSerializerSettings(
+        protected virtual JsonSerializerSettings ConfigureJsonSerializerSettings(
+            JsonSerializerSettings serializerSettings,
             bool camelCase,
-            bool thrownOnMissingMembers = true,
-            IEnumerable<JsonConverter> converters = null)
+            bool throwOnMissingMembers = true,
+            IEnumerable<JsonConverter>? converters = null)
         {
-            var serializerSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Include,
-                ////PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                ////ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple,
-                MissingMemberHandling = thrownOnMissingMembers
-                                            ? MissingMemberHandling.Error
-                                            : MissingMemberHandling.Ignore,
-                Error = this.HandleJsonSerializationError,
-                ContractResolver = this.GetContractResolver(camelCase),
-                SerializationBinder = this.GetSerializationBinder(),
-                TraceWriter = new JsonTraceWriter(this.logManager),
-            };
+            serializerSettings.NullValueHandling = NullValueHandling.Include;
+            ////serializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            ////serializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            serializerSettings.TypeNameHandling = TypeNameHandling.Objects;
+            serializerSettings.TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple;
+            serializerSettings.MissingMemberHandling = throwOnMissingMembers
+                ? MissingMemberHandling.Error
+                : MissingMemberHandling.Ignore;
+            serializerSettings.Error = this.HandleJsonSerializationError;
+            serializerSettings.ContractResolver = this.GetContractResolver(camelCase);
+            serializerSettings.SerializationBinder = this.GetSerializationBinder();
+            serializerSettings.TraceWriter = new JsonTraceWriter(this.logManager);
 
             serializerSettings.Converters.AddRange(converters ?? this.jsonConverters);
 
