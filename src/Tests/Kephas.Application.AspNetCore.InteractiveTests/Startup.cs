@@ -1,3 +1,5 @@
+using Kephas.Serialization.Json;
+
 namespace Kephas.Application.AspNetCore.InteractiveTests
 {
     using System;
@@ -32,9 +34,19 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         /// <param name="services">Collection of services.</param>
         public override void ConfigureServices(IServiceCollection services)
         {
+            var ambientServices = services.GetAmbientServices();
+
+            // TODO add assembly parts for MVC controller auto discovery.
+
             services
                 .AddRazorPages()
-                .AddNewtonsoftJson();
+                .AddNewtonsoftJson(
+                    options =>
+                    {
+                        var jsonSettingsProvider = this.AmbientServices.CompositionContainer
+                            .GetExport<IJsonSerializerSettingsProvider>();
+                        jsonSettingsProvider.ConfigureJsonSerializerSettings(options.SerializerSettings);
+                    });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -105,12 +117,7 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         /// <param name="ambientServices">The ambient services.</param>
         protected override void ConfigureAmbientServices(IAmbientServices ambientServices)
         {
-            var serilogConfig = new LoggerConfiguration()
-                .ReadFrom.Configuration(this.Configuration);
-
             ambientServices
-                .WithSerilogManager(serilogConfig)
-                .WithDynamicAppRuntime()
                 .WithAutofacCompositionContainer();
         }
     }

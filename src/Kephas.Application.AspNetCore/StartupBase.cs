@@ -54,7 +54,7 @@ namespace Kephas.Application.AspNetCore
         /// <param name="config">The configuration.</param>
         /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        protected StartupBase(IWebHostEnvironment env, IConfiguration config, IAmbientServices ambientServices = null, string[] appArgs = null)
+        protected StartupBase(IWebHostEnvironment env, IConfiguration config, IAmbientServices? ambientServices = null, string[]? appArgs = null)
             : base(ambientServices)
         {
             this.HostEnvironment = env;
