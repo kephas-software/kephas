@@ -791,14 +791,14 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Builds and sets the Lite composition container to the ambient services.
+        /// Builds the composition container using Lite and adds it to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="containerBuilderConfig">Optional. The container builder configuration.</param>
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices BuildLiteCompositionContainer(this IAmbientServices ambientServices, Action<LiteCompositionContainerBuilder>? containerBuilderConfig = null)
+        public static IAmbientServices BuildWithLite(this IAmbientServices ambientServices, Action<LiteCompositionContainerBuilder>? containerBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 

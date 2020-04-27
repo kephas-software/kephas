@@ -35,12 +35,12 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
     public class LiteCompositionContainerBuilderTest
     {
         [Test]
-        public void BuildLiteCompositionContainer_app_manager()
+        public void BuildWithLite_app_manager()
         {
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime(an => !this.IsTestAssembly(an));
 
-            ambientServices.BuildLiteCompositionContainer();
+            ambientServices.BuildWithLite();
 
             Assert.IsInstanceOf<CompositionContextAdapter>(ambientServices.CompositionContainer);
 
@@ -49,88 +49,88 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         }
 
         [Test]
-        public void BuildLiteCompositionContainer_closed_generic()
+        public void BuildWithLite_closed_generic()
         {
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly);
 
-            ambientServices.BuildLiteCompositionContainer(b => b.WithParts(new[] { typeof(IGeneric<>), typeof(IntGeneric) }));
+            ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGeneric<>), typeof(IntGeneric) }));
 
             var service = ambientServices.GetService(typeof(IGeneric<int>));
             Assert.IsInstanceOf<IntGeneric>(service);
         }
 
         [Test]
-        public void BuildLiteCompositionContainer_closed_generic_dependency()
+        public void BuildWithLite_closed_generic_dependency()
         {
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly);
 
-            ambientServices.BuildLiteCompositionContainer(b => b.WithParts(new[] { typeof(IGeneric<>), typeof(IntGeneric), typeof(IntGenericDepedent) }));
+            ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGeneric<>), typeof(IntGeneric), typeof(IntGenericDepedent) }));
 
             var service = ambientServices.GetService<IntGenericDepedent>();
             Assert.IsNotNull(service);
         }
 
         [Test]
-        public void BuildLiteCompositionContainer_closed_generic_with_non_generic_contract_metadata()
+        public void BuildWithLite_closed_generic_with_non_generic_contract_metadata()
         {
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly);
 
-            ambientServices.BuildLiteCompositionContainer(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(IntGenericSvc) }));
+            ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(IntGenericSvc) }));
 
             var serviceFactory = ambientServices.GetService<IExportFactory<INonGenericSvc, GenericSvcMetadata>>();
             Assert.AreSame(typeof(int), serviceFactory.Metadata.ServiceType);
         }
 
         [Test]
-        public void BuildLiteCompositionContainer_disposable_closed_generic_with_non_generic_contract_metadata()
+        public void BuildWithLite_disposable_closed_generic_with_non_generic_contract_metadata()
         {
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly);
 
-            ambientServices.BuildLiteCompositionContainer(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(DisposableIntGenericSvc) }));
+            ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IGenericSvc<>), typeof(INonGenericSvc), typeof(DisposableIntGenericSvc) }));
 
             var serviceFactory = ambientServices.GetService<IExportFactory<INonGenericSvc, GenericSvcMetadata>>();
             Assert.AreSame(typeof(int), serviceFactory.Metadata.ServiceType);
         }
 
         [Test]
-        public void BuildLiteCompositionContainer_multi_service_with_no_implementations()
+        public void BuildWithLite_multi_service_with_no_implementations()
         {
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly);
 
-            ambientServices.BuildLiteCompositionContainer(b => b.WithParts(new[] { typeof(IMultiService) }));
+            ambientServices.BuildWithLite(b => b.WithParts(new[] { typeof(IMultiService) }));
 
             var serviceFactoryList = ambientServices.GetService<IList<IExportFactory<IMultiService, AppServiceMetadata>>>();
             Assert.IsEmpty(serviceFactoryList);
         }
 
         [Test]
-        public void BuildLiteCompositionContainer_internally_owned_disposed()
+        public void BuildWithLite_internally_owned_disposed()
         {
             var disposable = Substitute.For<IDisposable>();
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly)
                 .Register<IDisposable>(b => b.WithInstance(disposable).ExternallyOwned(false));
 
-            ambientServices.BuildLiteCompositionContainer();
+            ambientServices.BuildWithLite();
 
             ambientServices.Dispose();
             disposable.Received(1).Dispose();
         }
 
         [Test]
-        public void BuildLiteCompositionContainer_externally_owned_disposed()
+        public void BuildWithLite_externally_owned_disposed()
         {
             var disposable = Substitute.For<IDisposable>();
             var ambientServices = new AmbientServices()
                 .WithStaticAppRuntime(this.IsAppAssembly)
                 .Register<IDisposable>(b => b.WithInstance(disposable).ExternallyOwned(true));
 
-            ambientServices.BuildLiteCompositionContainer();
+            ambientServices.BuildWithLite();
 
             ambientServices.Dispose();
             disposable.Received(0).Dispose();

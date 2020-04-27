@@ -69,7 +69,7 @@ namespace Kephas.Composition
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>, or <c>null</c> if a service with the provided contract was not found.</returns>
-        object TryGetExport(Type contractType, string? serviceName = null);
+        object? TryGetExport(Type contractType, string? serviceName = null);
 
         /// <summary>
         /// Tries to resolve the specified contract type.
@@ -302,7 +302,7 @@ namespace Kephas.Composition
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
             var importerType = typeof(IExportFactoryImporter<>).MakeGenericType(typeof(T));
-            var importer = (IExportFactoryImporter)compositionContext.TryGetExport(importerType);
+            var importer = (IExportFactoryImporter?)compositionContext.TryGetExport(importerType);
             return (IExportFactory<T>?)importer?.ExportFactory;
         }
 
@@ -320,7 +320,7 @@ namespace Kephas.Composition
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
             var importerType = typeof(IExportFactoryImporter<,>).MakeGenericType(typeof(T), typeof(TMetadata));
-            var importer = (IExportFactoryImporter)compositionContext.TryGetExport(importerType);
+            var importer = (IExportFactoryImporter?)compositionContext.TryGetExport(importerType);
             return (IExportFactory<T, TMetadata>?)importer?.ExportFactory;
         }
 

@@ -22,7 +22,7 @@ namespace Kephas.Composition.Mef.Hosting
     /// <summary>
     /// A MEF composition context.
     /// </summary>
-    public abstract class MefCompositionContextBase : ICompositionContext
+    public abstract class SystemCompositionContextBase : ICompositionContext
     {
         private static ConcurrentDictionary<CompositionContext, ICompositionContext> map = new ConcurrentDictionary<CompositionContext, ICompositionContext>();
 
@@ -42,7 +42,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <param name="contractType">Type of the contract.</param>
         /// <param name="serviceName">The service name.</param>
         /// <returns>An object implementing <paramref name="contractType"/>.</returns>
-        public virtual object GetExport(Type contractType, string serviceName = null)
+        public virtual object GetExport(Type contractType, string? serviceName = null)
         {
             this.AssertNotDisposed();
 
@@ -73,7 +73,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public virtual T GetExport<T>(string serviceName = null)
+        public virtual T GetExport<T>(string? serviceName = null)
             where T : class
         {
             this.AssertNotDisposed();
@@ -108,7 +108,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public virtual object TryGetExport(Type contractType, string serviceName = null)
+        public virtual object? TryGetExport(Type contractType, string? serviceName = null)
         {
             this.AssertNotDisposed();
 
@@ -127,7 +127,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public virtual T TryGetExport<T>(string serviceName = null)
+        public virtual T TryGetExport<T>(string? serviceName = null)
             where T : class
         {
             this.AssertNotDisposed();
@@ -168,14 +168,16 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// The composition context wrapper.
         /// </returns>
-        internal static ICompositionContext TryGetCompositionContext(CompositionContext context, bool createNewIfMissing)
+        internal static ICompositionContext? TryGetCompositionContext(CompositionContext context, bool createNewIfMissing)
         {
             if (map.TryGetValue(context, out var compositionContext))
             {
                 return compositionContext;
             }
 
-            return createNewIfMissing ? new MefScopedCompositionContext(new Export<CompositionContext>(context, () => { })) : null;
+            return createNewIfMissing
+                ? new SystemScopedCompositionContext(new Export<CompositionContext>(context, () => { }))
+                : null;
         }
 
         /// <summary>
@@ -197,7 +199,7 @@ namespace Kephas.Composition.Mef.Hosting
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MefCompositionContextBase"/> class.
+        /// Initializes a new instance of the <see cref="SystemCompositionContextBase"/> class.
         /// </summary>
         /// <param name="context">The inner container.</param>
         protected void Initialize(CompositionContext context)
@@ -234,7 +236,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         private static ICompositionContext GetOrAddCompositionContext(Export<CompositionContext> scopedContextExport)
         {
-            return map.GetOrAdd(scopedContextExport.Value, _ => new MefScopedCompositionContext(scopedContextExport));
+            return map.GetOrAdd(scopedContextExport.Value, _ => new SystemScopedCompositionContext(scopedContextExport));
         }
     }
 }

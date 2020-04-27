@@ -19,7 +19,7 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="MefScopedCompositionContext"/>.
+    /// Tests for <see cref="SystemScopedCompositionContext"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
@@ -31,7 +31,7 @@ namespace Kephas.Tests.Composition.Mef
             var container = this.CreateContainerWithBuilder(typeof(MefCompositionContainerTest.ScopeExportedClass));
             using (var scopedContext = container.CreateScopedContext())
             {
-                Assert.IsInstanceOf<MefScopedCompositionContext>(scopedContext);
+                Assert.IsInstanceOf<SystemScopedCompositionContext>(scopedContext);
                 var scopedInstance1 = scopedContext.GetExport<MefCompositionContainerTest.ScopeExportedClass>();
 
                 using (var nestedContext = scopedContext.CreateScopedContext())

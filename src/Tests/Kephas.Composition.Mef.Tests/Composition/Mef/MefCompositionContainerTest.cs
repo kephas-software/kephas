@@ -32,20 +32,20 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="MefCompositionContainer"/>.
+    /// Tests for <see cref="SystemCompositionContainer"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class MefCompositionContainerTest : MefCompositionTestBase
     {
-        public MefCompositionContainer CreateContainer(params Type[] types)
+        public SystemCompositionContainer CreateContainer(params Type[] types)
         {
             return this.WithEmptyConfiguration()
                 .WithParts(types)
                 .CreateCompositionContainer();
         }
 
-        public MefCompositionContainer CreateExportProvidersContainer(params Type[] types)
+        public SystemCompositionContainer CreateExportProvidersContainer(params Type[] types)
         {
             var config = this.WithEmptyConfiguration();
             return this.WithExportProviders(config).WithParts(types).CreateCompositionContainer();

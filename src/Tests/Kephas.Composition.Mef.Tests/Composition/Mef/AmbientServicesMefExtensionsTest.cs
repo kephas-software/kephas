@@ -25,26 +25,26 @@ namespace Kephas.Tests.Composition.Mef
     public class AmbientServicesMefExtensionsTest
     {
         [Test]
-        public void BuildMefCompositionContainer_defaults()
+        public void BuildWithSystemComposition_defaults()
         {
             var ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
-                .BuildMefCompositionContainer();
+                .BuildWithSystemComposition();
 
             var compositionContext = ambientServices.CompositionContainer;
-            Assert.IsInstanceOf<MefCompositionContainer>(compositionContext);
+            Assert.IsInstanceOf<SystemCompositionContainer>(compositionContext);
         }
 
         [Test]
-        public void BuildMefCompositionContainer_with_open_generic_override()
+        public void BuildWithSystemComposition_with_open_generic_override()
         {
             var ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
-                .BuildMefCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
+                .BuildWithSystemComposition(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
 
             var compositionContext = ambientServices.CompositionContainer;
             var moreOpen = compositionContext.GetExport<IOpen<int>>();
@@ -53,13 +53,13 @@ namespace Kephas.Tests.Composition.Mef
 
         [Test]
         [Ignore("Until a fix is found for BUG https://github.com/dotnet/corefx/issues/40094, ignore this test.")]
-        public void BuildMefCompositionContainer_with_open_generic_override_and_dependency()
+        public void BuildWithSystemComposition_with_open_generic_override_and_dependency()
         {
             var ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
-                .BuildMefCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
+                .BuildWithSystemComposition(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
 
             var compositionContext = ambientServices.CompositionContainer;
             var moreOpen = compositionContext.GetExport<IOpen<int>>();

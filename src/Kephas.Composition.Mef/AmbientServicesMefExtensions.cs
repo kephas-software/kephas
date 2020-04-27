@@ -22,12 +22,12 @@ namespace Kephas
     public static class AmbientServicesMefExtensions
     {
         /// <summary>
-        /// Builds and sets the composition container to the ambient services.
+        /// Builds the composition container using System.Composition and adds it to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
-        /// <returns>The provided ambient services builder.</returns>
-        public static IAmbientServices BuildMefCompositionContainer(this IAmbientServices ambientServices, Action<MefCompositionContainerBuilder> containerBuilderConfig = null)
+        /// <returns>The provided ambient services.</returns>
+        public static IAmbientServices BuildWithSystemComposition(this IAmbientServices ambientServices, Action<MefCompositionContainerBuilder> containerBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 

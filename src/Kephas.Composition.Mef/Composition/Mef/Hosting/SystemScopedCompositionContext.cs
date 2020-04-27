@@ -17,7 +17,7 @@ namespace Kephas.Composition.Mef.Hosting
     /// <summary>
     /// The MEF composition container.
     /// </summary>
-    public class MefScopedCompositionContext : MefCompositionContextBase
+    public class SystemScopedCompositionContext : SystemCompositionContextBase
     {
         /// <summary>
         /// The composition context export.
@@ -25,10 +25,10 @@ namespace Kephas.Composition.Mef.Hosting
         private Export<CompositionContext> export;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MefScopedCompositionContext"/> class.
+        /// Initializes a new instance of the <see cref="SystemScopedCompositionContext"/> class.
         /// </summary>
         /// <param name="export">The export.</param>
-        public MefScopedCompositionContext(Export<CompositionContext> export)
+        public SystemScopedCompositionContext(Export<CompositionContext> export)
         {
             Requires.NotNull(export, nameof(export));
 

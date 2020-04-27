@@ -69,7 +69,7 @@ namespace Kephas.Composition.Mef.ExportProviders
                         dependencies => ExportDescriptor.Create(
                             (c, o) =>
                                 {
-                                    var instance = MefCompositionContextBase.TryGetCompositionContext(c, createNewIfMissing: false) ?? this.compositionContainer;
+                                    var instance = SystemCompositionContextBase.TryGetCompositionContext(c, createNewIfMissing: false) ?? this.compositionContainer;
                                     return instance;
                                 },
                         ExportDescriptorProvider.NoMetadata))
