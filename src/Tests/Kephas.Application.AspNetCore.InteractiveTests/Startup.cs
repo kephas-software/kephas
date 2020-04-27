@@ -118,7 +118,7 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         protected override void ConfigureAmbientServices(IAmbientServices ambientServices)
         {
             ambientServices
-                .WithAutofacCompositionContainer();
+                .BuildAutofacCompositionContainer();
         }
     }
 }

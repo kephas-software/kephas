@@ -49,7 +49,7 @@ namespace Kephas
             if (descriptor == null)
             {
                 return throwOnNotFound
-                    ? throw new ServiceException($"The ambient services were not found. Add them previously using the {nameof(AddAmbientServices)}() method.")
+                    ? throw new ServiceException($"The ambient services were not found. Before getting, add them using the {nameof(AddAmbientServices)}() method.")
                     : (IAmbientServices?)null;
             }
 

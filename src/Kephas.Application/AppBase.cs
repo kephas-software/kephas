@@ -34,7 +34,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="ambientServices">Optional. The ambient services. If not provided then
         ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
-        protected AppBase(IAmbientServices ambientServices = null)
+        protected AppBase(IAmbientServices? ambientServices = null)
         {
             this.AmbientServices = ambientServices ?? new AmbientServices();
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
@@ -73,7 +73,7 @@ namespace Kephas.Application
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
         public virtual async Task<(IAppContext appContext, AppShutdownInstruction instruction)> BootstrapAsync(
-            string[] rawAppArgs = null,
+            string[]? rawAppArgs = null,
             CancellationToken cancellationToken = default)
         {
             this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
@@ -152,7 +152,7 @@ namespace Kephas.Application
         /// <returns>
         /// True if the initialization was performed, false if it was ignored because of subsequent calls.
         /// </returns>
-        protected virtual bool InitializePrerequisites(string[] rawAppArgs)
+        protected virtual bool InitializePrerequisites(string[]? rawAppArgs)
         {
             if (this.prerequisitesInitialized)
             {
@@ -168,8 +168,8 @@ namespace Kephas.Application
                 // registers the application context as a global service, so that other services can benefit from it.
                 this.AmbientServices.Register<IAppContext>(b => b.WithFactory(ctx => this.AppContext).AsTransient());
 
-                var appArgs = rawAppArgs == null ? new AppArgs() : new AppArgs(rawAppArgs);
-                this.AmbientServices.Register<IAppArgs>(b => b.WithInstance(appArgs));
+                this.AmbientServices.RegisterAppArgs(rawAppArgs);
+
                 this.ConfigureAmbientServices(this.AmbientServices);
 
                 this.Logger ??= this.AmbientServices.GetLogger(this.GetType());
@@ -359,9 +359,9 @@ namespace Kephas.Application
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        protected virtual bool Log(LogLevel level, Exception exception, string messageFormat = null, params object[] args)
+        protected virtual bool Log(LogLevel level, Exception? exception, string? messageFormat = null, params object[] args)
         {
-            return this.Logger?.Log(level, exception, messageFormat ?? exception.Message, args) ?? false;
+            return this.Logger?.Log(level, exception, messageFormat ?? exception?.Message, args) ?? false;
         }
     }
 }

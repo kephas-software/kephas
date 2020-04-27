@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Serilog;
-
 namespace Kephas.Application.AspNetCore.InteractiveTests
 {
     using Kephas.Extensions.DependencyInjection;
@@ -15,6 +13,7 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
+    using Serilog;
 
     public class Program
     {
@@ -25,11 +24,12 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var hostBuilderFactory = new HostBuilderFactory(args);
-            return hostBuilderFactory
-                    .CreateHostBuilder(PreconfigureAmbientServices)
+            var ambientServices = new AmbientServices();
+            return Host.CreateDefaultBuilder(args)
+                    .ConfigureAmbientServices(ambientServices, args, PreconfigureAmbientServices)
                     .ConfigureWebHostDefaults(
                         webBuilder => webBuilder
+                                        .UseAmbientServices(ambientServices)
                                         .UseUrls("http://*:5100", "https://*:5101")
                                         .UseStartup<Startup>())
                     .ConfigureAppConfiguration(b => b.AddJsonFile("appSettings.json"));

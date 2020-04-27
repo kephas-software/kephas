@@ -11,7 +11,6 @@
 namespace Kephas.Application.AspNetCore
 {
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas;
@@ -43,7 +42,7 @@ namespace Kephas.Application.AspNetCore
     /// </remarks>
     public abstract class StartupBase : AppBase
     {
-        private readonly string[] appArgs;
+        private readonly string[]? appArgs;
         private Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection;
         private Task bootstrapTask;
 
@@ -160,7 +159,7 @@ namespace Kephas.Application.AspNetCore
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopping" event.
             appLifetime.ApplicationStopping.Register(() => this.ShutdownAsync().WaitNonLocking());
-            appLifetime.ApplicationStopped.Register(() => this.FinalizeWebHostPrerequisites());
+            appLifetime.ApplicationStopped.Register(() => this.FinalizeWebAppPrerequisites());
         }
 
         /// <summary>
@@ -173,7 +172,7 @@ namespace Kephas.Application.AspNetCore
         /// <summary>
         /// Finalize the web host prerequisites.
         /// </summary>
-        protected virtual void FinalizeWebHostPrerequisites()
+        protected virtual void FinalizeWebAppPrerequisites()
         {
             base.FinalizePrerequisites();
         }

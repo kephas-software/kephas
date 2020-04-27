@@ -16,6 +16,7 @@ namespace Kephas.Application
     using System.Runtime.CompilerServices;
 
     using Kephas.Application.Reflection;
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for <see cref="IAppRuntime"/>.
@@ -58,6 +59,29 @@ namespace Kephas.Application
             }
 
             return appRuntime.GetFeatures().Any(f => string.Equals(f.Name, featureName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Register the application arguments as <see cref="IAppArgs"/> service.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="args">The application arguments.</param>
+        /// <returns>The provided ambient services.</returns>
+        public static IAmbientServices RegisterAppArgs(this IAmbientServices ambientServices, IEnumerable<string>? args = null)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            // register the app args if not already registered or the raw args are provided
+            if (args != null)
+            {
+                ambientServices.Register<IAppArgs>(b => b.WithInstance(new AppArgs(args)));
+            }
+            else if (!ambientServices.IsRegistered(typeof(IAppArgs)))
+            {
+                ambientServices.Register<IAppArgs>(b => b.WithInstance(new AppArgs()));
+            }
+
+            return ambientServices;
         }
     }
 }
