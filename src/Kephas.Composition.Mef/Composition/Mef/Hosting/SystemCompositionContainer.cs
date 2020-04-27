@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefCompositionContainer.cs" company="Kephas Software SRL">
+// <copyright file="SystemCompositionContainer.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -29,6 +29,7 @@ namespace Kephas.Composition.Mef.Hosting
         {
             Requires.NotNull(configuration, nameof(configuration));
 
+            // ReSharper disable once VirtualMemberCallInConstructor
             var compositionHost = this.CreateCompositionContext(configuration);
             this.Initialize(compositionHost);
         }

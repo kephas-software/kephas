@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefCompositionContextBase.cs" company="Kephas Software SRL">
+// <copyright file="SystemCompositionContextBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -176,7 +176,7 @@ namespace Kephas.Composition.Mef.Hosting
             }
 
             return createNewIfMissing
-                ? new SystemScopedCompositionContext(new Export<CompositionContext>(context, () => { }))
+                ? new ScopedSystemCompositionContext(new Export<CompositionContext>(context, () => { }))
                 : null;
         }
 
@@ -236,7 +236,7 @@ namespace Kephas.Composition.Mef.Hosting
         /// </returns>
         private static ICompositionContext GetOrAddCompositionContext(Export<CompositionContext> scopedContextExport)
         {
-            return map.GetOrAdd(scopedContextExport.Value, _ => new SystemScopedCompositionContext(scopedContextExport));
+            return map.GetOrAdd(scopedContextExport.Value, _ => new ScopedSystemCompositionContext(scopedContextExport));
         }
     }
 }

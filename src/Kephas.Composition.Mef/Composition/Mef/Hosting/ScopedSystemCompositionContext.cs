@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefScopedCompositionContext.cs" company="Kephas Software SRL">
+// <copyright file="ScopedSystemCompositionContext.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -17,7 +17,7 @@ namespace Kephas.Composition.Mef.Hosting
     /// <summary>
     /// The MEF composition container.
     /// </summary>
-    public class SystemScopedCompositionContext : SystemCompositionContextBase
+    public class ScopedSystemCompositionContext : SystemCompositionContextBase
     {
         /// <summary>
         /// The composition context export.
@@ -25,10 +25,10 @@ namespace Kephas.Composition.Mef.Hosting
         private Export<CompositionContext> export;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SystemScopedCompositionContext"/> class.
+        /// Initializes a new instance of the <see cref="ScopedSystemCompositionContext"/> class.
         /// </summary>
         /// <param name="export">The export.</param>
-        public SystemScopedCompositionContext(Export<CompositionContext> export)
+        public ScopedSystemCompositionContext(Export<CompositionContext> export)
         {
             Requires.NotNull(export, nameof(export));
 

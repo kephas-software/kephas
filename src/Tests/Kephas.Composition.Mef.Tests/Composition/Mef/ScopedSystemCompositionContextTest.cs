@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefScopedCompositionContextTest.cs" company="Kephas Software SRL">
+// <copyright file="ScopedSystemCompositionContextTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,11 +19,11 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="SystemScopedCompositionContext"/>.
+    /// Tests for <see cref="ScopedSystemCompositionContext"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class MefScopedCompositionContextTest : MefCompositionTestBase
+    public class ScopedSystemCompositionContextTest : MefCompositionTestBase
     {
         [Test]
         public void CreateScopedContext_NestedScopes()
@@ -31,7 +31,7 @@ namespace Kephas.Tests.Composition.Mef
             var container = this.CreateContainerWithBuilder(typeof(MefCompositionContainerTest.ScopeExportedClass));
             using (var scopedContext = container.CreateScopedContext())
             {
-                Assert.IsInstanceOf<SystemScopedCompositionContext>(scopedContext);
+                Assert.IsInstanceOf<ScopedSystemCompositionContext>(scopedContext);
                 var scopedInstance1 = scopedContext.GetExport<MefCompositionContainerTest.ScopeExportedClass>();
 
                 using (var nestedContext = scopedContext.CreateScopedContext())
