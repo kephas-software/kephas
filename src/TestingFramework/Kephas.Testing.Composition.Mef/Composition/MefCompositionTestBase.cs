@@ -45,7 +45,7 @@ namespace Kephas.Testing.Composition
             return configuration;
         }
 
-        public virtual MefCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
+        public virtual SystemCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
         {
             var log = new StringBuilder();
             logManager = logManager ?? new DebugLogManager((logger, level, message, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
@@ -56,7 +56,7 @@ namespace Kephas.Testing.Composition
                 .Register(logManager)
                 .WithAppRuntime(appRuntime)
                 .Register(log);
-            return new MefCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
+            return new SystemCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }
 
         public ICompositionContext CreateContainer(params Assembly[] assemblies)
@@ -68,7 +68,7 @@ namespace Kephas.Testing.Composition
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<MefCompositionContainerBuilder> config = null)
+            Action<SystemCompositionContainerBuilder> config = null)
         {
             ambientServices = ambientServices ?? new AmbientServices();
             var containerBuilder = WithContainerBuilder(ambientServices)

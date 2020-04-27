@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MefCompositionContainerBuilderTest.cs" company="Kephas Software SRL">
+// <copyright file="SystemCompositionContainerBuilderTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -36,11 +36,11 @@ namespace Kephas.Tests.Composition.Mef
     using NUnit.Framework;
 
     /// <summary>
-    /// Tests for <see cref="MefCompositionContainerBuilder"/>.
+    /// Tests for <see cref="SystemCompositionContainerBuilder"/>.
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class MefCompositionContainerBuilderTest : MefCompositionTestBase
+    public class SystemCompositionContainerBuilderTest : MefCompositionTestBase
     {
         [Test]
         public async Task CreateContainer_simple_ambient_services_exported()
@@ -450,7 +450,7 @@ namespace Kephas.Tests.Composition.Mef
             Assert.AreEqual("123", instance);
         }
 
-        private MefCompositionContainerBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
+        private SystemCompositionContainerBuilder CreateCompositionContainerBuilder(Action<ICompositionRegistrationContext> config = null)
         {
             var mockLoggerManager = Substitute.For<ILogManager>();
             var mockPlatformManager = Substitute.For<IAppRuntime>();
@@ -459,11 +459,11 @@ namespace Kephas.Tests.Composition.Mef
                                         .Register(mockLoggerManager)
                                         .Register(mockPlatformManager));
             config?.Invoke(context);
-            var factory = new MefCompositionContainerBuilder(context);
+            var factory = new SystemCompositionContainerBuilder(context);
             return factory;
         }
 
-        private MefCompositionContainerBuilder CreateCompositionContainerBuilderWithStringLogger()
+        private SystemCompositionContainerBuilder CreateCompositionContainerBuilderWithStringLogger()
         {
             var builder = this.CreateCompositionContainerBuilder();
 
@@ -476,7 +476,7 @@ namespace Kephas.Tests.Composition.Mef
         [Export]
         public class ComposedTestLogConsumer
         {
-            public ComposedTestLogConsumer(ILogger<MefCompositionContainerBuilderTest.ComposedTestLogConsumer> logger)
+            public ComposedTestLogConsumer(ILogger<SystemCompositionContainerBuilderTest.ComposedTestLogConsumer> logger)
             {
                 this.Logger = logger;
             }

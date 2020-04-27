@@ -33,7 +33,7 @@ namespace Kephas.Messaging.Tests
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<MefCompositionContainerBuilder> config = null)
+            Action<SystemCompositionContainerBuilder> config = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */

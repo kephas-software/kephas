@@ -89,7 +89,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// </summary>
         /// <param name="conventionsBuilder">The conventions builder.</param>
         /// <returns>A part builder allowing further configuration of the part.</returns>
-        public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
+        public IPartConventionsBuilder Export(Action<IExportConventionsBuilder>? conventionsBuilder = null)
         {
             if (conventionsBuilder == null)
             {
@@ -113,7 +113,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// </returns>
         public IPartConventionsBuilder ExportInterface(
             Type exportInterface,
-            Action<Type, IExportConventionsBuilder> exportConfiguration = null)
+            Action<Type, IExportConventionsBuilder>? exportConfiguration = null)
         {
             Requires.NotNull(exportInterface, nameof(exportInterface));
 
@@ -144,7 +144,7 @@ namespace Kephas.Composition.Mef.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
+        public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
         {
             Requires.NotNull(constructorSelector, nameof(constructorSelector));
 
