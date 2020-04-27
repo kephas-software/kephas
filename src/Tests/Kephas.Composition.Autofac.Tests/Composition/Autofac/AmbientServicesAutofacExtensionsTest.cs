@@ -22,26 +22,26 @@ namespace Kephas.Tests.Composition.Autofac
     public class AmbientServicesAutofacExtensionsTest
     {
         [Test]
-        public void WithAutofacCompositionContainer_defaults()
+        public void BuildAutofacCompositionContainer_defaults()
         {
             var ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => a.Name.Contains("Kephas") && !a.Name.Contains("Test"))
-                .WithAutofacCompositionContainer();
+                .BuildAutofacCompositionContainer();
 
             var compositionContext = ambientServices.CompositionContainer;
             Assert.IsInstanceOf<AutofacCompositionContainer>(compositionContext);
         }
 
         [Test]
-        public void WithAutofacCompositionContainer_with_open_generic_override()
+        public void BuildAutofacCompositionContainer_with_open_generic_override()
         {
             var ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
-                .WithAutofacCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
+                .BuildAutofacCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpen<>) }));
 
             var compositionContext = ambientServices.CompositionContainer;
             var moreOpen = compositionContext.GetExport<IOpen<int>>();
@@ -49,13 +49,13 @@ namespace Kephas.Tests.Composition.Autofac
         }
 
         [Test]
-        public void WithAutofacCompositionContainer_with_open_generic_override_and_dependency()
+        public void BuildAutofacCompositionContainer_with_open_generic_override_and_dependency()
         {
             var ambientServices = new AmbientServices();
             var builder = ambientServices;
             builder
                 .WithDynamicAppRuntime(a => !a.Name.Contains("Test"))
-                .WithAutofacCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
+                .BuildAutofacCompositionContainer(c => c.WithParts(new[] { typeof(IOpen<>), typeof(DefaultOpen<>), typeof(MoreOpenWithDependency<>), typeof(Dependency) }));
 
             var compositionContext = ambientServices.CompositionContainer;
             var moreOpen = compositionContext.GetExport<IOpen<int>>();

@@ -72,7 +72,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        bool Log(LogLevel level, Exception? exception, string messageFormat, params object?[] args);
+        bool Log(LogLevel level, Exception? exception, string? messageFormat, params object?[] args);
 
         /// <summary>
         /// Indicates whether logging at the indicated level is enabled.

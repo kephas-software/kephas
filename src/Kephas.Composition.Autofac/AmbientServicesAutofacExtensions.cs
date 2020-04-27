@@ -22,12 +22,12 @@ namespace Kephas
     public static class AmbientServicesAutofacExtensions
     {
         /// <summary>
-        /// Sets the composition container to the ambient services.
+        /// Builds and sets the composition container to the ambient services.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="containerBuilderConfig">The container builder configuration.</param>
         /// <returns>The provided ambient services builder.</returns>
-        public static IAmbientServices WithAutofacCompositionContainer(this IAmbientServices ambientServices, Action<AutofacCompositionContainerBuilder> containerBuilderConfig = null)
+        public static IAmbientServices BuildAutofacCompositionContainer(this IAmbientServices ambientServices, Action<AutofacCompositionContainerBuilder> containerBuilderConfig = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
