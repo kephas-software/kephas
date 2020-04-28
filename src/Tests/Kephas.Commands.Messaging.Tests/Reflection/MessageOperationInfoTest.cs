@@ -11,12 +11,16 @@
 namespace Kephas.Commands.Messaging.Tests.Reflection
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Commands.Messaging.Reflection;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging;
+    using Kephas.Messaging.Messages;
     using Kephas.Reflection;
+    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -80,7 +84,38 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
             var lazyMessageProcessor = new Lazy<IMessageProcessor>(() => Substitute.For<IMessageProcessor>());
             var operationInfo = new MessageOperationInfo(typeof(EnumMessage).AsRuntimeTypeInfo(), lazyMessageProcessor);
             var dateTime = new DateTime(2020, 04, 19);
-            Assert.Throws<InsufficientMemoryException>(() => operationInfo.CreateMessage(new Expando { ["nonexisting"] = true }));
+            Assert.Throws<ArgumentException>(() => operationInfo.CreateMessage(new Expando { ["nonexisting"] = true }));
+        }
+
+        [Test]
+        public async Task InvokeAsync_success()
+        {
+            var messageProcessor = Substitute.For<IMessageProcessor>();
+            messageProcessor.ProcessAsync(Arg.Any<NullableParamMessage>(), Arg.Any<Action<IMessagingContext>>(), Arg.Any<CancellationToken>())
+                .Returns(ci => new ResponseMessage { Message = $"Start time: {ci.Arg<NullableParamMessage>().StartTime:s}" });
+            var operationInfo = new MessageOperationInfo(
+                    typeof(NullableParamMessage).AsRuntimeTypeInfo(),
+                    new Lazy<IMessageProcessor>(() => messageProcessor));
+
+            var result = await operationInfo.InvokeAsync(null, new object?[] { new Expando { ["starttime"] = "2020-04-19" } });
+
+            Assert.IsInstanceOf<ResponseMessage>(result);
+
+            var response = (ResponseMessage)result;
+            Assert.AreEqual("Start time: 2020-04-19T00:00:00", response.Message);
+        }
+
+        [Test]
+        public async Task InvokeAsync_missing_handler()
+        {
+            var messageProcessor = Substitute.For<IMessageProcessor>();
+            messageProcessor.ProcessAsync(Arg.Any<NullableParamMessage>(), Arg.Any<Action<IMessagingContext>>(), Arg.Any<CancellationToken>())
+                .Returns(ci => (IMessage)null ?? throw new MissingHandlerException("bad"));
+            var operationInfo = new MessageOperationInfo(
+                    typeof(NullableParamMessage).AsRuntimeTypeInfo(),
+                    new Lazy<IMessageProcessor>(() => messageProcessor));
+
+            Assert.ThrowsAsync<MissingHandlerException>(() => operationInfo.InvokeAsync(null, new object?[] { new Expando() }));
         }
 
         public class NullableParamMessage : IMessage
