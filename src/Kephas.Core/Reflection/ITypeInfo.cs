@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Reflection
 {
     using System;
@@ -22,7 +20,7 @@ namespace Kephas.Reflection
     /// <summary>
     /// Contract providing type information.
     /// </summary>
-    public interface ITypeInfo : IElementInfo
+    public interface ITypeInfo : IElementInfo, IPrototype
     {
         /// <summary>
         /// Gets the namespace of the type.
@@ -97,15 +95,6 @@ namespace Kephas.Reflection
         /// The requested member, or <c>null</c>.
         /// </returns>
         IElementInfo? GetMember(string name, bool throwIfNotFound = true);
-
-        /// <summary>
-        /// Creates an instance with the provided arguments (if any).
-        /// </summary>
-        /// <param name="args">Optional. The arguments.</param>
-        /// <returns>
-        /// The new instance.
-        /// </returns>
-        object CreateInstance(IEnumerable<object?>? args = null);
 
         /// <summary>
         /// Constructs a generic type baed on the provided type arguments.
