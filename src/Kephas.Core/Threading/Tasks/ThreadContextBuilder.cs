@@ -25,7 +25,7 @@ namespace Kephas.Threading.Tasks
 
         private const string ThreadingContextRestoreActionsKey = "__ThreadContextRestoreActions";
 
-        private static readonly IExpando globalThreadContextPool = new Expando(isThreadSafe: true);
+        private static readonly IExpando GlobalThreadContextPool = new Expando(isThreadSafe: true);
 
         private readonly IExpando threadContextPool;
 
@@ -33,7 +33,7 @@ namespace Kephas.Threading.Tasks
         /// Initializes a new instance of the <see cref="ThreadContextBuilder"/> class.
         /// </summary>
         public ThreadContextBuilder()
-            : this(globalThreadContextPool)
+            : this(GlobalThreadContextPool)
         {
         }
 
@@ -125,7 +125,7 @@ namespace Kephas.Threading.Tasks
         /// <returns>
         /// The context actions list.
         /// </returns>
-        private IList<Action<ThreadContext>> GetContextActions(string actionsKey)
+        private IList<Action<ThreadContext>>? GetContextActions(string actionsKey)
         {
             var rawActions = this.threadContextPool?[actionsKey];
 

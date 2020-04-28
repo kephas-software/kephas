@@ -24,12 +24,12 @@ namespace Kephas.Threading.Tasks
         /// <summary>
         /// The store actions.
         /// </summary>
-        private readonly IEnumerable<Action<ThreadContext>> storeActions;
+        private readonly IEnumerable<Action<ThreadContext>>? storeActions;
 
         /// <summary>
         /// The restore actions.
         /// </summary>
-        private readonly IEnumerable<Action<ThreadContext>> restoreActions;
+        private readonly IEnumerable<Action<ThreadContext>>? restoreActions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ThreadContext"/>
@@ -37,7 +37,7 @@ namespace Kephas.Threading.Tasks
         /// </summary>
         /// <param name="storeActions">The actions called when information should be stored in the context.</param>
         /// <param name="restoreActions">The actions called when information should be restored from the context.</param>
-        public ThreadContext(IEnumerable<Action<ThreadContext>> storeActions, IEnumerable<Action<ThreadContext>> restoreActions)
+        public ThreadContext(IEnumerable<Action<ThreadContext>>? storeActions, IEnumerable<Action<ThreadContext>>? restoreActions)
         {
             this.storeActions = storeActions;
             this.restoreActions = restoreActions;
@@ -49,7 +49,7 @@ namespace Kephas.Threading.Tasks
         /// <value>
         /// The current culture.
         /// </value>
-        public CultureInfo CurrentCulture { get; set; }
+        public CultureInfo? CurrentCulture { get; set; }
 
         /// <summary>
         /// Gets or sets the current UI culture.
@@ -57,7 +57,7 @@ namespace Kephas.Threading.Tasks
         /// <value>
         /// The current UI culture.
         /// </value>
-        public CultureInfo CurrentUICulture { get; set; }
+        public CultureInfo? CurrentUICulture { get; set; }
 
         /// <summary>
         /// Stores information in the thread context.

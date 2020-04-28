@@ -534,9 +534,27 @@ namespace Kephas.Threading.Tasks
             Requires.NotNull(task, nameof(task));
 
             var taskType = task.GetType();
+            return taskType.IsConstructedGenericType
+                ? taskType.GetGenericArguments()[0]
+                : null;
+        }
+
+        /// <summary>
+        /// Gets the result of a task.
+        /// If the task does not return any result, <c>null</c> is returned.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <returns>
+        /// The result type.
+        /// </returns>
+        public static object? GetResult(this Task task)
+        {
+            Requires.NotNull(task, nameof(task));
+
+            var taskType = task.GetType();
             if (taskType.IsConstructedGenericType)
             {
-                return taskType.GetGenericArguments()[0];
+                return task.GetPropertyValue(nameof(Task<int>.Result));
             }
 
             return null;
@@ -556,20 +574,27 @@ namespace Kephas.Threading.Tasks
             }
 
             var taskException = task.Exception;
-            if (taskException is AggregateException aggException && aggException.InnerExceptions.Count == 1)
-            {
-                throw aggException.InnerExceptions[0];
-            }
-
             if (taskException != null)
             {
-                throw taskException;
+                throw taskException.InnerExceptions.Count == 1 ? taskException.InnerExceptions[0] : taskException;
             }
 
             if (task.IsCanceled)
             {
                 throw new TaskCanceledException(task);
             }
+        }
+
+        /// <summary>
+        /// Ensures that the task completed successfully.
+        /// </summary>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="task">The task.</param>
+        /// <returns>The task result.</returns>
+        public static TResult EnsureCompletedSuccessfully<TResult>(this Task<TResult> task)
+        {
+            EnsureCompletedSuccessfully((Task)task);
+            return task.Result;
         }
 
         private static async Task<Task> AsAsync(
@@ -582,20 +607,18 @@ namespace Kephas.Threading.Tasks
                 return task;
             }
 
-            using (var cts = new CancellationTokenSource())
-            using (cancellationToken.Register(() => cts.Cancel()))
+            using var cts = new CancellationTokenSource();
+            using var registration = cancellationToken.Register(() => cts.Cancel());
+            var delayTask = timeout == null ? Task.Delay(-1, cts.Token) : Task.Delay(timeout.Value, cts.Token);
+            var completedTask = await Task.WhenAny(task, delayTask).PreserveThreadContext();
+            if (completedTask == task)
             {
-                var delayTask = timeout == null ? Task.Delay(-1, cts.Token) : Task.Delay(timeout.Value, cts.Token);
-                var completedTask = await Task.WhenAny(task, delayTask).PreserveThreadContext();
-                if (completedTask == task)
-                {
-                    return task;
-                }
-
-                // TODO: the original task will not end.
-                cts.Token.ThrowIfCancellationRequested();
-                return task.IsCompleted ? task : delayTask;
+                return task;
             }
+
+            // TODO: the original task will not end.
+            cts.Token.ThrowIfCancellationRequested();
+            return task.IsCompleted ? task : delayTask;
         }
     }
 }
