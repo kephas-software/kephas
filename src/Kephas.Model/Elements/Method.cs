@@ -54,7 +54,7 @@ namespace Kephas.Model.Elements
         /// </value>
         public ITypeInfo ReturnType
         {
-            get => this.returnType ?? (this.returnType = this.ComputeReturnType());
+            get => this.returnType ??= this.ComputeReturnType();
             protected internal set => this.returnType = value;
         }
 
@@ -72,7 +72,7 @@ namespace Kephas.Model.Elements
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result.</returns>
-        public object? Invoke(object instance, IEnumerable<object?> args)
+        public object? Invoke(object? instance, IEnumerable<object?> args)
         {
             var runtimeMethod = this.TryGetRuntimeMethodInfo();
             if (runtimeMethod == null)

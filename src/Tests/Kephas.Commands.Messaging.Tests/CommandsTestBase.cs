@@ -43,7 +43,7 @@ namespace Kephas.Commands.Messaging.Tests
                             typeof(IAppManager).Assembly,               // Kephas.Application
                             typeof(IMessageProcessor).Assembly,         // Kephas.Messaging
                             typeof(ICommandProcessor).Assembly,         // Kephas.Commands
-                            typeof(MessagingCommandProcessor).Assembly, // Kephas.Commands.Messaging
+                            typeof(MessagingCommandRegistry).Assembly,  // Kephas.Commands.Messaging
                         });
 
             return assemblies;

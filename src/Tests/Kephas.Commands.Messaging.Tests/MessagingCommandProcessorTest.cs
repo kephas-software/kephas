@@ -78,8 +78,8 @@ namespace Kephas.Commands.Messaging.Tests
                         typeof(HelpMessage).AsRuntimeTypeInfo(),
                         typeof(NullableParamMessage).AsRuntimeTypeInfo(),
                     }.Where(t => string.IsNullOrEmpty(ci.Arg<string>()) || t.Name.StartsWith(ci.Arg<string>().Substring(0, 4), StringComparison.InvariantCultureIgnoreCase)));
-            registry.ResolveCommandType("help").Returns(typeof(HelpMessage).AsRuntimeTypeInfo());
-            registry.ResolveCommandType("nullable-param").Returns(typeof(NullableParamMessage).AsRuntimeTypeInfo());
+            registry.TryResolveCommandType("help").Returns(typeof(HelpMessage).AsRuntimeTypeInfo());
+            registry.TryResolveCommandType("nullable-param").Returns(typeof(NullableParamMessage).AsRuntimeTypeInfo());
 
             var container = this.CreateContainer(config: b => b.WithFactory<ICommandRegistry>(() => registry));
             var processor = container.GetExport<ICommandProcessor>();
@@ -104,7 +104,7 @@ namespace Kephas.Commands.Messaging.Tests
                     {
                         typeof(NullableParamMessage).AsRuntimeTypeInfo(),
                     }.Where(t => string.IsNullOrEmpty(ci.Arg<string>()) || t.Name.StartsWith(ci.Arg<string>().Substring(0, 4), StringComparison.InvariantCultureIgnoreCase)));
-            registry.ResolveCommandType("nullable-param").Returns(typeof(NullableParamMessage).AsRuntimeTypeInfo());
+            registry.TryResolveCommandType("nullable-param").Returns(typeof(NullableParamMessage).AsRuntimeTypeInfo());
 
             var container = this.CreateContainer(config: b => b.WithFactory<ICommandRegistry>(() => registry));
             var processor = container.GetExport<ICommandProcessor>();
@@ -128,7 +128,7 @@ namespace Kephas.Commands.Messaging.Tests
                     {
                         typeof(EnumMessage).AsRuntimeTypeInfo(),
                     }.Where(t => string.IsNullOrEmpty(ci.Arg<string>()) || t.Name.StartsWith(ci.Arg<string>().Substring(0, 4), StringComparison.InvariantCultureIgnoreCase)));
-            registry.ResolveCommandType("enum").Returns(typeof(EnumMessage).AsRuntimeTypeInfo());
+            registry.TryResolveCommandType("enum").Returns(typeof(EnumMessage).AsRuntimeTypeInfo());
 
             var container = this.CreateContainer(config: b => b.WithFactory<ICommandRegistry>(() => registry));
             var processor = container.GetExport<ICommandProcessor>();

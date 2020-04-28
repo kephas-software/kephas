@@ -24,7 +24,7 @@ namespace Kephas.Application.Console.Tests
     {
         public override ICompositionContext CreateContainer(IAmbientServices ambientServices = null, IEnumerable<Assembly> assemblies = null, IEnumerable<Type> parts = null, Action<LiteCompositionContainerBuilder> config = null)
         {
-            ambientServices = ambientServices ?? new AmbientServices();
+            ambientServices ??= new AmbientServices();
             if (!ambientServices.IsRegistered(typeof(IAppContext)))
             {
                 var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));

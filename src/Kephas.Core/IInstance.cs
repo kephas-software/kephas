@@ -30,7 +30,7 @@ namespace Kephas
     /// Generic contract for instances of classifiers.
     /// </summary>
     /// <typeparam name="T">The specific type.</typeparam>
-    public interface IInstance<T> : IInstance
+    public interface IInstance<out T> : IInstance
         where T : ITypeInfo
     {
         /// <summary>
