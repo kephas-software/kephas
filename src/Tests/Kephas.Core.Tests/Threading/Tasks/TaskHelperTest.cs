@@ -274,5 +274,21 @@ namespace Kephas.Core.Tests.Threading.Tasks
 
             TaskHelper.EnsureCompletedSuccessfully(task);
         }
+
+        [Test]
+        public void PreserveThreadContext_canceled_awaiter_is_completed()
+        {
+            var canceledTask = Task.FromCanceled(new CancellationToken(true));
+            var contextAwaiter = canceledTask.PreserveThreadContext();
+            Assert.IsTrue(contextAwaiter.IsCompleted);
+        }
+
+        [Test]
+        public void PreserveThreadContext_failed_awaiter_is_completed()
+        {
+            var failedTask = Task.FromException(new ArgumentException("arg"));
+            var contextAwaiter = failedTask.PreserveThreadContext();
+            Assert.IsTrue(contextAwaiter.IsCompleted);
+        }
     }
 }

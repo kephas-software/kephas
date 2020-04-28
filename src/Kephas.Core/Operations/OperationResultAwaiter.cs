@@ -102,7 +102,13 @@ namespace Kephas.Operations
             if (taskResultType == null)
             {
                 updateState(task);
-                return new OperationResultAwaiter(task.ContinueWith(t => { updateState(t); t.WaitNonLocking(); }));
+                return new OperationResultAwaiter(
+                    task.ContinueWith(
+                        t =>
+                        {
+                            updateState(t);
+                            t.EnsureCompletedSuccessfully();
+                        }));
             }
 
             var createMethodInfo = CreateMethodInfo.MakeGenericMethod(taskResultType);
@@ -125,7 +131,13 @@ namespace Kephas.Operations
             Requires.NotNull(task, nameof(task));
 
             updateState(task);
-            return new OperationResultAwaiter<TResult>(task.ContinueWith(t => { updateState(t); return t.GetResultNonLocking(); }));
+            return new OperationResultAwaiter<TResult>(
+                    task.ContinueWith(
+                        t =>
+                        {
+                            updateState(t);
+                            return t.EnsureCompletedSuccessfully();
+                        }));
         }
 
         /// <summary>

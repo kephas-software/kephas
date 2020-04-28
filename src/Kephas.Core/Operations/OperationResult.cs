@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Collections;
+
 #nullable enable
 
 namespace Kephas.Operations
@@ -79,9 +81,11 @@ namespace Kephas.Operations
             {
                 if (this.awaiter != null)
                 {
-                    return this.awaiter.IsCompleted
+                    var awaiterTask = this.awaiter.GetTask();
+                    var taskStatus = awaiterTask.Status;
+                    return awaiterTask.IsCompleted
                         ? this.awaiter.GetResult()
-                        : throw new InvalidOperationException($"The awaited task did not complete execution.");
+                        : throw new InvalidOperationException($"The awaited task did not complete execution (state: {taskStatus}).");
                 }
 
                 return this.returnValue;
@@ -245,7 +249,7 @@ namespace Kephas.Operations
             this.OperationState = opState;
             if (t.Exception != null)
             {
-                this.MergeException(t.Exception);
+                t.Exception.InnerExceptions.ForEach(ex => this.MergeException(ex));
             }
             else if (this.OperationState == OperationState.Completed)
             {
