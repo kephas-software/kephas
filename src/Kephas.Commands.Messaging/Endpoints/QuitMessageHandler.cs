@@ -21,7 +21,7 @@ namespace Kephas.Commands.Messaging.Endpoints
     /// <summary>
     /// A quit message handler.
     /// </summary>
-    public class QuitMessageHandler : MessageHandlerBase<QuitMessage, IMessage>
+    public class QuitMessageHandler : MessageHandlerBase<QuitMessage, IMessage?>
     {
         private readonly IEventHub eventHub;
 

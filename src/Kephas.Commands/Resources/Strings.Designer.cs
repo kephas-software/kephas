@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Kephas.Commands.Messaging.Resources {
+namespace Kephas.Commands.Resources {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Kephas.Commands.Messaging.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Strings {
+    public class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace Kephas.Commands.Messaging.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Commands.Messaging.Resources.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kephas.Commands.Resources.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Kephas.Commands.Messaging.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,20 +61,20 @@ namespace Kephas.Commands.Messaging.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please provide one command name to see the information about that command. Example: &apos;help &lt;command&gt;&apos;..
+        ///   Looks up a localized string similar to Multiple command types found for &apos;{0}&apos;: &apos;{1}&apos;..
         /// </summary>
-        internal static string MissingCommandName_Warning {
+        public static string DefaultCommandRegistry_AmbiguousCommandName {
             get {
-                return ResourceManager.GetString("MissingCommandName_Warning", resourceCulture);
+                return ResourceManager.GetString("DefaultCommandRegistry_AmbiguousCommandName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No commands with the filter &apos;{0}*&apos; found..
+        ///   Looks up a localized string similar to Command type for &apos;{0}&apos; not found..
         /// </summary>
-        internal static string NoMatchingCommands_Warning {
+        public static string DefaultCommandRegistry_CommandNotFound {
             get {
-                return ResourceManager.GetString("NoMatchingCommands_Warning", resourceCulture);
+                return ResourceManager.GetString("DefaultCommandRegistry_CommandNotFound", resourceCulture);
             }
         }
     }

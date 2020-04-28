@@ -18,7 +18,7 @@ namespace Kephas.Commands
     /// <summary>
     /// Singleton application service contract for the service registering command types.
     /// </summary>
-    [SingletonAppServiceContract]
+    [AppServiceContract(AllowMultiple = true)]
     public interface ICommandRegistry
     {
         /// <summary>
@@ -28,15 +28,6 @@ namespace Kephas.Commands
         /// <returns>
         /// The command types.
         /// </returns>
-        IEnumerable<ITypeInfo> GetCommandTypes(string? commandPattern = null);
-
-        /// <summary>
-        /// Resolves the command type.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <returns>
-        /// An ITypeInfo.
-        /// </returns>
-        ITypeInfo ResolveCommandType(string command);
+        IEnumerable<IOperationInfo> GetCommandTypes(string? commandPattern = null);
     }
 }

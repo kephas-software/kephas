@@ -8,16 +8,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-using Kephas.ComponentModel.DataAnnotations;
-using Kephas.Messaging;
-
 namespace Kephas.Commands.Messaging.Endpoints
 {
+    using System.ComponentModel.DataAnnotations;
+
+    using Kephas.ComponentModel.DataAnnotations;
+    using Kephas.Messaging;
+    using Kephas.Runtime.AttributedModel;
+
     /// <summary>
     /// A help message.
     /// </summary>
     [DisplayInfo(Description = "Displays the available commands. Use 'help <command>' to display information about the requested command.")]
+    [ReturnType(typeof(HelpResponseMessage))]
     public class HelpMessage : IMessage
     {
         /// <summary>
@@ -27,7 +30,7 @@ namespace Kephas.Commands.Messaging.Endpoints
         /// The command.
         /// </value>
         [Display(Name = "The command for which the help content should be provided.")]
-        public string Command { get; set; }
+        public string? Command { get; set; }
     }
 
     /// <summary>

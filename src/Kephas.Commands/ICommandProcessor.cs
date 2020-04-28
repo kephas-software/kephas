@@ -23,14 +23,14 @@ namespace Kephas.Commands
     public interface ICommandProcessor
     {
         /// <summary>
-        /// Executes the asynchronous operation.
+        /// Processes the provided command with the provided arguments and returns the result.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="args">Optional. The arguments.</param>
         /// <param name="context">Optional. The context.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// The asynchronous result returning the output of the command execution.
         /// </returns>
         Task<object?> ProcessAsync(string command, IExpando? args = null, IContext? context = null, CancellationToken cancellationToken = default);
     }

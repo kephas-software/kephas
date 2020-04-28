@@ -10,27 +10,34 @@
 
 namespace Kephas.Commands.Messaging.Endpoints
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Commands.Messaging.Resources;
     using Kephas.Messaging;
     using Kephas.Reflection;
+    using Kephas.Services;
+    using Kephas.Services.Composition;
 
     /// <summary>
     /// A help message handler.
     /// </summary>
     public class HelpMessageHandler : MessageHandlerBase<HelpMessage, HelpResponseMessage>
     {
-        private readonly ICommandRegistry commandRegistry;
+        private readonly ICollection<ICommandRegistry> registries;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HelpMessageHandler"/> class.
         /// </summary>
-        /// <param name="commandRegistry">The command registry.</param>
-        public HelpMessageHandler(ICommandRegistry commandRegistry)
+        /// <param name="registries">The command registries.</param>
+        public HelpMessageHandler(ICollection<Lazy<ICommandRegistry, AppServiceMetadata>> registries)
         {
-            this.commandRegistry = commandRegistry;
+            this.registries = registries.Order()
+                .Select(r => r.Value)
+                .ToList();
         }
 
         /// <summary>
@@ -42,31 +49,36 @@ namespace Kephas.Commands.Messaging.Endpoints
         /// <returns>The response promise.</returns>
         public override Task<HelpResponseMessage> ProcessAsync(HelpMessage message, IMessagingContext context, CancellationToken token)
         {
-            var matchingCommandTypes = this.commandRegistry.GetCommandTypes(message.Command).ToList();
+            var matchingCommands = this.registries
+                .SelectMany(r => r.GetCommandTypes(message.Command))
+                .OrderBy(c => c.Name)
+                .ToList();
 
-            var commands = matchingCommandTypes.ToDictionary(
-                t => t.Name.EndsWith("Message")
-                         ? t.Name.Substring(0, t.Name.Length - "Message".Length)
-                         : t.Name.EndsWith("Event")
-                             ? t.Name.Substring(0, t.Name.Length - "Event".Length)
-                             : t.Name,
+            var commands = matchingCommands.ToDictionary(
+                t => t.Name,
                 t => t);
-            var commandList = commands.ToList();
 
             var response = new HelpResponseMessage();
 
             if (commands.Count > 1)
             {
-                response.Command = commands.OrderBy(t => t.Key).ToDictionary(c => c.Key, c => c.Value.GetLocalization().Description);
+                response.Command = commands.ToDictionary(c => c.Key, c => c.Value.GetDisplayInfo()?.GetDescription());
                 response.Description = Strings.MissingCommandName_Warning;
             }
             else if (commands.Count == 1)
             {
-                var cmd = commands.First();
-                response.Command = commands.Select(t => t.Key).Single();
-                var localization = cmd.Value.GetLocalization();
-                response.Description = localization.Description;
-                response.Parameters = cmd.Value.Properties.Select(p => $"{p.Name} ({this.GetFormattedTypeName(p.ValueType)}): {p.GetLocalization().Description}").ToArray();
+#if NETSTANDARD2_1
+                var (name, command) = commands.First();
+#else
+                var kv = commands.First();
+                var name = kv.Key;
+                var command = kv.Value;
+#endif
+                response.Command = name;
+                response.Description = command.GetDisplayInfo()?.GetDescription();
+                response.Parameters = command.Parameters
+                    .Select(p => $"{p.Name} ({this.GetFormattedTypeName(p.ValueType)}): {p.GetDisplayInfo()?.GetDescription()}")
+                    .ToArray();
             }
             else
             {
@@ -81,12 +93,7 @@ namespace Kephas.Commands.Messaging.Endpoints
         {
             var type = typeInfo.AsType();
             var nonNullableType = type.GetNonNullableType();
-            if (type == nonNullableType)
-            {
-                return $"{type}";
-            }
-
-            return $"{nonNullableType}?";
+            return type == nonNullableType ? $"{type}" : $"{nonNullableType}?";
         }
     }
 }
