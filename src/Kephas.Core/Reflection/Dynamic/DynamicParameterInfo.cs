@@ -63,7 +63,7 @@ namespace Kephas.Reflection.Dynamic
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
-        public void SetValue(object obj, object value)
+        public void SetValue(object? obj, object? value)
         {
             Requires.NotNull(obj, nameof(obj));
 
@@ -72,7 +72,7 @@ namespace Kephas.Reflection.Dynamic
                 expando[this.Name] = value;
             }
 
-            obj.SetPropertyValue(this.Name, value);
+            obj?.SetPropertyValue(this.Name, value);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Kephas.Reflection.Dynamic
         /// <returns>
         /// The value.
         /// </returns>
-        public object GetValue(object obj)
+        public object? GetValue(object? obj)
         {
             Requires.NotNull(obj, nameof(obj));
 
@@ -91,7 +91,7 @@ namespace Kephas.Reflection.Dynamic
                 return expando[this.Name];
             }
 
-            return obj.GetPropertyValue(this.Name);
+            return obj?.GetPropertyValue(this.Name);
         }
     }
 }

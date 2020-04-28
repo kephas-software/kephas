@@ -1,14 +1,12 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DynamicMethodInfo.cs" company="Kephas Software SRL">
+// <copyright file="DynamicOperationInfo.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the dynamic method information class.
+//   Implements the dynamic operation information class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-#nullable enable
 
 namespace Kephas.Reflection.Dynamic
 {
@@ -16,9 +14,9 @@ namespace Kephas.Reflection.Dynamic
     using System.Collections.Generic;
 
     /// <summary>
-    /// Information about the dynamic method.
+    /// Information about the dynamic operation.
     /// </summary>
-    public class DynamicMethodInfo : DynamicElementInfo, IOperationInfo
+    public class DynamicOperationInfo : DynamicElementInfo, IOperationInfo
     {
         /// <summary>
         /// Gets or sets the return type of the method.
@@ -26,15 +24,15 @@ namespace Kephas.Reflection.Dynamic
         /// <value>
         /// The return type of the method.
         /// </value>
-        public ITypeInfo ReturnType { get; protected internal set; }
+        public ITypeInfo? ReturnType { get; protected internal set; }
 
         /// <summary>
-        /// Gets the method parameters.
+        /// Gets or sets the method parameters.
         /// </summary>
         /// <value>
         /// The method parameters.
         /// </value>
-        public IEnumerable<IParameterInfo> Parameters { get; } = new List<IParameterInfo>();
+        public IEnumerable<IParameterInfo> Parameters { get; protected internal set; } = new List<IParameterInfo>();
 
         /// <summary>
         /// Invokes the specified method on the provided instance.
@@ -42,7 +40,7 @@ namespace Kephas.Reflection.Dynamic
         /// <param name="instance">The instance.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result.</returns>
-        public object? Invoke(object instance, IEnumerable<object?> args)
+        public virtual object? Invoke(object? instance, IEnumerable<object?> args)
         {
             // TODO localization
             throw new NotSupportedException();
