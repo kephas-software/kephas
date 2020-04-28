@@ -8,7 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
+using System.Threading.Tasks;
+using Kephas.Diagnostics.Contracts;
+using Kephas.Threading.Tasks;
 
 namespace Kephas.Reflection
 {
@@ -25,7 +27,7 @@ namespace Kephas.Reflection
         /// <value>
         /// The return type of the method.
         /// </value>
-        ITypeInfo ReturnType { get; }
+        ITypeInfo? ReturnType { get; }
 
         /// <summary>
         /// Gets the method parameters.
@@ -42,5 +44,39 @@ namespace Kephas.Reflection
         /// <param name="args">The arguments.</param>
         /// <returns>The invocation result.</returns>
         object? Invoke(object? instance, IEnumerable<object?> args);
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IOperationInfo"/>.
+    /// </summary>
+    public static class OperationInfoExtensions
+    {
+        /// <summary>
+        /// Invokes the specified method on the provided instance.
+        /// </summary>
+        /// <param name="operationInfo">The operation info.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="args">The arguments.</param>
+        /// <returns>The invocation result.</returns>
+        public static async Task<object?> InvokeAsync(this IOperationInfo operationInfo, object? instance, IEnumerable<object?> args)
+        {
+            Requires.NotNull(operationInfo, nameof(operationInfo));
+
+            var result = operationInfo.Invoke(instance, args);
+            if (result is Task taskResult)
+            {
+                await taskResult.PreserveThreadContext();
+                result = taskResult.GetResult();
+            }
+#if NETSTANDARD2_1                
+            else if (result is ValueTask valueTaskResult)
+            {
+                taskResult = valueTaskResult.AsTask();
+                await taskResult.PreserveThreadContext();
+                result = taskResult.GetResult();
+            }
+#endif
+            return result;
+        }
     }
 }
