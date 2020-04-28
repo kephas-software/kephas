@@ -34,7 +34,7 @@ namespace Kephas.Runtime
     /// <returns>
     /// An object.
     /// </returns>
-    internal delegate object InstanceActivator(params object[] args);
+    internal delegate object InstanceActivator(params object?[] args);
 
     /// <summary>
     /// Provides optimized access to methods and properties at runtime.
@@ -1024,20 +1024,22 @@ namespace Kephas.Runtime
             var parameters = constructor.GetParameters();
             var argsParam = Expression.Parameter(typeof(object[]), "args");
 
-            var argex = new Expression[parameters.Length];
+            var exargs = new Expression[parameters.Length];
             for (var i = 0; i < parameters.Length; i++)
             {
                 var index = Expression.Constant(i);
                 var paramType = parameters[i].ParameterType;
                 var accessor = Expression.ArrayIndex(argsParam, index);
                 var cast = Expression.Convert(accessor, paramType);
-                argex[i] = cast;
+                exargs[i] = cast;
             }
 
-            var newex = Expression.New(constructor, argex);
+            var newex = Expression.New(constructor, exargs);
             var lambda = Expression.Lambda(typeof(InstanceActivator), newex, argsParam);
             var activator = (InstanceActivator)lambda.Compile();
-            return activator;
+            return args => parameters.Length == args?.Length
+                                        ? activator(args)
+                                        : throw new InvalidOperationException($"Mismatched parameter count: expected {parameters.Length}, received {args?.Length}.");
         }
     }
 }
