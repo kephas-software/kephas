@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Operations
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -72,6 +71,36 @@ namespace Kephas.Operations
         /// An object.
         /// </returns>
         Task<object?> ExecuteAsync(IContext? context = null, CancellationToken cancellationToken = default);
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IOperation"/>.
+    /// </summary>
+    public static class OperationExtensions
+    {
+        /// <summary>
+        /// Executes the operation asynchronously in the given context.
+        /// </summary>
+        /// <param name="operation">The operation.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An object.
+        /// </returns>
+        public static Task<object?> ExecuteAsync(
+            this IOperation operation,
+            IContext? context = null,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(operation, nameof(operation));
+
+            if (operation is IAsyncOperation asyncOperation)
+            {
+                return asyncOperation.ExecuteAsync(context, cancellationToken);
+            }
+
+            return ((Func<object?>)(() => operation.Execute(context))).AsAsync(cancellationToken);
+        }
     }
 #endif
 }
