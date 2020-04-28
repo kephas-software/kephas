@@ -106,7 +106,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// </summary>
         /// <param name="values">The values.</param>
         /// <returns>The message.</returns>
-        protected virtual object CreateMessage(IExpando? values)
+        protected internal virtual object CreateMessage(IExpando? values)
         {
             var message = this.messageType.CreateInstance();
 

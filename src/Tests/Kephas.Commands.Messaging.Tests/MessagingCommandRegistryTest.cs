@@ -25,19 +25,24 @@ namespace Kephas.Commands.Messaging.Tests
     using NUnit.Framework;
 
     [TestFixture]
-    public class MessagingCommandProcessorTest : CommandsTestBase
+    public class MessagingCommandRegistryTest : CommandsTestBase
     {
         [Test]
         public void Composition()
         {
             var container = this.CreateContainer();
-            var processor = container.GetExport<ICommandProcessor>();
+            var registries = container.GetExports<ICommandRegistry>();
 
-            Assert.IsNotNull(processor);
+            var msgRegistry = registries.OfType<MessagingCommandRegistry>().Single();
+            var commandTypes = msgRegistry.GetCommandTypes().ToList();
+
+            Assert.AreEqual(2, commandTypes.Count);
+            Assert.IsTrue(commandTypes.Any(c => c.Name == "Help"));
+            Assert.IsTrue(commandTypes.Any(c => c.Name == "Quit"));
         }
 
         [Test]
-        public async Task ProcessAsync_help()
+        public async Task ProcessAsync_composition_help()
         {
             var container = this.CreateContainer();
             var processor = container.GetExport<ICommandProcessor>();
@@ -54,7 +59,7 @@ namespace Kephas.Commands.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_help_indexed_params()
+        public async Task ProcessAsync_composition_help_indexed_params()
         {
             var container = this.CreateContainer();
             var processor = container.GetExport<ICommandProcessor>();
@@ -69,49 +74,15 @@ namespace Kephas.Commands.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_help_nullable_param()
+        public async Task ProcessAsync_composition_partial_command_name()
         {
-            var registry = Substitute.For<ICommandRegistry>();
-            registry.GetCommandTypes(Arg.Any<string>()).Returns(
-                ci => new List<ITypeInfo>()
-                    {
-                        typeof(HelpMessage).AsRuntimeTypeInfo(),
-                        typeof(NullableParamMessage).AsRuntimeTypeInfo(),
-                    }.Where(t => string.IsNullOrEmpty(ci.Arg<string>()) || t.Name.StartsWith(ci.Arg<string>().Substring(0, 4), StringComparison.InvariantCultureIgnoreCase)));
-            registry.TryResolveCommandType("help").Returns(typeof(HelpMessage).AsRuntimeTypeInfo());
-            registry.TryResolveCommandType("nullable-param").Returns(typeof(NullableParamMessage).AsRuntimeTypeInfo());
-
-            var container = this.CreateContainer(config: b => b.WithFactory<ICommandRegistry>(() => registry));
-            var processor = container.GetExport<ICommandProcessor>();
-
-            var response = await processor.ProcessAsync("help", new Expando { ["nullable-param"] = true });
-
-            Assert.IsInstanceOf<HelpResponseMessage>(response);
-
-            var helpResponse = (HelpResponseMessage)response;
-            var command = helpResponse.Command as string;
-            Assert.AreEqual("NullableParam", command);
-            Assert.AreEqual(1, helpResponse.Parameters.Length);
-            Assert.AreEqual("StartTime (System.DateTime?): ", helpResponse.Parameters[0]);
-        }
-
-        [Test]
-        public async Task ProcessAsync_nullable_param()
-        {
-            var registry = Substitute.For<ICommandRegistry>();
-            registry.GetCommandTypes(Arg.Any<string>()).Returns(
-                ci => new List<ITypeInfo>()
-                    {
-                        typeof(NullableParamMessage).AsRuntimeTypeInfo(),
-                    }.Where(t => string.IsNullOrEmpty(ci.Arg<string>()) || t.Name.StartsWith(ci.Arg<string>().Substring(0, 4), StringComparison.InvariantCultureIgnoreCase)));
-            registry.TryResolveCommandType("nullable-param").Returns(typeof(NullableParamMessage).AsRuntimeTypeInfo());
-
-            var container = this.CreateContainer(config: b => b.WithFactory<ICommandRegistry>(() => registry));
+            var container = this.CreateContainer(
+                parts: new[] { typeof(NullableParamMessage) });
             var processor = container.GetExport<ICommandProcessor>();
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
             handlerRegistry.RegisterHandler<NullableParamMessage>((msg, ctx) => new ResponseMessage { Message = $"Start time: {msg.StartTime:s}" });
 
-            var response = await processor.ProcessAsync("nullable-param", new Expando { ["StartTime"] = "2020-02-23" });
+            var response = await processor.ProcessAsync("null", new Expando { ["StartTime"] = "2020-02-23" });
 
             Assert.IsInstanceOf<ResponseMessage>(response);
 
@@ -120,17 +91,10 @@ namespace Kephas.Commands.Messaging.Tests
         }
 
         [Test]
-        public async Task ProcessAsync_enum_param()
+        public async Task ProcessAsync_composition_enum_param()
         {
-            var registry = Substitute.For<ICommandRegistry>();
-            registry.GetCommandTypes(Arg.Any<string>()).Returns(
-                ci => new List<ITypeInfo>()
-                    {
-                        typeof(EnumMessage).AsRuntimeTypeInfo(),
-                    }.Where(t => string.IsNullOrEmpty(ci.Arg<string>()) || t.Name.StartsWith(ci.Arg<string>().Substring(0, 4), StringComparison.InvariantCultureIgnoreCase)));
-            registry.TryResolveCommandType("enum").Returns(typeof(EnumMessage).AsRuntimeTypeInfo());
-
-            var container = this.CreateContainer(config: b => b.WithFactory<ICommandRegistry>(() => registry));
+            var container = this.CreateContainer(
+                parts: new[] { typeof(EnumMessage) });
             var processor = container.GetExport<ICommandProcessor>();
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
             handlerRegistry.RegisterHandler<EnumMessage>((msg, ctx) => new ResponseMessage { Message = $"Log level: {msg.LogLevel}" });
