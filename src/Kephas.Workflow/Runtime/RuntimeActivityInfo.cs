@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Workflow.Runtime
 {
     using System;
@@ -33,6 +31,9 @@ namespace Kephas.Workflow.Runtime
     /// </summary>
     public class RuntimeActivityInfo : RuntimeTypeInfo, IActivityInfo
     {
+        private static readonly MethodInfo ExecuteAsyncMethodInfo =
+            ReflectionHelper.GetMethodOf(_ => ((RuntimeActivityInfo)null).ExecuteAsync(null, null, null, null, default));
+        
         private static readonly IDictionary<string, PropertyInfo> ActivityProperties =
             typeof(ActivityBase).GetProperties().ToDictionary(p => p.Name, p => p);
 
@@ -89,11 +90,7 @@ namespace Kephas.Workflow.Runtime
 
             if (activity is IOperation operation)
             {
-#if NETSTANDARD2_1
                 return await operation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
-#else
-                return operation.Execute(context);
-#endif
             }
 
 #if NETSTANDARD2_1
@@ -118,25 +115,21 @@ namespace Kephas.Workflow.Runtime
         /// <returns>
         /// An object.
         /// </returns>
-        object? IOperationInfo.Invoke(object activity, IEnumerable<object?> args)
+        object? IOperationInfo.Invoke(object? activity, IEnumerable<object?> args)
         {
-            if (activity is IOperation operation)
+            if (!(activity is IActivity))
             {
-                return operation.Execute();
+                throw new WorkflowException($"Expected activity '{activity}' to invoke, instead received {activity?.GetType()}.");
             }
 
-#if NETSTANDARD2_1
-            // TODO localization
-            throw new NotImplementedException($"Implement the {nameof(IOperation)} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
-#else
-            if (activity is IAsyncOperation asyncOperation)
-            {
-                return asyncOperation.ExecuteAsync().GetResultNonLocking();
-            }
+            var argsList = new List<object?> { activity };
+            argsList.AddRange(args);
+            var target = argsList[0];
+            var arguments = (IExpando?)argsList[1];
+            var context = (IActivityContext)argsList[2];
+            var cancellationToken = (CancellationToken)argsList[3];
 
-            // TODO localization
-            throw new NotImplementedException($"Either implement the {nameof(IOperation)} or {nameof(IAsyncOperation)} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
-#endif
+            return ExecuteAsyncMethodInfo.Call(this, argsList.ToArray());
         }
 
         /// <summary>

@@ -8,7 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
+using System;
+using System.Reflection;
+using Kephas.Operations;
+using Kephas.Threading.Tasks;
 
 namespace Kephas.Workflow.Model.Elements
 {
@@ -28,6 +31,9 @@ namespace Kephas.Workflow.Model.Elements
     /// </summary>
     public class ActivityType : ClassifierBase<IActivityType>, IActivityType
     {
+        private static readonly MethodInfo ExecuteAsyncMethodInfo =
+            ReflectionHelper.GetMethodOf(_ => ((ActivityType)null).ExecuteAsync(null, null, null, null, default));
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivityType"/> class.
         /// </summary>
@@ -44,7 +50,7 @@ namespace Kephas.Workflow.Model.Elements
         /// <value>
         /// The type of the return value.
         /// </value>
-        public ITypeInfo ReturnType { get; protected set; }
+        public ITypeInfo? ReturnType { get; protected set; }
 
         /// <summary>
         /// Gets the parameters for controlling the activity.
@@ -94,14 +100,34 @@ namespace Kephas.Workflow.Model.Elements
         /// <returns>
         /// An asynchronous result that yields the execution output.
         /// </returns>
-        public virtual Task<object?> ExecuteAsync(
+        public virtual async Task<object?> ExecuteAsync(
             IActivity activity,
             object? target,
             IExpando? arguments,
             IActivityContext context,
             CancellationToken cancellationToken = default)
         {
-            return activity.GetTypeInfo().ExecuteAsync(activity, target, arguments, context, cancellationToken);
+            activity.Target = target;
+            activity.Arguments = arguments;
+            activity.Context = context;
+
+            if (activity is IOperation operation)
+            {
+                return await operation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
+            }
+
+#if NETSTANDARD2_1
+            // TODO localization
+            throw new NotImplementedException($"Implement the {nameof(IOperation)} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+#else
+            if (activity is IAsyncOperation asyncOperation)
+            {
+                return await asyncOperation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
+            }
+
+            // TODO localization
+            throw new NotImplementedException($"Either implement the {nameof(IOperation)} or {nameof(IAsyncOperation)} in the activity of type '{activity?.GetType()}', or provide a specialized type info.");
+#endif
         }
 
         /// <summary>
@@ -112,14 +138,21 @@ namespace Kephas.Workflow.Model.Elements
         /// <returns>
         /// The execution result.
         /// </returns>
-        object? IOperationInfo.Invoke(object instance, IEnumerable<object?> args)
+        object? IOperationInfo.Invoke(object? instance, IEnumerable<object?> args)
         {
-            if (!(instance is IActivity activity))
+            if (!(instance is IActivity))
             {
                 throw new WorkflowException($"Expected activity '{instance}' to invoke, instead received {instance?.GetType()}.");
             }
 
-            return activity.GetTypeInfo().Invoke(instance, args);
+            var argsList = new List<object?> { instance };
+            argsList.AddRange(args);
+            var target = argsList[0];
+            var arguments = (IExpando?)argsList[1];
+            var context = (IActivityContext)argsList[2];
+            var cancellationToken = (CancellationToken)argsList[3];
+
+            return ExecuteAsyncMethodInfo.Call(this, argsList.ToArray());
         }
 
         /// <summary>
