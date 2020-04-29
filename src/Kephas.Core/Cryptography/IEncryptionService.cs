@@ -33,7 +33,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// An array of byte.
         /// </returns>
-        byte[] GenerateKey(Action<IEncryptionContext> optionsConfig = null);
+        byte[] GenerateKey(Action<IEncryptionContext>? optionsConfig = null);
 
         /// <summary>
         /// Encrypts the input stream and writes the encrypted content into the output stream.

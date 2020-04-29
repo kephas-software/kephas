@@ -36,7 +36,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// An array of bytes.
         /// </returns>
-        public byte[] GenerateKey(Action<IEncryptionContext> optionsConfig = null)
+        public byte[] GenerateKey(Action<IEncryptionContext>? optionsConfig = null)
         {
             return null;
         }
@@ -51,7 +51,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task EncryptAsync(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null, CancellationToken cancellationToken = default)
+        public Task EncryptAsync(Stream input, Stream output, Action<IEncryptionContext>? optionsConfig = null, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
@@ -69,7 +69,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task DecryptAsync(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null, CancellationToken cancellationToken = default)
+        public Task DecryptAsync(Stream input, Stream output, Action<IEncryptionContext>? optionsConfig = null, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
@@ -83,7 +83,7 @@ namespace Kephas.Cryptography
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
-        public void Encrypt(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null)
+        public void Encrypt(Stream input, Stream output, Action<IEncryptionContext>? optionsConfig = null)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
@@ -97,7 +97,7 @@ namespace Kephas.Cryptography
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
-        public void Decrypt(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null)
+        public void Decrypt(Stream input, Stream output, Action<IEncryptionContext>? optionsConfig = null)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
