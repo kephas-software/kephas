@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConsoleTestBase.cs" company="Kephas Software SRL">
+// <copyright file="CommandsTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,7 +25,7 @@ namespace Kephas.Commands.Messaging.Tests
     {
         public override ICompositionContext CreateContainer(IAmbientServices ambientServices = null, IEnumerable<Assembly> assemblies = null, IEnumerable<Type> parts = null, Action<LiteCompositionContainerBuilder> config = null)
         {
-            ambientServices = ambientServices ?? new AmbientServices();
+            ambientServices ??= new AmbientServices();
             if (!ambientServices.IsRegistered(typeof(IAppContext)))
             {
                 var lazyAppContext = new Lazy<IAppContext>(() => new Kephas.Application.AppContext(ambientServices));
