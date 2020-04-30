@@ -26,7 +26,7 @@ namespace Kephas.Operations
     /// </summary>
     public class OperationResult : Expando, IOperationResult
     {
-        private object? returnValue;
+        private object? value;
         private OperationState operationState;
         private float percentCompleted;
         private TimeSpan elapsed;
@@ -44,11 +44,11 @@ namespace Kephas.Operations
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationResult"/> class.
         /// </summary>
-        /// <param name="returnValue">The return value.</param>
-        public OperationResult(object returnValue)
+        /// <param name="value">The return value.</param>
+        public OperationResult(object value)
             : this()
         {
-            this.ReturnValue = returnValue;
+            this.Value = value;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Kephas.Operations
         /// <value>
         /// The return value.
         /// </value>
-        public object? ReturnValue
+        public object? Value
         {
             get
             {
@@ -85,7 +85,7 @@ namespace Kephas.Operations
                         : throw new InvalidOperationException($"The awaited task did not complete execution (state: {taskStatus}).");
                 }
 
-                return this.returnValue;
+                return this.value;
             }
 
             set
@@ -95,7 +95,7 @@ namespace Kephas.Operations
                     throw new InvalidOperationException($"Cannot set the return value when awaiting a task.");
                 }
 
-                this.SetProperty(ref this.returnValue, value);
+                this.SetProperty(ref this.value, value);
             }
         }
 
@@ -196,7 +196,7 @@ namespace Kephas.Operations
         /// </returns>
         protected virtual OperationResultAwaiter CreateAwaiter()
         {
-            return new OperationResultAwaiter<object?>(Task.FromResult(this.ReturnValue));
+            return new OperationResultAwaiter<object?>(Task.FromResult(this.Value));
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace Kephas.Operations
         /// </returns>
         protected virtual Task CreateTask()
         {
-            return Task.FromResult(this.ReturnValue);
+            return Task.FromResult(this.Value);
         }
 
         /// <summary>
@@ -336,9 +336,9 @@ namespace Kephas.Operations
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationResult{TValue}"/> class.
         /// </summary>
-        /// <param name="returnValue">The return value.</param>
-        public OperationResult(TValue returnValue)
-            : base(returnValue)
+        /// <param name="value">The return value.</param>
+        public OperationResult(TValue value)
+            : base(value)
         {
         }
 
@@ -358,10 +358,10 @@ namespace Kephas.Operations
         /// <value>
         /// The return value.
         /// </value>
-        public new TValue ReturnValue
+        public new TValue Value
         {
-            get => (TValue)base.ReturnValue;
-            set => base.ReturnValue = value;
+            get => (TValue)base.Value;
+            set => base.Value = value;
         }
 
         /// <summary>
@@ -388,7 +388,7 @@ namespace Kephas.Operations
         /// </returns>
         protected override OperationResultAwaiter CreateAwaiter()
         {
-            return new OperationResultAwaiter<TValue>(Task.FromResult(this.ReturnValue));
+            return new OperationResultAwaiter<TValue>(Task.FromResult(this.Value));
         }
 
         /// <summary>
@@ -397,6 +397,6 @@ namespace Kephas.Operations
         /// <returns>
         /// The task representing this operation result.
         /// </returns>
-        protected override Task CreateTask() => Task.FromResult(this.ReturnValue);
+        protected override Task CreateTask() => Task.FromResult(this.Value);
     }
 }

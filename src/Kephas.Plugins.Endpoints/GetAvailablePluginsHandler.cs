@@ -59,7 +59,7 @@ namespace Kephas.Plugins.Endpoints
                       .Skip(message.Skip)
                       .Take(message.Take),
                 cancellationToken: token).PreserveThreadContext();
-            var plugins = result.ReturnValue;
+            var plugins = result.Value;
 
             var searchTerm = string.IsNullOrEmpty(message.SearchTerm)
                 ? string.Empty

@@ -52,6 +52,6 @@ namespace Kephas.Licensing
         /// <value>
         /// True if this app is licensed, false if not.
         /// </value>
-        public bool IsLicensed => this.ReturnValue;
+        public bool IsLicensed => this.Value;
     }
 }

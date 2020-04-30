@@ -55,7 +55,7 @@ namespace Kephas.Plugins.Endpoints
 
             var result = await this.pluginManager.InstallPluginAsync(new AppIdentity(message.Id, message.Version), ctx => ctx.Merge(context), token).PreserveThreadContext();
 
-            var plugin = result.ReturnValue;
+            var plugin = result.Value;
             var pluginId = plugin?.GetTypeInfo().Name ?? message.Id;
             var pluginVersion = plugin?.GetTypeInfo().Identity.Version ?? message.Version;
 

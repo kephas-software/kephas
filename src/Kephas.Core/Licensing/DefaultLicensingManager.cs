@@ -107,7 +107,7 @@ namespace Kephas.Licensing
                     .MergeMessage($"The license was issued for version range '{license.AppVersionRange}' not for the requested '{appIdentity}'.");
             }
 
-            return result.ReturnValue(true)
+            return result.Value(true)
                 .MergeMessage("Valid license.");
         }
 

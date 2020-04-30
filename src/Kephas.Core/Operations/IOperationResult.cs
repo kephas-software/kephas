@@ -13,14 +13,9 @@ namespace Kephas.Operations
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
     using System.Threading.Tasks;
 
-    using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
-    using Kephas.ExceptionHandling;
-    using Kephas.Resources;
 
     /// <summary>
     /// Contract for operation results.
@@ -33,7 +28,7 @@ namespace Kephas.Operations
         /// <value>
         /// The return value.
         /// </value>
-        object? ReturnValue { get; set; }
+        object? Value { get; set; }
 
         /// <summary>
         /// Gets or sets the state of the operation.
@@ -104,7 +99,7 @@ namespace Kephas.Operations
         /// <value>
         /// The return value.
         /// </value>
-        new TValue ReturnValue { get; set; }
+        new TValue Value { get; set; }
 
         /// <summary>
         /// Gets the operation result awaiter.

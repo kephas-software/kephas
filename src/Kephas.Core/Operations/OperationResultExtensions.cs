@@ -27,16 +27,16 @@ namespace Kephas.Operations
         /// </summary>
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <param name="result">The result.</param>
-        /// <param name="returnValue">The return value.</param>
+        /// <param name="value">The return value.</param>
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult ReturnValue<TResult>(this TResult result, object? returnValue)
+        public static TResult Value<TResult>(this TResult result, object? value)
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
 
-            result.ReturnValue = returnValue;
+            result.Value = value;
 
             return result;
         }
@@ -47,16 +47,16 @@ namespace Kephas.Operations
         /// <typeparam name="TResult">Type of the result.</typeparam>
         /// <typeparam name="TValue">Type of the return value.</typeparam>
         /// <param name="result">The result.</param>
-        /// <param name="returnValue">The return value.</param>
+        /// <param name="value">The return value.</param>
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult ReturnValue<TResult, TValue>(this TResult result, TValue returnValue)
+        public static TResult Value<TResult, TValue>(this TResult result, TValue value)
             where TResult : class, IOperationResult<TValue>
         {
             Requires.NotNull(result, nameof(result));
 
-            result.ReturnValue = returnValue;
+            result.Value = value;
 
             return result;
         }
@@ -256,7 +256,7 @@ namespace Kephas.Operations
 
             result.Messages.AddRange(resultToMerge.Messages);
             result.Exceptions.AddRange(resultToMerge.Exceptions);
-            result.ReturnValue = resultToMerge.ReturnValue;
+            result.Value = resultToMerge.Value;
             result.Elapsed += resultToMerge.Elapsed;
 
             return result;
@@ -393,7 +393,7 @@ namespace Kephas.Operations
         {
             Requires.NotNull(aggregatedResult, nameof(aggregatedResult));
 
-            var nestedResult = aggregatedResult.ReturnValue;
+            var nestedResult = aggregatedResult.Value;
             if (nestedResult == null)
             {
                 return throwOnNull

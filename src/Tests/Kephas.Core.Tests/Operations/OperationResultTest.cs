@@ -30,7 +30,7 @@ namespace Kephas.Core.Tests.Operations
 
             Assert.AreEqual(OperationState.Completed, opResult.OperationState);
             Assert.AreEqual(1f, opResult.PercentCompleted);
-            Assert.AreEqual(12, opResult.ReturnValue);
+            Assert.AreEqual(12, opResult.Value);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace Kephas.Core.Tests.Operations
 
             Assert.AreEqual(OperationState.Completed, opResult.OperationState);
             Assert.AreEqual(1f, opResult.PercentCompleted);
-            Assert.AreEqual(12, opResult.ReturnValue);
+            Assert.AreEqual(12, opResult.Value);
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace Kephas.Core.Tests.Operations
             {
                 Assert.AreEqual(OperationState.Failed, opResult.OperationState);
                 Assert.AreEqual(0f, opResult.PercentCompleted);
-                Assert.Throws<ArgumentException>(() => { var _ = opResult.ReturnValue; });
+                Assert.Throws<ArgumentException>(() => { var _ = opResult.Value; });
             });
         }
 
@@ -64,7 +64,7 @@ namespace Kephas.Core.Tests.Operations
             {
                 Assert.AreEqual(OperationState.Canceled, opResult.OperationState);
                 Assert.AreEqual(0f, opResult.PercentCompleted);
-                Assert.Throws<TaskCanceledException>(() => { var _ = opResult.ReturnValue; });
+                Assert.Throws<TaskCanceledException>(() => { var _ = opResult.Value; });
             });
         }
 
@@ -84,7 +84,7 @@ namespace Kephas.Core.Tests.Operations
             var result = await opResult;
             Assert.IsNull(result);
 
-            opResult.ReturnValue = 40;
+            opResult.Value = 40;
             result = await opResult;
 
             Assert.AreEqual(40, result);
@@ -105,7 +105,7 @@ namespace Kephas.Core.Tests.Operations
             var opResult = new OperationResult(Task.FromResult((object)12));
             await opResult.AsTask();
 
-            Assert.AreEqual(12, opResult.ReturnValue);
+            Assert.AreEqual(12, opResult.Value);
         }
 
         [Test]

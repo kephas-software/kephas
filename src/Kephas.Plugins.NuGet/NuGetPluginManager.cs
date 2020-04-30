@@ -163,7 +163,7 @@ namespace Kephas.Plugins.NuGet
                     }
                 }).PreserveThreadContext();
 
-            result.ReturnValue(availablePlugins)
+            result.Value(availablePlugins)
                 .MergeMessages(opResult)
                 .Complete(opResult.Elapsed);
             return result;
@@ -199,7 +199,7 @@ namespace Kephas.Plugins.NuGet
                     throw new InvalidOperationException($"Plugin package {pluginPackageIdentity} not available ({downloadResult.Status}).");
                 }
 
-                result.ReturnValue = downloadResult;
+                result.Value = downloadResult;
             }
             finally
             {
@@ -276,7 +276,7 @@ namespace Kephas.Plugins.NuGet
                 throw;
             }
 
-            result.ReturnValue = new Plugin(pluginInfo, pluginData) { Location = pluginLocation };
+            result.Value = new Plugin(pluginInfo, pluginData) { Location = pluginLocation };
             return result;
         }
 
@@ -392,7 +392,7 @@ namespace Kephas.Plugins.NuGet
                 .PreserveThreadContext();
 
             return result
-                .ReturnValue(baseResult.ReturnValue)
+                .Value(baseResult.Value)
                 .MergeMessages(baseResult);
         }
 
@@ -719,7 +719,7 @@ namespace Kephas.Plugins.NuGet
                           .Set(SourceCacheContextKey, cacheContext),
                 cancellationToken).PreserveThreadContext();
 
-            var downloadResult = (DownloadResourceResult)opResult.ReturnValue;
+            var downloadResult = (DownloadResourceResult)opResult.Value;
             var pluginPackageIdentity = this.ToPackageIdentity(pluginIdentity);
 
             var dependencies = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);

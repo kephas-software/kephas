@@ -95,7 +95,7 @@ namespace Kephas.Application.Tests
             var appManager = Substitute.For<IAppManager>();
             var termAwaiter = Substitute.For<IAppShutdownAwaiter>();
             termAwaiter.WaitForShutdownSignalAsync(Arg.Any<CancellationToken>())
-                .Returns((new OperationResult { ReturnValue = 12 }, AppShutdownInstruction.Shutdown));
+                .Returns((new OperationResult { Value = 12 }, AppShutdownInstruction.Shutdown));
 
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
@@ -108,7 +108,7 @@ namespace Kephas.Application.Tests
 
             appManager.Received(1).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
-            Assert.AreEqual(12, appResult.ReturnValue);
+            Assert.AreEqual(12, appResult.Value);
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace Kephas.Application.Tests
             var appManager = Substitute.For<IAppManager>();
             var termAwaiter = Substitute.For<IAppShutdownAwaiter>();
             termAwaiter.WaitForShutdownSignalAsync(Arg.Any<CancellationToken>())
-                .Returns((new OperationResult { ReturnValue = 23 }, AppShutdownInstruction.Ignore));
+                .Returns((new OperationResult { Value = 23 }, AppShutdownInstruction.Ignore));
 
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAppManager>(Arg.Any<string>())
@@ -130,7 +130,7 @@ namespace Kephas.Application.Tests
 
             appManager.Received(0).FinalizeAppAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>());
             var appResult = (IOperationResult)appContext.AppResult;
-            Assert.AreEqual(23, appResult.ReturnValue);
+            Assert.AreEqual(23, appResult.Value);
         }
 
         [Test]

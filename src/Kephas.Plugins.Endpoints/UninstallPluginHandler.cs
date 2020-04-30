@@ -56,11 +56,11 @@ namespace Kephas.Plugins.Endpoints
 
             var result = await this.pluginManager.UninstallPluginAsync(new AppIdentity(message.Id), ctx => ctx.Merge(context), token).PreserveThreadContext();
 
-            var operation = result.ReturnValue?.State == PluginState.PendingUninstallation
+            var operation = result.Value?.State == PluginState.PendingUninstallation
                 ? "uninitialized"
                 : "uninstalled";
 
-            this.appContext.Logger.Info("Plugin {plugin} {operation} ({state}). Elapsed: {elapsed:c}.", result.ReturnValue?.Id ?? message.Id, operation, result.ReturnValue?.State, result.Elapsed);
+            this.appContext.Logger.Info("Plugin {plugin} {operation} ({state}). Elapsed: {elapsed:c}.", result.Value?.Id ?? message.Id, operation, result.Value?.State, result.Elapsed);
 
             return new ResponseMessage
             {

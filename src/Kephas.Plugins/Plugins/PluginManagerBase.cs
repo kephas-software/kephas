@@ -161,9 +161,9 @@ namespace Kephas.Plugins
 
                     var downloadWrappedResult = await Profiler.WithStopwatchAsync(
                         () => this.DownloadPluginCoreAsync(pluginIdentity, downloadContext, cancellationToken)).PreserveThreadContext();
-                    result.MergeAll(downloadWrappedResult.ReturnValue);
+                    result.MergeAll(downloadWrappedResult.Value);
 
-                    return downloadWrappedResult.ReturnValue.ReturnValue;
+                    return downloadWrappedResult.Value.Value;
                 }).PreserveThreadContext();
 
             this.Logger.Info("Plugin {plugin} successfully downloaded. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);
@@ -212,11 +212,11 @@ namespace Kephas.Plugins
                                         () => this.InstallPluginCoreAsync(pluginIdentity, installContext, cancellationToken))
                                 .PreserveThreadContext();
 
-                            var plugin = installWrappedResult.ReturnValue.ReturnValue;
+                            var plugin = installWrappedResult.Value.Value;
                             pluginData = plugin.GetPluginData();
                             result
-                                .ReturnValue(plugin)
-                                .MergeMessages(installWrappedResult.ReturnValue)
+                                .Value(plugin)
+                                .MergeMessages(installWrappedResult.Value)
                                 .MergeMessage($"Plugin {pluginIdentity} successfully installed, awaiting initialization. Elapsed: {installWrappedResult.Elapsed:c}.");
 
                             this.SetPluginState(pluginData, PluginState.PendingInitialization);
@@ -231,7 +231,7 @@ namespace Kephas.Plugins
                         }
 
                         installContext
-                            .Plugin(result.ReturnValue)
+                            .Plugin(result.Value)
                             .PluginData(pluginData);
                         if (this.CanInitializePlugin(pluginData, installContext))
                         {
@@ -286,7 +286,7 @@ namespace Kephas.Plugins
                     pluginIdentity = pluginData.Identity;
 
                     var plugin = this.ToPlugin(pluginData);
-                    result.ReturnValue = plugin;
+                    result.Value = plugin;
 
                     Action<IPluginContext> uninstallOptions = ctx =>
                         ctx.Merge(options)
@@ -326,13 +326,13 @@ namespace Kephas.Plugins
 
                         uninstallContext
                             .PluginData(pluginData)
-                            .Plugin(result.ReturnValue);
+                            .Plugin(result.Value);
                         if (this.CanUninstallPlugin(pluginData, uninstallContext))
                         {
                             var uninstWrappedResult = await Profiler.WithStopwatchAsync(
                                     () => this.UninstallPluginCoreAsync(pluginIdentity, uninstallContext, cancellationToken))
                                 .PreserveThreadContext();
-                            result.MergeAll(uninstWrappedResult.ReturnValue);
+                            result.MergeAll(uninstWrappedResult.Value);
 
                             try
                             {
@@ -387,7 +387,7 @@ namespace Kephas.Plugins
                     pluginIdentity = pluginData.Identity;
 
                     var plugin = this.ToPlugin(pluginData);
-                    result.ReturnValue(plugin);
+                    result.Value(plugin);
 
                     Action<IPluginContext> initializeOptions = ctx => ctx
                         .Merge(options)
@@ -416,8 +416,8 @@ namespace Kephas.Plugins
                                     () => this.InitializePluginCoreAsync(pluginIdentity, initializeContext, cancellationToken))
                                 .PreserveThreadContext();
                             result
-                                .MergeAll(initWrappedResult.ReturnValue)
-                                .ReturnValue(plugin);
+                                .MergeAll(initWrappedResult.Value)
+                                .Value(plugin);
 
                             this.SetPluginState(pluginData, PluginState.Disabled);
 
@@ -443,7 +443,7 @@ namespace Kephas.Plugins
 
                         initializeContext
                             .PluginData(pluginData)
-                            .Plugin(result.ReturnValue);
+                            .Plugin(result.Value);
                         if (this.CanEnablePlugin(pluginData, initializeContext))
                         {
                             try
@@ -521,7 +521,7 @@ namespace Kephas.Plugins
                     }
 
                     var plugin = this.ToPlugin(pluginData);
-                    result.ReturnValue(plugin);
+                    result.Value(plugin);
 
                     prepareUninitializationContext
                         .PluginData(pluginData)
@@ -538,7 +538,7 @@ namespace Kephas.Plugins
                     {
                         var uninitWrappedResult = await Profiler.WithStopwatchAsync(
                             () => this.PrepareUninitializePluginCoreAsync(pluginIdentity, prepareUninitializationContext, cancellationToken)).PreserveThreadContext();
-                        result.MergeAll(uninitWrappedResult.ReturnValue);
+                        result.MergeAll(uninitWrappedResult.Value);
 
                         this.SetPluginState(pluginData, PluginState.PendingUninitialization);
 
@@ -618,7 +618,7 @@ namespace Kephas.Plugins
                     }
 
                     var plugin = this.ToPlugin(pluginData);
-                    result.ReturnValue(plugin);
+                    result.Value(plugin);
 
                     uninitializeContext
                         .PluginData(pluginData)
@@ -637,7 +637,7 @@ namespace Kephas.Plugins
                     {
                         var uninitWrappedResult = await Profiler.WithStopwatchAsync(
                             () => this.UninitializePluginCoreAsync(pluginIdentity, uninitializeContext, cancellationToken)).PreserveThreadContext();
-                        result.MergeAll(uninitWrappedResult.ReturnValue);
+                        result.MergeAll(uninitWrappedResult.Value);
 
                         this.SetPluginState(pluginData, PluginState.PendingUninstallation);
 
@@ -703,7 +703,7 @@ namespace Kephas.Plugins
 
                     var enableWrappedResult = await Profiler.WithStopwatchAsync(
                         () => this.EnablePluginCoreAsync(pluginIdentity, enableContext, cancellationToken)).PreserveThreadContext();
-                    result.MergeAll(enableWrappedResult.ReturnValue);
+                    result.MergeAll(enableWrappedResult.Value);
 
                     this.SetPluginState(pluginData, PluginState.Enabled);
 
@@ -751,7 +751,7 @@ namespace Kephas.Plugins
 
                     var disableWrappedResult = await Profiler.WithStopwatchAsync(
                         () => this.DisablePluginCoreAsync(pluginIdentity, disableContext, cancellationToken)).PreserveThreadContext();
-                    result.MergeAll(disableWrappedResult.ReturnValue);
+                    result.MergeAll(disableWrappedResult.Value);
 
                     this.SetPluginState(pluginData, PluginState.Disabled);
 
@@ -817,7 +817,7 @@ namespace Kephas.Plugins
                         cancellationToken).PreserveThreadContext();
                     result.MergeAll(instResult);
 
-                    return instResult.ReturnValue;
+                    return instResult.Value;
                 }).PreserveThreadContext();
 
             this.Logger.Warn("Plugin {plugin} successfully updated. Elapsed: {elapsed:c}.\n{messages}{exceptions}", pluginIdentity, opResult.Elapsed, result.Messages, result.Exceptions);

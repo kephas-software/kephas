@@ -58,8 +58,8 @@ namespace Kephas.Tests.Plugins
                 var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(PluginState.Enabled, result.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nEnabled\nEmbedded\n-inst-undo-1:test|h:i|param&pipe;1|param\\n2\n139272387", result.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual(PluginState.Enabled, result.Value.State);
+                Assert.AreEqual("p1:1.2.3.4\nEnabled\nEmbedded\n-inst-undo-1:test|h:i|param&pipe;1|param\\n2\n139272387", result.Value.GetPluginData().ToString());
             }
         }
 
@@ -88,8 +88,8 @@ namespace Kephas.Tests.Plugins
                 var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(PluginState.PendingInitialization, result.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nPendingInitialization\nEmbedded\n\n-374817233", result.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual(PluginState.PendingInitialization, result.Value.State);
+                Assert.AreEqual("p1:1.2.3.4\nPendingInitialization\nEmbedded\n\n-374817233", result.Value.GetPluginData().ToString());
             }
         }
 
@@ -105,8 +105,8 @@ namespace Kephas.Tests.Plugins
                 var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(PluginState.Disabled, result.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nDisabled\nEmbedded\n\n-237160451", result.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual(PluginState.Disabled, result.Value.State);
+                Assert.AreEqual("p1:1.2.3.4\nDisabled\nEmbedded\n\n-237160451", result.Value.GetPluginData().ToString());
             }
         }
 
@@ -122,8 +122,8 @@ namespace Kephas.Tests.Plugins
                 var uninstResult = await pluginManager.UninstallPluginAsync(new AppIdentity("p1"), pctx => pctx["callback"] = (Action)(() => callbackCalls++));
 
                 Assert.IsNotNull(uninstResult);
-                Assert.AreEqual(PluginState.None, uninstResult.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nNone\nEmbedded\n\n-1166008255", uninstResult.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual(PluginState.None, uninstResult.Value.State);
+                Assert.AreEqual("p1:1.2.3.4\nNone\nEmbedded\n\n-1166008255", uninstResult.Value.GetPluginData().ToString());
                 Assert.AreEqual(1, callbackCalls);
             }
         }
@@ -154,8 +154,8 @@ namespace Kephas.Tests.Plugins
                 var uninstResult = await pluginManager.UninstallPluginAsync(new AppIdentity("p1"));
 
                 Assert.IsNotNull(uninstResult);
-                Assert.AreEqual(PluginState.PendingUninstallation, uninstResult.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nPendingUninstallation\nEmbedded\n\n-858986955", uninstResult.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual(PluginState.PendingUninstallation, uninstResult.Value.State);
+                Assert.AreEqual("p1:1.2.3.4\nPendingUninstallation\nEmbedded\n\n-858986955", uninstResult.Value.GetPluginData().ToString());
             }
         }
 
@@ -199,8 +199,8 @@ namespace Kephas.Tests.Plugins
                 result = await pluginManager.UpdatePluginAsync(new AppIdentity("p1", "2.0.0.0"));
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(PluginState.Enabled, result.ReturnValue.State);
-                Assert.AreEqual("p1:1.2.3.4\nEnabled\nEmbedded\n\n-1236731413", result.ReturnValue.GetPluginData().ToString());
+                Assert.AreEqual(PluginState.Enabled, result.Value.State);
+                Assert.AreEqual("p1:1.2.3.4\nEnabled\nEmbedded\n\n-1236731413", result.Value.GetPluginData().ToString());
             }
         }
 

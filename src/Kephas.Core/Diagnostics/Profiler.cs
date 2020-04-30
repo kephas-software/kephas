@@ -231,7 +231,7 @@ namespace Kephas.Diagnostics
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            result.ReturnValue = action();
+            result.Value = action();
             stopwatch.Stop();
 
             result
@@ -449,7 +449,7 @@ namespace Kephas.Diagnostics
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            result.ReturnValue = await action().PreserveThreadContext();
+            result.Value = await action().PreserveThreadContext();
             stopwatch.Stop();
 
             result

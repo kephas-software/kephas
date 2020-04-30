@@ -104,7 +104,7 @@ namespace Kephas.Plugins.Endpoints
                 {
                     var availablePackages = (await this.pluginManager.GetAvailablePluginsAsync(
                         s => s.Take(installedPlugins.Count).IncludePrerelease(message.IncludePrerelease),
-                        token).PreserveThreadContext()).ReturnValue;
+                        token).PreserveThreadContext()).Value;
                     toUpdate = installedPlugins
                         .Select(p => (plugin: p, version: availablePackages
                             .FirstOrDefault(pkg =>
@@ -130,7 +130,7 @@ namespace Kephas.Plugins.Endpoints
                 {
                     var availablePackage = (await this.pluginManager.GetAvailablePluginsAsync(
                             s => s.SearchTerm(message.Id).IncludePrerelease(message.IncludePrerelease),
-                            token).PreserveThreadContext()).ReturnValue
+                            token).PreserveThreadContext()).Value
                         .FirstOrDefault(p =>
                             p.Identity.Id.Equals(message.Id, StringComparison.InvariantCultureIgnoreCase));
                     toUpdate = availablePackage == null
@@ -159,7 +159,7 @@ namespace Kephas.Plugins.Endpoints
                     .UpdatePluginAsync(pluginIdentity, ctx => ctx.Merge(context), token)
                     .PreserveThreadContext();
 
-                var plugin = result.ReturnValue;
+                var plugin = result.Value;
                 var pluginId = plugin?.GetTypeInfo().Name ?? pluginIdentity.Id;
                 var pluginVersion = plugin?.GetTypeInfo().Identity.Version ?? pluginIdentity.Version;
 
