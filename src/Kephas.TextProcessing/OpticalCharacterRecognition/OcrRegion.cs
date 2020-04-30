@@ -1,21 +1,31 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IOcrResult.cs" company="Kephas Software SRL">
+// <copyright file="OcrRegion.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Declares the IOcrResult interface.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Kephas.TextProcessing.OpticalCharacterRecognition
 {
-    using Kephas.Operations;
-
     /// <summary>
-    /// Interface for OCR result.
+    /// A region within a scanned document.
     /// </summary>
-    public interface IOcrResult : IOperationResult
+    public class OcrRegion
     {
+        /// <summary>
+        /// Gets or sets the bounding box.
+        /// </summary>
+        /// <value>
+        /// The bounding box.
+        /// </value>
+        public string BoundingBox { get; set; }
+
+        /// <summary>
+        /// Gets or sets the lines.
+        /// </summary>
+        /// <value>
+        /// The lines.
+        /// </value>
+        public OcrLine[] Lines { get; set; }
     }
 }

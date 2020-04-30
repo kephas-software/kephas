@@ -12,9 +12,11 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
 {
     using System;
     using System.IO;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -32,6 +34,6 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <returns>
         /// An asynchronous result that yields the OCR result.
         /// </returns>
-        Task<IOcrResult> ProcessAsync(Stream image, Action<IOcrContext> optionsConfig = null, CancellationToken cancellationToken = default);
+        Task<IOperationResult<OcrResult>> ProcessAsync(Stream image, Action<IOcrContext>? optionsConfig = null, CancellationToken cancellationToken = default);
     }
 }
