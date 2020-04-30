@@ -218,26 +218,30 @@ namespace Kephas.Data.IO.Setup
         /// </returns>
         protected virtual async Task<IOperationResult> ImportDataFileAsync(IDataSetupContext dataSetupContext, string dataFilePath, CancellationToken cancellationToken)
         {
-            using (var dataSource = this.CreateDataSource(dataFilePath))
-            using (var dataSpace = this.DataSpaceFactory.CreateInitializedValue(dataSetupContext))
+            using var dataSource = this.CreateDataSource(dataFilePath);
+            using var dataSpace = this.DataSpaceFactory.CreateInitializedValue(dataSetupContext);
+
+            try
             {
-                var result = new OperationResult();
+                var importResult = this.DataImportService
+                    .ImportDataAsync(dataSource, this.GetDataImportConfig(dataSetupContext, dataSpace), cancellationToken);
                 try
                 {
-                    var importResult = await this.DataImportService
-                                     .ImportDataAsync(dataSource, this.GetDataImportConfig(dataSetupContext, dataSpace), cancellationToken)
-                                     .PreserveThreadContext();
-                    result.MergeMessages(importResult);
-                    result.Messages?.ForEach(m => this.Logger.Info($"{{timestamp}}: {m.Message}", m.Timestamp));
-                    result.Exceptions?.ForEach(e => this.Logger.Error(e, "Exception while importing {file}.", dataFilePath));
-                    return result;
+                    await importResult;
                 }
-                catch (Exception ex)
+                catch (Exception innerEx)
                 {
-                    this.Logger.Error(ex, "Exception while importing {file}.", dataFilePath);
-                    result.MergeException(ex);
-                    return result;
+                    importResult.MergeException(innerEx);
                 }
+
+                importResult.Messages.ForEach(m => this.Logger.Info($"{{timestamp}}: {m.Message}", m.Timestamp));
+                importResult.Exceptions.ForEach(e => this.Logger.Error(e, "Exception while importing {file}.", dataFilePath));
+                return importResult;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Exception while importing {file}.", dataFilePath);
+                return ex.ToOperationResult();
             }
         }
 

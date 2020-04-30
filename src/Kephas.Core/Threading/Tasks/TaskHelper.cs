@@ -396,7 +396,7 @@ namespace Kephas.Threading.Tasks
             Requires.NotNull(action, nameof(action));
 
             var task = Task.Run(action, cancellationToken);
-            Task completedTask = null;
+            Task? completedTask = null;
             try
             {
                 completedTask = await AsAsync(task, timeout, cancellationToken).PreserveThreadContext();

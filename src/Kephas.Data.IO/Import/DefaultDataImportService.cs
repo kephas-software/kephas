@@ -12,9 +12,8 @@ namespace Kephas.Data.IO.Import
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
+    using System.Diagnostics;
     using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -24,7 +23,7 @@ namespace Kephas.Data.IO.Import
     using Kephas.Data.Commands;
     using Kephas.Data.Conversion;
     using Kephas.Data.IO.DataStreams;
-    using Kephas.Diagnostics;
+    using Kephas.Data.IO.Internal;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model;
@@ -58,7 +57,7 @@ namespace Kephas.Data.IO.Import
             IDataStreamReadService dataStreamReadService,
             IDataConversionService conversionService,
             IProjectedTypeResolver projectedTypeResolver,
-            ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories = null)
+            ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>>? behaviorFactories = null)
             : base(contextFactory)
         {
             Requires.NotNull(contextFactory, nameof(contextFactory));
@@ -92,29 +91,17 @@ namespace Kephas.Data.IO.Import
         /// <returns>
         /// A data import result.
         /// </returns>
-        public async Task<IOperationResult> ImportDataAsync(
+        public IOperationResult ImportDataAsync(
             DataStream dataSource,
-            Action<IDataImportContext> optionsConfig = null,
+            Action<IDataImportContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            using (var context = this.CreateDataImportContext(optionsConfig))
-            {
-                Requires.NotNull(context.DataSpace, nameof(context.DataSpace));
+            var context = this.CreateDataImportContext(optionsConfig);
 
-                var result = context.EnsureResult();
-                result.OperationState = OperationState.InProgress;
+            Requires.NotNull(context.DataSpace, nameof(context.DataSpace));
 
-                var opWrappedResult = await Profiler.WithStopwatchAsync(
-                    () =>
-                    {
-                        var job = this.CreateImportJob(dataSource, context, result);
-                        return job.ExecuteAsync(cancellationToken);
-                    }).PreserveThreadContext();
-
-                result.MergeMessages(opWrappedResult.ReturnValue)
-                    .Complete(opWrappedResult.Elapsed);
-                return result;
-            }
+            var job = new DataSourceImportJob(dataSource, context, this.dataStreamReadService, this.ConversionService, this.projectedTypeResolver, this.behaviorFactories);
+            return job.ExecuteAsync(cancellationToken);
         }
 
         /// <summary>
@@ -124,7 +111,7 @@ namespace Kephas.Data.IO.Import
         /// <returns>
         /// The new data import context.
         /// </returns>
-        protected virtual IDataImportContext CreateDataImportContext(Action<IDataImportContext> optionsConfig = null)
+        protected virtual IDataImportContext CreateDataImportContext(Action<IDataImportContext>? optionsConfig = null)
         {
             var context = this.contextFactory.CreateContext<DataImportContext>();
             optionsConfig?.Invoke(context);
@@ -132,66 +119,16 @@ namespace Kephas.Data.IO.Import
         }
 
         /// <summary>
-        /// Creates the import job.
-        /// </summary>
-        /// <param name="dataSource">The data source.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="result">The result.</param>
-        /// <returns>
-        /// A list of import jobs.
-        /// </returns>
-        private DataSourceImportJob CreateImportJob(DataStream dataSource, IDataImportContext context, IOperationResult result)
-        {
-            var job = new DataSourceImportJob(dataSource, context, this.dataStreamReadService, this.ConversionService, this.projectedTypeResolver, this.behaviorFactories);
-            job.PropertyChanged += (j, ea) => result.PercentCompleted = ((DataSourceImportJob)j).PercentCompleted;
-
-            return job;
-        }
-
-        /// <summary>
         /// The import job.
         /// </summary>
-        internal class DataSourceImportJob : INotifyPropertyChanged, IDisposable
+        internal class DataSourceImportJob : DataIOJobBase<IDataImportContext>
         {
-            /// <summary>
-            /// The data source.
-            /// </summary>
             private readonly DataStream dataSource;
-
-            /// <summary>
-            /// The context.
-            /// </summary>
-            private readonly IDataImportContext context;
-
-            /// <summary>
-            /// The converter.
-            /// </summary>
             private readonly IDataStreamReadService dataSourceReader;
-
-            /// <summary>
-            /// The data space.
-            /// </summary>
             private readonly IDataSpace dataSpace;
-
-            /// <summary>
-            /// The conversion service.
-            /// </summary>
             private readonly IDataConversionService conversionService;
-
-            /// <summary>
-            /// The projected type resolver.
-            /// </summary>
             private readonly IProjectedTypeResolver projectedTypeResolver;
-
-            /// <summary>
-            /// The behavior factories.
-            /// </summary>
             private readonly ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories;
-
-            /// <summary>
-            /// The percent completed.
-            /// </summary>
-            private float percentCompleted;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="DataSourceImportJob" /> class.
@@ -209,9 +146,9 @@ namespace Kephas.Data.IO.Import
                 IDataConversionService conversionService,
                 IProjectedTypeResolver projectedTypeResolver,
                 ICollection<IExportFactory<IDataImportBehavior, AppServiceMetadata>> behaviorFactories)
+            : base(context)
             {
                 this.dataSource = dataSource;
-                this.context = context;
                 this.dataSourceReader = dataSourceReader;
                 this.dataSpace = context.DataSpace;
                 this.conversionService = conversionService;
@@ -220,40 +157,14 @@ namespace Kephas.Data.IO.Import
             }
 
             /// <summary>
-            /// Occurs when a property value changes.
+            /// Executes the import job (core implementation).
             /// </summary>
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            /// <summary>
-            /// Gets or sets the percent completed.
-            /// </summary>
-            /// <value>
-            /// The percent completed.
-            /// </value>
-            public float PercentCompleted
-            {
-                get => this.percentCompleted;
-                set => this.SetProperty(ref this.percentCompleted, value);
-            }
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            public void Dispose()
-            {
-            }
-
-            /// <summary>
-            /// Executes the import job.
-            /// </summary>
-            /// <param name="cancellationToken">The cancellation token (optional).</param>
+            /// <param name="cancellationToken">The cancellation token.</param>
             /// <returns>
-            /// A data exchange result.
+            /// An operation result.
             /// </returns>
-            public async Task<IOperationResult> ExecuteAsync(CancellationToken cancellationToken = default)
+            protected override async Task<IOperationResult> ExecuteCoreAsync(CancellationToken cancellationToken)
             {
-                var result = new OperationResult();
-
                 var behaviors = this.behaviorFactories.Select(f => f.CreateExportedValue()).ToList();
                 var reversedBehaviors = new List<IDataImportBehavior>(behaviors);
                 reversedBehaviors.Reverse();
@@ -261,12 +172,12 @@ namespace Kephas.Data.IO.Import
                 cancellationToken.ThrowIfCancellationRequested();
                 foreach (var behavior in behaviors)
                 {
-                    await behavior.BeforeReadDataSourceAsync(this.dataSource, this.context, cancellationToken)
+                    await behavior.BeforeReadDataSourceAsync(this.dataSource, this.Context, cancellationToken)
                         .PreserveThreadContext();
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
-                var readResult = await this.dataSourceReader.ReadAsync(this.dataSource, this.context, cancellationToken).PreserveThreadContext();
+                var readResult = await this.dataSourceReader.ReadAsync(this.dataSource, this.Context, cancellationToken).PreserveThreadContext();
                 if (!readResult.GetType().IsCollection())
                 {
                     readResult = new List<object> { readResult };
@@ -277,68 +188,44 @@ namespace Kephas.Data.IO.Import
                 cancellationToken.ThrowIfCancellationRequested();
                 foreach (var behavior in reversedBehaviors)
                 {
-                    await behavior.AfterReadDataSourceAsync(this.dataSource, this.context, sourceEntities, cancellationToken)
+                    await behavior.AfterReadDataSourceAsync(this.dataSource, this.Context, sourceEntities, cancellationToken)
                         .PreserveThreadContext();
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
-                await this.ImportAsManyAsPossibleAsync(sourceEntities, result, behaviors, reversedBehaviors, cancellationToken).PreserveThreadContext();
+                await this.ImportAsManyAsPossibleAsync(sourceEntities, behaviors, reversedBehaviors, cancellationToken).PreserveThreadContext();
 
-                return result;
-            }
-
-            /// <summary>
-            /// Called when a property changes.
-            /// </summary>
-            /// <param name="propertyName">Name of the property.</param>
-            protected virtual void OnPropertyChanged(string propertyName = null)
-            {
-                var handler = this.PropertyChanged;
-                handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-
-            /// <summary>
-            /// Sets the property.
-            /// </summary>
-            /// <typeparam name="T">The field type.</typeparam>
-            /// <param name="field">The field.</param>
-            /// <param name="value">The value.</param>
-            /// <param name="name">The name.</param>
-            private void SetProperty<T>(ref T field, T value, [CallerMemberName] string name = "")
-            {
-                if (EqualityComparer<T>.Default.Equals(field, value))
-                {
-                    return;
-                }
-
-                field = value;
-                this.OnPropertyChanged(name);
+                return this.Result;
             }
 
             /// <summary>
             /// Imports as many as possible.
             /// </summary>
             /// <param name="sourceEntities">The source entities.</param>
-            /// <param name="result">The result.</param>
             /// <param name="behaviors">The behaviors.</param>
             /// <param name="reversedBehaviors">The reversed behaviors.</param>
             /// <param name="cancellationToken">Optional. The cancellation token.</param>
             /// <returns>
             /// A task for continuation.
             /// </returns>
-            private async Task ImportAsManyAsPossibleAsync(IEnumerable<object> sourceEntities, IOperationResult result, IList<IDataImportBehavior> behaviors, IList<IDataImportBehavior> reversedBehaviors, CancellationToken cancellationToken = default)
+            private async Task ImportAsManyAsPossibleAsync(IEnumerable<object> sourceEntities, IList<IDataImportBehavior> behaviors, IList<IDataImportBehavior> reversedBehaviors, CancellationToken cancellationToken = default)
             {
-                var importEntityEntries = sourceEntities.Select(this.AttachSourceEntity).ToList();
+                // ensure we run in a separate thread.
+                var importEntityEntries =
+                    await ((Func<List<IEntityEntry>>)(() => sourceEntities.Select(this.AttachSourceEntity).ToList()))
+                            .AsAsync(cancellationToken)
+                            .PreserveThreadContext();
+                var percentageStep = 1f / importEntityEntries.Count;
                 foreach (var importEntityEntry in importEntityEntries)
                 {
-                    IDataContext targetDataContext = null;
+                    IDataContext? targetDataContext = null;
                     try
                     {
                         // Convert the entity to import
                         cancellationToken.ThrowIfCancellationRequested();
                         foreach (var behavior in behaviors)
                         {
-                            await behavior.BeforeConvertEntityAsync(importEntityEntry, this.context, cancellationToken)
+                            await behavior.BeforeConvertEntityAsync(importEntityEntry, this.Context, cancellationToken)
                                 .PreserveThreadContext();
                         }
 
@@ -350,23 +237,23 @@ namespace Kephas.Data.IO.Import
                         cancellationToken.ThrowIfCancellationRequested();
                         foreach (var behavior in behaviors)
                         {
-                            await behavior.BeforePersistEntityAsync(importEntityEntry, targetEntry, this.context, cancellationToken)
+                            await behavior.BeforePersistEntityAsync(importEntityEntry, targetEntry, this.Context, cancellationToken)
                                 .PreserveThreadContext();
                         }
 
                         cancellationToken.ThrowIfCancellationRequested();
                         var persistContext = new PersistChangesContext(targetDataContext);
-                        this.context.PersistChangesConfig?.Invoke(persistContext);
+                        this.Context.PersistChangesConfig?.Invoke(persistContext);
                         await targetDataContext.PersistChangesAsync(persistContext, cancellationToken).PreserveThreadContext();
 
                         importEntityEntry.AcceptChanges();
-                        result.MergeMessage(new ImportEntitySuccessfulMessage(importEntityEntry.Entity));
+                        this.Result.MergeMessage(new ImportEntitySuccessfulMessage(importEntityEntry.Entity));
 
                         // The converted entity is persisted
                         cancellationToken.ThrowIfCancellationRequested();
                         foreach (var behavior in reversedBehaviors)
                         {
-                            await behavior.AfterPersistEntityAsync(importEntityEntry, targetEntry, this.context, cancellationToken)
+                            await behavior.AfterPersistEntityAsync(importEntityEntry, targetEntry, this.Context, cancellationToken)
                                 .PreserveThreadContext();
                         }
                     }
@@ -377,9 +264,11 @@ namespace Kephas.Data.IO.Import
                     }
                     catch (Exception ex)
                     {
-                        result.MergeException(new ImportEntityException(importEntityEntry.Entity, ex));
+                        this.Result.MergeException(new ImportEntityException(importEntityEntry.Entity, ex));
                         targetDataContext?.DiscardChanges();
                     }
+
+                    this.Result.PercentCompleted += percentageStep;
                 }
             }
 
@@ -429,32 +318,30 @@ namespace Kephas.Data.IO.Import
             private async Task<IEntityEntry> ConvertEntityAsync(IEntityEntry sourceEntityEntry, CancellationToken cancellationToken = default)
             {
                 var sourceEntity = sourceEntityEntry.Entity;
-                using (var conversionContext = new DataConversionContext(this.dataSpace, this.conversionService)
-                    .RootTargetType(this.projectedTypeResolver.ResolveProjectedType(sourceEntity.GetType(), this.context)))
+                using var conversionContext = new DataConversionContext(this.dataSpace, this.conversionService)
+                    .RootTargetType(this.projectedTypeResolver.ResolveProjectedType(sourceEntity.GetType(), this.Context));
+                this.Context.DataConversionConfig?.Invoke(sourceEntity, conversionContext);
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var conversionResult = await this.conversionService.ConvertAsync(sourceEntity, (object?)null, conversionContext, cancellationToken).PreserveThreadContext();
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var targetEntity = conversionResult.Target;
+                var targetDataContext = this.dataSpace[targetEntity.GetType()];
+                var targetEntityEntry = targetDataContext.Attach(targetEntity);
+
+                // force the change of the entity change state only if
+                // * the target entity is not changed - or -
+                // * the source entity indicated deletion.
+                if (targetEntityEntry.ChangeState == ChangeState.NotChanged
+                    || sourceEntityEntry.ChangeState == ChangeState.Deleted)
                 {
-                    this.context.DataConversionConfig?.Invoke(sourceEntity, conversionContext);
-
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    var conversionResult = await this.conversionService.ConvertAsync(sourceEntity, (object)null, conversionContext, cancellationToken).PreserveThreadContext();
-
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    var targetEntity = conversionResult.Target;
-                    var targetDataContext = this.dataSpace[targetEntity.GetType()];
-                    var targetEntityEntry = targetDataContext.Attach(targetEntity);
-
-                    // force the change of the entity change state only if
-                    // * the target entity is not changed - or -
-                    // * the source entity indicated deletion.
-                    if (targetEntityEntry.ChangeState == ChangeState.NotChanged
-                        || sourceEntityEntry.ChangeState == ChangeState.Deleted)
-                    {
-                        targetEntityEntry.ChangeState = sourceEntityEntry.ChangeState;
-                    }
-
-                    return targetEntityEntry;
+                    targetEntityEntry.ChangeState = sourceEntityEntry.ChangeState;
                 }
+
+                return targetEntityEntry;
             }
         }
     }

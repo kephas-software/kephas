@@ -79,44 +79,6 @@ namespace Kephas.Data.IO.Export
     public static class DataExportContextExtensions
     {
         /// <summary>
-        /// The result key.
-        /// </summary>
-        private const string ResultKey = "Result";
-
-        /// <summary>
-        /// Ensures that a result is set in the options.
-        /// </summary>
-        /// <param name="dataExportContext">The data export context.</param>
-        /// <param name="resultFactory">The result factory (optional).</param>
-        /// <returns>
-        /// The result, once it is set into the context.
-        /// </returns>
-        public static IOperationResult EnsureResult(this IDataExportContext dataExportContext, Func<IOperationResult> resultFactory = null)
-        {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
-
-            if (!(dataExportContext[ResultKey] is IOperationResult result))
-            {
-                resultFactory = resultFactory ?? (() => new OperationResult());
-                dataExportContext[ResultKey] = result = resultFactory();
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the result from the options.
-        /// </summary>
-        /// <param name="dataExportContext">The data export context.</param>
-        /// <returns>The result, once it is set into the options.</returns>
-        public static IOperationResult GetResult(this IDataExportContext dataExportContext)
-        {
-            Requires.NotNull(dataExportContext, nameof(dataExportContext));
-
-            return dataExportContext[ResultKey] as IOperationResult;
-        }
-
-        /// <summary>
         /// Sets the client query execution options configuration.
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>

@@ -33,6 +33,6 @@ namespace Kephas.Data.IO.Import
         /// <returns>
         /// A data import result.
         /// </returns>
-        Task<IOperationResult> ImportDataAsync(DataStream dataSource, Action<IDataImportContext> optionsConfig = null, CancellationToken cancellationToken = default);
+        IOperationResult ImportDataAsync(DataStream dataSource, Action<IDataImportContext>? optionsConfig = null, CancellationToken cancellationToken = default);
     }
 }

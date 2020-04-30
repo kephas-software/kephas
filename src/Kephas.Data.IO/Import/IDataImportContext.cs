@@ -55,42 +55,6 @@ namespace Kephas.Data.IO.Import
     public static class DataImportContextExtensions
     {
         /// <summary>
-        /// The result key.
-        /// </summary>
-        private const string ResultKey = "Result";
-
-        /// <summary>
-        /// Ensures that a result is set in the options.
-        /// </summary>
-        /// <param name="self">The self.</param>
-        /// <param name="resultFactory">The result factory.</param>
-        /// <returns>The result, once it is set into the options.</returns>
-        public static IOperationResult EnsureResult(this IDataImportContext self, Func<IOperationResult> resultFactory = null)
-        {
-            Requires.NotNull(self, nameof(self));
-
-            if (!(self[ResultKey] is IOperationResult result))
-            {
-                resultFactory = resultFactory ?? (() => new OperationResult());
-                self[ResultKey] = result = resultFactory();
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the result from the options.
-        /// </summary>
-        /// <param name="self">The self.</param>
-        /// <returns>The result, once it is set into the options.</returns>
-        public static IOperationResult GetResult(this IDataImportContext self)
-        {
-            Requires.NotNull(self, nameof(self));
-
-            return self[ResultKey] as IOperationResult;
-        }
-
-        /// <summary>
         /// Sets the data context.
         /// </summary>
         /// <typeparam name="TContext">Type of the context.</typeparam>

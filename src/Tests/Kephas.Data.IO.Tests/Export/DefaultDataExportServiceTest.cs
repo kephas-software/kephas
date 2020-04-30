@@ -66,7 +66,9 @@ namespace Kephas.Data.IO.Tests.Export
             var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                Assert.ThrowsAsync<NotFoundDataException>(() => service.ExportDataAsync(ctx => ctx.Query(Substitute.For<ClientQuery>()).Output(dataStream).ThrowOnNotFound(true)));
+                Assert.ThrowsAsync<NotFoundDataException>(async () =>
+                    await service.ExportDataAsync(
+                        ctx => ctx.Query(Substitute.For<ClientQuery>()).Output(dataStream).ThrowOnNotFound(true)));
             }
         }
 
@@ -124,7 +126,7 @@ namespace Kephas.Data.IO.Tests.Export
             var service = new DefaultDataExportService(ctxFactory, writer, queryExecutor);
             using (var dataStream = new DataStream(new MemoryStream(), ownsStream: true))
             {
-                Assert.ThrowsAsync<NotFoundDataException>(() => service.ExportDataAsync(ctx => ctx.Data(new object[0]).Output(dataStream).ThrowOnNotFound(true)));
+                Assert.ThrowsAsync<NotFoundDataException>(async () => await service.ExportDataAsync(ctx => ctx.Data(new object[0]).Output(dataStream).ThrowOnNotFound(true)));
             }
         }
     }

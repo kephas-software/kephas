@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics;
+using Kephas.Data.IO.Internal;
+
 namespace Kephas.Data.IO.Export
 {
     using System;
@@ -64,30 +67,12 @@ namespace Kephas.Data.IO.Export
         /// <returns>
         /// An asynchronous result that yields the export result.
         /// </returns>
-        public async Task<IOperationResult> ExportDataAsync(Action<IDataExportContext> optionsConfig = null, CancellationToken cancellationToken = default)
+        public IOperationResult ExportDataAsync(Action<IDataExportContext>? optionsConfig = null, CancellationToken cancellationToken = default)
         {
-            using (var context = this.CreateDataExportContext(optionsConfig))
-            {
-                var result = context.EnsureResult();
+            var context = this.CreateDataExportContext(optionsConfig);
 
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var data = await this.GetDataAsync(context, cancellationToken).PreserveThreadContext();
-
-                cancellationToken.ThrowIfCancellationRequested();
-
-                try
-                {
-                    await this.dataStreamWriteService.WriteAsync(data, context.Output, context, cancellationToken).PreserveThreadContext();
-                    result.MergeMessage(string.Format(Strings.DefaultDataExportService_ExportDataAsync_SuccessMessage, context.Output.Name));
-                }
-                catch (Exception ex)
-                {
-                    result.MergeException(ex);
-                }
-
-                return result;
-            }
+            var job = new DataSourceExportJob(context, this.dataStreamWriteService, this.clientQueryExecutor);
+            return job.ExecuteAsync(cancellationToken);
         }
 
         /// <summary>
@@ -97,7 +82,7 @@ namespace Kephas.Data.IO.Export
         /// <returns>
         /// The new data export context.
         /// </returns>
-        protected virtual IDataExportContext CreateDataExportContext(Action<IDataExportContext> optionsConfig = null)
+        protected virtual IDataExportContext CreateDataExportContext(Action<IDataExportContext>? optionsConfig = null)
         {
             var context = this.contextFactory.CreateContext<DataExportContext>();
             optionsConfig?.Invoke(context);
@@ -105,34 +90,89 @@ namespace Kephas.Data.IO.Export
         }
 
         /// <summary>
-        /// Gets the data to export asynchronously.
+        /// The export job.
         /// </summary>
-        /// <param name="context">The export context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
-        /// <returns>
-        /// An asynchronous result that yields the data.
-        /// </returns>
-        protected virtual async Task<IEnumerable<object>> GetDataAsync(IDataExportContext context, CancellationToken cancellationToken)
+        internal class DataSourceExportJob : DataIOJobBase<IDataExportContext>
         {
-            if (context.Query != null)
+            private readonly IDataStreamWriteService dataStreamWriteService;
+            private readonly IClientQueryProcessor clientQueryExecutor;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DataSourceExportJob"/> class.
+            /// </summary>
+            /// <param name="context">The context.</param>
+            /// <param name="dataStreamWriteService">The writer service.</param>
+            /// <param name="clientQueryExecutor">The query executor service.</param>
+            public DataSourceExportJob(
+                IDataExportContext context,
+                IDataStreamWriteService dataStreamWriteService,
+                IClientQueryProcessor clientQueryExecutor)
+                : base(context)
             {
-                context.Data = await this.clientQueryExecutor.ExecuteQueryAsync(
-                    context.Query,
-                    ctx =>
-                    {
-                        ctx.Merge(context);
-                        context.QueryExecutionConfig?.Invoke(ctx);
-                    },
-                    cancellationToken).PreserveThreadContext();
+                this.dataStreamWriteService = dataStreamWriteService;
+                this.clientQueryExecutor = clientQueryExecutor;
             }
 
-            var data = context.Data;
-            if (context.ThrowOnNotFound && (data == null || !data.Any()))
+            /// <summary>
+            /// Executes the I/O job (core implementation).
+            /// </summary>
+            /// <param name="cancellationToken">The cancellation token.</param>
+            /// <returns>
+            /// An operation result.
+            /// </returns>
+            protected override async Task<IOperationResult> ExecuteCoreAsync(CancellationToken cancellationToken)
             {
-                throw new NotFoundDataException(Strings.DefaultDataExportService_ExportDataAsync_NoDataException) { Severity = SeverityLevel.Warning };
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var data = await this.GetDataAsync(this.Context, cancellationToken).PreserveThreadContext();
+                this.Result.PercentCompleted += 0.5f;
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                try
+                {
+                    await this.dataStreamWriteService.WriteAsync(data, this.Context.Output, this.Context, cancellationToken).PreserveThreadContext();
+                    this.Result.MergeMessage(string.Format(Strings.DefaultDataExportService_ExportDataAsync_SuccessMessage, this.Context.Output.Name));
+                    this.Result.PercentCompleted = 1f;
+                }
+                catch (Exception ex)
+                {
+                    this.Result.MergeException(ex);
+                }
+
+                return this.Result;
             }
 
-            return data;
+            /// <summary>
+            /// Gets the data to export asynchronously.
+            /// </summary>
+            /// <param name="context">The export context.</param>
+            /// <param name="cancellationToken">The cancellation token (optional).</param>
+            /// <returns>
+            /// An asynchronous result that yields the data.
+            /// </returns>
+            protected virtual async Task<IEnumerable<object>> GetDataAsync(IDataExportContext context, CancellationToken cancellationToken)
+            {
+                if (context.Query != null)
+                {
+                    context.Data = await this.clientQueryExecutor.ExecuteQueryAsync(
+                        context.Query,
+                        ctx =>
+                        {
+                            ctx.Merge(context);
+                            context.QueryExecutionConfig?.Invoke(ctx);
+                        },
+                        cancellationToken).PreserveThreadContext();
+                }
+
+                var data = context.Data;
+                if (context.ThrowOnNotFound && (data == null || !data.Any()))
+                {
+                    throw new NotFoundDataException(Strings.DefaultDataExportService_ExportDataAsync_NoDataException) { Severity = SeverityLevel.Warning };
+                }
+
+                return data;
+            }
         }
     }
 }

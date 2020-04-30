@@ -13,6 +13,7 @@ namespace Kephas.Data.IO
     using System;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Operations;
     using Kephas.Serialization;
     using Kephas.Services;
 
@@ -43,6 +44,42 @@ namespace Kephas.Data.IO
     /// </summary>
     public static class DataIOContextExtensions
     {
+        /// <summary>
+        /// The result key.
+        /// </summary>
+        private const string ResultKey = "Result";
+
+        /// <summary>
+        /// Ensures that a result is set in the options.
+        /// </summary>
+        /// <param name="self">The self.</param>
+        /// <param name="resultFactory">The result factory.</param>
+        /// <returns>The result, once it is set into the options.</returns>
+        public static IOperationResult EnsureResult(this IDataIOContext self, Func<IOperationResult>? resultFactory = null)
+        {
+            Requires.NotNull(self, nameof(self));
+
+            if (!(self[ResultKey] is IOperationResult result))
+            {
+                resultFactory ??= () => new OperationResult();
+                self[ResultKey] = result = resultFactory?.Invoke() ?? new OperationResult();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the result from the options.
+        /// </summary>
+        /// <param name="self">The self.</param>
+        /// <returns>The result, once it is set into the options.</returns>
+        public static IOperationResult? GetResult(this IDataIOContext self)
+        {
+            Requires.NotNull(self, nameof(self));
+
+            return self[ResultKey] as IOperationResult;
+        }
+
         /// <summary>
         /// Sets the serialization options configuration.
         /// </summary>
