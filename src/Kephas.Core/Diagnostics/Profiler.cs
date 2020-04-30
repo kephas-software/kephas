@@ -34,9 +34,27 @@ namespace Kephas.Diagnostics
         /// The elapsed time.
         /// </returns>
         public static IOperationResult WithWarningStopwatch(
-            Action action,
-            ILogger logger = null,
-            [CallerMemberName] string memberName = null)
+            this Action action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
+        {
+            return WithStopwatch(action, logger, LogLevel.Warning, memberName);
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch, optionally logging the elapsed time at <see cref="LogLevel.Warning"/> level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        public static IOperationResult<T> WithWarningStopwatch<T>(
+            this Func<T> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
         {
             return WithStopwatch(action, logger, LogLevel.Warning, memberName);
         }
@@ -51,9 +69,27 @@ namespace Kephas.Diagnostics
         /// The elapsed time.
         /// </returns>
         public static IOperationResult WithInfoStopwatch(
-            Action action,
-            ILogger logger = null,
-            [CallerMemberName] string memberName = null)
+            this Action action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
+        {
+            return WithStopwatch(action, logger, LogLevel.Info, memberName);
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch, optionally logging the elapsed time at <see cref="LogLevel.Info"/> level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        public static IOperationResult<T> WithInfoStopwatch<T>(
+            this Func<T> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
         {
             return WithStopwatch(action, logger, LogLevel.Info, memberName);
         }
@@ -68,9 +104,27 @@ namespace Kephas.Diagnostics
         /// The elapsed time.
         /// </returns>
         public static IOperationResult WithDebugStopwatch(
-            Action action,
-            ILogger logger = null,
-            [CallerMemberName] string memberName = null)
+            this Action action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
+        {
+            return WithStopwatch(action, logger, LogLevel.Debug, memberName);
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch, optionally logging the elapsed time at <see cref="LogLevel.Debug"/> level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        public static IOperationResult<T> WithDebugStopwatch<T>(
+            this Func<T> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
         {
             return WithStopwatch(action, logger, LogLevel.Debug, memberName);
         }
@@ -85,9 +139,27 @@ namespace Kephas.Diagnostics
         /// The elapsed time.
         /// </returns>
         public static IOperationResult WithTraceStopwatch(
-            Action action,
-            ILogger logger = null,
-            [CallerMemberName] string memberName = null)
+            this Action action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
+        {
+            return WithStopwatch(action, logger, LogLevel.Trace, memberName);
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch, optionally logging the elapsed time at <see cref="LogLevel.Trace"/> level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        public static IOperationResult<T> WithTraceStopwatch<T>(
+            this Func<T> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
         {
             return WithStopwatch(action, logger, LogLevel.Trace, memberName);
         }
@@ -102,7 +174,11 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static IOperationResult WithStopwatch(Action action, ILogger logger = null, LogLevel logLevel = LogLevel.Debug, [CallerMemberName] string memberName = null)
+        public static IOperationResult WithStopwatch(
+            this Action action,
+            ILogger? logger = null,
+            LogLevel logLevel = LogLevel.Debug,
+            [CallerMemberName] string? memberName = null)
         {
             var result = new OperationResult();
             if (action == null)
@@ -138,7 +214,11 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static IOperationResult<T> WithStopwatch<T>(Func<T> action, ILogger logger = null, LogLevel logLevel = LogLevel.Debug, [CallerMemberName] string memberName = null)
+        public static IOperationResult<T> WithStopwatch<T>(
+            this Func<T> action,
+            ILogger? logger = null,
+            LogLevel logLevel = LogLevel.Debug,
+            [CallerMemberName] string? memberName = null)
         {
             var result = new OperationResult<T>();
             if (action == null)
@@ -172,9 +252,27 @@ namespace Kephas.Diagnostics
         /// The elapsed time.
         /// </returns>
         public static Task<IOperationResult> WithWarningStopwatchAsync(
-            Func<Task> action,
-            ILogger logger = null,
-            [CallerMemberName] string memberName = null)
+            this Func<Task> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
+        {
+            return WithStopwatchAsync(action, logger, LogLevel.Warning, memberName);
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch for asynchronous actions, optionally logging the elapsed time at <see cref="LogLevel.Warning"/> level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        public static Task<IOperationResult<T>> WithWarningStopwatchAsync<T>(
+            this Func<Task<T>> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
         {
             return WithStopwatchAsync(action, logger, LogLevel.Warning, memberName);
         }
@@ -189,9 +287,27 @@ namespace Kephas.Diagnostics
         /// The elapsed time.
         /// </returns>
         public static Task<IOperationResult> WithInfoStopwatchAsync(
-            Func<Task> action,
-            ILogger logger = null,
-            [CallerMemberName] string memberName = null)
+            this Func<Task> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
+        {
+            return WithStopwatchAsync(action, logger, LogLevel.Info, memberName);
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch for asynchronous actions, optionally logging the elapsed time at <see cref="LogLevel.Info"/> level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        public static Task<IOperationResult<T>> WithInfoStopwatchAsync<T>(
+            this Func<Task<T>> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
         {
             return WithStopwatchAsync(action, logger, LogLevel.Info, memberName);
         }
@@ -206,9 +322,27 @@ namespace Kephas.Diagnostics
         /// The elapsed time.
         /// </returns>
         public static Task<IOperationResult> WithDebugStopwatchAsync(
-            Func<Task> action,
-            ILogger logger = null,
-            [CallerMemberName] string memberName = null)
+            this Func<Task> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
+        {
+            return WithStopwatchAsync(action, logger, LogLevel.Debug, memberName);
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch for asynchronous actions, optionally logging the elapsed time at <see cref="LogLevel.Debug"/> level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        public static Task<IOperationResult<T>> WithDebugStopwatchAsync<T>(
+            this Func<Task<T>> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
         {
             return WithStopwatchAsync(action, logger, LogLevel.Debug, memberName);
         }
@@ -223,11 +357,29 @@ namespace Kephas.Diagnostics
         /// The elapsed time.
         /// </returns>
         public static Task<IOperationResult> WithTraceStopwatchAsync(
-            Func<Task> action,
-            ILogger logger = null,
-            [CallerMemberName] string memberName = null)
+            this Func<Task> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
         {
             return WithStopwatchAsync(action, logger, LogLevel.Trace, memberName);
+        }
+
+        /// <summary>
+        /// Executes the action with a stopwatch for asynchronous actions, optionally logging the elapsed time at <see cref="LogLevel.Trace"/> level.
+        /// </summary>
+        /// <typeparam name="T">The operation return type.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="memberName">Name of the member.</param>
+        /// <returns>
+        /// The elapsed time.
+        /// </returns>
+        public static Task<IOperationResult<T>> WithTraceStopwatchAsync<T>(
+            this Func<Task<T>> action,
+            ILogger? logger = null,
+            [CallerMemberName] string? memberName = null)
+        {
+            return WithStopwatchAsync<T>(action, logger, LogLevel.Trace, memberName);
         }
 
         /// <summary>
@@ -240,7 +392,11 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static async Task<IOperationResult> WithStopwatchAsync(Func<Task> action, ILogger logger = null, LogLevel logLevel = LogLevel.Debug, [CallerMemberName] string memberName = null)
+        public static async Task<IOperationResult> WithStopwatchAsync(
+            this Func<Task> action,
+            ILogger? logger = null,
+            LogLevel logLevel = LogLevel.Debug,
+            [CallerMemberName] string? memberName = null)
         {
             var result = new OperationResult();
             if (action == null)
@@ -276,7 +432,11 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The elapsed time.
         /// </returns>
-        public static async Task<IOperationResult<T>> WithStopwatchAsync<T>(Func<Task<T>> action, ILogger logger = null, LogLevel logLevel = LogLevel.Debug, [CallerMemberName] string memberName = null)
+        public static async Task<IOperationResult<T>> WithStopwatchAsync<T>(
+            this Func<Task<T>> action,
+            ILogger? logger = null,
+            LogLevel logLevel = LogLevel.Debug,
+            [CallerMemberName] string? memberName = null)
         {
             var result = new OperationResult<T>();
             if (action == null)
