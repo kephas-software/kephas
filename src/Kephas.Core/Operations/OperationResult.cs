@@ -8,10 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Collections;
-
-#nullable enable
-
 namespace Kephas.Operations
 {
     using System;
@@ -22,6 +18,7 @@ namespace Kephas.Operations
     using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
+    using Kephas.Collections;
     using Kephas.Dynamic;
 
     /// <summary>
