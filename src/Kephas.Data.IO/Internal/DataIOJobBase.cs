@@ -49,53 +49,53 @@ namespace Kephas.Data.IO.Internal
         /// <returns>The operation result.</returns>
         public IOperationResult ExecuteAsync(CancellationToken cancellationToken)
         {
-                this.stopwatch = Stopwatch.StartNew();
-                this.taskCompletionSource = new TaskCompletionSource<IOperationResult>();
-                this.Result = new OperationResult(this.taskCompletionSource.Task)
-                    {
-                        OperationState = OperationState.InProgress,
-                    };
-                this.Context.EnsureResult(() => this.Result);
+            this.stopwatch = Stopwatch.StartNew();
+            this.taskCompletionSource = new TaskCompletionSource<IOperationResult>();
+            this.Result = new OperationResult(this.taskCompletionSource.Task)
+            {
+                OperationState = OperationState.InProgress,
+            };
+            this.Context.EnsureResult(() => this.Result);
 
-                try
-                {
-                    var task = this.ExecuteCoreAsync(cancellationToken);
-                    task.ContinueWith(t =>
-                    {
-                        this.stopwatch.Stop();
-
-                        if (t.IsFaulted)
-                        {
-                            var exception = t.Exception.InnerExceptions.Count == 1
-                                ? t.Exception.InnerException
-                                : t.Exception;
-
-                            this.Result.Fail(exception, this.stopwatch.Elapsed);
-                            this.taskCompletionSource.TrySetException(exception);
-                        }
-                        else if (t.IsCanceled)
-                        {
-                            this.Result.Complete(this.stopwatch.Elapsed, OperationState.Canceled);
-                            this.taskCompletionSource.TrySetCanceled();
-                        }
-                        else
-                        {
-                            this.Result.Complete(this.stopwatch.Elapsed);
-                            this.taskCompletionSource.TrySetResult(t.Result);
-                        }
-
-                        this.Context?.Dispose();
-                    });
-                }
-                catch (Exception ex)
+            try
+            {
+                var task = this.ExecuteCoreAsync(cancellationToken);
+                task.ContinueWith(t =>
                 {
                     this.stopwatch.Stop();
-                    this.Result.Fail(ex, this.stopwatch.Elapsed);
-                    this.taskCompletionSource.TrySetException(ex);
-                    this.Context?.Dispose();
-                }
 
-                return this.Result;
+                    if (t.IsFaulted)
+                    {
+                        var exception = t.Exception.InnerExceptions.Count == 1
+                            ? t.Exception.InnerException
+                            : t.Exception;
+
+                        this.Result.Fail(exception, this.stopwatch.Elapsed);
+                        this.taskCompletionSource.TrySetException(exception);
+                    }
+                    else if (t.IsCanceled)
+                    {
+                        this.Result.Complete(this.stopwatch.Elapsed, OperationState.Canceled);
+                        this.taskCompletionSource.TrySetCanceled();
+                    }
+                    else
+                    {
+                        this.Result.Complete(this.stopwatch.Elapsed);
+                        this.taskCompletionSource.TrySetResult(t.Result);
+                    }
+
+                    this.Context?.Dispose();
+                });
+            }
+            catch (Exception ex)
+            {
+                this.stopwatch.Stop();
+                this.Result.Fail(ex, this.stopwatch.Elapsed);
+                this.taskCompletionSource.TrySetException(ex);
+                this.Context?.Dispose();
+            }
+
+            return this.Result;
         }
 
         /// <summary>
