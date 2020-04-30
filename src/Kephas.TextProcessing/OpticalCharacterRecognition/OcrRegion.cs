@@ -7,6 +7,8 @@
 
 namespace Kephas.TextProcessing.OpticalCharacterRecognition
 {
+    using System;
+
     /// <summary>
     /// A region within a scanned document.
     /// </summary>
@@ -26,6 +28,6 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The lines.
         /// </value>
-        public OcrLine[] Lines { get; set; }
+        public OcrLine[] Lines { get; set; } = Array.Empty<OcrLine>();
     }
 }

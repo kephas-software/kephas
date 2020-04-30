@@ -7,6 +7,10 @@
 
 namespace Kephas.TextProcessing.OpticalCharacterRecognition
 {
+    using System;
+    using System.Linq;
+    using System.Text;
+
     /// <summary>
     /// An OCR result.
     /// </summary>
@@ -42,6 +46,23 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The regions.
         /// </value>
-        public OcrRegion[] Regions { get; set; }
+        public OcrRegion[] Regions { get; set; } = Array.Empty<OcrRegion>();
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            foreach (var line in this.Regions.SelectMany(r => r.Lines))
+            {
+                sb.AppendLine(string.Join(" ", line.Words.Select(w => w.Text)));
+            }
+
+            return sb.ToString();
+        }
     }
 }
