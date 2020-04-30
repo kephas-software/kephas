@@ -26,14 +26,14 @@ namespace Kephas.TextProcessing
     public class Tokenizer : ITokenizer
     {
         private readonly IContextFactory contextFactory;
-        private readonly IConfiguration<TokenizerSettings> tokenizerConfig;
+        private readonly IConfiguration<TokenizerSettings>? tokenizerConfig;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tokenizer"/> class.
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="tokenizerConfig">Optional. The tokenizer configuration.</param>
-        public Tokenizer(IContextFactory contextFactory, IConfiguration<TokenizerSettings> tokenizerConfig = null)
+        public Tokenizer(IContextFactory contextFactory, IConfiguration<TokenizerSettings>? tokenizerConfig = null)
         {
             this.contextFactory = contextFactory;
             this.tokenizerConfig = tokenizerConfig;
@@ -47,7 +47,7 @@ namespace Kephas.TextProcessing
         /// <returns>
         /// An enumeration of tokens.
         /// </returns>
-        public IEnumerable<string> Tokenize(string text, Action<ITokenizerContext> optionsConfig = null)
+        public IEnumerable<string> Tokenize(string text, Action<ITokenizerContext>? optionsConfig = null)
         {
             using (var context = this.CreateTokenizerContext(optionsConfig))
             {
@@ -83,7 +83,7 @@ namespace Kephas.TextProcessing
         /// <returns>
         /// The new tokenizer context.
         /// </returns>
-        protected virtual ITokenizerContext CreateTokenizerContext(Action<ITokenizerContext> optionsConfig = null)
+        protected virtual ITokenizerContext CreateTokenizerContext(Action<ITokenizerContext>? optionsConfig = null)
         {
             return this.contextFactory.CreateContext<TokenizerContext>().Merge(optionsConfig);
         }

@@ -29,6 +29,6 @@ namespace Kephas.TextProcessing
         /// <returns>
         /// An enumeration of tokens.
         /// </returns>
-        IEnumerable<string> Tokenize(string text, Action<ITokenizerContext> optionsConfig = null);
+        IEnumerable<string> Tokenize(string text, Action<ITokenizerContext>? optionsConfig = null);
     }
 }

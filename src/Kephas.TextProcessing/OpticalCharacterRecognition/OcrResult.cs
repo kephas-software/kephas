@@ -17,20 +17,12 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
     public class OcrResult
     {
         /// <summary>
-        /// Gets or sets the text angle.
+        /// Gets or sets the read operation status.
         /// </summary>
         /// <value>
-        /// The text angle.
+        /// The read operation status.
         /// </value>
-        public double? TextAngle { get; set; }
-
-        /// <summary>
-        /// Gets or sets the orientation.
-        /// </summary>
-        /// <value>
-        /// The orientation.
-        /// </value>
-        public string Orientation { get; set; }
+        public string? Status { get; set; }
 
         /// <summary>
         /// Gets or sets the language.
@@ -38,7 +30,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The language.
         /// </value>
-        public string Language { get; set; }
+        public string? Language { get; set; }
 
         /// <summary>
         /// Gets or sets the regions.
@@ -46,7 +38,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The regions.
         /// </value>
-        public OcrRegion[] Regions { get; set; } = Array.Empty<OcrRegion>();
+        public virtual OcrPage[] Pages { get; set; } = Array.Empty<OcrPage>();
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -57,7 +49,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         public override string ToString()
         {
             var sb = new StringBuilder();
-            foreach (var line in this.Regions.SelectMany(r => r.Lines))
+            foreach (var line in this.Pages.SelectMany(r => r.Lines))
             {
                 sb.AppendLine(string.Join(" ", line.Words.Select(w => w.Text)));
             }
