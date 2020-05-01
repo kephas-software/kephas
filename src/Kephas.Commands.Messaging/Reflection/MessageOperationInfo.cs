@@ -48,6 +48,7 @@ namespace Kephas.Commands.Messaging.Reflection
                     ? t.Name.Substring(0, t.Name.Length - "Event".Length)
                     : t.Name;
 
+            // ReSharper disable once VirtualMemberCallInConstructor
             this.FullName = $"{messageType.Namespace}.{this.Name}";
 
             this.Parameters = messageType.Properties
@@ -116,9 +117,12 @@ namespace Kephas.Commands.Messaging.Reflection
             }
 
             var i = 0;
+            var messageProperties = this.messageType.Properties.ToList();
             foreach (var kv in this.GetMessageArguments(values))
             {
-                var propInfo = this.messageType.Properties.FirstOrDefault(p => string.Compare(p.Name, kv.Key, StringComparison.OrdinalIgnoreCase) == 0);
+                var propInfo = messageProperties.FirstOrDefault(
+                    p => string.Equals(p.Name, kv.Key, StringComparison.OrdinalIgnoreCase)
+                                                || string.Equals(p.GetDisplayInfo()?.GetShortName(), kv.Key, StringComparison.OrdinalIgnoreCase));
                 if (propInfo == null)
                 {
                     if (!this.HandleUnknownArgument(message, i, kv.Key, kv.Value))
@@ -133,6 +137,7 @@ namespace Kephas.Commands.Messaging.Reflection
 
                 i++;
             }
+
             return message;
         }
 

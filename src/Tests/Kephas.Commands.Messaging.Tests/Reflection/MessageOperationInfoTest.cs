@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.ComponentModel.DataAnnotations;
+
 namespace Kephas.Commands.Messaging.Tests.Reflection
 {
     using System;
@@ -70,7 +72,6 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         {
             var lazyMessageProcessor = new Lazy<IMessageProcessor>(() => Substitute.For<IMessageProcessor>());
             var operationInfo = new MessageOperationInfo(typeof(EnumMessage).AsRuntimeTypeInfo(), lazyMessageProcessor);
-            var dateTime = new DateTime(2020, 04, 19);
             var msg = operationInfo.CreateMessage(new Expando { ["logLevel"] = "error" });
 
             Assert.IsInstanceOf<EnumMessage>(msg);
@@ -85,6 +86,18 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
             var operationInfo = new MessageOperationInfo(typeof(EnumMessage).AsRuntimeTypeInfo(), lazyMessageProcessor);
             var dateTime = new DateTime(2020, 04, 19);
             Assert.Throws<ArgumentException>(() => operationInfo.CreateMessage(new Expando { ["nonexisting"] = true }));
+        }
+
+        [Test]
+        public void CreateMessage_use_short_name()
+        {
+            var lazyMessageProcessor = new Lazy<IMessageProcessor>(() => Substitute.For<IMessageProcessor>());
+            var operationInfo = new MessageOperationInfo(typeof(UpdateMessage).AsRuntimeTypeInfo(), lazyMessageProcessor);
+            var msg = operationInfo.CreateMessage(new Expando { ["Pre"] = true });
+
+            Assert.IsInstanceOf<UpdateMessage>(msg);
+            var typedMsg = (UpdateMessage)msg;
+            Assert.IsTrue(typedMsg.IncludePrerelease);
         }
 
         [Test]
@@ -126,6 +139,12 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         public class EnumMessage : IMessage
         {
             public LogLevel? LogLevel { get; set; }
+        }
+
+        public class UpdateMessage : IMessage
+        {
+            [DisplayInfo(ShortName = "pre", Description = "Includes prerelease.")]
+            public bool IncludePrerelease { get; set; }
         }
     }
 }
