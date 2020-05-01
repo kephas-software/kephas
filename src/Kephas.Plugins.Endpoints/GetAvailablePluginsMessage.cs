@@ -32,7 +32,7 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// True to include prerelease versions, false otherwise.
         /// </value>
-        [Display(Description = "Optional. Value indicating whether prerelease versions should be included or not.")]
+        [Display(ShortName = "pre", Description = "Optional. Value indicating whether prerelease versions should be included or not.")]
         public bool IncludePrerelease { get; set; } = false;
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The search term.
         /// </value>
-        [Display(Description = "Optional. The search term.")]
+        [Display(ShortName = "term", Description = "Optional. The search term.")]
         public string? SearchTerm { get; set; }
     }
 

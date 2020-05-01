@@ -23,9 +23,14 @@ namespace Kephas.Plugins.Endpoints
     public class UpdatePluginMessage : IMessage
     {
         /// <summary>
-        /// The latest version identifier.
+        /// Version identifier indicating the latest version available.
         /// </summary>
-        public static readonly string LatestVersion = "latest";
+        public static readonly string LatestVersion = "@latest";
+
+        /// <summary>
+        /// Package identifier indicating all available packages.
+        /// </summary>
+        public static readonly string All = "@all";
 
         /// <summary>
         /// Gets or sets the package ID.
@@ -34,7 +39,7 @@ namespace Kephas.Plugins.Endpoints
         /// The package ID.
         /// </value>
         [Display(Description = "The package ID of the plugin. Use 'all' to update all plugins.")]
-        public string Id { get; set; }
+        public string Id { get; set; } = All;
 
         /// <summary>
         /// Gets or sets the version.
@@ -42,7 +47,7 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The version.
         /// </value>
-        [Display(Description = "Optional. The package version of the plugin. Use 'latest' (default) to update to the latest version.")]
+        [Display(ShortName = "v", Description = "Optional. The package version of the plugin. Use 'latest' (default) to update to the latest version.")]
         public string Version { get; set; } = LatestVersion;
 
         /// <summary>
@@ -51,7 +56,7 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// True to include prerelease versions, false otherwise.
         /// </value>
-        [Display(Description = "Optional. Value indicating whether the prerelease versions should be included or not (default: false).")]
+        [Display(ShortName = "pre", Description = "Optional. Value indicating whether the prerelease versions should be included or not (default: false).")]
         [DefaultValue(false)]
         public bool IncludePrerelease { get; set; }
     }
