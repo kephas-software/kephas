@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.ComponentModel.DataAnnotations;
+
 namespace Kephas.Commands.Messaging.Tests.Endpoints
 {
     using System;
@@ -52,9 +54,42 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
             Assert.AreEqual("StartTime (System.DateTime?): ", helpResponse.Parameters[0]);
         }
 
+        [Test]
+        public async Task ProcessAsync_long_param_name()
+        {
+            var lazyMessageProcessor = new Lazy<IMessageProcessor>(() => Substitute.For<IMessageProcessor>());
+            var registry = Substitute.For<ICommandRegistry>();
+            registry.GetCommandTypes(Arg.Any<string>()).Returns(
+                ci => new List<IOperationInfo>()
+                {
+                    // new MessageOperationInfo(typeof(HelpMessage).AsRuntimeTypeInfo(), lazyMessageProcessor),
+                    new MessageOperationInfo(typeof(LongParamMessage).AsRuntimeTypeInfo(), lazyMessageProcessor),
+                });
+
+            var handler = new HelpMessageHandler(
+                new List<Lazy<ICommandRegistry, AppServiceMetadata>>
+                {
+                    new Lazy<ICommandRegistry, AppServiceMetadata>(
+                        () => registry,
+                        new AppServiceMetadata()),
+                });
+
+            var helpResponse = await handler.ProcessAsync(new HelpMessage(), Substitute.For<IMessagingContext>(), default);
+            var command = helpResponse.Command as string;
+            Assert.AreEqual("LongParam", command);
+            Assert.AreEqual(1, helpResponse.Parameters.Length);
+            Assert.AreEqual("IncludePrerelease/pre (System.Boolean): Includes prerelease.", helpResponse.Parameters[0]);
+        }
+
         public class NullableParamMessage : IMessage
         {
             public DateTime? StartTime { get; set; }
+        }
+
+        public class LongParamMessage : IMessage
+        {
+            [DisplayInfo(ShortName = "pre", Description = "Includes prerelease.")]
+            public bool IncludePrerelease { get; set; }
         }
     }
 }

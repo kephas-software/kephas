@@ -77,7 +77,7 @@ namespace Kephas.Commands.Messaging.Endpoints
                 response.Command = name;
                 response.Description = command.GetDisplayInfo()?.GetDescription();
                 response.Parameters = command.Parameters
-                    .Select(p => $"{p.Name} ({this.GetFormattedTypeName(p.ValueType)}): {p.GetDisplayInfo()?.GetDescription()}")
+                    .Select(this.GetParameterDescription)
                     .ToArray();
             }
             else
@@ -87,6 +87,16 @@ namespace Kephas.Commands.Messaging.Endpoints
             }
 
             return Task.FromResult(response);
+        }
+
+        private string GetParameterDescription(IParameterInfo p)
+        {
+            var displayInfo = p.GetDisplayInfo();
+            var shortName = displayInfo?.GetShortName();
+            shortName = string.IsNullOrEmpty(shortName)
+                ? string.Empty
+                : $"/{shortName}";
+            return $"{p.Name}{shortName} ({this.GetFormattedTypeName(p.ValueType)}): {displayInfo?.GetDescription()}";
         }
 
         private string GetFormattedTypeName(ITypeInfo typeInfo)
