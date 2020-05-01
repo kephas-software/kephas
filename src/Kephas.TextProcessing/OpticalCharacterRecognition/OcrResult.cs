@@ -22,7 +22,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The read operation status.
         /// </value>
-        public string? Status { get; set; }
+        public virtual string? Status { get; set; }
 
         /// <summary>
         /// Gets or sets the language.
@@ -30,7 +30,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The language.
         /// </value>
-        public string? Language { get; set; }
+        public virtual string? Language { get; set; }
 
         /// <summary>
         /// Gets or sets the regions.

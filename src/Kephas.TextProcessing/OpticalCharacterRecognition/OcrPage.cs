@@ -20,7 +20,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The page number.
         /// </value>
-        public int? Page { get; set; }
+        public virtual int? Page { get; set; }
 
         /// <summary>
         /// Gets or sets the bounding box.
@@ -28,7 +28,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The bounding box.
         /// </value>
-        public int[]? BoundingBox { get; set; }
+        public virtual int[]? BoundingBox { get; set; }
 
         /// <summary>
         /// Gets or sets the lines.
@@ -36,6 +36,6 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The lines.
         /// </value>
-        public OcrLine[] Lines { get; set; } = Array.Empty<OcrLine>();
+        public virtual OcrLine[] Lines { get; set; } = Array.Empty<OcrLine>();
     }
 }

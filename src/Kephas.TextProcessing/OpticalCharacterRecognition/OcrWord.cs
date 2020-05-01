@@ -18,7 +18,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The bounding box.
         /// </value>
-        public int[]? BoundingBox { get; set; }
+        public virtual int[]? BoundingBox { get; set; }
 
         /// <summary>
         /// Gets or sets the text.
@@ -26,7 +26,7 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The text.
         /// </value>
-        public string Text { get; set; }
+        public virtual string Text { get; set; }
 
         /// <summary>
         /// Gets or sets the confidence of the recognized text.
@@ -34,6 +34,6 @@ namespace Kephas.TextProcessing.OpticalCharacterRecognition
         /// <value>
         /// The text.
         /// </value>
-        public string? Confidence { get; set; }
+        public virtual string? Confidence { get; set; }
     }
 }
