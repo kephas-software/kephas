@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Application.Reflection;
+
 namespace Kephas.Plugins.Endpoints
 {
     using System;
@@ -96,25 +98,26 @@ namespace Kephas.Plugins.Endpoints
         private async Task<List<AppIdentity>> GetPackagesToUpdateAsync(UpdatePluginMessage message, CancellationToken token)
         {
             List<AppIdentity> toUpdate;
-            if (message.Id.Equals("all", StringComparison.InvariantCultureIgnoreCase))
+            if (message.Id.Equals(UpdatePluginMessage.All, StringComparison.InvariantCultureIgnoreCase))
             {
                 var installedPlugins = this.pluginManager.GetInstalledPlugins().ToList();
 
                 if (UpdatePluginMessage.LatestVersion.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var availablePackages = (await this.pluginManager.GetAvailablePluginsAsync(
-                        s => s.Take(installedPlugins.Count).IncludePrerelease(message.IncludePrerelease),
-                        token).PreserveThreadContext()).Value;
-                    toUpdate = installedPlugins
-                        .Select(p => (plugin: p, version: availablePackages
-                            .FirstOrDefault(pkg =>
-                                pkg.Identity.Id.Equals(p.Identity.Id, StringComparison.InvariantCultureIgnoreCase))
-                            ?.Identity.Version))
-                        .Where(tuple =>
-                            !string.IsNullOrEmpty(tuple.version) && !tuple.plugin.Identity.Version.Equals(
-                                tuple.version,
-                                StringComparison.InvariantCultureIgnoreCase))
-                        .Select(tuple => new AppIdentity(tuple.plugin.Identity.Id, tuple.version))
+                    var availablePackages = new List<IAppInfo>();
+                    foreach (var installedPlugin in installedPlugins)
+                    {
+                        var availablePackage = (await this.pluginManager.GetAvailablePluginsAsync(
+                            s => s.SearchTerm(installedPlugin.Identity.Id).IncludePrerelease(message.IncludePrerelease),
+                            token).PreserveThreadContext()).Value.FirstOrDefault();
+                        if (availablePackage != null && !installedPlugin.Identity.Id.Equals(availablePackage.Identity.Id))
+                        {
+                            availablePackages.Add(availablePackage);
+                        }
+                    }
+
+                    toUpdate = availablePackages
+                        .Select(p => new AppIdentity(p.Identity.Id, p.Identity.Version))
                         .ToList();
                 }
                 else
