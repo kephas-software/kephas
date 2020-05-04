@@ -108,7 +108,10 @@ namespace Kephas.Plugins.Endpoints
                     foreach (var installedPlugin in installedPlugins)
                     {
                         var availablePackage = (await this.pluginManager.GetAvailablePluginsAsync(
-                            s => s.SearchTerm(installedPlugin.Identity.Id).IncludePrerelease(message.IncludePrerelease),
+                            s => s
+                                .PluginIdentity(installedPlugin.Identity)
+                                .IncludePrerelease(message.IncludePrerelease)
+                                .Take(2),
                             token).PreserveThreadContext()).Value.FirstOrDefault();
                         if (availablePackage != null && !installedPlugin.Identity.Id.Equals(availablePackage.Identity.Id))
                         {
@@ -132,7 +135,10 @@ namespace Kephas.Plugins.Endpoints
                 if (UpdatePluginMessage.LatestVersion.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
                 {
                     var availablePackage = (await this.pluginManager.GetAvailablePluginsAsync(
-                            s => s.SearchTerm(message.Id).IncludePrerelease(message.IncludePrerelease),
+                            s => s
+                                .PluginIdentity(new AppIdentity(message.Id))
+                                .IncludePrerelease(message.IncludePrerelease)
+                                .Take(2),
                             token).PreserveThreadContext()).Value
                         .FirstOrDefault(p =>
                             p.Identity.Id.Equals(message.Id, StringComparison.InvariantCultureIgnoreCase));
