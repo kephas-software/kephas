@@ -130,6 +130,7 @@ namespace Kephas.Plugins.NuGet
                                     cancellationToken).PreserveThreadContext();
 
                                 var query = versions
+                                    .OrderByDescending(v => v.Version)
                                     .Select(v => this.ToPluginInfo(searchContext.PluginIdentity, v))
                                     .Skip(searchContext.Skip)
                                     .Take(searchContext.Take);
