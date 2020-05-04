@@ -219,8 +219,7 @@ namespace Kephas.Serialization.Json
             var settings = this.settingsProvider.GetJsonSerializerSettings();
             if (context != null)
             {
-                settings.Formatting = context.Indent ? Formatting.Indented : Formatting.None;
-                settings.TypeNameHandling = context.IncludeTypeInfo ? TypeNameHandling.Objects : TypeNameHandling.None;
+                settings.Configure(context);
             }
 
             return settings;
@@ -233,17 +232,12 @@ namespace Kephas.Serialization.Json
                 return obj;
             }
 
-            if (obj is JObject jobj)
+            return obj switch
             {
-                return new JObjectDictionary(jobj);
-            }
-
-            if (obj is JArray jarr)
-            {
-                return new JObjectList(jarr);
-            }
-
-            return obj;
+                JObject jobj => new JObjectDictionary(jobj),
+                JArray jarr => new JObjectList(jarr),
+                _ => obj
+            };
         }
     }
 }

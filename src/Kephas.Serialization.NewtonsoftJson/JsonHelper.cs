@@ -10,13 +10,69 @@
 
 namespace Kephas.Serialization.Json
 {
+    using System;
+
+    using Kephas.Diagnostics.Contracts;
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// A JSON helper.
     /// </summary>
-    internal static class JsonHelper
+    public static class JsonHelper
     {
+        private const string JsonOptionsKey = "__JsonOptions";
+
+        /// <summary>
+        /// Configures the serialization/deserialization with the provided options.
+        /// </summary>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="options">The custom options.</param>
+        /// <returns>The <paramref name="context"/>.</returns>
+        public static ISerializationContext Configure(
+            this ISerializationContext context,
+            Action<JsonSerializerSettings> options)
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context[JsonOptionsKey] = options;
+
+            return context;
+        }
+
+        /// <summary>
+        /// Configures the settings with the options stored in the provided context.
+        /// </summary>
+        /// <param name="settings">The settings to be configured.</param>
+        /// <param name="context">The serialization context.</param>
+        /// <returns>The configured <paramref name="settings"/>.</returns>
+        public static JsonSerializerSettings Configure(
+            this JsonSerializerSettings settings,
+            ISerializationContext? context)
+        {
+            Requires.NotNull(settings, nameof(settings));
+
+            if (context == null)
+            {
+                return settings;
+            }
+
+            if (context.Indent.HasValue)
+            {
+                settings.Formatting = context.Indent.Value ? Formatting.Indented : Formatting.None;
+            }
+
+            if (context.IncludeTypeInfo.HasValue)
+            {
+                settings.TypeNameHandling = context.IncludeTypeInfo.Value ? TypeNameHandling.Objects : TypeNameHandling.None;
+            }
+
+            var options = context[JsonOptionsKey] as Action<JsonSerializerSettings>;
+            options?.Invoke(settings);
+
+            return settings;
+        }
+
         /// <summary>
         /// A JToken extension method that unwraps the given value.
         /// </summary>
@@ -24,7 +80,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// An object.
         /// </returns>
-        public static object Unwrap(this JToken value)
+        internal static object Unwrap(this JToken value)
         {
             if (value is JObject jobj)
             {
@@ -51,7 +107,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// A JToken.
         /// </returns>
-        public static JToken Wrap(this object obj)
+        internal static JToken Wrap(this object obj)
         {
             return obj is JToken token ? token : JToken.FromObject(obj);
         }
