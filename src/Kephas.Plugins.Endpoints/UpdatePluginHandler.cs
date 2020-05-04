@@ -113,7 +113,7 @@ namespace Kephas.Plugins.Endpoints
                                 .IncludePrerelease(message.IncludePrerelease)
                                 .Take(2),
                             token).PreserveThreadContext()).Value.FirstOrDefault();
-                        if (availablePackage != null && !installedPlugin.Identity.Id.Equals(availablePackage.Identity.Id))
+                        if (availablePackage != null)
                         {
                             availablePackages.Add(availablePackage);
                         }
