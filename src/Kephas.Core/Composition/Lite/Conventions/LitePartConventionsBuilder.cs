@@ -85,7 +85,7 @@ namespace Kephas.Composition.Lite.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
+        public IPartConventionsBuilder Export(Action<IExportConventionsBuilder>? conventionsBuilder = null)
         {
             if (conventionsBuilder != null)
             {
@@ -103,7 +103,7 @@ namespace Kephas.Composition.Lite.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder ExportInterface(Type exportInterface, Action<Type, IExportConventionsBuilder> exportConfiguration = null)
+        public IPartConventionsBuilder ExportInterface(Type exportInterface, Action<Type, IExportConventionsBuilder>? exportConfiguration = null)
         {
             this.descriptorBuilder.ServiceType = exportInterface;
             this.descriptorBuilder.ExportConfiguration = exportConfiguration;

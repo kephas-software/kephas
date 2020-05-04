@@ -98,7 +98,7 @@ namespace Kephas.Composition.Lite.Conventions
         /// <value>
         /// The export configuration.
         /// </value>
-        public Action<Type, IExportConventionsBuilder> ExportConfiguration { get; set; }
+        public Action<Type, IExportConventionsBuilder>? ExportConfiguration { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether we allow multiple.
