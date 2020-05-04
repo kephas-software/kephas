@@ -58,16 +58,18 @@ namespace Kephas.Serialization
         /// </summary>
         /// <value>
         /// True if the output should be indented, false if not.
+        /// If a value is not provided, the default serializer settings are used.
         /// </value>
-        bool Indent { get; set; }
+        bool? Indent { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the type information should be included.
         /// </summary>
         /// <value>
         /// True to include type information, false otherwise.
+        /// If a value is not provided, the default serializer settings are used.
         /// </value>
-        bool IncludeTypeInfo { get; set; }
+        bool? IncludeTypeInfo { get; set; }
     }
 
     /// <summary>

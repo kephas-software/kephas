@@ -28,7 +28,7 @@ namespace Kephas.Serialization
         /// <param name="compositionContext">Context for the composition.</param>
         /// <param name="serializationService">The serialization service.</param>
         /// <param name="mediaType">Optional. The media type (type implementing <see cref="IMediaType"/>).</param>
-        public SerializationContext(ICompositionContext compositionContext, ISerializationService serializationService, Type mediaType = null)
+        public SerializationContext(ICompositionContext compositionContext, ISerializationService serializationService, Type? mediaType = null)
             : base(compositionContext)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
@@ -51,7 +51,7 @@ namespace Kephas.Serialization
         /// <value>
         /// The media type.
         /// </value>
-        public Type MediaType { get; set; }
+        public Type? MediaType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the root object.
@@ -59,7 +59,7 @@ namespace Kephas.Serialization
         /// <value>
         /// The type of the root object.
         /// </value>
-        public Type RootObjectType { get; set; }
+        public Type? RootObjectType { get; set; }
 
         /// <summary>
         /// Gets or sets the root object factory.
@@ -67,22 +67,24 @@ namespace Kephas.Serialization
         /// <value>
         /// The root object factory.
         /// </value>
-        public Func<object> RootObjectFactory { get; set; }
+        public Func<object>? RootObjectFactory { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the serialized output should be indented.
         /// </summary>
         /// <value>
         /// True if the output should be indented, false if not.
+        /// If a value is not provided, the default serializer settings are used.
         /// </value>
-        public bool Indent { get; set; }
+        public bool? Indent { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the type information should be included.
         /// </summary>
         /// <value>
         /// True to include type information, false otherwise.
+        /// If a value is not provided, the default serializer settings are used.
         /// </value>
-        public bool IncludeTypeInfo { get; set; } = true;
+        public bool? IncludeTypeInfo { get; set; }
     }
 }
