@@ -240,45 +240,12 @@ namespace Kephas.Plugins
 
         private int GetChecksum()
         {
-            var identityChecksum = this.GetChecksum(this.Identity.ToString());
-            var stateChecksum = this.GetChecksum(this.State.ToString());
-            var kindChecksum = this.GetChecksum(this.Kind.ToString());
-            var dataChecksum = this.GetChecksum(DataToString(this.Data));
-
-            unchecked
-            {
-                return identityChecksum
-                    + (stateChecksum << 1)
-                    + (kindChecksum << 2)
-                    + (dataChecksum << 3);
-            }
-        }
-
-        private int GetChecksum(string str)
-        {
-            if (string.IsNullOrEmpty(str))
-            {
-                return 0;
-            }
-
-            unchecked
-            {
-                int hash1 = (5381 << 16) + 5381;
-                int hash2 = hash1;
-
-                for (int i = 0; i < str.Length; i += 2)
-                {
-                    hash1 = ((hash1 << 5) + hash1) ^ str[i];
-                    if (i == str.Length - 1)
-                    {
-                        break;
-                    }
-
-                    hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
-                }
-
-                return hash1 + (hash2 * 1566083941);
-            }
+            var hashCodeGenerator = new HashCodeGenerator()
+                .CombineStable(this.Identity.ToString())
+                .Combine(this.State)
+                .Combine(this.Kind)
+                .CombineStable(DataToString(this.Data));
+            return hashCodeGenerator.GeneratedHash;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Kephas.Tests.Plugins
         public void ToString_with_checksum()
         {
             var pluginData = new PluginData(new AppIdentity("Gigi.Belogea", "1.2.3"), PluginState.Disabled, PluginKind.Standalone);
-            Assert.AreEqual("Gigi.Belogea:1.2.3\nDisabled\nStandalone\n\n129701855", pluginData.ToString());
+            Assert.AreEqual("Gigi.Belogea:1.2.3\nDisabled\nStandalone\n\n-747868367", pluginData.ToString());
         }
 
         [Test]
@@ -39,13 +39,13 @@ namespace Kephas.Tests.Plugins
         {
             var pluginData = new PluginData(new AppIdentity("Gigi.Belogea", "1.2.3"), PluginState.PendingInitialization)
                     .ChangeData("my", "data");
-            Assert.AreEqual("Gigi.Belogea:1.2.3\nPendingInitialization\nEmbedded\nmy:data\n-1975769539", pluginData.ToString());
+            Assert.AreEqual("Gigi.Belogea:1.2.3\nPendingInitialization\nEmbedded\nmy:data\n-1257453341", pluginData.ToString());
         }
 
         [Test]
         public void Parse_valid_checksum()
         {
-            var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3\nDisabled\nStandalone\n\n129701855");
+            var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3\nDisabled\nStandalone\n\n-747868367");
             Assert.AreEqual(new AppIdentity("Gigi.Belogea", "1.2.3"), pluginData.Identity);
             Assert.AreEqual(PluginState.Disabled, pluginData.State);
             Assert.AreEqual(PluginKind.Standalone, pluginData.Kind);
@@ -61,7 +61,7 @@ namespace Kephas.Tests.Plugins
         [Test]
         public void Parse_valid_data_and_checksum()
         {
-            var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3\nPendingInitialization\nEmbedded\nmy:data\n-1975769539");
+            var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3\nPendingInitialization\nEmbedded\nmy:data\n-1257453341");
             Assert.AreEqual(new AppIdentity("Gigi.Belogea", "1.2.3"), pluginData.Identity);
             Assert.AreEqual(PluginState.PendingInitialization, pluginData.State);
             Assert.AreEqual(PluginKind.Embedded, pluginData.Kind);
