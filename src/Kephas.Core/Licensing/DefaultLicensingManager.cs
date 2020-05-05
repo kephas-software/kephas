@@ -11,7 +11,6 @@
 namespace Kephas.Licensing
 {
     using System;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -179,7 +178,7 @@ namespace Kephas.Licensing
 
         private bool IsMatch(string pattern, string value)
         {
-            if (pattern.EndsWith(LicenseData.Wildcard))
+            if (pattern.EndsWith(VersionRange.Wildcard))
             {
                 var firstPart = pattern.Substring(0, pattern.Length - 1);
                 if (value.Length < firstPart.Length)

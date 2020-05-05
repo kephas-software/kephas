@@ -5,12 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Linq;
-using System.Net.Sockets;
-
 namespace Kephas.Versioning
 {
+    using System;
+    using System.Linq;
+
     /// <summary>
     /// Provides operations with version ranges.
     /// </summary>

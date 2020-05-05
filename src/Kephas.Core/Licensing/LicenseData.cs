@@ -24,11 +24,6 @@ namespace Kephas.Licensing
     /// </summary>
     public sealed class LicenseData : ICloneable, IIdentifiable
     {
-        /// <summary>
-        /// The wildcard used in version ranges and app IDs.
-        /// </summary>
-        public static readonly string Wildcard = "*";
-
         private const int ParseChecksumInvalidCode = 3;
         private const int ChecksumInvalidCode = 100;
         private const string DateTimeFormat = "yyyy-MM-dd";
