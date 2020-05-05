@@ -163,18 +163,13 @@ namespace Kephas.Licensing
 
         private bool IsVersionMatch(string versionRange, SemanticVersion? version)
         {
-            var dashPos = versionRange.IndexOf(LicenseData.VersionRangeSeparator);
-            var minVersionString = dashPos < 0 ? versionRange : versionRange.Substring(0, dashPos);
-            var maxVersionString = dashPos < 0 ? versionRange : versionRange.Substring(dashPos + 1);
-            var minVersion = this.GetNormalizedVersion(minVersionString, 0);
-            var maxVersion = string.IsNullOrEmpty(maxVersionString) ? null : this.GetNormalizedVersion(maxVersionString, short.MaxValue);
-
-            if (minVersion != null && (version == null || version < minVersion))
+            var range = VersionRange.Parse(versionRange);
+            if (range?.MinVersion != null && (version == null || version < range?.MinVersion))
             {
                 return false;
             }
 
-            if (maxVersion != null && (version == null || version > maxVersion))
+            if (range?.MaxVersion != null && (version == null || version > range?.MaxVersion))
             {
                 return false;
             }
@@ -182,37 +177,9 @@ namespace Kephas.Licensing
             return true;
         }
 
-        private bool IsVersionMatch(string versionRange, string? version)
-        {
-            var semanticVersion = string.IsNullOrEmpty(version) ? null : this.GetNormalizedVersion(version, 0);
-            return IsVersionMatch(versionRange, semanticVersion);
-        }
-
-        private SemanticVersion? GetNormalizedVersion(string version, short wildCardReplacement)
-        {
-            var dashPos = version.IndexOf("-");
-            var releaseVersionString = dashPos < 0 ? version : version.Substring(0, dashPos);
-            if (releaseVersionString.EndsWith(".*"))
-            {
-                releaseVersionString = releaseVersionString.Substring(0, releaseVersionString.Length - 2);
-            }
-            else if (releaseVersionString.EndsWith("*"))
-            {
-                releaseVersionString = releaseVersionString.Substring(0, releaseVersionString.Length - 1);
-            }
-
-            var dotCount = releaseVersionString.Count(c => c == '.');
-            for (var i = 0; i < 2 - dotCount; i++)
-            {
-                releaseVersionString += $".{wildCardReplacement}";
-            }
-
-            return string.IsNullOrEmpty(releaseVersionString) ? null : SemanticVersion.Parse(releaseVersionString);
-        }
-
         private bool IsMatch(string pattern, string value)
         {
-            if (pattern.EndsWith("*"))
+            if (pattern.EndsWith(LicenseData.Wildcard))
             {
                 var firstPart = pattern.Substring(0, pattern.Length - 1);
                 if (value.Length < firstPart.Length)

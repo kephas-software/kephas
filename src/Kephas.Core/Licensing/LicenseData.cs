@@ -25,9 +25,9 @@ namespace Kephas.Licensing
     public sealed class LicenseData : ICloneable, IIdentifiable
     {
         /// <summary>
-        /// The separator for the version range.
+        /// The wildcard used in version ranges and app IDs.
         /// </summary>
-        internal static readonly string VersionRangeSeparator = ":";
+        public static readonly string Wildcard = "*";
 
         private const int ParseChecksumInvalidCode = 3;
         private const int ChecksumInvalidCode = 100;
