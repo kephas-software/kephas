@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Application
 {
     using System;
 
     using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Versioning;
 
     /// <summary>
     /// An app identity.
@@ -31,6 +30,22 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="id">The app ID.</param>
         /// <param name="version">Optional. The version.</param>
+        public AppIdentity(string id, SemanticVersion? version)
+        {
+            if (!this.IsValidId(id, out var message))
+            {
+                throw new ArgumentException(message, nameof(id));
+            }
+
+            this.Id = id;
+            this.Version = version;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppIdentity"/> class.
+        /// </summary>
+        /// <param name="id">The app ID.</param>
+        /// <param name="version">Optional. The version.</param>
         public AppIdentity(string id, string? version = null)
         {
             if (!this.IsValidId(id, out var message))
@@ -38,15 +53,13 @@ namespace Kephas.Application
                 throw new ArgumentException(message, nameof(id));
             }
 
-            if (!this.IsValidVersion(version, out message))
+            if (!this.TryParseVersion(version, out var semanticVersion, out message))
             {
                 throw new ArgumentException(message, nameof(version));
             }
 
-            version = string.IsNullOrEmpty(version) ? null : version;
-
             this.Id = id;
-            this.Version = version;
+            this.Version = semanticVersion;
         }
 
         /// <summary>
@@ -63,7 +76,7 @@ namespace Kephas.Application
         /// <value>
         /// The version.
         /// </value>
-        public string? Version { get; }
+        public SemanticVersion? Version { get; }
 
         /// <summary>
         /// Gets the identifier for this instance.
@@ -106,7 +119,7 @@ namespace Kephas.Application
         {
             return other != null
                 && this.Id.Equals(other.Id, StringComparison.OrdinalIgnoreCase)
-                && (this.Version == null || this.Version.Equals(other.Version, StringComparison.OrdinalIgnoreCase));
+                && (this.Version == null || this.Version.Equals(other.Version));
         }
 
         /// <summary>
@@ -142,7 +155,7 @@ namespace Kephas.Application
         /// </returns>
         public override int GetHashCode()
         {
-            return this.Id.ToLower().GetHashCode() + (100 * (this.Version?.ToLower().GetHashCode() ?? 0));
+            return this.Id.ToLower().GetHashCode() + (100 * (this.Version?.GetHashCode() ?? 0));
         }
 
         /// <summary>
@@ -153,7 +166,7 @@ namespace Kephas.Application
         /// </returns>
         public override string ToString()
         {
-            return string.IsNullOrEmpty(this.Version) ? this.Id : $"{this.Id}{ItemSeparatorChar}{this.Version}";
+            return this.Version == null ? this.Id : $"{this.Id}{ItemSeparatorChar}{this.Version}";
         }
 
         private bool IsValidId(string? id, out string? message)
@@ -181,11 +194,13 @@ namespace Kephas.Application
             return true;
         }
 
-        private bool IsValidVersion(string? version, out string? message)
+        private bool TryParseVersion(string? version, out SemanticVersion? semanticVersion, out string? message)
         {
+            message = null;
+            semanticVersion = null;
+
             if (string.IsNullOrEmpty(version))
             {
-                message = null;
                 return true;
             }
 
@@ -199,6 +214,12 @@ namespace Kephas.Application
             if (invalidCharPos >= 0)
             {
                 message = $"The app version '{version}' may not contain '{version[invalidCharPos]}'. Not allowed characters: '{string.Join(string.Empty, InvalidChars)}'.";
+                return false;
+            }
+
+            if (!SemanticVersion.TryParse(version, out semanticVersion))
+            {
+                message = $"The app version '{version}' is invalid.";
                 return false;
             }
 

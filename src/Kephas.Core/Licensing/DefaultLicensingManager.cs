@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Licensing
 {
     using System;
@@ -23,6 +21,7 @@ namespace Kephas.Licensing
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
+    using Kephas.Versioning;
 
     /// <summary>
     /// The default licensing manager.
@@ -162,21 +161,20 @@ namespace Kephas.Licensing
         /// </returns>
         protected virtual LicenseData? GetLicenseData(AppIdentity appIdentity) => this.licenseDataGetter(appIdentity);
 
-        private bool IsVersionMatch(string versionRange, string version)
+        private bool IsVersionMatch(string versionRange, SemanticVersion? version)
         {
-            var dashPos = versionRange.IndexOf("-");
+            var dashPos = versionRange.IndexOf(LicenseData.VersionRangeSeparator);
             var minVersionString = dashPos < 0 ? versionRange : versionRange.Substring(0, dashPos);
             var maxVersionString = dashPos < 0 ? versionRange : versionRange.Substring(dashPos + 1);
-            var minVersion = this.GetReleaseVersion(minVersionString, 0);
-            var maxVersion = string.IsNullOrEmpty(maxVersionString) ? null : this.GetReleaseVersion(maxVersionString, short.MaxValue);
-            var versionToCheck = string.IsNullOrEmpty(version) ? null : this.GetReleaseVersion(version, 0);
+            var minVersion = this.GetNormalizedVersion(minVersionString, 0);
+            var maxVersion = string.IsNullOrEmpty(maxVersionString) ? null : this.GetNormalizedVersion(maxVersionString, short.MaxValue);
 
-            if (minVersion != null && (versionToCheck == null || versionToCheck < minVersion))
+            if (minVersion != null && (version == null || version < minVersion))
             {
                 return false;
             }
 
-            if (maxVersion != null && (versionToCheck == null || versionToCheck > maxVersion))
+            if (maxVersion != null && (version == null || version > maxVersion))
             {
                 return false;
             }
@@ -184,7 +182,13 @@ namespace Kephas.Licensing
             return true;
         }
 
-        private Version? GetReleaseVersion(string version, short wildCardReplacement)
+        private bool IsVersionMatch(string versionRange, string? version)
+        {
+            var semanticVersion = string.IsNullOrEmpty(version) ? null : this.GetNormalizedVersion(version, 0);
+            return IsVersionMatch(versionRange, semanticVersion);
+        }
+
+        private SemanticVersion? GetNormalizedVersion(string version, short wildCardReplacement)
         {
             var dashPos = version.IndexOf("-");
             var releaseVersionString = dashPos < 0 ? version : version.Substring(0, dashPos);
@@ -203,7 +207,7 @@ namespace Kephas.Licensing
                 releaseVersionString += $".{wildCardReplacement}";
             }
 
-            return string.IsNullOrEmpty(releaseVersionString) ? null : Version.Parse(releaseVersionString);
+            return string.IsNullOrEmpty(releaseVersionString) ? null : SemanticVersion.Parse(releaseVersionString);
         }
 
         private bool IsMatch(string pattern, string value)

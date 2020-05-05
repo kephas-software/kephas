@@ -24,6 +24,11 @@ namespace Kephas.Licensing
     /// </summary>
     public sealed class LicenseData : ICloneable, IIdentifiable
     {
+        /// <summary>
+        /// The separator for the version range.
+        /// </summary>
+        internal static readonly string VersionRangeSeparator = ":";
+
         private const int ParseChecksumInvalidCode = 3;
         private const int ChecksumInvalidCode = 100;
         private const string DateTimeFormat = "yyyy-MM-dd";
@@ -174,10 +179,11 @@ namespace Kephas.Licensing
             var validTo = splits.Length > 7 ? DateTimeParse(splits[7]) : null;
 #if NETSTANDARD2_1
             var checksumString = splits.Length > 8 ? splits[^1] : null;
+            var data = splits.Length > 9 ? DataParse(splits[8..^1]) : null;
 #else
             var checksumString = splits.Length > 8 ? splits[splits.Length - 1] : null;
-#endif
             var data = splits.Length > 9 ? DataParse(splits.Skip(8).Take(splits.Length - 9)) : null;
+#endif
 
             if (checksumString == null || !int.TryParse(checksumString, out var checksum))
             {
@@ -274,55 +280,17 @@ namespace Kephas.Licensing
 
         private int GetChecksum()
         {
-            var idChecksum = this.GetChecksum(this.Id);
-            var appIdChecksum = this.GetChecksum(this.AppId);
-            var appVersionRangeChecksum = this.GetChecksum(this.AppVersionRange);
-            var licenseTypeChecksum = this.GetChecksum(this.LicenseType);
-            var licensedToChecksum = this.GetChecksum(this.LicensedTo);
-            var licensedByChecksum = this.GetChecksum(this.LicensedBy);
-            var validFromChecksum = this.GetChecksum(this.ValidFrom?.ToString(DateTimeFormat));
-            var validToChecksum = this.GetChecksum(this.ValidTo?.ToString(DateTimeFormat));
-            var dataChecksum = this.GetChecksum(DataToString(this.Data));
-
-            unchecked
-            {
-                return idChecksum
-                    + (appIdChecksum << 1)
-                    + (appVersionRangeChecksum << 2)
-                    + (licenseTypeChecksum << 3)
-                    + (licensedToChecksum << 4)
-                    + (licensedByChecksum << 5)
-                    + (validFromChecksum << 6)
-                    + (validToChecksum << 7)
-                    + (dataChecksum << 8);
-            }
-        }
-
-        private int GetChecksum(string? str)
-        {
-            if (string.IsNullOrEmpty(str))
-            {
-                return 0;
-            }
-
-            unchecked
-            {
-                var hash1 = (5381 << 16) + 5381;
-                var hash2 = hash1;
-
-                for (var i = 0; i < str.Length; i += 2)
-                {
-                    hash1 = ((hash1 << 5) + hash1) ^ str[i];
-                    if (i == str.Length - 1)
-                    {
-                        break;
-                    }
-
-                    hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
-                }
-
-                return hash1 + (hash2 * 1566083941);
-            }
+            var hashCodeGenerator = new HashCodeGenerator()
+                .CombineStable(this.Id)
+                .CombineStable(this.AppId)
+                .CombineStable(this.AppVersionRange)
+                .CombineStable(this.LicenseType)
+                .CombineStable(this.LicensedTo)
+                .CombineStable(this.LicensedBy)
+                .CombineStable(this.ValidFrom?.ToString(DateTimeFormat))
+                .CombineStable(this.ValidTo?.ToString(DateTimeFormat))
+                .CombineStable(DataToString(this.Data));
+            return hashCodeGenerator.GeneratedHash;
         }
 
         private void Validate(int? checksum)

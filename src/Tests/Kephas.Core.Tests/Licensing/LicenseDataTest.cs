@@ -22,14 +22,14 @@ namespace Kephas.Core.Tests.Licensing
         [Test]
         public void LicenseData_id_empty()
         {
-            Assert.Throws<ArgumentNullException>(() => new LicenseData(null, "test", "1.0-2.0", "standard", "you", "me"));
+            Assert.Throws<ArgumentNullException>(() => new LicenseData(null, "test", "1.0:2.0", "standard", "you", "me"));
         }
 
         [Test]
         public void ToString_no_custom_data()
         {
-            var licenseData = new LicenseData("lic-id", "test", "1.0-2.0", "standard", "you", "me");
-            var expectedString = "lic-id\ntest\n1.0-2.0\nstandard\nyou\nme\n\n\n\n1858223752";
+            var licenseData = new LicenseData("lic-id", "test", "1.0:2.0", "standard", "you", "me");
+            var expectedString = "lic-id\ntest\n1.0:2.0\nstandard\nyou\nme\n\n\n\n1858223752";
             Assert.AreEqual(expectedString, licenseData.ToString());
         }
 
@@ -39,7 +39,7 @@ namespace Kephas.Core.Tests.Licensing
             var licenseData = new LicenseData(
                 "lic-id",
                 "test",
-                "1.0-2.0",
+                "1.0:2.0",
                 "standard",
                 "you",
                 "me",
@@ -50,25 +50,25 @@ namespace Kephas.Core.Tests.Licensing
                     { "SubscriptionId", "987654321" },
                     { "Description", "Good boy, may receive one year for free" },
                 });
-            var expectedString = "lic-id\ntest\n1.0-2.0\nstandard\nyou\nme\n2020-01-12\n2021-01-11\nSubscriptionId:987654321\nDescription:Good boy, may receive one year for free\n1905388808";
+            var expectedString = "lic-id\ntest\n1.0:2.0\nstandard\nyou\nme\n2020-01-12\n2021-01-11\nSubscriptionId:987654321\nDescription:Good boy, may receive one year for free\n1905388808";
             Assert.AreEqual(expectedString, licenseData.ToString());
         }
 
         [Test]
         public void Parse_invalid_checksum()
         {
-            var licenseString = "lic-id\ntest\n1.0-3.0\nstandard\nyou\nme\n\n\n\n1858223752";
+            var licenseString = "lic-id\ntest\n1.0:3.0\nstandard\nyou\nme\n\n\n\n1858223752";
             Assert.Throws<InvalidLicenseDataException>(() => LicenseData.Parse(licenseString));
         }
 
         [Test]
         public void Parse_no_custom_data()
         {
-            var licenseString = "lic-id\ntest\n1.0-2.0\nstandard\nyou\nme\n\n\n\n1858223752";
+            var licenseString = "lic-id\ntest\n1.*:2.*\nstandard\nyou\nme\n\n\n\n1858223752";
             var licenseData = LicenseData.Parse(licenseString);
             Assert.AreEqual("lic-id", licenseData.Id);
             Assert.AreEqual("test", licenseData.AppId);
-            Assert.AreEqual("1.0-2.0", licenseData.AppVersionRange);
+            Assert.AreEqual("1.*:2.*", licenseData.AppVersionRange);
             Assert.AreEqual("standard", licenseData.LicenseType);
             Assert.AreEqual("you", licenseData.LicensedTo);
             Assert.AreEqual("me", licenseData.LicensedBy);
@@ -77,11 +77,11 @@ namespace Kephas.Core.Tests.Licensing
         [Test]
         public void Parse_custom_data()
         {
-            var licenseString = "lic-id\ntest\n1.0-2.0\nstandard\nyou\nme\n2020-01-12\n2021-01-11\nSubscriptionId:987654321\nDescription:Good boy, may receive one year for free\n1905388808";
+            var licenseString = "lic-id\ntest\n2.*\nstandard\nyou\nme\n2020-01-12\n2021-01-11\nSubscriptionId:987654321\nDescription:Good boy, may receive one year for free\n1905388808";
             var licenseData = LicenseData.Parse(licenseString);
             Assert.AreEqual("lic-id", licenseData.Id);
             Assert.AreEqual("test", licenseData.AppId);
-            Assert.AreEqual("1.0-2.0", licenseData.AppVersionRange);
+            Assert.AreEqual("2.*", licenseData.AppVersionRange);
             Assert.AreEqual("standard", licenseData.LicenseType);
             Assert.AreEqual("you", licenseData.LicensedTo);
             Assert.AreEqual("me", licenseData.LicensedBy);
