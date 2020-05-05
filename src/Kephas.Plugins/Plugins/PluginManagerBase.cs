@@ -786,7 +786,7 @@ namespace Kephas.Plugins
             var opResult = await Profiler.WithStopwatchAsync(
                 async () =>
                 {
-                    if (string.IsNullOrEmpty(pluginIdentity.Version))
+                    if (pluginIdentity.Version == null)
                     {
                         throw new ArgumentNullException(nameof(pluginIdentity.Version), $"Please provide the version to which the plugin {pluginIdentity} should be updated.");
                     }

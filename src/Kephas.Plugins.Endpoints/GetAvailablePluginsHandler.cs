@@ -73,8 +73,8 @@ namespace Kephas.Plugins.Endpoints
                 {
                     Message = $"Retrieved {plugins.Count()} plugin packages{searchTerm}. Elapsed: {result.Elapsed:c}.",
                     Plugins = string.IsNullOrEmpty(message.Id)
-                        ? plugins.ToDictionary(p => p.Identity.Id, p => p.Identity.Version)
-                        : plugins.ToDictionary(p => p.Identity.Version, p => string.Empty),
+                        ? plugins.ToDictionary(p => p.Identity.Id, p => p.Identity.Version?.ToString())
+                        : plugins.ToDictionary(p => p.Identity.Version?.ToString(), p => string.Empty),
                 };
         }
     }

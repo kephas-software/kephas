@@ -65,7 +65,7 @@ namespace Kephas.Plugins.Endpoints
         {
             var pluginData = includeLicense ? new LicensePluginData() : new PluginData();
             pluginData.Id = plugin.Identity.Id;
-            pluginData.Version = plugin.Identity.Version;
+            pluginData.Version = plugin.Identity.Version?.ToString();
             pluginData.State = plugin.State;
             pluginData.Location = plugin.Location;
 

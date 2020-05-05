@@ -164,6 +164,10 @@ namespace Kephas.Plugins.NuGet
                     }
                 }).PreserveThreadContext();
 
+            // TODO make sure that the same app ID is not present more than once
+            // when it is available, for example, from multiple sources
+            // and in the case of plugin versions (searchContext.PluginIdentity != null)
+            // that the versions are sorted in a descending order.
             result.Value(availablePlugins)
                 .MergeMessages(opResult)
                 .Complete(opResult.Elapsed);
@@ -620,7 +624,7 @@ namespace Kephas.Plugins.NuGet
         /// </returns>
         protected virtual PackageIdentity ToPackageIdentity(AppIdentity pluginId)
         {
-            return new PackageIdentity(pluginId.Id, NuGetVersion.Parse(pluginId.Version));
+            return new PackageIdentity(pluginId.Id, NuGetVersion.Parse(pluginId.Version?.ToString()));
         }
 
         /// <summary>

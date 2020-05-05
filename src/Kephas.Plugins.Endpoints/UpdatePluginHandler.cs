@@ -112,7 +112,9 @@ namespace Kephas.Plugins.Endpoints
                                 .PluginIdentity(installedPlugin.Identity)
                                 .IncludePrerelease(message.IncludePrerelease)
                                 .Take(2),
-                            token).PreserveThreadContext()).Value.FirstOrDefault();
+                            token).PreserveThreadContext()).Value
+                            .OrderByDescending(p => p.Identity.Version)
+                            .FirstOrDefault();
                         if (availablePackage != null)
                         {
                             availablePackages.Add(availablePackage);
@@ -126,7 +128,7 @@ namespace Kephas.Plugins.Endpoints
                 else
                 {
                     toUpdate = installedPlugins.Where(p =>
-                            !p.Identity.Version.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
+                            !p.Identity.Version.Equals(message.Version))
                         .Select(p => new AppIdentity(p.Identity.Id, message.Version)).ToList();
                 }
             }
