@@ -202,7 +202,7 @@ namespace Kephas.Licensing
             }
 
             var dotCount = releaseVersionString.Count(c => c == '.');
-            for (var i = 0; i < 3 - dotCount; i++)
+            for (var i = 0; i < 2 - dotCount; i++)
             {
                 releaseVersionString += $".{wildCardReplacement}";
             }

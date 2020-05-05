@@ -72,7 +72,7 @@ namespace Kephas.Tests.Plugins
                     ctx,
                     canInstall: (d, c) => false);
 
-                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4")));
+                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3")));
             }
         }
 
@@ -168,7 +168,7 @@ namespace Kephas.Tests.Plugins
                     ctx,
                     canUninitialize: (d, c) => false);
 
-                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
+                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
                 Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1")));
             }
         }
@@ -182,8 +182,8 @@ namespace Kephas.Tests.Plugins
                     ctx,
                     canDisable: (d, c) => false);
 
-                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3.4"));
-                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1", "1.2.3.4")));
+                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
+                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1", "1.2.3")));
             }
         }
 
