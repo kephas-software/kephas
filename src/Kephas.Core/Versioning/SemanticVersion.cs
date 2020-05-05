@@ -10,7 +10,6 @@ namespace Kephas.Versioning
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>A strict SemVer implementation</summary>
@@ -326,43 +325,41 @@ namespace Kephas.Versioning
                 return false;
             }
 
-            var result = (Version?)null;
             var (versionPart, releaseLabelsPart, metadataPart) = ParseSections(value);
-            if (versionPart != null && Version.TryParse(versionPart, out result))
+            if (versionPart == null || !Version.TryParse(versionPart, out var result))
             {
-                var strArray = versionPart.Split('.');
-                if (strArray.Length > 4)
-                {
-                    return false;
-                }
-
-                foreach (var s in strArray)
-                {
-                    if (!IsValidPart(s, false))
-                    {
-                        return false;
-                    }
-                }
-
-                if (releaseLabelsPart != null)
-                {
-                    if (releaseLabelsPart.Any(t => !IsValidPart(t, false)))
-                    {
-                        return false;
-                    }
-                }
-
-                if (metadataPart != null && !IsValid(metadataPart, true))
-                {
-                    return false;
-                }
-
-                var version = NormalizeVersionValue(result);
-                semanticVersion = new SemanticVersion(version, releaseLabelsPart, metadataPart ?? string.Empty);
-                return true;
+                return false;
             }
 
-            return false;
+            var strArray = versionPart.Split('.');
+            if (strArray.Length > 4)
+            {
+                return false;
+            }
+
+            if (strArray.Any(s => !IsValidPart(s, false)))
+            {
+                return false;
+            }
+
+            if (releaseLabelsPart != null && releaseLabelsPart.Any(t => !IsValidPart(t, false)))
+            {
+                return false;
+            }
+
+            if (metadataPart != null && !IsValid(metadataPart, true))
+            {
+                return false;
+            }
+
+            var version = NormalizeVersionValue(result);
+            if (version.Revision != 0)
+            {
+                return false;
+            }
+
+            semanticVersion = new SemanticVersion(version, releaseLabelsPart, metadataPart ?? string.Empty);
+            return true;
         }
 
         /// <summary>
@@ -409,7 +406,7 @@ namespace Kephas.Versioning
         /// <returns>
         /// The formatted string.
         /// </returns>
-        public virtual string? ToString(string format, IFormatProvider formatProvider)
+        public virtual string? ToString(string format, IFormatProvider? formatProvider)
         {
             string? formattedString = null;
             if (formatProvider == null || !this.TryFormatter(format, formatProvider, out formattedString))

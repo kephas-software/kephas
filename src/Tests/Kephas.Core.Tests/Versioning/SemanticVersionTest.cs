@@ -10,6 +10,7 @@
 
 namespace Kephas.Core.Tests.Versioning
 {
+    using System;
     using System.Linq;
 
     using Kephas.Versioning;
@@ -29,6 +30,45 @@ namespace Kephas.Core.Tests.Versioning
             Assert.AreEqual("dev", version.ReleaseLabels.First());
             Assert.AreEqual("12", version.ReleaseLabels.Skip(1).First());
             Assert.AreEqual("1234", version.Metadata);
+        }
+
+        [Test]
+        public void Parse_legacy_version_success()
+        {
+            var version = SemanticVersion.Parse("2.1.4.0");
+
+            Assert.AreEqual(2, version.Major);
+            Assert.AreEqual(1, version.Minor);
+            Assert.AreEqual(4, version.Patch);
+            Assert.AreEqual("2.1.4", version.ToString());
+        }
+
+        [Test]
+        public void TryParse_legacy_version_success()
+        {
+            var parsed = SemanticVersion.TryParse("2.1.4.0", out var version);
+
+            Assert.IsTrue(parsed);
+            Assert.IsNotNull(version);
+            Assert.AreEqual(2, version.Major);
+            Assert.AreEqual(1, version.Minor);
+            Assert.AreEqual(4, version.Patch);
+            Assert.AreEqual("2.1.4", version.ToString());
+        }
+
+        [Test]
+        public void Parse_legacy_version_failure()
+        {
+            Assert.Throws<ArgumentException>(() => SemanticVersion.Parse("2.1.4.5"));
+        }
+
+        [Test]
+        public void TryParse_legacy_version_failure()
+        {
+            var parsed = SemanticVersion.TryParse("2.1.4.5", out var version);
+
+            Assert.IsFalse(parsed);
+            Assert.IsNull(version);
         }
 
         [Test]
