@@ -29,7 +29,7 @@ namespace Kephas.Core.Tests.Licensing
         public void ToString_no_custom_data()
         {
             var licenseData = new LicenseData("lic-id", "test", "1.0:2.0", "standard", "you", "me");
-            var expectedString = "lic-id\ntest\n1.0:2.0\nstandard\nyou\nme\n\n\n\n1858223752";
+            var expectedString = "lic-id\ntest\n1.0:2.0\nstandard\nyou\nme\n\n\n\n-1167447004";
             Assert.AreEqual(expectedString, licenseData.ToString());
         }
 
@@ -50,7 +50,7 @@ namespace Kephas.Core.Tests.Licensing
                     { "SubscriptionId", "987654321" },
                     { "Description", "Good boy, may receive one year for free" },
                 });
-            var expectedString = "lic-id\ntest\n1.0:2.0\nstandard\nyou\nme\n2020-01-12\n2021-01-11\nSubscriptionId:987654321\nDescription:Good boy, may receive one year for free\n1905388808";
+            var expectedString = "lic-id\ntest\n1.0:2.0\nstandard\nyou\nme\n2020-01-12\n2021-01-11\nSubscriptionId:987654321\nDescription:Good boy, may receive one year for free\n1431760574";
             Assert.AreEqual(expectedString, licenseData.ToString());
         }
 
@@ -64,7 +64,7 @@ namespace Kephas.Core.Tests.Licensing
         [Test]
         public void Parse_no_custom_data()
         {
-            var licenseString = "lic-id\ntest\n1.*:2.*\nstandard\nyou\nme\n\n\n\n1858223752";
+            var licenseString = "lic-id\ntest\n1.*:2.*\nstandard\nyou\nme\n\n\n\n1441544989";
             var licenseData = LicenseData.Parse(licenseString);
             Assert.AreEqual("lic-id", licenseData.Id);
             Assert.AreEqual("test", licenseData.AppId);
@@ -77,7 +77,7 @@ namespace Kephas.Core.Tests.Licensing
         [Test]
         public void Parse_custom_data()
         {
-            var licenseString = "lic-id\ntest\n2.*\nstandard\nyou\nme\n2020-01-12\n2021-01-11\nSubscriptionId:987654321\nDescription:Good boy, may receive one year for free\n1905388808";
+            var licenseString = "lic-id\ntest\n2.*\nstandard\nyou\nme\n2020-01-12\n2021-01-11\nSubscriptionId:987654321\nDescription:Good boy, may receive one year for free\n-12374228";
             var licenseData = LicenseData.Parse(licenseString);
             Assert.AreEqual("lic-id", licenseData.Id);
             Assert.AreEqual("test", licenseData.AppId);

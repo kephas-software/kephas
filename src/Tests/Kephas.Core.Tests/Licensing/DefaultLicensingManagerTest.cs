@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Core.Tests.Licensing
 {
     using System;
@@ -92,7 +90,7 @@ namespace Kephas.Core.Tests.Licensing
             var licenseData = new LicenseData(
                 Guid.NewGuid().ToString(),
                 "my-app",
-                "0-1",
+                "0:1",
                 "standard",
                 "you",
                 "me");
@@ -108,7 +106,7 @@ namespace Kephas.Core.Tests.Licensing
             var licenseData = new LicenseData(
                 Guid.NewGuid().ToString(),
                 "my-app",
-                "0-1.4",
+                "0:1.4",
                 "standard",
                 "you",
                 "me");
