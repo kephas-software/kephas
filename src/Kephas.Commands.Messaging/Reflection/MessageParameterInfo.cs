@@ -29,7 +29,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <param name="container">The container.</param>
         /// <param name="propertyInfo">The property info.</param>
         /// <param name="position">The parameter position.</param>
-        internal MessageParameterInfo(MessageOperationInfo container, IPropertyInfo propertyInfo, int position)
+        protected internal MessageParameterInfo(MessageOperationInfo container, IPropertyInfo propertyInfo, int position)
         {
             Requires.NotNull(propertyInfo, nameof(propertyInfo));
 

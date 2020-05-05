@@ -26,7 +26,6 @@ namespace Kephas.Commands.Messaging.Reflection
     /// </summary>
     public class MessageOperationInfo : DynamicOperationInfo, IPrototype
     {
-        private readonly ITypeInfo messageType;
         private readonly Lazy<IMessageProcessor> lazyMessageProcessor;
 
         /// <summary>
@@ -34,12 +33,12 @@ namespace Kephas.Commands.Messaging.Reflection
         /// </summary>
         /// <param name="messageType">The message type.</param>
         /// <param name="lazyMessageProcessor">The message processor.</param>
-        internal MessageOperationInfo(ITypeInfo messageType, Lazy<IMessageProcessor> lazyMessageProcessor)
+        protected internal MessageOperationInfo(ITypeInfo messageType, Lazy<IMessageProcessor> lazyMessageProcessor)
         {
             Requires.NotNull(messageType, nameof(messageType));
             Requires.NotNull(lazyMessageProcessor, nameof(lazyMessageProcessor));
 
-            this.messageType = messageType;
+            this.MessageType = messageType;
             this.lazyMessageProcessor = lazyMessageProcessor;
             var t = messageType;
             this.Name = t.Name.EndsWith("Message")
@@ -52,7 +51,7 @@ namespace Kephas.Commands.Messaging.Reflection
             this.FullName = $"{messageType.Namespace}.{this.Name}";
 
             this.Parameters = messageType.Properties
-                .Select((p, i) => new MessageParameterInfo(this, p, i))
+                .Select(this.CreateParameterInfo)
                 .ToArray();
 
             messageType.Annotations.ForEach(this.AddAnnotation);
@@ -60,12 +59,17 @@ namespace Kephas.Commands.Messaging.Reflection
         }
 
         /// <summary>
+        /// Gets the message type.
+        /// </summary>
+        protected ITypeInfo MessageType { get; }
+
+        /// <summary>
         /// Gets the display information.
         /// </summary>
         /// <returns>The display information.</returns>
         public override IDisplayInfo? GetDisplayInfo()
         {
-            return this.messageType.GetDisplayInfo();
+            return this.MessageType.GetDisplayInfo();
         }
 
         /// <summary>
@@ -109,7 +113,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <returns>The message.</returns>
         protected internal virtual object CreateMessage(IExpando? values)
         {
-            var message = this.messageType.CreateInstance();
+            var message = this.MessageType.CreateInstance();
 
             if (values == null)
             {
@@ -117,7 +121,7 @@ namespace Kephas.Commands.Messaging.Reflection
             }
 
             var i = 0;
-            var messageProperties = this.messageType.Properties.ToList();
+            var messageProperties = this.MessageType.Properties.ToList();
             foreach (var kv in this.GetMessageArguments(values))
             {
                 var propInfo = messageProperties.FirstOrDefault(
@@ -142,6 +146,17 @@ namespace Kephas.Commands.Messaging.Reflection
         }
 
         /// <summary>
+        /// Creates a new parameter information out of the property information and position.
+        /// </summary>
+        /// <param name="propertyInfo">The property information.</param>
+        /// <param name="position">The position.</param>
+        /// <returns>The new <see cref="IParameterInfo"/>.</returns>
+        protected virtual IParameterInfo CreateParameterInfo(IPropertyInfo propertyInfo, int position)
+        {
+            return new MessageParameterInfo(this, propertyInfo, position);
+        }
+
+        /// <summary>
         /// Gets message arguments.
         /// </summary>
         /// <param name="args">The arguments.</param>
@@ -162,7 +177,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// </returns>
         protected virtual bool HandleUnknownArgument(object message, int index, string name, object? value)
         {
-            var props = this.messageType.Properties.ToList();
+            var props = this.MessageType.Properties.ToList();
             if (index < props.Count && (value == null || (value is bool boolValue && boolValue)))
             {
                 this.SetPropertyValue(message, props[index], name);
