@@ -24,14 +24,13 @@ namespace Kephas.Commands.Messaging
     using Kephas.Services;
 
     /// <summary>
-    /// A default command registry.
+    /// A command registry for messages.
     /// </summary>
     [OverridePriority(Priority.Low)]
     public class MessagingCommandRegistry : ICommandRegistry
     {
         private readonly IAppRuntime appRuntime;
         private readonly ITypeLoader typeLoader;
-        private readonly Lazy<IMessageProcessor> lazyMessageProcessor;
         private IList<IOperationInfo>? commandTypes;
 
         /// <summary>
@@ -44,8 +43,13 @@ namespace Kephas.Commands.Messaging
         {
             this.appRuntime = appRuntime;
             this.typeLoader = typeLoader;
-            this.lazyMessageProcessor = lazyMessageProcessor;
+            this.LazyMessageProcessor = lazyMessageProcessor;
         }
+
+        /// <summary>
+        /// Gets the lazy message processor.
+        /// </summary>
+        protected Lazy<IMessageProcessor> LazyMessageProcessor { get; }
 
         /// <summary>
         /// Gets the command types.
@@ -54,11 +58,11 @@ namespace Kephas.Commands.Messaging
         /// <returns>
         /// The command types.
         /// </returns>
-        public IEnumerable<IOperationInfo> GetCommandTypes(string? commandPattern = null)
+        public virtual IEnumerable<IOperationInfo> GetCommandTypes(string? commandPattern = null)
         {
             this.commandTypes ??= this.appRuntime.GetAppAssemblies()
                                             .SelectMany(a => this.typeLoader.GetExportedTypes(a).Where(this.IsMessageType))
-                                            .Select(t => (IOperationInfo)new MessageOperationInfo(t.AsRuntimeTypeInfo(), this.lazyMessageProcessor))
+                                            .Select(this.ToOperationInfo)
                                             .ToList()
                                             .AsReadOnly();
 
@@ -67,11 +71,19 @@ namespace Kephas.Commands.Messaging
                 : this.commandTypes.Where(c => c.Name.StartsWith(commandPattern, StringComparison.InvariantCultureIgnoreCase));
         }
 
+        /// <summary>
+        /// Converts the provided type to an <see cref="IOperationInfo"/>.
+        /// </summary>
+        /// <param name="t">The type.</param>
+        /// <returns>The <see cref="IOperationInfo"/>.</returns>
+        protected virtual IOperationInfo ToOperationInfo(Type t) =>
+            new MessageOperationInfo(t.AsRuntimeTypeInfo(), this.LazyMessageProcessor);
+
         private bool IsMessageType(Type type) => !type.IsAbstract
-                                                    && typeof(IMessage).IsAssignableFrom(type)
-                                                    && !typeof(IResponse).IsAssignableFrom(type)
-                                                    && !type.Name.EndsWith("ResponseMessage")
-                                                    && !typeof(IMessageEnvelope).IsAssignableFrom(type)
-                                                    && type.GetCustomAttribute<ExcludeFromModelAttribute>() == null;
+                                                 && typeof(IMessage).IsAssignableFrom(type)
+                                                 && !typeof(IResponse).IsAssignableFrom(type)
+                                                 && !type.Name.EndsWith("ResponseMessage")
+                                                 && !typeof(IMessageEnvelope).IsAssignableFrom(type)
+                                                 && type.GetCustomAttribute<ExcludeFromModelAttribute>() == null;
     }
 }
