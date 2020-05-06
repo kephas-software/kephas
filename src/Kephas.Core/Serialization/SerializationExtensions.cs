@@ -605,6 +605,42 @@ namespace Kephas.Serialization
         }
 
         /// <summary>
+        /// Serializes the provided object as BSON asynchronously.
+        /// </summary>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// A Task promising the serialized object as a BSON string.
+        /// </returns>
+        public static Task<string?> BsonSerializeAsync(
+            this ISerializationService serializationService,
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null,
+            CancellationToken cancellationToken = default)
+        {
+            return SerializeAsync<BsonMediaType>(serializationService, obj, optionsConfig, cancellationToken);
+        }
+
+        /// <summary>
+        /// Serializes the provided object as BSON.
+        /// </summary>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <returns>
+        /// The serialized object as a BSON string.
+        /// </returns>
+        public static string? BsonSerialize(
+            this ISerializationService serializationService,
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null)
+        {
+            return Serialize<BsonMediaType>(serializationService, obj, optionsConfig);
+        }
+
+        /// <summary>
         /// Serializes the provided object as XML asynchronously.
         /// </summary>
         /// <param name="serializationService">The serialization service.</param>

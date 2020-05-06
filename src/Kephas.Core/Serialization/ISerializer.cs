@@ -107,7 +107,7 @@ namespace Kephas.Serialization
         /// <returns>
         /// The serialized object.
         /// </returns>
-        string Serialize(
+        string? Serialize(
             object? obj,
             ISerializationContext context)
         {
@@ -122,7 +122,7 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        object Deserialize(
+        object? Deserialize(
             TextReader textReader,
             ISerializationContext context)
         {
@@ -137,8 +137,8 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        object Deserialize(
-            string serializedObj,
+        object? Deserialize(
+            string? serializedObj,
             ISerializationContext context)
         {
             return this.DeserializeAsync(serializedObj, context).GetResultNonLocking();

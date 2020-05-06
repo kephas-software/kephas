@@ -12,6 +12,7 @@ namespace Kephas.Serialization.Json.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
+
     using Kephas.Testing.Composition;
 
     public class SerializationTestBase : CompositionTestBase
