@@ -59,7 +59,7 @@ namespace Kephas.Configuration
         /// </summary>
         /// <typeparam name="TSettings">Type of the settings.</typeparam>
         /// <param name="optionsConfig">The options configuration.</param>
-        public virtual void Configure<TSettings>(Action<TSettings> optionsConfig)
+        public virtual void Configure<TSettings>(Action<TSettings>? optionsConfig)
             where TSettings : class, new()
         {
             if (optionsConfig == null)

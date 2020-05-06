@@ -70,7 +70,7 @@ namespace Kephas.Composition.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null);
+        IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null);
 
         /// <summary>
         /// Indicates that this service allows multiple registrations.

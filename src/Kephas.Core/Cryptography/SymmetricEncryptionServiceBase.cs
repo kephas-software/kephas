@@ -61,20 +61,18 @@ namespace Kephas.Cryptography
         /// <returns>
         /// An array of byte.
         /// </returns>
-        public virtual byte[] GenerateKey(Action<IEncryptionContext> optionsConfig = null)
+        public virtual byte[] GenerateKey(Action<IEncryptionContext>? optionsConfig = null)
         {
-            using (var encryptionContext = this.CreateEncryptionContext(optionsConfig))
-            using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
+            using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
+            using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
+            var keySize = encryptionContext?.KeySize;
+            if (keySize != null)
             {
-                var keySize = encryptionContext?.KeySize;
-                if (keySize != null)
-                {
-                    algorithm.KeySize = keySize.Value;
-                }
-
-                algorithm.GenerateKey();
-                return algorithm.Key;
+                algorithm.KeySize = keySize.Value;
             }
+
+            algorithm.GenerateKey();
+            return algorithm.Key;
         }
 
         /// <summary>
@@ -90,17 +88,15 @@ namespace Kephas.Cryptography
         public Task EncryptAsync(
             Stream input,
             Stream output,
-            Action<IEncryptionContext> optionsConfig = null,
+            Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            using (var encryptionContext = this.CreateEncryptionContext(optionsConfig))
-            using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
-            {
-                return this.EncryptAsync(input, output, algorithm, encryptionContext, cancellationToken);
-            }
+            using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
+            using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
+            return this.EncryptAsync(input, output, algorithm, encryptionContext, cancellationToken);
         }
 
         /// <summary>
@@ -116,17 +112,15 @@ namespace Kephas.Cryptography
         public Task DecryptAsync(
             Stream input,
             Stream output,
-            Action<IEncryptionContext> optionsConfig = null,
+            Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            using (var encryptionContext = this.CreateEncryptionContext(optionsConfig))
-            using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
-            {
-                return this.DecryptAsync(input, output, algorithm, encryptionContext, cancellationToken);
-            }
+            using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
+            using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
+            return this.DecryptAsync(input, output, algorithm, encryptionContext, cancellationToken);
         }
 
         /// <summary>
@@ -135,16 +129,14 @@ namespace Kephas.Cryptography
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
-        public void Encrypt(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null)
+        public void Encrypt(Stream input, Stream output, Action<IEncryptionContext>? optionsConfig = null)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            using (var encryptionContext = this.CreateEncryptionContext(optionsConfig))
-            using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
-            {
-                this.Encrypt(input, output, algorithm, encryptionContext);
-            }
+            using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
+            using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
+            this.Encrypt(input, output, algorithm, encryptionContext);
         }
 
         /// <summary>
@@ -153,16 +145,14 @@ namespace Kephas.Cryptography
         /// <param name="input">The input stream.</param>
         /// <param name="output">The output stream.</param>
         /// <param name="optionsConfig">Optional. The options configuration.</param>
-        public void Decrypt(Stream input, Stream output, Action<IEncryptionContext> optionsConfig = null)
+        public void Decrypt(Stream input, Stream output, Action<IEncryptionContext>? optionsConfig = null)
         {
             Requires.NotNull(input, nameof(input));
             Requires.NotNull(output, nameof(output));
 
-            using (var encryptionContext = this.CreateEncryptionContext(optionsConfig))
-            using (var algorithm = this.CreateSymmetricAlgorithm(encryptionContext))
-            {
-                this.Decrypt(input, output, algorithm, encryptionContext);
-            }
+            using var encryptionContext = this.CreateEncryptionContext(optionsConfig);
+            using var algorithm = this.CreateSymmetricAlgorithm(encryptionContext);
+            this.Decrypt(input, output, algorithm, encryptionContext);
         }
 
         /// <summary>
@@ -172,7 +162,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The new encryption context.
         /// </returns>
-        protected virtual IEncryptionContext CreateEncryptionContext(Action<IEncryptionContext> optionsConfig = null)
+        protected virtual IEncryptionContext CreateEncryptionContext(Action<IEncryptionContext>? optionsConfig = null)
         {
             return this.contextCtor().Merge(optionsConfig);
         }
@@ -190,13 +180,11 @@ namespace Kephas.Cryptography
             algorithm.GenerateIV();
             this.WriteIV(output, algorithm.IV);
 
-            using (var crypto = new CryptoStream(output, algorithm.CreateEncryptor(), CryptoStreamMode.Write))
-            {
-                var bytes = input.ReadAllBytes();
+            using var crypto = new CryptoStream(output, algorithm.CreateEncryptor(), CryptoStreamMode.Write);
+            var bytes = input.ReadAllBytes();
 
-                crypto.Write(bytes, 0, bytes.Length);
-                crypto.FlushFinalBlock();
-            }
+            crypto.Write(bytes, 0, bytes.Length);
+            crypto.FlushFinalBlock();
         }
 
         /// <summary>
@@ -216,13 +204,11 @@ namespace Kephas.Cryptography
             algorithm.GenerateIV();
             this.WriteIV(output, algorithm.IV);
 
-            using (var crypto = new CryptoStream(output, algorithm.CreateEncryptor(), CryptoStreamMode.Write))
-            {
-                var bytes = await input.ReadAllBytesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            using var crypto = new CryptoStream(output, algorithm.CreateEncryptor(), CryptoStreamMode.Write);
+            var bytes = await input.ReadAllBytesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
 
-                await crypto.WriteAsync(bytes, 0, bytes.Length, cancellationToken).PreserveThreadContext();
-                crypto.FlushFinalBlock();
-            }
+            await crypto.WriteAsync(bytes, 0, bytes.Length, cancellationToken).PreserveThreadContext();
+            crypto.FlushFinalBlock();
         }
 
         /// <summary>
@@ -237,12 +223,10 @@ namespace Kephas.Cryptography
             var iv = this.ReadIV(input);
             algorithm.IV = iv;
 
-            using (var crypto = new CryptoStream(output, algorithm.CreateDecryptor(), CryptoStreamMode.Write))
-            {
-                var encryptedBytes = input.ReadAllBytes();
-                crypto.Write(encryptedBytes, 0, encryptedBytes.Length);
-                crypto.FlushFinalBlock();
-            }
+            using var crypto = new CryptoStream(output, algorithm.CreateDecryptor(), CryptoStreamMode.Write);
+            var encryptedBytes = input.ReadAllBytes();
+            crypto.Write(encryptedBytes, 0, encryptedBytes.Length);
+            crypto.FlushFinalBlock();
         }
 
         /// <summary>
@@ -261,12 +245,10 @@ namespace Kephas.Cryptography
             var iv = this.ReadIV(input);
             algorithm.IV = iv;
 
-            using (var crypto = new CryptoStream(output, algorithm.CreateDecryptor(), CryptoStreamMode.Write))
-            {
-                var encryptedBytes = await input.ReadAllBytesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
-                await crypto.WriteAsync(encryptedBytes, 0, encryptedBytes.Length, cancellationToken).PreserveThreadContext();
-                crypto.FlushFinalBlock();
-            }
+            using var crypto = new CryptoStream(output, algorithm.CreateDecryptor(), CryptoStreamMode.Write);
+            var encryptedBytes = await input.ReadAllBytesAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            await crypto.WriteAsync(encryptedBytes, 0, encryptedBytes.Length, cancellationToken).PreserveThreadContext();
+            crypto.FlushFinalBlock();
         }
 
         /// <summary>
@@ -288,7 +270,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// An array of byte.
         /// </returns>
-        protected virtual byte[] GetKey(IEncryptionContext encryptionContext)
+        protected virtual byte[]? GetKey(IEncryptionContext encryptionContext)
         {
             return encryptionContext?.Key;
         }

@@ -37,6 +37,6 @@ namespace Kephas.Configuration
         /// <returns>
         /// The required settings or <c>null</c>.
         /// </returns>
-        object TryGetSettings(Type settingsType);
+        object? TryGetSettings(Type settingsType);
     }
 }

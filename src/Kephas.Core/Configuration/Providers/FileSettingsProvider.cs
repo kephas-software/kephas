@@ -48,7 +48,7 @@ namespace Kephas.Configuration.Providers
             IAppRuntime appRuntime,
             ISerializationService serializationService,
             ICollection<Lazy<IMediaType, MediaTypeMetadata>> mediaTypes,
-            ILogManager logManager = null)
+            ILogManager? logManager = null)
             : base(logManager)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
@@ -79,7 +79,7 @@ namespace Kephas.Configuration.Providers
         /// <summary>Gets the settings with the provided type.</summary>
         /// <param name="settingsType">Type of the settings.</param>
         /// <returns>The settings.</returns>
-        public virtual object GetSettings(Type settingsType)
+        public virtual object? GetSettings(Type settingsType)
         {
             var (filePath, result, mediaType) = this.GetSettingsFileInfo(settingsType);
             if (filePath == null)

@@ -28,7 +28,7 @@ namespace Kephas.Configuration.Providers
         /// <returns>
         /// The settings.
         /// </returns>
-        object GetSettings(Type settingsType);
+        object? GetSettings(Type settingsType);
     }
 
     /// <summary>

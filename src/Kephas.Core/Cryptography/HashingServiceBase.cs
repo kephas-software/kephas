@@ -42,7 +42,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The hashed value.
         /// </returns>
-        public virtual byte[] Hash(byte[] value, Action<IHashingContext> optionsConfig = null)
+        public virtual byte[]? Hash(byte[] value, Action<IHashingContext>? optionsConfig = null)
         {
             if (value == null)
             {
@@ -74,7 +74,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The hashing context.
         /// </returns>
-        protected virtual IHashingContext GetHashingContext(Action<IHashingContext> optionsConfig)
+        protected virtual IHashingContext? GetHashingContext(Action<IHashingContext>? optionsConfig)
         {
             if (optionsConfig == null)
             {
@@ -93,7 +93,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The new hash algorithm.
         /// </returns>
-        protected abstract HashAlgorithm CreateHashAlgorithm(IHashingContext context = null);
+        protected abstract HashAlgorithm CreateHashAlgorithm(IHashingContext? context = null);
 
         /// <summary>
         /// Gets salted value.
@@ -103,7 +103,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The salted value.
         /// </returns>
-        protected virtual byte[] GetSaltedValue(byte[] value, byte[] saltBytes)
+        protected virtual byte[] GetSaltedValue(byte[] value, byte[]? saltBytes)
         {
             if (saltBytes == null || saltBytes.Length == 0)
             {
