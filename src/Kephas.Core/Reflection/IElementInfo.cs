@@ -8,10 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Reflection.Localization;
-
-#nullable enable
-
 namespace Kephas.Reflection
 {
     using System.Collections.Generic;

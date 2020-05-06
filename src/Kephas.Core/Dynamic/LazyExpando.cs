@@ -35,7 +35,7 @@ namespace Kephas.Dynamic
         /// Initializes a new instance of the <see cref="LazyExpando"/> class.
         /// </summary>
         /// <param name="valueResolver">The value resolver (optional).</param>
-        public LazyExpando(Func<string, object> valueResolver = null)
+        public LazyExpando(Func<string, object>? valueResolver = null)
             : this(new Dictionary<string, object>(), valueResolver)
         {
         }
@@ -45,7 +45,7 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>
         /// <param name="valueResolver">The value resolver (optional).</param>
-        public LazyExpando(IDictionary<string, object> dictionary, Func<string, object> valueResolver = null)
+        public LazyExpando(IDictionary<string, object> dictionary, Func<string, object>? valueResolver = null)
             : base(dictionary)
         {
             Requires.NotNull(dictionary, nameof(dictionary));
@@ -60,7 +60,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The value resolver.
         /// </value>
-        protected Func<string, object> ValueResolver { get; set; }
+        protected Func<string, object>? ValueResolver { get; set; }
 
         /// <summary>Attempts to get the dynamic value with the given key.</summary>
         /// <remarks>
@@ -73,7 +73,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// <c>true</c> if a value is found, <c>false</c> otherwise.
         /// </returns>
-        protected override bool TryGetValue(string key, out object value)
+        protected override bool TryGetValue(string key, out object? value)
         {
             if (base.TryGetValue(key, out value))
             {

@@ -60,12 +60,12 @@ namespace Kephas.Threading.Tasks
         {
             Requires.NotNull(task, nameof(task));
 
-            timeout = timeout ?? DefaultTimeout;
+            timeout ??= DefaultTimeout;
             var timeoutOccurred = false;
             var waitInterval = waitMilliseconds ?? DefaultWaitMilliseconds;
             var startTime = DateTime.Now;
 
-            AggregateException taskException = null;
+            AggregateException? taskException = null;
             try
             {
                 while (!task.IsCompleted && !task.IsCanceled && !task.IsFaulted)

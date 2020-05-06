@@ -27,7 +27,7 @@ namespace Kephas.Diagnostics
         /// </summary>
         /// <param name="processStartInfo">Information describing the process start.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public ProcessStarter(ProcessStartInfo processStartInfo, ILogManager logManager = null)
+        public ProcessStarter(ProcessStartInfo processStartInfo, ILogManager? logManager = null)
             : base(logManager)
         {
             this.ProcessStartInfo = processStartInfo;
@@ -50,7 +50,7 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task<ProcessStartResult> StartAsync(Action<Process> config = null, CancellationToken cancellationToken = default)
+        public Task<ProcessStartResult> StartAsync(Action<Process>? config = null, CancellationToken cancellationToken = default)
         {
             var processStartInfo = this.ProcessStartInfo;
 

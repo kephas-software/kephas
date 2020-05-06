@@ -30,15 +30,15 @@ namespace Kephas.Diagnostics
     {
         private readonly ProcessStartInfo processStartInfo = new ProcessStartInfo();
         private readonly IList<string> arguments = new List<string>();
-        private readonly ILogManager logManager;
-        private string executableFile;
+        private readonly ILogManager? logManager;
+        private string? executableFile;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessStarterFactory"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public ProcessStarterFactory(IAppRuntime appRuntime, ILogManager logManager = null)
+        public ProcessStarterFactory(IAppRuntime appRuntime, ILogManager? logManager = null)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
 
