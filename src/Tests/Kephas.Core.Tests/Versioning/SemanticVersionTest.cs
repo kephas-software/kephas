@@ -33,18 +33,19 @@ namespace Kephas.Core.Tests.Versioning
         }
 
         [Test]
-        public void Parse_legacy_version_success()
+        public void Parse_hotfix_version_success()
         {
             var version = SemanticVersion.Parse("2.1.4.0");
 
             Assert.AreEqual(2, version.Major);
             Assert.AreEqual(1, version.Minor);
             Assert.AreEqual(4, version.Patch);
+            Assert.IsNull(version.Hotfix);
             Assert.AreEqual("2.1.4", version.ToString());
         }
 
         [Test]
-        public void TryParse_legacy_version_success()
+        public void TryParse_hotfix_version_success()
         {
             var parsed = SemanticVersion.TryParse("2.1.4.0", out var version);
 
@@ -53,22 +54,34 @@ namespace Kephas.Core.Tests.Versioning
             Assert.AreEqual(2, version.Major);
             Assert.AreEqual(1, version.Minor);
             Assert.AreEqual(4, version.Patch);
+            Assert.IsNull(version.Hotfix);
             Assert.AreEqual("2.1.4", version.ToString());
         }
 
         [Test]
-        public void Parse_legacy_version_failure()
+        public void Parse_hotfix_version_non_null()
         {
-            Assert.Throws<ArgumentException>(() => SemanticVersion.Parse("2.1.4.5"));
+            var version = SemanticVersion.Parse("2.1.4.5");
+
+            Assert.AreEqual(2, version.Major);
+            Assert.AreEqual(1, version.Minor);
+            Assert.AreEqual(4, version.Patch);
+            Assert.AreEqual(5, version.Hotfix);
+            Assert.AreEqual("2.1.4.5", version.ToString());
         }
 
         [Test]
-        public void TryParse_legacy_version_failure()
+        public void TryParse_hotfix_version_non_null()
         {
             var parsed = SemanticVersion.TryParse("2.1.4.5", out var version);
 
-            Assert.IsFalse(parsed);
-            Assert.IsNull(version);
+            Assert.IsTrue(parsed);
+            Assert.IsNotNull(version);
+            Assert.AreEqual(2, version.Major);
+            Assert.AreEqual(1, version.Minor);
+            Assert.AreEqual(4, version.Patch);
+            Assert.AreEqual(5, version.Hotfix);
+            Assert.AreEqual("2.1.4.5", version.ToString());
         }
 
         [Test]
@@ -90,12 +103,39 @@ namespace Kephas.Core.Tests.Versioning
         }
 
         [Test]
+        public void GreaterThan_hotfix()
+        {
+            var version = SemanticVersion.Parse("2.1.4.5");
+            var version2 = SemanticVersion.Parse("2.1.4");
+
+            Assert.IsTrue(version > version2);
+        }
+
+        [Test]
         public void LessThan_release()
         {
             var version = SemanticVersion.Parse("2.1.4-dev.122");
             var version2 = SemanticVersion.Parse("2.1.4-dev.21");
 
             Assert.IsTrue(version2 < version);
+        }
+
+        [Test]
+        public void LessThan_hotfix()
+        {
+            var version = SemanticVersion.Parse("2.1.4.5-dev.122");
+            var version2 = SemanticVersion.Parse("2.1.4-dev.222");
+
+            Assert.IsTrue(version2 < version);
+        }
+
+        [Test]
+        public void Equals_hotfix()
+        {
+            var version = SemanticVersion.Parse("2.1.4");
+            var version2 = SemanticVersion.Parse("2.1.4.0");
+
+            Assert.IsTrue(version2 == version);
         }
     }
 }
