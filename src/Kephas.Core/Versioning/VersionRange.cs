@@ -113,13 +113,18 @@ namespace Kephas.Versioning
                 releaseVersionString = releaseVersionString.Substring(0, releaseVersionString.Length - 1);
             }
 
+            version = null;
+            if (string.IsNullOrEmpty(releaseVersionString))
+            {
+                return true;
+            }
+
             var dotCount = releaseVersionString.Count(c => c == '.');
             for (var i = 0; i < 2 - dotCount; i++)
             {
                 releaseVersionString += $".{wildCardReplacement}";
             }
 
-            version = null;
             if (string.IsNullOrEmpty(releaseVersionString))
             {
                 return true;

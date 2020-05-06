@@ -38,9 +38,8 @@ namespace Kephas.Core.Tests.Versioning
         {
             var range = VersionRange.Parse("*:2.*");
 
-            Assert.IsNotNull(range.MinVersion);
+            Assert.IsNull(range.MinVersion);
             Assert.IsNotNull(range.MaxVersion);
-            Assert.AreEqual(range.MinVersion, SemanticVersion.Parse("0.0.0"));
             Assert.AreEqual(range.MaxVersion, SemanticVersion.Parse($"2.{short.MaxValue}.{short.MaxValue}"));
         }
     }
