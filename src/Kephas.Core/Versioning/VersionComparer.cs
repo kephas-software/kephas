@@ -80,12 +80,12 @@ namespace Kephas.Versioning
         /// </returns>
         public bool Equals(SemanticVersion version1, SemanticVersion version2)
         {
-            if ((object) version1 == (object) version2)
+            if ((object)version1 == (object)version2)
             {
                 return true;
             }
 
-            if ((object) version2 == null || (object) version1 == null)
+            if ((object)version2 == null || (object)version1 == null)
             {
                 return false;
             }
@@ -95,8 +95,10 @@ namespace Kephas.Versioning
                 return this.Compare(version1, version2) == 0;
             }
 
-            return version1.Major == version2.Major && version1.Minor == version2.Minor &&
-                   (version1.Patch == version2.Patch) &&
+            return version1.Major == version2.Major &&
+                   version1.Minor == version2.Minor &&
+                   version1.Patch == version2.Patch &&
+                   version1.Hotfix == version2.Hotfix &&
                    VersionComparer.AreReleaseLabelsEqual(version1, version2);
         }
 
@@ -118,6 +120,11 @@ namespace Kephas.Versioning
             hashCodeGenerator.Combine(version.Major);
             hashCodeGenerator.Combine(version.Minor);
             hashCodeGenerator.Combine(version.Patch);
+            if (version.Hotfix.HasValue)
+            {
+                hashCodeGenerator.Combine(version.Hotfix.Value);
+            }
+
             if (this.mode == VersionComparison.Default || this.mode == VersionComparison.VersionRelease ||
                 this.mode == VersionComparison.VersionReleaseMetadata)
             {
@@ -181,6 +188,18 @@ namespace Kephas.Versioning
             if (num3 != 0)
             {
                 return num3;
+            }
+
+            int num4 = !version1.Hotfix.HasValue && !version2.Hotfix.HasValue
+                ? 0
+                : !version1.Hotfix.HasValue
+                    ? -1
+                    : !version2.Hotfix.HasValue
+                        ? 1
+                        : version1.Hotfix.Value.CompareTo(version2.Hotfix.Value);
+            if (num4 != 0)
+            {
+                return num4;
             }
 
             if (this.mode != VersionComparison.Version)

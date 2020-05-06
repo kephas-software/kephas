@@ -178,6 +178,9 @@ namespace Kephas.Versioning
         /// <summary>Gets the patch version Z (x.y.Z).</summary>
         public int Patch => this.version.Build;
 
+        /// <summary>Gets the hotfix version T (x.y.z.T).</summary>
+        public int? Hotfix => this.version.Revision == 0 ? (int?)null : this.version.Revision;
+
         /// <summary>
         /// Gets a collection of pre-release labels attached to the version.
         /// </summary>
@@ -353,11 +356,6 @@ namespace Kephas.Versioning
             }
 
             var version = NormalizeVersionValue(result);
-            if (version.Revision != 0)
-            {
-                return false;
-            }
-
             semanticVersion = new SemanticVersion(version, releaseLabelsPart, metadataPart ?? string.Empty);
             return true;
         }

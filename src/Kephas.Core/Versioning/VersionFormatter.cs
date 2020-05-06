@@ -8,6 +8,7 @@
 namespace Kephas.Versioning
 {
     using System;
+    using System.Runtime.CompilerServices;
     using System.Text;
 
     using Kephas.Diagnostics.Contracts;
@@ -127,10 +128,15 @@ namespace Kephas.Versioning
                 'x' => $"{version.Major}",
                 'y' => $"{version.Minor}",
                 'z' => $"{version.Patch}",
+                't' => $"{version.Hotfix}",
                 _ => null
             };
 
         private static string FormatVersion(SemanticVersion version) =>
-            $"{version.Major}.{version.Minor}.{version.Patch}";
+            $"{version.Major}.{version.Minor}.{version.Patch}{GetHotfixPart(version)}";
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static string GetHotfixPart(SemanticVersion version) =>
+            !version.Hotfix.HasValue || version.Hotfix == 0 ? string.Empty : $".{version.Hotfix}";
     }
 }
