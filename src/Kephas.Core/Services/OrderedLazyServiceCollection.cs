@@ -14,6 +14,7 @@ namespace Kephas.Services
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.Services.Composition;
 
     /// <summary>
@@ -31,13 +32,9 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="OrderedLazyServiceCollection{TService, TServiceMetadata}"/> class.
         /// </summary>
         /// <param name="serviceFactories">The service factories.</param>
-        public OrderedLazyServiceCollection(IEnumerable<Lazy<TService, TServiceMetadata>> serviceFactories = null)
+        public OrderedLazyServiceCollection(IEnumerable<Lazy<TService, TServiceMetadata>>? serviceFactories = null)
         {
-            this.serviceFactories = serviceFactories
-                ?.OrderBy(f => f.Metadata.OverridePriority)
-                .ThenBy(f => f.Metadata.ProcessingPriority)
-                .ToList()
-                ?? new List<Lazy<TService, TServiceMetadata>>();
+            this.serviceFactories = this.ComputeServiceFactories(serviceFactories);
         }
 
         /// <summary>
@@ -48,7 +45,7 @@ namespace Kephas.Services
         /// The ordered service factories.
         /// </returns>
         public IEnumerable<Lazy<TService, TServiceMetadata>> GetServiceFactories(
-            Func<Lazy<TService, TServiceMetadata>, bool> filter = null)
+            Func<Lazy<TService, TServiceMetadata>, bool>? filter = null)
         {
             return filter == null ? this.serviceFactories : this.serviceFactories.Where(filter);
         }
@@ -61,7 +58,7 @@ namespace Kephas.Services
         /// The ordered services.
         /// </returns>
         public IEnumerable<TService> GetServices(
-            Func<Lazy<TService, TServiceMetadata>, bool> filter = null)
+            Func<Lazy<TService, TServiceMetadata>, bool>? filter = null)
         {
             var factories = filter == null ? this.serviceFactories : this.serviceFactories.Where(filter);
             foreach (var factory in factories)
@@ -90,6 +87,37 @@ namespace Kephas.Services
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        private ICollection<Lazy<TService, TServiceMetadata>> ComputeServiceFactories(IEnumerable<Lazy<TService, TServiceMetadata>>? serviceFactories)
+        {
+            if (serviceFactories == null)
+            {
+                return Array.Empty<Lazy<TService, TServiceMetadata>>();
+            }
+
+            var orderedFactories = serviceFactories
+                       .OrderBy(f => f.Metadata.OverridePriority)
+                       .ThenBy(f => f.Metadata.ProcessingPriority)
+                       .ToList();
+
+
+            // get the overridden services which should be eliminated
+            var overriddenTypes = orderedFactories
+                .Where(f => f.Metadata.IsOverride && f.Metadata.AppServiceImplementationType?.BaseType != null)
+                .Select(f => f.Metadata.AppServiceImplementationType.BaseType)
+                .ToList();
+            if (overriddenTypes.Count == 0)
+            {
+                return orderedFactories;
+            }
+
+            // eliminate the overridden services
+            orderedFactories = orderedFactories
+                .Where(f => !overriddenTypes.Contains(f.Metadata.AppServiceImplementationType))
+                .ToList();
+
+            return orderedFactories;
         }
     }
 }

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Model.AttributedModel;
+
 namespace Kephas.Services.Composition
 {
     using System;
@@ -39,6 +41,7 @@ namespace Kephas.Services.Composition
             this.ProcessingPriority = this.GetMetadataValue<ProcessingPriorityAttribute, int>(metadata);
             this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, int>(metadata);
             this.ServiceName = this.GetMetadataValue<ServiceNameAttribute, string>(metadata);
+            this.IsOverride = this.GetMetadataValue<OverrideAttribute, bool>(metadata);
             this.AppServiceImplementationType = (Type)metadata.TryGetValue(nameof(this.AppServiceImplementationType));
         }
 
@@ -48,12 +51,14 @@ namespace Kephas.Services.Composition
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. The name of the service.</param>
-        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        /// <param name="isOverride">Optional. Indicates whether the service overrides its base.</param>
+        public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, string? serviceName = null, bool isOverride = false)
             : base(null)
         {
             this.ProcessingPriority = processingPriority;
             this.OverridePriority = overridePriority;
             this.ServiceName = serviceName;
+            this.IsOverride = isOverride;
         }
 
         /// <summary>
@@ -73,12 +78,21 @@ namespace Kephas.Services.Composition
         public int OverridePriority { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the service overrides the
+        /// service it specializes.
+        /// </summary>
+        /// <value>
+        /// True if the service overrides the service it specializes, false otherwise.
+        /// </value>
+        public bool IsOverride { get; }
+
+        /// <summary>
         /// Gets or sets the name of the service.
         /// </summary>
         /// <value>
         /// The name of the service.
         /// </value>
-        public string ServiceName { get; set; }
+        public string? ServiceName { get; set; }
 
         /// <summary>
         /// Gets or sets the concrete service type implementing the service contract.

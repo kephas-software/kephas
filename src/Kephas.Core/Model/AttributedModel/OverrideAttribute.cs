@@ -12,11 +12,28 @@ namespace Kephas.Model.AttributedModel
 {
     using System;
 
+    using Kephas.Composition.Metadata;
+
     /// <summary>
     /// Attribute for indicating that classifiers or members override their base. This class cannot be inherited.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Property | AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
-    public sealed class OverrideAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Property | AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
+    public sealed class OverrideAttribute : Attribute, IMetadataValue<bool>
     {
+        /// <summary>
+        /// Gets the metadata value.
+        /// </summary>
+        /// <value>
+        /// The metadata value.
+        /// </value>
+        object IMetadataValue.Value => true;
+
+        /// <summary>
+        /// Gets the metadata value.
+        /// </summary>
+        /// <value>
+        /// The metadata value.
+        /// </value>
+        bool IMetadataValue<bool>.Value => true;
     }
 }

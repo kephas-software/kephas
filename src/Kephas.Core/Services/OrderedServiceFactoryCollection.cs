@@ -33,13 +33,9 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="OrderedServiceFactoryCollection{TService, TServiceMetadata}"/> class.
         /// </summary>
         /// <param name="serviceFactories">The service factories.</param>
-        public OrderedServiceFactoryCollection(IEnumerable<IExportFactory<TService, TServiceMetadata>> serviceFactories = null)
+        public OrderedServiceFactoryCollection(IEnumerable<IExportFactory<TService, TServiceMetadata>>? serviceFactories = null)
         {
-            this.serviceFactories = serviceFactories
-                ?.OrderBy(f => f.Metadata.OverridePriority)
-                .ThenBy(f => f.Metadata.ProcessingPriority)
-                .ToList()
-                ?? new List<IExportFactory<TService, TServiceMetadata>>();
+            this.serviceFactories = this.ComputeServiceFactories(serviceFactories);
         }
 
         /// <summary>
@@ -50,7 +46,7 @@ namespace Kephas.Services
         /// The ordered service factories.
         /// </returns>
         public IEnumerable<IExportFactory<TService, TServiceMetadata>> GetServiceFactories(
-            Func<IExportFactory<TService, TServiceMetadata>, bool> filter = null)
+            Func<IExportFactory<TService, TServiceMetadata>, bool>? filter = null)
         {
             return filter == null ? this.serviceFactories : this.serviceFactories.Where(filter);
         }
@@ -63,7 +59,7 @@ namespace Kephas.Services
         /// The ordered services.
         /// </returns>
         public IEnumerable<TService> GetServices(
-            Func<IExportFactory<TService, TServiceMetadata>, bool> filter = null)
+            Func<IExportFactory<TService, TServiceMetadata>, bool>? filter = null)
         {
             var factories = filter == null ? this.serviceFactories : this.serviceFactories.Where(filter);
             foreach (var factory in factories)
@@ -92,6 +88,36 @@ namespace Kephas.Services
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        private ICollection<IExportFactory<TService, TServiceMetadata>> ComputeServiceFactories(IEnumerable<IExportFactory<TService, TServiceMetadata>>? serviceFactories)
+        {
+            if (serviceFactories == null)
+            {
+                return Array.Empty<IExportFactory<TService, TServiceMetadata>>();
+            }
+
+            var orderedFactories = serviceFactories
+                       .OrderBy(f => f.Metadata.OverridePriority)
+                       .ThenBy(f => f.Metadata.ProcessingPriority)
+                       .ToList();
+
+            // get the overridden services which should be eliminated
+            var overriddenTypes = orderedFactories
+                .Where(f => f.Metadata.IsOverride && f.Metadata.AppServiceImplementationType?.BaseType != null)
+                .Select(f => f.Metadata.AppServiceImplementationType.BaseType)
+                .ToList();
+            if (overriddenTypes.Count == 0)
+            {
+                return orderedFactories;
+            }
+
+            // eliminate the overridden services
+            orderedFactories = orderedFactories
+                .Where(f => !overriddenTypes.Contains(f.Metadata.AppServiceImplementationType))
+                .ToList();
+
+            return orderedFactories;
         }
     }
 }

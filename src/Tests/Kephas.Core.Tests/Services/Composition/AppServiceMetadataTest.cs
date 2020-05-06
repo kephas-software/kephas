@@ -25,6 +25,14 @@ namespace Kephas.Core.Tests.Services.Composition
     public class AppServiceMetadataTest
     {
         [Test]
+        public void GetMetadataValue_Override()
+        {
+            var metadata = new Dictionary<string, object> { { "Override", true } };
+            var appServiceMetadata = new AppServiceMetadata(metadata);
+            Assert.IsTrue(appServiceMetadata.IsOverride);
+        }
+
+        [Test]
         public void GetMetadataValue_Bool()
         {
             var metadata = new Dictionary<string, object> { { "Bool", false } };

@@ -15,11 +15,10 @@ namespace Kephas.Core.Tests.Services
 
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
+    using Kephas.Reflection;
     using Kephas.Services;
     using Kephas.Services.Composition;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -88,6 +87,85 @@ namespace Kephas.Core.Tests.Services
         }
 
         [Test]
+        public void OrderedServiceFactoryCollection_proper_order_with_override()
+        {
+            var instance1 = Substitute.For<TestDerived>();
+            var instance2 = Substitute.For<Test>();
+            var instance3 = Substitute.For<IInstance>();
+            var instance4 = Substitute.For<TestMostDerived>();
+            var orderedList = new OrderedServiceFactoryCollection<IInstance, AppServiceMetadata>(
+                new List<IExportFactory<IInstance, AppServiceMetadata>>
+                {
+                    new ExportFactory<IInstance, AppServiceMetadata>(
+                        () => instance1,
+                        new AppServiceMetadata(overridePriority: 3, processingPriority: 1)
+                            {
+                                AppServiceImplementationType = typeof(TestDerived),
+                            }),
+                    new ExportFactory<IInstance, AppServiceMetadata>(
+                        () => instance2,
+                        new AppServiceMetadata(overridePriority: 2, processingPriority: 2)
+                            {
+                                AppServiceImplementationType = typeof(Test),
+                            }),
+                    new ExportFactory<IInstance, AppServiceMetadata>(
+                        () => instance3,
+                        new AppServiceMetadata(overridePriority: 2, processingPriority: 3)),
+                    new ExportFactory<IInstance, AppServiceMetadata>(
+                        () => instance4,
+                        new AppServiceMetadata(overridePriority: 1, processingPriority: 1, isOverride: true)
+                            {
+                                AppServiceImplementationType = typeof(TestMostDerived),
+                            }),
+                }).ToList();
+
+
+            Assert.AreEqual(3, orderedList.Count);
+            Assert.AreSame(instance4, orderedList[0].CreateExportedValue());
+            Assert.AreSame(instance2, orderedList[1].CreateExportedValue());
+            Assert.AreSame(instance3, orderedList[2].CreateExportedValue());
+        }
+
+        [Test]
+        public void OrderedServiceFactoryCollection_proper_order_with_override_chain()
+        {
+            var instance1 = Substitute.For<TestDerived>();
+            var instance2 = Substitute.For<Test>();
+            var instance3 = Substitute.For<IInstance>();
+            var instance4 = Substitute.For<TestMostDerived>();
+            var orderedList = new OrderedServiceFactoryCollection<IInstance, AppServiceMetadata>(
+                new List<IExportFactory<IInstance, AppServiceMetadata>>
+                {
+                    new ExportFactory<IInstance, AppServiceMetadata>(
+                        () => instance1,
+                        new AppServiceMetadata(overridePriority: 3, processingPriority: 1, isOverride: true)
+                            {
+                                AppServiceImplementationType = typeof(TestDerived),
+                            }),
+                    new ExportFactory<IInstance, AppServiceMetadata>(
+                        () => instance2,
+                        new AppServiceMetadata(overridePriority: 2, processingPriority: 2, isOverride: true)
+                            {
+                                AppServiceImplementationType = typeof(Test),
+                            }),
+                    new ExportFactory<IInstance, AppServiceMetadata>(
+                        () => instance3,
+                        new AppServiceMetadata(overridePriority: 2, processingPriority: 3)),
+                    new ExportFactory<IInstance, AppServiceMetadata>(
+                        () => instance4,
+                        new AppServiceMetadata(overridePriority: 1, processingPriority: 1, isOverride: true)
+                            {
+                                AppServiceImplementationType = typeof(TestMostDerived),
+                            }),
+                }).ToList();
+
+
+            Assert.AreEqual(2, orderedList.Count);
+            Assert.AreSame(instance4, orderedList[0].CreateExportedValue());
+            Assert.AreSame(instance3, orderedList[1].CreateExportedValue());
+        }
+
+        [Test]
         public void GetServiceFactories_filter()
         {
             var instance1 = Substitute.For<IInstance>();
@@ -150,6 +228,18 @@ namespace Kephas.Core.Tests.Services
             Assert.AreSame(instance4, orderedList[0]);
             Assert.AreSame(instance2, orderedList[1]);
             Assert.AreSame(instance3, orderedList[2]);
+        }
+
+        public class TestMostDerived : TestDerived {}
+
+        public class TestDerived : Test {}
+
+        public class Test : IInstance
+        {
+#if NETSTANDARD2_1
+#else
+            public ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo();
+#endif
         }
     }
 }

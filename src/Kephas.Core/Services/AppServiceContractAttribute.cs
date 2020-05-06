@@ -10,6 +10,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Model.AttributedModel;
+
 namespace Kephas.Services
 {
     using System;
@@ -46,6 +48,7 @@ namespace Kephas.Services
                       typeof(ProcessingPriorityAttribute),
                       typeof(OverridePriorityAttribute),
                       typeof(ServiceNameAttribute),
+                      typeof(OverrideAttribute),
                   };
 
         /// <summary>

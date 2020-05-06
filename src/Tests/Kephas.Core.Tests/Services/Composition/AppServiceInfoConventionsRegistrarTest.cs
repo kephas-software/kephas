@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Model.AttributedModel;
+
 namespace Kephas.Core.Tests.Services.Composition
 {
     using System;
@@ -79,6 +81,28 @@ namespace Kephas.Core.Tests.Services.Composition
 
             Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
             Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(SingleTestService)));
+        }
+
+        [Test]
+        public void RegisterConventions_Single_one_service_overridden()
+        {
+            var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
+
+            var registrar = new AppServiceInfoConventionsRegistrar();
+            registrar.RegisterConventions(
+                conventions,
+                new[]
+                    {
+                        typeof(AttributedAppServiceInfoProvider).GetTypeInfo(),
+                        typeof(ISingleTestAppService).GetTypeInfo(), 
+                        typeof(SingleTestService).GetTypeInfo(),
+                        typeof(SingleOverrideTestService).GetTypeInfo(),
+                        typeof(TopSingleOverrideTestService).GetTypeInfo(),
+                    },
+                new TestRegistrationContext(new AmbientServices()));
+
+            Assert.AreEqual(1, conventions.TypeConventionsBuilders.Count);
+            Assert.IsTrue(conventions.TypeConventionsBuilders.ContainsKey(typeof(TopSingleOverrideTestService)));
         }
 
         [Test]
@@ -462,6 +486,9 @@ namespace Kephas.Core.Tests.Services.Composition
         public class MultipleTestService : IMultipleTestAppService { }
 
         public class NewMultipleTestService : IMultipleTestAppService { }
+
+        [Override]
+        public class TopSingleOverrideTestService : SingleOverrideTestService { }
 
 
         [SingletonAppServiceContract]

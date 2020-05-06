@@ -22,6 +22,7 @@ namespace Kephas.Services.Composition
     using Kephas.Composition.Hosting;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Runtime;
@@ -218,7 +219,7 @@ namespace Kephas.Services.Composition
                     b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes));
             }
 
-            partBuilder.SelectConstructor(ctorInfos => this.SelectAppServiceConstructor(serviceContract, ctorInfos));
+            partBuilder.SelectConstructor(ctorInfos => this.TrySelectAppServiceConstructor(serviceContract, ctorInfos));
 
             if (appServiceInfo.IsSingleton())
             {
@@ -355,7 +356,7 @@ namespace Kephas.Services.Composition
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>The service type referenced by the export factory, or <c>null</c> if the type is not an export factory.</returns>
-        private Type TryGetServiceContractTypeFromExportFactory(Type type)
+        private Type? TryGetServiceContractTypeFromExportFactory(Type type)
         {
             if (type.IsConstructedGenericType)
             {
@@ -382,7 +383,7 @@ namespace Kephas.Services.Composition
             Type serviceContract,
             IExportConventionsBuilder exportBuilder,
             Type exportedContractType,
-            Type serviceImplementationType,
+            Type? serviceImplementationType,
             IEnumerable<Type> metadataAttributes)
         {
             exportBuilder.AsContractType(exportedContractType);
@@ -433,7 +434,7 @@ namespace Kephas.Services.Composition
         /// <returns>
         /// The application service constructor.
         /// </returns>
-        private ConstructorInfo SelectAppServiceConstructor(
+        private ConstructorInfo? TrySelectAppServiceConstructor(
             Type serviceContract,
             IEnumerable<ConstructorInfo> constructors)
         {
@@ -485,7 +486,7 @@ namespace Kephas.Services.Composition
         /// <param name="builder">The builder.</param>
         /// <param name="serviceImplementationType">Type of the service implementation.</param>
         /// <param name="attributeTypes">The attribute types.</param>
-        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type serviceImplementationType, IEnumerable<Type> attributeTypes)
+        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType, IEnumerable<Type> attributeTypes)
         {
             // add the service type.
             builder.AddMetadata(nameof(AppServiceMetadata.AppServiceImplementationType), t => serviceImplementationType ?? t);
@@ -520,7 +521,7 @@ namespace Kephas.Services.Composition
         /// <returns>
         /// The part builder or <c>null</c>.
         /// </returns>
-        private IPartConventionsBuilder TryGetPartConventionsBuilder(
+        private IPartConventionsBuilder? TryGetPartConventionsBuilder(
             IAppServiceInfo appServiceInfo,
             Type serviceContract,
             IConventionsBuilder conventions,
@@ -632,7 +633,7 @@ namespace Kephas.Services.Composition
         /// <returns>
         /// An implementation type and a flag indicating if the selected implementation type is an override.
         /// </returns>
-        private (bool isOverride, Type implementationType) TrySelectSingleServiceImplementationType(
+        private (bool isOverride, Type? implementationType) TrySelectSingleServiceImplementationType(
             Type serviceContract,
             IEnumerable<Type> typeInfos,
             Func<Type, bool> criteria)
@@ -651,10 +652,24 @@ namespace Kephas.Services.Composition
                 var overrideChain = parts
                     .ToDictionary(
                         ti => ti,
-                        ti => ti.AsRuntimeTypeInfo().GetAttribute<OverridePriorityAttribute>()
+                        ti => ti.GetCustomAttribute<OverridePriorityAttribute>()
                               ?? new OverridePriorityAttribute(Priority.Normal))
                     .OrderBy(item => item.Value.Value)
                     .ToList();
+
+                // get the overridden services which should be eliminated
+                var overriddenTypes = overrideChain
+                    .Where(kv => kv.Key.GetCustomAttribute<OverrideAttribute>() != null && kv.Key.BaseType != null)
+                    .Select(kv => kv.Key.BaseType)
+                    .ToList();
+
+                if (overriddenTypes.Count > 0)
+                {
+                    // eliminate the overridden services
+                    overrideChain = overrideChain
+                        .Where(kv => !overriddenTypes.Contains(kv.Key))
+                        .ToList();
+                }
 
                 var selectedPart = overrideChain[0].Key;
                 if (overrideChain[0].Value.Value == overrideChain[1].Value.Value)
