@@ -10,6 +10,7 @@ namespace Kephas.Versioning
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>A strict SemVer implementation</summary>
