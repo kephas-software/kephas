@@ -57,7 +57,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public Task SerializeAsync(
+        public async Task SerializeAsync(
             object? obj,
             TextWriter textWriter,
             ISerializationContext? context = null,
@@ -65,7 +65,11 @@ namespace Kephas.Serialization.Json
         {
             Requires.NotNull(textWriter, nameof(textWriter));
 
-            return ((Action)(() => this.Serialize(obj, textWriter, context))).AsAsync(cancellationToken);
+            await Task.Yield();
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.Serialize(obj, textWriter, context);
         }
 
         /// <summary>
@@ -77,12 +81,16 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// An asynchronous result that yields the serialized object.
         /// </returns>
-        public Task<string?> SerializeAsync(
+        public async Task<string?> SerializeAsync(
             object? obj,
             ISerializationContext? context = null,
             CancellationToken cancellationToken = default)
         {
-            return ((Func<string?>)(() => this.Serialize(obj, context))).AsAsync(cancellationToken);
+            await Task.Yield();
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return this.Serialize(obj, context);
         }
 
         /// <summary>
@@ -94,14 +102,18 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// A Task promising the deserialized object.
         /// </returns>
-        public Task<object?> DeserializeAsync(
+        public async Task<object?> DeserializeAsync(
             TextReader textReader,
             ISerializationContext? context = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(textReader, nameof(textReader));
 
-            return ((Func<object?>)(() => this.Deserialize(textReader, context))).AsAsync(cancellationToken);
+            await Task.Yield();
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return this.Deserialize(textReader, context);
         }
 
         /// <summary>
@@ -113,14 +125,16 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        public Task<object?> DeserializeAsync(
-            string serializedObj,
+        public async Task<object?> DeserializeAsync(
+            string? serializedObj,
             ISerializationContext? context = null,
             CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(serializedObj, nameof(serializedObj));
+            await Task.Yield();
 
-            return ((Func<object?>)(() => this.Deserialize(serializedObj, context))).AsAsync(cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return this.Deserialize(serializedObj, context);
         }
 
         /// <summary>
