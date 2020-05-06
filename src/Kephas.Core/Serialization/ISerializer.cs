@@ -80,7 +80,7 @@ namespace Kephas.Serialization
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
         Task<object?> DeserializeAsync(
-            string serializedObj,
+            string? serializedObj,
             ISerializationContext context,
             CancellationToken cancellationToken = default);
 
@@ -214,7 +214,7 @@ namespace Kephas.Serialization
         /// The deserialized object.
         /// </returns>
         object? Deserialize(
-            string serializedObj,
+            string? serializedObj,
             ISerializationContext context);
     }
 #endif

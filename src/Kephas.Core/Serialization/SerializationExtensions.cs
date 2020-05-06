@@ -18,8 +18,6 @@ namespace Kephas.Serialization
     using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Net.Mime;
-    using Kephas.Resources;
-    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -38,9 +36,9 @@ namespace Kephas.Serialization
         /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         public static void Serialize(
             this ISerializationService serializationService,
-            object obj,
+            object? obj,
             TextWriter textWriter,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
@@ -68,10 +66,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// The serialized object.
         /// </returns>
-        public static string Serialize(
+        public static string? Serialize(
             this ISerializationService serializationService,
-            object obj,
-            Action<ISerializationContext> optionsConfig = null)
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
@@ -99,10 +97,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public static object Deserialize(
+        public static object? Deserialize(
             this ISerializationService serializationService,
             TextReader textReader,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
@@ -125,10 +123,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public static object Deserialize(
+        public static object? Deserialize(
             this ISerializationService serializationService,
-            string serializedObj,
-            Action<ISerializationContext> optionsConfig = null)
+            string? serializedObj,
+            Action<ISerializationContext>? optionsConfig = null)
         {
             Requires.NotNull(serializationService, nameof(serializationService));
 
@@ -157,8 +155,8 @@ namespace Kephas.Serialization
         /// </returns>
         public static async Task<TRootObject> DeserializeAsync<TMediaType, TRootObject>(
             this ISerializationService serializationService,
-            string serializedObj,
-            Action<ISerializationContext> optionsConfig = null,
+            string? serializedObj,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
@@ -193,8 +191,8 @@ namespace Kephas.Serialization
         /// </returns>
         public static TRootObject Deserialize<TMediaType, TRootObject>(
             this ISerializationService serializationService,
-            string serializedObj,
-            Action<ISerializationContext> optionsConfig = null)
+            string? serializedObj,
+            Action<ISerializationContext>? optionsConfig = null)
             where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
@@ -226,10 +224,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        public static Task<object> DeserializeAsync<TMediaType>(
+        public static Task<object?> DeserializeAsync<TMediaType>(
             this ISerializationService serializationService,
             string serializedObj,
-            Action<ISerializationContext> optionsConfig = null,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
@@ -237,7 +235,7 @@ namespace Kephas.Serialization
 
             if (serializedObj == null)
             {
-                return Task.FromResult((object)null);
+                return Task.FromResult((object?)null);
             }
 
             Action<ISerializationContext> config = ctx =>
@@ -259,10 +257,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public static object Deserialize<TMediaType>(
+        public static object? Deserialize<TMediaType>(
             this ISerializationService serializationService,
             string serializedObj,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
             where TMediaType : IMediaType
         {
             Requires.NotNull(serializationService, nameof(serializationService));
@@ -291,10 +289,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        public static Task<object> JsonDeserializeAsync(
+        public static Task<object?> JsonDeserializeAsync(
             this ISerializationService serializationService,
             string serializedObj,
-            Action<ISerializationContext> optionsConfig = null,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return DeserializeAsync<JsonMediaType>(serializationService, serializedObj, optionsConfig, cancellationToken);
@@ -309,10 +307,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public static object JsonDeserialize(
+        public static object? JsonDeserialize(
             this ISerializationService serializationService,
             string serializedObj,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
         {
             return Deserialize<JsonMediaType>(serializationService, serializedObj, optionsConfig);
         }
@@ -331,7 +329,7 @@ namespace Kephas.Serialization
         public static Task<TRootObject> JsonDeserializeAsync<TRootObject>(
             this ISerializationService serializationService,
             string serializedObj,
-            Action<ISerializationContext> optionsConfig = null,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return DeserializeAsync<JsonMediaType, TRootObject>(serializationService, serializedObj, optionsConfig, cancellationToken);
@@ -350,9 +348,84 @@ namespace Kephas.Serialization
         public static TRootObject JsonDeserialize<TRootObject>(
             this ISerializationService serializationService,
             string serializedObj,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
         {
             return Deserialize<JsonMediaType, TRootObject>(serializationService, serializedObj, optionsConfig);
+        }
+
+
+        /// <summary>
+        /// Deserializes the object from BSON asynchronously.
+        /// </summary>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the deserialized object.
+        /// </returns>
+        public static Task<object?> BsonDeserializeAsync(
+            this ISerializationService serializationService,
+            string serializedObj,
+            Action<ISerializationContext>? optionsConfig = null,
+            CancellationToken cancellationToken = default)
+        {
+            return DeserializeAsync<BsonMediaType>(serializationService, serializedObj, optionsConfig, cancellationToken);
+        }
+
+        /// <summary>
+        /// Deserializes the object from BSON.
+        /// </summary>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static object? BsonDeserialize(
+            this ISerializationService serializationService,
+            string serializedObj,
+            Action<ISerializationContext>? optionsConfig = null)
+        {
+            return Deserialize<BsonMediaType>(serializationService, serializedObj, optionsConfig);
+        }
+
+        /// <summary>
+        /// Deserializes the object from BSON asynchronously.
+        /// </summary>
+        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// An asynchronous result that yields the deserialized object.
+        /// </returns>
+        public static Task<TRootObject> BsonDeserializeAsync<TRootObject>(
+            this ISerializationService serializationService,
+            string serializedObj,
+            Action<ISerializationContext>? optionsConfig = null,
+            CancellationToken cancellationToken = default)
+        {
+            return DeserializeAsync<BsonMediaType, TRootObject>(serializationService, serializedObj, optionsConfig, cancellationToken);
+        }
+
+        /// <summary>
+        /// Deserializes the object from BSON.
+        /// </summary>
+        /// <typeparam name="TRootObject">Type of the root object.</typeparam>
+        /// <param name="serializationService">The serialization service.</param>
+        /// <param name="serializedObj">The serialized object.</param>
+        /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
+        public static TRootObject BsonDeserialize<TRootObject>(
+            this ISerializationService serializationService,
+            string serializedObj,
+            Action<ISerializationContext>? optionsConfig = null)
+        {
+            return Deserialize<BsonMediaType, TRootObject>(serializationService, serializedObj, optionsConfig);
         }
 
         /// <summary>
@@ -365,10 +438,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        public static Task<object> XmlDeserializeAsync(
+        public static Task<object?> XmlDeserializeAsync(
             this ISerializationService serializationService,
             string serializedObj,
-            Action<ISerializationContext> optionsConfig = null,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return DeserializeAsync<XmlMediaType>(serializationService, serializedObj, optionsConfig, cancellationToken);
@@ -383,10 +456,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public static object XmlDeserialize(
+        public static object? XmlDeserialize(
             this ISerializationService serializationService,
             string serializedObj,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
         {
             return Deserialize<XmlMediaType>(serializationService, serializedObj, optionsConfig);
         }
@@ -405,7 +478,7 @@ namespace Kephas.Serialization
         public static Task<TRootObject> XmlDeserializeAsync<TRootObject>(
             this ISerializationService serializationService,
             string serializedObj,
-            Action<ISerializationContext> optionsConfig = null,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return DeserializeAsync<XmlMediaType, TRootObject>(serializationService, serializedObj, optionsConfig, cancellationToken);
@@ -424,7 +497,7 @@ namespace Kephas.Serialization
         public static TRootObject XmlDeserialize<TRootObject>(
             this ISerializationService serializationService,
             string serializedObj,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
         {
             return Deserialize<XmlMediaType, TRootObject>(serializationService, serializedObj, optionsConfig);
         }
@@ -440,10 +513,10 @@ namespace Kephas.Serialization
         /// <returns>
         /// A Task promising the serialized object as a string.
         /// </returns>
-        public static Task<string> SerializeAsync<TMediaType>(
+        public static Task<string?> SerializeAsync<TMediaType>(
             this ISerializationService serializationService,
-            object obj,
-            Action<ISerializationContext> optionsConfig = null,
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
             where TMediaType : IMediaType
         {
@@ -451,7 +524,7 @@ namespace Kephas.Serialization
 
             if (obj == null)
             {
-                return Task.FromResult((string)null);
+                return Task.FromResult((string?)null);
             }
 
             Action<ISerializationContext> config = ctx =>
@@ -603,7 +676,7 @@ namespace Kephas.Serialization
         /// <returns>
         /// The serialized object.
         /// </returns>
-        public static string Serialize(
+        public static string? Serialize(
             this ISerializer serializer,
             object? obj,
             ISerializationContext context)
@@ -629,7 +702,7 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public static object Deserialize(
+        public static object? Deserialize(
             this ISerializer serializer,
             TextReader textReader,
             ISerializationContext context)
@@ -653,9 +726,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public static object Deserialize(
+        public static object? Deserialize(
             this ISerializer serializer,
-            string serializedObject,
+            string? serializedObject,
             ISerializationContext context)
         {
             Requires.NotNull(serializer, nameof(serializer));

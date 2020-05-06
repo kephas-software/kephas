@@ -29,6 +29,11 @@ namespace Kephas.Net.Mime
             /// The XML media type.
             /// </summary>
             public const string Xml = "application/xml";
+
+            /// <summary>
+            /// The BSON media type.
+            /// </summary>
+            public const string Bson = "application/bson";
         }
 
         /// <summary>

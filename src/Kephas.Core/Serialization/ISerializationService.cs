@@ -35,9 +35,9 @@ namespace Kephas.Serialization
         /// An asynchronous result.
         /// </returns>
         Task SerializeAsync(
-            object obj,
+            object? obj,
             TextWriter textWriter,
-            Action<ISerializationContext> optionsConfig = null,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the serialized object.
         /// </returns>
-        Task<string> SerializeAsync(
-            object obj,
-            Action<ISerializationContext> optionsConfig = null,
+        Task<string?> SerializeAsync(
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -63,9 +63,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        Task<object> DeserializeAsync(
+        Task<object?> DeserializeAsync(
             TextReader textReader,
-            Action<ISerializationContext> optionsConfig = null,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -77,9 +77,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        Task<object> DeserializeAsync(
-            string serializedObj,
-            Action<ISerializationContext> optionsConfig = null,
+        Task<object?> DeserializeAsync(
+            string? serializedObj,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
 
 #if NETSTANDARD2_1
@@ -90,9 +90,9 @@ namespace Kephas.Serialization
         /// <param name="textWriter">The text writer where the serialized object should be written.</param>
         /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         void Serialize(
-            object obj,
+            object? obj,
             TextWriter textWriter,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
         {
             if (obj != null)
             {
@@ -108,7 +108,7 @@ namespace Kephas.Serialization
         /// <returns>
         /// The serialized object.
         /// </returns>
-        string Serialize(object obj, Action<ISerializationContext> optionsConfig = null)
+        string? Serialize(object? obj, Action<ISerializationContext>? optionsConfig = null)
         {
             return obj == null
                 ? null
@@ -123,9 +123,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        object Deserialize(
+        object? Deserialize(
             TextReader textReader,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
         {
             return this.DeserializeAsync(textReader, optionsConfig).GetResultNonLocking();
         }
@@ -138,9 +138,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        object Deserialize(
-            string serializedObj,
-            Action<ISerializationContext> optionsConfig = null)
+        object? Deserialize(
+            string? serializedObj,
+            Action<ISerializationContext>? optionsConfig = null)
         {
             return this.DeserializeAsync(serializedObj, optionsConfig).GetResultNonLocking();
         }
@@ -161,9 +161,9 @@ namespace Kephas.Serialization
         /// <param name="textWriter">The text writer where the serialized object should be written.</param>
         /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         void Serialize(
-            object obj,
+            object? obj,
             TextWriter textWriter,
-            Action<ISerializationContext> optionsConfig = null);
+            Action<ISerializationContext>? optionsConfig = null);
 
         /// <summary>
         /// Serializes the object with the options provided in the serialization context.
@@ -173,7 +173,7 @@ namespace Kephas.Serialization
         /// <returns>
         /// The serialized object.
         /// </returns>
-        string Serialize(object obj, Action<ISerializationContext> optionsConfig = null);
+        string? Serialize(object? obj, Action<ISerializationContext>? optionsConfig = null);
 
         /// <summary>
         /// Deserializes the object with the options provided in the serialization context.
@@ -183,9 +183,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        object Deserialize(
+        object? Deserialize(
             TextReader textReader,
-            Action<ISerializationContext> optionsConfig = null);
+            Action<ISerializationContext>? optionsConfig = null);
 
         /// <summary>
         /// Deserializes the object with the options provided in the serialization context.
@@ -195,9 +195,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        object Deserialize(
-            string serializedObj,
-            Action<ISerializationContext> optionsConfig = null);
+        object? Deserialize(
+            string? serializedObj,
+            Action<ISerializationContext>? optionsConfig = null);
     }
 #endif
 }
