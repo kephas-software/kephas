@@ -63,9 +63,9 @@ namespace Kephas.Serialization
         /// An asynchronous result.
         /// </returns>
         public async Task SerializeAsync(
-            object obj,
+            object? obj,
             TextWriter textWriter,
-            Action<ISerializationContext> optionsConfig = null,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             if (obj == null)
@@ -73,11 +73,9 @@ namespace Kephas.Serialization
                 return;
             }
 
-            using (var context = this.CreateSerializationContext(optionsConfig))
-            {
-                var serializer = this.GetSerializer(context);
-                await serializer.SerializeAsync(obj, textWriter, context, cancellationToken).PreserveThreadContext();
-            }
+            using var context = this.CreateSerializationContext(optionsConfig);
+            var serializer = this.GetSerializer(context);
+            await serializer.SerializeAsync(obj, textWriter, context, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -89,9 +87,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the serialized object.
         /// </returns>
-        public async Task<string> SerializeAsync(
-            object obj,
-            Action<ISerializationContext> optionsConfig = null,
+        public async Task<string?> SerializeAsync(
+            object? obj,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             if (obj == null)
@@ -99,11 +97,9 @@ namespace Kephas.Serialization
                 return null;
             }
 
-            using (var context = this.CreateSerializationContext(optionsConfig))
-            {
-                var serializer = this.GetSerializer(context);
-                return await serializer.SerializeAsync(obj, context, cancellationToken).PreserveThreadContext();
-            }
+            using var context = this.CreateSerializationContext(optionsConfig);
+            var serializer = this.GetSerializer(context);
+            return await serializer.SerializeAsync(obj, context, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -113,20 +109,18 @@ namespace Kephas.Serialization
         /// <param name="textWriter">The text writer where the serialized object should be written.</param>
         /// <param name="optionsConfig">Optional. Function for serialization options configuration.</param>
         public void Serialize(
-            object obj,
+            object? obj,
             TextWriter textWriter,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
         {
             if (obj == null)
             {
                 return;
             }
 
-            using (var context = this.CreateSerializationContext(optionsConfig))
-            {
-                var serializer = this.GetSerializer(context);
-                serializer.Serialize(obj, textWriter, context);
-            }
+            using var context = this.CreateSerializationContext(optionsConfig);
+            var serializer = this.GetSerializer(context);
+            serializer.Serialize(obj, textWriter, context);
         }
 
         /// <summary>
@@ -137,18 +131,16 @@ namespace Kephas.Serialization
         /// <returns>
         /// The serialized object.
         /// </returns>
-        public string Serialize(object obj, Action<ISerializationContext> optionsConfig = null)
+        public string? Serialize(object? obj, Action<ISerializationContext>? optionsConfig = null)
         {
             if (obj == null)
             {
                 return null;
             }
 
-            using (var context = this.CreateSerializationContext(optionsConfig))
-            {
-                var serializer = this.GetSerializer(context);
-                return serializer.Serialize(obj, context);
-            }
+            using var context = this.CreateSerializationContext(optionsConfig);
+            var serializer = this.GetSerializer(context);
+            return serializer.Serialize(obj, context);
         }
 
         /// <summary>
@@ -160,16 +152,14 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        public async Task<object> DeserializeAsync(
+        public async Task<object?> DeserializeAsync(
             TextReader textReader,
-            Action<ISerializationContext> optionsConfig = null,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            using (var context = this.CreateSerializationContext(optionsConfig))
-            {
-                var serializer = this.GetSerializer(context);
-                return await serializer.DeserializeAsync(textReader, context).PreserveThreadContext();
-            }
+            using var context = this.CreateSerializationContext(optionsConfig);
+            var serializer = this.GetSerializer(context);
+            return await serializer.DeserializeAsync(textReader, context, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -181,9 +171,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// An asynchronous result that yields the deserialized object.
         /// </returns>
-        public async Task<object> DeserializeAsync(
-            string serializedObj,
-            Action<ISerializationContext> optionsConfig = null,
+        public async Task<object?> DeserializeAsync(
+            string? serializedObj,
+            Action<ISerializationContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             if (serializedObj == null)
@@ -191,11 +181,9 @@ namespace Kephas.Serialization
                 return null;
             }
 
-            using (var context = this.CreateSerializationContext(optionsConfig))
-            {
-                var serializer = this.GetSerializer(context);
-                return await serializer.DeserializeAsync(serializedObj, context).PreserveThreadContext();
-            }
+            using var context = this.CreateSerializationContext(optionsConfig);
+            var serializer = this.GetSerializer(context);
+            return await serializer.DeserializeAsync(serializedObj, context, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -206,15 +194,13 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public object Deserialize(
+        public object? Deserialize(
             TextReader textReader,
-            Action<ISerializationContext> optionsConfig = null)
+            Action<ISerializationContext>? optionsConfig = null)
         {
-            using (var context = this.CreateSerializationContext(optionsConfig))
-            {
-                var serializer = this.GetSerializer(context);
-                return serializer.Deserialize(textReader, context);
-            }
+            using var context = this.CreateSerializationContext(optionsConfig);
+            var serializer = this.GetSerializer(context);
+            return serializer.Deserialize(textReader, context);
         }
 
         /// <summary>
@@ -225,20 +211,18 @@ namespace Kephas.Serialization
         /// <returns>
         /// The deserialized object.
         /// </returns>
-        public object Deserialize(
-            string serializedObj,
-            Action<ISerializationContext> optionsConfig = null)
+        public object? Deserialize(
+            string? serializedObj,
+            Action<ISerializationContext>? optionsConfig = null)
         {
             if (serializedObj == null)
             {
                 return null;
             }
 
-            using (var context = this.CreateSerializationContext(optionsConfig))
-            {
-                var serializer = this.GetSerializer(context);
-                return serializer.Deserialize(serializedObj, context);
-            }
+            using var context = this.CreateSerializationContext(optionsConfig);
+            var serializer = this.GetSerializer(context);
+            return serializer.Deserialize(serializedObj, context);
         }
 
         /// <summary>
@@ -248,7 +232,7 @@ namespace Kephas.Serialization
         /// <returns>
         /// The new serialization context.
         /// </returns>
-        protected virtual ISerializationContext CreateSerializationContext(Action<ISerializationContext> optionsConfig = null)
+        protected virtual ISerializationContext CreateSerializationContext(Action<ISerializationContext>? optionsConfig = null)
         {
             var context = this.contextFactory.CreateContext<SerializationContext>(this);
             optionsConfig?.Invoke(context);
@@ -267,9 +251,9 @@ namespace Kephas.Serialization
         /// <returns>
         /// The serializer.
         /// </returns>
-        protected virtual ISerializer GetSerializer(ISerializationContext context = null)
+        protected virtual ISerializer GetSerializer(ISerializationContext context)
         {
-            context = context ?? this.contextFactory.CreateContext<SerializationContext>(this, typeof(JsonMediaType));
+            context ??= this.contextFactory.CreateContext<SerializationContext>(this, typeof(JsonMediaType));
             var mediaType = context.MediaType ?? typeof(JsonMediaType);
 
             var serializer = this.serializerFactories.TryGetValue(mediaType);
