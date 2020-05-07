@@ -75,7 +75,7 @@ namespace Kephas.Data.Client.Queries.Conversion
             this.typeResolver = typeResolver;
             this.projectedTypeResolver = projectedTypeResolver;
 
-            this.expressionConverters = converterFactories.ToPrioritizedDictionary(
+            this.expressionConverters = converterFactories.OrderAsDictionary(
                 f => f.Metadata.Operator,
                 f => f.CreateExportedValue());
         }

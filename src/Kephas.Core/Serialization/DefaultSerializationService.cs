@@ -48,7 +48,7 @@ namespace Kephas.Serialization
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(serializerFactories, nameof(serializerFactories));
 
-            this.serializerFactories = serializerFactories.ToPrioritizedDictionary(f => f.Metadata.MediaType);
+            this.serializerFactories = serializerFactories.OrderAsDictionary(f => f.Metadata.MediaType);
             this.contextFactory = contextFactory;
         }
 
