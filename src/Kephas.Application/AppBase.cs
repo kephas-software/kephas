@@ -23,11 +23,11 @@ namespace Kephas.Application
     /// Base class for the application's root.
     /// </summary>
     /// <remarks>
-    /// You should inherit this class and override at least the <see cref="ConfigureAmbientServices"/> method.
+    /// You should inherit this class and override at least the <see cref="BuildServicesContainer"/> method.
     /// </remarks>
     public abstract class AppBase
     {
-        private bool prerequisitesInitialized;
+        private bool isConfigured;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppBase"/> class.
@@ -72,15 +72,19 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
-        public virtual async Task<(IAppContext appContext, AppShutdownInstruction instruction)> BootstrapAsync(
+        public virtual async Task<(IAppContext? appContext, AppShutdownInstruction instruction)> BootstrapAsync(
             string[]? rawAppArgs = null,
             CancellationToken cancellationToken = default)
         {
             this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
 
-            this.InitializePrerequisites(rawAppArgs);
+            await Task.Yield();
+
+            this.BeforeAppManagerInitialize(rawAppArgs);
 
             await this.InitializeAppManagerAsync(this.AppContext, cancellationToken).PreserveThreadContext();
+
+            this.AfterAppManagerInitialize();
 
             var instruction = await this.WaitForShutdownSignalAsync(cancellationToken).PreserveThreadContext();
 
@@ -112,6 +116,8 @@ namespace Kephas.Application
         {
             try
             {
+                this.BeforeAppManagerFinalize();
+
                 var appContext = await this.FinalizeAppManagerAsync(cancellationToken).PreserveThreadContext();
                 appContext?.Dispose();
             }
@@ -123,38 +129,48 @@ namespace Kephas.Application
             {
                 try
                 {
-                    this.FinalizePrerequisites();
+                    this.AfterAppManagerFinalize();
                 }
                 catch
                 {
+                    // At this moment the loggers are disposed, do nothing
 #if DEBUG
                     Debug.Assert(false, "Should not fail in finalizing prerequisites.");
 #endif
-                    // TODO at this moment the loggers are disposed, do nothing
                 }
             }
         }
 
         /// <summary>
-        /// Finalize the prerequisites.
+        /// The <see cref="BeforeAppManagerFinalize"/> is called before the application manager starts finalization.
         /// </summary>
-        protected virtual void FinalizePrerequisites()
+        protected virtual void BeforeAppManagerFinalize()
+        {
+        }
+
+        /// <summary>
+        /// The <see cref="AfterAppManagerFinalize"/> is called after the application manager completed finalization.
+        /// It disposes the composition container and the ambient services.
+        /// </summary>
+        protected virtual void AfterAppManagerFinalize()
         {
             this.AmbientServices?.CompositionContainer.Dispose();
             this.AmbientServices?.Dispose();
         }
 
         /// <summary>
+        /// The <see cref="BeforeAppManagerInitialize"/> is called before the application manager is initialized.
         /// Initializes the application prerequisites: the ambient services, the application context
-        /// registration, the logger, other.
+        /// registration, its own logger, and other. In the end, the <see cref="BuildServicesContainer"/> method is called
+        /// to complete the service registration and build the composition container.
         /// </summary>
         /// <param name="rawAppArgs">The application arguments.</param>
         /// <returns>
         /// True if the initialization was performed, false if it was ignored because of subsequent calls.
         /// </returns>
-        protected virtual bool InitializePrerequisites(string[]? rawAppArgs)
+        protected virtual bool BeforeAppManagerInitialize(string[]? rawAppArgs)
         {
-            if (this.prerequisitesInitialized)
+            if (this.isConfigured)
             {
                 return false;
             }
@@ -170,7 +186,7 @@ namespace Kephas.Application
 
                 this.AmbientServices.RegisterAppArgs(rawAppArgs);
 
-                this.ConfigureAmbientServices(this.AmbientServices);
+                this.BuildServicesContainer(this.AmbientServices);
 
                 this.Logger ??= this.AmbientServices.GetLogger(this.GetType());
 
@@ -189,7 +205,14 @@ namespace Kephas.Application
                 throw;
             }
 
-            return this.prerequisitesInitialized = true;
+            return this.isConfigured = true;
+        }
+
+        /// <summary>
+        /// The <see cref="AfterAppManagerInitialize"/> is called after the application manager completed initialization.
+        /// </summary>
+        protected virtual void AfterAppManagerInitialize()
+        {
         }
 
         /// <summary>
@@ -236,13 +259,19 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Configures the ambient services asynchronously.
+        /// This is the last step in the app's configuration, when all the services are set up
+        /// and the container is built. For inheritors, this is the last place where services can
+        /// be added before calling. By default, it only builds the Lite container, but any other container adapter
+        /// can be used, like Autofac or System.Composition (MEF 2).
         /// </summary>
         /// <remarks>
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        protected abstract void ConfigureAmbientServices(IAmbientServices ambientServices);
+        protected virtual void BuildServicesContainer(IAmbientServices ambientServices)
+        {
+            ambientServices.BuildWithLite();
+        }
 
         /// <summary>
         /// Initializes the application manager asynchronously.
@@ -303,7 +332,7 @@ namespace Kephas.Application
         /// </returns>
         protected virtual async Task<IAppContext> FinalizeAppManagerAsync(CancellationToken cancellationToken)
         {
-            IAppContext appContext = null;
+            IAppContext? appContext = null;
 
             try
             {
