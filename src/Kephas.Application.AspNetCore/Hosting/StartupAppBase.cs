@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StartupBase.cs" company="Kephas Software SRL">
+// <copyright file="StartupAppBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,16 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore
+namespace Kephas.Application.AspNetCore.Hosting
 {
     using System;
     using System.Threading.Tasks;
 
-    using Kephas;
-    using Kephas.Application;
     using Kephas.Application.AspNetCore.Configuration;
-    using Kephas.Application.AspNetCore.Hosting;
-    using Kephas.Composition;
     using Kephas.Extensions.Configuration;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
@@ -28,6 +24,7 @@ namespace Kephas.Application.AspNetCore
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
 
@@ -38,22 +35,22 @@ namespace Kephas.Application.AspNetCore
     /// Base class for the ASP.NET startup.
     /// </summary>
     /// <remarks>
-    /// Check https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcore-2.1 for more options.
+    /// Check https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcore-3.1 for more options.
     /// </remarks>
-    public abstract class StartupBase : AppBase
+    public abstract class StartupAppBase : AppBase
     {
         private readonly string[]? appArgs;
         private Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection;
         private Task bootstrapTask;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StartupBase"/> class.
+        /// Initializes a new instance of the <see cref="StartupAppBase"/> class.
         /// </summary>
         /// <param name="env">The environment.</param>
         /// <param name="config">The configuration.</param>
         /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        protected StartupBase(IWebHostEnvironment env, IConfiguration config, IAmbientServices? ambientServices = null, string[]? appArgs = null)
+        protected StartupAppBase(IWebHostEnvironment env, IConfiguration config, IAmbientServices? ambientServices = null, string[]? appArgs = null)
             : base(ambientServices)
         {
             this.HostEnvironment = env;
@@ -78,10 +75,16 @@ namespace Kephas.Application.AspNetCore
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Configures the DI services.
+        /// The <see cref="ConfigureServices"/> method is called by the host before the <see cref="Configure"/>
+        /// method to configure the app's services. Here the configuration options are set by convention.
+        /// The host may configure some services before Startup methods are called.
+        /// For features that require substantial setup, there are Add{Service} extension methods on IServiceCollection.
+        /// For example, AddDbContext, AddDefaultIdentity, AddEntityFrameworkStores, and AddRazorPages.
+        /// Adding services to the service container makes them available within the app and in the <see cref="Configure"/> method.
+        /// The services are resolved via dependency injection or from ApplicationServices.
         /// </summary>
         /// <param name="serviceCollection">Collection of services.</param>
-        public virtual void ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection)
+        public virtual void ConfigureServices(IServiceCollection serviceCollection)
         {
             try
             {
@@ -97,7 +100,8 @@ namespace Kephas.Application.AspNetCore
         }
 
         /// <summary>
-        /// Configures the ambient services container.
+        /// The <see cref="ConfigureContainer"/> method is called by the host after all app configuration is set up
+        /// to complete the configuration. This is the place where the container should be built.
         /// </summary>
         /// <param name="ambientServices">Optional. The ambient services.</param>
         public virtual void ConfigureContainer(IAmbientServices ambientServices)
@@ -112,7 +116,7 @@ namespace Kephas.Application.AspNetCore
                     .ConfigureExtensionsOptions()
                     .UseConfiguration(this.Configuration);
 
-                this.InitializePrerequisites(this.appArgs);
+                this.BeforeAppManagerInitialize(this.appArgs);
             }
             catch (Exception ex)
             {
@@ -122,7 +126,10 @@ namespace Kephas.Application.AspNetCore
         }
 
         /// <summary>
-        /// Configures the given application.
+        /// The Configure method is used to specify how the app responds to HTTP requests.
+        /// The request pipeline is configured by adding middleware components to an IApplicationBuilder instance.
+        /// IApplicationBuilder is available to the Configure method, but it isn't registered in the service container.
+        /// Hosting creates an IApplicationBuilder and passes it directly to Configure.
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="appLifetime">The application lifetime.</param>
@@ -159,22 +166,25 @@ namespace Kephas.Application.AspNetCore
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopping" event.
             appLifetime.ApplicationStopping.Register(() => this.ShutdownAsync().WaitNonLocking());
-            appLifetime.ApplicationStopped.Register(() => this.FinalizeWebAppPrerequisites());
+            appLifetime.ApplicationStopped.Register(() => this.DisposeServicesContainer());
         }
 
         /// <summary>
-        /// Finalize the prerequisites.
+        /// Avoid disposing of services too soon, in the application stopping event.
+        /// Instead, provide a custom <see cref="DisposeServicesContainer"/> called after
+        /// the application has been stopped.
         /// </summary>
-        protected sealed override void FinalizePrerequisites()
+        protected sealed override void AfterAppManagerFinalize()
         {
         }
 
         /// <summary>
-        /// Finalize the web host prerequisites.
+        /// Disposes the services container. Replaces the original <see cref="AfterAppManagerFinalize"/>
+        /// which is called too soon in the standard use case.
         /// </summary>
-        protected virtual void FinalizeWebAppPrerequisites()
+        protected virtual void DisposeServicesContainer()
         {
-            base.FinalizePrerequisites();
+            base.AfterAppManagerFinalize();
         }
 
         /// <summary>
