@@ -33,7 +33,7 @@ namespace Kephas.Services
         /// The ordered service factories.
         /// </returns>
         IEnumerable<IExportFactory<TService, TServiceMetadata>> GetServiceFactories(
-            Func<IExportFactory<TService, TServiceMetadata>, bool> filter = null);
+            Func<IExportFactory<TService, TServiceMetadata>, bool>? filter = null);
 
         /// <summary>
         /// Gets the services in the appropriate order.
@@ -43,6 +43,6 @@ namespace Kephas.Services
         /// The ordered services.
         /// </returns>
         IEnumerable<TService> GetServices(
-            Func<IExportFactory<TService, TServiceMetadata>, bool> filter = null);
+            Func<IExportFactory<TService, TServiceMetadata>, bool>? filter = null);
     }
 }

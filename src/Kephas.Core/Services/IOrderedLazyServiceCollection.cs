@@ -32,7 +32,7 @@ namespace Kephas.Services
         /// The ordered service factories.
         /// </returns>
         IEnumerable<Lazy<TService, TServiceMetadata>> GetServiceFactories(
-            Func<Lazy<TService, TServiceMetadata>, bool> filter = null);
+            Func<Lazy<TService, TServiceMetadata>, bool>? filter = null);
 
         /// <summary>
         /// Gets the services in the appropriate order.
@@ -42,6 +42,6 @@ namespace Kephas.Services
         /// The ordered services.
         /// </returns>
         IEnumerable<TService> GetServices(
-            Func<Lazy<TService, TServiceMetadata>, bool> filter = null);
+            Func<Lazy<TService, TServiceMetadata>, bool>? filter = null);
     }
 }
