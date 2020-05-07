@@ -28,7 +28,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// Initializes a new instance of the <see cref="WorkerAppBase"/> class.
         /// </summary>
         /// <param name="ambientServices">Optional. The ambient services.</param>
-        protected WorkerAppBase(IAmbientServices ambientServices = null)
+        protected WorkerAppBase(IAmbientServices? ambientServices = null)
             : base(ambientServices)
         {
         }
@@ -57,8 +57,8 @@ namespace Kephas.Extensions.Hosting.Application
         /// <returns>
         /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
         /// </returns>
-        public override Task<(IAppContext appContext, AppShutdownInstruction instruction)> BootstrapAsync(
-            string[] rawAppArgs = null,
+        public override Task<(IAppContext? appContext, AppShutdownInstruction instruction)> BootstrapAsync(
+            string[]? rawAppArgs = null,
             CancellationToken cancellationToken = default)
         {
             this.HostBuilder = this.CreateHostBuilder(rawAppArgs);
@@ -79,7 +79,7 @@ namespace Kephas.Extensions.Hosting.Application
             this.ConfigureWorker(this.HostBuilder)
                 .ConfigureServices(services =>
                 {
-                    this.ConfigureWorkerAmbientServices(this.AmbientServices);
+                    this.BuildWorkerServicesContainer(this.AmbientServices);
                 });
 
             this.PostConfigureWorker(this.HostBuilder);
@@ -105,7 +105,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// Configures the ambient services asynchronously.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        protected sealed override void ConfigureAmbientServices(IAmbientServices ambientServices)
+        protected sealed override void BuildServicesContainer(IAmbientServices ambientServices)
         {
             this.Host = this.HostBuilder.Build();
         }
@@ -114,11 +114,11 @@ namespace Kephas.Extensions.Hosting.Application
         /// Configures the ambient services asynchronously for this worker.
         /// </summary>
         /// <remarks>
-        /// Use this method instead of <see cref="ConfigureAmbientServices(IAmbientServices)"/>
+        /// Use this method instead of <see cref="BuildServicesContainer"/>
         /// for configuring the worker ambient services.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        protected abstract void ConfigureWorkerAmbientServices(IAmbientServices ambientServices);
+        protected abstract void BuildWorkerServicesContainer(IAmbientServices ambientServices);
 
         /// <summary>
         /// Creates the host builder.
@@ -127,7 +127,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <returns>
         /// The new host builder.
         /// </returns>
-        protected virtual IHostBuilder CreateHostBuilder(string[] rawAppArgs)
+        protected virtual IHostBuilder CreateHostBuilder(string[]? rawAppArgs)
         {
             return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(rawAppArgs);
         }

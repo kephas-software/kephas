@@ -215,7 +215,7 @@ namespace Kephas.Application.Tests
         /// Configures the ambient services asynchronously.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        protected override async void ConfigureAmbientServices(IAmbientServices ambientServices)
+        protected override async void BuildServicesContainer(IAmbientServices ambientServices)
         {
             if (asyncConfig != null)
             {

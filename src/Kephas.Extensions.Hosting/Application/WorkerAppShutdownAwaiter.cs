@@ -15,12 +15,14 @@ namespace Kephas.Extensions.Hosting.Application
 
     using Kephas.Application;
     using Kephas.Interaction;
+    using Kephas.Model.AttributedModel;
     using Kephas.Services;
     using Microsoft.Extensions.Hosting;
 
     /// <summary>
     /// A service application shutdown awaiter.
     /// </summary>
+    [Override]
     [OverridePriority(Priority.AboveNormal)]
     public class WorkerAppShutdownAwaiter : DefaultAppShutdownAwaiter, IInitializable
     {
@@ -29,7 +31,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="host">Optional. The host.</param>
-        public WorkerAppShutdownAwaiter(IEventHub eventHub, IHost host = null)
+        public WorkerAppShutdownAwaiter(IEventHub eventHub, IHost? host = null)
             : base(eventHub)
         {
             this.Host = host;
@@ -41,7 +43,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <value>
         /// The application context.
         /// </value>
-        protected IContext AppContext { get; private set; }
+        protected IContext? AppContext { get; private set; }
 
         /// <summary>
         /// Gets the host.
@@ -49,13 +51,13 @@ namespace Kephas.Extensions.Hosting.Application
         /// <value>
         /// The host.
         /// </value>
-        protected IHost Host { get; }
+        protected IHost? Host { get; }
 
         /// <summary>
         /// Initializes the service.
         /// </summary>
         /// <param name="context">Optional. An optional context for initialization.</param>
-        public virtual void Initialize(IContext context = null)
+        public virtual void Initialize(IContext? context = null)
         {
             this.AppContext = context;
         }

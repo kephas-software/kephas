@@ -1,13 +1,12 @@
-using Kephas.Serialization.Json;
-
 namespace Kephas.Application.AspNetCore.InteractiveTests
 {
     using System;
 
     using Kephas;
     using Kephas.Application;
+    using Kephas.Application.AspNetCore.Hosting;
     using Kephas.Logging.Serilog;
-
+    using Kephas.Serialization.Json;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -16,20 +15,26 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
     using Microsoft.Extensions.Hosting;
     using Serilog;
 
-    public class Startup : Kephas.Application.AspNetCore.StartupBase
+    public class StartupApp : StartupAppBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Startup" /> class.
+        /// Initializes a new instance of the <see cref="StartupApp" /> class.
         /// </summary>
         /// <param name="env">The environment.</param>
         /// <param name="config">The configuration.</param>
-        public Startup(IWebHostEnvironment env, IConfiguration config)
+        public StartupApp(IWebHostEnvironment env, IConfiguration config)
             : base(env, config)
         {
         }
 
         /// <summary>
-        /// Configures the DI services.
+        /// The <see cref="ConfigureServices"/> method is called by the host before the <see cref="Configure"/>
+        /// method to configure the app's services. Here the configuration options are set by convention.
+        /// The host may configure some services before Startup methods are called.
+        /// For features that require substantial setup, there are Add{Service} extension methods on IServiceCollection.
+        /// For example, AddDbContext, AddDefaultIdentity, AddEntityFrameworkStores, and AddRazorPages.
+        /// Adding services to the service container makes them available within the app and in the <see cref="Configure"/> method.
+        /// The services are resolved via dependency injection or from ApplicationServices.
         /// </summary>
         /// <param name="services">Collection of services.</param>
         public override void ConfigureServices(IServiceCollection services)
@@ -58,8 +63,10 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         }
 
         /// <summary>
-        /// This method gets called by the runtime. Use this method to configure the HTTP request
-        /// pipeline.
+        /// The Configure method is used to specify how the app responds to HTTP requests.
+        /// The request pipeline is configured by adding middleware components to an IApplicationBuilder instance.
+        /// IApplicationBuilder is available to the Configure method, but it isn't registered in the service container.
+        /// Hosting creates an IApplicationBuilder and passes it directly to Configure.
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="appLifetime">The application lifetime.</param>
@@ -115,7 +122,7 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         /// Override this method to initialize the startup services, like log manager and configuration manager.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        protected override void ConfigureAmbientServices(IAmbientServices ambientServices)
+        protected override void BuildServicesContainer(IAmbientServices ambientServices)
         {
             ambientServices
                 .BuildWithAutofac();

@@ -5,13 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Application;
-
 namespace Kephas.Extensions.Hosting
 {
     using System;
     using System.Collections.Generic;
 
+    using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Extensions.Hosting.DependencyInjection;
     using Microsoft.Extensions.Configuration;

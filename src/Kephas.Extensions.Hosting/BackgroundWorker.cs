@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Extensions.Hosting.Application;
-
 namespace Kephas.Extensions.Hosting
 {
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Extensions.Hosting.Application;
     using Kephas.Logging;
     using Microsoft.Extensions.Hosting;
 
