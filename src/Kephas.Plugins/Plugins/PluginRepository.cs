@@ -37,10 +37,11 @@ namespace Kephas.Plugins
         /// Gets the installed plugin state and version.
         /// </summary>
         /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="throwOnInvalid">Optional. Indicates whether to throw on invalid plugin data or to return a corrupt-marked data.</param>
         /// <returns>
         /// The plugin state and version.
         /// </returns>
-        public PluginData GetPluginData(AppIdentity pluginIdentity)
+        public PluginData GetPluginData(AppIdentity pluginIdentity, bool throwOnInvalid = true)
         {
             var pluginLocation = this.pluginLocationResolver(pluginIdentity);
             if (string.IsNullOrEmpty(pluginLocation))
@@ -55,10 +56,10 @@ namespace Kephas.Plugins
             }
 
             var pluginDataString = File.ReadAllText(pluginDataFile);
-            var pluginData = PluginData.Parse(pluginDataString);
+            var pluginData = PluginData.Parse(pluginDataString, throwOnInvalid);
             if (!pluginIdentity.IsMatch(pluginData.Identity))
             {
-                throw new InvalidPluginDataException($"Identity mismatch for stored plugin data: '{pluginIdentity}' requested, but '{pluginData.Identity}' found.");
+                throw new InvalidPluginDataException($"Identity mismatch for stored plugin data: '{pluginIdentity}' requested, but '{pluginData.Identity}' found.", PluginData.MismatchedIdentityCode);
             }
 
             return pluginData;

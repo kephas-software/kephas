@@ -137,7 +137,7 @@ namespace Kephas.Plugins
         /// </returns>
         public virtual PluginState GetPluginState(AppIdentity pluginIdentity)
         {
-            return this.PluginRepository.GetPluginData(pluginIdentity).State;
+            return this.PluginRepository.GetPluginData(pluginIdentity, throwOnInvalid: false).State;
         }
 
         /// <summary>

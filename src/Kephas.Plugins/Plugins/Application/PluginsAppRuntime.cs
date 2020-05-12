@@ -89,7 +89,9 @@ namespace Kephas.Plugins.Application
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);
             this.TargetFramework = this.ComputeTargetFramework(targetFramework, appArgs);
-            this.PluginRepository = pluginRepository ?? new PluginRepository(appIdentity => this.GetAppLocation(appIdentity, throwOnNotFound: false));
+            this.PluginRepository = pluginRepository ??
+                                    new PluginRepository(appIdentity =>
+                                        this.GetAppLocation(appIdentity, throwOnNotFound: false));
         }
 
         /// <summary>
@@ -179,7 +181,10 @@ namespace Kephas.Plugins.Application
                 appDirectories.AddRange(pluginsDirectories.Where(this.CanLoadEmbeddedPluginBinaries));
             }
 
-            this.Logger.Debug(Strings.PluginsAppRuntime_LoadingApplicationFolders_Message, appDirectories, this.EnablePlugins ? "enabled" : "disabled");
+            this.Logger.Debug(
+                Strings.PluginsAppRuntime_LoadingApplicationFolders_Message,
+                appDirectories,
+                this.EnablePlugins ? "enabled" : "disabled");
 
             return appDirectories;
         }
@@ -192,15 +197,18 @@ namespace Kephas.Plugins.Application
         /// </returns>
         public virtual IEnumerable<PluginData> GetInstalledPlugins()
         {
-            if (Directory.Exists(this.PluginsLocation))
+            if (!Directory.Exists(this.PluginsLocation))
             {
-                var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation);
+                yield break;
+            }
 
-                foreach (var pluginDirectory in pluginsDirectories)
-                {
-                    var pluginId = Path.GetFileName(pluginDirectory);
-                    yield return this.PluginRepository.GetPluginData(new AppIdentity(pluginId));
-                }
+            var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation);
+
+            foreach (var pluginDirectory in pluginsDirectories)
+            {
+                var pluginId = Path.GetFileName(pluginDirectory);
+                var pluginData = this.PluginRepository.GetPluginData(new AppIdentity(pluginId), throwOnInvalid: false);
+                yield return pluginData;
             }
         }
 
@@ -214,21 +222,24 @@ namespace Kephas.Plugins.Application
         {
             var targetFramework = this.TargetFramework;
 
-            if (Directory.Exists(this.PluginsLocation))
+            if (!Directory.Exists(this.PluginsLocation))
             {
-                var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation);
+                yield break;
+            }
 
-                foreach (var pluginDirectory in pluginsDirectories)
+            var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation);
+            foreach (var pluginDirectory in pluginsDirectories)
+            {
+                if (string.IsNullOrEmpty(targetFramework))
                 {
-                    if (string.IsNullOrEmpty(targetFramework))
-                    {
-                        yield return pluginDirectory;
-                    }
-                    else
-                    {
-                        var frameworkSpecificDirectory = Path.Combine(pluginDirectory, targetFramework);
-                        yield return Directory.Exists(frameworkSpecificDirectory) ? frameworkSpecificDirectory : pluginDirectory;
-                    }
+                    yield return pluginDirectory;
+                }
+                else
+                {
+                    var frameworkSpecificDirectory = Path.Combine(pluginDirectory, targetFramework);
+                    yield return Directory.Exists(frameworkSpecificDirectory)
+                        ? frameworkSpecificDirectory
+                        : pluginDirectory;
                 }
             }
         }
@@ -243,7 +254,7 @@ namespace Kephas.Plugins.Application
         /// </returns>
         protected virtual bool ComputeEnablePlugins(bool? enablePlugins, IExpando? appArgs)
         {
-            return enablePlugins ?? (bool?)appArgs?[EnablePluginsArgName] ?? true;
+            return enablePlugins ?? (bool?) appArgs?[EnablePluginsArgName] ?? true;
         }
 
         /// <summary>
@@ -285,33 +296,44 @@ namespace Kephas.Plugins.Application
         {
             var pluginId = Path.GetFileName(pluginFolder);
             var pluginIdentity = new AppIdentity(pluginId);
-            var pluginData = this.PluginRepository.GetPluginData(pluginIdentity);
-            pluginIdentity = pluginData.Identity;
-
-            var shouldLoadPlugin = (pluginData.State == PluginState.PendingInitialization
-                                            || pluginData.State == PluginState.Enabled
-                                            || pluginData.State == PluginState.PendingUninitialization)
-                                        && pluginData.Kind == PluginKind.Embedded;
-            if (shouldLoadPlugin)
+            try
             {
-                try
-                {
-                    var licenseState = this.CheckLicense(pluginIdentity, null);
-                    if (!licenseState.IsLicensed)
-                    {
-                        this.Logger.Warn("Plugin '{plugin}' is not licensed, will not be loaded. Checker information: {messages}.", pluginIdentity, licenseState.Messages.Select(m => m.Message).ToArray());
-                    }
+                var pluginData = this.PluginRepository.GetPluginData(pluginIdentity, throwOnInvalid: false);
+                pluginIdentity = pluginData.Identity;
 
-                    return licenseState.IsLicensed;
-                }
-                catch (Exception ex)
+                var shouldLoadPlugin = (pluginData.State == PluginState.PendingInitialization
+                                        || pluginData.State == PluginState.Enabled
+                                        || pluginData.State == PluginState.PendingUninitialization)
+                                       && pluginData.Kind == PluginKind.Embedded;
+                if (!shouldLoadPlugin)
                 {
-                    this.Logger.Error(ex, "Error while checking the license for plugin {plugin}.", pluginIdentity);
                     return false;
                 }
             }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while reading the plugin data for {plugin}.", pluginIdentity);
+                return false;
+            }
 
-            return false;
+            try
+            {
+                var licenseState = this.CheckLicense(pluginIdentity, null);
+                if (!licenseState.IsLicensed)
+                {
+                    this.Logger.Warn(
+                        "Plugin '{plugin}' is not licensed, will not be loaded. Checker information: {messages}.",
+                        pluginIdentity,
+                        licenseState.Messages.Select(m => m.Message).ToArray());
+                }
+
+                return licenseState.IsLicensed;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while checking the license for plugin {plugin}.", pluginIdentity);
+                return false;
+            }
         }
 
         /// <summary>

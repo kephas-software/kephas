@@ -21,19 +21,28 @@ namespace Kephas.Plugins
         /// Initializes a new instance of the <see cref="InvalidPluginDataException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public InvalidPluginDataException(string message)
+        /// <param name="errorCode">The error code.</param>
+        public InvalidPluginDataException(string message, int errorCode)
             : base(message)
         {
+            this.ErrorCode = errorCode;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InvalidPluginDataException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
+        /// <param name="errorCode">The error code.</param>
         /// <param name="innerException">The inner exception.</param>
-        public InvalidPluginDataException(string message, Exception innerException)
+        public InvalidPluginDataException(string message, int errorCode, Exception innerException)
             : base(message, innerException)
         {
+            this.ErrorCode = errorCode;
         }
+
+        /// <summary>
+        /// Gets the error code.
+        /// </summary>
+        public int ErrorCode { get; }
     }
 }

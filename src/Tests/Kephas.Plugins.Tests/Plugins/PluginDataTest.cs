@@ -59,6 +59,14 @@ namespace Kephas.Tests.Plugins
         }
 
         [Test]
+        public void Parse_missing_kind_no_throw()
+        {
+            var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3\nPendingInitialization\nmy:data\n1855999989", throwOnInvalid: false);
+            Assert.AreEqual(new AppIdentity("Gigi.Belogea", "1.2.3"), pluginData.Identity);
+            Assert.AreEqual(PluginState.Corrupt, pluginData.State);
+        }
+
+        [Test]
         public void Parse_valid_data_and_checksum()
         {
             var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3\nPendingInitialization\nEmbedded\nmy:data\n-1257453341");
@@ -73,6 +81,16 @@ namespace Kephas.Tests.Plugins
         {
             var ex = Assert.Throws<InvalidPluginDataException>(() => PluginData.Parse("Gigi.Belogea:1.2.3\nEnabled\nStandalone\n\n274170507"));
             Assert.AreEqual($"The plugin data for Gigi.Belogea:1.2.3 is corrupt, probably was manually changed (100).", ex.Message);
+        }
+
+        [Test]
+        public void Parse_invalid_checksum_no_throw()
+        {
+            var pluginData = PluginData.Parse("Gigi.Belogea:1.2.3\nEnabled\nStandalone\n\n274170507", throwOnInvalid: false);
+            Assert.AreEqual(new AppIdentity("Gigi.Belogea", "1.2.3"), pluginData.Identity);
+            Assert.AreEqual(PluginState.Corrupt, pluginData.State);
+            Assert.AreEqual(PluginKind.Standalone, pluginData.Kind);
+            Assert.AreEqual(0, pluginData.Data.Count);
         }
 
         [Test]

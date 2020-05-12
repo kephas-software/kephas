@@ -24,6 +24,11 @@ namespace Kephas.Plugins
     /// </summary>
     public sealed class PluginData
     {
+        /// <summary>
+        /// Gets the code for the mismatched identity.
+        /// </summary>
+        internal const int MismatchedIdentityCode = 10;
+
         private const int MissingPartsInvalidCode = 1;
         private const int ParseStateInvalidCode = 2;
         private const int ParseKindInvalidCode = 3;
@@ -83,10 +88,11 @@ namespace Kephas.Plugins
         /// Parses the value and returns valid plugin data.
         /// </summary>
         /// <param name="value">The value.</param>
+        /// <param name="throwOnInvalid">Optional. Indicates whether to throw on invalid plugin data or to return a corrupt-marked data.</param>
         /// <returns>
         /// A PluginData.
         /// </returns>
-        public static PluginData Parse(string value)
+        public static PluginData Parse(string value, bool throwOnInvalid = true)
         {
             Requires.NotNull(value, nameof(value));
 
@@ -95,30 +101,42 @@ namespace Kephas.Plugins
 
             if (splits.Length < 3)
             {
-                throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({MissingPartsInvalidCode}).");
+                return throwOnInvalid
+                    ? throw new InvalidPluginDataException(
+                        $"The plugin data for {appId} is corrupt, probably was manually changed ({MissingPartsInvalidCode}).",
+                        MissingPartsInvalidCode)
+                    : new PluginData(appId, PluginState.Corrupt);
             }
 
             if (!Enum.TryParse<PluginState>(splits[1], out var state))
             {
-                throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseStateInvalidCode}).");
+                return throwOnInvalid
+                    ? throw new InvalidPluginDataException(
+                        $"The plugin data for {appId} is corrupt, probably was manually changed ({ParseStateInvalidCode}).",
+                        ParseStateInvalidCode)
+                    : new PluginData(appId, PluginState.Corrupt);
             }
 
             if (!Enum.TryParse<PluginKind>(splits[2], out var kind))
             {
-                throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseKindInvalidCode}).");
+                return throwOnInvalid
+                    ? throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseKindInvalidCode}).", ParseKindInvalidCode)
+                    : new PluginData(appId, PluginState.Corrupt);
             }
 
             var data = splits.Length > 3 ? DataParse(splits.Skip(3).Take(splits.Length - 4)) : null;
 
             if (!int.TryParse(splits[splits.Length - 1], out var checksum))
             {
-                throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseChecksumInvalidCode}).");
+                return throwOnInvalid
+                    ? throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseChecksumInvalidCode}).", ParseChecksumInvalidCode)
+                    : new PluginData(appId, PluginState.Corrupt, kind, data);
             }
 
             var pluginData = new PluginData(appId, state, kind, data);
-            pluginData.Validate(checksum);
-
-            return pluginData;
+            return pluginData.Validate(checksum, throwOnInvalid)
+                ? pluginData
+                : new PluginData(appId, PluginState.Corrupt, kind, data);
         }
 
         /// <summary>
@@ -136,7 +154,7 @@ namespace Kephas.Plugins
                 || !(this.Identity.Version?.Equals(pluginIdentity.Version)
                     ?? true))
             {
-                throw new InvalidPluginDataException($"Cannot change identity from {this.Identity} to {pluginIdentity}, only casing differences are accepted.");
+                throw new InvalidPluginDataException($"Cannot change identity from {this.Identity} to {pluginIdentity}, only casing differences are accepted.", MismatchedIdentityCode);
             }
 
             this.Identity = pluginIdentity;
@@ -228,14 +246,16 @@ namespace Kephas.Plugins
             return string.Join("\n", data.Select(kv => $"{kv.Key}:{kv.Value}"));
         }
 
-        private void Validate(int checksum)
+        private bool Validate(int checksum, bool throwOnInvalid)
         {
             if (this.GetChecksum() == checksum)
             {
-                return;
+                return true;
             }
 
-            throw new InvalidPluginDataException($"The plugin data for {this.Identity} is corrupt, probably was manually changed ({ChecksumInvalidCode}).");
+            return throwOnInvalid
+                ? throw new InvalidPluginDataException($"The plugin data for {this.Identity} is corrupt, probably was manually changed ({ChecksumInvalidCode}).", ChecksumInvalidCode)
+                : false;
         }
 
         private int GetChecksum()

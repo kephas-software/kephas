@@ -249,7 +249,7 @@ namespace Kephas.Tests.Plugins
         {
             private ConcurrentDictionary<string, PluginData> cache = new ConcurrentDictionary<string, PluginData>();
 
-            public PluginData GetPluginData(AppIdentity pluginIdentity)
+            public PluginData GetPluginData(AppIdentity pluginIdentity, bool throwOnInvalid = true)
             {
                 if (this.cache.TryGetValue(pluginIdentity.Id.ToLower(), out var pluginData))
                 {
