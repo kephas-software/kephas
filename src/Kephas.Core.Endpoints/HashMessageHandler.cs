@@ -46,6 +46,8 @@ namespace Kephas.Core.Endpoints
         /// <returns>The response promise.</returns>
         public override async Task<HashResponseMessage> ProcessAsync(HashMessage message, IMessagingContext context, CancellationToken token)
         {
+            await Task.Yield();
+
             var salt = string.IsNullOrEmpty(message.Salt)
                         ? null
                         : Encoding.UTF8.GetBytes(message.Salt);
