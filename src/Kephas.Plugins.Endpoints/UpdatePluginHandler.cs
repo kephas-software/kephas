@@ -107,14 +107,7 @@ namespace Kephas.Plugins.Endpoints
                     var availablePackages = new List<IAppInfo>();
                     foreach (var installedPlugin in installedPlugins)
                     {
-                        var availablePackage = (await this.pluginManager.GetAvailablePluginsAsync(
-                            s => s
-                                .PluginIdentity(installedPlugin.Identity)
-                                .IncludePrerelease(message.IncludePrerelease)
-                                .Take(2),
-                            token).PreserveThreadContext()).Value
-                            .OrderByDescending(p => p.Identity.Version)
-                            .FirstOrDefault();
+                        var availablePackage = await this.GetLatestAvailablePackageAsync(installedPlugin.Identity, message.IncludePrerelease, token).PreserveThreadContext();
                         if (availablePackage != null)
                         {
                             availablePackages.Add(availablePackage);
@@ -127,23 +120,17 @@ namespace Kephas.Plugins.Endpoints
                 }
                 else
                 {
-                    toUpdate = installedPlugins.Where(p =>
-                            !p.Identity.Version.Equals(message.Version))
-                        .Select(p => new AppIdentity(p.Identity.Id, message.Version)).ToList();
+                    toUpdate = installedPlugins
+                        .Where(p => !p.Identity.Version!.Equals(message.Version))
+                        .Select(p => new AppIdentity(p.Identity.Id, message.Version))
+                        .ToList();
                 }
             }
             else
             {
                 if (UpdatePluginMessage.LatestVersion.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var availablePackage = (await this.pluginManager.GetAvailablePluginsAsync(
-                            s => s
-                                .PluginIdentity(new AppIdentity(message.Id))
-                                .IncludePrerelease(message.IncludePrerelease)
-                                .Take(2),
-                            token).PreserveThreadContext()).Value
-                        .FirstOrDefault(p =>
-                            p.Identity.Id.Equals(message.Id, StringComparison.InvariantCultureIgnoreCase));
+                    var availablePackage = await this.GetLatestAvailablePackageAsync(new AppIdentity(message.Id), message.IncludePrerelease, token).PreserveThreadContext();
                     toUpdate = availablePackage == null
                         ? new List<AppIdentity>()
                         : new List<AppIdentity> { availablePackage.Identity };
@@ -155,6 +142,18 @@ namespace Kephas.Plugins.Endpoints
             }
 
             return toUpdate;
+        }
+
+        private async Task<IAppInfo> GetLatestAvailablePackageAsync(AppIdentity pluginIdentity, bool includePrerelease, CancellationToken token)
+        {
+            return (await this.pluginManager.GetAvailablePluginsAsync(
+                    s => s
+                        .PluginIdentity(pluginIdentity)
+                        .IncludePrerelease(includePrerelease)
+                        .Take(2),
+                    token).PreserveThreadContext()).Value
+                .OrderByDescending(p => p.Identity.Version)
+                .FirstOrDefault();
         }
 
         private async Task<IOperationResult> UpdatePluginAsync(AppIdentity pluginIdentity, IMessagingContext context, CancellationToken token)
