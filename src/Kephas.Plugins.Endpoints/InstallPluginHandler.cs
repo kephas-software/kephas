@@ -58,14 +58,10 @@ namespace Kephas.Plugins.Endpoints
             AppIdentity? pluginIdentity;
             if (UpdatePluginMessage.LatestVersion.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
             {
-                var availablePackage = (await this.pluginManager.GetAvailablePluginsAsync(
-                        s => s
-                            .PluginIdentity(new AppIdentity(message.Id))
-                            .IncludePrerelease(message.IncludePrerelease)
-                            .Take(2),
-                        token).PreserveThreadContext()).Value
-                    .FirstOrDefault(p =>
-                        p.Identity.Id.Equals(message.Id, StringComparison.InvariantCultureIgnoreCase));
+                var availablePackage = await this.pluginManager.GetLatestAvailablePluginVersionAsync(
+                    new AppIdentity(message.Id),
+                    message.IncludePrerelease,
+                    token).PreserveThreadContext();
                 pluginIdentity = availablePackage?.Identity;
             }
             else

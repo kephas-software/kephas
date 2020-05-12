@@ -12,6 +12,7 @@ namespace Kephas.Plugins
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace Kephas.Plugins
     using Kephas.Application.Reflection;
     using Kephas.Operations;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Interface for plugin manager.
@@ -140,5 +142,33 @@ namespace Kephas.Plugins
         /// An asynchronous result that yields the available plugins.
         /// </returns>
         Task<IOperationResult<IEnumerable<IAppInfo>>> GetAvailablePluginsAsync(Action<ISearchContext>? filter = null, CancellationToken cancellationToken = default);
+    }
+
+    /// <summary>
+    /// Extension methods for <see cref="IPluginManager"/>.
+    /// </summary>
+    public static class PluginManagerExtensions
+    {
+        /// <summary>
+        /// Gets the latest available plugin version asynchronously.
+        /// </summary>
+        /// <param name="pluginManager">The plugin manager.</param>
+        /// <param name="pluginIdentity">The plugin identity.</param>
+        /// <param name="includePrerelease">True to include, false to exclude the prerelease.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the latest available package.
+        /// </returns>
+        public static async Task<IAppInfo> GetLatestAvailablePluginVersionAsync(this IPluginManager pluginManager, AppIdentity pluginIdentity, bool includePrerelease, CancellationToken cancellationToken = default)
+        {
+            return (await pluginManager.GetAvailablePluginsAsync(
+                    s => s
+                        .PluginIdentity(pluginIdentity)
+                        .IncludePrerelease(includePrerelease)
+                        .Take(2),
+                    cancellationToken).PreserveThreadContext()).Value
+                .OrderByDescending(p => p.Identity.Version)
+                .FirstOrDefault();
+        }
     }
 }
