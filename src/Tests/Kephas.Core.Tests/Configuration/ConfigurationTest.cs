@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Kephas.Core.Tests.Configuration
 {
     using System;
@@ -85,16 +88,14 @@ namespace Kephas.Core.Tests.Configuration
         {
             public static TestSettings Settings = new TestSettings();
 
-            /// <summary>
-            /// Gets the settings with the provided type.
-            /// </summary>
-            /// <param name="settingsType">Type of the settings.</param>
-            /// <returns>
-            /// The settings.
-            /// </returns>
             public object GetSettings(Type settingsType)
             {
                 return Settings;
+            }
+
+            public async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+            {
+                await Task.Yield();
             }
         }
 

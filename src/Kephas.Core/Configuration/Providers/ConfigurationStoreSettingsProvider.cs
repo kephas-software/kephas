@@ -11,6 +11,8 @@
 namespace Kephas.Configuration.Providers
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Services;
@@ -46,6 +48,18 @@ namespace Kephas.Configuration.Providers
             Requires.NotNull(settingsType, nameof(settingsType));
 
             return this.configurationStore.TryGetSettings(settingsType);
+        }
+
+        /// <summary>
+        /// Updates the settings asynchronously.
+        /// </summary>
+        /// <param name="settings">The settings to be updated.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+        {
+            await Task.Yield();
+            this.configurationStore.UpdateSettings(settings);
         }
     }
 }

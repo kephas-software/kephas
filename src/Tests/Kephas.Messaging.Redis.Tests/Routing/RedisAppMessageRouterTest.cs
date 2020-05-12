@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Threading;
+
 namespace Kephas.Messaging.Redis.Tests.Routing
 {
     using System;
@@ -236,6 +238,11 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 }
 
                 return null;
+            }
+
+            public async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+            {
+                await Task.Yield();
             }
         }
     }

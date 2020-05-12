@@ -38,5 +38,11 @@ namespace Kephas.Configuration
         /// The required settings or <c>null</c>.
         /// </returns>
         object? TryGetSettings(Type settingsType);
+
+        /// <summary>
+        /// Updates the settings.
+        /// </summary>
+        /// <param name="settings">The settings to be updated.</param>
+        void UpdateSettings(object settings);
     }
 }

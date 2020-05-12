@@ -15,6 +15,8 @@ namespace Kephas.Configuration.Providers
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
@@ -26,6 +28,7 @@ namespace Kephas.Configuration.Providers
     using Kephas.Reflection;
     using Kephas.Serialization;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A file settings provider.
@@ -34,7 +37,7 @@ namespace Kephas.Configuration.Providers
     public class FileSettingsProvider : Loggable, ISettingsProvider
     {
         private readonly ICollection<Lazy<IMediaType, MediaTypeMetadata>> mediaTypes;
-        private ConcurrentDictionary<Type, (string filePath, IOperationResult result, Type mediaType)> fileInfos =
+        private readonly ConcurrentDictionary<Type, (string filePath, IOperationResult result, Type mediaType)> fileInfos =
             new ConcurrentDictionary<Type, (string filePath, IOperationResult result, Type mediaType)>();
 
         /// <summary>
@@ -93,6 +96,42 @@ namespace Kephas.Configuration.Providers
             var settings = this.SerializationService.Deserialize(settingsContent, ctx => ctx.RootObjectType(settingsType).MediaType(mediaType));
 
             return settings;
+        }
+
+        /// <summary>
+        /// Updates the settings asynchronously.
+        /// </summary>
+        /// <param name="settings">The settings to be updated.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(settings, nameof(settings));
+
+            await Task.Yield();
+
+            var settingsType = settings.GetType();
+            var (filePath, result, mediaType) = this.GetSettingsFileInfo(settingsType);
+            if (filePath == null)
+            {
+                this.Logger.Warn(result.Exceptions.First().Message);
+                return;
+            }
+
+            this.Logger.Debug(result.Messages.First().Message);
+            using var fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
+            using var fileWriter = new StreamWriter(fileStream);
+            await this.SerializationService.SerializeAsync(
+                settings,
+                fileWriter,
+                ctx => ctx
+                    .Indent(true)
+                    .MediaType(mediaType)
+                    .IncludeTypeInfo(false),
+                cancellationToken: cancellationToken)
+                .PreserveThreadContext();
+
+            this.Logger.Info("Settings '{settingsType}' updated.", settingsType);
         }
 
         /// <summary>

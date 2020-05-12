@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Diagnostics.Contracts;
+
 namespace Kephas.Configuration
 {
     using System;
@@ -90,6 +92,17 @@ namespace Kephas.Configuration
         }
 
         /// <summary>
+        /// Updates the settings.
+        /// </summary>
+        /// <param name="settings">The settings to be updated.</param>
+        public void UpdateSettings(object settings)
+        {
+            Requires.NotNull(settings, nameof(settings));
+
+            this.TryAddOrUpdateSettings(settings.GetType(), settings);
+        }
+
+        /// <summary>
         /// Tries to get the indicated settings and, if not found, add a new instance.
         /// </summary>
         /// <param name="settingsType">Type of the settings.</param>
@@ -120,6 +133,28 @@ namespace Kephas.Configuration
 
                 this.settingsMap.Add(settingsType, settings = ctor());
                 return settings;
+            }
+        }
+
+        /// <summary>
+        /// Tries to get the indicated settings and, if not found, add a new instance.
+        /// </summary>
+        /// <param name="settingsType">Type of the settings.</param>
+        /// <param name="settings">The settings.</param>
+        /// <returns>
+        /// True if the add or update was successful, false otherwise.
+        /// </returns>
+        protected virtual bool TryAddOrUpdateSettings(Type settingsType, object settings)
+        {
+            if (settingsType == null)
+            {
+                return false;
+            }
+
+            lock (this.settingsMap)
+            {
+                this.settingsMap[settingsType] = settings;
+                return true;
             }
         }
 
