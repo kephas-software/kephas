@@ -10,6 +10,8 @@
 
 namespace Kephas.Plugins.Endpoints
 {
+    using System;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -53,13 +55,50 @@ namespace Kephas.Plugins.Endpoints
         {
             this.appContext.Logger.Info("Installing plugin {plugin} {version}...", message.Id, message.Version);
 
-            var result = await this.pluginManager.InstallPluginAsync(new AppIdentity(message.Id, message.Version), ctx => ctx.Merge(context), token).PreserveThreadContext();
+            AppIdentity? pluginIdentity;
+            if (UpdatePluginMessage.LatestVersion.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var availablePackage = (await this.pluginManager.GetAvailablePluginsAsync(
+                        s => s
+                            .PluginIdentity(new AppIdentity(message.Id))
+                            .IncludePrerelease(message.IncludePrerelease)
+                            .Take(2),
+                        token).PreserveThreadContext()).Value
+                    .FirstOrDefault(p =>
+                        p.Identity.Id.Equals(message.Id, StringComparison.InvariantCultureIgnoreCase));
+                pluginIdentity = availablePackage?.Identity;
+            }
+            else
+            {
+                pluginIdentity = new AppIdentity(message.Id, message.Version);
+            }
+
+            if (pluginIdentity == null)
+            {
+                this.appContext.Logger.Info(
+                    "No plugin {plugin} {version} could be found.",
+                    message.Id,
+                    message.Version);
+                return new ResponseMessage
+                {
+                    Message = $"No plugin {message.Id} {message.Version} could be found.",
+                };
+            }
+
+            var result = await this.pluginManager.InstallPluginAsync(pluginIdentity, ctx => ctx.Merge(context), token)
+                .PreserveThreadContext();
 
             var plugin = result.Value;
             var pluginId = plugin?.GetTypeInfo().Name ?? message.Id;
             var pluginVersion = plugin?.GetTypeInfo().Identity.Version?.ToString() ?? message.Version;
 
-            this.appContext.Logger.Info("Plugin {plugin} {version} ({state}) installed in {pluginPath}. Elapsed: {elapsed:c}.", pluginId, pluginVersion, plugin?.State, plugin?.Location, result.Elapsed);
+            this.appContext.Logger.Info(
+                "Plugin {plugin} {version} ({state}) installed in {pluginPath}. Elapsed: {elapsed:c}.",
+                pluginId,
+                pluginVersion,
+                plugin?.State,
+                plugin?.Location,
+                result.Elapsed);
 
             return new ResponseMessage
                 {

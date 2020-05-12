@@ -10,6 +10,7 @@
 
 namespace Kephas.Plugins.Endpoints
 {
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     using Kephas.ComponentModel.DataAnnotations;
@@ -36,7 +37,17 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The version.
         /// </value>
-        [Display(Description = "The package version of the plugin.")]
-        public string Version { get; set; }
+        [Display(ShortName = "v", Description = "Optional. The package version of the plugin. Use '@latest' (default) to install to the latest version.")]
+        public string Version { get; set; } = UpdatePluginMessage.LatestVersion;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether prerelease versions should be included or not.
+        /// </summary>
+        /// <value>
+        /// True to include prerelease versions, false otherwise.
+        /// </value>
+        [Display(ShortName = "pre", Description = "Optional. Value indicating whether to consider prerelease versions if no explicit version is set (default: false).")]
+        [DefaultValue(false)]
+        public bool IncludePrerelease { get; set; }
     }
 }

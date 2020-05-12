@@ -38,7 +38,7 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The package ID.
         /// </value>
-        [Display(Description = "The package ID of the plugin. Use 'all' to update all plugins.")]
+        [Display(Description = "The package ID of the plugin. Use '@all' to update all plugins.")]
         public string Id { get; set; } = All;
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Kephas.Plugins.Endpoints
         /// <value>
         /// The version.
         /// </value>
-        [Display(ShortName = "v", Description = "Optional. The package version of the plugin. Use 'latest' (default) to update to the latest version.")]
+        [Display(ShortName = "v", Description = "Optional. The package version of the plugin. Use '@latest' (default) to update to the latest version.")]
         public string Version { get; set; } = LatestVersion;
 
         /// <summary>
