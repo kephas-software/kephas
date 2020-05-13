@@ -38,7 +38,7 @@ namespace Kephas.Core.Tests.Reflection
         {
             var type = typeof(string);
             var qualifiedFullName = type.GetQualifiedFullName(stripVersionInfo: true);
-#if NETCOREAPP3_1 || NETCOREAPP2_2
+#if NETCOREAPP3_1 || NETCOREAPP2_1
             Assert.AreEqual("System.String, System.Private.CoreLib", qualifiedFullName);
 #else
             Assert.AreEqual("System.String, mscorlib", qualifiedFullName);
