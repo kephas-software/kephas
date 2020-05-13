@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Scheduling.Runtime;
-
 namespace Kephas.Scheduling
 {
     using System;
@@ -19,6 +17,7 @@ namespace Kephas.Scheduling
     using Kephas.Dynamic;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
+    using Kephas.Scheduling.Runtime;
     using Kephas.Services;
     using Kephas.Workflow;
 

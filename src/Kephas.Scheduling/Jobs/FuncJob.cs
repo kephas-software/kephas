@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Reflection;
-
 namespace Kephas.Scheduling.Jobs
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Reflection;
     using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Runtime;
     using Kephas.Services;
@@ -53,7 +52,11 @@ namespace Kephas.Scheduling.Jobs
         /// </summary>
         /// <param name="operation">The operation.</param>
         public FuncJob(Action operation)
-            : this(() => { operation(); return (object?)null; })
+            : this(() =>
+            {
+                operation();
+                return (object?)null;
+            })
         {
         }
 

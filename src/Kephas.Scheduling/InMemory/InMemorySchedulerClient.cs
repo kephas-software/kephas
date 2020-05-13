@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryJobSchedulerClient.cs" company="Kephas Software SRL">
+// <copyright file="InMemorySchedulerClient.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,8 +7,6 @@
 //   Implements the in memory job scheduler client class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Kephas.Scheduling.Jobs;
 
 namespace Kephas.Scheduling.InMemory
 {
@@ -20,6 +18,7 @@ namespace Kephas.Scheduling.InMemory
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
+    using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
     using Kephas.Workflow;

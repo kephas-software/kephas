@@ -70,7 +70,7 @@ namespace Kephas.Scheduling.Runtime
         /// <returns>
         /// The new instance.
         /// </returns>
-        public override object CreateInstance(IEnumerable<object>? args = null)
+        public override object CreateInstance(IEnumerable<object?>? args = null)
         {
             if (args == null)
             {

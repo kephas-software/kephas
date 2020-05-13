@@ -272,7 +272,8 @@ namespace Kephas.Scheduling.InMemory
 
             if (!this.activeJobs.TryRemove(e.JobId, out var tuple))
             {
-                this.Logger.Warn("Job with ID '{jobId}' was already removed from the list of active jobs.",
+                this.Logger.Warn(
+                    "Job with ID '{jobId}' was already removed from the list of active jobs.",
                     e.JobId);
             }
 

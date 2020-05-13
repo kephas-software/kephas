@@ -8,14 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Scheduling.Jobs;
-using Kephas.Scheduling.Triggers;
-
 namespace Kephas.Scheduling.Runtime
 {
     using System;
 
     using Kephas.Runtime;
+    using Kephas.Scheduling.Jobs;
+    using Kephas.Scheduling.Triggers;
 
     /// <summary>
     /// A scheduling type information factory.
