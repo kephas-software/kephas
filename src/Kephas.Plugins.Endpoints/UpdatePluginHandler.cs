@@ -9,6 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Kephas.Application.Reflection;
+using Kephas.Versioning;
 
 namespace Kephas.Plugins.Endpoints
 {
@@ -108,7 +109,7 @@ namespace Kephas.Plugins.Endpoints
                     foreach (var installedPlugin in installedPlugins)
                     {
                         var availablePackage = await this.pluginManager.GetLatestAvailablePluginVersionAsync(installedPlugin.Identity, message.IncludePrerelease, token).PreserveThreadContext();
-                        if (availablePackage != null)
+                        if (availablePackage != null && availablePackage.Identity.Version != installedPlugin.Identity.Version)
                         {
                             availablePackages.Add(availablePackage);
                         }
@@ -128,16 +129,24 @@ namespace Kephas.Plugins.Endpoints
             }
             else
             {
-                if (UpdatePluginMessage.LatestVersion.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
+                var installedPlugin = this.pluginManager.GetInstalledPlugins()
+                    .FirstOrDefault(p => p.Identity.Id.Equals(message.Id, StringComparison.OrdinalIgnoreCase));
+                if (installedPlugin == null)
+                {
+                    toUpdate = new List<AppIdentity>();
+                }
+                else if (UpdatePluginMessage.LatestVersion.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
                 {
                     var availablePackage = await this.pluginManager.GetLatestAvailablePluginVersionAsync(new AppIdentity(message.Id), message.IncludePrerelease, token).PreserveThreadContext();
-                    toUpdate = availablePackage == null
-                        ? new List<AppIdentity>()
-                        : new List<AppIdentity> { availablePackage.Identity };
+                    toUpdate = availablePackage != null && availablePackage.Identity.Version != installedPlugin.Identity.Version
+                        ? new List<AppIdentity> { availablePackage.Identity }
+                        : new List<AppIdentity>();
                 }
                 else
                 {
-                    toUpdate = new List<AppIdentity> { new AppIdentity(message.Id, message.Version) };
+                    toUpdate = SemanticVersion.Parse(message.Version) != installedPlugin.Identity.Version
+                        ? new List<AppIdentity> { new AppIdentity(message.Id, message.Version) }
+                        : new List<AppIdentity>();
                 }
             }
 
