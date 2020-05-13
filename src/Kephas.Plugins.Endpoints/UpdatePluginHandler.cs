@@ -62,11 +62,11 @@ namespace Kephas.Plugins.Endpoints
 
             if (toUpdate.Count == 0)
             {
-                this.appContext.Logger.Info("No packages to update, all have the the requested version.");
+                this.appContext.Logger.Info("No packages to update, all have the requested version.");
 
                 return new ResponseMessage
                 {
-                    Message = "No packages to update, all have the the requested version.",
+                    Message = "No packages to update, all have the requested version.",
                 };
             }
 

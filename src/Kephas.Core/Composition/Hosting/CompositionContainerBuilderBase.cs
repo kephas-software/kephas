@@ -422,7 +422,7 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
-        /// Asserts the the required service is not missing.
+        /// Asserts the required service is not missing.
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         /// <typeparam name="TService">Type of the service.</typeparam>
