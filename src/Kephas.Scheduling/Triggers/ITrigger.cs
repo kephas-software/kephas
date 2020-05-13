@@ -24,7 +24,7 @@ namespace Kephas.Scheduling.Triggers
         /// <summary>
         /// Occurs when the trigger is fired.
         /// </summary>
-        event EventHandler Fire;
+        event EventHandler<FireEventArgs> Fire;
 
         /// <summary>
         /// Occurs when the trigger reached its end of life.

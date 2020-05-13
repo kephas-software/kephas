@@ -15,6 +15,7 @@ namespace Kephas.Scheduling.Tests.Timers
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Operations;
     using Kephas.Scheduling.Triggers;
     using NUnit.Framework;
 
@@ -34,7 +35,12 @@ namespace Kephas.Scheduling.Tests.Timers
             var fired = 0;
             var disposed = 0;
             var fires = new List<long>();
-            trigger.Fire += (s, e) => { fired++; fires.Add(DateTimeOffset.Now.Ticks); Thread.Sleep(30); };
+            trigger.Fire += (s, e) =>
+            {
+                fired++;
+                fires.Add(DateTimeOffset.Now.Ticks);
+                Thread.Sleep(30);
+            };
             trigger.Disposed += (s, e) => disposed++;
 
             trigger.Initialize();
@@ -59,7 +65,16 @@ namespace Kephas.Scheduling.Tests.Timers
             var fired = 0;
             var disposed = 0;
             var fires = new List<long>();
-            trigger.Fire += (s, e) => { fired++; fires.Add(DateTimeOffset.Now.Ticks); Thread.Sleep(30); };
+            trigger.Fire += (s, e) =>
+            {
+                fired++;
+                fires.Add(DateTimeOffset.Now.Ticks);
+                var opResult = new OperationResult(Task.Delay(30));
+                if (e.CompleteCallback != null)
+                {
+                    opResult.AsTask().ContinueWith(t => e.CompleteCallback.Invoke(opResult));
+                }
+            };
             trigger.Disposed += (s, e) => disposed++;
 
             trigger.Initialize();

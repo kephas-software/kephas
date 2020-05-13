@@ -13,7 +13,9 @@ namespace Kephas.Scheduling.Triggers
     using System;
 
     using Kephas.Dynamic;
+    using Kephas.Operations;
     using Kephas.Reflection;
+    using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
 
@@ -27,7 +29,7 @@ namespace Kephas.Scheduling.Triggers
         /// <summary>
         /// Occurs when the trigger is fired.
         /// </summary>
-        public event EventHandler? Fire;
+        public event EventHandler<FireEventArgs>? Fire;
 
         /// <summary>
         /// Occurs when the trigger reached its end of life.
@@ -112,11 +114,12 @@ namespace Kephas.Scheduling.Triggers
         /// <summary>
         /// Triggers the <see cref="Fire"/> event.
         /// </summary>
-        protected virtual void OnFire()
+        /// <param name="completeCallback">Optional. The callback upon job completion.</param>
+        protected virtual void OnFire(Action<IOperationResult>? completeCallback = null)
         {
             if (this.IsEnabled)
             {
-                this.Fire?.Invoke(this, EventArgs.Empty);
+                this.Fire?.Invoke(this, new FireEventArgs(completeCallback));
             }
         }
 

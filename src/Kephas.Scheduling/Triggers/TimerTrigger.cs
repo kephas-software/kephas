@@ -14,6 +14,7 @@ namespace Kephas.Scheduling.Triggers
     using System.Runtime.CompilerServices;
     using System.Threading;
 
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -141,19 +142,32 @@ namespace Kephas.Scheduling.Triggers
                 this.DisposeTimer();
             }
 
-            this.OnFire();
+            if (this.IntervalKind == TimerIntervalKind.EndToStart)
+            {
+                void CompletionCallback(IOperationResult result)
+                {
+                    if (this.HasReachedEndOfLife())
+                    {
+                        return;
+                    }
+
+                    this.timer = new Timer(
+                        s => this.HandleTimer(),
+                        null,
+                        this.normalizedInterval,
+                        Timeout.InfiniteTimeSpan);
+                }
+
+                this.OnFire(CompletionCallback);
+            }
+            else
+            {
+                this.OnFire();
+            }
 
             if (this.HasReachedEndOfLife())
             {
                 this.Dispose();
-            }
-            else if (this.IntervalKind == TimerIntervalKind.EndToStart)
-            {
-                this.timer = new Timer(
-                    s => this.HandleTimer(),
-                    null,
-                    this.normalizedInterval,
-                    Timeout.InfiniteTimeSpan);
             }
         }
 

@@ -192,7 +192,7 @@ namespace Kephas.Scheduling.InMemory
                 return;
             }
 
-            void OnTriggerOnFire(object sender, EventArgs args)
+            void OnTriggerOnFire(object sender, FireEventArgs args)
             {
                 var triggerId = trigger.Id;
                 if (!this.activeTriggers.TryGetValue(triggerId, out var tuple))
@@ -208,6 +208,11 @@ namespace Kephas.Scheduling.InMemory
                     this.Logger.Warn(
                         "Cannot add the job with ID '{jobId}' to the list of active jobs.",
                         jobResult.JobId);
+                }
+
+                if (args.CompleteCallback != null)
+                {
+                    jobResult.AsTask().ContinueWith(t => args.CompleteCallback(jobResult), cancellationSource.Token);
                 }
             }
 
