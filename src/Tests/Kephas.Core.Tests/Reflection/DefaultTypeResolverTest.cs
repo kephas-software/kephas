@@ -35,6 +35,15 @@ namespace Kephas.Core.Tests.Reflection
         }
 
         [Test]
+        public void ResolveType_DotNet_Native_only_name()
+        {
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            var resolver = new DefaultTypeResolver(getAssemblies);
+            var type = resolver.ResolveType("String");
+            Assert.AreEqual(typeof(string), type);
+        }
+
+        [Test]
         public void ResolveType_AssemblyQualifiedName()
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
@@ -61,12 +70,46 @@ namespace Kephas.Core.Tests.Reflection
         }
 
         [Test]
+        public void ResolveType_other_assembly_with_assembly_name_only_name()
+        {
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            var resolver = new DefaultTypeResolver(getAssemblies);
+            var type = resolver.ResolveType("IAmbientServices, Kephas.Core");
+            Assert.AreSame(typeof(IAmbientServices), type);
+        }
+
+        [Test]
+        public void ResolveType_other_assembly_with_assembly_name_only_name_ambiguous()
+        {
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { this.GetType().Assembly };
+            var resolver = new DefaultTypeResolver(getAssemblies);
+            Assert.Throws<TypeLoadException>(() => resolver.ResolveType($"{nameof(One.TestSameName)}, {this.GetType().Assembly.GetName().Name}"));
+        }
+
+        [Test]
         public void ResolveType_other_assembly_without_assembly_name()
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
             var resolver = new DefaultTypeResolver(getAssemblies);
             var type = resolver.ResolveType("Kephas.Interaction.ISignal");
             Assert.AreEqual("Kephas.Interaction.ISignal", type.FullName);
+        }
+
+        [Test]
+        public void ResolveType_other_assembly_without_assembly_name_only_name()
+        {
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            var resolver = new DefaultTypeResolver(getAssemblies);
+            var type = resolver.ResolveType("ISignal");
+            Assert.AreEqual("Kephas.Interaction.ISignal", type.FullName);
+        }
+
+        [Test]
+        public void ResolveType_other_assembly_without_assembly_name_only_name_ambiguous()
+        {
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { this.GetType().Assembly };
+            var resolver = new DefaultTypeResolver(getAssemblies);
+            Assert.Throws<TypeLoadException>(() => resolver.ResolveType($"{nameof(One.TestSameName)}"));
         }
 
         [Test]
@@ -77,6 +120,14 @@ namespace Kephas.Core.Tests.Reflection
             var type = resolver.ResolveType("Kephas.Services.Behaviors.IServiceBehaviorContext`1[[Kephas.Interaction.ISignal]]");
             Assert.AreEqual("IServiceBehaviorContext`1", type.Name);
             Assert.AreEqual("ISignal", type.GenericTypeArguments[0].Name);
+        }
+
+        [Test]
+        public void ResolveType_other_assembly_generic_without_assembly_name_only_name()
+        {
+            Func<IEnumerable<Assembly>> getAssemblies = () => AppDomain.CurrentDomain.GetAssemblies();
+            var resolver = new DefaultTypeResolver(getAssemblies);
+            Assert.Throws<TypeLoadException>(() => resolver.ResolveType("IServiceBehaviorContext`1[[Kephas.Interaction.ISignal]]"));
         }
 
         [Test]
@@ -116,5 +167,15 @@ namespace Kephas.Core.Tests.Reflection
             var log = sb.ToString();
             Assert.AreEqual("Warning:Errors occurred when trying to resolve type '{type}'.bla, bla", log);
         }
+    }
+
+    namespace One
+    {
+        public class TestSameName { }
+    }
+
+    namespace Two
+    {
+        public class TestSameName { }
     }
 }

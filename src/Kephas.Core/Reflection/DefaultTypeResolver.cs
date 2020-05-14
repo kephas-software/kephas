@@ -31,18 +31,21 @@ namespace Kephas.Reflection
     {
         private readonly Func<IEnumerable<Assembly>> getAppAssemblies;
         private readonly ConcurrentDictionary<string, Type?> typeCache = new ConcurrentDictionary<string, Type?>();
+        private readonly ITypeLoader typeLoader;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultTypeResolver"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="typeLoader">Optional. The type loader.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         [CompositionConstructor]
-        public DefaultTypeResolver(IAppRuntime appRuntime, ILogManager? logManager = null)
+        public DefaultTypeResolver(IAppRuntime appRuntime, ITypeLoader? typeLoader = null, ILogManager? logManager = null)
             : base(logManager)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
 
+            this.typeLoader = typeLoader ?? new DefaultTypeLoader(logManager);
             this.getAppAssemblies = () => appRuntime.GetAppAssemblies();
         }
 
@@ -50,12 +53,14 @@ namespace Kephas.Reflection
         /// Initializes a new instance of the <see cref="DefaultTypeResolver"/> class.
         /// </summary>
         /// <param name="getAppAssemblies">The get application assemblies.</param>
+        /// <param name="typeLoader">Optional. The type loader.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        public DefaultTypeResolver(Func<IEnumerable<Assembly>> getAppAssemblies, ILogManager logManager = null)
+        public DefaultTypeResolver(Func<IEnumerable<Assembly>> getAppAssemblies, ITypeLoader? typeLoader = null, ILogManager logManager = null)
             : base(logManager)
         {
             Requires.NotNull(getAppAssemblies, nameof(getAppAssemblies));
 
+            this.typeLoader = typeLoader ?? new DefaultTypeLoader(logManager);
             this.getAppAssemblies = getAppAssemblies;
         }
 
@@ -101,6 +106,12 @@ namespace Kephas.Reflection
                     type = this.getAppAssemblies()
                         .Select(asm => asm.GetType(qualifiedName.TypeName, throwOnError: false))
                         .FirstOrDefault(t => t != null);
+
+                    if (type == null && qualifiedName.Namespace == null)
+                    {
+                        type = this.ResolveTypeByNameOnly(qualifiedName.Name, this.getAppAssemblies());
+                    }
+
                     return type;
                 }
 
@@ -113,6 +124,11 @@ namespace Kephas.Reflection
                 }
 
                 type = assembly.GetType(qualifiedName.TypeName, throwOnError: false);
+                if (type == null && qualifiedName.Namespace == null)
+                {
+                    type = this.ResolveTypeByNameOnly(qualifiedName.Name, new[] { assembly });
+                }
+
                 return type;
             }
             catch (Exception ex)
@@ -120,6 +136,21 @@ namespace Kephas.Reflection
                 this.Logger.Warn(ex, Strings.DefaultTypeResolver_ResolveTypeCore_Exception, typeName);
                 return null;
             }
+        }
+
+        private Type? ResolveTypeByNameOnly(string name, IEnumerable<Assembly> assemblies)
+        {
+            var matchingTypes = assemblies
+                .SelectMany(asm => this.typeLoader.GetExportedTypes(asm).Where(t => t.Name == name))
+                .Take(2)
+                .ToList();
+            if (matchingTypes.Count > 1)
+            {
+                throw new AmbiguousMatchException(
+                    $"Multiple types with the name '{name}' found, at least '{matchingTypes[0]}' and '{matchingTypes[1]}'.");
+            }
+
+            return matchingTypes.Count == 0 ? null : matchingTypes[0];
         }
     }
 }
