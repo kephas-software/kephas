@@ -57,7 +57,7 @@ namespace Kephas.Core.Endpoints
             var settingsType = this.typeResolver.ResolveType(settingsTypeString, throwOnNotFound: false);
             if (settingsType == null)
             {
-                settingsTypeString = settingsType + "Settings";
+                settingsTypeString = settingsTypeString + "Settings";
                 settingsType = this.typeResolver.ResolveType(settingsTypeString, throwOnNotFound: false);
             }
 

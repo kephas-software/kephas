@@ -10,17 +10,14 @@
 
 namespace Kephas.Core.Endpoints.Tests
 {
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Threading.Tasks;
 
-    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.Messaging;
     using Kephas.Reflection;
-    using Kephas.Threading.Tasks;
     using NSubstitute;
     using NUnit.Framework;
 
