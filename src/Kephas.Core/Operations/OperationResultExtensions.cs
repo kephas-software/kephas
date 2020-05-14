@@ -102,6 +102,7 @@ namespace Kephas.Operations
 
             result.Elapsed = elapsed ?? (result.Elapsed != TimeSpan.Zero ? result.Elapsed : TimeSpan.Zero);
             result.OperationState = operationState ?? GetOperationState(exception);
+            result.MergeException(exception);
 
             return result;
         }
