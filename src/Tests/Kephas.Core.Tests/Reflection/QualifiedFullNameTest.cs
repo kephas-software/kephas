@@ -20,19 +20,45 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void QualifiedFullName_generic_with_assembly_type_param_with_assembly()
         {
+            var qname = new QualifiedFullName("Full.Type.Generic`1[[Full.Type.Name, AssemblyName]], GenericAssemblyName, Version, Token");
+
+            Assert.AreEqual("GenericAssemblyName", qname.AssemblyName.FullName);
+            Assert.AreEqual("Full.Type.Generic`1[[Full.Type.Name, AssemblyName]]", qname.TypeName);
+            Assert.AreEqual("Generic`1[[Full.Type.Name, AssemblyName]]", qname.Name);
+            Assert.AreEqual("Full.Type", qname.Namespace);
+        }
+
+        [Test]
+        public void QualifiedFullName_generic_with_assembly_type_param_with_assembly_no_namespace()
+        {
             var qname = new QualifiedFullName("Generic`1[[Full.Type.Name, AssemblyName]], GenericAssemblyName, Version, Token");
 
             Assert.AreEqual("GenericAssemblyName", qname.AssemblyName.FullName);
             Assert.AreEqual("Generic`1[[Full.Type.Name, AssemblyName]]", qname.TypeName);
+            Assert.AreEqual("Generic`1[[Full.Type.Name, AssemblyName]]", qname.Name);
+            Assert.IsNull(qname.Namespace);
         }
 
         [Test]
         public void QualifiedFullName_generic_without_assembly_type_param_with_assembly()
         {
+            var qname = new QualifiedFullName("Full.Type.Generic`1[[Full.Type.Name, AssemblyName]]");
+
+            Assert.IsNull(qname.AssemblyName);
+            Assert.AreEqual("Full.Type.Generic`1[[Full.Type.Name, AssemblyName]]", qname.TypeName);
+            Assert.AreEqual("Generic`1[[Full.Type.Name, AssemblyName]]", qname.Name);
+            Assert.AreEqual("Full.Type", qname.Namespace);
+        }
+
+        [Test]
+        public void QualifiedFullName_generic_without_assembly_type_param_with_assembly_no_namespace()
+        {
             var qname = new QualifiedFullName("Generic`1[[Full.Type.Name, AssemblyName]]");
 
             Assert.IsNull(qname.AssemblyName);
             Assert.AreEqual("Generic`1[[Full.Type.Name, AssemblyName]]", qname.TypeName);
+            Assert.AreEqual("Generic`1[[Full.Type.Name, AssemblyName]]", qname.Name);
+            Assert.IsNull(qname.Namespace);
         }
 
         [Test]
@@ -42,6 +68,19 @@ namespace Kephas.Core.Tests.Reflection
 
             Assert.AreEqual("AssemblyName", qname.AssemblyName.FullName);
             Assert.AreEqual("Full.Type.Name", qname.TypeName);
+            Assert.AreEqual("Name", qname.Name);
+            Assert.AreEqual("Full.Type", qname.Namespace);
+        }
+
+        [Test]
+        public void QualifiedFullName_with_assembly_no_namespace()
+        {
+            var qname = new QualifiedFullName("Name, AssemblyName, Version, Token");
+
+            Assert.AreEqual("AssemblyName", qname.AssemblyName.FullName);
+            Assert.AreEqual("Name", qname.TypeName);
+            Assert.AreEqual("Name", qname.Name);
+            Assert.IsNull(qname.Namespace);
         }
 
         [Test]
@@ -51,6 +90,19 @@ namespace Kephas.Core.Tests.Reflection
 
             Assert.IsNull(qname.AssemblyName);
             Assert.AreEqual("Full.Type.Name", qname.TypeName);
+            Assert.AreEqual("Name", qname.Name);
+            Assert.AreEqual("Full.Type", qname.Namespace);
+        }
+
+        [Test]
+        public void QualifiedFullName_without_assembly_no_namespace()
+        {
+            var qname = new QualifiedFullName("Name");
+
+            Assert.IsNull(qname.AssemblyName);
+            Assert.AreEqual("Name", qname.TypeName);
+            Assert.AreEqual("Name", qname.Name);
+            Assert.IsNull(qname.Namespace);
         }
     }
 }
