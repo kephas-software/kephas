@@ -106,7 +106,7 @@ namespace Kephas.Model
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public async Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public async Task InitializeAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
             this.initialization.Start();
 
@@ -145,7 +145,7 @@ namespace Kephas.Model
         /// <returns>
         /// The new model construction context.
         /// </returns>
-        protected virtual ModelConstructionContext CreateModelConstructionContext(IContext parentContext)
+        protected virtual ModelConstructionContext CreateModelConstructionContext(IContext? parentContext)
         {
             var constructionContext = this.ContextFactory.CreateContext<ModelConstructionContext>(parentContext);
             constructionContext.RuntimeModelElementFactory = this.runtimeModelElementFactory;

@@ -47,7 +47,7 @@ namespace Kephas.Model
         /// The resolved model type or <c>null</c>, if <paramref name="throwOnNotFound" /> is set to
         /// false and a model type could not be found.
         /// </returns>
-        public ITypeInfo ResolveModelType(ITypeInfo rawType, IContext context = null, bool throwOnNotFound = true)
+        public ITypeInfo ResolveModelType(ITypeInfo rawType, IContext? context = null, bool throwOnNotFound = true)
         {
             var modelSpace = this.modelSpaceProvider.GetModelSpace();
             var classifier = modelSpace.TryGetClassifier(rawType, context);

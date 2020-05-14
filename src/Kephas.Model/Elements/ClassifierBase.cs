@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Model.Elements
 {
     using System;
@@ -84,6 +82,7 @@ namespace Kephas.Model.Elements
         /// The classifier properties.
         /// </value>
         public IEnumerable<IProperty> Properties => this.Members.OfType<IProperty>();
+
         /// <summary>
         /// Gets the classifier methods.
         /// </summary>
@@ -91,32 +90,6 @@ namespace Kephas.Model.Elements
         /// The classifier methods.
         /// </value>
         public IEnumerable<IMethod> Methods => this.Members.OfType<IMethod>();
-
-#if NETSTANDARD2_1
-#else
-        /// <summary>
-        /// Gets the enumeration of properties.
-        /// </summary>
-        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
-
-        /// <summary>
-        /// Gets the members.
-        /// </summary>
-        /// <value>
-        /// The members.
-        /// </value>
-        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
-
-        /// <summary>
-        /// Gets a member by the provided name.
-        /// </summary>
-        /// <param name="name">The member name.</param>
-        /// <param name="throwIfNotFound">True to throw if the requested member is not found.</param>
-        /// <returns>
-        /// The requested member, or <c>null</c>.
-        /// </returns>
-        IElementInfo? ITypeInfo.GetMember(string name, bool throwIfNotFound) => this.GetMember(name, throwIfNotFound);
-#endif
 
         /// <summary>
         /// Gets a value indicating whether this classifier is a mixin.
@@ -198,6 +171,32 @@ namespace Kephas.Model.Elements
         /// </value>
         public ITypeInfo? GenericTypeDefinition { get; private set; }
 
+#if NETSTANDARD2_1
+#else
+        /// <summary>
+        /// Gets the enumeration of properties.
+        /// </summary>
+        IEnumerable<IPropertyInfo> ITypeInfo.Properties => this.Properties;
+
+        /// <summary>
+        /// Gets the members.
+        /// </summary>
+        /// <value>
+        /// The members.
+        /// </value>
+        IEnumerable<IElementInfo> ITypeInfo.Members => this.Members;
+
+        /// <summary>
+        /// Gets a member by the provided name.
+        /// </summary>
+        /// <param name="name">The member name.</param>
+        /// <param name="throwIfNotFound">True to throw if the requested member is not found.</param>
+        /// <returns>
+        /// The requested member, or <c>null</c>.
+        /// </returns>
+        IElementInfo? ITypeInfo.GetMember(string name, bool throwIfNotFound) => this.GetMember(name, throwIfNotFound);
+#endif
+
         /// <summary>
         /// Indicates whether this classifier is an aspect of the provided classifier.
         /// </summary>
@@ -228,7 +227,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The new instance.
         /// </returns>
-        public virtual object CreateInstance(IEnumerable<object>? args = null)
+        public virtual object CreateInstance(IEnumerable<object?>? args = null)
         {
             throw new ActivationException(string.Format(Strings.ClassifierBase_CannotInstantiateAbstractTypeInfo_Exception, this, typeof(ITypeInfo), this));
         }

@@ -123,7 +123,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The classifier, or <c>null</c> if the classifier was not found.
         /// </returns>
-        public IClassifier TryGetClassifier(ITypeInfo typeInfo, IContext findContext = null)
+        public IClassifier TryGetClassifier(ITypeInfo typeInfo, IContext? findContext = null)
         {
             if (typeInfo is IClassifier classifier)
             {
@@ -342,12 +342,11 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// An IClassifier.
         /// </returns>
-        private (IClassifier Classifier, bool IsNew) TryComputeClassifier(ITypeInfo typeInfo, IEnumerable<IClassifier> classifiers, IModelConstructionContext constructionContext)
+        private (IClassifier Classifier, bool IsNew) TryComputeClassifier(ITypeInfo typeInfo, IEnumerable<IClassifier> classifiers, IModelConstructionContext? constructionContext)
         {
             // TODO return only aggregated classifiers, not partial ones.
             // try to find in all classifiers, in all parts, the provided type info
             // if one is found, the containing classifier is the searched one.
-
             var resolvedClassifier = classifiers.FirstOrDefault(c => c == typeInfo || c.Aggregates(typeInfo));
             if (resolvedClassifier == null)
             {
@@ -357,7 +356,7 @@ namespace Kephas.Model.Elements
                     var resolvedGenericDefinition = classifiers.FirstOrDefault(c => c == genericTypeDefinition || c.Aggregates(genericTypeDefinition));
                     if (resolvedGenericDefinition != null)
                     {
-                        constructionContext = constructionContext ?? this.ConstructionContext;
+                        constructionContext ??= this.ConstructionContext;
                         var constructedType = (IClassifier)constructionContext.TryGetModelElementInfo(typeInfo);
                         this.ResolveAspects(new[] { constructedType }, this.GetAspects(classifiers));
 

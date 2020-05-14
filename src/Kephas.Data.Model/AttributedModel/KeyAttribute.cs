@@ -45,7 +45,7 @@ namespace Kephas.Data.Model.AttributedModel
         /// <param name="name">The key name.</param>
         /// <param name="kind">The key kind.</param>
         /// <param name="keyProperties">The key properties.</param>
-        protected KeyAttribute(string name, KeyKind kind, string[] keyProperties)
+        protected KeyAttribute(string? name, KeyKind kind, string[] keyProperties)
         {
             Requires.NotNullOrEmpty(keyProperties, nameof(keyProperties));
 
@@ -60,7 +60,7 @@ namespace Kephas.Data.Model.AttributedModel
         /// <value>
         /// The key name.
         /// </value>
-        public string Name { get; }
+        public string? Name { get; }
 
         /// <summary>
         /// Gets the key properties.

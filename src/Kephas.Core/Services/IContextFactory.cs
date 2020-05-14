@@ -32,7 +32,7 @@ namespace Kephas.Services
         /// <returns>
         /// The new context.
         /// </returns>
-        TContext CreateContext<TContext>(params object[] args)
+        TContext CreateContext<TContext>(params object?[] args)
             where TContext : class;
     }
 
@@ -56,7 +56,7 @@ namespace Kephas.Services
         /// <returns>
         /// The new context.
         /// </returns>
-        public static object CreateContext(this IContextFactory contextFactory, Type contextType, params object[] args)
+        public static object CreateContext(this IContextFactory contextFactory, Type contextType, params object?[] args)
         {
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(contextType, nameof(contextType));

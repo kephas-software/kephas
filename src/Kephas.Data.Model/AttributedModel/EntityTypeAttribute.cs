@@ -24,7 +24,7 @@ namespace Kephas.Data.Model.AttributedModel
         /// Initializes a new instance of the <see cref="EntityTypeAttribute"/> class.
         /// </summary>
         /// <param name="classifierName">Optional. Name of the classifier.</param>
-        public EntityTypeAttribute(string classifierName = null)
+        public EntityTypeAttribute(string? classifierName = null)
             : base(typeof(IEntityType), classifierName)
         {
         }

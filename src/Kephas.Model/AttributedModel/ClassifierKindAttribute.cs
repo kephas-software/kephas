@@ -24,7 +24,7 @@ namespace Kephas.Model.AttributedModel
         /// </summary>
         /// <param name="classifierType">The type of the classifier.</param>
         /// <param name="classifierName">Optional. Name of the classifier.</param>
-        protected ClassifierKindAttribute(Type classifierType, string classifierName = null)
+        protected ClassifierKindAttribute(Type classifierType, string? classifierName = null)
         {
             Requires.NotNull(classifierType, nameof(classifierType));
 
@@ -46,6 +46,6 @@ namespace Kephas.Model.AttributedModel
         /// <value>
         /// The name of the classifier.
         /// </value>
-        public string ClassifierName { get; }
+        public string? ClassifierName { get; }
     }
 }
