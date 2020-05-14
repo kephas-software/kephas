@@ -36,6 +36,6 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// An asynchronous result that yields the start.
         /// </returns>
-        Task<ProcessStartResult> StartAsync(Action<Process> config = null, CancellationToken cancellationToken = default);
+        Task<ProcessStartResult> StartAsync(Action<Process>? config = null, CancellationToken cancellationToken = default);
     }
 }

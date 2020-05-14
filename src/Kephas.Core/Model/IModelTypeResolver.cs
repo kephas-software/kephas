@@ -28,6 +28,6 @@ namespace Kephas.Model
         /// <returns>
         /// The resolved model type or <c>null</c>, if <paramref name="throwOnNotFound"/> is set to false and a model type could not be found.
         /// </returns>
-        ITypeInfo ResolveModelType(ITypeInfo rawType, IContext context = null, bool throwOnNotFound = true);
+        ITypeInfo ResolveModelType(ITypeInfo rawType, IContext? context = null, bool throwOnNotFound = true);
     }
 }

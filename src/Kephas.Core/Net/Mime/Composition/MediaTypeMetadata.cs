@@ -44,7 +44,7 @@ namespace Kephas.Net.Mime.Composition
         /// <param name="supportedFileExtensions">Optional. The supported file extensions.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public MediaTypeMetadata(string[] supportedMediaTypes, string[] supportedFileExtensions = null, int processingPriority = 0, int overridePriority = 0)
+        public MediaTypeMetadata(string[] supportedMediaTypes, string[]? supportedFileExtensions = null, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             Requires.NotNull(supportedMediaTypes, nameof(supportedMediaTypes));
@@ -67,6 +67,6 @@ namespace Kephas.Net.Mime.Composition
         /// <value>
         /// The supported file extensions.
         /// </value>
-        public string[] SupportedFileExtensions { get; }
+        public string[]? SupportedFileExtensions { get; }
     }
 }

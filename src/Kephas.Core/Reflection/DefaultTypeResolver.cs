@@ -30,7 +30,7 @@ namespace Kephas.Reflection
     public class DefaultTypeResolver : Loggable, ITypeResolver
     {
         private readonly Func<IEnumerable<Assembly>> getAppAssemblies;
-        private readonly ConcurrentDictionary<string, Type> typeCache = new ConcurrentDictionary<string, Type>();
+        private readonly ConcurrentDictionary<string, Type?> typeCache = new ConcurrentDictionary<string, Type?>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultTypeResolver"/> class.
@@ -38,7 +38,7 @@ namespace Kephas.Reflection
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         [CompositionConstructor]
-        public DefaultTypeResolver(IAppRuntime appRuntime, ILogManager logManager = null)
+        public DefaultTypeResolver(IAppRuntime appRuntime, ILogManager? logManager = null)
             : base(logManager)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
@@ -67,7 +67,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// A Type.
         /// </returns>
-        public Type ResolveType(string typeName, bool throwOnNotFound = true)
+        public Type? ResolveType(string typeName, bool throwOnNotFound = true)
         {
             var type = this.typeCache.GetOrAdd(typeName, _ => this.ResolveTypeCore(typeName));
             if (type == null && throwOnNotFound)
@@ -85,7 +85,7 @@ namespace Kephas.Reflection
         /// <returns>
         /// A Type.
         /// </returns>
-        protected virtual Type ResolveTypeCore(string typeName)
+        protected virtual Type? ResolveTypeCore(string typeName)
         {
             try
             {

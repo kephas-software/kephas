@@ -36,6 +36,6 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The new hash algorithm.
         /// </returns>
-        protected override HashAlgorithm CreateHashAlgorithm(IHashingContext context = null) => new SHA256Managed();
+        protected override HashAlgorithm CreateHashAlgorithm(IHashingContext? context = null) => new SHA256Managed();
     }
 }

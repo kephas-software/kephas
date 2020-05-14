@@ -51,7 +51,7 @@ namespace Kephas.Model
         /// The resolved type or <c>null</c>, if <paramref name="throwOnNotFound" /> is set to false and
         /// a projected type could not be found.
         /// </returns>
-        public virtual Type ResolveProjectedType(Type projectionType, IContext context = null, bool throwOnNotFound = true)
+        public virtual Type ResolveProjectedType(Type projectionType, IContext? context = null, bool throwOnNotFound = true)
         {
             Requires.NotNull(projectionType, nameof(projectionType));
 
@@ -75,7 +75,7 @@ namespace Kephas.Model
         /// <returns>
         /// The projection for attribute.
         /// </returns>
-        protected virtual ProjectionForAttribute GetProjectionForAttribute(Type projectionType, IContext context)
+        protected virtual ProjectionForAttribute GetProjectionForAttribute(Type projectionType, IContext? context)
         {
             var projectionAttr = projectionType.GetTypeInfo().GetCustomAttribute<ProjectionForAttribute>();
             return projectionAttr;

@@ -60,7 +60,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public bool Log(LogLevel level, Exception? exception, string messageFormat, params object?[] args)
+        public bool Log(LogLevel level, Exception? exception, string? messageFormat, params object?[] args)
         {
             var success = false;
             foreach (var logger in this.loggers)

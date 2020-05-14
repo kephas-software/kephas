@@ -100,7 +100,7 @@ namespace Kephas.Diagnostics.Logging
             /// <returns>
             /// True if the log operation succeeded, false if it failed.
             /// </returns>
-            public bool Log(LogLevel level, Exception? exception, string messageFormat, params object?[] args)
+            public bool Log(LogLevel level, Exception? exception, string? messageFormat, params object?[] args)
             {
                 return this.LogCore(level.ToString(), messageFormat, exception);
             }
