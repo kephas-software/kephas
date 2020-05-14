@@ -143,11 +143,7 @@ namespace Kephas.Scheduling.Triggers
             }
 
 
-            if (this.HasReachedEndOfLife())
-            {
-                this.Dispose();
-            }
-            else if (this.IntervalKind == TimerIntervalKind.EndToStart)
+            if (this.IntervalKind == TimerIntervalKind.EndToStart)
             {
                 void CompletionCallback(IOperationResult result)
                 {
@@ -168,6 +164,11 @@ namespace Kephas.Scheduling.Triggers
             else
             {
                 this.OnFire();
+            }
+
+            if (this.HasReachedEndOfLife())
+            {
+                this.Dispose();
             }
         }
 

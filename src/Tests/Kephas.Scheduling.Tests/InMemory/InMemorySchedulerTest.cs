@@ -48,7 +48,7 @@ namespace Kephas.Scheduling.Tests.InMemory
                 new EnqueueEvent
                 {
                     JobInfo = jobInfo,
-                    Options = ctx => ctx.Trigger(new TimerTrigger { Count = 2, Interval = TimeSpan.FromMilliseconds(30) }),
+                    Options = ctx => ctx.Trigger(new TimerTrigger { Count = 2, Interval = TimeSpan.FromMilliseconds(30), IntervalKind = TimerIntervalKind.StartToStart }),
                 },
                 null);
 
