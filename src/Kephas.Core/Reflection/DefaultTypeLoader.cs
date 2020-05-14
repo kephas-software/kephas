@@ -8,15 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Reflection
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Resources;
 
@@ -25,6 +25,10 @@ namespace Kephas.Reflection
     /// </summary>
     public class DefaultTypeLoader : Loggable, ITypeLoader
     {
+        private static readonly Lazy<ITypeLoader> LazyInstance = new Lazy<ITypeLoader>(() => new DefaultTypeLoader());
+        private readonly ConcurrentDictionary<Assembly, IEnumerable<Type>> assemblyCache =
+            new ConcurrentDictionary<Assembly, IEnumerable<Type>>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultTypeLoader"/> class.
         /// </summary>
@@ -35,6 +39,11 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Gets the static instance of the <see cref="DefaultTypeLoader"/>.
+        /// </summary>
+        public static ITypeLoader Instance => LazyInstance.Value;
+
+        /// <summary>
         /// Gets the loadable exported types from the provided assembly.
         /// </summary>
         /// <param name="assembly">The assembly containing the types.</param>
@@ -43,29 +52,36 @@ namespace Kephas.Reflection
         /// </returns>
         public IEnumerable<Type> GetExportedTypes(Assembly assembly)
         {
-            // for more information check also:
-            // http://stackoverflow.com/questions/7889228/how-to-prevent-reflectiontypeloadexception-when-calling-assembly-gettypes
-            try
-            {
-                return assembly.IsDynamic ? new Type[0] : assembly.ExportedTypes;
-            }
-            catch (ReflectionTypeLoadException e)
-            {
-                this.Logger.Error(e, Strings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
-                return e.Types.Where(t => t != null);
-            }
-            catch (TypeLoadException tle)
-            {
-                this.Logger.Error(tle, Strings.DefaultTypeLoader_GetLoadableExportedTypes_TypeLoadException, tle.TypeName, assembly);
+            Requires.NotNull(assembly, nameof(assembly));
 
-                return this.GetLoadableDefinedTypes(assembly);
-            }
-            catch (Exception e)
-            {
-                this.Logger.Error(e, Strings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
+            return this.assemblyCache.GetOrAdd(
+                assembly,
+                _ =>
+                {
+                    // for more information check also:
+                    // http://stackoverflow.com/questions/7889228/how-to-prevent-reflectiontypeloadexception-when-calling-assembly-gettypes
+                    try
+                    {
+                        return assembly.IsDynamic ? new Type[0] : assembly.ExportedTypes;
+                    }
+                    catch (ReflectionTypeLoadException e)
+                    {
+                        this.Logger.Error(e, Strings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
+                        return e.Types.Where(t => t != null);
+                    }
+                    catch (TypeLoadException tle)
+                    {
+                        this.Logger.Error(tle, Strings.DefaultTypeLoader_GetLoadableExportedTypes_TypeLoadException, tle.TypeName, assembly);
 
-                return this.GetLoadableDefinedTypes(assembly);
-            }
+                        return this.GetLoadableDefinedTypes(assembly);
+                    }
+                    catch (Exception e)
+                    {
+                        this.Logger.Error(e, Strings.DefaultTypeLoader_GetLoadableExportedTypes_ReflectionTypeLoadException, assembly);
+
+                        return this.GetLoadableDefinedTypes(assembly);
+                    }
+                });
         }
 
         /// <summary>
