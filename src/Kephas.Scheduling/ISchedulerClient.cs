@@ -43,10 +43,56 @@ namespace Kephas.Scheduling
         /// An asynchronous result that yields the operation result.
         /// </returns>
         Task<IJobResult> EnqueueAsync(
-            object jobInfo,
+            IJobInfo jobInfo,
             object? target,
             IExpando? arguments,
             Action<IActivityContext>? options = null,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Enqueues a new job asynchronously.
+        /// <para>
+        /// The job information provided may be either an ID, a qualified name, or a
+        /// <see cref="IJobInfo"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="jobInfoId">The ID of the job information.</param>
+        /// <param name="target">Target for the.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
+        Task<IJobResult> EnqueueAsync(
+            object jobInfoId,
+            object? target,
+            IExpando? arguments,
+            Action<IActivityContext>? options = null,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Cancels all running jobs and active triggers related to the provided job information asynchronously.
+        /// </summary>
+        /// <param name="jobInfo">The job information instance.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
+        Task<IJobResult> CancelJobInfoAsync(
+            IJobInfo jobInfo,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Cancels all running jobs and active triggers related to the provided job information asynchronously.
+        /// </summary>
+        /// <param name="jobInfoId">The ID of the job information.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
+        Task<IJobResult> CancelJobInfoAsync(
+            object jobInfoId,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -148,7 +194,7 @@ namespace Kephas.Scheduling
         /// </returns>
         private static Task<IJobResult> EnqueueAsync(
             this ISchedulerClient scheduler,
-            RuntimeFuncJobInfo jobInfo,
+            IJobInfo jobInfo,
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default)
         {

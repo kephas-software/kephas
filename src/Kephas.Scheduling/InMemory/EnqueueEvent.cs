@@ -13,6 +13,7 @@ namespace Kephas.Scheduling.InMemory
     using System;
 
     using Kephas.Dynamic;
+    using Kephas.Scheduling.Reflection;
     using Kephas.Workflow;
 
     /// <summary>
@@ -23,7 +24,12 @@ namespace Kephas.Scheduling.InMemory
         /// <summary>
         /// Gets or sets the job information.
         /// </summary>
-        public object JobInfo { get; set; }
+        public IJobInfo? JobInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the job information.
+        /// </summary>
+        public object? JobInfoId { get; set; }
 
         /// <summary>
         /// Gets or sets the trigger ID.

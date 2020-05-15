@@ -14,6 +14,7 @@ namespace Kephas.Scheduling.InMemory
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Interaction;
     using Kephas.Logging;
@@ -55,7 +56,7 @@ namespace Kephas.Scheduling.InMemory
         /// <see cref="IJobInfo"/>.
         /// </para>
         /// </summary>
-        /// <param name="jobInfo">Information describing the job.</param>
+        /// <param name="jobInfoId">The job information ID.</param>
         /// <param name="target">Target for the.</param>
         /// <param name="arguments">The arguments.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
@@ -63,28 +64,73 @@ namespace Kephas.Scheduling.InMemory
         /// <returns>
         /// An asynchronous result that yields the operation result.
         /// </returns>
-        public async Task<IJobResult> EnqueueAsync(
-            object jobInfo,
+        public Task<IJobResult> EnqueueAsync(
+            object jobInfoId,
             object? target,
             IExpando? arguments,
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            var enqueueEvent = new EnqueueEvent
-            {
-                JobInfo = jobInfo,
-                TriggerId = Guid.NewGuid(),
-                Target = target,
-                Arguments = arguments,
-                Options = options,
-            };
-            await this.eventHub.PublishAsync(
-                enqueueEvent,
-                this.contextFactory.CreateContext<Context>(),
-                cancellationToken);
+            Requires.NotNull(jobInfoId, nameof(jobInfoId));
 
-            return new JobResult(enqueueEvent.TriggerId)
-                .Complete(TimeSpan.Zero, OperationState.InProgress);
+            return this.EnqueueAsync(null, jobInfoId, target, arguments, options, cancellationToken);
+        }
+
+        /// <summary>
+        /// Starts a new job asynchronously.
+        /// <para>
+        /// The job information provided may be either an ID, a qualified name, or a
+        /// <see cref="IJobInfo"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="jobInfo">The job information.</param>
+        /// <param name="target">Target for the.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
+        public Task<IJobResult> EnqueueAsync(
+            IJobInfo jobInfo,
+            object? target,
+            IExpando? arguments,
+            Action<IActivityContext>? options = null,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(jobInfo, nameof(jobInfo));
+
+            return this.EnqueueAsync(jobInfo, null, target, arguments, options, cancellationToken);
+        }
+
+        /// <summary>
+        /// Cancels all running jobs and active triggers related to the provided job information asynchronously.
+        /// </summary>
+        /// <param name="jobInfoId">The identifier of the job information.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
+        public Task<IJobResult> CancelJobInfoAsync(object jobInfoId, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(jobInfoId, nameof(jobInfoId));
+
+            return this.CancelJobInfoAsync(null, jobInfoId, cancellationToken);
+        }
+
+        /// <summary>
+        /// Cancels all running jobs and active triggers related to the provided job information asynchronously.
+        /// </summary>
+        /// <param name="jobInfo">The job information.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
+        public Task<IJobResult> CancelJobInfoAsync(IJobInfo jobInfo, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(jobInfo, nameof(jobInfo));
+
+            return this.CancelJobInfoAsync(jobInfo, null, cancellationToken);
         }
 
         /// <summary>
@@ -130,6 +176,75 @@ namespace Kephas.Scheduling.InMemory
                 cancellationToken);
 
             return new JobResult(triggerId)
+                .Complete(TimeSpan.Zero, OperationState.InProgress);
+        }
+
+        /// <summary>
+        /// Cancels all running jobs and active triggers related to the provided job information asynchronously.
+        /// </summary>
+        /// <param name="jobInfo">The job information.</param>
+        /// <param name="jobInfoId">The ID of the job information.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
+        protected virtual async Task<IJobResult> CancelJobInfoAsync(IJobInfo? jobInfo, object? jobInfoId, CancellationToken cancellationToken = default)
+        {
+            var enqueueEvent = new CancelJobInfoEvent
+            {
+                JobInfo = jobInfo,
+                JobInfoId = jobInfoId,
+            };
+            await this.eventHub.PublishAsync(
+                enqueueEvent,
+                this.contextFactory.CreateContext<Context>(),
+                cancellationToken);
+
+            return new JobResult { JobInfo = jobInfo, JobInfoId = jobInfoId }
+                .Complete(TimeSpan.Zero, OperationState.InProgress);
+        }
+
+        /// <summary>
+        /// Starts a new job asynchronously.
+        /// <para>
+        /// The job information provided may be either an ID, a qualified name, or a
+        /// <see cref="IJobInfo"/>.
+        /// </para>
+        /// </summary>
+        /// <param name="jobInfo">The job information.</param>
+        /// <param name="jobInfoId">The ID of the job information.</param>
+        /// <param name="target">Target for the.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="options">Optional. Options for controlling the operation.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
+        protected virtual async Task<IJobResult> EnqueueAsync(
+            IJobInfo? jobInfo,
+            object? jobInfoId,
+            object? target,
+            IExpando? arguments,
+            Action<IActivityContext>? options = null,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(jobInfo, nameof(jobInfo));
+
+            var enqueueEvent = new EnqueueEvent
+            {
+                JobInfo = jobInfo,
+                JobInfoId = jobInfoId,
+                TriggerId = Guid.NewGuid(),
+                Target = target,
+                Arguments = arguments,
+                Options = options,
+            };
+            await this.eventHub.PublishAsync(
+                enqueueEvent,
+                this.contextFactory.CreateContext<Context>(),
+                cancellationToken);
+
+            return new JobResult(enqueueEvent.TriggerId) { JobInfo = jobInfo, JobInfoId = jobInfoId }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
         }
     }
