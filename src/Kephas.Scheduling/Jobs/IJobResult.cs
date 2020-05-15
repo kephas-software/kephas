@@ -8,15 +8,34 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Kephas.Scheduling.Jobs
 {
     using Kephas.Operations;
+    using Kephas.Scheduling.Reflection;
 
     /// <summary>
     /// Interface for job result.
     /// </summary>
     public interface IJobResult : IOperationResult
     {
+        /// <summary>
+        /// Gets the identifier of the job.
+        /// </summary>
+        /// <value>
+        /// The identifier of the job.
+        /// </value>
+        object? JobInfoId { get; }
+
+        /// <summary>
+        /// Gets the job information.
+        /// </summary>
+        /// <value>
+        /// The job information.
+        /// </value>
+        IJobInfo? JobInfo { get; }
+
         /// <summary>
         /// Gets the identifier of the job.
         /// </summary>
@@ -40,5 +59,15 @@ namespace Kephas.Scheduling.Jobs
         /// The identifier of the trigger.
         /// </value>
         object? TriggerId { get; }
+
+        /// <summary>
+        /// Gets the time when the job started.
+        /// </summary>
+        DateTimeOffset? StartedAt { get; }
+
+        /// <summary>
+        /// Gets the time when the job ended.
+        /// </summary>
+        DateTimeOffset? EndedAt { get; }
     }
 }

@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using Kephas.Scheduling.Reflection;
+
 namespace Kephas.Scheduling.Jobs
 {
     using System.Threading.Tasks;
@@ -47,6 +50,16 @@ namespace Kephas.Scheduling.Jobs
         }
 
         /// <summary>
+        /// Gets or sets the ID of the job information.
+        /// </summary>
+        public object? JobInfoId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the job information.
+        /// </summary>
+        public IJobInfo? JobInfo { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the job.
         /// </summary>
         /// <value>
@@ -66,5 +79,36 @@ namespace Kephas.Scheduling.Jobs
         /// Gets or sets the trigger identifier.
         /// </summary>
         public object? TriggerId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the time when the job started.
+        /// </summary>
+        public DateTimeOffset? StartedAt { get; set; }
+
+        /// <summary>
+        /// Gets or sets the time when the job ended.
+        /// </summary>
+        public DateTimeOffset? EndedAt { get; set; }
+
+        /// <summary>
+        /// Gets or sets the elapsed time.
+        /// </summary>
+        /// <value>
+        /// The elapsed time.
+        /// </value>
+        public override TimeSpan Elapsed
+        {
+            get
+            {
+                if (base.Elapsed == TimeSpan.Zero && this.StartedAt.HasValue)
+                {
+                        return this.EndedAt.HasValue
+                            ? this.EndedAt.Value - this.StartedAt.Value
+                            : DateTimeOffset.Now - this.StartedAt.Value;
+                }
+
+                return base.Elapsed;
+            }
+        }
     }
 }
