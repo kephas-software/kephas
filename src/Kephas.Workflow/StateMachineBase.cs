@@ -61,7 +61,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The current state of the target.
         /// </value>
-        public virtual TState CurrentState => (TState)this.GetTypeInfo().TargetStateProperty.GetValue(this.Target);
+        public virtual TState CurrentState => (TState)this.GetTypeInfo().TargetStateProperty.GetValue(this.Target)!;
 
         /// <summary>
         /// Gets the target controlled by the state machine.
@@ -77,7 +77,7 @@ namespace Kephas.Workflow
         /// <value>
         /// The current state of the target.
         /// </value>
-        object IStateMachine.CurrentState => this.CurrentState;
+        object IStateMachine.CurrentState => this.CurrentState!;
 
         /// <summary>
         /// Gets type information.
@@ -85,7 +85,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// The type information.
         /// </returns>
-        public virtual IStateMachineInfo GetTypeInfo() => (IStateMachineInfo)this.GetRuntimeTypeInfo();
+        public virtual IStateMachineInfo GetTypeInfo() => (IStateMachineInfo)this.GetRuntimeTypeInfo()!;
 
         /// <summary>
         /// Gets the type information.

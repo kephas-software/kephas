@@ -203,7 +203,7 @@ namespace Kephas.Workflow.Runtime
         /// </returns>
         private IEnumerable<IParameterInfo> GetParameters()
         {
-            return (this.parameters ?? (this.parameters = this.CreateParameterInfos(this.Type))).Values;
+            return (this.parameters ??= this.CreateParameterInfos(this.Type)).Values;
         }
     }
 }

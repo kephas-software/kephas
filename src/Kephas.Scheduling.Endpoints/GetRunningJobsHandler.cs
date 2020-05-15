@@ -44,6 +44,7 @@ namespace Kephas.Scheduling.Endpoints
                     .Select(jobResult => new RunningJobData
                     {
                         JobId = jobResult.JobId,
+                        JobInfo = jobResult.JobInfo?.ToString(),
                         OperationState = jobResult.OperationState,
                         PercentCompleted = jobResult.PercentCompleted,
                         StartedAt = jobResult.StartedAt,

@@ -111,7 +111,7 @@ namespace Kephas.Workflow.Runtime
         /// <returns>
         /// The new member infos.
         /// </returns>
-        protected override IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(Action<IDictionary<string, IRuntimeElementInfo>> membersConfig = null)
+        protected override IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(Action<IDictionary<string, IRuntimeElementInfo>>? membersConfig = null)
         {
             void AddTransitions(IDictionary<string, IRuntimeElementInfo> m)
             {

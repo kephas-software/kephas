@@ -44,7 +44,7 @@ namespace Kephas.Workflow.Behaviors.Composition
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. The name of the service.</param>
-        public ActivityBehaviorMetadata(Type activityType, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        public ActivityBehaviorMetadata(Type activityType, int processingPriority = 0, int overridePriority = 0, string? serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
             Requires.NotNull(activityType, nameof(activityType));

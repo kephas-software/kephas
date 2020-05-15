@@ -130,6 +130,7 @@ namespace Kephas.Scheduling
         /// </summary>
         /// <param name="scheduler">The scheduler to act on.</param>
         /// <param name="operation">The operation.</param>
+        /// <param name="friendlyName">The friendly name of the job.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
@@ -138,10 +139,11 @@ namespace Kephas.Scheduling
         public static Task<IJobResult> EnqueueAsync(
             this ISchedulerClient scheduler,
             Func<object?> operation,
+            string? friendlyName = null,
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(operation), options, cancellationToken);
+            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(operation, friendlyName), options, cancellationToken);
         }
 
         /// <summary>
@@ -149,6 +151,7 @@ namespace Kephas.Scheduling
         /// </summary>
         /// <param name="scheduler">The scheduler to act on.</param>
         /// <param name="operation">The operation.</param>
+        /// <param name="friendlyName">The friendly name of the job.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
@@ -157,10 +160,11 @@ namespace Kephas.Scheduling
         public static Task<IJobResult> EnqueueAsync(
             this ISchedulerClient scheduler,
             Action operation,
+            string? friendlyName = null,
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(operation), options, cancellationToken);
+            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(operation, friendlyName), options, cancellationToken);
         }
 
         /// <summary>
@@ -168,6 +172,7 @@ namespace Kephas.Scheduling
         /// </summary>
         /// <param name="scheduler">The scheduler to act on.</param>
         /// <param name="asyncOperation">The asynchronous operation.</param>
+        /// <param name="friendlyName">The friendly name of the job.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
@@ -176,10 +181,11 @@ namespace Kephas.Scheduling
         public static Task<IJobResult> EnqueueAsync(
             this ISchedulerClient scheduler,
             Func<CancellationToken, Task<object?>> asyncOperation,
+            string? friendlyName = null,
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(asyncOperation), options, cancellationToken);
+            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(asyncOperation, friendlyName), options, cancellationToken);
         }
 
         /// <summary>

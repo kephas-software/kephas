@@ -52,7 +52,7 @@ namespace Kephas.Workflow.Runtime
         /// <param name="propertyInfo">Information describing the property backing the parameter.</param>
         /// <param name="position">The position.</param>
         /// <param name="logger">The logger.</param>
-        internal RuntimeActivityParameterInfo(PropertyInfo propertyInfo, int position, ILogger logger = null)
+        internal RuntimeActivityParameterInfo(PropertyInfo propertyInfo, int position, ILogger? logger = null)
             : base(isThreadSafe: true)
         {
             this.PropertyInfo = propertyInfo;

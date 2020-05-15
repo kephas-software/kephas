@@ -62,5 +62,10 @@ namespace Kephas.Scheduling.Endpoints
         /// Gets or sets the elapsed time.
         /// </summary>
         public TimeSpan Elapsed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the job information.
+        /// </summary>
+        public object? JobInfo { get; set; }
     }
 }

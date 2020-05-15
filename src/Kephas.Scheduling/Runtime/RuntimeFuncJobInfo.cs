@@ -29,15 +29,15 @@ namespace Kephas.Scheduling.Runtime
         /// Initializes a new instance of the <see cref="RuntimeFuncJobInfo"/> class.
         /// </summary>
         /// <param name="operation">The operation.</param>
-        /// <param name="name">Optional. The name.</param>
-        protected internal RuntimeFuncJobInfo(Action operation, string? name = null)
+        /// <param name="friendlyName">Optional. The friendly name.</param>
+        protected internal RuntimeFuncJobInfo(Action operation, string? friendlyName = null)
             : this(
                 () =>
                     {
                         operation();
                         return null;
                     },
-                name)
+                friendlyName)
         {
         }
 
@@ -45,23 +45,30 @@ namespace Kephas.Scheduling.Runtime
         /// Initializes a new instance of the <see cref="RuntimeFuncJobInfo"/> class.
         /// </summary>
         /// <param name="operation">The operation.</param>
-        /// <param name="name">Optional. The name.</param>
-        protected internal RuntimeFuncJobInfo(Func<object?> operation, string? name = null)
+        /// <param name="friendlyName">Optional. The friendly name.</param>
+        protected internal RuntimeFuncJobInfo(Func<object?> operation, string? friendlyName = null)
             : base(typeof(FuncJob))
         {
             this.operation = operation;
+            this.FriendlyName = friendlyName;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeFuncJobInfo"/> class.
         /// </summary>
         /// <param name="asyncOperation">The async operation.</param>
-        /// <param name="name">Optional. The name.</param>
-        protected internal RuntimeFuncJobInfo(Func<CancellationToken, Task<object?>> asyncOperation, string? name = null)
+        /// <param name="friendlyName">Optional. The friendly name.</param>
+        protected internal RuntimeFuncJobInfo(Func<CancellationToken, Task<object?>> asyncOperation, string? friendlyName = null)
             : base(typeof(FuncJob))
         {
             this.asyncOperation = asyncOperation;
+            this.FriendlyName = friendlyName;
         }
+
+        /// <summary>
+        /// Gets the friendly name.
+        /// </summary>
+        public string? FriendlyName { get; }
 
         /// <summary>
         /// Creates an instance with the provided arguments (if any).
@@ -80,6 +87,17 @@ namespace Kephas.Scheduling.Runtime
             }
 
             return base.CreateInstance(args);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.FriendlyName ?? base.ToString();
         }
     }
 }
