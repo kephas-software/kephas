@@ -117,7 +117,7 @@ namespace Kephas.Operations
         /// <value>
         /// The percent completed.
         /// </value>
-        public float PercentCompleted
+        public virtual float PercentCompleted
         {
             get => this.percentCompleted;
             set => this.SetProperty(ref this.percentCompleted, value);
@@ -129,7 +129,7 @@ namespace Kephas.Operations
         /// <value>
         /// The elapsed time.
         /// </value>
-        public TimeSpan Elapsed
+        public virtual TimeSpan Elapsed
         {
             get => this.elapsed;
             set => this.SetProperty(ref this.elapsed, value);
