@@ -17,9 +17,12 @@ namespace Kephas.Scheduling.InMemory
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Interaction;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Triggers;
@@ -82,6 +85,7 @@ namespace Kephas.Scheduling.InMemory
         {
             this.subscriptions.Add(this.eventHub.Subscribe<EnqueueEvent>(this.HandleEnqueue));
             this.subscriptions.Add(this.eventHub.Subscribe<CancelJobEvent>(this.HandleCancelJob));
+            this.subscriptions.Add(this.eventHub.Subscribe<CancelJobInfoEvent>(this.HandleCancelJobInfo));
             this.subscriptions.Add(this.eventHub.Subscribe<CancelTriggerEvent>(this.HandleCancelTrigger));
 
             return Task.CompletedTask;
@@ -107,7 +111,7 @@ namespace Kephas.Scheduling.InMemory
                 var kv = this.activeTriggers.FirstOrDefault();
                 if (kv.Key != null)
                 {
-                    this.HandleCancelTrigger(new CancelTriggerEvent { TriggerId = kv.Key }, context!);
+                    this.CancelTrigger(kv.Key);
                 }
             }
 
@@ -117,7 +121,7 @@ namespace Kephas.Scheduling.InMemory
                 var kv = this.activeJobs.FirstOrDefault();
                 if (kv.Key != null)
                 {
-                    this.HandleCancelJob(new CancelJobEvent { JobId = kv.Key }, context!);
+                    this.CancelJob(kv.Key);
                 }
             }
 
@@ -162,31 +166,32 @@ namespace Kephas.Scheduling.InMemory
                 return;
             }
 
-            if (!(e.JobInfo is IJobInfo jobInfoObject))
+            if (e.JobInfo == null)
             {
                 throw new ArgumentException(
-                    $"Only {nameof(IJobInfo)} values accepted for the {nameof(e.JobInfo)} parameter.",
+                    $"The {nameof(e.JobInfo)} parameter in the {nameof(EnqueueEvent)} is not set.",
                     nameof(e.JobInfo));
             }
 
+            var jobInfo = e.JobInfo;
             var activityContext = this.CreateActivityContext(e.Options);
 
             var trigger = activityContext.Trigger()
                           ?? new TimerTrigger(e.TriggerId ?? Guid.NewGuid());
 
-            if (!jobInfoObject.AddTrigger(trigger))
+            if (!jobInfo.AddTrigger(trigger))
             {
-                this.Logger.Warn("Could not add trigger '{trigger}' to job '{job}'", trigger, jobInfoObject);
+                this.Logger.Warn("Could not add trigger '{trigger}' to job '{job}'", trigger, jobInfo);
             }
 
             lock (this.scheduledJobs)
             {
-                this.scheduledJobs.Add(jobInfoObject);
+                this.scheduledJobs.Add(jobInfo);
             }
 
             if (!this.activeTriggers.TryAdd(
                 trigger.Id,
-                (trigger, ct => this.StartJob(jobInfoObject, e.Target, e.Arguments, e.Options, ct))))
+                (trigger, ct => this.StartJob(jobInfo, e.Target, e.Arguments, e.Options, ct))))
             {
                 this.Logger.Warn("Cannot enqueue trigger with ID {triggerId}.", trigger.Id);
                 return;
@@ -210,6 +215,20 @@ namespace Kephas.Scheduling.InMemory
                         jobResult.JobId);
                 }
 
+                // upon completion, remove the job from the active collection.
+                jobResult.AsTask().ContinueWith(
+                    t =>
+                    {
+                        if (jobResult is JobResult jobResultClass)
+                        {
+                            jobResultClass.EndedAt = DateTimeOffset.Now;
+                            jobResultClass.PercentCompleted = 1;
+                        }
+
+                        this.activeJobs.TryRemove(jobResult.JobId!, out _);
+                    });
+
+                // also, upon completion, remove the job from the active collection.
                 if (args.CompleteCallback != null)
                 {
                     jobResult.AsTask().ContinueWith(t => args.CompleteCallback(jobResult), cancellationSource.Token);
@@ -223,12 +242,12 @@ namespace Kephas.Scheduling.InMemory
                 {
                     trigger.Fire -= OnTriggerOnFire;
                     trigger.Disposed -= OnTriggerOnDisposed;
-                    jobInfoObject.RemoveTrigger(trigger);
-                    if (!jobInfoObject.Triggers.Any())
+                    jobInfo.RemoveTrigger(trigger);
+                    if (!jobInfo.Triggers.Any())
                     {
                         lock (this.scheduledJobs)
                         {
-                            this.scheduledJobs.Remove(jobInfoObject);
+                            this.scheduledJobs.Remove(jobInfo);
                         }
                     }
                 }
@@ -237,7 +256,7 @@ namespace Kephas.Scheduling.InMemory
             trigger.Fire += OnTriggerOnFire;
             trigger.Disposed += OnTriggerOnDisposed;
 
-            this.Logger.Info("Enqueued job '{job}' with trigger '{trigger}'.", jobInfoObject, trigger);
+            this.Logger.Info("Enqueued job '{job}' with trigger '{trigger}'.", jobInfo, trigger);
 
             ServiceHelper.Initialize(trigger);
         }
@@ -249,16 +268,31 @@ namespace Kephas.Scheduling.InMemory
         /// <param name="context">The context.</param>
         protected virtual void HandleCancelTrigger(CancelTriggerEvent e, IContext context)
         {
-            this.Logger.Info("Cancelling trigger with ID '{triggerId}'...", e.TriggerId);
+            Requires.NotNull(e.TriggerId, nameof(e.TriggerId));
 
-            if (!this.activeTriggers.TryRemove(e.TriggerId, out var tuple))
+            this.CancelTrigger(e.TriggerId);
+        }
+
+        /// <summary>
+        /// Cancels the trigger with the provided ID.
+        /// </summary>
+        /// <param name="triggerId">The trigger ID.</param>
+        protected virtual void CancelTrigger(object triggerId)
+        {
+            Requires.NotNull(triggerId, nameof(triggerId));
+
+            this.Logger.Info("Cancelling trigger with ID '{triggerId}'...", triggerId);
+
+            if (!this.activeTriggers.TryRemove(triggerId, out var tuple))
             {
-                this.Logger.Warn("Trigger with ID '{triggerId}' was already removed from the list of active triggers.", e.TriggerId);
+                this.Logger.Warn("Trigger with ID '{triggerId}' was already removed from the list of active triggers.", triggerId);
             }
-
-            tuple.trigger.Dispose();
-
-            this.Logger.Info("Trigger with ID '{triggerId}' is canceled.", e.TriggerId);
+            else
+            {
+                tuple.trigger.IsEnabled = false;
+                tuple.trigger.Dispose();
+                this.Logger.Info("Trigger with ID '{triggerId}' is canceled.", triggerId);
+            }
         }
 
         /// <summary>
@@ -268,18 +302,55 @@ namespace Kephas.Scheduling.InMemory
         /// <param name="context">The context.</param>
         protected virtual void HandleCancelJob(CancelJobEvent e, IContext context)
         {
-            this.Logger.Info("Cancelling job with ID '{jobId}'...", e.JobId);
+            Requires.NotNull(e.JobId, nameof(e.JobId));
 
-            if (!this.activeJobs.TryRemove(e.JobId, out var tuple))
+            this.CancelJob(e.JobId);
+        }
+
+        /// <summary>
+        /// Cancels the job with the provided ID.
+        /// </summary>
+        /// <param name="jobId">The job ID.</param>
+        protected virtual void CancelJob(object jobId)
+        {
+            this.Logger.Info("Cancelling job with ID '{jobId}'...", jobId);
+
+            if (!this.activeJobs.TryRemove(jobId, out var tuple))
             {
                 this.Logger.Warn(
                     "Job with ID '{jobId}' was already removed from the list of active jobs.",
-                    e.JobId);
+                    jobId);
+            }
+            else
+            {
+                tuple.cancellationSource.Cancel();
+                this.Logger.Info("Job with ID '{jobId}' was signaled for cancellation.", jobId);
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="CancelJobInfoEvent"/>.
+        /// </summary>
+        /// <param name="e">The event to process.</param>
+        /// <param name="context">The context.</param>
+        protected virtual void HandleCancelJobInfo(CancelJobInfoEvent e, IContext context)
+        {
+            if (e.JobInfo == null && e.JobInfoId == null)
+            {
+                throw new ArgumentNullException(nameof(e.JobInfo), $"Either the {nameof(e.JobInfo)} or {nameof(e.JobInfoId)} must be provided.");
             }
 
-            tuple.cancellationSource.Cancel();
+            this.Logger.Info("Cancelling jobs and triggers based on job information '{jobInfo}'...", e.JobInfo ?? e.JobInfoId);
 
-            this.Logger.Info("Job with ID '{jobId}' was signaled for cancellation.", e.JobId);
+            e.JobInfo?.Triggers.ForEach(t => this.CancelTrigger(t.Id));
+
+            var matchingActiveJobs = (e.JobInfo == null
+                ? this.activeJobs.Where(kv => e.JobInfoId.Equals(kv.Value.jobResult.JobInfoId))
+                : this.activeJobs.Where(kv => e.JobInfo.Equals(kv.Value.jobResult.JobInfo)))
+                    .Select(kv => kv.Key)
+                    .ToList();
+
+            matchingActiveJobs.ForEach(this.CancelJob);
         }
 
         /// <summary>
@@ -311,12 +382,16 @@ namespace Kephas.Scheduling.InMemory
             var job = (IJob)jobInfo.CreateInstance();
             job.Target = target;
             job.Arguments = arguments;
+            var startedAt = DateTimeOffset.Now;
 
             return new JobResult(
                 job.Id,
                 this.workflowProcessor.ExecuteAsync(job, target, arguments, options, cancellationToken))
             {
+                JobInfo = jobInfo,
                 Job = job,
+                StartedAt = startedAt,
+                OperationState = OperationState.InProgress,
             };
         }
     }
