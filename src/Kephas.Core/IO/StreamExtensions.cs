@@ -33,10 +33,8 @@ namespace Kephas.IO
         {
             Requires.NotNull(input, nameof(input));
 
-            using (var reader = new StreamReader(input))
-            {
-                return reader.ReadToEnd();
-            }
+            using var reader = new StreamReader(input);
+            return reader.ReadToEnd();
         }
 
         /// <summary>
@@ -50,10 +48,8 @@ namespace Kephas.IO
         {
             Requires.NotNull(input, nameof(input));
 
-            using (var reader = new StreamReader(input))
-            {
-                return await reader.ReadToEndAsync().PreserveThreadContext();
-            }
+            using var reader = new StreamReader(input);
+            return await reader.ReadToEndAsync().PreserveThreadContext();
         }
 
         /// <summary>
@@ -67,19 +63,18 @@ namespace Kephas.IO
         {
             Requires.NotNull(input, nameof(input));
 
-            using (var mem = new MemoryStream())
-            {
-                // read all bytes
-                const int ChunkSize = 1000;
-                var buffer = new byte[ChunkSize];
-                var readLength = 0;
-                while ((readLength = input.Read(buffer, 0, ChunkSize)) > 0)
-                {
-                    mem.Write(buffer, 0, readLength);
-                }
+            using var mem = new MemoryStream();
 
-                return mem.ToArray();
+            // read all bytes
+            const int ChunkSize = 1000;
+            var buffer = new byte[ChunkSize];
+            var readLength = 0;
+            while ((readLength = input.Read(buffer, 0, ChunkSize)) > 0)
+            {
+                mem.Write(buffer, 0, readLength);
             }
+
+            return mem.ToArray();
         }
 
         /// <summary>
@@ -94,19 +89,18 @@ namespace Kephas.IO
         {
             Requires.NotNull(input, nameof(input));
 
-            using (var mem = new MemoryStream())
-            {
-                // read all bytes
-                const int ChunkSize = 1000;
-                var buffer = new byte[ChunkSize];
-                var readLength = 0;
-                while ((readLength = await input.ReadAsync(buffer, 0, ChunkSize, cancellationToken).PreserveThreadContext()) > 0)
-                {
-                    await mem.WriteAsync(buffer, 0, readLength, cancellationToken).PreserveThreadContext();
-                }
+            using var mem = new MemoryStream();
 
-                return mem.ToArray();
+            // read all bytes
+            const int ChunkSize = 1000;
+            var buffer = new byte[ChunkSize];
+            var readLength = 0;
+            while ((readLength = await input.ReadAsync(buffer, 0, ChunkSize, cancellationToken).PreserveThreadContext()) > 0)
+            {
+                await mem.WriteAsync(buffer, 0, readLength, cancellationToken).PreserveThreadContext();
             }
+
+            return mem.ToArray();
         }
     }
 }
