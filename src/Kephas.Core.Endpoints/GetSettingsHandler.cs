@@ -12,6 +12,7 @@ namespace Kephas.Core.Endpoints
 
     using Kephas.Composition;
     using Kephas.Configuration;
+    using Kephas.ExceptionHandling;
     using Kephas.Messaging;
     using Kephas.Reflection;
 
@@ -48,6 +49,7 @@ namespace Kephas.Core.Endpoints
                 return new GetSettingsResponseMessage
                 {
                     Message = "Settings type not provided.",
+                    Severity = SeverityLevel.Error,
                 };
             }
 
@@ -66,6 +68,7 @@ namespace Kephas.Core.Endpoints
                 return new GetSettingsResponseMessage
                 {
                     Message = $"Settings type {message.SettingsType} not found.",
+                    Severity = SeverityLevel.Error,
                 };
             }
 
