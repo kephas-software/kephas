@@ -7,6 +7,7 @@
 
 namespace Kephas.Core.Endpoints
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -21,6 +22,8 @@ namespace Kephas.Core.Endpoints
     /// </summary>
     public class GetSettingsHandler : MessageHandlerBase<GetSettingsMessage, GetSettingsResponseMessage>
     {
+        private const string SettingsEnding = "Settings";
+
         private readonly ICompositionContext compositionContext;
         private readonly ITypeResolver typeResolver;
 
@@ -56,13 +59,12 @@ namespace Kephas.Core.Endpoints
             await Task.Yield();
 
             var settingsTypeString = message.SettingsType.ToPascalCase();
-            var settingsType = this.typeResolver.ResolveType(settingsTypeString, throwOnNotFound: false);
-            if (settingsType == null)
+            if (!settingsTypeString.EndsWith(SettingsEnding, StringComparison.OrdinalIgnoreCase))
             {
-                settingsTypeString = settingsTypeString + "Settings";
-                settingsType = this.typeResolver.ResolveType(settingsTypeString, throwOnNotFound: false);
+                settingsTypeString += SettingsEnding;
             }
 
+            var settingsType = this.typeResolver.ResolveType(settingsTypeString, throwOnNotFound: false);
             if (settingsType == null)
             {
                 return new GetSettingsResponseMessage
