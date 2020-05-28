@@ -54,7 +54,7 @@ namespace Kephas.Application
         /// <value>
         /// The application context.
         /// </value>
-        public IAppContext AppContext { get; set; }
+        public IAppContext? AppContext { get; set; }
 
         /// <summary>
         /// Gets or sets the ambient services.
@@ -62,6 +62,6 @@ namespace Kephas.Application
         /// <value>
         /// The ambient services.
         /// </value>
-        public IAmbientServices AmbientServices { get; set; }
+        public IAmbientServices? AmbientServices { get; set; }
     }
 }

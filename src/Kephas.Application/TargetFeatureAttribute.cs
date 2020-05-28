@@ -25,7 +25,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="featureName">Name of the feature.</param>
         /// <param name="featureVersion">Optional. The feature version.</param>
-        public TargetFeatureAttribute(string featureName, string featureVersion = null)
+        public TargetFeatureAttribute(string featureName, string? featureVersion = null)
         {
             this.Value = new FeatureRef(featureName, featureVersion);
         }
