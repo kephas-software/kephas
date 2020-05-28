@@ -34,12 +34,12 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="ambientServices">Optional. The ambient services. If not provided then
         ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
-        /// <param name="cancellationTokenSource">Optional. The cancellation token source used to stop the application.</param>
-        protected AppBase(IAmbientServices? ambientServices = null, CancellationTokenSource? cancellationTokenSource = null)
+        /// <param name="appLifetimeTokenSource">Optional. The cancellation token source used to stop the application.</param>
+        protected AppBase(IAmbientServices? ambientServices = null, CancellationTokenSource? appLifetimeTokenSource = null)
         {
             this.AmbientServices = ambientServices ?? new AmbientServices();
+            this.AppLifetimeTokenSource = appLifetimeTokenSource;
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
-            this.CancellationTokenSource = cancellationTokenSource ?? new CancellationTokenSource();
         }
 
         /// <summary>
@@ -59,9 +59,9 @@ namespace Kephas.Application
         public IAppContext AppContext { get; private set; }
 
         /// <summary>
-        /// The cancellation token source used to stop the application.
+        /// Gets or sets the cancellation token source used to stop the application.
         /// </summary>
-        protected CancellationTokenSource CancellationTokenSource { get; }
+        protected CancellationTokenSource? AppLifetimeTokenSource { get; set; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -93,20 +93,23 @@ namespace Kephas.Application
 
             this.AfterAppManagerInitialize();
 
-            var instruction = await this.WaitForShutdownSignalAsync(this.CancellationTokenSource.Token).PreserveThreadContext();
+            this.AppLifetimeTokenSource ??= new CancellationTokenSource();
+            var instruction = await this.WaitForShutdownSignalAsync(this.AppLifetimeTokenSource.Token).PreserveThreadContext();
 
-            if (instruction == AppShutdownInstruction.Shutdown)
+            if (instruction != AppShutdownInstruction.Shutdown)
             {
-                try
-                {
-                    await this.ShutdownAsync(cancellationToken).PreserveThreadContext();
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.Fatal(ex, "Abnormal application termination.");
-                    this.AppContext.Exception = ex;
-                    return (null, instruction);
-                }
+                return (this.AppContext, instruction);
+            }
+
+            try
+            {
+                await this.ShutdownAsync(cancellationToken).PreserveThreadContext();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Fatal(ex, "Abnormal application termination.");
+                this.AppContext.Exception = ex;
+                return (null, instruction);
             }
 
             return (this.AppContext, instruction);
