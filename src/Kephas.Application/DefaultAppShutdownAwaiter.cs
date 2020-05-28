@@ -47,16 +47,16 @@ namespace Kephas.Application
         /// <value>
         /// True if the application is attended/interactive, false if not.
         /// </value>
-        public bool IsAttended { get; internal protected set; } = true;
+        public bool IsAttended { get; protected internal set; } = true;
 
         /// <summary>
         /// Waits for the shutdown signal asynchronously.
         /// </summary>
-        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <param name="cancellationToken">The application lifetime token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
+        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken)
         {
             this.completionSource = new TaskCompletionSource<IOperationResult>();
 
@@ -64,6 +64,7 @@ namespace Kephas.Application
 
             using (this.cancellationTokenSource)
             using (this.cancellationTokenSource.Token.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult())))
+            using (cancellationToken.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult())))
             using (this.shutdownSubscription)
             {
                 if (this.IsAttended)

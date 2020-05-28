@@ -25,10 +25,10 @@ namespace Kephas.Application
         /// <summary>
         /// Waits for the shutdown signal asynchronously.
         /// </summary>
-        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <param name="cancellationToken">The application lifetime token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default);
+        Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken);
     }
 }

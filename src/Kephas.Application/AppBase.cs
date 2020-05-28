@@ -34,10 +34,12 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="ambientServices">Optional. The ambient services. If not provided then
         ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
-        protected AppBase(IAmbientServices? ambientServices = null)
+        /// <param name="cancellationTokenSource">Optional. The cancellation token source used to stop the application.</param>
+        protected AppBase(IAmbientServices? ambientServices = null, CancellationTokenSource? cancellationTokenSource = null)
         {
             this.AmbientServices = ambientServices ?? new AmbientServices();
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
+            this.CancellationTokenSource = cancellationTokenSource ?? new CancellationTokenSource();
         }
 
         /// <summary>
@@ -55,6 +57,11 @@ namespace Kephas.Application
         /// The application context.
         /// </value>
         public IAppContext AppContext { get; private set; }
+
+        /// <summary>
+        /// The cancellation token source used to stop the application.
+        /// </summary>
+        protected CancellationTokenSource CancellationTokenSource { get; }
 
         /// <summary>
         /// Gets or sets the logger.
@@ -86,7 +93,7 @@ namespace Kephas.Application
 
             this.AfterAppManagerInitialize();
 
-            var instruction = await this.WaitForShutdownSignalAsync(cancellationToken).PreserveThreadContext();
+            var instruction = await this.WaitForShutdownSignalAsync(this.CancellationTokenSource.Token).PreserveThreadContext();
 
             if (instruction == AppShutdownInstruction.Shutdown)
             {
@@ -228,10 +235,17 @@ namespace Kephas.Application
             {
                 var container = this.AmbientServices.CompositionContainer;
                 var terminationAwaiter = container.GetExport<IAppShutdownAwaiter>();
-                var (result, instruction) = await terminationAwaiter.WaitForShutdownSignalAsync(cancellationToken).PreserveThreadContext();
+                var (result, instruction) = await terminationAwaiter.WaitForShutdownSignalAsync(cancellationToken)
+                    .PreserveThreadContext();
                 this.AppContext.AppResult = result;
 
                 return instruction;
+            }
+            catch (OperationCanceledException cex)
+                when (cex.CancellationToken == cancellationToken)
+            {
+                this.Logger.Info("Shutdown triggered by cancelling the application lifetime token.");
+                return AppShutdownInstruction.Shutdown;
             }
             catch (Exception ex)
             {

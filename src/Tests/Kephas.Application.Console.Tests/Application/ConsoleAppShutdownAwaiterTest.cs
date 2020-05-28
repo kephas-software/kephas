@@ -51,7 +51,7 @@ namespace Kephas.Application.Console.Tests.Application
                 .Returns(Task.Delay(100));
 
             var awaiter = new ConsoleAppShutdownAwaiter(shell, eventHub);
-            var awaiterTask = awaiter.WaitForShutdownSignalAsync();
+            var awaiterTask = awaiter.WaitForShutdownSignalAsync(default);
             await Task.WhenAll(
                 awaiterTask,
                 callback(new ShutdownSignal("hello"), Substitute.For<IContext>(), default));
@@ -75,7 +75,7 @@ namespace Kephas.Application.Console.Tests.Application
                     return Substitute.For<IEventSubscription>();
                 });
             var awaiter = new ConsoleAppShutdownAwaiter(shell, eventHub);
-            var awaiterTask = awaiter.WaitForShutdownSignalAsync();
+            var awaiterTask = awaiter.WaitForShutdownSignalAsync(default);
             await awaiterTask;
 
             Assert.AreEqual(AppShutdownInstruction.Shutdown, awaiterTask.Result.instruction);
