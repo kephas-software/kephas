@@ -53,10 +53,10 @@ namespace Kephas.Extensions.Configuration.Providers
         /// <returns>
         /// The settings.
         /// </returns>
-        public virtual object GetSettings(Type settingsType)
+        public virtual object? GetSettings(Type settingsType)
         {
-            var options = this.compositionContext.GetExport(typeof(IOptions<>).MakeGenericType(settingsType));
-            return options.GetPropertyValue(nameof(IOptions<CoreSettings>.Value));
+            var options = this.compositionContext.TryGetExport(typeof(IOptions<>).MakeGenericType(settingsType));
+            return options?.GetPropertyValue(nameof(IOptions<CoreSettings>.Value));
         }
 
         /// <summary>
