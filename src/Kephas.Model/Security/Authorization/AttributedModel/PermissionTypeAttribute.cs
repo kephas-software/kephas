@@ -11,15 +11,16 @@
 namespace Kephas.Model.Security.Authorization.AttributedModel
 {
     using System;
-
     using Kephas.Model.AttributedModel;
+    using Kephas.Reflection;
     using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.Reflection;
 
     /// <summary>
     /// Attribute used to mark permission types.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
-    public class PermissionTypeAttribute : ClassifierKindAttribute
+    public class PermissionTypeAttribute : ClassifierKindAttribute, IScoped, INamed
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionTypeAttribute"/> class.
@@ -39,5 +40,8 @@ namespace Kephas.Model.Security.Authorization.AttributedModel
         /// The permission scoping.
         /// </value>
         public Scoping Scoping { get; }
+
+        /// <inheritdoc/>
+        string INamed.Name => this.ClassifierName ?? string.Empty;
     }
 }

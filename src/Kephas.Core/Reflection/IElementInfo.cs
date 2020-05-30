@@ -18,16 +18,8 @@ namespace Kephas.Reflection
     /// <summary>
     /// Contract providing base element information.
     /// </summary>
-    public interface IElementInfo : IExpando, IAttributeProvider
+    public interface IElementInfo : IExpando, IAttributeProvider, INamed
     {
-        /// <summary>
-        /// Gets the name of the element.
-        /// </summary>
-        /// <value>
-        /// The name of the element.
-        /// </value>
-        string Name { get; }
-
         /// <summary>
         /// Gets the full name of the element.
         /// </summary>

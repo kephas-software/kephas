@@ -49,7 +49,7 @@ namespace Kephas.Model.Runtime.Construction
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
-        protected override string TryComputeNameCore(object runtimeElement)
+        protected override string? TryComputeNameCore(object runtimeElement)
         {
             if (runtimeElement is IRuntimeTypeInfo typeInfo)
             {

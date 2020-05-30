@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Kephas.Model.Security.Authorization.Elements
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-
     using Kephas.Collections;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
@@ -23,6 +24,7 @@ namespace Kephas.Model.Security.Authorization.Elements
     using Kephas.Runtime;
     using Kephas.Security.Authorization;
     using Kephas.Security.Authorization.AttributedModel;
+    using Kephas.Security.Authorization.Reflection;
 
     /// <summary>
     /// Classifier class for permissions.
@@ -49,7 +51,7 @@ namespace Kephas.Model.Security.Authorization.Elements
         /// <value>
         /// The granted permissions.
         /// </value>
-        public IEnumerable<IPermissionType> GrantedPermissions { get; private set; }
+        public IEnumerable<IPermissionInfo> GrantedPermissions { get; private set; }
 
         /// <summary>
         /// Gets the required permissions to access this permission.
@@ -57,7 +59,7 @@ namespace Kephas.Model.Security.Authorization.Elements
         /// <value>
         /// The required permissions.
         /// </value>
-        public IEnumerable<IPermissionType> RequiredPermissions { get; private set; }
+        public IEnumerable<IPermissionInfo> RequiredPermissions { get; private set; }
 
         /// <summary>
         /// Gets the scoping.
@@ -75,10 +77,10 @@ namespace Kephas.Model.Security.Authorization.Elements
         {
             base.OnCompleteConstruction(constructionContext);
 
-            this.GrantedPermissions = new ReadOnlyCollection<IPermissionType>(this.BaseMixins.OfType<IPermissionType>().ToList());
+            this.GrantedPermissions = new ReadOnlyCollection<IPermissionInfo>(this.BaseMixins.OfType<IPermissionInfo>().ToList());
             var permTypeAttr = this.Parts
                 .OfType<ITypeInfo>()
-                .Select(p => p.GetAttribute<PermissionTypeAttribute>())
+                .Select(p => p.GetAttributes<Attribute>().OfType<IScoped>().FirstOrDefault())
                 .FirstOrDefault();
             this.Scoping = permTypeAttr?.Scoping ?? Scoping.Global;
             this.RequiredPermissions = this.GetAttributes<RequiresPermissionAttribute>()

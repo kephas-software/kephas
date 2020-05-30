@@ -1,21 +1,23 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPermissionType.cs" company="Kephas Software SRL">
+// <copyright file="INamed.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Declares the IPermissionType interface.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Security.Authorization
+namespace Kephas.Reflection
 {
-    using Kephas.Security.Authorization.Reflection;
-
     /// <summary>
-    /// Interface for permission type.
+    /// Provides the <see cref="Name"/> property.
     /// </summary>
-    public interface IPermissionType : IClassifier, IPermissionInfo
+    public interface INamed
     {
+        /// <summary>
+        /// Gets the name of the element.
+        /// </summary>
+        /// <value>
+        /// The name of the element.
+        /// </value>
+        string Name { get; }
     }
 }
