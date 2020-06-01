@@ -8,20 +8,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Model.Security.Authorization.Elements
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+
     using Kephas.Collections;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
     using Kephas.Model.Resources;
-    using Kephas.Model.Security.Authorization.AttributedModel;
     using Kephas.Reflection;
-    using Kephas.Runtime;
     using Kephas.Security.Authorization;
     using Kephas.Security.Authorization.AttributedModel;
     using Kephas.Security.Authorization.Reflection;
@@ -70,6 +68,11 @@ namespace Kephas.Model.Security.Authorization.Elements
         public Scoping Scoping { get; private set; }
 
         /// <summary>
+        /// Gets the token name.
+        /// </summary>
+        string IToken.TokenName => this.Name;
+
+        /// <summary>
         /// Called when the construction is complete.
         /// </summary>
         /// <param name="constructionContext">Context for the construction.</param>
@@ -78,22 +81,18 @@ namespace Kephas.Model.Security.Authorization.Elements
             base.OnCompleteConstruction(constructionContext);
 
             this.GrantedPermissions = new ReadOnlyCollection<IPermissionInfo>(this.BaseMixins.OfType<IPermissionInfo>().ToList());
-            var permTypeAttr = this.Parts
-                .OfType<ITypeInfo>()
+            var permInfoPart = this.Parts
+                .OfType<IPermissionInfo>()
                 .Select(p => p.GetAttributes<Attribute>().OfType<IScoped>().FirstOrDefault())
                 .FirstOrDefault();
-            this.Scoping = permTypeAttr?.Scoping ?? Scoping.Global;
+            this.Scoping = permInfoPart?.Scoping ?? Scoping.Global;
             this.RequiredPermissions = this.GetAttributes<RequiresPermissionAttribute>()
                 .SelectMany(
                     attr => attr.PermissionTypes
                         .Select(
                             t => constructionContext.ModelSpace.TryGetClassifier(
                                 t.AsRuntimeTypeInfo(),
-                                constructionContext))
-                        .Union(attr.Permissions
-                            .Select(p => constructionContext.ConstructedClassifiers
-                                .OfType<IPermissionType>()
-                                .FirstOrDefault(c => c.Name == p))))
+                                constructionContext)))
                 .OfType<IPermissionType>()
                 .Distinct()
                 .ToList()
@@ -117,35 +116,26 @@ namespace Kephas.Model.Security.Authorization.Elements
                 return baseTypes;
             }
 
-            var grantedPermNames = new HashSet<string>(
-                grantedAttrs
-                    .Where(a => a.Permissions != null)
-                    .SelectMany(a => a.Permissions));
             var grantedPermTypes = new HashSet<ITypeInfo>(
                 grantedAttrs
-                    .Where(a => a.Permissions != null)
+                    .Where(a => a.PermissionTypes != null)
                     .SelectMany(a => a.PermissionTypes)
                     .Select(t => t.AsRuntimeTypeInfo()));
 
             var grantedTypes = constructionContext.ModelSpace.Classifiers
                                 .OfType<IPermissionType>()
-                                .Where(c => grantedPermNames.Any(n => c.Name == n || c.FullName == n)
-                                            || grantedPermTypes.Any(t => c.Parts.Contains(t)))
+                                .Where(c => grantedPermTypes.Any(t => c.Parts.Contains(t)))
                                 .Cast<ITypeInfo>();
             baseTypes = baseTypes.AddRange(grantedTypes).Distinct().ToList();
 
-            var notFoundPermNames = grantedPermNames
-                .Where(n => baseTypes.All(t => t.Name != n && t.FullName != n))
-                .ToList();
             var baseClassifiers = baseTypes.OfType<IClassifier>().ToList();
             var notFoundPermTypes = grantedPermTypes
                 .Where(t => baseClassifiers.All(c => !c.Parts.Contains(t)))
                 .ToList();
 
-            if (notFoundPermNames.Count > 0 || notFoundPermTypes.Count > 0)
+            if (notFoundPermTypes.Count > 0)
             {
-                notFoundPermNames.AddRange(notFoundPermTypes.Select(t => t.FullName));
-                throw new ModelConstructionException(string.Format(Strings.PermissionType_MissingGrantedPermissions_Exception, this.FullName, string.Join(", ", notFoundPermNames)));
+                throw new ModelConstructionException(string.Format(Strings.PermissionType_MissingGrantedPermissions_Exception, this.FullName, string.Join(", ", notFoundPermTypes.Select(t => t.FullName))));
             }
 
             return baseTypes;
@@ -172,7 +162,7 @@ namespace Kephas.Model.Security.Authorization.Elements
         /// <returns>
         /// The calculated base classifier.
         /// </returns>
-        protected override IClassifier ComputeBaseClassifier(IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> baseTypes)
+        protected override IClassifier? ComputeBaseClassifier(IModelConstructionContext constructionContext, IEnumerable<ITypeInfo> baseTypes)
         {
             return null;
         }
