@@ -15,11 +15,14 @@ namespace Kephas.Plugins.Endpoints
 
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// An install plugin message.
     /// </summary>
     [DisplayInfo(Description = "Installs the indicated plugin.")]
+    [RequiresPermission(typeof(AppAdminPermission))]
     public class InstallPluginMessage : IMessage
     {
         /// <summary>

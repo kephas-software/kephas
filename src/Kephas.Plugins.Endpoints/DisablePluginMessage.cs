@@ -14,11 +14,14 @@ namespace Kephas.Plugins.Endpoints
 
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// A disable plugin message.
     /// </summary>
     [DisplayInfo(Description = "Disables the indicated plugin.")]
+    [RequiresPermission(typeof(AppAdminPermission))]
     public class DisablePluginMessage : IMessage
     {
         /// <summary>

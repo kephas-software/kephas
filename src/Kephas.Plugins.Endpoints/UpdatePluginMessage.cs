@@ -15,11 +15,14 @@ namespace Kephas.Plugins.Endpoints
 
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// An update plugin message.
     /// </summary>
     [DisplayInfo(Description = "Updates the installed plugin with the indicated version. A typical usage is 'updateplugin @all', which updates all installed plugins to the latest version.")]
+    [RequiresPermission(typeof(AppAdminPermission))]
     public class UpdatePluginMessage : IMessage
     {
         /// <summary>

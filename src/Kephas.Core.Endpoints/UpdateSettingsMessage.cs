@@ -8,11 +8,14 @@
 namespace Kephas.Core.Endpoints
 {
     using Kephas.ComponentModel.DataAnnotations;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// Message for updating the settings.
     /// </summary>
     [DisplayInfo(Description = "Gets the provided settings.")]
+    [RequiresPermission(typeof(AppAdminPermission))]
     public class UpdateSettingsMessage
     {
         /// <summary>

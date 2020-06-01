@@ -15,11 +15,14 @@ namespace Kephas.Core.Endpoints
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Logging;
     using Kephas.Messaging;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// A set log level message.
     /// </summary>
     [DisplayInfo(Description = "Sets the application minimum log level.")]
+    [RequiresPermission(typeof(AppAdminPermission))]
     public class SetLogLevelMessage : IMessage
     {
         /// <summary>
