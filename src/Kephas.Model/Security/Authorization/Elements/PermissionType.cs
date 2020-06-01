@@ -70,7 +70,18 @@ namespace Kephas.Model.Security.Authorization.Elements
         /// <summary>
         /// Gets the token name.
         /// </summary>
-        string IToken.TokenName => this.Name;
+        public string TokenName { get; private set; }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"[{this.TokenName}] {base.ToString()}";
+        }
 
         /// <summary>
         /// Called when the construction is complete.
@@ -80,12 +91,16 @@ namespace Kephas.Model.Security.Authorization.Elements
         {
             base.OnCompleteConstruction(constructionContext);
 
-            this.GrantedPermissions = new ReadOnlyCollection<IPermissionInfo>(this.BaseMixins.OfType<IPermissionInfo>().ToList());
             var permInfoPart = this.Parts
                 .OfType<IPermissionInfo>()
-                .Select(p => p.GetAttributes<Attribute>().OfType<IScoped>().FirstOrDefault())
                 .FirstOrDefault();
             this.Scoping = permInfoPart?.Scoping ?? Scoping.Global;
+            this.TokenName = permInfoPart?.TokenName ?? this.Name;
+
+            this.GrantedPermissions = this.BaseMixins
+                .OfType<IPermissionInfo>()
+                .ToList()
+                .AsReadOnly();
             this.RequiredPermissions = this.GetAttributes<RequiresPermissionAttribute>()
                 .SelectMany(
                     attr => attr.PermissionTypes
@@ -93,7 +108,7 @@ namespace Kephas.Model.Security.Authorization.Elements
                             t => constructionContext.ModelSpace.TryGetClassifier(
                                 t.AsRuntimeTypeInfo(),
                                 constructionContext)))
-                .OfType<IPermissionType>()
+                .OfType<IPermissionInfo>()
                 .Distinct()
                 .ToList()
                 .AsReadOnly();

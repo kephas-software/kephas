@@ -90,6 +90,17 @@ namespace Kephas.Security.Authorization.Runtime
                 .AsReadOnly();
         }
 
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"[{this.TokenName}] {base.ToString()}";
+        }
+
         private string ComputeTokenName(Type type)
         {
             var attr = type.GetCustomAttributes<Attribute>()
