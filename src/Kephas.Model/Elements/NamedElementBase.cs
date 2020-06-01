@@ -8,17 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.ComponentModel.DataAnnotations;
-using Kephas.Reflection.Localization;
-
-#nullable enable
-
 namespace Kephas.Model.Elements
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;

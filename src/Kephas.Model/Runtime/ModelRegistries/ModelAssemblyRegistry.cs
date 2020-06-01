@@ -20,6 +20,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Reflection;
     using Kephas.Reflection;
@@ -28,7 +29,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     /// Registry reading the <see cref="ModelAssemblyAttribute"/> and providing the types
     /// exported by the attribute.
     /// </summary>
-    public class ModelAssemblyRegistry : IRuntimeModelRegistry
+    public class ModelAssemblyRegistry : Loggable, IRuntimeModelRegistry
     {
         private readonly IAppRuntime appRuntime;
         private readonly ITypeLoader typeLoader;
@@ -40,7 +41,13 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">The type loader.</param>
         /// <param name="modelAssemblyAttributeProvider">The model assembly attribute provider.</param>
-        public ModelAssemblyRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader, IModelAssemblyAttributeProvider modelAssemblyAttributeProvider)
+        /// <param name="logManager">Optional. The log manager.</param>
+        public ModelAssemblyRegistry(
+            IAppRuntime appRuntime,
+            ITypeLoader typeLoader,
+            IModelAssemblyAttributeProvider modelAssemblyAttributeProvider,
+            ILogManager? logManager = null)
+            : base(logManager)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(typeLoader, nameof(typeLoader));
@@ -80,7 +87,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
                 {
                     var filterSet = false;
 
-                    // first of all process all explicitely provided model types.
+                    // first of all process all explicitly provided model types.
                     if (attr.ModelTypes != null && attr.ModelTypes.Length > 0)
                     {
                         this.AddModelTypes(types, attr.ModelTypes, attr);

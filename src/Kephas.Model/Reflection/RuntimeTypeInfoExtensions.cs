@@ -30,7 +30,7 @@ namespace Kephas.Model.Reflection
         /// <returns>
         /// The classifier kind.
         /// </returns>
-        public static Type GetClassifierKind(this IRuntimeTypeInfo runtimeTypeInfo)
+        public static Type? GetClassifierKind(this IRuntimeTypeInfo runtimeTypeInfo)
         {
             if (runtimeTypeInfo == null)
             {
