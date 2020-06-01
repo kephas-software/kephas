@@ -35,7 +35,7 @@ namespace Kephas.Services
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public static Task InitializeAsync(object service, IContext context = null, CancellationToken cancellationToken = default)
+        public static Task InitializeAsync(object service, IContext? context = null, CancellationToken cancellationToken = default)
         {
             if (service is IAsyncInitializable asyncService)
             {
@@ -61,7 +61,7 @@ namespace Kephas.Services
         /// </remarks>
         /// <param name="service">The service.</param>
         /// <param name="context">Optional. The context.</param>
-        public static void Initialize(object service, IContext context = null)
+        public static void Initialize(object service, IContext? context = null)
         {
             if (service is IAsyncInitializable asyncService)
             {
@@ -88,7 +88,7 @@ namespace Kephas.Services
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public static async Task FinalizeAsync(object service, IContext context = null, CancellationToken cancellationToken = default)
+        public static async Task FinalizeAsync(object service, IContext? context = null, CancellationToken cancellationToken = default)
         {
             if (service is IAsyncFinalizable asyncService)
             {
@@ -128,7 +128,7 @@ namespace Kephas.Services
         /// </remarks>
         /// <param name="service">The service.</param>
         /// <param name="context">Optional. The context.</param>
-        public static void Finalize(object service, IContext context = null)
+        public static void Finalize(object service, IContext? context = null)
         {
             if (service is IAsyncFinalizable asyncService)
             {
