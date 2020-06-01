@@ -24,6 +24,6 @@ namespace Kephas.Runtime
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        IRuntimeTypeInfo TryCreateRuntimeTypeInfo(Type type);
+        IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type);
     }
 }

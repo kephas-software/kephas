@@ -372,7 +372,6 @@ namespace Kephas.Runtime
             Factories.Insert(0, factory);
         }
 
-
 #if NETSTANDARD2_1
 #else
         /// <summary>
@@ -642,7 +641,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The new member infos.
         /// </returns>
-        protected virtual IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(Action<IDictionary<string, IRuntimeElementInfo>> membersConfig = null)
+        protected virtual IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(Action<IDictionary<string, IRuntimeElementInfo>>? membersConfig = null)
         {
             return CreateMemberInfos(this.Fields, this.Properties, this.Methods, membersConfig);
         }
@@ -659,7 +658,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// A dictionary of members.
         /// </returns>
-        protected IDictionary<string, TMemberInfo> CreateMembers<TRuntimeMemberInfo, TMemberInfo>(Type type, IEnumerable<TRuntimeMemberInfo> runtimeMembers, Func<TRuntimeMemberInfo, Type> memberTypeGetter, Func<TRuntimeMemberInfo, bool> criteria = null)
+        protected IDictionary<string, TMemberInfo> CreateMembers<TRuntimeMemberInfo, TMemberInfo>(Type type, IEnumerable<TRuntimeMemberInfo> runtimeMembers, Func<TRuntimeMemberInfo, Type> memberTypeGetter, Func<TRuntimeMemberInfo, bool>? criteria = null)
             where TRuntimeMemberInfo : MemberInfo
         {
             var memberInfos = new Dictionary<string, TMemberInfo>();
@@ -679,7 +678,7 @@ namespace Kephas.Runtime
 
                 var memberType = memberTypeGetter(runtimeMemberInfo);
                 var memberCtor = memberType.GetTypeInfo().DeclaredConstructors.First();
-                var memberInfo = (TMemberInfo)memberCtor.Invoke(new object[] { runtimeMemberInfo, position++, this.Logger });
+                var memberInfo = (TMemberInfo)memberCtor.Invoke(new object?[] { runtimeMemberInfo, position++, this.Logger });
                 memberInfos.Add(memberName, memberInfo);
             }
 
@@ -694,7 +693,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// A dictionary of fields.
         /// </returns>
-        protected virtual IDictionary<string, IRuntimeFieldInfo> CreateFieldInfos(Type type, Func<FieldInfo, bool> criteria = null)
+        protected virtual IDictionary<string, IRuntimeFieldInfo> CreateFieldInfos(Type type, Func<FieldInfo, bool>? criteria = null)
         {
             var memberTypeGetter = type.GetTypeInfo().ContainsGenericParameters
                                        ? (Func<FieldInfo, Type>)(fieldType => RuntimeFieldInfoTypeInfo.AsType())
@@ -713,7 +712,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// A dictionary of properties.
         /// </returns>
-        protected virtual IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type, Func<PropertyInfo, bool> criteria = null)
+        protected virtual IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type, Func<PropertyInfo, bool>? criteria = null)
         {
             var memberTypeGetter = type.GetTypeInfo().ContainsGenericParameters
                                        ? (Func<PropertyInfo, Type>)(prop => RuntimePropertyInfoTypeInfo.AsType())
@@ -755,7 +754,7 @@ namespace Kephas.Runtime
             IDictionary<string, IRuntimeFieldInfo> fieldInfos,
             IDictionary<string, IRuntimePropertyInfo> propertyInfos,
             IDictionary<string, ICollection<IRuntimeMethodInfo>> methodInfos,
-            Action<IDictionary<string, IRuntimeElementInfo>> membersConfig)
+            Action<IDictionary<string, IRuntimeElementInfo>>? membersConfig)
         {
             var memberInfos = new Dictionary<string, IRuntimeElementInfo>();
             foreach (var kv in fieldInfos)
@@ -817,7 +816,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The generic type definition.
         /// </returns>
-        private ITypeInfo GetGenericTypeDefinition(TypeInfo typeInfo)
+        private ITypeInfo? GetGenericTypeDefinition(Type typeInfo)
         {
             if (typeInfo.IsGenericType && !typeInfo.IsGenericTypeDefinition)
             {

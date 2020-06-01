@@ -248,7 +248,7 @@ namespace Kephas.Runtime
         /// <param name="propertyInfo">The property information.</param>
         /// <param name="position">Optional. The position.</param>
         /// <param name="logger">Optional. The logger.</param>
-        internal RuntimePropertyInfo(PropertyInfo propertyInfo, int position = -1, ILogger logger = null)
+        internal RuntimePropertyInfo(PropertyInfo propertyInfo, int position = -1, ILogger? logger = null)
             : base(propertyInfo, position, logger)
         {
         }
@@ -311,7 +311,7 @@ namespace Kephas.Runtime
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
         /// <exception cref="MemberAccessException">Property value cannot be set.</exception>
-        public override void SetValue(object obj, object value)
+        public override void SetValue(object? obj, object? value)
         {
             var setDelegate = this.Setter;
             if (setDelegate == null)
@@ -330,7 +330,7 @@ namespace Kephas.Runtime
         /// The value.
         /// </returns>
         /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
-        public override object GetValue(object obj)
+        public override object? GetValue(object? obj)
         {
             var getDelegate = this.Getter;
             if (getDelegate == null)

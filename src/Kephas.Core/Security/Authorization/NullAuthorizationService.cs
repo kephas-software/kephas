@@ -32,7 +32,7 @@ namespace Kephas.Security.Authorization
         /// </summary>
         /// <param name="executionContext">The context for the execution to be authorized.</param>
         /// <param name="permissions">The permissions.</param>
-        /// <param name="scope">Optional. The autorization scope.</param>
+        /// <param name="scope">Optional. The authorization scope.</param>
         /// <param name="authConfig">Optional. The authorization configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
@@ -41,8 +41,8 @@ namespace Kephas.Security.Authorization
         public Task<bool> AuthorizeAsync(
             IContext executionContext,
             IEnumerable<object> permissions,
-            object scope = null,
-            Action<IAuthorizationContext> authConfig = null,
+            object? scope = null,
+            Action<IAuthorizationContext>? authConfig = null,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult(true);
@@ -61,8 +61,8 @@ namespace Kephas.Security.Authorization
         public bool Authorize(
             IContext executionContext,
             IEnumerable<object> permissions,
-            object scope = null,
-            Action<IAuthorizationContext> authConfig = null)
+            object? scope = null,
+            Action<IAuthorizationContext>? authConfig = null)
         {
             return true;
         }
