@@ -17,8 +17,8 @@ namespace Kephas.Core.Tests.Security.Authorization.Runtime
     [TestFixture]
     public class RuntimePermissionInfoTest
     {
-        [OneTimeSetUp]
-        public void OneTImeSetUp()
+        [SetUp]
+        public void SetUp()
         {
             RuntimeTypeInfo.RegisterFactory(new AuthorizationTypeInfoFactory());
         }

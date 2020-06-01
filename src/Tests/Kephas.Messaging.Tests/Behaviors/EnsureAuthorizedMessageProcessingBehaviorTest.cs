@@ -75,7 +75,7 @@ namespace Kephas.Messaging.Tests.Behaviors
                     {
                         var perms = ci.Arg<IEnumerable<object>>().ToList();
                         Assert.AreEqual(1, perms.Count);
-                        Assert.AreEqual("gigi", perms[0]);
+                        Assert.AreEqual(typeof(GigiPermission), perms[0]);
                         return Task.FromResult(true);
                     });
             var behavior = new EnsureAuthorizedMessageProcessingBehavior(authService, Substitute.For<IAuthorizationScopeService>());
