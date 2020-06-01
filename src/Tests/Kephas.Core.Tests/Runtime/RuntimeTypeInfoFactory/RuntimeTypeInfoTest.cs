@@ -60,7 +60,7 @@ namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
 
         public class AttributedRuntimeTypeInfoFactory : IRuntimeTypeInfoFactory
         {
-            public IRuntimeTypeInfo TryCreateRuntimeTypeInfo(Type rawType)
+            public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type rawType)
             {
                 var attr = rawType.GetCustomAttribute<RuntimeTypeInfoTypeAttribute>();
                 var typeInfoType = attr?.Type;

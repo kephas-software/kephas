@@ -206,7 +206,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.MongoD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Serialization.MongoDBBson.Tests", "Tests\Kephas.Serialization.MongoDBBson.Tests\Kephas.Serialization.MongoDBBson.Tests.csproj", "{F96FCF45-DDC7-48B9-A482-A7BAFEBDACDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Core.Endpoints.Tests", "Tests\Kephas.Core.Endpoints.Tests\Kephas.Core.Endpoints.Tests.csproj", "{B5B548A6-0DFC-41EF-8F2F-6937C4AB9D29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kephas.Core.Endpoints.Tests", "Tests\Kephas.Core.Endpoints.Tests\Kephas.Core.Endpoints.Tests.csproj", "{B5B548A6-0DFC-41EF-8F2F-6937C4AB9D29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kephas.Workflow.Model.Tests", "Tests\Kephas.Workflow.Model.Tests\Kephas.Workflow.Model.Tests.csproj", "{747AC2E1-8397-4016-896D-6E966BBE6695}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -570,6 +572,10 @@ Global
 		{B5B548A6-0DFC-41EF-8F2F-6937C4AB9D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5B548A6-0DFC-41EF-8F2F-6937C4AB9D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5B548A6-0DFC-41EF-8F2F-6937C4AB9D29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{747AC2E1-8397-4016-896D-6E966BBE6695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{747AC2E1-8397-4016-896D-6E966BBE6695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{747AC2E1-8397-4016-896D-6E966BBE6695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{747AC2E1-8397-4016-896D-6E966BBE6695}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -613,6 +619,7 @@ Global
 		{08DA52A2-F987-411E-B341-8AB77E76DFE7} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{F96FCF45-DDC7-48B9-A482-A7BAFEBDACDB} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 		{B5B548A6-0DFC-41EF-8F2F-6937C4AB9D29} = {816692E7-24DC-46B5-97FB-D314B52D815D}
+		{747AC2E1-8397-4016-896D-6E966BBE6695} = {816692E7-24DC-46B5-97FB-D314B52D815D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E2AB5E9-3322-4898-B244-CF15E159CF16}
