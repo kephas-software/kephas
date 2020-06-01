@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkflowApplicationLifecycleBehavior.cs" company="Kephas Software SRL">
+// <copyright file="WorkflowAppLifecycleBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -23,7 +23,7 @@ namespace Kephas.Workflow.Application
     /// A workflow application lifecycle behavior.
     /// </summary>
     [ProcessingPriority(Priority.High)]
-    public class WorkflowApplicationLifecycleBehavior : IAppLifecycleBehavior
+    public class WorkflowAppLifecycleBehavior : IAppLifecycleBehavior
     {
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
