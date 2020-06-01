@@ -14,7 +14,7 @@ namespace Kephas.Security.Authorization.Reflection
     /// <summary>
     /// Reflective information about a permission.
     /// </summary>
-    public interface IPermissionInfo : IElementInfo, IScoped
+    public interface IPermissionInfo : IElementInfo, IScoped, IToken
     {
         /// <summary>
         /// Gets the granted permissions.

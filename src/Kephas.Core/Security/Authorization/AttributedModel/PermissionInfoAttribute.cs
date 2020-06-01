@@ -16,17 +16,17 @@ namespace Kephas.Security.Authorization.AttributedModel
     /// Attribute indicating that the permission to access/execute/use the decorated element is granted.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
-    public class PermissionInfoAttribute : Attribute, IScoped, INamed
+    public class PermissionInfoAttribute : Attribute, IScoped, IToken
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionInfoAttribute"/> class.
         /// </summary>
-        /// <param name="name">The permission name.</param>
+        /// <param name="tokenName">The permission's token name.</param>
         /// <param name="scoping">The permission scoping.</param>
-        public PermissionInfoAttribute(string? name = null, Scoping scoping = Scoping.Global)
+        public PermissionInfoAttribute(string? tokenName = null, Scoping scoping = Scoping.Global)
         {
             this.Scoping = scoping;
-            this.Name = name ?? string.Empty;
+            this.TokenName = tokenName ?? string.Empty;
         }
 
         /// <summary>
@@ -38,11 +38,11 @@ namespace Kephas.Security.Authorization.AttributedModel
         public Scoping Scoping { get; }
 
         /// <summary>
-        /// Gets the name of the element.
+        /// Gets the name of the permission token.
         /// </summary>
         /// <value>
-        /// The name of the element.
+        /// The name of the permission token.
         /// </value>
-        public string Name { get; }
+        public string TokenName { get; }
     }
 }
