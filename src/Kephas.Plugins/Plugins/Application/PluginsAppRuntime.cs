@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Plugins.Application
 {
     using System;
@@ -23,7 +21,6 @@ namespace Kephas.Plugins.Application
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Plugins.Resources;
-    using Kephas.Reflection;
     using Kephas.Services;
 
     /// <summary>
@@ -143,7 +140,7 @@ namespace Kephas.Plugins.Application
             }
 
             var targetFramework = this.TargetFramework;
-            var primaryLocation = Path.Combine(this.PluginsLocation, appIdentity.Id);
+            var primaryLocation = Path.Combine(this.PluginsLocation, appIdentity!.Id);
 
             if (!string.IsNullOrEmpty(targetFramework))
             {

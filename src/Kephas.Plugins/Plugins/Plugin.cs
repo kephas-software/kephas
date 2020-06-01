@@ -136,13 +136,13 @@ namespace Kephas.Plugins
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
-        public override IDictionary<string, object> ToDictionary(Func<string, string>? keyFunc = null, Func<object, object>? valueFunc = null)
+        public override IDictionary<string, object?> ToDictionary(Func<string, string>? keyFunc = null, Func<object?, object?>? valueFunc = null)
         {
             var dictionary = base.ToDictionary(keyFunc, valueFunc);
             var data = this.GetPluginData().Data;
             foreach (var kv in data)
             {
-                dictionary[kv.Key] = dictionary[kv.Value];
+                dictionary[kv.Key] = kv.Value;
             }
 
             return dictionary;

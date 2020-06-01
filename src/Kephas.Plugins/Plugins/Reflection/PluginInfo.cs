@@ -59,7 +59,7 @@ namespace Kephas.Plugins.Reflection
         /// <returns>
         /// The new instance.
         /// </returns>
-        public override object CreateInstance(IEnumerable<object>? args = null)
+        public override object CreateInstance(IEnumerable<object?>? args = null)
         {
             if (args?.Any() ?? false)
             {
