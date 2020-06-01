@@ -10,92 +10,45 @@
 
 namespace Kephas.Messaging.Model.Runtime.ModelRegistries
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     using Kephas.Application;
-    using Kephas.Collections;
-    using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
     using Kephas.Messaging.Model.AttributedModel;
-    using Kephas.Model.Reflection;
     using Kephas.Model.Runtime;
     using Kephas.Reflection;
+    using Kephas.Services;
 
     using IMessage = Kephas.Messaging.IMessage;
 
     /// <summary>
     /// A messaging model registry.
     /// </summary>
-    public class MessagingModelRegistry : IRuntimeModelRegistry
+    public class MessagingModelRegistry : ConventionsRuntimeModelRegistryBase
     {
-        private readonly IAppRuntime appRuntime;
-        private readonly ITypeLoader typeLoader;
-        private readonly TypeInfo markerInterface = typeof(IMessage).GetTypeInfo();
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingModelRegistry"/> class.
         /// </summary>
+        /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="typeLoader">The type loader.</param>
-        public MessagingModelRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader)
+        /// <param name="typeLoader">Optional. The type loader.</param>
+        /// <param name="logManager">optional. The log manager.</param>
+        public MessagingModelRegistry(
+            IContextFactory contextFactory,
+            IAppRuntime appRuntime,
+            ITypeLoader? typeLoader = null,
+            ILogManager? logManager = null)
+            : base(
+                contextFactory,
+                appRuntime,
+                typeLoader,
+                conventions =>
+                {
+                    conventions.MarkerBaseTypes = new[] { typeof(IMessage) };
+                    conventions.MarkerAttributeTypes = new[] { typeof(MessagePartAttribute) };
+                    conventions.IncludeClasses = true;
+                    conventions.ExcludeMarkers = true;
+                },
+                logManager: logManager)
         {
-            Requires.NotNull(appRuntime, nameof(appRuntime));
-
-            this.appRuntime = appRuntime;
-            this.typeLoader = typeLoader;
-        }
-
-        /// <summary>
-        /// Gets the runtime elements.
-        /// </summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>
-        /// A promise of an enumeration of runtime elements.
-        /// </returns>
-        public Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default)
-        {
-            var assemblies = this.appRuntime.GetAppAssemblies();
-
-            var types = new HashSet<Type>();
-            foreach (var assembly in assemblies)
-            {
-                types.AddRange(this.typeLoader.GetExportedTypes(assembly).Where(
-                    t =>
-                        {
-                            var ti = t.GetTypeInfo();
-                            return (this.IsMessage(ti) || this.IsMessagePart(ti)) && !ti.IsExcludedFromModel();
-                        }));
-            }
-
-            return Task.FromResult<IEnumerable<object>>(types);
-        }
-
-        /// <summary>
-        /// Query if 'type' is message.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        /// True if the type is a message, false if not.
-        /// </returns>
-        private bool IsMessage(TypeInfo type)
-        {
-            return type.IsClass && !type.IsAbstract && this.markerInterface.IsAssignableFrom(type);
-        }
-
-        /// <summary>
-        /// Query if 'type' is a message part.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        /// True if the type is a message part, false if not.
-        /// </returns>
-        private bool IsMessagePart(TypeInfo type)
-        {
-            return type.IsClass && !type.IsAbstract && type.GetCustomAttribute<MessagePartAttribute>() != null;
         }
     }
 }

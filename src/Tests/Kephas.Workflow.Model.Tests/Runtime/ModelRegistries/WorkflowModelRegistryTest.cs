@@ -1,37 +1,31 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessagingModelRegistryTest.cs" company="Kephas Software SRL">
+// <copyright file="WorkflowModelRegistryTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the messaging model registry test class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
+namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
 {
     using System;
     using System.Linq;
     using System.Reflection;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
     using Kephas.Composition;
-    using Kephas.Messaging.Messages;
-    using Kephas.Messaging.Model.Elements;
-    using Kephas.Messaging.Model.Runtime.ModelRegistries;
+    using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime;
     using Kephas.Reflection;
+    using Kephas.Runtime.AttributedModel;
     using Kephas.Testing;
+    using Kephas.Workflow.Model.Runtime.ModelRegistries;
     using NSubstitute;
     using NUnit.Framework;
 
-    using IMessage = Kephas.Messaging.IMessage;
-
     [TestFixture]
-    public class MessagingModelRegistryTest : TestBase
+    public class WorkflowModelRegistryTest : TestBase
     {
         [Test]
         public async Task GetRuntimeElementsAsync()
@@ -42,15 +36,16 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
                 .Returns(new[] { this.GetType().Assembly });
 
             var typeLoader = Substitute.For<ITypeLoader>();
-            typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(PingMessage) });
+            typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IActivity), typeof(IActivityType), typeof(IStateMachine), typeof(IStateMachineType), typeof(ActivityBase), typeof(string), typeof(TestActivity), typeof(TestStateMachine) });
 
             var contextFactory = this.CreateContextFactoryMock(() =>
                 new ModelRegistryConventions(Substitute.For<ICompositionContext>()));
 
-            var registry = new MessagingModelRegistry(contextFactory, appRuntime, typeLoader);
+            var registry = new WorkflowModelRegistry(contextFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreSame(typeof(PingMessage), result[0]);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreSame(typeof(TestActivity), result[0]);
+            Assert.AreSame(typeof(TestStateMachine), result[1]);
         }
 
         [Test]
@@ -62,19 +57,33 @@ namespace Kephas.Messaging.Model.Tests.Runtime.ModelRegistries
                 .Returns(new[] { this.GetType().Assembly });
 
             var typeLoader = Substitute.For<ITypeLoader>();
-            typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IMessage), typeof(IMessageType), typeof(MessageType), typeof(string), typeof(ExcludedMessage) });
+            typeLoader.GetExportedTypes(Arg.Any<Assembly>()).Returns(new[] { typeof(IActivity), typeof(IActivityType), typeof(ActivityBase), typeof(string), typeof(ExcludedActivity) });
 
             var contextFactory = this.CreateContextFactoryMock(() =>
                 new ModelRegistryConventions(Substitute.For<ICompositionContext>()));
 
-            var registry = new MessagingModelRegistry(contextFactory, appRuntime, typeLoader);
+            var registry = new WorkflowModelRegistry(contextFactory, appRuntime, typeLoader);
             var result = (await registry.GetRuntimeElementsAsync()).ToList();
             Assert.AreEqual(0, result.Count);
         }
 
         [ExcludeFromModel]
-        public class ExcludedMessage : IMessage
+        public class ExcludedActivity : ActivityBase, IActivity
         {
+        }
+
+        [ReturnType(typeof(int))]
+        public class TestActivity : ActivityBase
+        {
+        }
+
+        [ReturnType(typeof(int))]
+        public class TestStateMachine : StateMachineBase<string, LogLevel>
+        {
+            public TestStateMachine(string target, ILogManager? logManager = null)
+                : base(target, logManager)
+            {
+            }
         }
     }
 }

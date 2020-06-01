@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Model.Runtime
 {
     using System.Collections.Generic;
@@ -29,7 +27,7 @@ namespace Kephas.Model.Runtime
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
-        /// A promise of an enumeration of runtime elements.
+        /// An asynchronous result yielding an enumeration of runtime elements.
         /// </returns>
         Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default);
     }
