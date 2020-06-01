@@ -24,6 +24,9 @@ namespace Kephas.Core.Endpoints
         public string? SettingsType { get; set; }
     }
 
+    /// <summary>
+    /// Response to the <see cref="GetSettingsMessage"/>.
+    /// </summary>
     public class GetSettingsResponseMessage : ResponseMessage
     {
         /// <summary>
