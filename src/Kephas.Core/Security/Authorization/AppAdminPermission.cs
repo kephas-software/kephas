@@ -12,13 +12,13 @@ namespace Kephas.Security.Authorization
     /// <summary>
     /// Defines the global application administration permission.
     /// </summary>
-    [PermissionInfo(Name, Scoping.Global)]
+    [PermissionInfo(TokenName, Scoping.Global)]
     public sealed class AppAdminPermission : IPermission
     {
         /// <summary>
         /// The name of the AppAdmin permission.
         /// </summary>
-        public const string Name = "appadmin";
+        public const string TokenName = "appadmin";
 
         private AppAdminPermission()
         {

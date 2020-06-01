@@ -12,14 +12,14 @@ namespace Kephas.Security.Authorization
     /// <summary>
     /// Defines the system permission reserved by the internal system identity.
     /// </summary>
-    [PermissionInfo(Name, Scoping.Global)]
+    [PermissionInfo(TokenName, Scoping.Global)]
     [RequiresPermission(typeof(SystemPermission))]
     public sealed class SystemPermission : IPermission
     {
         /// <summary>
-        /// The name of the AppAdmin permission.
+        /// The token name of the System permission.
         /// </summary>
-        public const string Name = "system";
+        public const string TokenName = "system";
 
         private SystemPermission()
         {
