@@ -31,7 +31,7 @@ namespace Kephas.Services.Behaviors
         /// </returns>
         IEnumerable<TService> WhereEnabled<TService>(
             IEnumerable<TService> services,
-            IContext context = null)
+            IContext? context = null)
             where TService : class;
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Kephas.Services.Behaviors
         /// </returns>
         IEnumerable<IExportFactory<TService>> WhereEnabled<TService>(
             IEnumerable<IExportFactory<TService>> serviceFactories,
-            IContext context = null)
+            IContext? context = null)
             where TService : class;
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Kephas.Services.Behaviors
         /// </returns>
         IEnumerable<IExportFactory<TService, TMetadata>> WhereEnabled<TService, TMetadata>(
             IEnumerable<IExportFactory<TService, TMetadata>> serviceFactories,
-            IContext context = null)
+            IContext? context = null)
             where TService : class;
     }
 }

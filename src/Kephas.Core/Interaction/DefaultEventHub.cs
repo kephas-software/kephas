@@ -35,7 +35,7 @@ namespace Kephas.Interaction
         /// Initializes a new instance of the <see cref="DefaultEventHub"/> class.
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public DefaultEventHub(ILogManager logManager = null)
+        public DefaultEventHub(ILogManager? logManager = null)
             : base(logManager)
         {
         }

@@ -27,7 +27,7 @@ namespace Kephas.Diagnostics
         /// </summary>
         /// <param name="process">The process.</param>
         /// <param name="startException">The start exception (optional).</param>
-        public ProcessStartResult(Process process, Exception startException = null)
+        public ProcessStartResult(Process process, Exception? startException = null)
         {
             Requires.NotNull(process, nameof(process));
 
@@ -54,7 +54,7 @@ namespace Kephas.Diagnostics
         /// <value>
         /// The start exception.
         /// </value>
-        public Exception StartException { get; }
+        public Exception? StartException { get; }
 
         /// <summary>
         /// Gets information describing the error.

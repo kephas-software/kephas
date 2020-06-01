@@ -47,12 +47,13 @@ namespace Kephas.Services.Behaviors
         /// <param name="behaviorFactories">The behavior factories.</param>
         public DefaultServiceBehaviorProvider(
             ICompositionContext compositionContext,
-            ICollection<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>> behaviorFactories = null)
+            ICollection<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>? behaviorFactories = null)
         {
             this.compositionContext = compositionContext;
             Requires.NotNull(compositionContext, nameof(compositionContext));
 
-            this.behaviorFactories = behaviorFactories.Order().ToList();
+            this.behaviorFactories = behaviorFactories?.Order().ToList()
+                                     ?? new List<IExportFactory<IEnabledServiceBehaviorRule, ServiceBehaviorRuleMetadata>>();
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace Kephas.Services.Behaviors
         /// <returns>
         /// An enumeration of enabled services.
         /// </returns>
-        public IEnumerable<TService> WhereEnabled<TService>(IEnumerable<TService> services, IContext context = null)
+        public IEnumerable<TService> WhereEnabled<TService>(IEnumerable<TService> services, IContext? context = null)
             where TService : class
         {
             Requires.NotNull(services, nameof(services));
@@ -82,7 +83,7 @@ namespace Kephas.Services.Behaviors
         /// <returns>
         /// An enumerator that allows foreach to be used to process where enabled in this collection.
         /// </returns>
-        public IEnumerable<IExportFactory<TService>> WhereEnabled<TService>(IEnumerable<IExportFactory<TService>> serviceFactories, IContext context = null)
+        public IEnumerable<IExportFactory<TService>> WhereEnabled<TService>(IEnumerable<IExportFactory<TService>> serviceFactories, IContext? context = null)
             where TService : class
         {
             Requires.NotNull(serviceFactories, nameof(serviceFactories));

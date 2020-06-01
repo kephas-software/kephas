@@ -29,7 +29,7 @@ namespace Kephas.Services.Behaviors
         /// <param name="service">The service.</param>
         /// <param name="metadata">The metadata (optional).</param>
         /// <param name="context">Context for the behavior (optional).</param>
-        public ServiceBehaviorContext(ICompositionContext compositionContext, TServiceContract service, object metadata = null, IContext context = null)
+        public ServiceBehaviorContext(ICompositionContext compositionContext, TServiceContract service, object? metadata = null, IContext? context = null)
             : this(compositionContext, null, service, metadata, context)
         {
             Requires.NotNull(service, nameof(service));
@@ -42,7 +42,7 @@ namespace Kephas.Services.Behaviors
         /// <param name="compositionContext">The composition context.</param>
         /// <param name="serviceFactory">The service export factory.</param>
         /// <param name="context">Context for the behavior (optional).</param>
-        public ServiceBehaviorContext(ICompositionContext compositionContext, IExportFactory<TServiceContract> serviceFactory, IContext context = null)
+        public ServiceBehaviorContext(ICompositionContext compositionContext, IExportFactory<TServiceContract> serviceFactory, IContext? context = null)
             : this(compositionContext, serviceFactory, null, GetExportMetadata(serviceFactory), context)
         {
             Requires.NotNull(serviceFactory, nameof(serviceFactory));
@@ -57,7 +57,7 @@ namespace Kephas.Services.Behaviors
         /// <param name="service">The service.</param>
         /// <param name="metadata">The metadata.</param>
         /// <param name="context">Context for the behavior (optional).</param>
-        private ServiceBehaviorContext(ICompositionContext compositionContext, IExportFactory<TServiceContract> serviceFactory, TServiceContract service, object metadata = null, IContext context = null)
+        private ServiceBehaviorContext(ICompositionContext compositionContext, IExportFactory<TServiceContract> serviceFactory, TServiceContract service, object? metadata = null, IContext? context = null)
             : base(compositionContext)
         {
             this.ServiceFactory = serviceFactory;
@@ -72,7 +72,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The behavior context.
         /// </value>
-        public IContext Context { get; }
+        public IContext? Context { get; }
 
         /// <summary>
         /// Gets the service.
@@ -96,7 +96,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service metadata.
         /// </value>
-        public object Metadata { get; }
+        public object? Metadata { get; }
 
         /// <summary>
         /// Gets export metadata.
@@ -105,9 +105,9 @@ namespace Kephas.Services.Behaviors
         /// <returns>
         /// The export metadata.
         /// </returns>
-        private static object GetExportMetadata(IExportFactory<TServiceContract> serviceExport)
+        private static object? GetExportMetadata(IExportFactory<TServiceContract> serviceExport)
         {
-            var metadata = serviceExport.ToExpando()[nameof(IExportFactory<TServiceContract, AppServiceMetadata>.Metadata)];
+            var metadata = serviceExport.ToExpando()![nameof(IExportFactory<TServiceContract, AppServiceMetadata>.Metadata)];
             return metadata;
         }
     }

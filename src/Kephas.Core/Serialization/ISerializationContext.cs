@@ -35,7 +35,7 @@ namespace Kephas.Serialization
         /// <value>
         /// The media type.
         /// </value>
-        Type MediaType { get; set; }
+        Type? MediaType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the root object.
@@ -43,7 +43,7 @@ namespace Kephas.Serialization
         /// <value>
         /// The type of the root object.
         /// </value>
-        Type RootObjectType { get; set; }
+        Type? RootObjectType { get; set; }
 
         /// <summary>
         /// Gets or sets the root object factory.
@@ -51,7 +51,7 @@ namespace Kephas.Serialization
         /// <value>
         /// The root object factory.
         /// </value>
-        Func<object> RootObjectFactory { get; set; }
+        Func<object>? RootObjectFactory { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the serialized output should be indented.
