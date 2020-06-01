@@ -27,23 +27,6 @@ namespace Kephas.Security.Authorization.AttributedModel
         public const string PermissionTypesMetadataKey = "RequiresPermissionTypes";
 
         /// <summary>
-        /// The permissions metadata key.
-        /// </summary>
-        public const string PermissionsMetadataKey = "RequiresPermissions";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RequiresPermissionAttribute"/> class.
-        /// </summary>
-        /// <param name="permissions">A variable-length parameters list containing the required permissions.</param>
-        public RequiresPermissionAttribute(params string[] permissions)
-        {
-            Requires.NotNullOrEmpty(permissions, nameof(permissions));
-
-            this.Permissions = permissions;
-            this.PermissionTypes = new Type[0];
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="RequiresPermissionAttribute"/> class.
         /// </summary>
         /// <param name="permissions">A variable-length parameters list containing the required permissions.</param>
@@ -51,7 +34,6 @@ namespace Kephas.Security.Authorization.AttributedModel
         {
             Requires.NotNullOrEmpty(permissions, nameof(permissions));
 
-            this.Permissions = new string[0];
             this.PermissionTypes = permissions;
         }
 
@@ -63,14 +45,5 @@ namespace Kephas.Security.Authorization.AttributedModel
         /// </value>
         [MetadataValue(PermissionTypesMetadataKey)]
         public Type[] PermissionTypes { get; }
-
-        /// <summary>
-        /// Gets the required permissions.
-        /// </summary>
-        /// <value>
-        /// The required permissions.
-        /// </value>
-        [MetadataValue(PermissionsMetadataKey)]
-        public string[] Permissions { get; }
     }
 }

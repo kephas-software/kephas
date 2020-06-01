@@ -5,13 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
-
 namespace Kephas.Security.Authorization.Runtime
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -65,6 +64,8 @@ namespace Kephas.Security.Authorization.Runtime
         {
             get => this.grantedPermissions ??= this.GetAttributes<GrantsPermissionAttribute>()
                 .SelectMany(attr => attr.PermissionTypes)
+                .Union(new List<Type>(this.Type.GetInterfaces()) { this.Type.BaseType }
+                    .Where(t => t != null))
                 .Select(t => t.AsRuntimeTypeInfo())
                 .OfType<IPermissionInfo>()
                 .Distinct()
@@ -87,32 +88,6 @@ namespace Kephas.Security.Authorization.Runtime
                 .Distinct()
                 .ToList()
                 .AsReadOnly();
-        }
-
-        /// <summary>
-        /// Gets the granted permissions providing a resolver also for permissions based on their name.
-        /// </summary>
-        /// <param name="permissionResolver">The permissions resolver.</param>
-        /// <returns>An enumeration of <see cref="IPermissionInfo"/>.</returns>
-        public IEnumerable<IPermissionInfo> GetGrantedPermissions(Func<string, IPermissionInfo> permissionResolver)
-        {
-            return this.GetAttributes<GrantsPermissionAttribute>()
-                .SelectMany(attr => attr.Permissions.Select(permissionResolver))
-                .Union(this.GrantedPermissions)
-                .Distinct();
-        }
-
-        /// <summary>
-        /// Gets the required permissions providing a resolver also for permissions based on their name.
-        /// </summary>
-        /// <param name="permissionResolver">The permissions resolver.</param>
-        /// <returns>An enumeration of <see cref="IPermissionInfo"/>.</returns>
-        public IEnumerable<IPermissionInfo> GetRequiredPermissions(Func<string, IPermissionInfo> permissionResolver)
-        {
-            return this.GetAttributes<RequiresPermissionAttribute>()
-                .SelectMany(attr => attr.Permissions.Select(permissionResolver))
-                .Union(this.RequiredPermissions)
-                .Distinct();
         }
 
         private string ComputeTokenName(Type type)

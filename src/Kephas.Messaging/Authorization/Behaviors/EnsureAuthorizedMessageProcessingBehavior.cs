@@ -49,8 +49,8 @@ namespace Kephas.Messaging.Authorization.Behaviors
         /// <summary>
         /// The permissions map.
         /// </summary>
-        private readonly ConcurrentDictionary<Type, IReadOnlyList<object>>
-            permissionsMap = new ConcurrentDictionary<Type, IReadOnlyList<object>>();
+        private readonly ConcurrentDictionary<Type, IReadOnlyList<Type>>
+            permissionsMap = new ConcurrentDictionary<Type, IReadOnlyList<Type>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnsureAuthorizedMessageProcessingBehavior"/>
@@ -95,7 +95,7 @@ namespace Kephas.Messaging.Authorization.Behaviors
         /// <returns>
         /// The required permissions.
         /// </returns>
-        private IReadOnlyList<object> GetRequiredPermissions(Type messageType)
+        private IReadOnlyList<Type> GetRequiredPermissions(Type messageType)
         {
             var perms = this.permissionsMap.GetOrAdd(messageType, this.ComputePermissions);
             return perms;
@@ -108,14 +108,13 @@ namespace Kephas.Messaging.Authorization.Behaviors
         /// <returns>
         /// The calculated permissions.
         /// </returns>
-        private IReadOnlyList<object> ComputePermissions(Type messageType)
+        private IReadOnlyList<Type> ComputePermissions(Type messageType)
         {
             var permAttrs = messageType.GetTypeInfo().GetCustomAttributes<RequiresPermissionAttribute>();
-            var permissions = new HashSet<object>();
+            var permissions = new HashSet<Type>();
             foreach (var permAttr in permAttrs)
             {
-                permissions.AddRange(permAttr.Permissions.Cast<object>());
-                permissions.AddRange(permAttr.PermissionTypes.Cast<object>());
+                permissions.AddRange(permAttr.PermissionTypes);
             }
 
             return permissions.ToList().AsReadOnly();
