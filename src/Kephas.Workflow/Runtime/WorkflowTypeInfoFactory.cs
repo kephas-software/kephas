@@ -26,7 +26,7 @@ namespace Kephas.Workflow.Runtime
         /// <returns>
         /// The matching runtime type information type, or <c>null</c> if a runtime type info could not be created.
         /// </returns>
-        public IRuntimeTypeInfo TryCreateRuntimeTypeInfo(Type type)
+        public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type)
         {
             if (typeof(IActivity).IsAssignableFrom(type))
             {
