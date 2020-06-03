@@ -102,7 +102,7 @@ namespace Kephas.Services.Behaviors
         /// <returns>
         /// An enumerator that allows foreach to be used to process where enabled in this collection.
         /// </returns>
-        public IEnumerable<IExportFactory<TService, TMetadata>> WhereEnabled<TService, TMetadata>(IEnumerable<IExportFactory<TService, TMetadata>> serviceFactories, IContext context = null)
+        public IEnumerable<IExportFactory<TService, TMetadata>> WhereEnabled<TService, TMetadata>(IEnumerable<IExportFactory<TService, TMetadata>> serviceFactories, IContext? context = null)
             where TService : class
         {
             Requires.NotNull(serviceFactories, nameof(serviceFactories));

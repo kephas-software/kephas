@@ -55,7 +55,7 @@ namespace Kephas.Reflection
         /// <param name="getAppAssemblies">The get application assemblies.</param>
         /// <param name="typeLoader">Optional. The type loader.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        public DefaultTypeResolver(Func<IEnumerable<Assembly>> getAppAssemblies, ITypeLoader? typeLoader = null, ILogManager logManager = null)
+        public DefaultTypeResolver(Func<IEnumerable<Assembly>> getAppAssemblies, ITypeLoader? typeLoader = null, ILogManager? logManager = null)
             : base(logManager)
         {
             Requires.NotNull(getAppAssemblies, nameof(getAppAssemblies));

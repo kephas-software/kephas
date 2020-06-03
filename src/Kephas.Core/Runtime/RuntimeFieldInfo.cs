@@ -142,7 +142,7 @@ namespace Kephas.Runtime
         /// The value.
         /// </returns>
         /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
-        public virtual object GetValue(object? obj)
+        public virtual object? GetValue(object? obj)
         {
             throw new NotSupportedException();
         }
@@ -198,7 +198,7 @@ namespace Kephas.Runtime
         /// <param name="fieldInfo">The field information.</param>
         /// <param name="position">Optional. The position.</param>
         /// <param name="logger">Optional. The logger.</param>
-        internal RuntimeFieldInfo(FieldInfo fieldInfo, int position = -1, ILogger logger = null)
+        internal RuntimeFieldInfo(FieldInfo fieldInfo, int position = -1, ILogger? logger = null)
             : base(fieldInfo, position, logger)
         {
         }
@@ -209,7 +209,7 @@ namespace Kephas.Runtime
         /// <param name="obj">The object.</param>
         /// <param name="value">The value.</param>
         /// <exception cref="System.MemberAccessException">Property value cannot be set.</exception>
-        public override void SetValue(object obj, object value)
+        public override void SetValue(object? obj, object? value)
         {
             this.FieldInfo.SetValue(obj, value);
         }
@@ -222,7 +222,7 @@ namespace Kephas.Runtime
         /// The value.
         /// </returns>
         /// <exception cref="MemberAccessException">Property value cannot be get.</exception>
-        public override object GetValue(object obj)
+        public override object? GetValue(object? obj)
         {
             return this.FieldInfo.GetValue(obj);
         }

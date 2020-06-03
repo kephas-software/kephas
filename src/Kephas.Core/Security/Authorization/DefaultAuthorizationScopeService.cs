@@ -49,22 +49,20 @@ namespace Kephas.Security.Authorization
         /// <returns>
         /// An asynchronous result that yields the authorization scope.
         /// </returns>
-        public async Task<object> GetAuthorizationScopeAsync(IContext callingContext, Action<IAuthorizationScopeContext> optionsConfig = null, CancellationToken cancellationToken = default)
+        public async Task<object?> GetAuthorizationScopeAsync(IContext callingContext, Action<IAuthorizationScopeContext>? optionsConfig = null, CancellationToken cancellationToken = default)
         {
-            using (var context = this.CreateScopeContext(callingContext, optionsConfig))
+            using var context = this.CreateScopeContext(callingContext, optionsConfig);
+            foreach (var provider in this.providers)
             {
-                foreach (var provider in this.providers)
+                var (scope, canResolve) = await provider.GetAuthorizationScopeAsync(context, cancellationToken)
+                    .PreserveThreadContext();
+                if (canResolve)
                 {
-                    var (scope, canResolve) = await provider.GetAuthorizationScopeAsync(context, cancellationToken)
-                                         .PreserveThreadContext();
-                    if (canResolve)
-                    {
-                        return scope;
-                    }
+                    return scope;
                 }
-
-                return null;
             }
+
+            return null;
         }
 
         /// <summary>
@@ -75,7 +73,7 @@ namespace Kephas.Security.Authorization
         /// <returns>
         /// The new scope context.
         /// </returns>
-        protected virtual IAuthorizationScopeContext CreateScopeContext(IContext callingContext, Action<IAuthorizationScopeContext> optionsConfig = null)
+        protected virtual IAuthorizationScopeContext CreateScopeContext(IContext callingContext, Action<IAuthorizationScopeContext>? optionsConfig = null)
         {
             return new AuthorizationScopeContext(callingContext).Merge(optionsConfig);
         }

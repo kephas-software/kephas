@@ -31,6 +31,6 @@ namespace Kephas.Security.Authorization
         /// <returns>
         /// An asynchronous result that yields the authorization scope.
         /// </returns>
-        Task<object> GetAuthorizationScopeAsync(IContext callingContext, Action<IAuthorizationScopeContext> optionsConfig = null, CancellationToken cancellationToken = default);
+        Task<object?> GetAuthorizationScopeAsync(IContext callingContext, Action<IAuthorizationScopeContext>? optionsConfig = null, CancellationToken cancellationToken = default);
     }
 }

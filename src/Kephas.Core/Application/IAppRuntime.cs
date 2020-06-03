@@ -181,7 +181,7 @@ namespace Kephas.Application
                 return appRuntime.GetAppLocation();
             }
 
-            path = FileSystem.NormalizePath(path);
+            path = FileSystem.NormalizePath(path!);
             return Path.GetFullPath(Path.IsPathRooted(path) ? path : Path.Combine(appRuntime.GetAppLocation(), path));
         }
     }

@@ -44,7 +44,7 @@ namespace Kephas.Text.Encoding
         /// </summary>
         /// <param name="bytes">The bytes.</param>
         /// <param name="mimeType">The MIME type (optional).</param>
-        public Base64Data(byte[] bytes, string mimeType = null)
+        public Base64Data(byte[] bytes, string? mimeType = null)
         {
             Requires.NotNull(bytes, nameof(bytes));
 
@@ -58,7 +58,7 @@ namespace Kephas.Text.Encoding
         /// <value>
         /// The MIME type.
         /// </value>
-        public string MimeType { get; }
+        public string? MimeType { get; }
 
         /// <summary>
         /// Gets the bytes.
@@ -88,7 +88,7 @@ namespace Kephas.Text.Encoding
         /// <returns>
         /// The given data converted to a Base64 string.
         /// </returns>
-        public static string ToBase64String(byte[] bytes, string mimeType = null)
+        public static string ToBase64String(byte[] bytes, string? mimeType = null)
         {
             return new Base64Data(bytes, mimeType).ToBase64String();
         }
@@ -101,7 +101,7 @@ namespace Kephas.Text.Encoding
         /// <returns>
         /// The given string converted to a Base64 string.
         /// </returns>
-        public static string ToBase64String(string plainString, string mimeType = null)
+        public static string ToBase64String(string plainString, string? mimeType = null)
         {
             Requires.NotNull(plainString, nameof(plainString));
 
