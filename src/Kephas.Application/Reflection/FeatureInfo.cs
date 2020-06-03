@@ -128,7 +128,7 @@ namespace Kephas.Application.Reflection
 
             var autoVersion = VersionZero;
 
-            var name = metadata.AppServiceImplementationType?.Name;
+            var name = metadata.ServiceType?.Name;
             if (string.IsNullOrEmpty(name))
             {
                 return new FeatureInfo($"unnamed-{Guid.NewGuid()}", autoVersion);

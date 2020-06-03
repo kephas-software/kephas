@@ -28,8 +28,9 @@ namespace Kephas.Extensions.Hosting.Application
         /// Initializes a new instance of the <see cref="WorkerAppBase"/> class.
         /// </summary>
         /// <param name="ambientServices">Optional. The ambient services.</param>
-        protected WorkerAppBase(IAmbientServices? ambientServices = null)
-            : base(ambientServices)
+        /// <param name="appLifetimeTokenSource">Optional. The application lifetime token source.</param>
+        protected WorkerAppBase(IAmbientServices? ambientServices = null, CancellationTokenSource? appLifetimeTokenSource = null)
+            : base(ambientServices, appLifetimeTokenSource)
         {
         }
 

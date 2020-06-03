@@ -69,7 +69,7 @@ namespace Kephas.Messaging.HandlerProviders
                         string.Format(
                             Strings.DefaultMessageProcessor_AmbiguousHandler_Exception,
                             $"'{messageType.FullName}/{messageId}'",
-                            string.Join(", ", orderedFactories.Select(f => f.Metadata.AppServiceImplementationType?.FullName))));
+                            string.Join(", ", orderedFactories.Select(f => f.Metadata.ServiceType?.FullName))));
                 }
             }
 

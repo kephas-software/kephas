@@ -123,7 +123,7 @@ namespace Kephas.Data
             {
                 var factory =
                     dataContextFactories.FirstOrDefault(
-                        f => f.Metadata.AppServiceImplementationType == dataStore.DataContextType);
+                        f => f.Metadata.ServiceType == dataStore.DataContextType);
                 if (factory == null)
                 {
                     return new ExportFactory<IDataContext>((Func<IDataContext>)(() =>
@@ -160,8 +160,8 @@ namespace Kephas.Data
                             string.Format(
                                 Strings.DefaultDataContextProvider_AmbiguousDataContext_Exception,
                                 dataStore.Name,
-                                dataContextFactories[0].Metadata.AppServiceImplementationType,
-                                dataContextFactories[1].Metadata.AppServiceImplementationType));
+                                dataContextFactories[0].Metadata.ServiceType,
+                                dataContextFactories[1].Metadata.ServiceType));
                     }));
             }
 

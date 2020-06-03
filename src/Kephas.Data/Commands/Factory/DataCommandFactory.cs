@@ -64,8 +64,8 @@ namespace Kephas.Data.Commands.Factory
                         Strings.DataCommandFactory_GetCommandFactory_AmbiguousMatch_Exception,
                         typeof(TCommand).FullName,
                         dataContextType.FullName,
-                        commandFactoriesList[0].Metadata.AppServiceImplementationType?.FullName,
-                        commandFactoriesList[1].Metadata.AppServiceImplementationType?.FullName));
+                        commandFactoriesList[0].Metadata.ServiceType?.FullName,
+                        commandFactoriesList[1].Metadata.ServiceType?.FullName));
                 }
             }
 

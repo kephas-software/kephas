@@ -489,7 +489,7 @@ namespace Kephas.Services.Composition
         private void AddCompositionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType, IEnumerable<Type> attributeTypes)
         {
             // add the service type.
-            builder.AddMetadata(nameof(AppServiceMetadata.AppServiceImplementationType), t => serviceImplementationType ?? t);
+            builder.AddMetadata(nameof(AppServiceMetadata.ServiceType), t => serviceImplementationType ?? t);
 
             // add the rest of the metadata indicated by the attributes.
             if (attributeTypes == null)

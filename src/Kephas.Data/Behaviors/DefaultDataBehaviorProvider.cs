@@ -82,7 +82,7 @@ namespace Kephas.Data.Behaviors
             var behaviorTypeInfo = typeof(TBehavior).GetTypeInfo();
             var behaviors = (from f in this.dataBehaviorFactories
                                  let entityTypeInfo = f.Metadata.EntityType.GetTypeInfo()
-                                 let serviceTypeInfo = f.Metadata.AppServiceImplementationType.GetTypeInfo()
+                                 let serviceTypeInfo = f.Metadata.ServiceType.GetTypeInfo()
                                  where
                                      entityTypeInfo.IsAssignableFrom(typeInfo)
                                      && behaviorTypeInfo.IsAssignableFrom(serviceTypeInfo)

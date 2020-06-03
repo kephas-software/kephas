@@ -41,7 +41,7 @@ namespace Kephas.Services.Composition
             this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, int>(metadata);
             this.ServiceName = this.GetMetadataValue<ServiceNameAttribute, string>(metadata);
             this.IsOverride = this.GetMetadataValue<OverrideAttribute, bool>(metadata);
-            this.AppServiceImplementationType = (Type)metadata.TryGetValue(nameof(this.AppServiceImplementationType));
+            this.ServiceType = (Type)metadata.TryGetValue(nameof(this.ServiceType));
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Kephas.Services.Composition
         /// <value>
         /// The type of the service.
         /// </value>
-        public Type AppServiceImplementationType { get; set; }
+        public Type ServiceType { get; set; }
 
         /// <summary>
         /// Gets or sets the service dependencies.
@@ -118,7 +118,7 @@ namespace Kephas.Services.Composition
         public override string ToString()
         {
             var serviceName = string.IsNullOrEmpty(this.ServiceName) ? string.Empty : $"Name: {this.ServiceName}, ";
-            return $"Override#: {this.OverridePriority}, Processing#: {this.ProcessingPriority}, {serviceName}Impl: {this.AppServiceImplementationType}";
+            return $"Override#: {this.OverridePriority}, Processing#: {this.ProcessingPriority}, {serviceName}Impl: {this.ServiceType}";
         }
 
         /// <summary>
