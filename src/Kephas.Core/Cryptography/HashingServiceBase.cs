@@ -42,12 +42,9 @@ namespace Kephas.Cryptography
         /// <returns>
         /// The hashed value.
         /// </returns>
-        public virtual byte[]? Hash(byte[] value, Action<IHashingContext>? optionsConfig = null)
+        public virtual byte[] Hash(byte[] value, Action<IHashingContext>? optionsConfig = null)
         {
-            if (value == null)
-            {
-                return null;
-            }
+            Requires.NotNull(value, nameof(value));
 
             var hashingContext = this.GetHashingContext(optionsConfig);
 
