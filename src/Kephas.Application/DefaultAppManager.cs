@@ -48,10 +48,10 @@ namespace Kephas.Application
         public DefaultAppManager(
             IAppRuntime appRuntime,
             ICompositionContext compositionContext,
-            IServiceBehaviorProvider serviceBehaviorProvider = null,
-            ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> appLifecycleBehaviorFactories = null,
-            ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories = null,
-            ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> featureLifecycleBehaviorFactories = null)
+            IServiceBehaviorProvider? serviceBehaviorProvider = null,
+            ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>? appLifecycleBehaviorFactories = null,
+            ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>>? featureManagerFactories = null,
+            ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>? featureLifecycleBehaviorFactories = null)
             : base(compositionContext)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
@@ -678,7 +678,7 @@ namespace Kephas.Application
         /// Ensures that all feature managers have the FeatureInfo property set.
         /// </summary>
         /// <param name="featureManagerFactories">The feature manager factories.</param>
-        private void EnsureMetadataHasFeatureInfo(ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories)
+        private void EnsureMetadataHasFeatureInfo(ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>>? featureManagerFactories)
         {
             if (featureManagerFactories == null)
             {
@@ -687,10 +687,7 @@ namespace Kephas.Application
 
             foreach (var fmFactory in featureManagerFactories)
             {
-                if (fmFactory.Metadata.FeatureInfo == null)
-                {
-                    fmFactory.Metadata.FeatureInfo = this.ComputeDefaultFeatureInfo(fmFactory.Metadata);
-                }
+                fmFactory.Metadata.FeatureInfo ??= this.ComputeDefaultFeatureInfo(fmFactory.Metadata);
             }
         }
 
