@@ -21,21 +21,17 @@ namespace Kephas.Runtime
     /// <summary>
     /// Implementation of <see cref="IRuntimeFieldInfo" /> for runtime fields.
     /// </summary>
-    public class RuntimeFieldInfo : Expando, IRuntimeFieldInfo
+    public class RuntimeFieldInfo : RuntimeElementInfoBase, IRuntimeFieldInfo
     {
-        /// <summary>
-        /// The runtime type of <see cref="RuntimeFieldInfo{T,TMember}"/>.
-        /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimeFieldInfo = new RuntimeTypeInfo(typeof(RuntimeFieldInfo));
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeFieldInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The runtime type serviceRegistry.</param>
         /// <param name="fieldInfo">The field information.</param>
         /// <param name="position">Optional. The position.</param>
         /// <param name="logger">Optional. the logger.</param>
-        internal RuntimeFieldInfo(FieldInfo fieldInfo, int position = -1, ILogger logger = null)
-            : base(isThreadSafe: true)
+        internal RuntimeFieldInfo(IRuntimeTypeRegistry typeRegistry, FieldInfo fieldInfo, int position = -1, ILogger logger = null)
+            : base(typeRegistry, logger)
         {
             this.FieldInfo = fieldInfo;
             this.Name = fieldInfo.Name;
@@ -72,7 +68,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => RuntimeTypeInfo.GetRuntimeType(this.FieldInfo.DeclaringType);
+        public IElementInfo DeclaringContainer => this.TypeRegistry.GetRuntimeType(this.FieldInfo.DeclaringType);
 
         /// <summary>
         /// Gets the field information.
@@ -96,7 +92,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        public IRuntimeTypeInfo ValueType => RuntimeTypeInfo.GetRuntimeType(this.FieldInfo.FieldType);
+        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetRuntimeType(this.FieldInfo.FieldType);
 
         /// <summary>
         /// Gets the type of the field.
@@ -104,7 +100,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        ITypeInfo IValueElementInfo.ValueType => RuntimeTypeInfo.GetRuntimeType(this.FieldInfo.FieldType);
+        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetRuntimeType(this.FieldInfo.FieldType);
 
 #if NETSTANDARD2_1
 #else
@@ -174,9 +170,7 @@ namespace Kephas.Runtime
         /// The <see cref="ITypeInfo"/> of this expando object.
         /// </returns>
         protected override ITypeInfo GetThisTypeInfo()
-        {
-            return RuntimeTypeInfoOfRuntimeFieldInfo;
-        }
+            => (this.TypeRegistry as RuntimeTypeRegistry)?.TypeOfRuntimeFieldInfo ?? this.TypeRegistry.GetRuntimeType(typeof(RuntimeFieldInfo));
     }
 
     /// <summary>
@@ -187,19 +181,14 @@ namespace Kephas.Runtime
     public sealed class RuntimeFieldInfo<T, TMember> : RuntimeFieldInfo
     {
         /// <summary>
-        /// The runtime type of <see cref="RuntimeFieldInfo{T,TMember}"/>.
-        /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfGenericRuntimeFieldInfo =
-            new RuntimeTypeInfo(typeof(RuntimeFieldInfo<T, TMember>));
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeFieldInfo{T,TMember}"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The runtime type serviceRegistry.</param>
         /// <param name="fieldInfo">The field information.</param>
         /// <param name="position">Optional. The position.</param>
         /// <param name="logger">Optional. The logger.</param>
-        internal RuntimeFieldInfo(FieldInfo fieldInfo, int position = -1, ILogger? logger = null)
-            : base(fieldInfo, position, logger)
+        internal RuntimeFieldInfo(IRuntimeTypeRegistry typeRegistry, FieldInfo fieldInfo, int position = -1, ILogger? logger = null)
+            : base(typeRegistry, fieldInfo, position, logger)
         {
         }
 
@@ -235,7 +224,7 @@ namespace Kephas.Runtime
         /// </returns>
         protected override ITypeInfo GetThisTypeInfo()
         {
-            return RuntimeTypeInfoOfGenericRuntimeFieldInfo;
+            return this.TypeRegistry.GetRuntimeType(typeof(RuntimeFieldInfo<T, TMember>));
         }
     }
 }

@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.ComponentModel.DataAnnotations;
-
 namespace Kephas.Commands.Messaging.Tests.Endpoints
 {
     using System;
@@ -18,6 +16,7 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
 
     using Kephas.Commands.Messaging.Endpoints;
     using Kephas.Commands.Messaging.Reflection;
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Reflection;
     using Kephas.Services.Composition;

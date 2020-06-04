@@ -32,31 +32,33 @@ namespace Kephas.Model
         /// Gets the abstract type for an implementation type.
         /// </summary>
         /// <param name="type">The type to act on.</param>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The abstract type, or the type itself, if the type is not an implementation type.
         /// </returns>
-        public static ITypeInfo GetAbstractTypeInfo(this Type type)
+        public static ITypeInfo GetAbstractTypeInfo(this Type type, IRuntimeTypeRegistry? typeRegistry)
         {
             Requires.NotNull(type, nameof(type));
 
-            return type.AsRuntimeTypeInfo().GetAbstractTypeInfo();
+            return type.AsRuntimeTypeInfo(typeRegistry).GetAbstractTypeInfo(typeRegistry);
         }
 
         /// <summary>
         /// Gets the abstract type for an implementation type.
         /// </summary>
         /// <param name="type">The type to act on.</param>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The abstract type, or the type itself, if the type is not an implementation type.
         /// </returns>
-        public static ITypeInfo GetAbstractTypeInfo(this ITypeInfo type)
+        public static ITypeInfo GetAbstractTypeInfo(this ITypeInfo type, IRuntimeTypeRegistry? typeRegistry)
         {
             Requires.NotNull(type, nameof(type));
 
             if (!(type[AbstractTypeInfoName] is ITypeInfo abstractTypeInfo))
             {
                 var implementationFor = type.GetAttribute<ImplementationForAttribute>();
-                abstractTypeInfo = (implementationFor != null ? implementationFor.AbstractType?.AsRuntimeTypeInfo() : type) ?? type;
+                abstractTypeInfo = (implementationFor != null ? implementationFor.AbstractType?.AsRuntimeTypeInfo(typeRegistry) : type) ?? type;
                 type[AbstractTypeInfoName] = abstractTypeInfo;
             }
 
@@ -67,68 +69,70 @@ namespace Kephas.Model
         /// Gets the abstract type for an implementation type.
         /// </summary>
         /// <param name="type">The type to act on.</param>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The abstract type, or the type itself, if the type is not an implementation type.
         /// </returns>
-        public static Type GetAbstractType(this Type type)
+        public static Type GetAbstractType(this Type type, IRuntimeTypeRegistry? typeRegistry)
         {
             Requires.NotNull(type, nameof(type));
 
-            return ((IRuntimeTypeInfo)GetAbstractTypeInfo(type.AsRuntimeTypeInfo())).Type;
+            return ((IRuntimeTypeInfo)GetAbstractTypeInfo(type.AsRuntimeTypeInfo(typeRegistry), typeRegistry)).Type;
         }
 
         /// <summary>
         /// Gets the abstract type for an implementation type.
         /// </summary>
         /// <param name="type">The type to act on.</param>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The abstract type, or the type itself, if the type is not an implementation type.
         /// </returns>
-        public static Type GetAbstractType(this ITypeInfo type)
+        public static Type GetAbstractType(this ITypeInfo type, IRuntimeTypeRegistry? typeRegistry)
         {
             Requires.NotNull(type, nameof(type));
 
-            return ((IRuntimeTypeInfo)GetAbstractTypeInfo(type)).Type;
+            return ((IRuntimeTypeInfo)GetAbstractTypeInfo(type, typeRegistry)).Type;
         }
 
         /// <summary>
         /// Gets the abstract type for which this instance is an implementation.
         /// </summary>
         /// <param name="obj">The object to act on.</param>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The abstract type.
         /// </returns>
-        public static Type GetAbstractType(this object obj)
+        public static Type GetAbstractType(this object obj, IRuntimeTypeRegistry? typeRegistry)
         {
-            switch (obj)
+            Requires.NotNull(obj, nameof(obj));
+
+            return obj switch
             {
-                case Type typeObj:
-                    return GetAbstractType(typeObj);
-                case ITypeInfo typeInfoInterface:
-                    return GetAbstractType(typeInfoInterface);
-                default:
-                    return obj?.GetType().GetAbstractType();
-            }
+                Type typeObj => GetAbstractType(typeObj, typeRegistry),
+                ITypeInfo typeInfoInterface => GetAbstractType(typeInfoInterface, typeRegistry),
+                _ => obj.GetType().GetAbstractType(typeRegistry)
+            };
         }
 
         /// <summary>
         /// Gets the abstract type for which this instance is an implementation.
         /// </summary>
         /// <param name="obj">The object to act on.</param>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The abstract type.
         /// </returns>
-        public static ITypeInfo GetAbstractTypeInfo(this object obj)
+        public static ITypeInfo GetAbstractTypeInfo(this object obj, IRuntimeTypeRegistry? typeRegistry)
         {
-            switch (obj)
+            Requires.NotNull(obj, nameof(obj));
+
+            return obj switch
             {
-                case Type typeObj:
-                    return GetAbstractTypeInfo(typeObj);
-                case ITypeInfo typeInfoInterface:
-                    return GetAbstractTypeInfo(typeInfoInterface);
-                default:
-                    return obj?.GetType().GetAbstractTypeInfo();
-            }
+                Type typeObj => GetAbstractTypeInfo(typeObj, typeRegistry),
+                ITypeInfo typeInfoInterface => GetAbstractTypeInfo(typeInfoInterface, typeRegistry),
+                _ => obj.GetType().GetAbstractTypeInfo(typeRegistry)
+            };
         }
     }
 }

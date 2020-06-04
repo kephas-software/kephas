@@ -18,7 +18,7 @@ namespace Kephas.Services.Composition
     /// <summary>
     /// Interface for application service metadata resolver.
     /// </summary>
-    internal interface IAppServiceMetadataResolver
+    public interface IAppServiceMetadataResolver
     {
         /// <summary>
         /// Gets the metadata value properties which should be retrieved from the attribute.

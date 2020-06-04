@@ -101,8 +101,12 @@ namespace Kephas.Data.Capabilities
         {
             get
             {
-                IDataContext dataContext = null;
+                IDataContext? dataContext = null;
                 this.dataContextRef?.TryGetTarget(out dataContext);
+                if (dataContext == null)
+                {
+                    throw new ObjectDisposedException("The entity entry is disposed.");
+                }
                 return dataContext;
             }
 
@@ -331,7 +335,7 @@ namespace Kephas.Data.Capabilities
         /// <returns>
         /// The entity identifier.
         /// </returns>
-        protected virtual object TryGetEntityId()
+        protected virtual object? TryGetEntityId()
         {
             // first of all get the ID from an Identifiable interface
             if (this.Entity is IIdentifiable identifiable)
@@ -349,7 +353,7 @@ namespace Kephas.Data.Capabilities
         /// <returns>
         /// The change state tracker.
         /// </returns>
-        protected virtual IChangeStateTrackable TryGetChangeStateTracker()
+        protected virtual IChangeStateTrackable? TryGetChangeStateTracker()
         {
             return this.Entity as IChangeStateTrackable;
         }
@@ -360,7 +364,7 @@ namespace Kephas.Data.Capabilities
         /// <returns>
         /// The entity graph.
         /// </returns>
-        protected virtual IAggregatable TryGetEntityGraph()
+        protected virtual IAggregatable? TryGetEntityGraph()
         {
             return this.Entity as IAggregatable;
         }
@@ -371,7 +375,7 @@ namespace Kephas.Data.Capabilities
         /// <returns>
         /// An object implementing INotifyPropertyChanging, or <c>null</c>.
         /// </returns>
-        protected virtual INotifyPropertyChanging TryGetNotifyPropertyChanging()
+        protected virtual INotifyPropertyChanging? TryGetNotifyPropertyChanging()
         {
             return this.Entity as INotifyPropertyChanging;
         }
@@ -382,7 +386,7 @@ namespace Kephas.Data.Capabilities
         /// <returns>
         /// An object implementing INotifyPropertyChanged, or <c>null</c>.
         /// </returns>
-        protected virtual INotifyPropertyChanged TryGetNotifyPropertyChanged()
+        protected virtual INotifyPropertyChanged? TryGetNotifyPropertyChanged()
         {
             return this.Entity as INotifyPropertyChanged;
         }
@@ -395,7 +399,7 @@ namespace Kephas.Data.Capabilities
         /// </returns>
         protected virtual IExpando CreateOriginalEntity()
         {
-            var typeInfo = this.Entity.GetTypeInfo();
+            var typeInfo = this.Entity.GetTypeInfo(this.DataContext?.AmbientServices?.TypeRegistry);
             var originalValues = new Dictionary<string, object>();
             foreach (var prop in typeInfo.Properties)
             {

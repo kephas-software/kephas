@@ -22,8 +22,8 @@ namespace Kephas.Composition.Lite.Internal
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string>(null, null));
 
-        public CollectionServiceSource(IServiceRegistry registry)
-            : base(registry)
+        public CollectionServiceSource(IServiceRegistry serviceRegistry)
+            : base(serviceRegistry)
         {
         }
 

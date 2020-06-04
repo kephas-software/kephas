@@ -33,14 +33,15 @@ namespace Kephas.Reflection
         /// Gets the <see cref="IRuntimeTypeInfo"/> for the provided <see cref="Type"/> instance.
         /// </summary>
         /// <param name="type">The type.</param>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The provided <see cref="Type"/>'s associated <see cref="IRuntimeTypeInfo"/>.
         /// </returns>
-        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this Type type)
+        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this Type type, IRuntimeTypeRegistry? typeRegistry)
         {
             Requires.NotNull(type, nameof(type));
 
-            return RuntimeTypeInfo.GetRuntimeType(type);
+            return (typeRegistry ?? RuntimeTypeRegistry.Instance).GetRuntimeType(type);
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(type, nameof(type));
 
-            return IntrospectionExtensions.GetTypeInfo(type).GetNonNullableType().AsType();
+            return type.GetTypeInfo().GetNonNullableType().AsType();
         }
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(type, nameof(type));
 
-            return IntrospectionExtensions.GetTypeInfo(type).IsNullableType();
+            return type.GetTypeInfo().IsNullableType();
         }
 
         /// <summary>
@@ -80,8 +81,8 @@ namespace Kephas.Reflection
         public static bool IsEnumerable(this Type type)
         {
             return type != null
-                   && IntrospectionExtensions.GetTypeInfo(typeof(IEnumerable))
-                       .IsAssignableFrom(IntrospectionExtensions.GetTypeInfo(type));
+                   && typeof(IEnumerable).GetTypeInfo()
+                       .IsAssignableFrom(type.GetTypeInfo());
         }
 
         /// <summary>
@@ -98,8 +99,8 @@ namespace Kephas.Reflection
                 return false;
             }
 
-            var typeInfo = IntrospectionExtensions.GetTypeInfo(type);
-            var collectionTypeInfo = IntrospectionExtensions.GetTypeInfo(typeof(ICollection<>));
+            var typeInfo = type.GetTypeInfo();
+            var collectionTypeInfo = typeof(ICollection<>).GetTypeInfo();
             if (typeInfo.IsConstructedGenericOf(collectionTypeInfo))
             {
                 return true;
@@ -122,8 +123,8 @@ namespace Kephas.Reflection
                 return false;
             }
 
-            var typeInfo = IntrospectionExtensions.GetTypeInfo(type);
-            var dictionaryTypeInfo = IntrospectionExtensions.GetTypeInfo(typeof(IDictionary<,>));
+            var typeInfo = type.GetTypeInfo();
+            var dictionaryTypeInfo = typeof(IDictionary<,>).GetTypeInfo();
             if (typeInfo.IsConstructedGenericOf(dictionaryTypeInfo))
             {
                 return true;
@@ -142,8 +143,8 @@ namespace Kephas.Reflection
         public static bool IsQueryable(this Type type)
         {
             return type != null
-                   && IntrospectionExtensions.GetTypeInfo(typeof(IQueryable))
-                       .IsAssignableFrom(IntrospectionExtensions.GetTypeInfo(type));
+                   && typeof(IQueryable).GetTypeInfo()
+                       .IsAssignableFrom(type.GetTypeInfo());
         }
 
         /// <summary>
@@ -151,7 +152,7 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="type">The enumerable type.</param>
         /// <returns>The item type if the provided type is enumerable, otherwise <c>null</c>.</returns>
-        public static Type TryGetEnumerableItemType(this Type type)
+        public static Type? TryGetEnumerableItemType(this Type type)
         {
             return TryGetEnumerableItemType(type, typeof(IEnumerable<>));
         }
@@ -161,7 +162,7 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="type">The queryable type.</param>
         /// <returns>The item type if the provided type is queryable, otherwise <c>null</c>.</returns>
-        public static Type TryGetQueryableItemType(this Type type)
+        public static Type? TryGetQueryableItemType(this Type type)
         {
             return TryGetEnumerableItemType(type, typeof(IQueryable<>));
         }
@@ -171,7 +172,7 @@ namespace Kephas.Reflection
         /// </summary>
         /// <param name="type">The collection type.</param>
         /// <returns>The item type if the provided type is a collection, otherwise <c>null</c>.</returns>
-        public static Type TryGetCollectionItemType(this Type type)
+        public static Type? TryGetCollectionItemType(this Type type)
         {
             return TryGetEnumerableItemType(type, typeof(ICollection<>));
         }
@@ -184,26 +185,27 @@ namespace Kephas.Reflection
         /// <returns>
         /// The enumerable item type.
         /// </returns>
-        public static Type TryGetEnumerableItemType(this Type type, Type enumerableGenericType)
+        public static Type? TryGetEnumerableItemType(this Type type, Type enumerableGenericType)
         {
             if (!type.IsEnumerable())
             {
                 return null;
             }
 
-            Func<Type, bool> isRequestedEnumerable = t =>
-                {
-                    var ti = IntrospectionExtensions.GetTypeInfo(t);
-                    return ti.IsGenericType && ti.GetGenericTypeDefinition() == enumerableGenericType;
-                };
-            var enumerableType = isRequestedEnumerable(type)
+            bool IsRequestedEnumerable(Type t)
+            {
+                var ti = t.GetTypeInfo();
+                return ti.IsGenericType && ti.GetGenericTypeDefinition() == enumerableGenericType;
+            }
+
+            var enumerableType = IsRequestedEnumerable(type)
                                      ? type
-                                     : IntrospectionExtensions.GetTypeInfo(type)
-                                         .ImplementedInterfaces.SingleOrDefault(isRequestedEnumerable);
+                                     : type.GetTypeInfo()
+                                         .ImplementedInterfaces.SingleOrDefault(IsRequestedEnumerable);
 
             return enumerableType == null
                        ? null
-                       : IntrospectionExtensions.GetTypeInfo(enumerableType).GenericTypeArguments[0];
+                       : enumerableType.GetTypeInfo().GenericTypeArguments[0];
         }
 
         /// <summary>
@@ -241,7 +243,7 @@ namespace Kephas.Reflection
             Requires.NotNull(type, nameof(type));
             Requires.NotNull(openGenericType, nameof(openGenericType));
 
-            var openGenericTypeInfo = IntrospectionExtensions.GetTypeInfo(openGenericType);
+            var openGenericTypeInfo = openGenericType.GetTypeInfo();
             if (openGenericTypeInfo.IsClass)
             {
                 while (type != ObjectType)
@@ -251,12 +253,12 @@ namespace Kephas.Reflection
                         return type;
                     }
 
-                    type = IntrospectionExtensions.GetTypeInfo(type).BaseType;
+                    type = type.GetTypeInfo().BaseType;
                 }
             }
             else if (openGenericTypeInfo.IsInterface)
             {
-                var implementedInterfaces = IntrospectionExtensions.GetTypeInfo(type).ImplementedInterfaces;
+                var implementedInterfaces = type.GetTypeInfo().ImplementedInterfaces;
                 var constructedInterface = implementedInterfaces.FirstOrDefault(
                     t => t.IsConstructedGenericType && t.GetGenericTypeDefinition() == openGenericType);
                 return constructedInterface;
@@ -277,7 +279,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(type, nameof(type));
 
-            return TypeInfoExtensions.GetQualifiedFullName(IntrospectionExtensions.GetTypeInfo(type), stripVersionInfo);
+            return type.GetTypeInfo().GetQualifiedFullName(stripVersionInfo);
         }
     }
 }

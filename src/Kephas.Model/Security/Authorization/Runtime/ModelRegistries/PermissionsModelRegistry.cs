@@ -17,7 +17,7 @@ namespace Kephas.Model.Security.Authorization.Runtime.ModelRegistries
     using Kephas.Services;
 
     /// <summary>
-    /// Model registry for permissions.
+    /// Model serviceRegistry for permissions.
     /// </summary>
     public class PermissionsModelRegistry : ConventionsRuntimeModelRegistryBase
     {

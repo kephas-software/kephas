@@ -55,6 +55,6 @@ namespace Kephas.Data.Endpoints
         /// <value>
         /// The data source.
         /// </value>
-        public IList<object> DataSource { get; set; }
+        public IList<object>? DataSource { get; set; }
     }
 }

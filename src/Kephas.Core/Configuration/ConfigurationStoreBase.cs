@@ -8,16 +8,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Diagnostics.Contracts;
-
 namespace Kephas.Configuration
 {
     using System;
     using System.Collections.Generic;
 
     using Kephas.Collections;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Abstract base class for configuration stores.
@@ -30,9 +30,11 @@ namespace Kephas.Configuration
         /// Initializes a new instance of the <see cref="ConfigurationStoreBase"/> class.
         /// </summary>
         /// <param name="store">The store.</param>
-        protected ConfigurationStoreBase(IIndexable store)
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
+        protected ConfigurationStoreBase(IIndexable store, IRuntimeTypeRegistry typeRegistry)
         {
             this.InternalStore = store;
+            this.TypeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -42,6 +44,11 @@ namespace Kephas.Configuration
         /// The internal store.
         /// </value>
         protected IIndexable InternalStore { get; }
+
+        /// <summary>
+        /// Gets the type serviceRegistry.
+        /// </summary>
+        protected IRuntimeTypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Indexer to get or set items within this collection using array index syntax.
@@ -71,11 +78,11 @@ namespace Kephas.Configuration
 
             var settingsType = typeof(TSettings);
 
-            var settings = this.TryGetOrAddSettings(typeof(TSettings), () => new TSettings());
+            var settings = this.TryGetOrAddSettings(settingsType, () => new TSettings());
             if (settings != null)
             {
                 optionsConfig.Invoke((TSettings)settings);
-                this.SetValue(typeof(TSettings).FullName, settings, syncSettingsMap: false);
+                this.SetValue(settingsType.FullName, settings, syncSettingsMap: false);
             }
         }
 
@@ -88,7 +95,7 @@ namespace Kephas.Configuration
         /// </returns>
         public object? TryGetSettings(Type settingsType)
         {
-            return this.TryGetOrAddSettings(settingsType, () => settingsType.AsRuntimeTypeInfo().CreateInstance());
+            return this.TryGetOrAddSettings(settingsType, () => settingsType.AsRuntimeTypeInfo(this.TypeRegistry).CreateInstance());
         }
 
         /// <summary>
@@ -167,7 +174,7 @@ namespace Kephas.Configuration
         /// </returns>
         protected virtual object CreateSettings(Type settingsType)
         {
-            var settingsTypeInfo = settingsType.AsRuntimeTypeInfo();
+            var settingsTypeInfo = settingsType.AsRuntimeTypeInfo(this.TypeRegistry);
             var settings = settingsTypeInfo.CreateInstance();
 
             return settings;

@@ -14,7 +14,7 @@ namespace Kephas.Composition.Lite.Internal
     using System.Collections.Generic;
 
     /// <summary>
-    /// Interface for service registry.
+    /// Interface for service serviceRegistry.
     /// </summary>
     internal interface IServiceRegistry : IEnumerable<IServiceInfo>, IDisposable
     {
@@ -69,7 +69,7 @@ namespace Kephas.Composition.Lite.Internal
         /// </summary>
         /// <param name="serviceInfo">Information describing the service.</param>
         /// <returns>
-        /// This service registry.
+        /// This service serviceRegistry.
         /// </returns>
         ServiceRegistry RegisterService(IServiceInfo serviceInfo);
 
@@ -78,7 +78,7 @@ namespace Kephas.Composition.Lite.Internal
         /// </summary>
         /// <param name="serviceSource">The service source.</param>
         /// <returns>
-        /// This service registry.
+        /// This service serviceRegistry.
         /// </returns>
         ServiceRegistry RegisterSource(IServiceSource serviceSource);
     }

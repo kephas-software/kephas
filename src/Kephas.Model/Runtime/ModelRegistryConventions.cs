@@ -12,7 +12,7 @@ namespace Kephas.Model.Runtime
     using Kephas.Services;
 
     /// <summary>
-    /// The context for the convention model registry.
+    /// The context for the convention model serviceRegistry.
     /// </summary>
     public class ModelRegistryConventions : Context
     {

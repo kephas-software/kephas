@@ -68,5 +68,5 @@ $paths = @(
 foreach ($path in $paths) {
     $packagename = get-packagename $path
     $packagepath = "..\$path\bin\$build\$packagename.$version.nupkg"
-    .\NuGet.exe push $packagepath -Source https://api.nuget.org/v3/index.json 
+    .\NuGet.exe push $packagepath 
 }

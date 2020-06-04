@@ -4,9 +4,11 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the model assembly registry class.
+//   Implements the model assembly serviceRegistry class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Kephas.Runtime;
 
 namespace Kephas.Model.Runtime.ModelRegistries
 {
@@ -34,6 +36,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
         private readonly IAppRuntime appRuntime;
         private readonly ITypeLoader typeLoader;
         private readonly IModelAssemblyAttributeProvider modelAssemblyAttributeProvider;
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelAssemblyRegistry"/> class.
@@ -41,11 +44,13 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">The type loader.</param>
         /// <param name="modelAssemblyAttributeProvider">The model assembly attribute provider.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public ModelAssemblyRegistry(
             IAppRuntime appRuntime,
             ITypeLoader typeLoader,
             IModelAssemblyAttributeProvider modelAssemblyAttributeProvider,
+            IRuntimeTypeRegistry typeRegistry,
             ILogManager? logManager = null)
             : base(logManager)
         {
@@ -56,6 +61,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
             this.appRuntime = appRuntime;
             this.typeLoader = typeLoader;
             this.modelAssemblyAttributeProvider = modelAssemblyAttributeProvider;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -145,7 +151,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
             var defaultClassifierKind = modelAssemblyAttribute.DefaultClassifierKindAttribute?.ClassifierType;
             foreach (var type in modelTypes)
             {
-                var runtimeTypeInfo = type.AsRuntimeTypeInfo();
+                var runtimeTypeInfo = type.AsRuntimeTypeInfo(this.typeRegistry);
                 if (defaultClassifierKind != null)
                 {
                     runtimeTypeInfo.SetClassifierKind(defaultClassifierKind);

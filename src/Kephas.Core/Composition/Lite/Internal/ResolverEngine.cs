@@ -27,7 +27,7 @@ namespace Kephas.Composition.Lite.Internal
         /// Initializes a new instance of the <see cref="ResolverEngine"/> class.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="registry">The registry.</param>
+        /// <param name="registry">The serviceRegistry.</param>
         public ResolverEngine(IAmbientServices ambientServices, IServiceRegistry registry)
         {
             this.ambientServicesRef = new WeakReference<IAmbientServices>(ambientServices);

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas
 {
     using System;
@@ -49,6 +51,11 @@ namespace Kephas
         /// The application runtime.
         /// </value>
         IAppRuntime AppRuntime { get; }
+
+        /// <summary>
+        /// Gets the runtime type serviceRegistry.
+        /// </summary>
+        IRuntimeTypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Gets the type loader.

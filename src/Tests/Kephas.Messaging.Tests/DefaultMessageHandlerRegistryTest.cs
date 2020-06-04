@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the default message handler registry test class.
+//   Implements the default message handler serviceRegistry test class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

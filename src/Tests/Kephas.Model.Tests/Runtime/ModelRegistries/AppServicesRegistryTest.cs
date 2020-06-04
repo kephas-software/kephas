@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the application services registry test class.
+//   Implements the application services serviceRegistry test class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

@@ -131,7 +131,7 @@ namespace Kephas.Model.Runtime.Configuration
         public virtual TConfigurator AddAttribute<TAttribute>()
             where TAttribute : Attribute
         {
-            var attr = typeof(TAttribute).AsRuntimeTypeInfo().CreateInstance();
+            var attr = Activator.CreateInstance(typeof(TAttribute));
             return this.AddMember(attr);
         }
 

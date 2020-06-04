@@ -16,6 +16,7 @@ namespace Kephas.Services.Composition
     using Kephas.Collections;
     using Kephas.Composition.Metadata;
     using Kephas.Model.AttributedModel;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -23,7 +24,7 @@ namespace Kephas.Services.Composition
     /// </summary>
     public class AppServiceMetadata : ExportMetadataBase
     {
-        private static readonly IAppServiceMetadataResolver MetadataResolver = new AppServiceMetadataResolver();
+        private static readonly IAppServiceMetadataResolver MetadataResolver = new AppServiceMetadataResolver(RuntimeTypeRegistry.Instance);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadata"/> class.

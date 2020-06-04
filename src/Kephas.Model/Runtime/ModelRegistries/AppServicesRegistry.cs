@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the application service contracts registry class.
+//   Implements the application service contracts serviceRegistry class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ namespace Kephas.Model.Runtime.ModelRegistries
     using Kephas.Services.Composition;
 
     /// <summary>
-    /// An application service contracts registry.
+    /// An application service contracts serviceRegistry.
     /// </summary>
     public class AppServicesRegistry : IRuntimeModelRegistry
     {

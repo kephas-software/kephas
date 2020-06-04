@@ -208,7 +208,7 @@ namespace Kephas.Data.Client.Queries
                     return entities.Cast<object>().ToList();
                 }
 
-                var clientEntityTypeInfo = typeof(TClientEntity).AsRuntimeTypeInfo();
+                var clientEntityTypeInfo = typeof(TClientEntity).AsRuntimeTypeInfo(executionContext?.AmbientServices?.TypeRegistry);
                 foreach (var entity in entities)
                 {
                     using (var context = new DataConversionContext(dataSpace, this.ConversionService)

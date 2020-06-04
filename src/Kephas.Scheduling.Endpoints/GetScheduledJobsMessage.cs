@@ -5,12 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Messaging.Messages;
-
 namespace Kephas.Scheduling.Endpoints
 {
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
+    using Kephas.Messaging.Messages;
 
     /// <summary>
     /// Message for getting the scheduled jobs.

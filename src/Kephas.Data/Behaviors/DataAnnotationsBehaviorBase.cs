@@ -33,7 +33,7 @@ namespace Kephas.Data.Behaviors
         /// <value>
         /// The " data annotations behavior base validation fn".
         /// </value>
-        private const string ValidationFnKey = "DataAnnotationsBehaviorBase_ValidationFn";
+        private const string ValidationFnKey = "__ValidationFn";
 
         /// <summary>
         /// Callback invoked after upon entity validation.
@@ -54,7 +54,7 @@ namespace Kephas.Data.Behaviors
                 return DataValidationResult.Success;
             }
 
-            var typeInfo = entity.GetTypeInfo();
+            var typeInfo = entity.GetTypeInfo(operationContext.AmbientServices?.TypeRegistry);
             var validationFn = typeInfo[ValidationFnKey] as Func<object, IEntityEntry, IDataOperationContext, IDataValidationResult>;
             if (validationFn == null)
             {
@@ -74,12 +74,15 @@ namespace Kephas.Data.Behaviors
         /// </returns>
         protected virtual Func<object, IEntityEntry, IDataOperationContext, IDataValidationResult> CreateValidationFn(ITypeInfo typeInfo)
         {
-            var propValidations = new List<Func<object, IDataValidationResultItem>>();
+            var propValidations = new List<Func<object, IDataValidationResultItem?>>();
 
             foreach (var propInfo in typeInfo.Properties)
             {
                 var propInfoValidations = propInfo.Annotations.OfType<ValidationAttribute>().ToList();
-                propInfoValidations.AddRange(propInfo.Annotations.OfType<IAttributeProvider>().Select(p => p.GetAttribute<ValidationAttribute>()).Where(a => a != null));
+                propInfoValidations.AddRange(propInfo.Annotations
+                    .OfType<IAttributeProvider>()
+                    .Select(p => p.GetAttribute<ValidationAttribute>()!)
+                    .Where(a => a != null));
                 var propInfoLocalization = propInfo.GetLocalization();
                 foreach (var propInfoValidation in propInfoValidations)
                 {
@@ -105,9 +108,9 @@ namespace Kephas.Data.Behaviors
         /// <returns>
         /// The data validation result.
         /// </returns>
-        private IDataValidationResult GetDataValidationResult(object entity, List<Func<object, IDataValidationResultItem>> propValidations)
+        private IDataValidationResult GetDataValidationResult(object entity, List<Func<object, IDataValidationResultItem?>> propValidations)
         {
-            var propResults = propValidations.Select(v => v(entity)).Where(res => res != null).ToArray();
+            var propResults = propValidations.Select(v => v(entity)!).Where(res => res != null).ToArray();
             if (propResults.Length == 0)
             {
                 return DataValidationResult.Success;

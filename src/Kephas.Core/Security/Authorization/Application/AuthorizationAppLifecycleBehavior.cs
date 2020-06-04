@@ -21,6 +21,17 @@ namespace Kephas.Security.Authorization.Application
     [ProcessingPriority(Priority.High)]
     public class AuthorizationAppLifecycleBehavior : IAppLifecycleBehavior
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationAppLifecycleBehavior"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
+        public AuthorizationAppLifecycleBehavior(IRuntimeTypeRegistry typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
+
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
@@ -31,7 +42,7 @@ namespace Kephas.Security.Authorization.Application
         /// </returns>
         public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            RuntimeTypeInfo.RegisterFactory(new AuthorizationTypeInfoFactory());
+            this.typeRegistry.RegisterFactory(new AuthorizationTypeInfoFactory(this.typeRegistry));
 
             return Task.CompletedTask;
         }

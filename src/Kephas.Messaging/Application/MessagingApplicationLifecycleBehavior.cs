@@ -32,6 +32,7 @@ namespace Kephas.Messaging.Application
     {
         private readonly IConfiguration<MessagingSettings> messagingConfig;
         private readonly IMessageBroker messageBroker;
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessagingApplicationLifecycleBehavior"/>
@@ -39,13 +40,16 @@ namespace Kephas.Messaging.Application
         /// </summary>
         /// <param name="messagingConfig">The messaging configuration.</param>
         /// <param name="messageBroker">The message broker.</param>
-        public MessagingApplicationLifecycleBehavior(IConfiguration<MessagingSettings> messagingConfig, IMessageBroker messageBroker)
+        /// <param name="typeRegistry">The type registry.</param>
+        public MessagingApplicationLifecycleBehavior(IConfiguration<MessagingSettings> messagingConfig, IMessageBroker messageBroker, IRuntimeTypeRegistry typeRegistry)
         {
             Requires.NotNull(messagingConfig, nameof(messagingConfig));
             Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(typeRegistry, nameof(typeRegistry));
 
             this.messagingConfig = messagingConfig;
             this.messageBroker = messageBroker;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -58,7 +62,7 @@ namespace Kephas.Messaging.Application
         /// </returns>
         public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            RuntimeTypeInfo.RegisterFactory(new MessagingTypeInfoFactory());
+            this.typeRegistry.RegisterFactory(new MessagingTypeInfoFactory(this.typeRegistry));
 
             this.InitializeConfig();
 

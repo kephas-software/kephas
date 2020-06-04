@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
+
 namespace Kephas.Plugins.Transactions
 {
     using System;
@@ -31,8 +33,8 @@ namespace Kephas.Plugins.Transactions
         /// <summary>
         /// The command activators.
         /// </summary>
-        protected static readonly ConcurrentDictionary<string, Func<string[], UndoCommandBase>> Activators =
-            new ConcurrentDictionary<string, Func<string[], UndoCommandBase>>();
+        protected static readonly ConcurrentDictionary<string, Func<string[], IPluginContext, UndoCommandBase>> Activators =
+            new ConcurrentDictionary<string, Func<string[], IPluginContext, UndoCommandBase>>();
 
         private const char SplitSeparatorChar = '|';
 
@@ -43,7 +45,7 @@ namespace Kephas.Plugins.Transactions
         /// </summary>
         static UndoCommandBase()
         {
-            Activators.TryAdd(MoveFileUndoCommand.CommandName, args => new MoveFileUndoCommand(args));
+            Activators.TryAdd(MoveFileUndoCommand.CommandName, (args, ctx) => new MoveFileUndoCommand(args));
         }
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace Kephas.Plugins.Transactions
             this.Name = name;
             this.Args = args;
 
-            Activators.TryAdd(name, ctorargs => (UndoCommandBase)this.GetType().AsRuntimeTypeInfo().CreateInstance(new object[] { ctorargs }));
+            Activators.TryAdd(name, (ctorArgs, ctx) => (UndoCommandBase)this.GetType().AsRuntimeTypeInfo(ctx?.AmbientServices?.TypeRegistry).CreateInstance(new object[] { ctorArgs }));
         }
 
         /// <summary>
@@ -88,16 +90,19 @@ namespace Kephas.Plugins.Transactions
         /// Parses the command string to restore an <see cref="UndoCommandBase"/> object.
         /// </summary>
         /// <param name="commandString">The command string.</param>
+        /// <param name="context">The execution context.</param>
         /// <returns>
         /// An <see cref="UndoCommandBase"/>.
         /// </returns>
-        public static UndoCommandBase Parse(string commandString)
+        public static UndoCommandBase Parse(string commandString, IPluginContext context)
         {
             var splits = commandString.Split(SplitSeparatorChar);
             var activator = Activators[splits[0]];
-            return activator(splits.Skip(1)
-                .Select(Unescape)
-                .ToArray());
+            return activator(
+                splits.Skip(1)
+                    .Select(Unescape)
+                    .ToArray(),
+                context);
         }
 
         /// <summary>

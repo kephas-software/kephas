@@ -11,8 +11,6 @@
 namespace Kephas.Reflection
 {
     using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.IO;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -25,11 +23,6 @@ namespace Kephas.Reflection
     /// </summary>
     public static class ReflectionHelper
     {
-        /// <summary>
-        /// The empty type infos.
-        /// </summary>
-        internal static readonly IReadOnlyList<ITypeInfo> EmptyTypeInfos = Array.Empty<ITypeInfo>();
-
         private static readonly Func<AssemblyName, bool> IsSystemAssemblyFuncValue = assemblyName =>
             {
                 var assemblyFullName = assemblyName.FullName;
@@ -290,14 +283,15 @@ namespace Kephas.Reflection
         /// Gets the <see cref="IRuntimeAssemblyInfo"/> for the provided <see cref="Assembly"/> instance.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The provided <see cref="Assembly"/>'s associated <see cref="IRuntimeAssemblyInfo"/>.
         /// </returns>
-        public static IRuntimeAssemblyInfo AsRuntimeAssemblyInfo(this Assembly assembly)
+        public static IRuntimeAssemblyInfo AsRuntimeAssemblyInfo(this Assembly assembly, IRuntimeTypeRegistry? typeRegistry)
         {
             Requires.NotNull(assembly, nameof(assembly));
 
-            return RuntimeAssemblyInfo.GetRuntimeAssembly(assembly);
+            return (typeRegistry ?? RuntimeTypeRegistry.Instance).GetRuntimeAssembly(assembly);
         }
 
         /// <summary>
@@ -330,11 +324,14 @@ namespace Kephas.Reflection
         /// of its runtime type.
         /// </summary>
         /// <param name="obj">The object.</param>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>A type information for the provided object.</returns>
-        public static ITypeInfo GetTypeInfo(this object obj)
+        public static ITypeInfo GetTypeInfo(this object obj, IRuntimeTypeRegistry? typeRegistry)
         {
+            Requires.NotNull(obj, nameof(obj));
+
             var typeInfo = (obj as IInstance)?.GetTypeInfo();
-            return typeInfo ?? obj?.GetType().AsRuntimeTypeInfo();
+            return typeInfo ?? obj.GetType().AsRuntimeTypeInfo(typeRegistry);
         }
     }
 }

@@ -21,6 +21,8 @@ namespace Kephas.Services.Composition
 
     internal class AppServiceMetadataResolver : IAppServiceMetadataResolver
     {
+        private readonly IRuntimeTypeRegistry? typeRegistry;
+
         /// <summary>
         /// The attribute suffix.
         /// </summary>
@@ -39,7 +41,16 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Information describing the metadata value type.
         /// </summary>
-        private static IRuntimeTypeInfo metadataValueTypeInfo;
+        private IRuntimeTypeInfo? metadataValueTypeInfo;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppServiceMetadataResolver"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
+        internal AppServiceMetadataResolver(IRuntimeTypeRegistry? typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
 
         /// <summary>
         /// Gets information describing the metadata value type.
@@ -47,8 +58,8 @@ namespace Kephas.Services.Composition
         /// <value>
         /// Information describing the metadata value type.
         /// </value>
-        private static IRuntimeTypeInfo MetadataValueTypeInfo
-            => metadataValueTypeInfo ?? (metadataValueTypeInfo = typeof(IMetadataValue).AsRuntimeTypeInfo());
+        private IRuntimeTypeInfo MetadataValueTypeInfo
+            => this.metadataValueTypeInfo ??= typeof(IMetadataValue).AsRuntimeTypeInfo(this.typeRegistry);
 
         /// <summary>
         /// Gets the metadata value properties which should be retrieved from the attribute.
@@ -59,7 +70,7 @@ namespace Kephas.Services.Composition
         /// </returns>
         public IDictionary<string, IPropertyInfo> GetMetadataValueProperties(Type attributeType)
         {
-            var attributeTypeInfo = attributeType.AsRuntimeTypeInfo();
+            var attributeTypeInfo = attributeType.AsRuntimeTypeInfo(this.typeRegistry);
 
             const string MetadataValuePropertiesName = "__MetadataValueProperties";
             if (attributeTypeInfo[MetadataValuePropertiesName] is IDictionary<string, IPropertyInfo> metadataValueProperties)

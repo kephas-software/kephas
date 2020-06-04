@@ -61,7 +61,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(type, nameof(type));
 
-            return GetLocalization(type.AsRuntimeTypeInfo());
+            return GetLocalization(type.AsRuntimeTypeInfo(null));
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return GetLocalization(typeInfo.AsRuntimeTypeInfo());
+            return GetLocalization(typeInfo.AsRuntimeTypeInfo(null));
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Kephas.Reflection
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
             var localization = typeInfo[LocalizationPropertyName] as ITypeInfoLocalization;
-            if (localization == null && !typeInfo.HasDynamicMember(LocalizationPropertyName))
+            if (localization == null)
             {
                 localization = CreateTypeInfoLocalization(typeInfo) ?? new TypeInfoLocalization(typeInfo);
                 typeInfo[LocalizationPropertyName] = localization;
@@ -110,7 +110,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(propertyInfo, nameof(propertyInfo));
 
-            var runtimeTypeInfo = propertyInfo.DeclaringType.AsRuntimeTypeInfo();
+            var runtimeTypeInfo = propertyInfo.DeclaringType.AsRuntimeTypeInfo(null);
             var runtimePropertyInfo = runtimeTypeInfo.Properties[propertyInfo.Name];
             return GetLocalization(runtimePropertyInfo);
         }
@@ -127,10 +127,10 @@ namespace Kephas.Reflection
             Requires.NotNull(propertyInfo, nameof(propertyInfo));
 
             var localization = propertyInfo[LocalizationPropertyName] as IMemberInfoLocalization;
-            if (localization == null && !propertyInfo.HasDynamicMember(LocalizationPropertyName))
+            if (localization == null)
             {
                 var typeInfo = propertyInfo.DeclaringContainer as ITypeInfo;
-                var typeInfoLocalization = GetLocalization(typeInfo);
+                var typeInfoLocalization = GetLocalization(typeInfo!);
                 localization = typeInfoLocalization.Members[propertyInfo.Name];
                 propertyInfo[LocalizationPropertyName] = localization;
             }

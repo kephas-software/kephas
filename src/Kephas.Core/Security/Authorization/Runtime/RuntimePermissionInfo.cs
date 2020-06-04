@@ -28,9 +28,10 @@ namespace Kephas.Security.Authorization.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimePermissionInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <param name="type">The type.</param>
-        protected internal RuntimePermissionInfo(Type type)
-            : base(type)
+        protected internal RuntimePermissionInfo(IRuntimeTypeRegistry typeRegistry, Type type)
+            : base(typeRegistry, type)
         {
             var permTypeAttr = this.GetAttributes<Attribute>().OfType<IScoped>().FirstOrDefault();
             this.Scoping = permTypeAttr?.Scoping ?? Scoping.Global;
@@ -66,7 +67,7 @@ namespace Kephas.Security.Authorization.Runtime
                 .SelectMany(attr => attr.PermissionTypes)
                 .Union(new List<Type>(this.Type.GetInterfaces()) { this.Type.BaseType }
                     .Where(t => t != null))
-                .Select(t => t.AsRuntimeTypeInfo())
+                .Select(t => this.TypeRegistry.GetRuntimeType(t))
                 .OfType<IPermissionInfo>()
                 .Distinct()
                 .ToList()
@@ -83,7 +84,7 @@ namespace Kephas.Security.Authorization.Runtime
         {
             get => this.requiredPermissions ??= this.GetAttributes<RequiresPermissionAttribute>()
                 .SelectMany(attr => attr.PermissionTypes)
-                .Select(t => t.AsRuntimeTypeInfo())
+                .Select(t => this.TypeRegistry.GetRuntimeType(t))
                 .OfType<IPermissionInfo>()
                 .Distinct()
                 .ToList()

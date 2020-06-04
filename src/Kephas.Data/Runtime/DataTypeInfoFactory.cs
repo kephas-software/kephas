@@ -19,6 +19,17 @@ namespace Kephas.Data.Runtime
     /// </summary>
     public class DataTypeInfoFactory : IRuntimeTypeInfoFactory
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataTypeInfoFactory"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        public DataTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
+
         /// <summary>
         /// Tries to create the runtime type information type for the provided raw type.
         /// </summary>
@@ -30,7 +41,7 @@ namespace Kephas.Data.Runtime
         {
             if (typeof(IEntity).IsAssignableFrom(type))
             {
-                return new RuntimeEntityInfo(type);
+                return new RuntimeEntityInfo(this.typeRegistry, type);
             }
 
             return null;

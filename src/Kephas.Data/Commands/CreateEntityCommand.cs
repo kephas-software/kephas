@@ -61,7 +61,7 @@ namespace Kephas.Data.Commands
             var entity = this.CreateEntity(operationContext);
 
             var dataContext = operationContext.DataContext;
-            IEntityEntry entityEntry = null;
+            IEntityEntry? entityEntry = null;
             try
             {
                 entityEntry = dataContext.Attach(entity);
@@ -108,7 +108,7 @@ namespace Kephas.Data.Commands
         protected virtual object CreateEntity(ICreateEntityContext operationContext)
         {
             var activator = this.TryGetEntityActivator(operationContext.DataContext) ?? RuntimeActivator.Instance;
-            var entity = activator.CreateInstance(operationContext.EntityType.AsRuntimeTypeInfo());
+            var entity = activator.CreateInstance(operationContext.EntityType.AsRuntimeTypeInfo(operationContext?.AmbientServices?.TypeRegistry));
             return entity;
         }
 

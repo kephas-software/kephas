@@ -81,7 +81,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
 
             memberName = memberName.ToPascalCase();
 
-            var queryItemTypeInfo = lambdaArg.Type.AsRuntimeTypeInfo();
+            var queryItemTypeInfo = lambdaArg.Type.AsRuntimeTypeInfo(null);
             if (!queryItemTypeInfo.Properties.TryGetValue(memberName, out var propertyInfo))
             {
                 throw new MissingMemberException(string.Format(Strings.DefaultClientQueryConverter_MissingMember_Exception, memberName, queryItemTypeInfo));

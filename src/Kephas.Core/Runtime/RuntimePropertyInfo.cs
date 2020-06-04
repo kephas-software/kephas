@@ -22,21 +22,17 @@ namespace Kephas.Runtime
     /// <summary>
     /// Implementation of <see cref="IRuntimePropertyInfo" /> for runtime properties.
     /// </summary>
-    public class RuntimePropertyInfo : Expando, IRuntimePropertyInfo
+    public class RuntimePropertyInfo : RuntimeElementInfoBase, IRuntimePropertyInfo
     {
-        /// <summary>
-        /// The runtime type of <see cref="RuntimePropertyInfo{T,TMember}"/>.
-        /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo));
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimePropertyInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <param name="propertyInfo">The property information.</param>
         /// <param name="position">Optional. The position.</param>
         /// <param name="logger">Optional. The logger.</param>
-        internal RuntimePropertyInfo(PropertyInfo propertyInfo, int position = -1, ILogger logger = null)
-            : base(isThreadSafe: true)
+        internal RuntimePropertyInfo(IRuntimeTypeRegistry typeRegistry, PropertyInfo propertyInfo, int position = -1, ILogger logger = null)
+            : base(typeRegistry, logger)
         {
             this.PropertyInfo = propertyInfo;
             this.Logger = logger;
@@ -74,7 +70,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.DeclaringType);
+        public IElementInfo DeclaringContainer => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.DeclaringType);
 
         /// <summary>
         /// Gets the property information.
@@ -98,7 +94,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the property.
         /// </value>
-        public IRuntimeTypeInfo ValueType => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.PropertyType);
+        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Gets the type of the property.
@@ -106,7 +102,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the property.
         /// </value>
-        ITypeInfo IValueElementInfo.ValueType => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.PropertyType);
+        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Gets a value indicating whether the property can be written to.
@@ -200,9 +196,7 @@ namespace Kephas.Runtime
         /// The <see cref="ITypeInfo"/> of this expando object.
         /// </returns>
         protected override ITypeInfo GetThisTypeInfo()
-        {
-            return RuntimeTypeInfoOfRuntimePropertyInfo;
-        }
+            => (this.TypeRegistry as RuntimeTypeRegistry)?.TypeOfRuntimePropertyInfo ?? this.TypeRegistry.GetRuntimeType(typeof(RuntimePropertyInfo));
     }
 
     /// <summary>
@@ -213,16 +207,6 @@ namespace Kephas.Runtime
     public sealed class RuntimePropertyInfo<T, TMember> : RuntimePropertyInfo
     {
         /// <summary>
-        /// The empty arguments.
-        /// </summary>
-        private static readonly object[] EmptyArgs = new object[0];
-
-        /// <summary>
-        /// The runtime type of <see cref="RuntimePropertyInfo{T,TMember}"/>.
-        /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfGenericRuntimePropertyInfo = new RuntimeTypeInfo(typeof(RuntimePropertyInfo<T, TMember>));
-
-        /// <summary>
         /// True if getter computed.
         /// </summary>
         private bool getterComputed = false;
@@ -230,7 +214,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// The getter.
         /// </summary>
-        private Func<T, TMember> getter;
+        private Func<T, TMember>? getter;
 
         /// <summary>
         /// True if setter computed.
@@ -240,16 +224,17 @@ namespace Kephas.Runtime
         /// <summary>
         /// The setter.
         /// </summary>
-        private Action<T, TMember> setter;
+        private Action<T, TMember>? setter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimePropertyInfo{T,TMember}"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <param name="propertyInfo">The property information.</param>
         /// <param name="position">Optional. The position.</param>
         /// <param name="logger">Optional. The logger.</param>
-        internal RuntimePropertyInfo(PropertyInfo propertyInfo, int position = -1, ILogger? logger = null)
-            : base(propertyInfo, position, logger)
+        internal RuntimePropertyInfo(IRuntimeTypeRegistry typeRegistry, PropertyInfo propertyInfo, int position = -1, ILogger? logger = null)
+            : base(typeRegistry, propertyInfo, position, logger)
         {
         }
 
@@ -272,7 +257,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// Gets the getter.
         /// </summary>
-        private Func<T, TMember> Getter
+        private Func<T, TMember>? Getter
         {
             get
             {
@@ -290,7 +275,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// Gets the setter.
         /// </summary>
-        private Action<T, TMember> Setter
+        private Action<T, TMember>? Setter
         {
             get
             {
@@ -349,7 +334,7 @@ namespace Kephas.Runtime
         /// </returns>
         protected override ITypeInfo GetThisTypeInfo()
         {
-            return RuntimeTypeInfoOfGenericRuntimePropertyInfo;
+            return this.TypeRegistry.GetRuntimeType(typeof(RuntimePropertyInfo<T, TMember>));
         }
 
         /// <summary>
@@ -358,7 +343,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The member get delegate.
         /// </returns>
-        private Func<T, TMember> ComputeGetter()
+        private Func<T, TMember>? ComputeGetter()
         {
             var mi = this.PropertyInfo.GetMethod;
             if (mi != null && mi.IsPublic)
@@ -367,7 +352,7 @@ namespace Kephas.Runtime
                 {
                     if (mi.IsSecurityTransparent)
                     {
-                        return obj => (TMember)mi.Invoke(obj, EmptyArgs);
+                        return obj => (TMember)mi.Invoke(obj, Array.Empty<object>());
                     }
 
                     return (Func<T, TMember>)mi.CreateDelegate(typeof(Func<T, TMember>));
@@ -379,7 +364,7 @@ namespace Kephas.Runtime
                         this.Logger.Trace(ex, "Cannot compute getter delegate for {typeName}.{methodName}, falling back to reflection.", mi.DeclaringType, mi.Name);
                     }
 
-                    return obj => (TMember)mi.Invoke(obj, EmptyArgs);
+                    return obj => (TMember)mi.Invoke(obj, Array.Empty<object>());
                 }
             }
 
@@ -392,7 +377,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// The member set delegate.
         /// </returns>
-        private Action<T, TMember> ComputeSetter()
+        private Action<T, TMember>? ComputeSetter()
         {
             var mi = this.PropertyInfo.SetMethod;
             if (mi != null && mi.IsPublic)

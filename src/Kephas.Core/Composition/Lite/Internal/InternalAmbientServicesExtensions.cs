@@ -16,6 +16,7 @@ namespace Kephas.Composition.Lite.Internal
 
     using Kephas.Composition;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services.Composition;
 
     internal static class InternalAmbientServicesExtensions
@@ -35,13 +36,14 @@ namespace Kephas.Composition.Lite.Internal
 
         internal static TMetadata GetMetadata<TMetadata>(
             this IAppServiceMetadataResolver metadataResolver,
+            IRuntimeTypeRegistry typeRegistry,
             IServiceInfo serviceInfo)
         {
             IDictionary<string, object> metadata;
             if (serviceInfo.InstanceType != null)
             {
                 const string AppServiceMetadataKey = "__AppServiceMetadata";
-                var instanceTypeInfo = serviceInfo.InstanceType.AsRuntimeTypeInfo();
+                var instanceTypeInfo = serviceInfo.InstanceType.AsRuntimeTypeInfo(typeRegistry);
                 if (instanceTypeInfo[AppServiceMetadataKey] is IDictionary<string, object> savedMetadata)
                 {
                     metadata = savedMetadata;
@@ -55,7 +57,7 @@ namespace Kephas.Composition.Lite.Internal
                     metadata.Add(nameof(AppServiceMetadata.ServiceType), serviceInfo.InstanceType);
 
                     AddMetadataFromGenericServiceType(metadata, metadataResolver, serviceInfo.ServiceType, serviceInfo.InstanceType);
-                    AddMetadataFromAttributes(metadata, metadataResolver, serviceInfo.InstanceType);
+                    AddMetadataFromAttributes(metadata, typeRegistry, metadataResolver, serviceInfo.InstanceType);
 
                     instanceTypeInfo[AppServiceMetadataKey] = metadata;
                 }
@@ -65,7 +67,7 @@ namespace Kephas.Composition.Lite.Internal
                 metadata = new Dictionary<string, object>();
             }
 
-            return (TMetadata)typeof(TMetadata).AsRuntimeTypeInfo()
+            return (TMetadata)typeof(TMetadata).AsRuntimeTypeInfo(typeRegistry)
                 .CreateInstance(new object[] { metadata });
         }
 
@@ -93,12 +95,13 @@ namespace Kephas.Composition.Lite.Internal
 
         private static void AddMetadataFromAttributes(
             IDictionary<string, object> metadata,
+            IRuntimeTypeRegistry typeRegistry,
             IAppServiceMetadataResolver metadataResolver,
             Type serviceImplementationType)
         {
             // leave the conversion to RuntimeTypeInfo here
             // as it may be possible to use runtime added attributes
-            var metaAttrs = serviceImplementationType.AsRuntimeTypeInfo().GetAttributes<Attribute>();
+            var metaAttrs = serviceImplementationType.AsRuntimeTypeInfo(typeRegistry).GetAttributes<Attribute>();
             foreach (var metaAttr in metaAttrs)
             {
                 var attrType = metaAttr.GetType();

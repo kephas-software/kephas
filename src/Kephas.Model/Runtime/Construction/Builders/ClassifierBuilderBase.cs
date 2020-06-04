@@ -58,7 +58,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         {
             if (projectionBuilder != null)
             {
-                var projBuilder = new RuntimeProjectionBuilder();
+                var projBuilder = new RuntimeProjectionBuilder(this.ConstructionContext);
                 projectionBuilder(projBuilder);
                 this.Element.SetRuntimeProjection(projBuilder.Projection);
             }

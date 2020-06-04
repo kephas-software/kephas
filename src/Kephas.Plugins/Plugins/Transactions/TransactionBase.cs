@@ -63,7 +63,7 @@ namespace Kephas.Plugins.Transactions
         /// </returns>
         public virtual IOperationResult Rollback(IPluginContext context)
         {
-            var undoCommands = this.GetUndoCommands(this.pluginData);
+            var undoCommands = this.GetUndoCommands(this.pluginData, context);
 
             var result = new OperationResult();
             var opResult = Profiler.WithStopwatch(() =>
@@ -114,17 +114,18 @@ namespace Kephas.Plugins.Transactions
         /// Gets the undo commands.
         /// </summary>
         /// <param name="pluginData">Information describing the plugin.</param>
+        /// <param name="context">The plugin context.</param>
         /// <returns>
         /// An enumerator that allows foreach to be used to process the undo commands in this collection.
         /// </returns>
-        protected virtual IEnumerable<(string key, UndoCommandBase command)> GetUndoCommands(PluginData pluginData)
+        protected virtual IEnumerable<(string key, UndoCommandBase command)> GetUndoCommands(PluginData pluginData, IPluginContext context)
         {
             var cmdKeyPart = this.GetCommandKeyPart();
             var cmds = pluginData.Data.Keys
                 .Where(k => k.StartsWith(cmdKeyPart) && !string.IsNullOrEmpty(pluginData.Data[k]))
                 .Select(k =>
                 {
-                    var cmd = UndoCommandBase.Parse(pluginData.Data[k]);
+                    var cmd = UndoCommandBase.Parse(pluginData.Data[k], context);
                     cmd.Index = int.Parse(k.Substring(cmdKeyPart.Length));
                     return (key: k, command: cmd);
                 })

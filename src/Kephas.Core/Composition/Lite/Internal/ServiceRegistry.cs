@@ -4,7 +4,7 @@
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the service registry class.
+//   Implements the service serviceRegistry class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ namespace Kephas.Composition.Lite.Internal
     using Kephas.Resources;
 
     /// <summary>
-    /// A service registry.
+    /// A service serviceRegistry.
     /// </summary>
     internal class ServiceRegistry : IServiceRegistry
     {
@@ -56,7 +56,7 @@ namespace Kephas.Composition.Lite.Internal
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         /// <param name="serviceInfo">Information describing the service.</param>
         /// <returns>
-        /// This service registry.
+        /// This service serviceRegistry.
         /// </returns>
         public ServiceRegistry RegisterService(IServiceInfo serviceInfo)
         {

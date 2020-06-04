@@ -34,24 +34,25 @@ namespace Kephas.Model.Runtime
     [OverridePriority(Priority.Low)]
     public class DefaultRuntimeModelInfoProvider : RuntimeModelInfoProviderBase<DefaultRuntimeModelInfoProvider>
     {
-        /// <summary>
-        /// The model registrars.
-        /// </summary>
         private readonly ICollection<IRuntimeModelRegistry> modelRegistries;
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRuntimeModelInfoProvider" /> class.
         /// </summary>
         /// <param name="runtimeModelElementFactory">The runtime model info factory.</param>
         /// <param name="modelRegistries">The model registries.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         public DefaultRuntimeModelInfoProvider(
             IRuntimeModelElementFactory runtimeModelElementFactory,
-            ICollection<IRuntimeModelRegistry> modelRegistries)
+            ICollection<IRuntimeModelRegistry> modelRegistries,
+            IRuntimeTypeRegistry typeRegistry)
             : base(runtimeModelElementFactory)
         {
             Requires.NotNull(modelRegistries, nameof(modelRegistries));
 
             this.modelRegistries = modelRegistries;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace Kephas.Model.Runtime
         /// A return value of <c>null</c> indicates only that the provided <paramref name="nativeElementInfo"/> cannot be handled.
         /// For any other errors an exception should be thrown.
         /// </remarks>
-        public override IElementInfo TryGetModelElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext)
+        public override IElementInfo? TryGetModelElementInfo(IElementInfo nativeElementInfo, IModelConstructionContext constructionContext)
         {
             if (!(nativeElementInfo is IRuntimeTypeInfo runtimeTypeInfo))
             {
@@ -143,17 +144,14 @@ namespace Kephas.Model.Runtime
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
         /// <returns>The normalized runtime type.</returns>
-        private IRuntimeTypeInfo ToRuntimeTypeInfo(object runtimeElement)
+        private IRuntimeTypeInfo? ToRuntimeTypeInfo(object runtimeElement)
         {
-            switch (runtimeElement)
+            return runtimeElement switch
             {
-                case TypeInfo runtimeTypeInfo:
-                    return runtimeTypeInfo.AsRuntimeTypeInfo();
-                case Type runtimeType:
-                    return runtimeType.AsRuntimeTypeInfo();
-                default:
-                    return runtimeElement as IRuntimeTypeInfo;
-            }
+                TypeInfo runtimeTypeInfo => runtimeTypeInfo.AsRuntimeTypeInfo(this.typeRegistry),
+                Type runtimeType => runtimeType.AsRuntimeTypeInfo(this.typeRegistry),
+                _ => runtimeElement as IRuntimeTypeInfo
+            };
         }
     }
 }

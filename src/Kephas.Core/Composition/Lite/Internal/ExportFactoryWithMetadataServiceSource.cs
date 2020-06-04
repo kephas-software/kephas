@@ -20,19 +20,20 @@ namespace Kephas.Composition.Lite.Internal
     using Kephas.Composition.ExportFactories;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Runtime;
     using Kephas.Services.Composition;
 
     internal class ExportFactoryWithMetadataServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => GetService<string, string>(null, null, null));
+            ReflectionHelper.GetGenericMethodOf(_ => GetService<string, string>(null, null, null, null));
 
         private readonly IAppServiceMetadataResolver metadataResolver;
 
-        public ExportFactoryWithMetadataServiceSource(IServiceRegistry registry)
-            : base(registry)
+        public ExportFactoryWithMetadataServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+            : base(serviceRegistry, typeRegistry)
         {
-            this.metadataResolver = new AppServiceMetadataResolver();
+            this.metadataResolver = new AppServiceMetadataResolver(typeRegistry);
         }
 
         public override bool IsMatch(Type contractType)
@@ -61,13 +62,13 @@ namespace Kephas.Composition.Lite.Internal
             var innerType = genericArgs[0];
             var metadataType = genericArgs[1];
             var getService = GetServiceMethod.MakeGenericMethod(innerType, metadataType);
-            return this.GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, this.metadataResolver, tuple.serviceInfo, tuple.fn));
+            return this.GetServiceDescriptors(parent, innerType, ((IServiceInfo serviceInfo, Func<object> fn) tuple) => () => getService.Call(null, this.typeRegistry, this.metadataResolver, tuple.serviceInfo, tuple.fn));
         }
 
-        private static IExportFactory<T, TMetadata> GetService<T, TMetadata>(IAppServiceMetadataResolver metadataResolver, IServiceInfo serviceInfo, Func<object> factory)
+        private static IExportFactory<T, TMetadata> GetService<T, TMetadata>(IRuntimeTypeRegistry typeRegistry, IAppServiceMetadataResolver metadataResolver, IServiceInfo serviceInfo, Func<object> factory)
             where T : class
         {
-            return new ExportFactory<T, TMetadata>(() => (T)factory(), metadataResolver.GetMetadata<TMetadata>(serviceInfo));
+            return new ExportFactory<T, TMetadata>(() => (T)factory(), metadataResolver.GetMetadata<TMetadata>(typeRegistry, serviceInfo));
         }
     }
 }

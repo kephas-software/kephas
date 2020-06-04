@@ -23,9 +23,10 @@ namespace Kephas.Messaging.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeMessageInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="type">The type.</param>
-        protected internal RuntimeMessageInfo(Type type)
-            : base(type)
+        protected internal RuntimeMessageInfo(IRuntimeTypeRegistry typeRegistry, Type type)
+            : base(typeRegistry, type)
         {
         }
     }

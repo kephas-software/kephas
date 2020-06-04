@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas
 {
     using System.Dynamic;
@@ -34,7 +32,7 @@ namespace Kephas
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo(null);
             runtimeTypeInfo.SetValue(obj, propertyName, value);
         }
 
@@ -53,7 +51,7 @@ namespace Kephas
                 return false;
             }
 
-            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo(null);
             return runtimeTypeInfo.TrySetValue(obj, propertyName, value);
         }
 
@@ -67,7 +65,7 @@ namespace Kephas
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo(null);
             return runtimeTypeInfo.GetValue(obj, propertyName);
         }
 
@@ -84,7 +82,7 @@ namespace Kephas
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo(null);
             return runtimeTypeInfo.TryGetValue(obj, propertyName, out value);
         }
 
@@ -95,7 +93,7 @@ namespace Kephas
         /// <returns>A dynamic type information for the provided object.</returns>
         public static IRuntimeTypeInfo? GetRuntimeTypeInfo(this object? obj)
         {
-            return obj?.GetType().AsRuntimeTypeInfo();
+            return obj?.GetType().AsRuntimeTypeInfo(null);
         }
 
         /// <summary>

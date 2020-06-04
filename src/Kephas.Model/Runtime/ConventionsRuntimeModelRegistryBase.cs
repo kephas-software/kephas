@@ -23,7 +23,7 @@ namespace Kephas.Model.Runtime
     using Kephas.Services;
 
     /// <summary>
-    /// Base class for conventions based runtime model registry.
+    /// Base class for conventions based runtime model serviceRegistry.
     /// </summary>
     public abstract class ConventionsRuntimeModelRegistryBase : Loggable, IRuntimeModelRegistry
     {

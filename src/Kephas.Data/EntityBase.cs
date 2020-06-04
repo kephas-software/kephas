@@ -13,7 +13,6 @@ namespace Kephas.Data
     using System;
     using System.Collections.Generic;
 
-    using Kephas;
     using Kephas.Data.Capabilities;
     using Kephas.Dynamic;
     using Kephas.Model;
@@ -37,7 +36,7 @@ namespace Kephas.Data
         /// <summary>
         /// The values.
         /// </summary>
-        private IDictionary<string, object> values;
+        private IDictionary<string, object?> values;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityBase"/> class.
@@ -51,7 +50,7 @@ namespace Kephas.Data
         /// Initializes a new instance of the <see cref="EntityBase"/> class.
         /// </summary>
         /// <param name="innerDictionary">The inner dictionary.</param>
-        protected EntityBase(IDictionary<string, object> innerDictionary)
+        protected EntityBase(IDictionary<string, object?> innerDictionary)
             : base(innerDictionary)
         {
             this.values = innerDictionary;
@@ -73,7 +72,7 @@ namespace Kephas.Data
         /// </returns>
         public ITypeInfo GetTypeInfo()
         {
-            return this.typeInfo ?? (this.typeInfo = this.ComputeTypeInfo());
+            return this.typeInfo ??= this.ComputeTypeInfo();
         }
 
         /// <summary>
@@ -82,9 +81,9 @@ namespace Kephas.Data
         /// <returns>
         /// The associated entity entry.
         /// </returns>
-        public IEntityEntry GetEntityEntry()
+        public IEntityEntry? GetEntityEntry()
         {
-            IEntityEntry entityEntry = null;
+            IEntityEntry? entityEntry = null;
             this.weakEntityEntry?.TryGetTarget(out entityEntry);
             return entityEntry;
         }
@@ -106,7 +105,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual ITypeInfo ComputeTypeInfo()
         {
-            return this.GetAbstractTypeInfo();
+            return this.GetAbstractTypeInfo(this.GetEntityEntry()?.DataContext?.AmbientServices?.TypeRegistry);
         }
 
         /// <summary>Attempts to set the value with the given key.</summary>
@@ -120,7 +119,7 @@ namespace Kephas.Data
         /// <returns>
         /// <c>true</c> if the value could be set, <c>false</c> otherwise.
         /// </returns>
-        protected override bool TrySetValue(string key, object value)
+        protected override bool TrySetValue(string key, object? value)
         {
             if (this.values.TryGetValue(key, out var currentValue))
             {
@@ -149,7 +148,7 @@ namespace Kephas.Data
         protected override ITypeInfo GetThisTypeInfo()
         {
             // avoid StackOverflowException
-            return this.GetType().AsRuntimeTypeInfo();
+            return this.GetType().AsRuntimeTypeInfo(this.GetEntityEntry()?.DataContext?.AmbientServices?.TypeRegistry);
         }
     }
 }

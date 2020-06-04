@@ -28,6 +28,7 @@ namespace Kephas
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Services.Reflection;
@@ -59,6 +60,10 @@ namespace Kephas
             this.Register<IAmbientServices>(b => b.WithInstance(this).ExternallyOwned(true))
                 .Register<ICompositionContext>(b => b.WithInstance(this.AsCompositionContext()).ExternallyOwned(true));
 
+            var typeRegistry = RuntimeTypeRegistry.Instance;
+            this
+                .Register<IRuntimeTypeRegistry>(typeRegistry);
+
             if (registerDefaultServices)
             {
                 this
@@ -76,9 +81,9 @@ namespace Kephas
 
             this.registry
                 .RegisterSource(new LazyServiceSource(this.registry))
-                .RegisterSource(new LazyWithMetadataServiceSource(this.registry))
+                .RegisterSource(new LazyWithMetadataServiceSource(this.registry, typeRegistry))
                 .RegisterSource(new ExportFactoryServiceSource(this.registry))
-                .RegisterSource(new ExportFactoryWithMetadataServiceSource(this.registry))
+                .RegisterSource(new ExportFactoryWithMetadataServiceSource(this.registry, typeRegistry))
                 .RegisterSource(new ListServiceSource(this.registry))
                 .RegisterSource(new CollectionServiceSource(this.registry))
                 .RegisterSource(new EnumerableServiceSource(this.registry));
@@ -101,6 +106,11 @@ namespace Kephas
         /// The composition container.
         /// </value>
         public ICompositionContext CompositionContainer => this.GetService<ICompositionContext>();
+
+        /// <summary>
+        /// Gets the type serviceRegistry.
+        /// </summary>
+        public IRuntimeTypeRegistry TypeRegistry => this.GetService<IRuntimeTypeRegistry>();
 
         /// <summary>
         /// Gets the type loader.

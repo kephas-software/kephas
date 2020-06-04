@@ -37,17 +37,17 @@ namespace Kephas.Data.Linq.Expressions
         /// <summary>
         /// The implementation type resolver.
         /// </summary>
-        private readonly Func<Type, IContext, Type> implementationTypeResolver;
+        private readonly Func<Type, IContext?, Type?>? implementationTypeResolver;
 
         /// <summary>
         /// The generic handlers.
         /// </summary>
-        private readonly IEnumerable<ISubstituteTypeConstantHandler> constantHandlers;
+        private readonly IEnumerable<ISubstituteTypeConstantHandler>? constantHandlers;
 
         /// <summary>
         /// The context.
         /// </summary>
-        private readonly IContext context;
+        private readonly IContext? context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SubstituteTypeExpressionVisitor"/> class.
@@ -56,16 +56,16 @@ namespace Kephas.Data.Linq.Expressions
         /// <param name="activator">The activator (optional).</param>
         /// <param name="constantHandlers">The constant handlers (optional).</param>
         /// <param name="context">The context (optional).</param>
-        public SubstituteTypeExpressionVisitor(Func<Type, IContext, Type> implementationTypeResolver = null, IActivator activator = null, IEnumerable<ISubstituteTypeConstantHandler> constantHandlers = null, IContext context = null)
+        public SubstituteTypeExpressionVisitor(Func<Type, IContext?, Type?>? implementationTypeResolver = null, IActivator? activator = null, IEnumerable<ISubstituteTypeConstantHandler>? constantHandlers = null, IContext? context = null)
         {
+            this.context = context;
             this.implementationTypeResolver = (t, ctx) =>
                 {
                     var implementationType = implementationTypeResolver?.Invoke(t, ctx)
-                                             ?? (activator?.GetImplementationType(t.AsRuntimeTypeInfo(), throwOnNotFound: false, activationContext: ctx) as IRuntimeTypeInfo)?.Type;
+                                             ?? (activator?.GetImplementationType(t.AsRuntimeTypeInfo(context?.AmbientServices?.TypeRegistry), throwOnNotFound: false, activationContext: ctx) as IRuntimeTypeInfo)?.Type;
                     return implementationType;
                 };
             this.constantHandlers = constantHandlers ?? GetDefaultSubstituteTypeConstantHandlers();
-            this.context = context;
         }
 
         /// <summary>
@@ -171,10 +171,10 @@ namespace Kephas.Data.Linq.Expressions
                 switch (node.Member)
                 {
                     case FieldInfo _:
-                        otherMember = concreteType.AsRuntimeTypeInfo().Fields[memberName];
+                        otherMember = concreteType.AsRuntimeTypeInfo(this.context?.AmbientServices?.TypeRegistry).Fields[memberName];
                         break;
                     case PropertyInfo _:
-                        otherMember = concreteType.AsRuntimeTypeInfo().Properties[memberName];
+                        otherMember = concreteType.AsRuntimeTypeInfo(this.context?.AmbientServices?.TypeRegistry).Properties[memberName];
                         break;
                     default:
                         return base.VisitMember(node);
@@ -300,7 +300,7 @@ namespace Kephas.Data.Linq.Expressions
         /// </remarks>
         /// <param name="abstractType">The abstract type.</param>
         /// <returns>The implementation type.</returns>
-        protected virtual Type TryResolveImplementationType(Type abstractType)
+        protected virtual Type? TryResolveImplementationType(Type abstractType)
         {
             if (abstractType == null)
             {
@@ -310,12 +310,12 @@ namespace Kephas.Data.Linq.Expressions
             var collectionItemType = abstractType.TryGetCollectionItemType();
             if (collectionItemType == null)
             {
-                return this.implementationTypeResolver(abstractType, this.context);
+                return this.implementationTypeResolver?.Invoke(abstractType, this.context);
             }
 
             if (collectionItemType.GetTypeInfo().IsInterface)
             {
-                var collectionItemImplementationType = this.implementationTypeResolver(abstractType, this.context);
+                var collectionItemImplementationType = this.implementationTypeResolver?.Invoke(abstractType, this.context);
                 if (collectionItemImplementationType != null)
                 {
                     var collectionGenericDefinitionType = abstractType.GetGenericTypeDefinition();
@@ -335,7 +335,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <returns>
         /// A Type.
         /// </returns>
-        protected virtual Type TryResolveDeepImplementationType(Type constructedType)
+        protected virtual Type? TryResolveDeepImplementationType(Type constructedType)
         {
             if (constructedType == null)
             {

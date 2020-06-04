@@ -11,7 +11,6 @@
 namespace Kephas.Runtime
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -19,9 +18,7 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Collections;
-    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -37,34 +34,14 @@ namespace Kephas.Runtime
     internal delegate object InstanceActivator(params object?[] args);
 
     /// <summary>
-    /// Provides optimized access to methods and properties at runtime.
+    /// Provides optimized and extensible access to a type's methods and properties at runtime.
     /// </summary>
-    public class RuntimeTypeInfo : Expando, IRuntimeTypeInfo
+    public class RuntimeTypeInfo : RuntimeElementInfoBase, IRuntimeTypeInfo
     {
-        /// <summary>
-        /// The cache of runtime type infos.
-        /// </summary>
-        private static readonly ConcurrentDictionary<Type, IRuntimeTypeInfo> RuntimeTypeInfosCache = new ConcurrentDictionary<Type, IRuntimeTypeInfo>();
-
-        private static readonly TypeInfo RuntimeFieldInfoGenericTypeInfo = typeof(RuntimeFieldInfo<,>).GetTypeInfo();
-        private static readonly TypeInfo RuntimeFieldInfoTypeInfo = typeof(RuntimeFieldInfo).GetTypeInfo();
-        private static readonly TypeInfo RuntimePropertyInfoGenericTypeInfo = typeof(RuntimePropertyInfo<,>).GetTypeInfo();
-        private static readonly TypeInfo RuntimePropertyInfoTypeInfo = typeof(RuntimePropertyInfo).GetTypeInfo();
-
-        /// <summary>
-        /// The runtime type of the <see cref="RuntimeTypeInfo"/>.
-        /// </summary>
-        private static readonly RuntimeTypeInfo RuntimeTypeInfoOfRuntimeTypeInfo;
-
-        /// <summary>
-        /// The factories.
-        /// </summary>
-        private static readonly IList<IRuntimeTypeInfoFactory> Factories = new List<IRuntimeTypeInfoFactory>();
-
-        /// <summary>
-        /// The function for creating the type info.
-        /// </summary>
-        private static Func<Type, IRuntimeTypeInfo> createRuntimeTypeInfoFunc = CreateRuntimeTypeInfoCore;
+        private static readonly Type RuntimeFieldInfoGenericType = typeof(RuntimeFieldInfo<,>);
+        private static readonly Type RuntimeFieldInfoType = typeof(RuntimeFieldInfo);
+        private static readonly Type RuntimePropertyInfoGenericType = typeof(RuntimePropertyInfo<,>);
+        private static readonly Type RuntimePropertyInfoType = typeof(RuntimePropertyInfo);
 
         private IDictionary<string, IRuntimeFieldInfo> fields;
         private IDictionary<string, IRuntimePropertyInfo> properties;
@@ -89,7 +66,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// The generic type definition.
         /// </summary>
-        private ITypeInfo genericTypeDefinition;
+        private ITypeInfo? genericTypeDefinition;
 
         /// <summary>
         /// The default value.
@@ -112,65 +89,42 @@ namespace Kephas.Runtime
         private IRuntimeAssemblyInfo declaringContainer;
 
         /// <summary>
-        /// Initializes static members of the <see cref="RuntimeTypeInfo"/> class.
-        /// </summary>
-        static RuntimeTypeInfo()
-        {
-            RuntimeTypeInfoOfRuntimeTypeInfo = new RuntimeTypeInfo(typeof(RuntimeTypeInfo));
-            RuntimeTypeInfosCache.TryAdd(typeof(RuntimeTypeInfo), RuntimeTypeInfoOfRuntimeTypeInfo);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The container type serviceRegistry.</param>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
         /// <param name="logger">Optional. The logger.</param>
-        internal RuntimeTypeInfo(TypeInfo typeInfo, ILogger? logger = null)
-            : this(typeInfo.AsType(), typeInfo, logger)
+        internal RuntimeTypeInfo(IRuntimeTypeRegistry typeRegistry, TypeInfo typeInfo, ILogger? logger = null)
+            : this(typeRegistry, typeInfo.AsType(), typeInfo, logger)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The container type serviceRegistry.</param>
         /// <param name="type">The type.</param>
         /// <param name="logger">Optional. The logger.</param>
-        protected internal RuntimeTypeInfo(Type type, ILogger? logger = null)
-            : this(type, type.GetTypeInfo(), logger)
+        protected internal RuntimeTypeInfo(IRuntimeTypeRegistry typeRegistry, Type type, ILogger? logger = null)
+            : this(typeRegistry, type, type.GetTypeInfo(), logger)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTypeInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The container type serviceRegistry.</param>
         /// <param name="type">The type.</param>
         /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
         /// <param name="logger">The logger.</param>
-        private RuntimeTypeInfo(Type type, TypeInfo typeInfo, ILogger? logger)
-            : base(isThreadSafe: true)
+        private RuntimeTypeInfo(IRuntimeTypeRegistry typeRegistry, Type type, TypeInfo typeInfo, ILogger? logger)
+            : base(typeRegistry, logger)
         {
             this.Type = type;
             this.TypeInfo = typeInfo;
             this.Name = type.Name;
             this.FullName = typeInfo.FullName;
             this.Namespace = type.Namespace;
-            this.Logger = logger;
-        }
-
-        /// <summary>
-        /// Gets or sets the function for creating the runtime type information.
-        /// </summary>
-        /// <value>
-        /// The function for creating the runtime type information.
-        /// </value>
-        public static Func<Type, IRuntimeTypeInfo> CreateRuntimeTypeInfo
-        {
-            get => createRuntimeTypeInfoFunc;
-            set
-            {
-                Requires.NotNull(value, nameof(value));
-                createRuntimeTypeInfoFunc = value;
-            }
         }
 
         /// <summary>
@@ -269,7 +223,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The generic type definition.
         /// </value>
-        public ITypeInfo GenericTypeDefinition => this.genericTypeDefinition ??= this.GetGenericTypeDefinition(this.TypeInfo);
+        public ITypeInfo? GenericTypeDefinition => this.genericTypeDefinition ??= this.GetGenericTypeDefinition(this.TypeInfo);
 
         /// <summary>
         /// Gets the enumeration of properties.
@@ -298,7 +252,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => this.declaringContainer ??= RuntimeAssemblyInfo.GetRuntimeAssembly(this.TypeInfo.Assembly);
+        public IElementInfo DeclaringContainer => this.declaringContainer ??= this.TypeRegistry.GetRuntimeAssembly(this.TypeInfo.Assembly);
 
         /// <summary>
         /// Gets the type.
@@ -347,30 +301,6 @@ namespace Kephas.Runtime
         /// The runtime methods.
         /// </value>
         public IDictionary<string, ICollection<IRuntimeMethodInfo>> Methods => this.GetMethods();
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        protected ILogger? Logger { get; }
-
-        /// <summary>
-        /// Registers a factory used to create <see cref="IRuntimeTypeInfo"/> instances.
-        /// </summary>
-        /// <remarks>
-        /// Factories are called in the inverse order of their addition, meaning that the last added factory
-        /// is invoked first. This is by design, so that the non-framework code has a change to override the
-        /// default behavior.
-        /// </remarks>
-        /// <param name="factory">The factory.</param>
-        public static void RegisterFactory(IRuntimeTypeInfoFactory factory)
-        {
-            Requires.NotNull(factory, nameof(factory));
-
-            Factories.Insert(0, factory);
-        }
 
 #if NETSTANDARD2_1
 #else
@@ -572,7 +502,7 @@ namespace Kephas.Runtime
         public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null)
         {
             var constructedType = this.TypeInfo.MakeGenericType(typeArguments.Cast<IRuntimeTypeInfo>().Select(t => t.Type).ToArray());
-            return constructedType.AsRuntimeTypeInfo();
+            return this.TypeRegistry.GetRuntimeType(constructedType);
         }
 
         /// <summary>
@@ -581,10 +511,7 @@ namespace Kephas.Runtime
         /// <returns>
         /// A string that represents the current object.
         /// </returns>
-        public override string ToString()
-        {
-            return this.Type.ToString();
-        }
+        public override string ToString() => this.Type.ToString();
 
         /// <summary>
         /// Gets the attribute of the provided type.
@@ -600,39 +527,13 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Gets the runtime type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>A runtime type.</returns>
-        internal static IRuntimeTypeInfo GetRuntimeType(Type type)
-        {
-            Requires.NotNull(type, nameof(type));
-
-            return RuntimeTypeInfosCache.GetOrAdd(type, _ => CreateRuntimeTypeInfo(type) ?? new RuntimeTypeInfo(type));
-        }
-
-        /// <summary>
-        /// Gets the runtime type.
-        /// </summary>
-        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        /// <returns>A runtime type.</returns>
-        internal static IRuntimeTypeInfo GetRuntimeType(TypeInfo typeInfo)
-        {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
-
-            return RuntimeTypeInfosCache.GetOrAdd(typeInfo.AsType(), _ => CreateRuntimeTypeInfo(typeInfo.AsType()) ?? new RuntimeTypeInfo(typeInfo));
-        }
-
-        /// <summary>
         /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </summary>
         /// <returns>
         /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </returns>
         protected override ITypeInfo GetThisTypeInfo()
-        {
-            return RuntimeTypeInfoOfRuntimeTypeInfo;
-        }
+            => (this.TypeRegistry as RuntimeTypeRegistry)?.TypeOfRuntimeTypeInfo ?? this.TypeRegistry.GetRuntimeType(typeof(RuntimeTypeInfo));
 
         /// <summary>
         /// Creates the member infos.
@@ -678,7 +579,7 @@ namespace Kephas.Runtime
 
                 var memberType = memberTypeGetter(runtimeMemberInfo);
                 var memberCtor = memberType.GetTypeInfo().DeclaredConstructors.First();
-                var memberInfo = (TMemberInfo)memberCtor.Invoke(new object?[] { runtimeMemberInfo, position++, this.Logger });
+                var memberInfo = (TMemberInfo)memberCtor.Invoke(new object?[] { this.TypeRegistry, runtimeMemberInfo, position++, this.Logger });
                 memberInfos.Add(memberName, memberInfo);
             }
 
@@ -696,8 +597,8 @@ namespace Kephas.Runtime
         protected virtual IDictionary<string, IRuntimeFieldInfo> CreateFieldInfos(Type type, Func<FieldInfo, bool>? criteria = null)
         {
             var memberTypeGetter = type.GetTypeInfo().ContainsGenericParameters
-                                       ? (Func<FieldInfo, Type>)(fieldType => RuntimeFieldInfoTypeInfo.AsType())
-                                       : (field => RuntimeFieldInfoGenericTypeInfo.MakeGenericType(type, field.FieldType));
+                                       ? (Func<FieldInfo, Type>)(fieldType => RuntimeFieldInfoType)
+                                       : (field => RuntimeFieldInfoGenericType.MakeGenericType(type, field.FieldType));
 
             var runtimeMembers = type.GetRuntimeFields().Where(f => f.IsPublic);
 
@@ -715,39 +616,14 @@ namespace Kephas.Runtime
         protected virtual IDictionary<string, IRuntimePropertyInfo> CreatePropertyInfos(Type type, Func<PropertyInfo, bool>? criteria = null)
         {
             var memberTypeGetter = type.GetTypeInfo().ContainsGenericParameters
-                                       ? (Func<PropertyInfo, Type>)(prop => RuntimePropertyInfoTypeInfo.AsType())
-                                       : (prop => RuntimePropertyInfoGenericTypeInfo.MakeGenericType(type, prop.PropertyType));
+                                       ? (Func<PropertyInfo, Type>)(prop => RuntimePropertyInfoType)
+                                       : (prop => RuntimePropertyInfoGenericType.MakeGenericType(type, prop.PropertyType));
 
             var runtimeMembers = type.GetRuntimeProperties()
                 .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
                             && p.GetIndexParameters().Length == 0);
 
             return this.CreateMembers<PropertyInfo, IRuntimePropertyInfo>(type, runtimeMembers, memberTypeGetter, criteria);
-        }
-
-        private static IRuntimeTypeInfo CreateRuntimeTypeInfoCore(Type rawType)
-        {
-            if (Factories.Count > 0)
-            {
-                foreach (var factory in Factories)
-                {
-                    var typeInfo = factory.TryCreateRuntimeTypeInfo(rawType);
-                    if (typeInfo != null)
-                    {
-                        return typeInfo;
-                    }
-                }
-            }
-
-            return new RuntimeTypeInfo(rawType);
-        }
-
-        private static IDictionary<string, ICollection<IRuntimeMethodInfo>> CreateMethodInfos(Type type)
-        {
-            var methodInfos = type.GetRuntimeMethods()
-                                .Where(mi => !mi.IsStatic && mi.IsPublic)
-                                .GroupBy(mi => mi.Name, (name, methods) => new KeyValuePair<string, ICollection<IRuntimeMethodInfo>>(name, new ReadOnlyCollection<IRuntimeMethodInfo>(methods.Select(mi => (IRuntimeMethodInfo)new RuntimeMethodInfo(mi)).ToList())));
-            return new ReadOnlyDictionary<string, ICollection<IRuntimeMethodInfo>>(methodInfos.ToDictionary(g => g.Key, g => g.Value));
         }
 
         private static IDictionary<string, IRuntimeElementInfo> CreateMemberInfos(
@@ -789,85 +665,61 @@ namespace Kephas.Runtime
             return new ReadOnlyDictionary<string, IRuntimeElementInfo>(memberInfos);
         }
 
-        /// <summary>
-        /// Creates the bases.
-        /// </summary>
-        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        /// <returns>
-        /// The new bases.
-        /// </returns>
+        private IDictionary<string, ICollection<IRuntimeMethodInfo>> CreateMethodInfos(Type type)
+        {
+            var methodInfos = type.GetRuntimeMethods()
+                .Where(mi => !mi.IsStatic && mi.IsPublic)
+                .GroupBy(
+                    mi => mi.Name,
+                    (name, methods)
+                        => new KeyValuePair<string, ICollection<IRuntimeMethodInfo>>(
+                            name,
+                            methods.Select(mi
+                                => (IRuntimeMethodInfo)new RuntimeMethodInfo(this.TypeRegistry, mi, this.Logger)).ToList().AsReadOnly()));
+            return new ReadOnlyDictionary<string, ICollection<IRuntimeMethodInfo>>(methodInfos.ToDictionary(g => g.Key, g => g.Value));
+        }
+
         private IReadOnlyList<ITypeInfo> CreateBaseTypes(TypeInfo typeInfo)
         {
             var baseTypeInfos = new List<ITypeInfo>();
             if (typeInfo.BaseType != null)
             {
-                baseTypeInfos.Add(typeInfo.BaseType.AsRuntimeTypeInfo());
+                baseTypeInfos.Add(typeInfo.BaseType.AsRuntimeTypeInfo(this.TypeRegistry));
             }
 
-            typeInfo.ImplementedInterfaces.ForEach(i => baseTypeInfos.Add(i.AsRuntimeTypeInfo()));
+            typeInfo.ImplementedInterfaces.ForEach(i => baseTypeInfos.Add(i.AsRuntimeTypeInfo(this.TypeRegistry)));
 
             return new ReadOnlyCollection<ITypeInfo>(baseTypeInfos);
         }
 
-        /// <summary>
-        /// Gets the generic type definition.
-        /// </summary>
-        /// <param name="typeInfo">The <see cref="TypeInfo"/>.</param>
-        /// <returns>
-        /// The generic type definition.
-        /// </returns>
         private ITypeInfo? GetGenericTypeDefinition(Type typeInfo)
         {
             if (typeInfo.IsGenericType && !typeInfo.IsGenericTypeDefinition)
             {
-                return GetRuntimeType(typeInfo.GetGenericTypeDefinition());
+                return this.TypeRegistry.GetRuntimeType(typeInfo.GetGenericTypeDefinition());
             }
 
             return null;
         }
 
-        /// <summary>
-        /// Gets the members, initializing them if necessary.
-        /// </summary>
-        /// <returns>
-        /// The members.
-        /// </returns>
         private IDictionary<string, IRuntimeElementInfo> GetMembers()
         {
             return this.members ??= this.CreateMemberInfos();
         }
 
-        /// <summary>
-        /// Gets the field infos, initializing them if necessary.
-        /// </summary>
-        /// <returns>
-        /// The fields.
-        /// </returns>
         private IDictionary<string, IRuntimeFieldInfo> GetFields()
         {
             return this.fields ??= this.CreateFieldInfos(this.Type);
         }
 
-        /// <summary>
-        /// Gets the property infos, initializing them if necessary.
-        /// </summary>
-        /// <returns>
-        /// The properties.
-        /// </returns>
         private IDictionary<string, IRuntimePropertyInfo> GetProperties()
         {
             return this.properties ??= this.CreatePropertyInfos(this.Type);
         }
 
-        /// <summary>
-        /// Gets the method infos, initializing them if necessary.
-        /// </summary>
-        /// <returns>
-        /// The dynamic method.
-        /// </returns>
         private IDictionary<string, ICollection<IRuntimeMethodInfo>> GetMethods()
         {
-            return this.methods ??= CreateMethodInfos(this.Type);
+            return this.methods ??= this.CreateMethodInfos(this.Type);
         }
 
         /// <summary>
@@ -882,10 +734,10 @@ namespace Kephas.Runtime
             var args = typeInfo.GenericTypeParameters;
             if (args.Length == 0)
             {
-                return ReflectionHelper.EmptyTypeInfos;
+                return Array.Empty<ITypeInfo>();
             }
 
-            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)GetRuntimeType(a)).ToList());
+            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)this.TypeRegistry.GetRuntimeType(a)).ToList());
         }
 
         /// <summary>
@@ -900,10 +752,10 @@ namespace Kephas.Runtime
             var args = typeInfo.GenericTypeArguments;
             if (args.Length == 0)
             {
-                return ReflectionHelper.EmptyTypeInfos;
+                return Array.Empty<ITypeInfo>();
             }
 
-            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)GetRuntimeType(a)).ToList());
+            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)this.TypeRegistry.GetRuntimeType(a)).ToList());
         }
 
         /// <summary>

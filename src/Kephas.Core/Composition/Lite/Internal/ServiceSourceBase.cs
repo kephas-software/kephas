@@ -14,13 +14,17 @@ namespace Kephas.Composition.Lite.Internal
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Runtime;
+
     internal abstract class ServiceSourceBase : IServiceSource
     {
-        protected readonly IServiceRegistry registry;
+        protected readonly IServiceRegistry serviceRegistry;
+        protected readonly IRuntimeTypeRegistry typeRegistry;
 
-        protected ServiceSourceBase(IServiceRegistry registry)
+        protected ServiceSourceBase(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
         {
-            this.registry = registry;
+            this.serviceRegistry = serviceRegistry;
+            this.typeRegistry = typeRegistry;
         }
 
         public abstract bool IsMatch(Type contractType);
@@ -39,7 +43,7 @@ namespace Kephas.Composition.Lite.Internal
             Type serviceType,
             Func<(IServiceInfo serviceInfo, Func<object> factory), Func<object>> selector)
         {
-            if (this.registry.TryGet(serviceType, out var serviceInfo))
+            if (this.serviceRegistry.TryGet(serviceType, out var serviceInfo))
             {
                 if (serviceInfo is IEnumerable<IServiceInfo> multiServiceInfo)
                 {
@@ -62,7 +66,7 @@ namespace Kephas.Composition.Lite.Internal
             }
             else
             {
-                var source = registry.Sources.FirstOrDefault(s => s.IsMatch(serviceType));
+                var source = serviceRegistry.Sources.FirstOrDefault(s => s.IsMatch(serviceType));
                 if (source != null)
                 {
                     foreach (var descriptor in source.GetServiceDescriptors(parent, serviceType))

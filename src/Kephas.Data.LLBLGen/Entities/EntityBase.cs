@@ -155,7 +155,7 @@ namespace Kephas.Data.LLBLGen.Entities
         /// </value>
         /// <param name="key">The key.</param>
         /// <returns>The requested property value.</returns>
-        public object this[string key]
+        public object? this[string key]
         {
             get
             {
@@ -181,7 +181,7 @@ namespace Kephas.Data.LLBLGen.Entities
         /// </returns>
         public ITypeInfo GetTypeInfo()
         {
-            return this.typeInfo ?? (this.typeInfo = this.ComputeTypeInfo());
+            return this.typeInfo ??= this.ComputeTypeInfo();
         }
 
         /// <summary>
@@ -190,9 +190,9 @@ namespace Kephas.Data.LLBLGen.Entities
         /// <returns>
         /// The associated entity information.
         /// </returns>
-        public IEntityEntry GetEntityEntry()
+        public IEntityEntry? GetEntityEntry()
         {
-            IEntityEntry entityEntry = null;
+            IEntityEntry? entityEntry = null;
             this.weakEntityInfo?.TryGetTarget(out entityEntry);
             return entityEntry;
         }
@@ -214,7 +214,7 @@ namespace Kephas.Data.LLBLGen.Entities
         /// </returns>
         protected IRuntimeTypeInfo GetRuntimeTypeInfo()
         {
-            return this.runtimeTypeInfo ?? (this.runtimeTypeInfo = this.GetType().AsRuntimeTypeInfo());
+            return this.runtimeTypeInfo ??= this.GetType().AsRuntimeTypeInfo(this.GetEntityEntry()?.DataContext?.AmbientServices?.TypeRegistry);
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace Kephas.Data.LLBLGen.Entities
         /// </returns>
         protected virtual ITypeInfo ComputeTypeInfo()
         {
-            return this.GetType().GetAbstractTypeInfo();
+            return this.GetType().GetAbstractTypeInfo(this.GetEntityEntry()?.DataContext?.AmbientServices?.TypeRegistry);
         }
 
         /// <summary>

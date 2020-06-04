@@ -20,6 +20,17 @@ namespace Kephas.Messaging.Runtime
     /// </summary>
     public class MessagingTypeInfoFactory : IRuntimeTypeInfoFactory
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessagingTypeInfoFactory"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        public MessagingTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
+
         /// <summary>
         /// Tries to create the runtime type information type for the provided raw type.
         /// </summary>
@@ -31,12 +42,12 @@ namespace Kephas.Messaging.Runtime
         {
             if (typeof(IEvent).IsAssignableFrom(type))
             {
-                return new RuntimeEventInfo(type);
+                return new RuntimeEventInfo(this.typeRegistry, type);
             }
 
             if (typeof(IMessage).IsAssignableFrom(type))
             {
-                return new RuntimeMessageInfo(type);
+                return new RuntimeMessageInfo(this.typeRegistry, type);
             }
 
             return null;

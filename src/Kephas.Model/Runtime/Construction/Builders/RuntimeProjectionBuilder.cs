@@ -12,8 +12,8 @@ namespace Kephas.Model.Runtime.Construction.Builders
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-
     using Kephas.Dynamic;
+    using Kephas.Model.Construction;
     using Kephas.Reflection;
     using Kephas.Runtime;
 
@@ -22,16 +22,16 @@ namespace Kephas.Model.Runtime.Construction.Builders
     /// </summary>
     public class RuntimeProjectionBuilder
     {
-        /// <summary>
-        /// The projection.
-        /// </summary>
+        private readonly IModelConstructionContext constructionContext;
         private readonly IList<IRuntimeTypeInfo> projection = new List<IRuntimeTypeInfo>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeProjectionBuilder"/> class.
         /// </summary>
-        public RuntimeProjectionBuilder()
+        /// <param name="constructionContext">The construction context.</param>
+        public RuntimeProjectionBuilder(IModelConstructionContext constructionContext)
         {
+            this.constructionContext = constructionContext;
             this.Projection = new ReadOnlyCollection<IRuntimeTypeInfo>(this.projection);
         }
 
@@ -49,7 +49,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// </returns>
         public RuntimeProjectionBuilder Dim<TModelDimensionElement>()
         {
-            this.projection.Add(typeof(TModelDimensionElement).AsRuntimeTypeInfo());
+            this.projection.Add(typeof(TModelDimensionElement).AsRuntimeTypeInfo(this.constructionContext?.AmbientServices?.TypeRegistry));
             return this;
         }
     }

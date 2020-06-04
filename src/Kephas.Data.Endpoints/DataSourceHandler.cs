@@ -81,12 +81,12 @@ namespace Kephas.Data.Endpoints
         /// </returns>
         public override async Task<DataSourceResponseMessage> ProcessAsync(DataSourceMessage message, IMessagingContext context, CancellationToken token)
         {
-            var entityType = this.ResolveEntityType(message.EntityType);
+            var entityType = this.ResolveEntityType(message.EntityType, context);
             var property = this.ResolveProperty(entityType, message.Property);
 
             using (var dataSpace = this.dataSpaceFactory.CreateInitializedValue(context))
             {
-                var projectedType = this.ResolveProjectedEntityType(entityType);
+                var projectedType = this.ResolveProjectedEntityType(entityType, context);
                 var dataContext = dataSpace[projectedType];
                 var dataSourceContext = new DataSourceContext(dataContext, entityType, projectedType)
                                             {
@@ -100,7 +100,7 @@ namespace Kephas.Data.Endpoints
 
                 return new DataSourceResponseMessage
                 {
-                    DataSource = dataSource?.ToList()
+                    DataSource = dataSource?.ToList(),
                 };
             }
         }
@@ -110,10 +110,11 @@ namespace Kephas.Data.Endpoints
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         /// <param name="entityTypeName">Name of the entity type.</param>
+        /// <param name="context">The messaging context.</param>
         /// <returns>
         /// An ITypeInfo.
         /// </returns>
-        protected virtual ITypeInfo ResolveEntityType(string entityTypeName)
+        protected virtual ITypeInfo ResolveEntityType(string entityTypeName, IMessagingContext context)
         {
             var entityType = this.typeResolver.ResolveType(entityTypeName, throwOnNotFound: false);
             if (entityType == null)
@@ -122,7 +123,7 @@ namespace Kephas.Data.Endpoints
                 throw new InvalidOperationException($"Could not resolve type '{entityTypeName}'.");
             }
 
-            return entityType.AsRuntimeTypeInfo();
+            return entityType.AsRuntimeTypeInfo(context.AmbientServices?.TypeRegistry);
         }
 
         /// <summary>
@@ -130,14 +131,15 @@ namespace Kephas.Data.Endpoints
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         /// <param name="entityType">Type of the entity.</param>
+        /// <param name="context">The messaging context.</param>
         /// <returns>
         /// An ITypeInfo.
         /// </returns>
-        protected virtual ITypeInfo ResolveProjectedEntityType(ITypeInfo entityType)
+        protected virtual ITypeInfo ResolveProjectedEntityType(ITypeInfo entityType, IMessagingContext context)
         {
             if (entityType is IRuntimeTypeInfo runtimeEntityType)
             {
-                return this.projectedTypeResolver.ResolveProjectedType(runtimeEntityType.Type).AsRuntimeTypeInfo();
+                return this.projectedTypeResolver.ResolveProjectedType(runtimeEntityType.Type).AsRuntimeTypeInfo(context.AmbientServices?.TypeRegistry);
             }
 
             return entityType;

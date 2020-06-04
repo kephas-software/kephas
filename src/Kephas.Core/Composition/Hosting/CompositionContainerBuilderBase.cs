@@ -119,10 +119,10 @@ namespace Kephas.Composition.Hosting
         protected HashSet<Type> CompositionParts { get; private set; }
 
         /// <summary>
-        /// Gets the <see cref="IAppServiceInfo"/> registry.
+        /// Gets the <see cref="IAppServiceInfo"/> serviceRegistry.
         /// </summary>
         /// <value>
-        /// The registry.
+        /// The serviceRegistry.
         /// </value>
         protected AppServiceInfoRegistry Registry { get; } = new AppServiceInfoRegistry();
 
@@ -528,7 +528,7 @@ namespace Kephas.Composition.Hosting
         }
 
         /// <summary>
-        /// An application service information registry.
+        /// An application service information serviceRegistry.
         /// </summary>
         protected class AppServiceInfoRegistry : IAppServiceInfoProvider
         {

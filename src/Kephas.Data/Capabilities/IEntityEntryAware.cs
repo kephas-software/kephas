@@ -21,7 +21,7 @@ namespace Kephas.Data.Capabilities
         /// <returns>
         /// The entity entry.
         /// </returns>
-        IEntityEntry GetEntityEntry();
+        IEntityEntry? GetEntityEntry();
 
         /// <summary>
         /// Sets the entity entry.

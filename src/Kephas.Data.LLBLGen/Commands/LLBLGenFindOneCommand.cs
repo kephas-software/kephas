@@ -65,7 +65,7 @@ namespace Kephas.Data.LLBLGen.Commands
             var localCache = (LLBLGenCache)this.TryGetLocalCache(dataContext);
             if (localCache != null)
             {
-                var runtimeEntityType = findContext.EntityType.AsRuntimeTypeInfo();
+                var runtimeEntityType = findContext.EntityType.AsRuntimeTypeInfo(findContext?.AmbientServices?.TypeRegistry);
                 var underlyingEntityType = (IRuntimeTypeInfo)this.entityActivator.GetImplementationType(runtimeEntityType);
                 result = localCache.GetAll(underlyingEntityType.Type).Cast<T>()
                     .Where(criteria.Compile())

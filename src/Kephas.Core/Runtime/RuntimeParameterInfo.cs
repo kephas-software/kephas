@@ -15,18 +15,14 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Reflection;
 
     /// <summary>
     /// Information about the runtime parameter.
     /// </summary>
-    public class RuntimeParameterInfo : Expando, IRuntimeParameterInfo
+    public class RuntimeParameterInfo : RuntimeElementInfoBase, IRuntimeParameterInfo
     {
-        /// <summary>
-        /// The runtime type of <see cref="RuntimeParameterInfo"/>.
-        /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimeParameterInfo = new RuntimeTypeInfo(typeof(RuntimeParameterInfo));
-
         /// <summary>
         /// The declaring container reference.
         /// </summary>
@@ -35,10 +31,12 @@ namespace Kephas.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeParameterInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <param name="parameterInfo">Information describing the parameter.</param>
         /// <param name="declaringContainer">The declaring element.</param>
-        internal RuntimeParameterInfo(ParameterInfo parameterInfo, IElementInfo declaringContainer)
-            : base(isThreadSafe: true)
+        /// <param name="logger">Optional. The logger.</param>
+        internal RuntimeParameterInfo(IRuntimeTypeRegistry typeRegistry, ParameterInfo parameterInfo, IElementInfo declaringContainer, ILogger? logger = null)
+            : base(typeRegistry, logger)
         {
             this.ParameterInfo = parameterInfo;
             this.Name = parameterInfo.Name ?? $"__unnamed_{this.Position}";
@@ -135,7 +133,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        public IRuntimeTypeInfo ValueType => RuntimeTypeInfo.GetRuntimeType(this.ParameterInfo.ParameterType);
+        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetRuntimeType(this.ParameterInfo.ParameterType);
 
         /// <summary>
         /// Gets the type of the field.
@@ -143,7 +141,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        ITypeInfo IValueElementInfo.ValueType => RuntimeTypeInfo.GetRuntimeType(this.ParameterInfo.ParameterType);
+        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetRuntimeType(this.ParameterInfo.ParameterType);
 
         /// <summary>
         /// Sets the specified value.
@@ -223,8 +221,6 @@ namespace Kephas.Runtime
         /// The <see cref="ITypeInfo"/> of this expando object.
         /// </returns>
         protected override ITypeInfo GetThisTypeInfo()
-        {
-            return RuntimeTypeInfoOfRuntimeParameterInfo;
-        }
+            => (this.TypeRegistry as RuntimeTypeRegistry)?.TypeOfRuntimeParameterInfo ?? this.TypeRegistry.GetRuntimeType(typeof(RuntimeParameterInfo));
     }
 }

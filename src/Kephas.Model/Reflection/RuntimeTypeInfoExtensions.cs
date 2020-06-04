@@ -55,7 +55,7 @@ namespace Kephas.Model.Reflection
         /// </returns>
         public static bool IsExcludedFromModel(this Type typeInfo)
         {
-            return typeInfo == null || typeInfo.AsRuntimeTypeInfo().GetAttribute<ExcludeFromModelAttribute>() != null;
+            return typeInfo == null || typeInfo.GetCustomAttribute<ExcludeFromModelAttribute>() != null;
         }
 
         /// <summary>

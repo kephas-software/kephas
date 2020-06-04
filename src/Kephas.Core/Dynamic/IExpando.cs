@@ -61,7 +61,7 @@ namespace Kephas.Dynamic
         /// </summary>
         private static readonly IRuntimeTypeInfo StringTypeInfo = typeof(string).AsRuntimeTypeInfo();
 
-        private static readonly IDictionary<Type, Func<string, object>> Parsers = new Dictionary<Type, Func<string, object>>
+        private static readonly IDictionary<Type, Func<string, object?>> Parsers = new Dictionary<Type, Func<string, object?>>
         {
             { typeof(bool), v => bool.TryParse(v, out var b) ? (object)b : null },
             { typeof(int), v => int.TryParse(v, out var b) ? (object)b : null },

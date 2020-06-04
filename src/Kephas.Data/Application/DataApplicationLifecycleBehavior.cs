@@ -25,6 +25,17 @@ namespace Kephas.Data.Application
     [ProcessingPriority(Priority.High)]
     public class DataApplicationLifecycleBehavior : IAppLifecycleBehavior
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataApplicationLifecycleBehavior"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        public DataApplicationLifecycleBehavior(IRuntimeTypeRegistry typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
+
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
@@ -35,7 +46,7 @@ namespace Kephas.Data.Application
         /// </returns>
         public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            RuntimeTypeInfo.RegisterFactory(new DataTypeInfoFactory());
+            this.typeRegistry.RegisterFactory(new DataTypeInfoFactory(this.typeRegistry));
 
             return Task.CompletedTask;
         }

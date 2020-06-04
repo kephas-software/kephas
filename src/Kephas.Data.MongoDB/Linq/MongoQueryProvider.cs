@@ -48,7 +48,7 @@ namespace Kephas.Data.MongoDB.Linq
         /// </returns>
         public override Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
         {
-            var nativeProviderTypeInfo = this.NativeQueryProvider.GetType().AsRuntimeTypeInfo();
+            var nativeProviderTypeInfo = this.NativeQueryProvider.GetType().AsRuntimeTypeInfo(this.DataContext?.AmbientServices?.TypeRegistry);
             var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods[nameof(this.ExecuteAsync)].Single();
             var executeAsync = executeAsyncMethodInfo.MethodInfo.MakeGenericMethod(typeof(object));
             var taskResult = (Task<object>)executeAsync.Call(this.NativeQueryProvider, expression, cancellationToken);
@@ -69,7 +69,7 @@ namespace Kephas.Data.MongoDB.Linq
         /// </returns>
         public override Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         {
-            var nativeProviderTypeInfo = this.NativeQueryProvider.GetType().AsRuntimeTypeInfo();
+            var nativeProviderTypeInfo = this.NativeQueryProvider.GetType().AsRuntimeTypeInfo(this.DataContext?.AmbientServices?.TypeRegistry);
             var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods[nameof(this.ExecuteAsync)].Single();
             var executeAsync = executeAsyncMethodInfo.MethodInfo.MakeGenericMethod(typeof(TResult));
             var taskResult = (Task<TResult>)executeAsync.Call(this.NativeQueryProvider, expression, cancellationToken);

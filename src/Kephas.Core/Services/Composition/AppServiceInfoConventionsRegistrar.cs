@@ -33,7 +33,7 @@ namespace Kephas.Services.Composition
     /// </summary>
     public class AppServiceInfoConventionsRegistrar : IConventionsRegistrar
     {
-        private readonly IAppServiceMetadataResolver metadataResolver = new AppServiceMetadataResolver();
+        //private readonly IAppServiceMetadataResolver metadataResolver = new AppServiceMetadataResolver();
 
         /// <summary>
         /// Registers the conventions.
@@ -66,6 +66,8 @@ namespace Kephas.Services.Composition
 
             var appServiceContracts = appServiceContractsInfos.Select(e => e.contractType).ToList();
 
+            var typeRegistry = registrationContext.AmbientServices?.TypeRegistry;
+            var metadataResolver = new AppServiceMetadataResolver(typeRegistry);
             foreach (var appServiceContractInfo in appServiceContractsInfos)
             {
                 var appServiceContract = appServiceContractInfo.contractType;
@@ -85,10 +87,11 @@ namespace Kephas.Services.Composition
                         appServiceContract,
                         conventions,
                         typeInfos,
-                        logger);
+                        logger,
+                        typeRegistry);
                     if (partConventionsBuilder != null)
                     {
-                        this.ConfigurePartBuilder(partConventionsBuilder, appServiceContract, appServiceInfo, appServiceContracts, logger);
+                        this.ConfigurePartBuilder(partConventionsBuilder, appServiceContract, appServiceInfo, appServiceContracts, metadataResolver, logger);
                     }
                     else
                     {
@@ -164,12 +167,14 @@ namespace Kephas.Services.Composition
         /// <param name="serviceContract">The service contract.</param>
         /// <param name="appServiceInfo">The application service metadata.</param>
         /// <param name="appServiceContracts">The application service contracts.</param>
+        /// <param name="metadataResolver">The metadata resolver.</param>
         /// <param name="logger">The logger.</param>
         protected void ConfigurePartBuilder(
             IPartConventionsBuilder partBuilder,
             Type serviceContract,
             IAppServiceInfo appServiceInfo,
             IList<Type> appServiceContracts,
+            IAppServiceMetadataResolver metadataResolver,
             ILogger logger)
         {
             var serviceContractType = serviceContract;
@@ -192,7 +197,7 @@ namespace Kephas.Services.Composition
                 {
                     partBuilder.ExportInterface(
                         exportedContract,
-                        (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes));
+                        (t, b) => this.ConfigureExport(serviceContract, b, exportedContractType, t, metadataAttributes, metadataResolver));
 
                     if (metadataAttributes.Count > 0)
                     {
@@ -210,13 +215,13 @@ namespace Kephas.Services.Composition
                 {
                     partBuilder.ExportInterface(
                         exportedContract,
-                        (t, b) => this.ConfigureExport(serviceContract, b, t, t, metadataAttributes));
+                        (t, b) => this.ConfigureExport(serviceContract, b, t, t, metadataAttributes, metadataResolver));
                 }
             }
             else
             {
                 partBuilder.Export(
-                    b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes));
+                    b => this.ConfigureExport(serviceContract, b, exportedContractType, null, metadataAttributes, metadataResolver));
             }
 
             partBuilder.SelectConstructor(ctorInfos => this.TrySelectAppServiceConstructor(serviceContract, ctorInfos));
@@ -371,24 +376,17 @@ namespace Kephas.Services.Composition
             return null;
         }
 
-        /// <summary>
-        /// Configures the export.
-        /// </summary>
-        /// <param name="serviceContract">The service contract.</param>
-        /// <param name="exportBuilder">The export builder.</param>
-        /// <param name="exportedContractType">Type of the exported contract.</param>
-        /// <param name="serviceImplementationType">Type of the service implementation.</param>
-        /// <param name="metadataAttributes">The metadata attributes.</param>
         private void ConfigureExport(
             Type serviceContract,
             IExportConventionsBuilder exportBuilder,
             Type exportedContractType,
             Type? serviceImplementationType,
-            IEnumerable<Type> metadataAttributes)
+            IEnumerable<Type> metadataAttributes,
+            IAppServiceMetadataResolver metadataResolver)
         {
             exportBuilder.AsContractType(exportedContractType);
-            this.AddCompositionMetadata(exportBuilder, serviceImplementationType, metadataAttributes);
-            this.AddCompositionMetadataForGenerics(exportBuilder, serviceContract);
+            this.AddCompositionMetadata(exportBuilder, serviceImplementationType, metadataAttributes, metadataResolver);
+            this.AddCompositionMetadataForGenerics(exportBuilder, serviceContract, metadataResolver);
         }
 
         /// <summary>
@@ -456,12 +454,7 @@ namespace Kephas.Services.Composition
             return explicitlyMarkedConstructors[0];
         }
 
-        /// <summary>
-        /// Adds the composition metadata.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <param name="serviceContract">The service contract.</param>
-        private void AddCompositionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract)
+        private void AddCompositionMetadataForGenerics(IExportConventionsBuilder builder, Type serviceContract, IAppServiceMetadataResolver metadataResolver)
         {
             if (!serviceContract.IsGenericTypeDefinition)
             {
@@ -475,18 +468,12 @@ namespace Kephas.Services.Composition
                 var genericTypeParameter = genericTypeParameters[i];
                 var position = i;
                 builder.AddMetadata(
-                    this.metadataResolver.GetMetadataNameFromGenericTypeParameter(genericTypeParameter),
-                    t => this.metadataResolver.GetMetadataValueFromGenericParameter(t, position, serviceContractType));
+                    metadataResolver.GetMetadataNameFromGenericTypeParameter(genericTypeParameter),
+                    t => metadataResolver.GetMetadataValueFromGenericParameter(t, position, serviceContractType));
             }
         }
 
-        /// <summary>
-        /// Adds the composition metadata.
-        /// </summary>
-        /// <param name="builder">The builder.</param>
-        /// <param name="serviceImplementationType">Type of the service implementation.</param>
-        /// <param name="attributeTypes">The attribute types.</param>
-        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType, IEnumerable<Type> attributeTypes)
+        private void AddCompositionMetadata(IExportConventionsBuilder builder, Type? serviceImplementationType, IEnumerable<Type> attributeTypes, IAppServiceMetadataResolver metadataResolver)
         {
             // add the service type.
             builder.AddMetadata(nameof(AppServiceMetadata.ServiceType), t => serviceImplementationType ?? t);
@@ -499,12 +486,12 @@ namespace Kephas.Services.Composition
 
             foreach (var attributeType in attributeTypes)
             {
-                var valueProperties = this.metadataResolver.GetMetadataValueProperties(attributeType);
+                var valueProperties = metadataResolver.GetMetadataValueProperties(attributeType);
                 foreach (var valuePropertyEntry in valueProperties)
                 {
                     builder.AddMetadata(
                         valuePropertyEntry.Key,
-                        t => this.metadataResolver.GetMetadataValueFromAttribute(t, attributeType, valuePropertyEntry.Value));
+                        t => metadataResolver.GetMetadataValueFromAttribute(t, attributeType, valuePropertyEntry.Value));
                 }
             }
         }
@@ -526,7 +513,8 @@ namespace Kephas.Services.Composition
             Type serviceContract,
             IConventionsBuilder conventions,
             IEnumerable<Type> typeInfos,
-            ILogger logger)
+            ILogger logger,
+            IRuntimeTypeRegistry? typeRegistry)
         {
             var serviceContractType = serviceContract;
 
@@ -556,7 +544,7 @@ namespace Kephas.Services.Composition
                     var (isOverride, selectedInstanceType) = this.TrySelectSingleServiceImplementationType(
                                                                      serviceContract,
                                                                      typeInfos,
-                                                                     t => this.MatchOpenGenericContractType(t, serviceContractType));
+                                                                     t => this.MatchOpenGenericContractType(t, serviceContractType, typeRegistry));
                     if (logger.IsDebugEnabled())
                     {
                         logger.Debug("Service {serviceContractType} matches open generic implementation type {serviceInstanceType}.", serviceContractType, selectedInstanceType?.ToString() ?? "<not found>");
@@ -582,7 +570,7 @@ namespace Kephas.Services.Composition
                 // if there is non-generic service contract with the same full name
                 // then add just the conventions for the derived types.
                 return conventions
-                    .ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType))
+                    .ForTypesMatching(t => this.MatchOpenGenericContractType(t, serviceContractType, typeRegistry))
                     .AsServiceType(serviceContract)
                     .AllowMultiple(appServiceInfo.AllowMultiple);
             }
@@ -597,7 +585,7 @@ namespace Kephas.Services.Composition
                 // if the service contract metadata allows multiple service registrations
                 // then add just the conventions for the derived types.
                 return conventions
-                    .ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract))
+                    .ForTypesMatching(t => this.MatchDerivedFromContractType(t, serviceContract, typeRegistry))
                     .AsServiceType(serviceContract)
                     .AllowMultiple(appServiceInfo.AllowMultiple);
             }
@@ -605,7 +593,7 @@ namespace Kephas.Services.Composition
             var (_, selectedPart) = this.TrySelectSingleServiceImplementationType(
                 serviceContract,
                 typeInfos,
-                part => this.MatchDerivedFromContractType(part, serviceContract));
+                part => this.MatchDerivedFromContractType(part, serviceContract, typeRegistry));
 
             if (selectedPart != null)
             {
@@ -739,32 +727,23 @@ namespace Kephas.Services.Composition
             return false;
         }
 
-        /// <summary>
-        /// Determines whether the provided type info is an eligible part.
-        /// </summary>
-        /// <param name="typeInfo">The type information.</param>
-        /// <returns>
-        /// <c>true</c> if the type information is an eligible part, otherwise <c>false</c>.
-        /// </returns>
-        private bool IsEligiblePart(Type typeInfo)
+        private bool IsEligiblePart(Type typeInfo, IRuntimeTypeRegistry? typeRegistry)
         {
             // leave here the AsRuntimeTypeInfo conversion so that
             // runtime added attributes may be used
             return typeInfo.IsClass
                    && !typeInfo.IsAbstract
                    && !typeInfo.IsNestedPrivate
-                   && typeInfo.AsRuntimeTypeInfo().GetAttribute<ExcludeFromCompositionAttribute>() == null;
+                   && typeInfo.AsRuntimeTypeInfo(typeRegistry).GetAttribute<ExcludeFromCompositionAttribute>() == null;
         }
 
         /// <summary>
         /// Checks whether the part type matches the type of the open generic contract.
         /// </summary>
-        /// <param name="partTypeInfo">Type of the part.</param>
-        /// <param name="serviceContract">Type of the service contract.</param>
         /// <returns><c>true</c> if the part type matches the type of the generic contract, otherwise <c>false</c>.</returns>
-        private bool MatchDerivedFromContractType(Type partTypeInfo, Type serviceContract)
+        private bool MatchDerivedFromContractType(Type partTypeInfo, Type serviceContract, IRuntimeTypeRegistry? typeRegistry)
         {
-            if (!this.IsEligiblePart(partTypeInfo) || partTypeInfo.IsGenericTypeDefinition)
+            if (!this.IsEligiblePart(partTypeInfo, typeRegistry) || partTypeInfo.IsGenericTypeDefinition)
             {
                 return false;
             }
@@ -778,9 +757,9 @@ namespace Kephas.Services.Composition
         /// <param name="partType">Type of the part.</param>
         /// <param name="serviceContract">Type of the service contract.</param>
         /// <returns><c>true</c> if the part type matches the type of the generic contract, otherwise <c>false</c>.</returns>
-        private bool MatchDerivedFromContractType(Type partType, TypeInfo serviceContract)
+        private bool MatchDerivedFromContractType(Type partType, TypeInfo serviceContract, IRuntimeTypeRegistry? typeRegistry)
         {
-            return this.MatchDerivedFromContractType(partType.GetTypeInfo(), (Type)serviceContract);
+            return this.MatchDerivedFromContractType(partType.GetTypeInfo(), (Type)serviceContract, typeRegistry);
         }
 
         /// <summary>
@@ -789,10 +768,10 @@ namespace Kephas.Services.Composition
         /// <param name="partType">Type of the part.</param>
         /// <param name="serviceContractType">Type of the service contract.</param>
         /// <returns><c>true</c> if the part type matches the type of the generic contract, otherwise <c>false</c>.</returns>
-        private bool MatchOpenGenericContractType(Type partType, Type serviceContractType)
+        private bool MatchOpenGenericContractType(Type partType, Type serviceContractType, IRuntimeTypeRegistry? typeRegistry)
         {
             var partTypeInfo = partType.GetTypeInfo();
-            if (!this.IsEligiblePart(partTypeInfo))
+            if (!this.IsEligiblePart(partTypeInfo, typeRegistry))
             {
                 return false;
             }

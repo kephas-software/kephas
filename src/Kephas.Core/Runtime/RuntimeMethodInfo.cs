@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Runtime
 {
     using System;
@@ -20,18 +18,14 @@ namespace Kephas.Runtime
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Reflection;
 
     /// <summary>
     /// Implementation of <see cref="IRuntimeMethodInfo"/> for runtime methods.
     /// </summary>
-    public sealed class RuntimeMethodInfo : Expando, IRuntimeMethodInfo
+    public sealed class RuntimeMethodInfo : RuntimeElementInfoBase, IRuntimeMethodInfo
     {
-        /// <summary>
-        /// The <see cref="IRuntimeTypeInfo"/> of <see cref="RuntimeMethodInfo"/>.
-        /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimeMethodInfo = new RuntimeTypeInfo(typeof(RuntimeMethodInfo));
-
         /// <summary>
         /// The parameters.
         /// </summary>
@@ -40,11 +34,11 @@ namespace Kephas.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeMethodInfo"/> class.
         /// </summary>
-        /// <param name="methodInfo">
-        /// The method information.
-        /// </param>
-        internal RuntimeMethodInfo(MethodInfo methodInfo)
-            : base(isThreadSafe: true)
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
+        /// <param name="methodInfo">The method information.</param>
+        /// <param name="logger">The logger.</param>
+        internal RuntimeMethodInfo(IRuntimeTypeRegistry typeRegistry, MethodInfo methodInfo, ILogger? logger = null)
+            : base(typeRegistry, logger)
         {
             Requires.NotNull(methodInfo, nameof(methodInfo));
 
@@ -99,7 +93,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo? DeclaringContainer => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.DeclaringType);
+        public IElementInfo? DeclaringContainer => this.TypeRegistry.GetRuntimeType(this.MethodInfo.DeclaringType);
 
         /// <summary>
         /// Gets the method info.
@@ -120,7 +114,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        ITypeInfo IOperationInfo.ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
+        ITypeInfo IOperationInfo.ReturnType => this.TypeRegistry.GetRuntimeType(this.MethodInfo.ReturnType);
 
         /// <summary>
         /// Gets the return type of the method.
@@ -128,7 +122,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        public IRuntimeTypeInfo ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
+        public IRuntimeTypeInfo ReturnType => this.TypeRegistry.GetRuntimeType(this.MethodInfo.ReturnType);
 
 #if NETSTANDARD2_1
 #else
@@ -208,9 +202,7 @@ namespace Kephas.Runtime
         /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
         /// </returns>
         protected override ITypeInfo GetThisTypeInfo()
-        {
-            return RuntimeTypeInfoOfRuntimeMethodInfo;
-        }
+            => (this.TypeRegistry as RuntimeTypeRegistry)?.TypeOfRuntimeMethodInfo ?? this.TypeRegistry.GetRuntimeType(typeof(RuntimeMethodInfo));
 
         /// <summary>
         /// Creates parameter infos.
@@ -225,7 +217,7 @@ namespace Kephas.Runtime
             var parameterInfos = methodInfo.GetParameters();
             foreach (var parameterInfo in parameterInfos)
             {
-                var runtimeParameterInfo = new RuntimeParameterInfo(parameterInfo, this);
+                var runtimeParameterInfo = new RuntimeParameterInfo(this.TypeRegistry, parameterInfo, this, this.Logger);
                 var parameterName = runtimeParameterInfo.Name;
                 runtimeParameterInfos.Add(parameterName, runtimeParameterInfo);
             }
@@ -241,7 +233,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IDictionary<string, IRuntimeParameterInfo> GetParameters()
         {
-            return this.parameters ?? (this.parameters = this.CreateParameterInfos(this.MethodInfo));
+            return this.parameters ??= this.CreateParameterInfos(this.MethodInfo);
         }
     }
 }

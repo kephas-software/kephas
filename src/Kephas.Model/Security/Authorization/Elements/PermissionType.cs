@@ -106,7 +106,7 @@ namespace Kephas.Model.Security.Authorization.Elements
                     attr => attr.PermissionTypes
                         .Select(
                             t => constructionContext.ModelSpace.TryGetClassifier(
-                                t.AsRuntimeTypeInfo(),
+                                t.AsRuntimeTypeInfo(constructionContext?.AmbientServices?.TypeRegistry),
                                 constructionContext)))
                 .OfType<IPermissionInfo>()
                 .Distinct()
@@ -135,7 +135,7 @@ namespace Kephas.Model.Security.Authorization.Elements
                 grantedAttrs
                     .Where(a => a.PermissionTypes != null)
                     .SelectMany(a => a.PermissionTypes)
-                    .Select(t => t.AsRuntimeTypeInfo()));
+                    .Select(t => t.AsRuntimeTypeInfo(constructionContext?.AmbientServices?.TypeRegistry)));
 
             var grantedTypes = constructionContext.ModelSpace.Classifiers
                                 .OfType<IPermissionType>()

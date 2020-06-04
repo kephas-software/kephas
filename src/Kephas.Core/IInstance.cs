@@ -24,7 +24,7 @@ namespace Kephas
         /// The type information.
         /// </returns>
 #if NETSTANDARD2_1
-        ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo();
+        ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo(null);
 #else
         ITypeInfo GetTypeInfo();
 #endif
@@ -33,7 +33,7 @@ namespace Kephas
     /// <summary>
     /// Generic contract for instances of classifiers.
     /// </summary>
-    /// <typeparam name="T">The specific type.</typeparam>
+    /// <typeparam name="T">The specific type info.</typeparam>
     public interface IInstance<out T> : IInstance
         where T : ITypeInfo
     {

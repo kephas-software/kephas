@@ -11,52 +11,33 @@
 namespace Kephas.Runtime
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Dynamic;
     using Kephas.Reflection;
 
     /// <summary>
     /// Information about the runtime assembly. This class cannot be inherited.
     /// </summary>
-    public sealed class RuntimeAssemblyInfo : Expando, IRuntimeAssemblyInfo
+    public sealed class RuntimeAssemblyInfo : RuntimeElementInfoBase, IRuntimeAssemblyInfo
     {
-        private static readonly ConcurrentDictionary<Assembly, IRuntimeAssemblyInfo> RuntimeAssemblyInfosCache = new ConcurrentDictionary<Assembly, IRuntimeAssemblyInfo>();
-        private static Func<Assembly, IRuntimeAssemblyInfo> createRuntimeAssemblyInfoFunc = a => new RuntimeAssemblyInfo(a);
-
         private readonly Assembly assembly;
 
-        private IList<ITypeInfo> types;
+        private IList<ITypeInfo>? types;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeAssemblyInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <param name="assembly">The assembly.</param>
-        internal RuntimeAssemblyInfo(Assembly assembly)
+        internal RuntimeAssemblyInfo(IRuntimeTypeRegistry typeRegistry, Assembly assembly)
+            : base(typeRegistry)
         {
             Requires.NotNull(assembly, nameof(assembly));
 
             this.assembly = assembly;
-        }
-
-        /// <summary>
-        /// Gets or sets the function for creating the runtime assembly information.
-        /// </summary>
-        /// <value>
-        /// The function for creating the runtime assembly information.
-        /// </value>
-        public static Func<Assembly, IRuntimeAssemblyInfo> CreateRuntimeAssemblyInfo
-        {
-            get => createRuntimeAssemblyInfoFunc;
-            set
-            {
-                Requires.NotNull(value, nameof(value));
-                createRuntimeAssemblyInfoFunc = value;
-            }
         }
 
         /// <summary>
@@ -144,28 +125,16 @@ namespace Kephas.Runtime
 #endif
 
         /// <summary>
-        /// Gets the runtime assembly.
-        /// </summary>
-        /// <param name="assembly">The assembly.</param>
-        /// <returns>A runtime assembly.</returns>
-        internal static IRuntimeAssemblyInfo GetRuntimeAssembly(Assembly assembly)
-        {
-            Requires.NotNull(assembly, nameof(assembly));
-
-            return RuntimeAssemblyInfosCache.GetOrAdd(assembly, _ => CreateRuntimeAssemblyInfo(assembly) ?? new RuntimeAssemblyInfo(assembly));
-        }
-
-        /// <summary>
         /// Creates the list of type information from the provided assembly.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         /// <returns>
         /// The types in the assembly.
         /// </returns>
-        private static IList<ITypeInfo> CreateTypeInfos(Assembly assembly)
+        private IList<ITypeInfo> CreateTypeInfos(Assembly assembly)
         {
-            var types = DefaultTypeLoader.Instance.GetExportedTypes(assembly);
-            return types.Select(t => (ITypeInfo)RuntimeTypeInfo.GetRuntimeType(t)).ToList();
+            var assemblyTypes = DefaultTypeLoader.Instance.GetExportedTypes(assembly);
+            return assemblyTypes.Select(t => (ITypeInfo)this.TypeRegistry.GetRuntimeType(t)).ToList();
         }
 
         /// <summary>
@@ -176,7 +145,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IEnumerable<ITypeInfo> GetTypes()
         {
-            return this.types ??= CreateTypeInfos(this.assembly);
+            return this.types ??= this.CreateTypeInfos(this.assembly);
         }
     }
 }

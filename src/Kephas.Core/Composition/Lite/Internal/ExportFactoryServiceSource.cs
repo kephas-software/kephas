@@ -26,8 +26,8 @@ namespace Kephas.Composition.Lite.Internal
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string>(null, null));
 
-        public ExportFactoryServiceSource(IServiceRegistry registry)
-            : base(registry)
+        public ExportFactoryServiceSource(IServiceRegistry serviceRegistry)
+            : base(serviceRegistry)
         {
         }
 

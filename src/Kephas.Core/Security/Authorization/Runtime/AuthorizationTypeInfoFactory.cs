@@ -16,6 +16,17 @@ namespace Kephas.Security.Authorization.Runtime
     /// </summary>
     public class AuthorizationTypeInfoFactory : IRuntimeTypeInfoFactory
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationTypeInfoFactory"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type serviceRegistry.</param>
+        public AuthorizationTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
+
         /// <summary>
         /// Tries to create the runtime type information type for the provided raw type.
         /// </summary>
@@ -27,7 +38,7 @@ namespace Kephas.Security.Authorization.Runtime
         {
             if (typeof(IPermission).IsAssignableFrom(type) && typeof(IPermission) != type)
             {
-                return new RuntimePermissionInfo(type);
+                return new RuntimePermissionInfo(this.typeRegistry, type);
             }
 
             return null;
