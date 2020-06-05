@@ -25,59 +25,50 @@ namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class RuntimeTypeInfoFactoryTest
     {
-        private static bool initialized;
-
-        private static object sync = new object();
-
-        [OneTimeSetUp]
-        public void RegisterFactory()
-        {
-            if (!initialized)
-            {
-                lock (sync)
-                {
-                    if (!initialized)
-                    {
-                        RuntimeTypeInfo.RegisterFactory(new AttributedRuntimeTypeInfoFactory());
-                    }
-                }
-            }
-        }
-
         [Test]
         public void CreateRuntimeTypeInfo_default()
         {
-            var typeInfo = RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(int));
+            var typeRegistry = new RuntimeTypeRegistry();
+            var typeInfo = typeRegistry.CreateRuntimeTypeInfo(typeof(int));
             Assert.IsInstanceOf<RuntimeTypeInfo>(typeInfo);
         }
 
         [Test]
         public void CreateRuntimeTypeInfo_attributed()
         {
-            var typeInfo = RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(HasSpecialRuntimeTypeInfo));
+            var typeRegistry = new RuntimeTypeRegistry();
+            typeRegistry.RegisterFactory(new AttributedRuntimeTypeInfoFactory(typeRegistry));
+            var typeInfo = typeRegistry.CreateRuntimeTypeInfo(typeof(HasSpecialRuntimeTypeInfo));
             Assert.IsInstanceOf<SpecialRuntimeTypeInfo>(typeInfo);
         }
 
         public class AttributedRuntimeTypeInfoFactory : IRuntimeTypeInfoFactory
         {
+            private readonly IRuntimeTypeRegistry typeRegistry;
+
+            public AttributedRuntimeTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
+            {
+                this.typeRegistry = typeRegistry;
+            }
+
             public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type rawType)
             {
-                var attr = rawType.GetCustomAttribute<RuntimeTypeInfoTypeAttribute>();
+                var attr = rawType.GetCustomAttribute<RuntimeTypeInfoAttribute>();
                 var typeInfoType = attr?.Type;
                 if (typeInfoType == null)
                 {
                     return null;
                 }
 
-                var typeInfo = (IRuntimeTypeInfo)Activator.CreateInstance(typeInfoType, rawType);
+                var typeInfo = (IRuntimeTypeInfo)Activator.CreateInstance(typeInfoType, this.typeRegistry, rawType);
                 return typeInfo;
             }
         }
 
         [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Interface | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
-        public sealed class RuntimeTypeInfoTypeAttribute : Attribute
+        public sealed class RuntimeTypeInfoAttribute : Attribute
         {
-            public RuntimeTypeInfoTypeAttribute(Type type)
+            public RuntimeTypeInfoAttribute(Type type)
             {
                 this.Type = type;
             }
@@ -85,13 +76,13 @@ namespace Kephas.Core.Tests.Runtime.RuntimeTypeInfoFactory
             public Type Type { get; }
         }
 
-        [RuntimeTypeInfoType(typeof(SpecialRuntimeTypeInfo))]
+        [RuntimeTypeInfo(typeof(SpecialRuntimeTypeInfo))]
         public class HasSpecialRuntimeTypeInfo { }
 
         public class SpecialRuntimeTypeInfo : RuntimeTypeInfo
         {
-            public SpecialRuntimeTypeInfo(Type type)
-                : base(type)
+            public SpecialRuntimeTypeInfo(IRuntimeTypeRegistry typeRegistry, Type type)
+                : base(typeRegistry, type)
             {
             }
         }

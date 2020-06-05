@@ -19,6 +19,7 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
     using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Messaging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services.Composition;
     using NSubstitute;
     using NUnit.Framework;
@@ -26,6 +27,13 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
     [TestFixture]
     public class HelpMessageHandlerTest
     {
+        private readonly RuntimeTypeRegistry typeRegistry;
+
+        public HelpMessageHandlerTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+        
         [Test]
         public async Task ProcessAsync_nullable_param()
         {
@@ -35,7 +43,7 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
                 ci => new List<IOperationInfo>()
                     {
                         // new MessageOperationInfo(typeof(HelpMessage).AsRuntimeTypeInfo(), lazyMessageProcessor),
-                        new MessageOperationInfo(typeof(NullableParamMessage).AsRuntimeTypeInfo(), lazyMessageProcessor),
+                        new MessageOperationInfo(this.typeRegistry, typeof(NullableParamMessage).AsRuntimeTypeInfo(this.typeRegistry), lazyMessageProcessor),
                     });
 
             var handler = new HelpMessageHandler(
@@ -62,7 +70,7 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
                 ci => new List<IOperationInfo>()
                 {
                     // new MessageOperationInfo(typeof(HelpMessage).AsRuntimeTypeInfo(), lazyMessageProcessor),
-                    new MessageOperationInfo(typeof(LongParamMessage).AsRuntimeTypeInfo(), lazyMessageProcessor),
+                    new MessageOperationInfo(this.typeRegistry, typeof(LongParamMessage).AsRuntimeTypeInfo(this.typeRegistry), lazyMessageProcessor),
                 });
 
             var handler = new HelpMessageHandler(
