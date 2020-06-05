@@ -162,15 +162,6 @@ namespace Kephas.Runtime
         {
             return $"{this.Name}: {this.FieldInfo.FieldType.FullName}";
         }
-
-        /// <summary>
-        /// Gets the <see cref="ITypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ITypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-            => (this.TypeRegistry as RuntimeTypeRegistry)?.TypeOfRuntimeFieldInfo ?? this.TypeRegistry.GetRuntimeType(typeof(RuntimeFieldInfo));
     }
 
     /// <summary>
@@ -214,17 +205,6 @@ namespace Kephas.Runtime
         public override object? GetValue(object? obj)
         {
             return this.FieldInfo.GetValue(obj);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ITypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ITypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-        {
-            return this.TypeRegistry.GetRuntimeType(typeof(RuntimeFieldInfo<T, TMember>));
         }
     }
 }

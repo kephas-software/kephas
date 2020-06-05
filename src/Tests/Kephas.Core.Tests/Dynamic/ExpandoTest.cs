@@ -360,7 +360,7 @@ namespace Kephas.Core.Tests.Dynamic
             {
             }
 
-            public bool HasWrappedObject => this.GetInnerObjectTypeInfo() != null;
+            public bool HasWrappedObject => this.GetInnerObjectType() != null;
         }
     }
 }

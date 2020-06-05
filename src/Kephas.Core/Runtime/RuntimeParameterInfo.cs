@@ -213,14 +213,5 @@ namespace Kephas.Runtime
         {
             return $"{this.Name}: {this.ParameterInfo.ParameterType.FullName}";
         }
-
-        /// <summary>
-        /// Gets the <see cref="ITypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ITypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-            => (this.TypeRegistry as RuntimeTypeRegistry)?.TypeOfRuntimeParameterInfo ?? this.TypeRegistry.GetRuntimeType(typeof(RuntimeParameterInfo));
     }
 }

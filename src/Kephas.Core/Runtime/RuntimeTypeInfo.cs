@@ -527,17 +527,6 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-            => this.GetType() == typeof(RuntimeTypeInfo) && this.TypeRegistry is RuntimeTypeRegistry reg
-                ? reg.TypeOfRuntimeTypeInfo
-                : base.GetThisTypeInfo();
-
-        /// <summary>
         /// Creates the member infos.
         /// </summary>
         /// <param name="membersConfig">Optional. The members configuration.</param>

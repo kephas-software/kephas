@@ -179,15 +179,6 @@ namespace Kephas.Runtime
         {
             return $"{this.PropertyInfo.Name}: {this.PropertyInfo.PropertyType.FullName}";
         }
-
-        /// <summary>
-        /// Gets the <see cref="ITypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ITypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-            => (this.TypeRegistry as RuntimeTypeRegistry)?.TypeOfRuntimePropertyInfo ?? this.TypeRegistry.GetRuntimeType(typeof(RuntimePropertyInfo));
     }
 
     /// <summary>
@@ -315,17 +306,6 @@ namespace Kephas.Runtime
             }
 
             return getDelegate((T)obj);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ITypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ITypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-        {
-            return this.TypeRegistry.GetRuntimeType(typeof(RuntimePropertyInfo<T, TMember>));
         }
 
         /// <summary>

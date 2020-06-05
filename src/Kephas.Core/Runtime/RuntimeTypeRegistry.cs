@@ -37,13 +37,6 @@ namespace Kephas.Runtime
         /// </summary>
         private Func<Type, IRuntimeTypeInfo> createRuntimeTypeInfoFunc;
 
-        internal readonly RuntimeTypeInfo TypeOfRuntimeTypeRegistry;
-        internal readonly RuntimeTypeInfo TypeOfRuntimeTypeInfo;
-        internal readonly RuntimeTypeInfo TypeOfRuntimePropertyInfo;
-        internal readonly RuntimeTypeInfo TypeOfRuntimeFieldInfo;
-        internal readonly RuntimeTypeInfo TypeOfRuntimeMethodInfo;
-        internal readonly RuntimeTypeInfo TypeOfRuntimeParameterInfo;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTypeRegistry"/> class.
         /// </summary>
@@ -52,16 +45,7 @@ namespace Kephas.Runtime
             : base(isThreadSafe: true)
         {
             this.typeLoader = typeLoader;
-            this.runtimeTypeInfosCache = new ConcurrentDictionary<Type, IRuntimeTypeInfo>(
-                new Dictionary<Type, IRuntimeTypeInfo>
-                {
-                    { typeof(RuntimeTypeRegistry), this.TypeOfRuntimeTypeRegistry = new RuntimeTypeInfo(this, typeof(RuntimeTypeRegistry)) },
-                    { typeof(RuntimeTypeInfo), this.TypeOfRuntimeTypeInfo = new RuntimeTypeInfo(this, typeof(RuntimeTypeInfo)) },
-                    { typeof(RuntimePropertyInfo), this.TypeOfRuntimePropertyInfo = new RuntimeTypeInfo(this, typeof(RuntimePropertyInfo)) },
-                    { typeof(RuntimeFieldInfo), this.TypeOfRuntimeFieldInfo = new RuntimeTypeInfo(this, typeof(RuntimeFieldInfo)) },
-                    { typeof(RuntimeMethodInfo), this.TypeOfRuntimeMethodInfo = new RuntimeTypeInfo(this, typeof(RuntimeMethodInfo)) },
-                    { typeof(RuntimeMethodInfo), this.TypeOfRuntimeParameterInfo = new RuntimeTypeInfo(this, typeof(RuntimeParameterInfo)) },
-                });
+            this.runtimeTypeInfosCache = new ConcurrentDictionary<Type, IRuntimeTypeInfo>();
 
             this.createRuntimeTypeInfoFunc = this.CreateRuntimeTypeInfoCore;
             this.createRuntimeAssemblyInfoFunc = a => new RuntimeAssemblyInfo(this, a, this.typeLoader);
@@ -142,17 +126,6 @@ namespace Kephas.Runtime
             Requires.NotNull(factory, nameof(factory));
 
             this.typeFactories.Insert(0, factory);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ITypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ITypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-        {
-            return this.TypeOfRuntimeTypeRegistry;
         }
 
         private IRuntimeTypeInfo CreateRuntimeTypeInfoCore(Type rawType)

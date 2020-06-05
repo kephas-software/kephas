@@ -196,15 +196,6 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-            => (this.TypeRegistry as RuntimeTypeRegistry)?.TypeOfRuntimeMethodInfo ?? this.TypeRegistry.GetRuntimeType(typeof(RuntimeMethodInfo));
-
-        /// <summary>
         /// Creates parameter infos.
         /// </summary>
         /// <param name="methodInfo">The method information.</param>
