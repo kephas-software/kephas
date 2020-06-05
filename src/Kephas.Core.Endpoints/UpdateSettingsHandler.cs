@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.ExceptionHandling;
-
 namespace Kephas.Core.Endpoints
 {
     using System;
@@ -16,6 +14,7 @@ namespace Kephas.Core.Endpoints
 
     using Kephas.Composition;
     using Kephas.Configuration;
+    using Kephas.ExceptionHandling;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Operations;
@@ -32,6 +31,7 @@ namespace Kephas.Core.Endpoints
         private readonly ICompositionContext compositionContext;
         private readonly ITypeResolver typeResolver;
         private readonly ISerializationService serializationService;
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSettingsHandler"/> class.
@@ -39,14 +39,17 @@ namespace Kephas.Core.Endpoints
         /// <param name="compositionContext">The composition context.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="serializationService">The serialization service.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         public UpdateSettingsHandler(
             ICompositionContext compositionContext,
             ITypeResolver typeResolver,
-            ISerializationService serializationService)
+            ISerializationService serializationService,
+            IRuntimeTypeRegistry typeRegistry)
         {
             this.compositionContext = compositionContext;
             this.typeResolver = typeResolver;
             this.serializationService = serializationService;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -101,7 +104,7 @@ namespace Kephas.Core.Endpoints
 
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
             var configuration = this.compositionContext.GetExport(configurationType);
-            var updateMethod = (IRuntimeMethodInfo)configuration.GetRuntimeTypeInfo()
+            var updateMethod = (IRuntimeMethodInfo)configuration.GetRuntimeTypeInfo(typeRegistry)
                 .GetMember(nameof(IConfiguration<CoreSettings>.UpdateSettingsAsync));
             var result = (IOperationResult<bool>)(await updateMethod.InvokeAsync(configuration, new[] { settings, token }).PreserveThreadContext());
             return new ResponseMessage

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas.Workflow
 {
     using System;
@@ -79,6 +81,15 @@ namespace Kephas.Workflow
         /// Gets the type information (overridable implementation).
         /// </summary>
         /// <returns>The type information.</returns>
-        protected virtual ITypeInfo GetTypeInfoBase() => this.GetRuntimeTypeInfo()!;
+        protected virtual ITypeInfo GetTypeInfoBase() => this.GetRuntimeTypeInfo(this.GetTypeRegistry())!;
+
+        /// <summary>
+        /// Gets the type registry.
+        /// </summary>
+        /// <returns>The type registry.</returns>
+        protected override IRuntimeTypeRegistry? GetTypeRegistry()
+        {
+            return this.Context?.AmbientServices?.TypeRegistry ?? base.GetTypeRegistry();
+        }
     }
 }

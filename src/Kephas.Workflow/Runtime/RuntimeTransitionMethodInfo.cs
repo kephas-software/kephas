@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Workflow.Runtime
 {
     using System;
@@ -19,7 +17,6 @@ namespace Kephas.Workflow.Runtime
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Workflow.AttributedModel;
@@ -28,13 +25,8 @@ namespace Kephas.Workflow.Runtime
     /// <summary>
     /// Information about the runtime method representing a transition.
     /// </summary>
-    public sealed class RuntimeTransitionMethodInfo : Expando, IRuntimeElementInfo, ITransitionInfo
+    public sealed class RuntimeTransitionMethodInfo : RuntimeElementInfoBase, IRuntimeElementInfo, ITransitionInfo
     {
-        /// <summary>
-        /// The <see cref="IRuntimeTypeInfo"/> of <see cref="RuntimeMethodInfo"/>.
-        /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimeTransitionInfo = new RuntimeTypeInfo(typeof(RuntimeTransitionMethodInfo));
-
         /// <summary>
         /// The parameters.
         /// </summary>
@@ -43,11 +35,10 @@ namespace Kephas.Workflow.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTransitionMethodInfo"/> class.
         /// </summary>
-        /// <param name="methodInfo">
-        /// The method information.
-        /// </param>
-        internal RuntimeTransitionMethodInfo(MethodInfo methodInfo)
-            : base(isThreadSafe: true)
+        /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="methodInfo">The method information.</param>
+        internal RuntimeTransitionMethodInfo(IRuntimeTypeRegistry typeRegistry, MethodInfo methodInfo)
+            : base(typeRegistry)
         {
             Requires.NotNull(methodInfo, nameof(methodInfo));
 
@@ -117,7 +108,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo? DeclaringContainer => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.DeclaringType);
+        public IElementInfo? DeclaringContainer => this.TypeRegistry.GetRuntimeType(this.MethodInfo.DeclaringType);
 
         /// <summary>
         /// Gets the method info.
@@ -130,7 +121,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        ITypeInfo IOperationInfo.ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
+        ITypeInfo IOperationInfo.ReturnType => this.TypeRegistry.GetRuntimeType(this.MethodInfo.ReturnType);
 
         /// <summary>
         /// Gets the return type of the method.
@@ -138,7 +129,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        public IRuntimeTypeInfo ReturnType => RuntimeTypeInfo.GetRuntimeType(this.MethodInfo.ReturnType);
+        public IRuntimeTypeInfo ReturnType => this.TypeRegistry.GetRuntimeType(this.MethodInfo.ReturnType);
 
         /// <summary>
         /// Gets the states from which the transitions starts.
@@ -214,7 +205,7 @@ namespace Kephas.Workflow.Runtime
         /// </returns>
         protected override ITypeInfo GetThisTypeInfo()
         {
-            return RuntimeTypeInfoOfRuntimeTransitionInfo;
+            return this.TypeRegistry.GetRuntimeType(typeof(RuntimeTransitionMethodInfo));
         }
 
         private IDictionary<string, IRuntimeParameterInfo> CreateParameterInfos(MethodInfo methodInfo)
@@ -223,7 +214,7 @@ namespace Kephas.Workflow.Runtime
             var parameterInfos = methodInfo.GetParameters();
             foreach (var parameterInfo in parameterInfos)
             {
-                var runtimeParameterInfo = new RuntimeParameterInfo(parameterInfo, this);
+                var runtimeParameterInfo = new RuntimeParameterInfo(this.TypeRegistry, parameterInfo, this);
                 var parameterName = runtimeParameterInfo.Name;
                 runtimeParameterInfos.Add(parameterName, runtimeParameterInfo);
             }

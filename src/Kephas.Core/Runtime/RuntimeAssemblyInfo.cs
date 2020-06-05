@@ -24,6 +24,7 @@ namespace Kephas.Runtime
     public sealed class RuntimeAssemblyInfo : RuntimeElementInfoBase, IRuntimeAssemblyInfo
     {
         private readonly Assembly assembly;
+        private readonly ITypeLoader typeLoader;
 
         private IList<ITypeInfo>? types;
 
@@ -32,12 +33,14 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <param name="assembly">The assembly.</param>
-        internal RuntimeAssemblyInfo(IRuntimeTypeRegistry typeRegistry, Assembly assembly)
+        /// <param name="typeLoader">The type loader.</param>
+        internal RuntimeAssemblyInfo(IRuntimeTypeRegistry typeRegistry, Assembly assembly, ITypeLoader? typeLoader)
             : base(typeRegistry)
         {
             Requires.NotNull(assembly, nameof(assembly));
 
             this.assembly = assembly;
+            this.typeLoader = typeLoader ?? DefaultTypeLoader.Instance;
         }
 
         /// <summary>
@@ -133,7 +136,7 @@ namespace Kephas.Runtime
         /// </returns>
         private IList<ITypeInfo> CreateTypeInfos(Assembly assembly)
         {
-            var assemblyTypes = DefaultTypeLoader.Instance.GetExportedTypes(assembly);
+            var assemblyTypes = this.typeLoader.GetExportedTypes(assembly);
             return assemblyTypes.Select(t => (ITypeInfo)this.TypeRegistry.GetRuntimeType(t)).ToList();
         }
 

@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Workflow
 {
     using System;
@@ -23,6 +21,7 @@ namespace Kephas.Workflow
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Threading.Tasks;
     using Kephas.Workflow.Reflection;
 
@@ -34,17 +33,21 @@ namespace Kephas.Workflow
     public abstract class StateMachineBase<TTarget, TState> : Loggable, IStateMachine<TTarget, TState>
         where TTarget : class
     {
+        private readonly IRuntimeTypeRegistry? typeRegistry;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StateMachineBase{TTarget, TState}"/> class.
         /// </summary>
         /// <param name="target">The target instance to control.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        protected StateMachineBase(TTarget target, ILogManager? logManager = null)
+        protected StateMachineBase(TTarget target, IRuntimeTypeRegistry? typeRegistry, ILogManager? logManager = null)
             : base(logManager)
         {
             Requires.NotNull(target, nameof(target));
 
             this.Target = target;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -85,7 +88,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// The type information.
         /// </returns>
-        public virtual IStateMachineInfo GetTypeInfo() => (IStateMachineInfo)this.GetRuntimeTypeInfo()!;
+        public virtual IStateMachineInfo GetTypeInfo() => (IStateMachineInfo)this.GetRuntimeTypeInfo(this.typeRegistry)!;
 
         /// <summary>
         /// Gets the type information.

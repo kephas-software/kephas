@@ -15,7 +15,6 @@ namespace Kephas.Scheduling.Triggers
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Reflection;
-    using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
 
@@ -52,7 +51,7 @@ namespace Kephas.Scheduling.Triggers
         /// <returns>
         /// The type information.
         /// </returns>
-        public virtual ITriggerInfo GetTypeInfo() => (ITriggerInfo)this.GetRuntimeTypeInfo()!;
+        public virtual ITriggerInfo GetTypeInfo() => (ITriggerInfo)this.GetRuntimeTypeInfo(this.GetTypeRegistry())!;
 
         /// <summary>
         /// Gets type information.

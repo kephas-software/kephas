@@ -26,14 +26,6 @@ namespace Kephas.Core.Tests.Reflection
     public class TypeInfoExtensionsTest
     {
         [Test]
-        public void IsGenericType_non_generic()
-        {
-            var typeInfo = RuntimeTypeInfo.CreateRuntimeTypeInfo(typeof(string));
-
-            Assert.IsFalse(typeInfo.IsGenericType());
-        }
-
-        [Test]
         public void IsGenericType_open_generic()
         {
             var typeInfo = (ITypeInfo)new RuntimeTypeInfo(typeof(IEnumerable<>));

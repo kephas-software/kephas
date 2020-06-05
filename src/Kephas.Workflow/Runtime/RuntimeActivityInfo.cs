@@ -33,7 +33,7 @@ namespace Kephas.Workflow.Runtime
     {
         private static readonly MethodInfo ExecuteAsyncMethodInfo =
             ReflectionHelper.GetMethodOf(_ => ((RuntimeActivityInfo)null).ExecuteAsync(null, null, null, null, default));
-        
+
         private static readonly IDictionary<string, PropertyInfo> ActivityProperties =
             typeof(ActivityBase).GetProperties().ToDictionary(p => p.Name, p => p);
 
@@ -44,9 +44,10 @@ namespace Kephas.Workflow.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeActivityInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="type">The type.</param>
-        protected internal RuntimeActivityInfo(Type type)
-            : base(type)
+        protected internal RuntimeActivityInfo(IRuntimeTypeRegistry typeRegistry, Type type)
+            : base(typeRegistry, type)
         {
         }
 
@@ -133,6 +134,17 @@ namespace Kephas.Workflow.Runtime
         }
 
         /// <summary>
+        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
+        /// </returns>
+        protected override ITypeInfo GetThisTypeInfo()
+        {
+            return this.TypeRegistry.GetRuntimeType(this.GetType());
+        }
+
+        /// <summary>
         /// Creates the properties.
         /// </summary>
         /// <param name="type">The container type.</param>
@@ -192,7 +204,7 @@ namespace Kephas.Workflow.Runtime
         private ITypeInfo ComputeReturnType()
         {
             var returnTypeAttr = this.Type.GetCustomAttribute<ReturnTypeAttribute>();
-            return RuntimeTypeInfo.GetRuntimeType(returnTypeAttr?.Value ?? typeof(void));
+            return this.TypeRegistry.GetRuntimeType(returnTypeAttr?.Value ?? typeof(void));
         }
 
         /// <summary>

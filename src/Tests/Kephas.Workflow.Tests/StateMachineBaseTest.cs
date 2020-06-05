@@ -24,16 +24,18 @@ namespace Kephas.Workflow.Tests
     [TestFixture]
     public class StateMachineBaseTest
     {
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+        public StateMachineBaseTest()
         {
-            RuntimeTypeInfo.RegisterFactory(new WorkflowTypeInfoFactory());
+            this.TypeRegistry = new RuntimeTypeRegistry();
+            this.TypeRegistry.RegisterFactory(new WorkflowTypeInfoFactory(this.TypeRegistry));
         }
+
+        public IRuntimeTypeRegistry TypeRegistry { get; }
 
         [Test]
         public async Task TransitionAsync_changes_state_on_success()
         {
-            var stateMachine = new TestStateMachine(new TestEntity());
+            var stateMachine = new TestStateMachine(new TestEntity(), this.TypeRegistry);
             var context = new TransitionContext(Substitute.For<ICompositionContext>(), stateMachine)
             {
                 To = TestState.Valid,
@@ -59,8 +61,8 @@ namespace Kephas.Workflow.Tests
 
         public class TestStateMachine : StateMachineBase<TestEntity, TestState>
         {
-            public TestStateMachine(TestEntity target, ILogManager logManager = null)
-                : base(target, logManager)
+            public TestStateMachine(TestEntity target, IRuntimeTypeRegistry typeRegistry, ILogManager logManager = null)
+                : base(target, typeRegistry, logManager)
             {
             }
 

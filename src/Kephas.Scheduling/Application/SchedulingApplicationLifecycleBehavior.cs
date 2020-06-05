@@ -26,14 +26,17 @@ namespace Kephas.Scheduling.Application
     public class SchedulingApplicationLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IScheduler scheduler;
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SchedulingApplicationLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="scheduler">The scheduler.</param>
-        public SchedulingApplicationLifecycleBehavior(IScheduler scheduler)
+        /// <param name="typeRegistry">The type registry.</param>
+        public SchedulingApplicationLifecycleBehavior(IScheduler scheduler, IRuntimeTypeRegistry typeRegistry)
         {
             this.scheduler = scheduler;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace Kephas.Scheduling.Application
         /// </returns>
         public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            RuntimeTypeInfo.RegisterFactory(new SchedulingTypeInfoFactory());
+            this.typeRegistry.RegisterFactory(new SchedulingTypeInfoFactory(this.typeRegistry));
 
             return Task.CompletedTask;
         }

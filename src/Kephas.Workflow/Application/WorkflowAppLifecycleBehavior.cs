@@ -25,6 +25,17 @@ namespace Kephas.Workflow.Application
     [ProcessingPriority(Priority.High)]
     public class WorkflowAppLifecycleBehavior : IAppLifecycleBehavior
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowAppLifecycleBehavior"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        public WorkflowAppLifecycleBehavior(IRuntimeTypeRegistry typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
+
         /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
@@ -35,7 +46,7 @@ namespace Kephas.Workflow.Application
         /// </returns>
         public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            RuntimeTypeInfo.RegisterFactory(new WorkflowTypeInfoFactory());
+            this.typeRegistry.RegisterFactory(new WorkflowTypeInfoFactory(this.typeRegistry));
 
             return Task.CompletedTask;
         }

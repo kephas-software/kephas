@@ -18,14 +18,15 @@ namespace Kephas.Composition.Lite.Internal
     using Kephas;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Runtime;
 
     internal class LazyServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string>(null, null));
 
-        public LazyServiceSource(IServiceRegistry serviceRegistry)
-            : base(serviceRegistry)
+        public LazyServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+            : base(serviceRegistry, typeRegistry)
         {
         }
 

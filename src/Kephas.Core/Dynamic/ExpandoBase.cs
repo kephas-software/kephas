@@ -16,6 +16,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+using Kephas.Services;
+
 namespace Kephas.Dynamic
 {
     using System;
@@ -352,7 +355,7 @@ namespace Kephas.Dynamic
         {
             return this.innerObject == null
                        ? null
-                       : this.innerObjectTypeInfo ??= this.innerObject.GetType().AsRuntimeTypeInfo();
+                       : this.innerObjectTypeInfo ??= this.innerObject.GetType().AsRuntimeTypeInfo(this.GetTypeRegistry());
         }
 
         /// <summary>
@@ -363,7 +366,21 @@ namespace Kephas.Dynamic
         /// </returns>
         protected virtual ITypeInfo GetThisTypeInfo()
         {
-            return this.thisTypeInfo ??= this.GetTypeInfo();
+            return this.thisTypeInfo ??= this.GetTypeInfo(this.GetTypeRegistry());
+        }
+
+        /// <summary>
+        /// Gets the type registry.
+        /// </summary>
+        /// <returns>The type registry.</returns>
+        protected virtual IRuntimeTypeRegistry? GetTypeRegistry()
+        {
+            if (this is IContext context)
+            {
+                return context.AmbientServices?.TypeRegistry;
+            }
+
+            return null;
         }
 
         /// <summary>

@@ -79,17 +79,17 @@ namespace Kephas.Model.Runtime.Construction
         /// <summary>
         /// Tries to compute the name for the provided runtime element.
         /// </summary>
-        /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
         /// <returns>
         /// A string containing the name, or <c>null</c> if the name could not be computed.
         /// </returns>
-        public string? TryComputeName(IModelConstructionContext constructionContext, object runtimeElement)
+        public string? TryComputeName(object runtimeElement, IModelConstructionContext constructionContext)
         {
             Requires.NotNull(constructionContext, nameof(constructionContext));
             Requires.NotNull(runtimeElement, nameof(runtimeElement));
 
-            return this.TryComputeNameCore(runtimeElement);
+            return this.TryComputeNameCore(runtimeElement, constructionContext);
         }
 
         /// <summary>
@@ -132,8 +132,11 @@ namespace Kephas.Model.Runtime.Construction
         /// Computes the model element name based on the runtime element.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
+        /// <param name="constructionContext">The construction context.</param>
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
-        protected virtual string? TryComputeNameCore(object runtimeElement)
+        protected virtual string? TryComputeNameCore(
+            object runtimeElement,
+            IModelConstructionContext constructionContext)
         {
             var memberInfo = runtimeElement as IElementInfo;
             if (memberInfo == null)

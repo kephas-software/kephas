@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging;
+using Kephas.Runtime;
+
 namespace Kephas.Behaviors
 {
     /// <summary>
@@ -17,6 +20,16 @@ namespace Kephas.Behaviors
     /// <typeparam name="TValue">Type of the value.</typeparam>
     public abstract class BehaviorRuleBase<TContext, TValue> : BehaviorRuleFlowControlBase, IBehaviorRule<TContext, TValue>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BehaviorRuleBase{TContext, TValue}"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        protected BehaviorRuleBase(IRuntimeTypeRegistry typeRegistry, ILogManager? logManager = null)
+            : base(typeRegistry, logManager)
+        {
+        }
+
         /// <summary>
         /// Gets a value indicating whether the rule may be applied or not.
         /// </summary>

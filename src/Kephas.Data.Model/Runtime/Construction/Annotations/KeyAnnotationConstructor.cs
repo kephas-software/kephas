@@ -31,15 +31,18 @@ namespace Kephas.Data.Model.Runtime.Construction.Annotations
         /// </returns>
         protected override KeyAnnotation TryCreateModelElementCore(IModelConstructionContext constructionContext, KeyAttribute runtimeElement)
         {
-            return new KeyAnnotation(constructionContext, this.TryComputeName(constructionContext, runtimeElement), runtimeElement);
+            return new KeyAnnotation(constructionContext, this.TryComputeName(runtimeElement, constructionContext), runtimeElement);
         }
 
         /// <summary>
         /// Computes the model element name based on the runtime element.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
+        /// <param name="constructionContext">The construction context.</param>
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
-        protected override string TryComputeNameCore(object runtimeElement)
+        protected override string? TryComputeNameCore(
+            object runtimeElement,
+            IModelConstructionContext constructionContext)
         {
             var attribute = (KeyAttribute)runtimeElement;
             if (!string.IsNullOrEmpty(attribute.Name))

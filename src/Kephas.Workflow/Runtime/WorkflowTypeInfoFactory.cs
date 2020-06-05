@@ -19,6 +19,17 @@ namespace Kephas.Workflow.Runtime
     /// </summary>
     public class WorkflowTypeInfoFactory : IRuntimeTypeInfoFactory
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowTypeInfoFactory"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        public WorkflowTypeInfoFactory(IRuntimeTypeRegistry typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
+
         /// <summary>
         /// Tries to create the runtime type information type for the provided raw type.
         /// </summary>
@@ -30,12 +41,12 @@ namespace Kephas.Workflow.Runtime
         {
             if (typeof(IActivity).IsAssignableFrom(type))
             {
-                return new RuntimeActivityInfo(type);
+                return new RuntimeActivityInfo(this.typeRegistry, type);
             }
 
             if (typeof(IStateMachine).IsAssignableFrom(type))
             {
-                return new RuntimeStateMachineInfo(type);
+                return new RuntimeStateMachineInfo(this.typeRegistry, type);
             }
 
             return null;

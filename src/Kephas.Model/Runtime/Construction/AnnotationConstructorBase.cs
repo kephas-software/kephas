@@ -51,10 +51,13 @@ namespace Kephas.Model.Runtime.Construction
         /// Computes the model element name based on the runtime element.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
+        /// <param name="constructionContext">The construction context.</param>
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
-        protected override string TryComputeNameCore(object runtimeElement)
+        protected override string? TryComputeNameCore(
+            object runtimeElement,
+            IModelConstructionContext constructionContext)
         {
-            var attrTypeInfo = runtimeElement.GetRuntimeTypeInfo();
+            var attrTypeInfo = runtimeElement.GetRuntimeTypeInfo(constructionContext.AmbientServices?.TypeRegistry);
             var usage = attrTypeInfo.TypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
             // NOTE: The speciality of the runtime is to prepend the @ sign to the
             // attribute name, because the member name conventions imply it.
@@ -62,7 +65,7 @@ namespace Kephas.Model.Runtime.Construction
             // This simplifies the member aggregation in the final classifier
             // because the name is already prepared by the info classes and the 
             // classifier must simply create the corresponding members.
-            var name = typeof(IAnnotation).GetMemberNameDiscriminator() + base.TryComputeNameCore(attrTypeInfo);
+            var name = typeof(IAnnotation).GetMemberNameDiscriminator() + base.TryComputeNameCore(attrTypeInfo, constructionContext);
             if (usage == null || usage.AllowMultiple)
             {
                 var counter = Interlocked.Increment(ref nameCounter);
@@ -83,7 +86,7 @@ namespace Kephas.Model.Runtime.Construction
             TAttribute runtimeElement,
             TAnnotation element)
         {
-            var attrTypeInfo = runtimeElement.GetRuntimeTypeInfo();
+            var attrTypeInfo = runtimeElement.GetRuntimeTypeInfo(constructionContext.AmbientServices?.TypeRegistry);
             var usage = attrTypeInfo.TypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
             if (usage != null)
             {

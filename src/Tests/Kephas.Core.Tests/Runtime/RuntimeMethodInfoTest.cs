@@ -22,7 +22,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void ToString_name_parameters_and_type()
         {
-            var methodInfo = new RuntimeMethodInfo(typeof(string).GetMethod(nameof(string.Copy)));
+            var registry = new RuntimeTypeRegistry();
+            var methodInfo = new RuntimeMethodInfo(registry, typeof(string).GetMethod(nameof(string.Copy)));
 
             var toString = methodInfo.ToString();
             Assert.AreEqual("Copy(str: System.String): System.String", toString);
@@ -31,7 +32,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void IsStatic()
         {
-            var methodInfo = new RuntimeMethodInfo(typeof(string).GetMethod(nameof(string.Copy)));
+            var registry = new RuntimeTypeRegistry();
+            var methodInfo = new RuntimeMethodInfo(registry, typeof(string).GetMethod(nameof(string.Copy)));
 
             Assert.IsTrue(methodInfo.IsStatic);
         }
@@ -39,7 +41,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void Invoke()
         {
-            var methodInfo = new RuntimeMethodInfo(typeof(string).GetMethod(nameof(string.Copy)));
+            var registry = new RuntimeTypeRegistry();
+            var methodInfo = new RuntimeMethodInfo(registry, typeof(string).GetMethod(nameof(string.Copy)));
             var result = methodInfo.Invoke(null, new object[] { "test" });
             Assert.AreEqual("test", result);
         }

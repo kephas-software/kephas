@@ -14,16 +14,18 @@ namespace Kephas.Composition.Lite.Internal
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Kephas;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     internal class CollectionServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string>(null, null));
 
-        public CollectionServiceSource(IServiceRegistry serviceRegistry)
-            : base(serviceRegistry)
+        public CollectionServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+            : base(serviceRegistry, typeRegistry)
         {
         }
 

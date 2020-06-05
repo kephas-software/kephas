@@ -96,7 +96,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             protected override Annotation TryCreateModelElementCore(IModelConstructionContext constructionContext, Attribute runtimeElement)
             {
-                return new TestAnnotation(constructionContext, this.TryComputeNameCore(runtimeElement));
+                return new TestAnnotation(constructionContext, this.TryComputeNameCore(runtimeElement, constructionContext));
             }
         }
     }

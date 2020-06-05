@@ -250,7 +250,7 @@ namespace Kephas.Workflow
         {
             // TODO fix the check of the activity type
             var behaviors = this.behaviorFactories
-                .Where(f => f.Metadata.ActivityType == null || activityInfo == f.Metadata.ActivityType.AsRuntimeTypeInfo())
+                .Where(f => f.Metadata.ActivityType == null || activityInfo == f.Metadata.ActivityType.AsRuntimeTypeInfo(context?.AmbientServices?.TypeRegistry))
                 .Order()
                 .GetServices()
                 .ToList();

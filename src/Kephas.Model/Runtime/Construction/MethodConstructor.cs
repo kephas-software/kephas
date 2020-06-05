@@ -36,7 +36,7 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         protected override Method TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeMethodInfo runtimeElement)
         {
-            var method = new Method(constructionContext, this.TryComputeNameCore(runtimeElement))
+            var method = new Method(constructionContext, this.TryComputeNameCore(runtimeElement, constructionContext))
                                {
                                };
             return method;

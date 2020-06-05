@@ -68,7 +68,7 @@ namespace Kephas.Workflow.Reflection
         /// <returns>
         /// An asynchronous result that yields the transition result.
         /// </returns>
-        Task<object> TransitionAsync(
+        Task<object?> TransitionAsync(
             IStateMachine stateMachine,
             object targetState,
             ITransitionInfo? transitionInfo,

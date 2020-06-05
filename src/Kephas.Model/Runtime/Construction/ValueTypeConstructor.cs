@@ -74,7 +74,7 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         protected override ValueType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return new ValueType(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
+            return new ValueType(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
         }
     }
 }

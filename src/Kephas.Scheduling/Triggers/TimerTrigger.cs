@@ -15,6 +15,7 @@ namespace Kephas.Scheduling.Triggers
     using System.Threading;
 
     using Kephas.Operations;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -141,7 +142,6 @@ namespace Kephas.Scheduling.Triggers
             {
                 this.DisposeTimer();
             }
-
 
             if (this.IntervalKind == TimerIntervalKind.EndToStart)
             {

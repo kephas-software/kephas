@@ -69,7 +69,7 @@ namespace Kephas.Workflow.Model.Runtime.Construction
             IModelConstructionContext constructionContext,
             IRuntimeTypeInfo runtimeElement)
         {
-            return new StateMachineType(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
+            return new StateMachineType(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
         }
     }
 }

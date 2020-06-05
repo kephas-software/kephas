@@ -34,7 +34,7 @@ namespace Kephas.Model.Runtime.Construction
             IModelConstructionContext constructionContext,
             IRuntimeParameterInfo runtimeElement)
         {
-            var parameter = new Parameter(constructionContext, this.TryComputeNameCore(runtimeElement))
+            var parameter = new Parameter(constructionContext, this.TryComputeNameCore(runtimeElement, constructionContext))
                              {
                                  Position = runtimeElement.Position,
                                  IsOptional = runtimeElement.IsOptional,

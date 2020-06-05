@@ -35,7 +35,7 @@ namespace Kephas.Model.Runtime.Construction.Annotations
         /// </returns>
         protected override MixinAnnotation TryCreateModelElementCore(IModelConstructionContext constructionContext, MixinAttribute runtimeElement)
         {
-            return new MixinAnnotation(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
+            return new MixinAnnotation(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
         }
     }
 }

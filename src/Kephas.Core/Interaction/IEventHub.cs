@@ -76,7 +76,7 @@ namespace Kephas.Interaction
             Requires.NotNull(eventHub, nameof(eventHub));
             Requires.NotNull(callback, nameof(callback));
 
-            return eventHub.Subscribe(typeof(TEvent).AsRuntimeTypeInfo(), (e, ctx, token) => callback((TEvent)e, ctx, token));
+            return eventHub.Subscribe(typeof(TEvent).AsRuntimeTypeInfo(null), (e, ctx, token) => callback((TEvent)e, ctx, token));
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Kephas.Interaction
             Requires.NotNull(callback, nameof(callback));
 
             return eventHub.Subscribe(
-                typeof(TEvent).AsRuntimeTypeInfo(),
+                typeof(TEvent).AsRuntimeTypeInfo(null),
                 (e, ctx, token) =>
                     {
                         callback((TEvent)e, ctx);

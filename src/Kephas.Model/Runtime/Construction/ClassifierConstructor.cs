@@ -46,7 +46,7 @@ namespace Kephas.Model.Runtime.Construction
         /// </returns>
         protected override Classifier TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return new Classifier(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
+            return new Classifier(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
         }
     }
 }

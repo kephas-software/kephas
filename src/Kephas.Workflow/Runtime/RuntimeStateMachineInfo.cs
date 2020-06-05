@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Workflow.Runtime
 {
     using System;
@@ -17,12 +15,10 @@ namespace Kephas.Workflow.Runtime
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Collections;
+
     using Kephas.Dynamic;
-    using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Threading.Tasks;
     using Kephas.Workflow.AttributedModel;
     using Kephas.Workflow.Reflection;
 
@@ -38,9 +34,10 @@ namespace Kephas.Workflow.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeStateMachineInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="type">The type.</param>
-        protected internal RuntimeStateMachineInfo(Type type)
-            : base(type)
+        protected internal RuntimeStateMachineInfo(IRuntimeTypeRegistry typeRegistry, Type type)
+            : base(typeRegistry, type)
         {
         }
 
@@ -88,7 +85,7 @@ namespace Kephas.Workflow.Runtime
         /// <returns>
         /// An asynchronous result that yields the transition result.
         /// </returns>
-        public Task<object> TransitionAsync(IStateMachine stateMachine, object targetState, ITransitionInfo? transitionInfo, IExpando? arguments, ITransitionContext context, CancellationToken cancellationToken = default)
+        public Task<object?> TransitionAsync(IStateMachine stateMachine, object targetState, ITransitionInfo? transitionInfo, IExpando? arguments, ITransitionContext context, CancellationToken cancellationToken = default)
         {
             context.To = targetState;
             if (transitionInfo != null)
@@ -101,7 +98,18 @@ namespace Kephas.Workflow.Runtime
                 context.Arguments = arguments;
             }
 
-            throw new NotImplementedException();
+            return stateMachine.TransitionAsync(context, cancellationToken);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
+        /// </returns>
+        protected override ITypeInfo GetThisTypeInfo()
+        {
+            return this.TypeRegistry.GetRuntimeType(typeof(RuntimeStateMachineInfo));
         }
 
         /// <summary>
@@ -117,7 +125,7 @@ namespace Kephas.Workflow.Runtime
             {
                 m.Where(kv => kv.Value is IRuntimeMethodInfo mi && mi.GetAttribute<TransitionAttribute>() != null)
                     .ToList()
-                    .ForEach(kv => m.Add($"{kv.Value.Name}#trans", new RuntimeTransitionMethodInfo(((IRuntimeMethodInfo)kv.Value).MethodInfo)));
+                    .ForEach(kv => m.Add($"{kv.Value.Name}#trans", new RuntimeTransitionMethodInfo(this.TypeRegistry, ((IRuntimeMethodInfo)kv.Value).MethodInfo)));
 
                 membersConfig?.Invoke(m);
             }
@@ -130,10 +138,10 @@ namespace Kephas.Workflow.Runtime
             var stateMachineInterface = this.Type.GetBaseConstructedGenericOf(typeof(IStateMachine<,>));
             if (stateMachineInterface == null)
             {
-                return typeof(object).AsRuntimeTypeInfo();
+                return typeof(object).AsRuntimeTypeInfo(this.TypeRegistry);
             }
 
-            return stateMachineInterface.GetGenericArguments()[1].AsRuntimeTypeInfo();
+            return stateMachineInterface.GetGenericArguments()[1].AsRuntimeTypeInfo(this.TypeRegistry);
         }
 
         private ITypeInfo? ComputeTargetType()
@@ -141,10 +149,10 @@ namespace Kephas.Workflow.Runtime
             var stateMachineInterface = this.Type.GetBaseConstructedGenericOf(typeof(IStateMachine<,>));
             if (stateMachineInterface == null)
             {
-                return typeof(object).AsRuntimeTypeInfo();
+                return typeof(object).AsRuntimeTypeInfo(this.TypeRegistry);
             }
 
-            return stateMachineInterface.GetGenericArguments()[0].AsRuntimeTypeInfo();
+            return stateMachineInterface.GetGenericArguments()[0].AsRuntimeTypeInfo(this.TypeRegistry);
         }
 
         private IPropertyInfo? ComputeTargetStateProperty()

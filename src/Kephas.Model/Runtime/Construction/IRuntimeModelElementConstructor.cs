@@ -33,12 +33,12 @@ namespace Kephas.Model.Runtime.Construction
         /// <summary>
         /// Tries to compute the name for the provided runtime element.
         /// </summary>
-        /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
+        /// <param name="constructionContext">Context for the construction.</param>
         /// <returns>
         /// A string containing the name, or <c>null</c> if the name could not be computed.
         /// </returns>
-        string? TryComputeName(IModelConstructionContext constructionContext, object runtimeElement);
+        string? TryComputeName(object runtimeElement, IModelConstructionContext constructionContext);
     }
 
     /// <summary>

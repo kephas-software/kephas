@@ -51,7 +51,7 @@ namespace Kephas.Messaging.Model.Runtime.Construction
         /// </returns>
         protected override MessageType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return new MessageType(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
+            return new MessageType(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
         }
     }
 }

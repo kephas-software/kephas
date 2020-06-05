@@ -24,13 +24,8 @@ namespace Kephas.Workflow.Runtime
     /// <summary>
     /// Information about the runtime activity parameter.
     /// </summary>
-    public class RuntimeActivityParameterInfo : Expando, IRuntimeParameterInfo
+    public class RuntimeActivityParameterInfo : RuntimeElementInfoBase, IRuntimeParameterInfo
     {
-        /// <summary>
-        /// The runtime type of <see cref="RuntimeParameterInfo"/>.
-        /// </summary>
-        private static readonly IRuntimeTypeInfo RuntimeTypeInfoOfRuntimeActivityParameterInfo = new RuntimeTypeInfo(typeof(RuntimeActivityParameterInfo));
-
         /// <summary>
         /// True if is optional, false if not.
         /// </summary>
@@ -49,11 +44,12 @@ namespace Kephas.Workflow.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeActivityParameterInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="propertyInfo">Information describing the property backing the parameter.</param>
         /// <param name="position">The position.</param>
         /// <param name="logger">The logger.</param>
-        internal RuntimeActivityParameterInfo(PropertyInfo propertyInfo, int position, ILogger? logger = null)
-            : base(isThreadSafe: true)
+        internal RuntimeActivityParameterInfo(IRuntimeTypeRegistry typeRegistry, PropertyInfo propertyInfo, int position, ILogger? logger = null)
+            : base(typeRegistry, logger)
         {
             this.PropertyInfo = propertyInfo;
             this.Position = position;
@@ -91,7 +87,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.DeclaringType);
+        public IElementInfo DeclaringContainer => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.DeclaringType);
 
         /// <summary>
         /// Gets information describing the parameter.
@@ -142,7 +138,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        public IRuntimeTypeInfo ValueType => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.PropertyType);
+        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Gets the type of the field.
@@ -150,7 +146,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        ITypeInfo IValueElementInfo.ValueType => RuntimeTypeInfo.GetRuntimeType(this.PropertyInfo.PropertyType);
+        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Sets the specified value.
@@ -231,7 +227,7 @@ namespace Kephas.Workflow.Runtime
         /// </returns>
         protected override ITypeInfo GetThisTypeInfo()
         {
-            return RuntimeTypeInfoOfRuntimeActivityParameterInfo;
+            return this.TypeRegistry.GetRuntimeType(typeof(RuntimeActivityParameterInfo));
         }
 
         /// <summary>

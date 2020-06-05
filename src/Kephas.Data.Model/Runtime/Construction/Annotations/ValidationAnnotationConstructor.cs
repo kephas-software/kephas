@@ -32,7 +32,7 @@ namespace Kephas.Data.Model.Runtime.Construction.Annotations
         /// </returns>
         protected override ValidationAnnotation TryCreateModelElementCore(IModelConstructionContext constructionContext, ValidationAttribute runtimeElement)
         {
-            return new ValidationAnnotation(constructionContext, this.TryComputeName(constructionContext, runtimeElement), runtimeElement);
+            return new ValidationAnnotation(constructionContext, this.TryComputeName(runtimeElement, constructionContext), runtimeElement);
         }
     }
 }

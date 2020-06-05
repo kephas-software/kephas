@@ -20,14 +20,15 @@ namespace Kephas.Composition.Lite.Internal
     using Kephas.Composition.ExportFactories;
     using Kephas.Reflection;
     using Kephas.Resources;
+    using Kephas.Runtime;
 
     internal class ExportFactoryServiceSource : ServiceSourceBase
     {
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string>(null, null));
 
-        public ExportFactoryServiceSource(IServiceRegistry serviceRegistry)
-            : base(serviceRegistry)
+        public ExportFactoryServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+            : base(serviceRegistry, typeRegistry)
         {
         }
 

@@ -45,13 +45,16 @@ namespace Kephas.Model.Runtime.Construction
         /// Computes the model element name based on the runtime element.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
+        /// <param name="constructionContext">The construction context.</param>
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
-        protected override string TryComputeNameCore(object runtimeElement)
+        protected override string? TryComputeNameCore(
+            object runtimeElement,
+            IModelConstructionContext constructionContext)
         {
             var typeInfo = (runtimeElement as IRuntimeTypeInfo)?.TypeInfo;
             var dimensionName = this.ComputeDimensionName(typeInfo?.Namespace);
 
-            var baseName = base.TryComputeNameCore(runtimeElement);
+            var baseName = base.TryComputeNameCore(runtimeElement, constructionContext);
             if (baseName.EndsWith(dimensionName))
             {
                 return baseName.Substring(0, baseName.Length - dimensionName.Length);
@@ -83,7 +86,7 @@ namespace Kephas.Model.Runtime.Construction
                 return null;
             }
 
-            var modelElement = new ModelDimensionElement(constructionContext, this.TryComputeNameCore(runtimeElement))
+            var modelElement = new ModelDimensionElement(constructionContext, this.TryComputeNameCore(runtimeElement, constructionContext))
             {
                 DimensionName = this.ComputeDimensionName(typeInfo.Namespace)
             };

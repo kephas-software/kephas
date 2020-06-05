@@ -16,6 +16,7 @@ namespace Kephas.Composition.Lite.Internal
 
     using Kephas;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// An enumerable service source.
@@ -25,8 +26,8 @@ namespace Kephas.Composition.Lite.Internal
         private static readonly MethodInfo GetServiceMethod =
             ReflectionHelper.GetGenericMethodOf(_ => GetService<string>(null, null));
 
-        public EnumerableServiceSource(IServiceRegistry serviceRegistry)
-            : base(serviceRegistry)
+        public EnumerableServiceSource(IServiceRegistry serviceRegistry, IRuntimeTypeRegistry typeRegistry)
+            : base(serviceRegistry, typeRegistry)
         {
         }
 

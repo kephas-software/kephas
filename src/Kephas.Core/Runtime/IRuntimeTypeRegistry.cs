@@ -11,11 +11,12 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
 
     /// <summary>
     /// The interface for the runtime type serviceRegistry.
     /// </summary>
-    public interface IRuntimeTypeRegistry
+    public interface IRuntimeTypeRegistry : IExpando
     {
         /// <summary>
         /// Gets the runtime type.
@@ -30,7 +31,7 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="typeInfo">The type information.</param>
         /// <returns>A runtime type.</returns>
-        public IRuntimeTypeInfo GetRuntimeType(TypeInfo typeInfo)
+        IRuntimeTypeInfo GetRuntimeType(TypeInfo typeInfo)
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 

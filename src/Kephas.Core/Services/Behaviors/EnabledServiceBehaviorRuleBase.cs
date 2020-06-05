@@ -11,6 +11,8 @@
 namespace Kephas.Services.Behaviors
 {
     using Kephas.Behaviors;
+    using Kephas.Logging;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Base class for behavior rules controlling the enabled state of services.
@@ -19,6 +21,16 @@ namespace Kephas.Services.Behaviors
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
     public abstract class EnabledServiceBehaviorRuleBase<TServiceContract> : BehaviorRuleBase<IServiceBehaviorContext<TServiceContract>, bool>, IEnabledServiceBehaviorRule<TServiceContract>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TServiceContract}"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        protected EnabledServiceBehaviorRuleBase(IRuntimeTypeRegistry typeRegistry, ILogManager? logManager = null)
+            : base(typeRegistry, logManager)
+        {
+        }
+
         /// <summary>
         /// Gets a value indicating whether the rule may be applied or not.
         /// </summary>
@@ -65,6 +77,16 @@ namespace Kephas.Services.Behaviors
     public abstract class EnabledServiceBehaviorRuleBase<TServiceContract, TServiceImplementation> : EnabledServiceBehaviorRuleBase<TServiceContract>
         where TServiceImplementation : TServiceContract
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TServiceContract, TServiceImplementation}"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        protected EnabledServiceBehaviorRuleBase(IRuntimeTypeRegistry typeRegistry, ILogManager? logManager = null)
+            : base(typeRegistry, logManager)
+        {
+        }
+
         /// <summary>
         /// Base class for behavior rules controlling the enabled state of services
         /// implementing the contract <typeparamref name="TServiceContract"/>.

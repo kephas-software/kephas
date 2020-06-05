@@ -21,6 +21,7 @@ namespace Kephas.Commands.Messaging
     using Kephas.Messaging.Messages;
     using Kephas.Model.AttributedModel;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -31,6 +32,7 @@ namespace Kephas.Commands.Messaging
     {
         private readonly IAppRuntime appRuntime;
         private readonly ITypeLoader typeLoader;
+        private readonly IRuntimeTypeRegistry typeRegistry;
         private IList<IOperationInfo>? commandTypes;
 
         /// <summary>
@@ -39,10 +41,16 @@ namespace Kephas.Commands.Messaging
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="typeLoader">The type loader.</param>
         /// <param name="lazyMessageProcessor">The lazy message processor.</param>
-        public MessagingCommandRegistry(IAppRuntime appRuntime, ITypeLoader typeLoader, Lazy<IMessageProcessor> lazyMessageProcessor)
+        /// <param name="typeRegistry">The type registry.</param>
+        public MessagingCommandRegistry(
+            IAppRuntime appRuntime,
+            ITypeLoader typeLoader,
+            Lazy<IMessageProcessor> lazyMessageProcessor,
+            IRuntimeTypeRegistry typeRegistry)
         {
             this.appRuntime = appRuntime;
             this.typeLoader = typeLoader;
+            this.typeRegistry = typeRegistry;
             this.LazyMessageProcessor = lazyMessageProcessor;
         }
 
@@ -77,7 +85,7 @@ namespace Kephas.Commands.Messaging
         /// <param name="t">The type.</param>
         /// <returns>The <see cref="IOperationInfo"/>.</returns>
         protected virtual IOperationInfo ToOperationInfo(Type t) =>
-            new MessageOperationInfo(t.AsRuntimeTypeInfo(), this.LazyMessageProcessor);
+            new MessageOperationInfo(this.typeRegistry, t.AsRuntimeTypeInfo(this.typeRegistry), this.LazyMessageProcessor);
 
         private bool IsMessageType(Type type) => !type.IsAbstract
                                                  && typeof(IMessage).IsAssignableFrom(type)

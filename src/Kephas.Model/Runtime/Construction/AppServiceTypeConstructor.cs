@@ -57,7 +57,7 @@ namespace Kephas.Model.Runtime.Construction
 
             var appServiceRuntimeElement = appServiceAttr?.ContractType?.AsRuntimeTypeInfo(constructionContext?.AmbientServices?.TypeRegistry) ?? runtimeElement;
 
-            return new AppServiceType(constructionContext, appServiceAttr, this.TryComputeName(constructionContext, appServiceRuntimeElement));
+            return new AppServiceType(constructionContext, appServiceAttr, this.TryComputeName(appServiceRuntimeElement, constructionContext));
         }
     }
 }

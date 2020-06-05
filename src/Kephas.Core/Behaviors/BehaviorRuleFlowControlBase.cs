@@ -13,6 +13,7 @@ namespace Kephas.Behaviors
     using System.Linq;
 
     using Kephas.Logging;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -20,12 +21,18 @@ namespace Kephas.Behaviors
     /// </summary>
     public abstract class BehaviorRuleFlowControlBase : Loggable, IBehaviorRuleFlowControl
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BehaviorRuleFlowControlBase"/> class.
         /// </summary>
-        protected BehaviorRuleFlowControlBase()
+        /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        protected BehaviorRuleFlowControlBase(IRuntimeTypeRegistry typeRegistry, ILogManager? logManager = null)
+            : base(logManager)
         {
-            // ReSharper disable VirtualMemberCallInContructor
+            this.typeRegistry = typeRegistry;
+            // ReSharper disable VirtualMemberCallInConstructor
             this.ProcessingPriority = this.ComputeProcessingPriority();
             this.IsEndRule = this.ComputeIsEndRule();
         }
@@ -54,7 +61,7 @@ namespace Kephas.Behaviors
         /// </returns>
         protected virtual bool ComputeIsEndRule()
         {
-            var endRuleAttribute = this.GetRuntimeTypeInfo().Annotations.OfType<EndRuleAttribute>().FirstOrDefault();
+            var endRuleAttribute = this.GetRuntimeTypeInfo(this.typeRegistry).Annotations.OfType<EndRuleAttribute>().FirstOrDefault();
             return endRuleAttribute?.Value ?? false;
         }
 
@@ -66,7 +73,7 @@ namespace Kephas.Behaviors
         /// </returns>
         protected virtual int ComputeProcessingPriority()
         {
-            var priorityOrderAttribute = this.GetRuntimeTypeInfo().Annotations.OfType<ProcessingPriorityAttribute>().FirstOrDefault();
+            var priorityOrderAttribute = this.GetRuntimeTypeInfo(this.typeRegistry).Annotations.OfType<ProcessingPriorityAttribute>().FirstOrDefault();
             return priorityOrderAttribute?.Value ?? 0;
         }
     }

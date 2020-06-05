@@ -108,7 +108,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             /// </returns>
             protected override TestClassifier TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
             {
-                return new TestClassifier(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
+                return new TestClassifier(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
             }
         }
 

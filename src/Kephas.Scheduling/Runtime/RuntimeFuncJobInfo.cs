@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas.Scheduling.Runtime
 {
     using System;
@@ -28,10 +30,12 @@ namespace Kephas.Scheduling.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeFuncJobInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="operation">The operation.</param>
         /// <param name="friendlyName">Optional. The friendly name.</param>
-        protected internal RuntimeFuncJobInfo(Action operation, string? friendlyName = null)
+        protected internal RuntimeFuncJobInfo(IRuntimeTypeRegistry typeRegistry, Action operation, string? friendlyName = null)
             : this(
+                typeRegistry,
                 () =>
                     {
                         operation();
@@ -44,10 +48,11 @@ namespace Kephas.Scheduling.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeFuncJobInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="operation">The operation.</param>
         /// <param name="friendlyName">Optional. The friendly name.</param>
-        protected internal RuntimeFuncJobInfo(Func<object?> operation, string? friendlyName = null)
-            : base(typeof(FuncJob))
+        protected internal RuntimeFuncJobInfo(IRuntimeTypeRegistry typeRegistry, Func<object?> operation, string? friendlyName = null)
+            : base(typeRegistry, typeof(FuncJob))
         {
             this.operation = operation;
             this.FriendlyName = friendlyName;
@@ -56,10 +61,11 @@ namespace Kephas.Scheduling.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeFuncJobInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="asyncOperation">The async operation.</param>
         /// <param name="friendlyName">Optional. The friendly name.</param>
-        protected internal RuntimeFuncJobInfo(Func<CancellationToken, Task<object?>> asyncOperation, string? friendlyName = null)
-            : base(typeof(FuncJob))
+        protected internal RuntimeFuncJobInfo(IRuntimeTypeRegistry typeRegistry, Func<CancellationToken, Task<object?>> asyncOperation, string? friendlyName = null)
+            : base(typeRegistry, typeof(FuncJob))
         {
             this.asyncOperation = asyncOperation;
             this.FriendlyName = friendlyName;

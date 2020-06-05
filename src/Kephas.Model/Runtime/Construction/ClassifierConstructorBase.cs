@@ -48,8 +48,11 @@ namespace Kephas.Model.Runtime.Construction
         /// Computes the model element name based on the runtime element.
         /// </summary>
         /// <param name="runtimeElement">The runtime element.</param>
+        /// <param name="constructionContext">The construction context.</param>
         /// <returns>The element name, or <c>null</c> if the name could not be computed.</returns>
-        protected override string? TryComputeNameCore(object runtimeElement)
+        protected override string? TryComputeNameCore(
+            object runtimeElement,
+            IModelConstructionContext constructionContext)
         {
             if (runtimeElement is IRuntimeTypeInfo typeInfo)
             {
@@ -60,7 +63,7 @@ namespace Kephas.Model.Runtime.Construction
                 }
             }
 
-            return base.TryComputeNameCore(runtimeElement);
+            return base.TryComputeNameCore(runtimeElement, constructionContext);
         }
     }
 }

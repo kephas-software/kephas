@@ -23,9 +23,10 @@ namespace Kephas.Scheduling.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTriggerInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="type">The type.</param>
-        protected internal RuntimeTriggerInfo(Type type)
-            : base(type)
+        protected internal RuntimeTriggerInfo(IRuntimeTypeRegistry typeRegistry, Type type)
+            : base(typeRegistry, type)
         {
         }
     }

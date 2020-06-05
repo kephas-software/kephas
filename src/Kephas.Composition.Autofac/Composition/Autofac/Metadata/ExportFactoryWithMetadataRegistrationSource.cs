@@ -96,7 +96,7 @@ namespace Kephas.Composition.Autofac.Metadata
                                 return (T)lifetimeScope.ResolveComponent(request);
                             },
                             (TMetadata)typeof(TMetadata)
-                                .AsRuntimeTypeInfo()
+                                .AsRuntimeTypeInfo(null)
                                 .CreateInstance(new object[] { valueRegistration.Target.Metadata }));
                     })
                 .As(providedService)

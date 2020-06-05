@@ -13,12 +13,15 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     /// <summary>
     /// Provides methods for accessing runtime type information.
     /// </summary>
-    public class RuntimeTypeRegistry : IRuntimeTypeRegistry
+    public class RuntimeTypeRegistry : Expando, IRuntimeTypeRegistry
     {
+        private readonly ITypeLoader? typeLoader;
         private readonly ConcurrentDictionary<Type, IRuntimeTypeInfo> runtimeTypeInfosCache;
 
         private readonly IList<IRuntimeTypeInfoFactory> typeFactories
@@ -34,6 +37,7 @@ namespace Kephas.Runtime
         /// </summary>
         private Func<Type, IRuntimeTypeInfo> createRuntimeTypeInfoFunc;
 
+        internal readonly RuntimeTypeInfo TypeOfRuntimeTypeRegistry;
         internal readonly RuntimeTypeInfo TypeOfRuntimeTypeInfo;
         internal readonly RuntimeTypeInfo TypeOfRuntimePropertyInfo;
         internal readonly RuntimeTypeInfo TypeOfRuntimeFieldInfo;
@@ -43,11 +47,15 @@ namespace Kephas.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeTypeRegistry"/> class.
         /// </summary>
-        public RuntimeTypeRegistry()
+        /// <param name="typeLoader">Optional. The type loader.</param>
+        public RuntimeTypeRegistry(ITypeLoader? typeLoader = null)
+            : base(isThreadSafe: true)
         {
+            this.typeLoader = typeLoader;
             this.runtimeTypeInfosCache = new ConcurrentDictionary<Type, IRuntimeTypeInfo>(
                 new Dictionary<Type, IRuntimeTypeInfo>
                 {
+                    { typeof(RuntimeTypeRegistry), this.TypeOfRuntimeTypeRegistry = new RuntimeTypeInfo(this, typeof(RuntimeTypeRegistry)) },
                     { typeof(RuntimeTypeInfo), this.TypeOfRuntimeTypeInfo = new RuntimeTypeInfo(this, typeof(RuntimeTypeInfo)) },
                     { typeof(RuntimePropertyInfo), this.TypeOfRuntimePropertyInfo = new RuntimeTypeInfo(this, typeof(RuntimePropertyInfo)) },
                     { typeof(RuntimeFieldInfo), this.TypeOfRuntimeFieldInfo = new RuntimeTypeInfo(this, typeof(RuntimeFieldInfo)) },
@@ -56,13 +64,13 @@ namespace Kephas.Runtime
                 });
 
             this.createRuntimeTypeInfoFunc = this.CreateRuntimeTypeInfoCore;
-            this.createRuntimeAssemblyInfoFunc = a => new RuntimeAssemblyInfo(this, a);
+            this.createRuntimeAssemblyInfoFunc = a => new RuntimeAssemblyInfo(this, a, this.typeLoader);
         }
 
         /// <summary>
         /// Gets the static instance of the type serviceRegistry.
         /// </summary>
-        public static IRuntimeTypeRegistry Instance { get; } = new RuntimeTypeRegistry();
+        public static IRuntimeTypeRegistry Instance { get; } = new RuntimeTypeRegistry(DefaultTypeLoader.Instance);
 
         /// <summary>
         /// Gets or sets the function for creating the runtime type information.
@@ -117,7 +125,7 @@ namespace Kephas.Runtime
         {
             Requires.NotNull(assembly, nameof(assembly));
 
-            return this.runtimeAssemblyInfosCache.GetOrAdd(assembly, _ => this.CreateRuntimeAssemblyInfo(assembly) ?? new RuntimeAssemblyInfo(this, assembly));
+            return this.runtimeAssemblyInfosCache.GetOrAdd(assembly, _ => this.CreateRuntimeAssemblyInfo(assembly) ?? new RuntimeAssemblyInfo(this, assembly, this.typeLoader));
         }
 
         /// <summary>
@@ -134,6 +142,17 @@ namespace Kephas.Runtime
             Requires.NotNull(factory, nameof(factory));
 
             this.typeFactories.Insert(0, factory);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ITypeInfo"/> of this expando object.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ITypeInfo"/> of this expando object.
+        /// </returns>
+        protected override ITypeInfo GetThisTypeInfo()
+        {
+            return this.TypeOfRuntimeTypeRegistry;
         }
 
         private IRuntimeTypeInfo CreateRuntimeTypeInfoCore(Type rawType)

@@ -80,13 +80,13 @@ namespace Kephas
             }
 
             this.registry
-                .RegisterSource(new LazyServiceSource(this.registry))
+                .RegisterSource(new LazyServiceSource(this.registry, typeRegistry))
                 .RegisterSource(new LazyWithMetadataServiceSource(this.registry, typeRegistry))
-                .RegisterSource(new ExportFactoryServiceSource(this.registry))
+                .RegisterSource(new ExportFactoryServiceSource(this.registry, typeRegistry))
                 .RegisterSource(new ExportFactoryWithMetadataServiceSource(this.registry, typeRegistry))
-                .RegisterSource(new ListServiceSource(this.registry))
-                .RegisterSource(new CollectionServiceSource(this.registry))
-                .RegisterSource(new EnumerableServiceSource(this.registry));
+                .RegisterSource(new ListServiceSource(this.registry, typeRegistry))
+                .RegisterSource(new CollectionServiceSource(this.registry, typeRegistry))
+                .RegisterSource(new EnumerableServiceSource(this.registry, typeRegistry));
 
             this.resolver = new ResolverEngine(this, this.registry);
         }

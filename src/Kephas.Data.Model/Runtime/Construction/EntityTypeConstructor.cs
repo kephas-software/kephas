@@ -47,7 +47,7 @@ namespace Kephas.Data.Model.Runtime.Construction
         /// </returns>
         protected override EntityType TryCreateModelElementCore(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return new EntityType(constructionContext, this.TryComputeName(constructionContext, runtimeElement));
+            return new EntityType(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
         }
     }
 }

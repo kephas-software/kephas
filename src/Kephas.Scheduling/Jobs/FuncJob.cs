@@ -15,6 +15,7 @@ namespace Kephas.Scheduling.Jobs
     using System.Threading.Tasks;
 
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Runtime;
     using Kephas.Services;
@@ -34,7 +35,7 @@ namespace Kephas.Scheduling.Jobs
         /// </summary>
         /// <param name="operation">The operation.</param>
         public FuncJob(Func<object?> operation)
-            : this(operation, () => new RuntimeFuncJobInfo(operation))
+            : this(operation, () => new RuntimeFuncJobInfo(RuntimeTypeRegistry.Instance, operation))
         {
         }
 
@@ -43,7 +44,7 @@ namespace Kephas.Scheduling.Jobs
         /// </summary>
         /// <param name="asyncOperation">The asynchronous operation.</param>
         public FuncJob(Func<CancellationToken, Task<object?>> asyncOperation)
-            : this(asyncOperation, () => new RuntimeFuncJobInfo(asyncOperation))
+            : this(asyncOperation, () => new RuntimeFuncJobInfo(RuntimeTypeRegistry.Instance, asyncOperation))
         {
         }
 

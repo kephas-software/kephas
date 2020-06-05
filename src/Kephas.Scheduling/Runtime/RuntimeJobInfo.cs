@@ -11,13 +11,12 @@
 namespace Kephas.Scheduling.Runtime
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.Runtime;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Triggers;
@@ -32,9 +31,10 @@ namespace Kephas.Scheduling.Runtime
         /// <summary>
         /// Initializes a new instance of the <see cref="RuntimeJobInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="type">The type.</param>
-        protected internal RuntimeJobInfo(Type type)
-            : base(type)
+        protected internal RuntimeJobInfo(IRuntimeTypeRegistry typeRegistry, Type type)
+            : base(typeRegistry, type)
         {
         }
 

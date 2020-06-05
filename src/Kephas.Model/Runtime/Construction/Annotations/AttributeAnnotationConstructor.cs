@@ -40,7 +40,7 @@ namespace Kephas.Model.Runtime.Construction.Annotations
                 new object[]
                 {
                     constructionContext,
-                    this.TryComputeNameCore(runtimeElement),
+                    this.TryComputeNameCore(runtimeElement, constructionContext),
                     runtimeElement,
                 });
             return (Annotation)annotation;

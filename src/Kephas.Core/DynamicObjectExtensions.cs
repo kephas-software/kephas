@@ -90,10 +90,12 @@ namespace Kephas
         /// Gets a runtime type information out of the provided instance.
         /// </summary>
         /// <param name="obj">The object.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <returns>A dynamic type information for the provided object.</returns>
-        public static IRuntimeTypeInfo? GetRuntimeTypeInfo(this object? obj)
+        public static IRuntimeTypeInfo GetRuntimeTypeInfo(this object obj, IRuntimeTypeRegistry? typeRegistry)
         {
-            return obj?.GetType().AsRuntimeTypeInfo(null);
+            Requires.NotNull(obj, nameof(obj));
+            return obj.GetType().AsRuntimeTypeInfo(typeRegistry);
         }
 
         /// <summary>

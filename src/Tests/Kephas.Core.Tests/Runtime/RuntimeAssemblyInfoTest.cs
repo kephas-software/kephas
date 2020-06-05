@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Reflection;
+using NSubstitute;
+
 namespace Kephas.Core.Tests.Runtime
 {
     using System.Linq;
@@ -22,22 +25,39 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void Name()
         {
-            var assemblyInfo = new RuntimeAssemblyInfo(typeof(RuntimeAssemblyInfoTest).Assembly);
+            var registry = new RuntimeTypeRegistry();
+            var assemblyInfo = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
             Assert.AreEqual("Kephas.Core.Tests", assemblyInfo.Name);
         }
 
         [Test]
         public void Types()
         {
-            var assemblyInfo = new RuntimeAssemblyInfo(typeof(RuntimeAssemblyInfoTest).Assembly);
+            var registry = new RuntimeTypeRegistry();
+            var assemblyInfo = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
             Assert.IsTrue(assemblyInfo.Types.Cast<IRuntimeTypeInfo>().Any(t => t.Type == this.GetType()));
         }
 
         [Test]
         public void Types_declaring_container_set()
         {
-            var assemblyInfo = RuntimeAssemblyInfo.GetRuntimeAssembly(typeof(RuntimeAssemblyInfoTest).Assembly);
+            var registry = new RuntimeTypeRegistry();
+            var assemblyInfo = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
             Assert.IsTrue(assemblyInfo.Types.All(t => t.DeclaringContainer == assemblyInfo));
+        }
+
+        [Test]
+        public void Types_custom_type_loader()
+        {
+            var typeLoader = Substitute.For<ITypeLoader>();
+            typeLoader.GetExportedTypes(typeof(RuntimeAssemblyInfoTest).Assembly)
+                .Returns(new[] { typeof(RuntimeAssemblyInfoTest) });
+            var registry = new RuntimeTypeRegistry();
+            var assemblyInfo = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, typeLoader);
+
+            var types = assemblyInfo.Types;
+            Assert.AreEqual(1, types.Count());
+            Assert.AreEqual("RuntimeAssemblyInfoTest", types.Single().Name);
         }
     }
 }

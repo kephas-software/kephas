@@ -18,6 +18,7 @@ namespace Kephas.Commands.Messaging.Reflection
     using Kephas.Messaging;
     using Kephas.Reflection;
     using Kephas.Reflection.Dynamic;
+    using Kephas.Runtime;
     using Kephas.Runtime.AttributedModel;
     using Kephas.Services;
 
@@ -26,19 +27,22 @@ namespace Kephas.Commands.Messaging.Reflection
     /// </summary>
     public class MessageOperationInfo : DynamicOperationInfo, IPrototype
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
         private readonly Lazy<IMessageProcessor> lazyMessageProcessor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageOperationInfo"/> class.
         /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="messageType">The message type.</param>
         /// <param name="lazyMessageProcessor">The message processor.</param>
-        protected internal MessageOperationInfo(ITypeInfo messageType, Lazy<IMessageProcessor> lazyMessageProcessor)
+        protected internal MessageOperationInfo(IRuntimeTypeRegistry typeRegistry, ITypeInfo messageType, Lazy<IMessageProcessor> lazyMessageProcessor)
         {
             Requires.NotNull(messageType, nameof(messageType));
             Requires.NotNull(lazyMessageProcessor, nameof(lazyMessageProcessor));
 
             this.MessageType = messageType;
+            this.typeRegistry = typeRegistry;
             this.lazyMessageProcessor = lazyMessageProcessor;
             var t = messageType;
             this.Name = t.Name.EndsWith("Message")
@@ -55,7 +59,7 @@ namespace Kephas.Commands.Messaging.Reflection
                 .ToArray();
 
             messageType.Annotations.ForEach(this.AddAnnotation);
-            this.ReturnType = this.Annotations.OfType<ReturnTypeAttribute>().FirstOrDefault()?.Value?.AsRuntimeTypeInfo();
+            this.ReturnType = this.Annotations.OfType<ReturnTypeAttribute>().FirstOrDefault()?.Value?.AsRuntimeTypeInfo(this.typeRegistry);
         }
 
         /// <summary>

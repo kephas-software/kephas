@@ -22,7 +22,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void ToString_name_and_type()
         {
-            var propInfo = new RuntimePropertyInfo<string, int>(typeof(string).GetProperty(nameof(string.Length)));
+            var registry = new RuntimeTypeRegistry();
+            var propInfo = new RuntimePropertyInfo<string, int>(registry, typeof(string).GetProperty(nameof(string.Length)));
 
             var toString = propInfo.ToString();
             Assert.AreEqual("Length: System.Int32", toString);
@@ -31,7 +32,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void IsStatic()
         {
-            var propInfo = new RuntimePropertyInfo<Test, string>(typeof(Test).GetProperty(nameof(Test.OnlyGet)));
+            var registry = new RuntimeTypeRegistry();
+            var propInfo = new RuntimePropertyInfo<Test, string>(registry, typeof(Test).GetProperty(nameof(Test.OnlyGet)));
 
             Assert.IsFalse(propInfo.IsStatic);
         }
@@ -39,7 +41,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void CanWrite()
         {
-            var propInfo = new RuntimePropertyInfo<Test, string>(typeof(Test).GetProperty(nameof(Test.OnlyGet)));
+            var registry = new RuntimeTypeRegistry();
+            var propInfo = new RuntimePropertyInfo<Test, string>(registry, typeof(Test).GetProperty(nameof(Test.OnlyGet)));
 
             Assert.IsTrue(propInfo.CanRead);
             Assert.IsFalse(propInfo.CanWrite);
@@ -48,7 +51,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void CanRead()
         {
-            var propInfo = new RuntimePropertyInfo<Test, string>(typeof(Test).GetProperty(nameof(Test.OnlySet)));
+            var registry = new RuntimeTypeRegistry();
+            var propInfo = new RuntimePropertyInfo<Test, string>(registry, typeof(Test).GetProperty(nameof(Test.OnlySet)));
 
             Assert.IsFalse(propInfo.CanRead);
             Assert.IsTrue(propInfo.CanWrite);
@@ -57,7 +61,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void SetValue()
         {
-            var propInfo = new RuntimePropertyInfo<Test, string>(typeof(Test).GetProperty(nameof(Test.ReadWrite)));
+            var registry = new RuntimeTypeRegistry();
+            var propInfo = new RuntimePropertyInfo<Test, string>(registry, typeof(Test).GetProperty(nameof(Test.ReadWrite)));
 
             var obj = new Test();
             propInfo.SetValue(obj, "gigi");
@@ -67,7 +72,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void SetValue_exception()
         {
-            var propInfo = new RuntimePropertyInfo<Test, string>(typeof(Test).GetProperty(nameof(Test.OnlyGet)));
+            var registry = new RuntimeTypeRegistry();
+            var propInfo = new RuntimePropertyInfo<Test, string>(registry, typeof(Test).GetProperty(nameof(Test.OnlyGet)));
 
             var obj = new Test();
             Assert.Throws<MemberAccessException>(() => propInfo.SetValue(obj, "gigi"));
@@ -76,7 +82,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void GetValue()
         {
-            var propInfo = new RuntimePropertyInfo<Test, string>(typeof(Test).GetProperty(nameof(Test.ReadWrite)));
+            var registry = new RuntimeTypeRegistry();
+            var propInfo = new RuntimePropertyInfo<Test, string>(registry, typeof(Test).GetProperty(nameof(Test.ReadWrite)));
 
             var obj = new Test();
             obj.ReadWrite = "gigi";
@@ -86,7 +93,8 @@ namespace Kephas.Core.Tests.Runtime
         [Test]
         public void GetValue_Exception()
         {
-            var propInfo = new RuntimePropertyInfo<Test, string>(typeof(Test).GetProperty(nameof(Test.OnlySet)));
+            var registry = new RuntimeTypeRegistry();
+            var propInfo = new RuntimePropertyInfo<Test, string>(registry, typeof(Test).GetProperty(nameof(Test.OnlySet)));
 
             var obj = new Test();
             Assert.Throws<MemberAccessException>(() => propInfo.GetValue(obj));

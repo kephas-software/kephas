@@ -15,6 +15,7 @@ namespace Kephas.Scheduling
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
+    using Kephas.Runtime;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Runtime;
@@ -143,7 +144,7 @@ namespace Kephas.Scheduling
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(operation, friendlyName), options, cancellationToken);
+            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(RuntimeTypeRegistry.Instance, operation, friendlyName), options, cancellationToken);
         }
 
         /// <summary>
@@ -164,7 +165,7 @@ namespace Kephas.Scheduling
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(operation, friendlyName), options, cancellationToken);
+            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(RuntimeTypeRegistry.Instance, operation, friendlyName), options, cancellationToken);
         }
 
         /// <summary>
@@ -185,7 +186,7 @@ namespace Kephas.Scheduling
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(asyncOperation, friendlyName), options, cancellationToken);
+            return EnqueueAsync(scheduler, new RuntimeFuncJobInfo(RuntimeTypeRegistry.Instance, asyncOperation, friendlyName), options, cancellationToken);
         }
 
         /// <summary>
