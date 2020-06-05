@@ -31,11 +31,10 @@ namespace Kephas.Runtime
         /// <param name="propertyInfo">The property information.</param>
         /// <param name="position">Optional. The position.</param>
         /// <param name="logger">Optional. The logger.</param>
-        internal RuntimePropertyInfo(IRuntimeTypeRegistry typeRegistry, PropertyInfo propertyInfo, int position = -1, ILogger logger = null)
+        internal RuntimePropertyInfo(IRuntimeTypeRegistry typeRegistry, PropertyInfo propertyInfo, int position = -1, ILogger? logger = null)
             : base(typeRegistry, logger)
         {
             this.PropertyInfo = propertyInfo;
-            this.Logger = logger;
             this.Name = propertyInfo.Name;
             this.FullName = propertyInfo.DeclaringType?.FullName + "." + propertyInfo.Name;
         }
@@ -173,14 +172,6 @@ namespace Kephas.Runtime
         {
             return this.PropertyInfo.GetCustomAttributes<TAttribute>(inherit: true);
         }
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
-        protected ILogger Logger { get; }
 
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>

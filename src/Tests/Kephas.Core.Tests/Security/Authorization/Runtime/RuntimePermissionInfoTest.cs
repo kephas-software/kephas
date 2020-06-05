@@ -17,16 +17,18 @@ namespace Kephas.Core.Tests.Security.Authorization.Runtime
     [TestFixture]
     public class RuntimePermissionInfoTest
     {
-        [SetUp]
-        public void SetUp()
+        private RuntimeTypeRegistry typeRegistry;
+
+        public RuntimePermissionInfoTest()
         {
-            RuntimeTypeInfo.RegisterFactory(new AuthorizationTypeInfoFactory());
+            this.typeRegistry = new RuntimeTypeRegistry();
+            this.typeRegistry.RegisterFactory(new AuthorizationTypeInfoFactory(this.typeRegistry));
         }
 
         [Test]
         public void Constructor_for_system()
         {
-            var info = new RuntimePermissionInfo(typeof(SystemPermission));
+            var info = new RuntimePermissionInfo(this.typeRegistry, typeof(SystemPermission));
 
             Assert.AreEqual("system", info.TokenName);
             Assert.AreEqual(1, info.RequiredPermissions.Count());
@@ -38,7 +40,7 @@ namespace Kephas.Core.Tests.Security.Authorization.Runtime
         [Test]
         public void Constructor_for_appadmin()
         {
-            var info = new RuntimePermissionInfo(typeof(AppAdminPermission));
+            var info = new RuntimePermissionInfo(this.typeRegistry, typeof(AppAdminPermission));
 
             Assert.AreEqual("appadmin", info.TokenName);
             Assert.AreEqual(0, info.RequiredPermissions.Count());
@@ -48,7 +50,7 @@ namespace Kephas.Core.Tests.Security.Authorization.Runtime
         [Test]
         public void Constructor_compute_token_name()
         {
-            var info = new RuntimePermissionInfo(typeof(ITestReadPermission));
+            var info = new RuntimePermissionInfo(this.typeRegistry, typeof(ITestReadPermission));
 
             Assert.AreEqual("TestRead", info.TokenName);
             Assert.AreEqual(0, info.RequiredPermissions.Count());
@@ -59,7 +61,7 @@ namespace Kephas.Core.Tests.Security.Authorization.Runtime
         [Test]
         public void Constructor_derived_permission()
         {
-            var info = new RuntimePermissionInfo(typeof(IDerivedTestPermission));
+            var info = new RuntimePermissionInfo(this.typeRegistry, typeof(IDerivedTestPermission));
 
             Assert.AreEqual("DerivedTest", info.TokenName);
             Assert.AreEqual(0, info.RequiredPermissions.Count());

@@ -147,27 +147,28 @@ namespace Kephas.Workflow
             if (returnType == typeof(Task))
             {
                 var task = (Task)this.InvokeTransition(transitionInfo, context, cancellationToken)!;
-                return task.ContinueWith(t => (object?)null);
+                return task.ContinueWith(t => (object?)null, cancellationToken);
             }
 
             if (returnType.IsConstructedGenericOf(typeof(Task<>)))
             {
                 var task = (Task)this.InvokeTransition(transitionInfo, context, cancellationToken)!;
-                return task.ContinueWith(t => t.GetPropertyValue(nameof(Task<int>.Result)));
+                return task.ContinueWith(t => t.GetPropertyValue(nameof(Task<int>.Result)), cancellationToken);
             }
 
 #if NETSTANDARD2_1
             if (returnType == typeof(ValueTask))
             {
                 var valueTask = (ValueTask)this.InvokeTransition(transitionInfo, context, cancellationToken)!;
-                return valueTask.AsTask().ContinueWith(t => (object?)null);
+                return valueTask.AsTask().ContinueWith(t => (object?)null, cancellationToken);
             }
 
             if (returnType.IsConstructedGenericOf(typeof(ValueTask<>)))
             {
                 var valueTaskObject = this.InvokeTransition(transitionInfo, context, cancellationToken)!;
-                var task = (Task)valueTaskObject.GetRuntimeTypeInfo().Invoke(valueTaskObject, nameof(ValueTask<int>.AsTask), Array.Empty<object>());
-                return task.ContinueWith(t => t.GetPropertyValue(nameof(Task<int>.Result)));
+                var task = (Task)valueTaskObject.GetRuntimeTypeInfo(this.typeRegistry)
+                            .Invoke(valueTaskObject, nameof(ValueTask<int>.AsTask), Array.Empty<object>())!;
+                return task.ContinueWith(t => t.GetPropertyValue(nameof(Task<int>.Result)), cancellationToken);
             }
 #endif
             return Task.FromResult(this.InvokeTransition(transitionInfo, context, cancellationToken));

@@ -11,47 +11,72 @@
 namespace Kephas.Core.Tests.Behaviors
 {
     using Kephas.Behaviors;
+    using Kephas.Runtime;
     using Kephas.Services;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class BehaviorRuleFlowControlBaseTest
     {
+        private readonly RuntimeTypeRegistry typeRegistry;
+
+        public BehaviorRuleFlowControlBaseTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void PriorityOrder_default()
         {
-            var behavior = new DefaultBehaviorRuleFlowControl();
+            var behavior = new DefaultBehaviorRuleFlowControl(this.typeRegistry);
             Assert.AreEqual(0, behavior.ProcessingPriority);
         }
 
         [Test]
         public void PriorityOrder_attribute()
         {
-            var behavior = new PriorityBehaviorRuleFlowControl();
+            var behavior = new PriorityBehaviorRuleFlowControl(this.typeRegistry);
             Assert.AreEqual(12, behavior.ProcessingPriority);
         }
 
         [Test]
         public void IsEndRule_default()
         {
-            var behavior = new DefaultBehaviorRuleFlowControl();
+            var behavior = new DefaultBehaviorRuleFlowControl(this.typeRegistry);
             Assert.IsFalse(behavior.IsEndRule);
         }
 
         [Test]
         public void IsEndRule_attribute()
         {
-            var behavior = new EndRuleBehaviorRuleFlowControl();
+            var behavior = new EndRuleBehaviorRuleFlowControl(this.typeRegistry);
             Assert.IsTrue(behavior.IsEndRule);
         }
 
-        private class DefaultBehaviorRuleFlowControl : BehaviorRuleFlowControlBase { }
+        private class DefaultBehaviorRuleFlowControl : BehaviorRuleFlowControlBase
+        {
+            public DefaultBehaviorRuleFlowControl(IRuntimeTypeRegistry typeRegistry)
+                : base(typeRegistry)
+            {
+            }
+        }
 
         [ProcessingPriority(12)]
-        private class PriorityBehaviorRuleFlowControl : BehaviorRuleFlowControlBase { }
+        private class PriorityBehaviorRuleFlowControl : BehaviorRuleFlowControlBase
+        {
+            public PriorityBehaviorRuleFlowControl(IRuntimeTypeRegistry typeRegistry)
+                : base(typeRegistry)
+            {
+            }
+        }
 
         [EndRule]
-        private class EndRuleBehaviorRuleFlowControl : BehaviorRuleFlowControlBase { }
+        private class EndRuleBehaviorRuleFlowControl : BehaviorRuleFlowControlBase
+        {
+            public EndRuleBehaviorRuleFlowControl(IRuntimeTypeRegistry typeRegistry)
+                : base(typeRegistry)
+            {
+            }
+        }
     }
 }

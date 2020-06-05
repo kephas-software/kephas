@@ -71,7 +71,7 @@ namespace Kephas.Behaviors
         /// <returns>
         /// The reason, if one was provided, otherwise <c>null</c>.
         /// </returns>
-        public static string GetReason(this IBehaviorValue behavior)
+        public static string? GetReason(this IBehaviorValue behavior)
         {
             if (behavior == null)
             {
@@ -109,7 +109,7 @@ namespace Kephas.Behaviors
         /// <value>
         /// The behavior value.
         /// </value>
-        object IBehaviorValue.Value => this.Value;
+        object? IBehaviorValue.Value => this.Value;
 
         /// <summary>
         /// Gets or sets the behavior value.

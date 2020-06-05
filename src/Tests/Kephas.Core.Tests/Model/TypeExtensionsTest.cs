@@ -12,17 +12,24 @@ namespace Kephas.Core.Tests.Model
 {
     using Kephas.Activation;
     using Kephas.Model;
-
+    using Kephas.Runtime;
     using NUnit.Framework;
 
     [TestFixture]
     public class TypeExtensionsTest
     {
+        private readonly RuntimeTypeRegistry typeRegistry;
+
+        public TypeExtensionsTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void GetAbstractType_none()
         {
             var expected = typeof(string);
-            var actual = typeof(string).GetAbstractType();
+            var actual = typeof(string).GetAbstractType(this.typeRegistry);
 
             Assert.AreSame(expected, actual);
         }
@@ -31,7 +38,7 @@ namespace Kephas.Core.Tests.Model
         public void GetAbstractType_single()
         {
             var expected = typeof(string);
-            var actual = typeof(TestImplementationType).GetAbstractType();
+            var actual = typeof(TestImplementationType).GetAbstractType(this.typeRegistry);
 
             Assert.AreSame(expected, actual);
         }
@@ -40,7 +47,7 @@ namespace Kephas.Core.Tests.Model
         public void GetAbstractType_multiple()
         {
             var expected = typeof(string);
-            var actual = typeof(TestImplementationMultipleType).GetAbstractType();
+            var actual = typeof(TestImplementationMultipleType).GetAbstractType(this.typeRegistry);
 
             Assert.AreSame(expected, actual);
         }

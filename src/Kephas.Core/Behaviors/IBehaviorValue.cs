@@ -23,7 +23,7 @@ namespace Kephas.Behaviors
         /// <value>
         /// The behavior value.
         /// </value>
-        object Value { get; }
+        object? Value { get; }
     }
 
     /// <summary>

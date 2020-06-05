@@ -26,6 +26,7 @@ namespace Kephas.Data.Client.Queries.Conversion
     using Kephas.Logging;
     using Kephas.Model;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     using Expression = Kephas.Data.Client.Queries.Expression;
@@ -37,24 +38,10 @@ namespace Kephas.Data.Client.Queries.Conversion
     [OverridePriority(Priority.Low)]
     public class DefaultClientQueryConverter : Loggable, IClientQueryConverter
     {
-        /// <summary>
-        /// The data context query method.
-        /// </summary>
         private static readonly MethodInfo DataContextQueryMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IDataContext)null).Query<string>(null));
-
-        /// <summary>
-        /// The type resolver.
-        /// </summary>
         private readonly ITypeResolver typeResolver;
-
-        /// <summary>
-        /// The entity type resolver.
-        /// </summary>
         private readonly IProjectedTypeResolver projectedTypeResolver;
-
-        /// <summary>
-        /// The expression converters.
-        /// </summary>
+        private readonly IRuntimeTypeRegistry typeRegistry;
         private readonly IDictionary<string, IExpressionConverter> expressionConverters;
 
         /// <summary>
@@ -63,10 +50,12 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="projectedTypeResolver">The entity type resolver.</param>
         /// <param name="converterFactories">The expression converters.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         public DefaultClientQueryConverter(
             ITypeResolver typeResolver,
             IProjectedTypeResolver projectedTypeResolver,
-            ICollection<IExportFactory<IExpressionConverter, ExpressionConverterMetadata>> converterFactories)
+            ICollection<IExportFactory<IExpressionConverter, ExpressionConverterMetadata>> converterFactories,
+            IRuntimeTypeRegistry typeRegistry)
         {
             Requires.NotNull(typeResolver, nameof(typeResolver));
             Requires.NotNull(projectedTypeResolver, nameof(projectedTypeResolver));
@@ -74,6 +63,7 @@ namespace Kephas.Data.Client.Queries.Conversion
 
             this.typeResolver = typeResolver;
             this.projectedTypeResolver = projectedTypeResolver;
+            this.typeRegistry = typeRegistry;
 
             this.expressionConverters = converterFactories.OrderAsDictionary(
                 f => f.Metadata.Operator,
@@ -223,7 +213,7 @@ namespace Kephas.Data.Client.Queries.Conversion
                         ? GetOrder(
                             orderArg,
                             AscExpressionConverter.Operator,
-                            MemberAccessExpressionConverter.MakeMemberAccessExpression(orderArg, clientItemType, lambdaArg))
+                            MemberAccessExpressionConverter.MakeMemberAccessExpression(orderArg, clientItemType, lambdaArg, this.typeRegistry))
 
                         // constants are not relevant for sorting, so just ignore them.
                         : null;
@@ -244,7 +234,7 @@ namespace Kephas.Data.Client.Queries.Conversion
         /// </returns>
         protected virtual Type GetQueryClientEntityType(ClientQuery clientQuery)
         {
-            return this.typeResolver.ResolveType(clientQuery.EntityType);
+            return this.typeResolver.ResolveType(clientQuery.EntityType)!;
         }
 
         /// <summary>
@@ -289,7 +279,7 @@ namespace Kephas.Data.Client.Queries.Conversion
                         arg is Expression argExpression
                             ? this.ConvertExpression(argExpression, clientItemType, lambdaArg, context)
                             : context.UseMemberAccessConvention && MemberAccessExpressionConverter.IsMemberAccess(arg)
-                                ? MemberAccessExpressionConverter.MakeMemberAccessExpression(arg, clientItemType, lambdaArg)
+                                ? MemberAccessExpressionConverter.MakeMemberAccessExpression(arg, clientItemType, lambdaArg, this.typeRegistry)
                                 : this.MakeConstantExpression(arg));
                 }
             }

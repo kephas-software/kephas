@@ -21,7 +21,7 @@ namespace Kephas.Reflection.Localization
     /// <summary>
     /// Localization information for <see cref="IElementInfo"/>.
     /// </summary>
-    public class ElementInfoLocalization : Localization, IElementInfoLocalization
+    public abstract class ElementInfoLocalization : Localization, IElementInfoLocalization
     {
         private string name;
         private string description;
@@ -31,7 +31,7 @@ namespace Kephas.Reflection.Localization
         /// <summary>
         /// Initializes a new instance of the <see cref="ElementInfoLocalization"/> class.
         /// </summary>
-        public ElementInfoLocalization()
+        protected ElementInfoLocalization()
         {
             // ReSharper disable once VirtualMemberCallInConstructor
             this.DisplayInfo = this.GetDisplayInfo(null);
@@ -41,7 +41,7 @@ namespace Kephas.Reflection.Localization
         /// Initializes a new instance of the <see cref="ElementInfoLocalization"/> class.
         /// </summary>
         /// <param name="elementInfo">Information describing the element.</param>
-        public ElementInfoLocalization(IElementInfo elementInfo)
+        protected ElementInfoLocalization(IElementInfo elementInfo)
         {
             Requires.NotNull(elementInfo, nameof(elementInfo));
 

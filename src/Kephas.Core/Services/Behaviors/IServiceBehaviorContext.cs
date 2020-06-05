@@ -24,7 +24,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The behavior context.
         /// </value>
-        IContext Context { get; }
+        IContext? Context { get; }
 
         /// <summary>
         /// Gets the service.
@@ -48,6 +48,6 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service metadata.
         /// </value>
-        object Metadata { get; }
+        object? Metadata { get; }
     }
 }

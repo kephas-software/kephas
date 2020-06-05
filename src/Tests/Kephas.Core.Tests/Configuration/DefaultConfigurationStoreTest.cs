@@ -11,16 +11,23 @@
 namespace Kephas.Core.Tests.Configuration
 {
     using Kephas.Configuration;
-
+    using Kephas.Runtime;
     using NUnit.Framework;
 
     [TestFixture]
     public class DefaultConfigurationStoreTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public DefaultConfigurationStoreTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void Item_case_insensitive()
         {
-            var configStore = new DefaultConfigurationStore();
+            var configStore = new DefaultConfigurationStore(this.typeRegistry);
             configStore["myKey"] = "123";
 
             Assert.AreEqual("123", configStore["MyKey"]);

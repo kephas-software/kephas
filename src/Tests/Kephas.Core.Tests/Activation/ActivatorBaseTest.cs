@@ -26,19 +26,26 @@ namespace Kephas.Core.Tests.Activation
     [TestFixture]
     public class ActivatorBaseTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public ActivatorBaseTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void CreateInstance_no_args()
         {
             var activator = new Activator();
-            var date = activator.CreateInstance(typeof(DateTime).AsRuntimeTypeInfo());
+            var date = activator.CreateInstance(typeof(DateTime).AsRuntimeTypeInfo(this.typeRegistry));
             Assert.IsInstanceOf<DateTime>(date);
         }
 
         [Test]
         public void GetImplementationType_overridden_core()
         {
-            var activator = new OverriddenActivator(t => typeof(string).AsRuntimeTypeInfo());
-            var implementationType = activator.GetImplementationType(typeof(int).AsRuntimeTypeInfo());
+            var activator = new OverriddenActivator(t => typeof(string).AsRuntimeTypeInfo(this.typeRegistry));
+            var implementationType = activator.GetImplementationType(typeof(int).AsRuntimeTypeInfo(this.typeRegistry));
             Assert.AreEqual(typeof(string), ((IRuntimeTypeInfo)implementationType).Type);
         }
 

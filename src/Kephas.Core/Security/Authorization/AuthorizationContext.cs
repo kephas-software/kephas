@@ -25,7 +25,7 @@ namespace Kephas.Security.Authorization
         /// <param name="executingContext">Context for the executing.</param>
         /// <param name="requiredPermissions">The required permissions.</param>
         /// <param name="scope">Optional. The authorization scope.</param>
-        public AuthorizationContext(IContext executingContext, IEnumerable<object> requiredPermissions, object scope = null)
+        public AuthorizationContext(IContext executingContext, IEnumerable<object> requiredPermissions, object? scope = null)
             : base(executingContext?.CompositionContext)
         {
             this.Identity = executingContext?.Identity;

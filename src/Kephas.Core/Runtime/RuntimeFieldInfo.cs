@@ -30,7 +30,7 @@ namespace Kephas.Runtime
         /// <param name="fieldInfo">The field information.</param>
         /// <param name="position">Optional. The position.</param>
         /// <param name="logger">Optional. the logger.</param>
-        internal RuntimeFieldInfo(IRuntimeTypeRegistry typeRegistry, FieldInfo fieldInfo, int position = -1, ILogger logger = null)
+        internal RuntimeFieldInfo(IRuntimeTypeRegistry typeRegistry, FieldInfo fieldInfo, int position = -1, ILogger? logger = null)
             : base(typeRegistry, logger)
         {
             this.FieldInfo = fieldInfo;

@@ -16,18 +16,24 @@ namespace Kephas.Data.Tests.DataSources.Providers
     using Kephas.Data.DataSources;
     using Kephas.Data.DataSources.Providers;
     using Kephas.Reflection;
-
+    using Kephas.Runtime;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class EnumDataSourceProviderTest
     {
+        private IRuntimeTypeRegistry typeRegistry;
+
+        public EnumDataSourceProviderTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void CanHandle_non_nullable()
         {
-            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo();
+            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo(this.typeRegistry);
             var provider = new EnumDataSourceProvider();
             var context = new DataSourceContext(Substitute.For<IDataContext>(), typeInfo, typeInfo);
             var canHandle = provider.CanHandle(
@@ -39,7 +45,7 @@ namespace Kephas.Data.Tests.DataSources.Providers
         [Test]
         public void CanHandle_nullable()
         {
-            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo();
+            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo(this.typeRegistry);
             var provider = new EnumDataSourceProvider();
             var context = new DataSourceContext(Substitute.For<IDataContext>(), typeInfo, typeInfo);
             var canHandle = provider.CanHandle(
@@ -51,7 +57,7 @@ namespace Kephas.Data.Tests.DataSources.Providers
         [Test]
         public void CanHandle_non_enum()
         {
-            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo();
+            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo(this.typeRegistry);
             var provider = new EnumDataSourceProvider();
             var context = new DataSourceContext(Substitute.For<IDataContext>(), typeInfo, typeInfo);
             var canHandle = provider.CanHandle(
@@ -63,7 +69,7 @@ namespace Kephas.Data.Tests.DataSources.Providers
         [Test]
         public async Task GetDataSourceAsync_non_nullable()
         {
-            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo();
+            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo(this.typeRegistry);
             var provider = new EnumDataSourceProvider();
             var context = new DataSourceContext(Substitute.For<IDataContext>(), typeInfo, typeInfo);
             var dataSource = await provider.GetDataSourceAsync(
@@ -80,7 +86,7 @@ namespace Kephas.Data.Tests.DataSources.Providers
         [Test]
         public async Task GetDataSourceAsync_nullable()
         {
-            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo();
+            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo(this.typeRegistry);
             var provider = new EnumDataSourceProvider();
             var context = new DataSourceContext(Substitute.For<IDataContext>(), typeInfo, typeInfo);
             var dataSource = await provider.GetDataSourceAsync(
@@ -97,7 +103,7 @@ namespace Kephas.Data.Tests.DataSources.Providers
         [Test]
         public async Task GetDataSourceAsync_non_enum()
         {
-            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo();
+            var typeInfo = typeof(TestWithEnum).AsRuntimeTypeInfo(this.typeRegistry);
             var provider = new EnumDataSourceProvider();
             var context = new DataSourceContext(Substitute.For<IDataContext>(), typeInfo, typeInfo);
             var dataSource = await provider.GetDataSourceAsync(

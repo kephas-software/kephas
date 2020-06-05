@@ -13,9 +13,8 @@ namespace Kephas.Core.Tests.Reflection
     using System.Collections.Generic;
 
     using Kephas.Reflection;
-
+    using Kephas.Runtime;
     using NSubstitute;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -24,6 +23,13 @@ namespace Kephas.Core.Tests.Reflection
     [TestFixture]
     public class ReflectionHelperTest
     {
+        private readonly RuntimeTypeRegistry typeRegistry;
+
+        public ReflectionHelperTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void GetNonGenericName_non_generic()
         {
@@ -41,7 +47,7 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void AsRuntimeAssemblyInfo()
         {
-            var assemblyInfo = ReflectionHelper.AsRuntimeAssemblyInfo(this.GetType().Assembly);
+            var assemblyInfo = ReflectionHelper.AsRuntimeAssemblyInfo(this.GetType().Assembly, this.typeRegistry);
             Assert.AreSame(assemblyInfo.GetUnderlyingAssemblyInfo(), this.GetType().Assembly);
         }
 
@@ -55,8 +61,8 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void GetTypeInfo_non_IInstance()
         {
-            var typeInfo = ReflectionHelper.GetTypeInfo("123");
-            Assert.AreSame(typeof(string).AsRuntimeTypeInfo(), typeInfo);
+            var typeInfo = ReflectionHelper.GetTypeInfo("123", this.typeRegistry);
+            Assert.AreSame(typeof(string).AsRuntimeTypeInfo(this.typeRegistry), typeInfo);
         }
 
         [Test]
@@ -67,7 +73,7 @@ namespace Kephas.Core.Tests.Reflection
             instance.GetTypeInfo().Returns(typeInfo);
 
             var obj = (object)instance;
-            var objTypeInfo = ReflectionHelper.GetTypeInfo(obj);
+            var objTypeInfo = ReflectionHelper.GetTypeInfo(obj, this.typeRegistry);
 
             Assert.AreSame(typeInfo, objTypeInfo);
         }

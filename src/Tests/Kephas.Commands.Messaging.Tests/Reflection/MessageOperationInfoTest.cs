@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.ComponentModel.DataAnnotations;
-
 namespace Kephas.Commands.Messaging.Tests.Reflection
 {
     using System;
@@ -17,11 +15,13 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
     using System.Threading.Tasks;
 
     using Kephas.Commands.Messaging.Reflection;
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
@@ -29,11 +29,18 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
     [TestFixture]
     public class MessageOperationInfoTest
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
+        public MessageOperationInfoTest(IRuntimeTypeRegistry typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
+
         [Test]
         public void CreateMessage_exact_param()
         {
             var lazyMessageProcessor = new Lazy<IMessageProcessor>(() => Substitute.For<IMessageProcessor>());
-            var operationInfo = new MessageOperationInfo(typeof(NullableParamMessage).AsRuntimeTypeInfo(), lazyMessageProcessor);
+            var operationInfo = new MessageOperationInfo(this.typeRegistry, typeof(NullableParamMessage).AsRuntimeTypeInfo(this.typeRegistry), lazyMessageProcessor);
             var dateTime = new DateTime(2020, 04, 19);
             var msg = operationInfo.CreateMessage(new Expando { ["starttime"] = dateTime });
 
@@ -46,7 +53,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         public void CreateMessage_parse_date()
         {
             var lazyMessageProcessor = new Lazy<IMessageProcessor>(() => Substitute.For<IMessageProcessor>());
-            var operationInfo = new MessageOperationInfo(typeof(NullableParamMessage).AsRuntimeTypeInfo(), lazyMessageProcessor);
+            var operationInfo = new MessageOperationInfo(this.typeRegistry, typeof(NullableParamMessage).AsRuntimeTypeInfo(this.typeRegistry), lazyMessageProcessor);
             var msg = operationInfo.CreateMessage(new Expando { ["starttime"] = "2020-04-19" });
 
             Assert.IsInstanceOf<NullableParamMessage>(msg);
@@ -58,7 +65,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         public void CreateMessage_positional_param()
         {
             var lazyMessageProcessor = new Lazy<IMessageProcessor>(() => Substitute.For<IMessageProcessor>());
-            var operationInfo = new MessageOperationInfo(typeof(EnumMessage).AsRuntimeTypeInfo(), lazyMessageProcessor);
+            var operationInfo = new MessageOperationInfo(this.typeRegistry, typeof(EnumMessage).AsRuntimeTypeInfo(this.typeRegistry), lazyMessageProcessor);
             var dateTime = new DateTime(2020, 04, 19);
             var msg = operationInfo.CreateMessage(new Expando { ["fatal"] = true });
 
@@ -71,7 +78,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         public void CreateMessage_parse_enum()
         {
             var lazyMessageProcessor = new Lazy<IMessageProcessor>(() => Substitute.For<IMessageProcessor>());
-            var operationInfo = new MessageOperationInfo(typeof(EnumMessage).AsRuntimeTypeInfo(), lazyMessageProcessor);
+            var operationInfo = new MessageOperationInfo(this.typeRegistry, typeof(EnumMessage).AsRuntimeTypeInfo(this.typeRegistry), lazyMessageProcessor);
             var msg = operationInfo.CreateMessage(new Expando { ["logLevel"] = "error" });
 
             Assert.IsInstanceOf<EnumMessage>(msg);
@@ -83,7 +90,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         public void CreateMessage_arg_not_found()
         {
             var lazyMessageProcessor = new Lazy<IMessageProcessor>(() => Substitute.For<IMessageProcessor>());
-            var operationInfo = new MessageOperationInfo(typeof(EnumMessage).AsRuntimeTypeInfo(), lazyMessageProcessor);
+            var operationInfo = new MessageOperationInfo(this.typeRegistry, typeof(EnumMessage).AsRuntimeTypeInfo(this.typeRegistry), lazyMessageProcessor);
             var dateTime = new DateTime(2020, 04, 19);
             Assert.Throws<ArgumentException>(() => operationInfo.CreateMessage(new Expando { ["nonexisting"] = true }));
         }
@@ -92,7 +99,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
         public void CreateMessage_use_short_name()
         {
             var lazyMessageProcessor = new Lazy<IMessageProcessor>(() => Substitute.For<IMessageProcessor>());
-            var operationInfo = new MessageOperationInfo(typeof(UpdateMessage).AsRuntimeTypeInfo(), lazyMessageProcessor);
+            var operationInfo = new MessageOperationInfo(this.typeRegistry, typeof(UpdateMessage).AsRuntimeTypeInfo(this.typeRegistry), lazyMessageProcessor);
             var msg = operationInfo.CreateMessage(new Expando { ["Pre"] = true });
 
             Assert.IsInstanceOf<UpdateMessage>(msg);
@@ -106,8 +113,8 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
             var messageProcessor = Substitute.For<IMessageProcessor>();
             messageProcessor.ProcessAsync(Arg.Any<NullableParamMessage>(), Arg.Any<Action<IMessagingContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => new ResponseMessage { Message = $"Start time: {ci.Arg<NullableParamMessage>().StartTime:s}" });
-            var operationInfo = new MessageOperationInfo(
-                    typeof(NullableParamMessage).AsRuntimeTypeInfo(),
+            var operationInfo = new MessageOperationInfo(this.typeRegistry, 
+                    typeof(NullableParamMessage).AsRuntimeTypeInfo(this.typeRegistry),
                     new Lazy<IMessageProcessor>(() => messageProcessor));
 
             var result = await operationInfo.InvokeAsync(null, new object?[] { new Expando { ["starttime"] = "2020-04-19" } });
@@ -124,8 +131,8 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
             var messageProcessor = Substitute.For<IMessageProcessor>();
             messageProcessor.ProcessAsync(Arg.Any<NullableParamMessage>(), Arg.Any<Action<IMessagingContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => (IMessage)null ?? throw new MissingHandlerException("bad"));
-            var operationInfo = new MessageOperationInfo(
-                    typeof(NullableParamMessage).AsRuntimeTypeInfo(),
+            var operationInfo = new MessageOperationInfo(this.typeRegistry, 
+                    typeof(NullableParamMessage).AsRuntimeTypeInfo(this.typeRegistry),
                     new Lazy<IMessageProcessor>(() => messageProcessor));
 
             Assert.ThrowsAsync<MissingHandlerException>(() => operationInfo.InvokeAsync(null, new object?[] { new Expando() }));

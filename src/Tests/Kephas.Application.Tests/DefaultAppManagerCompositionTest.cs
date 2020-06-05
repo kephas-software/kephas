@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultAppManagerTest.cs" company="Kephas Software SRL">
+// <copyright file="DefaultAppManagerCompositionTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,9 +16,9 @@ namespace Kephas.Application.Tests
     using Kephas.Application;
     using Kephas.Application.Composition;
     using Kephas.Behaviors;
+    using Kephas.Runtime;
     using Kephas.Services.Behaviors;
     using Kephas.Testing.Composition;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -27,7 +27,7 @@ namespace Kephas.Application.Tests
         [Test]
         public void Composition_compute_auto_feature_info()
         {
-            var container = CreateContainer(parts: new[] { typeof(TestFeatureManager) });
+            var container = this.CreateContainer(parts: new[] { typeof(TestFeatureManager) });
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
@@ -42,7 +42,7 @@ namespace Kephas.Application.Tests
         [Test]
         public void Composition_full_feature_info()
         {
-            var container = CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager) });
+            var container = this.CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager) });
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
@@ -59,7 +59,7 @@ namespace Kephas.Application.Tests
         [Test]
         public void Composition_enabled_feature_info()
         {
-            var container = CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager), typeof(RequiredTestFeatureManager), typeof(RequiredFeatureManagerServiceBehavior) });
+            var container = this.CreateContainer(parts: new[] { typeof(AnnotatedTestFeatureManager), typeof(RequiredTestFeatureManager), typeof(RequiredFeatureManagerServiceBehavior) });
             var appManager = (DefaultAppManager)container.GetExport<IAppManager>();
 
             var factoryMetadata = appManager.FeatureManagerFactories.Select(f => f.Metadata).ToList();
@@ -86,6 +86,11 @@ namespace Kephas.Application.Tests
 
         public class RequiredFeatureManagerServiceBehavior : EnabledServiceBehaviorRuleBase<IFeatureManager>
         {
+            public RequiredFeatureManagerServiceBehavior(IRuntimeTypeRegistry typeRegistry)
+                : base(typeRegistry)
+            {
+            }
+
             /// <summary>
             /// Gets the behavior value.
             /// </summary>

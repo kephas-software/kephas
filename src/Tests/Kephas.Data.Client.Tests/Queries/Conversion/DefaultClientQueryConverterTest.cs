@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas.Data.Client.Tests.Queries.Conversion
 {
     using System;
@@ -287,7 +289,7 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
 
         private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> MemberAccessConverter()
         {
-            return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => new MemberAccessExpressionConverter(), new ExpressionConverterMetadata(MemberAccessExpressionConverter.Operator));
+            return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => new MemberAccessExpressionConverter(new RuntimeTypeRegistry()), new ExpressionConverterMetadata(MemberAccessExpressionConverter.Operator));
         }
 
         private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> AscConverter()

@@ -74,7 +74,7 @@ namespace Kephas.Services
         /// <returns>
         /// The new context.
         /// </returns>
-        public TContext CreateContext<TContext>(params object[] args)
+        public TContext CreateContext<TContext>(params object?[] args)
             where TContext : class
         {
             var contextType = typeof(TContext);

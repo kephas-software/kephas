@@ -375,7 +375,7 @@ namespace Kephas.Data.Tests.Linq
             {
                 var elementType = expression.Type.TryGetEnumerableItemType();
                 var nativeQuery = this.nativeQueryProvider.CreateQuery(expression);
-                var asyncQueryTypeInfo = typeof(AsyncQuery<>).MakeGenericType(elementType).AsRuntimeTypeInfo();
+                var asyncQueryTypeInfo = typeof(AsyncQuery<>).MakeGenericType(elementType).AsRuntimeTypeInfo(null);
                 var asyncQuery = (IQueryable)asyncQueryTypeInfo.CreateInstance(new object[] { this, nativeQuery });
                 return asyncQuery;
             }

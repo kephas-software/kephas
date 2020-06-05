@@ -22,7 +22,7 @@ namespace Kephas.Services
         /// Initializes a new instance of the <see cref="MetadataValueAttribute"/> class.
         /// </summary>
         /// <param name="valueName">Name of the value. If not provided, the metadata value will have the name {attribute-name}{property-name}.</param>
-        public MetadataValueAttribute(string valueName = null)
+        public MetadataValueAttribute(string? valueName = null)
         {
             this.ValueName = valueName;
         }
@@ -33,6 +33,6 @@ namespace Kephas.Services
         /// <value>
         /// The name of the metadata value.
         /// </value>
-        public string ValueName { get; }
+        public string? ValueName { get; }
     }
 }

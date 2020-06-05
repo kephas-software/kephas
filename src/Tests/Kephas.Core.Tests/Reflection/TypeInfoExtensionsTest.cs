@@ -25,10 +25,17 @@ namespace Kephas.Core.Tests.Reflection
     [TestFixture]
     public class TypeInfoExtensionsTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public TypeInfoExtensionsTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void IsGenericType_open_generic()
         {
-            var typeInfo = (ITypeInfo)new RuntimeTypeInfo(typeof(IEnumerable<>));
+            var typeInfo = (ITypeInfo)new RuntimeTypeInfo(this.typeRegistry, typeof(IEnumerable<>));
 
             Assert.IsTrue(typeInfo.IsGenericType());
         }
@@ -36,7 +43,7 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void IsGenericType_closed_generic()
         {
-            var typeInfo = (ITypeInfo)new RuntimeTypeInfo(typeof(IEnumerable<string>));
+            var typeInfo = (ITypeInfo)new RuntimeTypeInfo(this.typeRegistry, typeof(IEnumerable<string>));
 
             Assert.IsTrue(typeInfo.IsGenericType());
         }
@@ -44,7 +51,7 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void IsGenericTypeDefinition_non_generic()
         {
-            var typeInfo = (ITypeInfo)new RuntimeTypeInfo(typeof(string));
+            var typeInfo = (ITypeInfo)new RuntimeTypeInfo(this.typeRegistry, typeof(string));
 
             Assert.IsFalse(typeInfo.IsGenericTypeDefinition());
         }
@@ -52,7 +59,7 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void IsGenericTypeDefinition_open_generic()
         {
-            var typeInfo = (ITypeInfo)new RuntimeTypeInfo(typeof(IEnumerable<>));
+            var typeInfo = (ITypeInfo)new RuntimeTypeInfo(this.typeRegistry, typeof(IEnumerable<>));
 
             Assert.IsTrue(typeInfo.IsGenericTypeDefinition());
         }
@@ -60,7 +67,7 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void IsGenericTypeDefinition_closed_generic()
         {
-            var typeInfo = (ITypeInfo)new RuntimeTypeInfo(typeof(IEnumerable<string>));
+            var typeInfo = (ITypeInfo)new RuntimeTypeInfo(this.typeRegistry, typeof(IEnumerable<string>));
 
             Assert.IsFalse(typeInfo.IsGenericTypeDefinition());
         }
@@ -73,7 +80,7 @@ namespace Kephas.Core.Tests.Reflection
             logger.IsEnabled(Arg.Any<LogLevel>()).Returns(true);
             logger.Log(Arg.Any<LogLevel>(), Arg.Any<Exception>(), Arg.Any<string>(), Arg.Any<object[]>())
                 .Returns(ci => { log.AppendLine($"{ci.Arg<LogLevel>()} {ci.Arg<string>()}-{ci.Arg<object[]>()?.FirstOrDefault()}"); return true; });
-            var typeInfo = new RuntimeTypeInfo(typeof(DateTime).GetTypeInfo(), logger);
+            var typeInfo = new RuntimeTypeInfo(this.typeRegistry, typeof(DateTime).GetTypeInfo(), logger);
 
             object dateTime = DateTime.Now;
             var date = typeInfo.GetValue(dateTime, "Date");
@@ -110,7 +117,8 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void GetDeclaredMembers()
         {
-            var typeInfo = typeof(IRuntimeElementInfo).AsRuntimeTypeInfo();
+            var typeREgistry = new RuntimeTypeRegistry();
+            var typeInfo = typeof(IRuntimeElementInfo).AsRuntimeTypeInfo(typeRegistry);
 
             var declaredMembers = typeInfo.GetDeclaredMembers().ToList();
             Assert.AreEqual(1, declaredMembers.Count);
