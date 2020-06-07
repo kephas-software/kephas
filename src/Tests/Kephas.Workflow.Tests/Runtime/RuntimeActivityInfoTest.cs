@@ -31,24 +31,31 @@ namespace Kephas.Workflow.Tests.Runtime
     [TestFixture]
     public class RuntimeActivityInfoTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public RuntimeActivityInfoTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void ReturnType_void()
         {
-            var activityInfo = new RuntimeActivityInfo(typeof(ITestActivity));
+            var activityInfo = new RuntimeActivityInfo(this.typeRegistry, typeof(ITestActivity));
             Assert.AreSame(typeof(void), (activityInfo.ReturnType as IRuntimeTypeInfo).Type);
         }
 
         [Test]
         public void ReturnType_explicit()
         {
-            var activityInfo = new RuntimeActivityInfo(typeof(TestActivity));
+            var activityInfo = new RuntimeActivityInfo(this.typeRegistry, typeof(TestActivity));
             Assert.AreSame(typeof(int), (activityInfo.ReturnType as IRuntimeTypeInfo).Type);
         }
 
         [Test]
         public void Parameters_order()
         {
-            var activityInfo = new RuntimeActivityInfo(typeof(ITestActivity));
+            var activityInfo = new RuntimeActivityInfo(this.typeRegistry, typeof(ITestActivity));
             var paramList = activityInfo.Parameters.OrderBy(p => p.Position).ToList();
 
             Assert.AreEqual(6, paramList.Count);
@@ -63,7 +70,7 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public void Parameters_class_order()
         {
-            var activityInfo = new RuntimeActivityInfo(typeof(TestActivity));
+            var activityInfo = new RuntimeActivityInfo(this.typeRegistry, typeof(TestActivity));
             var paramList = activityInfo.Parameters.OrderBy(p => p.Position).ToList();
 
             Assert.AreEqual(6, paramList.Count);
@@ -78,7 +85,7 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public void ExecuteAsync_not_implemented()
         {
-            var activityInfo = new RuntimeActivityInfo(typeof(TestActivity));
+            var activityInfo = new RuntimeActivityInfo(this.typeRegistry, typeof(TestActivity));
             Assert.ThrowsAsync<NotImplementedException>(
                 () => activityInfo.ExecuteAsync(new TestActivity(), null, null, new ActivityContext(Substitute.For<ICompositionContext>(), Substitute.For<IWorkflowProcessor>())));
         }
@@ -88,7 +95,7 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public async Task ExecuteAsync_operation()
         {
-            var activityInfo = new RuntimeActivityInfo(typeof(TestActivity));
+            var activityInfo = new RuntimeActivityInfo(this.typeRegistry, typeof(TestActivity));
             var activity = Substitute.For<ActivityBase, IOperation>();
             (activity as IOperation).Execute(Arg.Any<IContext>()).Returns("success");
 
@@ -100,7 +107,7 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public async Task ExecuteAsync_async_operation()
         {
-            var activityInfo = new RuntimeActivityInfo(typeof(TestActivity));
+            var activityInfo = new RuntimeActivityInfo(this.typeRegistry, typeof(TestActivity));
 #if NETCOREAPP3_1
             var activity = Substitute.For<ActivityBase, IOperation>();
 

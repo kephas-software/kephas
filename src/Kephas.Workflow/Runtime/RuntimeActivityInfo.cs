@@ -134,17 +134,6 @@ namespace Kephas.Workflow.Runtime
         }
 
         /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-        {
-            return this.TypeRegistry.GetRuntimeType(this.GetType());
-        }
-
-        /// <summary>
         /// Creates the properties.
         /// </summary>
         /// <param name="type">The container type.</param>

@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas.Workflow.Tests.Runtime
 {
     using System.Linq;
@@ -22,10 +24,17 @@ namespace Kephas.Workflow.Tests.Runtime
     [TestFixture]
     public class RuntimeStateMachineInfoTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public RuntimeStateMachineInfoTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void Transitions()
         {
-            var stateMachineInfo = new RuntimeStateMachineInfo(typeof(IPluginStateMachine));
+            var stateMachineInfo = new RuntimeStateMachineInfo(this.typeRegistry, typeof(IPluginStateMachine));
 
             Assert.AreEqual(2, stateMachineInfo.Transitions.Count());
 
@@ -41,17 +50,17 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public void TargetType()
         {
-            var stateMachineInfo = new RuntimeStateMachineInfo(typeof(IPluginStateMachine));
+            var stateMachineInfo = new RuntimeStateMachineInfo(this.typeRegistry, typeof(IPluginStateMachine));
 
-            Assert.AreEqual(typeof(IPlugin).AsRuntimeTypeInfo(), stateMachineInfo.TargetType);
+            Assert.AreEqual(typeof(IPlugin).AsRuntimeTypeInfo(this.typeRegistry), stateMachineInfo.TargetType);
         }
 
         [Test]
         public void TargetStateProperty()
         {
-            var stateMachineInfo = new RuntimeStateMachineInfo(typeof(IPluginStateMachine));
+            var stateMachineInfo = new RuntimeStateMachineInfo(this.typeRegistry, typeof(IPluginStateMachine));
 
-            Assert.AreEqual(typeof(IPlugin).AsRuntimeTypeInfo().Properties["State"], stateMachineInfo.TargetStateProperty);
+            Assert.AreEqual(typeof(IPlugin).AsRuntimeTypeInfo(this.typeRegistry).Properties["State"], stateMachineInfo.TargetStateProperty);
         }
 
         public enum PluginState

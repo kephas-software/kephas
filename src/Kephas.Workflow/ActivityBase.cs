@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Workflow
 {
     using System;
@@ -17,6 +15,7 @@ namespace Kephas.Workflow
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Workflow.Reflection;
 
     /// <summary>
@@ -82,14 +81,5 @@ namespace Kephas.Workflow
         /// </summary>
         /// <returns>The type information.</returns>
         protected virtual ITypeInfo GetTypeInfoBase() => this.GetRuntimeTypeInfo(this.GetTypeRegistry())!;
-
-        /// <summary>
-        /// Gets the type registry.
-        /// </summary>
-        /// <returns>The type registry.</returns>
-        protected override IRuntimeTypeRegistry? GetTypeRegistry()
-        {
-            return this.Context?.AmbientServices?.TypeRegistry ?? base.GetTypeRegistry();
-        }
     }
 }

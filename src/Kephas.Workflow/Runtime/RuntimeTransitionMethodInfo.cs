@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RuntimeMethodActivityInfo.cs" company="Kephas Software SRL">
+// <copyright file="RuntimeTransitionMethodInfo.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -195,17 +195,6 @@ namespace Kephas.Workflow.Runtime
         public override string ToString()
         {
             return $"{this.Name}[({string.Join(", ", this.From)}) -> {this.To}]({string.Join(", ", this.Parameters.Values.Select(p => p.ToString()))}): {this.ReturnType.FullName}";
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-        {
-            return this.TypeRegistry.GetRuntimeType(typeof(RuntimeTransitionMethodInfo));
         }
 
         private IDictionary<string, IRuntimeParameterInfo> CreateParameterInfos(MethodInfo methodInfo)

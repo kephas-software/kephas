@@ -102,17 +102,6 @@ namespace Kephas.Workflow.Runtime
         }
 
         /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IRuntimeTypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-        {
-            return this.TypeRegistry.GetRuntimeType(typeof(RuntimeStateMachineInfo));
-        }
-
-        /// <summary>
         /// Creates the member infos.
         /// </summary>
         /// <param name="membersConfig">Optional. The members configuration.</param>

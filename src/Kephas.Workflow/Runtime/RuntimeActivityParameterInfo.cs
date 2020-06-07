@@ -220,17 +220,6 @@ namespace Kephas.Workflow.Runtime
         }
 
         /// <summary>
-        /// Gets the <see cref="ITypeInfo"/> of this expando object.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ITypeInfo"/> of this expando object.
-        /// </returns>
-        protected override ITypeInfo GetThisTypeInfo()
-        {
-            return this.TypeRegistry.GetRuntimeType(typeof(RuntimeActivityParameterInfo));
-        }
-
-        /// <summary>
         /// Gets is optional.
         /// </summary>
         /// <returns>

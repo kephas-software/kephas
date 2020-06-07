@@ -12,18 +12,25 @@ namespace Kephas.Workflow.Tests.Runtime
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Kephas.Runtime;
     using Kephas.Runtime.AttributedModel;
     using Kephas.Workflow.Runtime;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class RuntimeActivityParameterInfoTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public RuntimeActivityParameterInfoTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void IsIn_implicit()
         {
-            var paramInfo = new RuntimeActivityParameterInfo(
+            var paramInfo = new RuntimeActivityParameterInfo(this.typeRegistry, 
                 typeof(ITestActivity).GetProperty(nameof(ITestActivity.ImplicitInput)), 2);
 
             Assert.IsTrue(paramInfo.IsIn);
@@ -33,7 +40,7 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public void IsIn_explicit()
         {
-            var paramInfo = new RuntimeActivityParameterInfo(
+            var paramInfo = new RuntimeActivityParameterInfo(this.typeRegistry, 
                 typeof(ITestActivity).GetProperty(nameof(ITestActivity.ExplicitInput)), 2);
 
             Assert.IsTrue(paramInfo.IsIn);
@@ -43,7 +50,7 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public void IsOut_explicit()
         {
-            var paramInfo = new RuntimeActivityParameterInfo(
+            var paramInfo = new RuntimeActivityParameterInfo(this.typeRegistry, 
                 typeof(ITestActivity).GetProperty(nameof(ITestActivity.Output)), 2);
 
             Assert.IsFalse(paramInfo.IsIn);
@@ -53,7 +60,7 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public void IsByRef()
         {
-            var paramInfo = new RuntimeActivityParameterInfo(
+            var paramInfo = new RuntimeActivityParameterInfo(this.typeRegistry, 
                 typeof(ITestActivity).GetProperty(nameof(ITestActivity.ByRef)), 2);
 
             Assert.IsTrue(paramInfo.IsIn);
@@ -63,7 +70,7 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public void IsOptional_implicit_optional()
         {
-            var paramInfo = new RuntimeActivityParameterInfo(
+            var paramInfo = new RuntimeActivityParameterInfo(this.typeRegistry, 
                 typeof(ITestActivity).GetProperty(nameof(ITestActivity.ImplicitInput)), 2);
 
             Assert.IsTrue(paramInfo.IsOptional);
@@ -72,7 +79,7 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public void IsOptional_implicit_required()
         {
-            var paramInfo = new RuntimeActivityParameterInfo(
+            var paramInfo = new RuntimeActivityParameterInfo(this.typeRegistry, 
                 typeof(ITestActivity).GetProperty(nameof(ITestActivity.ImplicitRequired)), 2);
 
             Assert.IsFalse(paramInfo.IsOptional);
@@ -81,7 +88,7 @@ namespace Kephas.Workflow.Tests.Runtime
         [Test]
         public void IsOptional_explicit_required()
         {
-            var paramInfo = new RuntimeActivityParameterInfo(
+            var paramInfo = new RuntimeActivityParameterInfo(this.typeRegistry, 
                 typeof(ITestActivity).GetProperty(nameof(ITestActivity.ExplicitRequired)), 12);
 
             Assert.IsFalse(paramInfo.IsOptional);
