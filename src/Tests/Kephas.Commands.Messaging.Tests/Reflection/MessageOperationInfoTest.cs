@@ -31,9 +31,9 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
 
-        public MessageOperationInfoTest(IRuntimeTypeRegistry typeRegistry)
+        public MessageOperationInfoTest()
         {
-            this.typeRegistry = typeRegistry;
+            this.typeRegistry = new RuntimeTypeRegistry();
         }
 
         [Test]
