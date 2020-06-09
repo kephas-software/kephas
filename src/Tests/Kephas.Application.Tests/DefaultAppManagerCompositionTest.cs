@@ -16,7 +16,6 @@ namespace Kephas.Application.Tests
     using Kephas.Application;
     using Kephas.Application.Composition;
     using Kephas.Behaviors;
-    using Kephas.Runtime;
     using Kephas.Services.Behaviors;
     using Kephas.Testing.Composition;
     using NUnit.Framework;
@@ -86,11 +85,6 @@ namespace Kephas.Application.Tests
 
         public class RequiredFeatureManagerServiceBehavior : EnabledServiceBehaviorRuleBase<IFeatureManager>
         {
-            public RequiredFeatureManagerServiceBehavior(IRuntimeTypeRegistry typeRegistry)
-                : base(typeRegistry)
-            {
-            }
-
             /// <summary>
             /// Gets the behavior value.
             /// </summary>

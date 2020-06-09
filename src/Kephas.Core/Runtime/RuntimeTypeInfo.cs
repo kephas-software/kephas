@@ -760,10 +760,10 @@ namespace Kephas.Runtime
             var baseTypeInfos = new List<ITypeInfo>();
             if (typeInfo.BaseType != null)
             {
-                baseTypeInfos.Add(typeInfo.BaseType.AsRuntimeTypeInfo(this.TypeRegistry));
+                baseTypeInfos.Add(typeInfo.BaseType.AsRuntimeTypeInfo());
             }
 
-            typeInfo.ImplementedInterfaces.ForEach(i => baseTypeInfos.Add(i.AsRuntimeTypeInfo(this.TypeRegistry)));
+            typeInfo.ImplementedInterfaces.ForEach(i => baseTypeInfos.Add(i.AsRuntimeTypeInfo()));
 
             return new ReadOnlyCollection<ITypeInfo>(baseTypeInfos);
         }

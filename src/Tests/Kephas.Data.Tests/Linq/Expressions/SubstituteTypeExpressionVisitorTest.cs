@@ -26,24 +26,17 @@ namespace Kephas.Data.Tests.Linq.Expressions
     [TestFixture]
     public class SubstituteTypeExpressionVisitorTest
     {
-        private IRuntimeTypeRegistry typeRegistry;
-
-        public SubstituteTypeExpressionVisitorTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void Visit_Where()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Test).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Test).AsRuntimeTypeInfo());
 
             var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
                                                                   {
                                                                       new Test { Name = "gigi" },
-                                                                      new Test { Name = "belogea" }
+                                                                      new Test { Name = "belogea" },
                                                                   }).AsQueryable();
             var query = baseQuery.Where(t => t.Name == "gigi");
             var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
@@ -61,13 +54,13 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void Visit_Where_equals_with_value_types()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(BetterTest).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(BetterTest).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(BetterTest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(BetterTest).AsRuntimeTypeInfo());
 
             var baseQuery = new List<BetterTest>(new[]
                                                   {
                                                       new BetterTest { Age = 2 },
-                                                      new BetterTest { Age = null }
+                                                      new BetterTest { Age = null },
                                                   }).AsQueryable();
             var query = baseQuery.Where(t => object.Equals((object)t.Age, null));
             var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
@@ -81,15 +74,15 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void Visit_Where_captured_local_variable()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Test).AsRuntimeTypeInfo(this.typeRegistry));
-            activator.GetImplementationType(typeof(string).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(string).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Test).AsRuntimeTypeInfo());
+            activator.GetImplementationType(typeof(string).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(string).AsRuntimeTypeInfo());
 
             var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
                                                                   {
                                                                       new Test { Name = "gigi" },
-                                                                      new Test { Name = "belogea" }
+                                                                      new Test { Name = "belogea" },
                                                                   }).AsQueryable();
             var gigi = "gigi";
             var query = baseQuery.Where(t => t.Name == gigi);
@@ -108,19 +101,19 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void Visit_Join()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(IBetterTest).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(BetterTest).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(IBetterTest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(BetterTest).AsRuntimeTypeInfo());
 
             var baseQuery = (IQueryable<IBetterTest>)new List<BetterTest>(new[]
                                                                   {
                                                                       new BetterTest { Name = "gigi", BetterName = "belogea" },
-                                                                      new BetterTest { Name = "sisi", BetterName = "von habsburg" }
+                                                                      new BetterTest { Name = "sisi", BetterName = "von habsburg" },
                                                                   }).AsQueryable();
 
             var joinQuery = (IQueryable<IBetterTest>)new List<BetterTest>(new[]
                                                                   {
                                                                       new BetterTest { Name = "gigi", BetterName = "Belogea" },
-                                                                      new BetterTest { Name = "belogea", BetterName = "Gigi" }
+                                                                      new BetterTest { Name = "belogea", BetterName = "Gigi" },
                                                                   }).AsQueryable();
 
             var query = from t in baseQuery 
@@ -147,13 +140,13 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void Visit_Select()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(IBetterTest).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(BetterTest).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(IBetterTest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(BetterTest).AsRuntimeTypeInfo());
 
             var baseQuery = (IQueryable<IBetterTest>)new List<BetterTest>(new[]
                                                                   {
                                                                       new BetterTest { Name = "gigi", BetterName = "belogea" },
-                                                                      new BetterTest { Name = "sisi", BetterName = "von habsburg" }
+                                                                      new BetterTest { Name = "sisi", BetterName = "von habsburg" },
                                                                   }).AsQueryable();
 
             var query = from t in baseQuery 
@@ -182,15 +175,15 @@ namespace Kephas.Data.Tests.Linq.Expressions
                 .Returns(ci =>
                     {
                         var typeInfo = ci.Arg<ITypeInfo>();
-                        return typeInfo == typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry)
-                                   ? typeof(Test).AsRuntimeTypeInfo(this.typeRegistry)
-                                   : typeInfo;
+                        return typeInfo == typeof(ITest).AsRuntimeTypeInfo()
+                            ? typeof(Test).AsRuntimeTypeInfo()
+                            : typeInfo;
                     });
 
             var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
                                                                   {
                                                                       new Test { Name = "gigi" },
-                                                                      new Test { Name = "belogea" }
+                                                                      new Test { Name = "belogea" },
                                                                   }).AsQueryable();
             var gigi = "gigi";
             var query = baseQuery.Where(t => t.Name.Length == gigi.Length);
@@ -214,15 +207,15 @@ namespace Kephas.Data.Tests.Linq.Expressions
                 .Returns(ci =>
                     {
                         var typeInfo = ci.Arg<ITypeInfo>();
-                        return typeInfo == typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry)
-                                   ? typeof(Test).AsRuntimeTypeInfo(this.typeRegistry)
+                        return typeInfo == typeof(ITest).AsRuntimeTypeInfo()
+                                   ? typeof(Test).AsRuntimeTypeInfo()
                                    : typeInfo;
                     });
 
             var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
                                                                   {
                                                                       new Test { Name = "gigi" },
-                                                                      new Test { Name = "Test" }
+                                                                      new Test { Name = "Test" },
                                                                   }).AsQueryable();
             var gigi = "gigi";
             var query = baseQuery.Where(t => t.Name == Test.ClassName);
@@ -245,15 +238,15 @@ namespace Kephas.Data.Tests.Linq.Expressions
                 .Returns(ci =>
                     {
                         var typeInfo = ci.Arg<ITypeInfo>();
-                        return typeInfo == typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry)
-                                   ? typeof(Test).AsRuntimeTypeInfo(this.typeRegistry)
-                                   : typeInfo;
+                        return typeInfo == typeof(ITest).AsRuntimeTypeInfo()
+                            ? typeof(Test).AsRuntimeTypeInfo()
+                            : typeInfo;
                     });
 
             var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
                                                                   {
                                                                       new Test { Name = "gigi" },
-                                                                      new Test { Name = "belogea" }
+                                                                      new Test { Name = "belogea" },
                                                                   }).AsQueryable();
             var gigi = new Test();
             var query = baseQuery.Where(t => t.Name == gigi.Gigi.Item1);
@@ -276,9 +269,9 @@ namespace Kephas.Data.Tests.Linq.Expressions
                 .Returns(ci =>
                     {
                         var typeInfo = ci.Arg<ITypeInfo>();
-                        return typeInfo == typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry)
-                                   ? typeof(Test).AsRuntimeTypeInfo(this.typeRegistry)
-                                   : typeInfo;
+                        return typeInfo == typeof(ITest).AsRuntimeTypeInfo()
+                            ? typeof(Test).AsRuntimeTypeInfo()
+                            : typeInfo;
                     });
 
             var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
@@ -302,8 +295,8 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void Visit_OfType()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Test).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Test).AsRuntimeTypeInfo());
 
             var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
                                                                   {
@@ -325,8 +318,8 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void Visit_OfType_strip_away()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Test).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Test).AsRuntimeTypeInfo());
 
             var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
                                                                   {
@@ -348,8 +341,8 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void Visit_Cast()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Test).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Test).AsRuntimeTypeInfo());
 
             var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
                                                                   {
@@ -370,8 +363,8 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void Visit_Cast_strip_away()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Test).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Test).AsRuntimeTypeInfo());
 
             var baseQuery = (IQueryable<ITest>)new List<Test>(new[]
                                                                   {
@@ -393,8 +386,8 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void VisitConstant_nullable_value_null()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(long?).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(long?).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(long?).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(long?).AsRuntimeTypeInfo());
 
 
             var expression = Expression.Constant((long?)null, typeof(long?));
@@ -408,8 +401,8 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void VisitConstant_nullable_value_non_null()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(long?).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(long?).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(long?).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(long?).AsRuntimeTypeInfo());
 
             var expression = Expression.Constant((long?)2, typeof(long?));
             var visitor = new SubstituteTypeExpressionVisitor(activator: activator);
@@ -500,8 +493,8 @@ namespace Kephas.Data.Tests.Linq.Expressions
         public void Visit_Where_type_resolver_before_activator()
         {
             var activator = Substitute.For<IActivator>();
-            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(this.typeRegistry), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Test).AsRuntimeTypeInfo(this.typeRegistry));
+            activator.GetImplementationType(typeof(ITest).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Test).AsRuntimeTypeInfo());
 
             var typeResolver = (Func<Type, IContext, Type>)((t, ctx) => t == typeof(ITest) ? typeof(DerivedTest) : null);
             var baseQuery = (IQueryable<ITest>)new List<DerivedTest>(new[]

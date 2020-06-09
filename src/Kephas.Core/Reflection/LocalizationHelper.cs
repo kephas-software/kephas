@@ -15,7 +15,6 @@ namespace Kephas.Reflection
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection.Localization;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Localization extensions for reflection.
@@ -55,30 +54,28 @@ namespace Kephas.Reflection
         /// Gets the localization for a <see cref="Type"/>.
         /// </summary>
         /// <param name="type">The type to act on.</param>
-        /// <param name="typeRegistry">The type registry.</param>
         /// <returns>
         /// The type localization.
         /// </returns>
-        public static ITypeInfoLocalization GetLocalization(this Type type, IRuntimeTypeRegistry? typeRegistry)
+        public static ITypeInfoLocalization GetLocalization(this Type type)
         {
             Requires.NotNull(type, nameof(type));
 
-            return GetLocalization(type.AsRuntimeTypeInfo(typeRegistry));
+            return GetLocalization(type.AsRuntimeTypeInfo());
         }
 
         /// <summary>
         /// Gets the localization for a <see cref="TypeInfo"/>.
         /// </summary>
         /// <param name="typeInfo">The type information to act on.</param>
-        /// <param name="typeRegistry">The type registry.</param>
         /// <returns>
         /// The type localization.
         /// </returns>
-        public static ITypeInfoLocalization GetLocalization(this TypeInfo typeInfo, IRuntimeTypeRegistry? typeRegistry)
+        public static ITypeInfoLocalization GetLocalization(this TypeInfo typeInfo)
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return GetLocalization(typeInfo.AsRuntimeTypeInfo(typeRegistry));
+            return GetLocalization(typeInfo.AsRuntimeTypeInfo());
         }
 
         /// <summary>
@@ -106,15 +103,14 @@ namespace Kephas.Reflection
         /// Gets the localization for a <see cref="PropertyInfo"/>.
         /// </summary>
         /// <param name="propertyInfo">The property information to act on.</param>
-        /// <param name="typeRegistry">The type registry.</param>
         /// <returns>
         /// The property localization.
         /// </returns>
-        public static IMemberInfoLocalization GetLocalization(this PropertyInfo propertyInfo, IRuntimeTypeRegistry? typeRegistry)
+        public static IMemberInfoLocalization GetLocalization(this PropertyInfo propertyInfo)
         {
             Requires.NotNull(propertyInfo, nameof(propertyInfo));
 
-            var runtimeTypeInfo = propertyInfo.DeclaringType.AsRuntimeTypeInfo(typeRegistry);
+            var runtimeTypeInfo = propertyInfo.DeclaringType.AsRuntimeTypeInfo();
             var runtimePropertyInfo = runtimeTypeInfo.Properties[propertyInfo.Name];
             return GetLocalization(runtimePropertyInfo);
         }

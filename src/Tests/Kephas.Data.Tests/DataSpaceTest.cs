@@ -80,7 +80,7 @@ namespace Kephas.Data.Tests
             dataContextFactory.CreateDataContext("default").Returns(dataContext);
 
             IDataSpace dataSpace = new DataSpace(compositionContext, dataContextFactory, dataStoreProvider);
-            var ti = (ITypeInfo)typeof(string).AsRuntimeTypeInfo(null);
+            var ti = (ITypeInfo)typeof(string).AsRuntimeTypeInfo();
             var dc = dataSpace[ti];
             Assert.AreSame(dataContext, dc);
         }

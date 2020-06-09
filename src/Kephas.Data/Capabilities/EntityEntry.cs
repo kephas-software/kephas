@@ -410,7 +410,7 @@ namespace Kephas.Data.Capabilities
         /// </returns>
         protected virtual IExpando CreateOriginalEntity()
         {
-            var typeInfo = this.Entity.GetTypeInfo(this.TryGetDataContext()?.AmbientServices?.TypeRegistry);
+            var typeInfo = this.Entity.GetTypeInfo();
             var originalValues = new Dictionary<string, object?>();
             foreach (var prop in typeInfo.Properties)
             {

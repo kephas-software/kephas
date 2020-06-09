@@ -32,7 +32,7 @@ namespace Kephas.Data.LLBLGen.Tests.Entities
         [Test]
         public void GetModelTypeInfos_empty()
         {
-            var provider = new EntityModelProvider(new List<IExportFactory<IEntityFactory, EntityFactoryMetadata>>(), this.typeRegistry);
+            var provider = new EntityModelProvider(new List<IExportFactory<IEntityFactory, EntityFactoryMetadata>>());
             var typeInfos = provider.GetModelTypeInfos();
             Assert.AreEqual(0, typeInfos.Count());
         }

@@ -32,7 +32,7 @@ namespace Kephas.Scheduling.Triggers
         /// </summary>
         /// <param name="typeRegistry">Optional. The type registry.</param>
         public TimerTrigger(IRuntimeTypeRegistry? typeRegistry = null)
-            : base(typeRegistry)
+            : base()
         {
         }
 
@@ -42,7 +42,7 @@ namespace Kephas.Scheduling.Triggers
         /// <param name="id">The trigger ID.</param>
         /// <param name="typeRegistry">Optional. The type registry.</param>
         public TimerTrigger(object id, IRuntimeTypeRegistry? typeRegistry = null)
-            : base(typeRegistry)
+            : base()
         {
             this.Id = id;
         }

@@ -197,7 +197,7 @@ namespace Kephas.Model.Tests.Elements
             foreach (var propName in properties)
             {
                 var property = new Property(context, propName);
-                property.ValueType = typeof(string).AsRuntimeTypeInfo(this.typeRegistry);
+                property.ValueType = typeof(string).AsRuntimeTypeInfo();
                 ((IConstructibleElement)classifier).AddMember(property);
             }
 

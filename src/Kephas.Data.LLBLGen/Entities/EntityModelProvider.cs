@@ -31,11 +31,10 @@ namespace Kephas.Data.LLBLGen.Entities
         /// Initializes a new instance of the <see cref="EntityModelProvider"/> class.
         /// </summary>
         /// <param name="entityFactoriesCollection">Collection of entity factories.</param>
-        /// <param name="typeRegistry">The type registry.</param>
-        public EntityModelProvider(ICollection<IExportFactory<IEntityFactory, EntityFactoryMetadata>> entityFactoriesCollection, IRuntimeTypeRegistry typeRegistry)
+        public EntityModelProvider(ICollection<IExportFactory<IEntityFactory, EntityFactoryMetadata>> entityFactoriesCollection)
         {
             this.modelTypeInfos =
-                entityFactoriesCollection.Select(f => f.Metadata.EntityType.AsRuntimeTypeInfo(typeRegistry)).ToList();
+                entityFactoriesCollection.Select(f => f.Metadata.EntityType.AsRuntimeTypeInfo()).ToList();
         }
 
         /// <summary>

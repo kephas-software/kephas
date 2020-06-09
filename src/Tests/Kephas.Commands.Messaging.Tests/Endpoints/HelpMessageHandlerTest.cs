@@ -43,7 +43,7 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
                 ci => new List<IOperationInfo>()
                     {
                         // new MessageOperationInfo(typeof(HelpMessage).AsRuntimeTypeInfo(), lazyMessageProcessor),
-                        new MessageOperationInfo(this.typeRegistry, typeof(NullableParamMessage).AsRuntimeTypeInfo(this.typeRegistry), lazyMessageProcessor),
+                        new MessageOperationInfo(this.typeRegistry, typeof(NullableParamMessage).AsRuntimeTypeInfo(), lazyMessageProcessor),
                     });
 
             var handler = new HelpMessageHandler(
@@ -70,7 +70,7 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
                 ci => new List<IOperationInfo>()
                 {
                     // new MessageOperationInfo(typeof(HelpMessage).AsRuntimeTypeInfo(), lazyMessageProcessor),
-                    new MessageOperationInfo(this.typeRegistry, typeof(LongParamMessage).AsRuntimeTypeInfo(this.typeRegistry), lazyMessageProcessor),
+                    new MessageOperationInfo(this.typeRegistry, typeof(LongParamMessage).AsRuntimeTypeInfo(), lazyMessageProcessor),
                 });
 
             var handler = new HelpMessageHandler(

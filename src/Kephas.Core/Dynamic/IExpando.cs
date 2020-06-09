@@ -59,7 +59,7 @@ namespace Kephas.Dynamic
         /// <summary>
         /// Information describing the string type.
         /// </summary>
-        private static readonly IRuntimeTypeInfo StringTypeInfo = typeof(string).AsRuntimeTypeInfo(null);
+        private static readonly IRuntimeTypeInfo StringTypeInfo = typeof(string).AsRuntimeTypeInfo();
 
         private static readonly IDictionary<Type, Func<string, object?>> Parsers = new Dictionary<Type, Func<string, object?>>
         {
@@ -113,7 +113,7 @@ namespace Kephas.Dynamic
             }
 
             // if the source is an enumeration of key-value pairs (dictionaries), then merge the dictionary.
-            var itemType = source.GetType().TryGetEnumerableItemType()?.AsRuntimeTypeInfo(null);
+            var itemType = source.GetType().TryGetEnumerableItemType()?.AsRuntimeTypeInfo();
             if (itemType != null && itemType.IsGenericType())
             {
                 var genericItemTypeDefinition = itemType.TypeInfo.GetGenericTypeDefinition();

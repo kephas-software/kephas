@@ -14,7 +14,6 @@ namespace Kephas.Configuration
     using System.Collections.Concurrent;
 
     using Kephas.Dynamic;
-    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -26,9 +25,8 @@ namespace Kephas.Configuration
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultConfigurationStore"/> class.
         /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
-        public DefaultConfigurationStore(IRuntimeTypeRegistry typeRegistry)
-            : base(new Expando(new ConcurrentDictionary<string, object>(StringComparer.OrdinalIgnoreCase)), typeRegistry)
+        public DefaultConfigurationStore()
+            : base(new Expando(new ConcurrentDictionary<string, object?>(StringComparer.OrdinalIgnoreCase)))
         {
         }
     }

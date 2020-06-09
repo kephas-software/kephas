@@ -59,7 +59,7 @@ namespace Kephas.Plugins.Transactions
             this.Name = name;
             this.Args = args;
 
-            Activators.TryAdd(name, (ctorArgs, ctx) => (UndoCommandBase)this.GetType().AsRuntimeTypeInfo(ctx?.AmbientServices?.TypeRegistry).CreateInstance(new object[] { ctorArgs }));
+            Activators.TryAdd(name, (ctorArgs, ctx) => (UndoCommandBase)this.GetType().AsRuntimeTypeInfo().CreateInstance(new object[] { ctorArgs }));
         }
 
         /// <summary>

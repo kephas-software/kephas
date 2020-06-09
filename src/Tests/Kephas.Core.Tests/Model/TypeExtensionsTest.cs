@@ -29,7 +29,7 @@ namespace Kephas.Core.Tests.Model
         public void GetAbstractType_none()
         {
             var expected = typeof(string);
-            var actual = typeof(string).GetAbstractType(this.typeRegistry);
+            var actual = typeof(string).GetAbstractType();
 
             Assert.AreSame(expected, actual);
         }
@@ -38,7 +38,7 @@ namespace Kephas.Core.Tests.Model
         public void GetAbstractType_single()
         {
             var expected = typeof(string);
-            var actual = typeof(TestImplementationType).GetAbstractType(this.typeRegistry);
+            var actual = typeof(TestImplementationType).GetAbstractType();
 
             Assert.AreSame(expected, actual);
         }
@@ -47,7 +47,7 @@ namespace Kephas.Core.Tests.Model
         public void GetAbstractType_multiple()
         {
             var expected = typeof(string);
-            var actual = typeof(TestImplementationMultipleType).GetAbstractType(this.typeRegistry);
+            var actual = typeof(TestImplementationMultipleType).GetAbstractType();
 
             Assert.AreSame(expected, actual);
         }

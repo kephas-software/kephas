@@ -105,7 +105,7 @@ namespace Kephas.Data
         /// </returns>
         protected virtual ITypeInfo ComputeTypeInfo()
         {
-            return this.GetAbstractTypeInfo(this.GetEntityEntry()?.DataContext?.AmbientServices?.TypeRegistry);
+            return this.GetAbstractTypeInfo();
         }
 
         /// <summary>Attempts to set the value with the given key.</summary>

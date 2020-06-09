@@ -35,24 +35,20 @@ namespace Kephas.Model.Runtime
     public class DefaultRuntimeModelInfoProvider : RuntimeModelInfoProviderBase<DefaultRuntimeModelInfoProvider>
     {
         private readonly ICollection<IRuntimeModelRegistry> modelRegistries;
-        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRuntimeModelInfoProvider" /> class.
         /// </summary>
         /// <param name="runtimeModelElementFactory">The runtime model info factory.</param>
         /// <param name="modelRegistries">The model registries.</param>
-        /// <param name="typeRegistry">The type registry.</param>
         public DefaultRuntimeModelInfoProvider(
             IRuntimeModelElementFactory runtimeModelElementFactory,
-            ICollection<IRuntimeModelRegistry> modelRegistries,
-            IRuntimeTypeRegistry typeRegistry)
+            ICollection<IRuntimeModelRegistry> modelRegistries)
             : base(runtimeModelElementFactory)
         {
             Requires.NotNull(modelRegistries, nameof(modelRegistries));
 
             this.modelRegistries = modelRegistries;
-            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -148,8 +144,8 @@ namespace Kephas.Model.Runtime
         {
             return runtimeElement switch
             {
-                TypeInfo runtimeTypeInfo => runtimeTypeInfo.AsRuntimeTypeInfo(this.typeRegistry),
-                Type runtimeType => runtimeType.AsRuntimeTypeInfo(this.typeRegistry),
+                TypeInfo runtimeTypeInfo => runtimeTypeInfo.AsRuntimeTypeInfo(),
+                Type runtimeType => runtimeType.AsRuntimeTypeInfo(),
                 _ => runtimeElement as IRuntimeTypeInfo
             };
         }

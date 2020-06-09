@@ -57,7 +57,7 @@ namespace Kephas.Model.Runtime.Construction
             object runtimeElement,
             IModelConstructionContext constructionContext)
         {
-            var attrTypeInfo = runtimeElement.GetRuntimeTypeInfo(constructionContext.AmbientServices?.TypeRegistry);
+            var attrTypeInfo = runtimeElement.GetRuntimeTypeInfo();
             var usage = attrTypeInfo.TypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
             // NOTE: The speciality of the runtime is to prepend the @ sign to the
             // attribute name, because the member name conventions imply it.
@@ -86,7 +86,7 @@ namespace Kephas.Model.Runtime.Construction
             TAttribute runtimeElement,
             TAnnotation element)
         {
-            var attrTypeInfo = runtimeElement.GetRuntimeTypeInfo(constructionContext.AmbientServices?.TypeRegistry);
+            var attrTypeInfo = runtimeElement.GetRuntimeTypeInfo();
             var usage = attrTypeInfo.TypeInfo.GetCustomAttribute<AttributeUsageAttribute>();
             if (usage != null)
             {

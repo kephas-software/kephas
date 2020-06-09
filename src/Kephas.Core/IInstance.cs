@@ -24,7 +24,7 @@ namespace Kephas
         /// The type information.
         /// </returns>
 #if NETSTANDARD2_1
-        ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo(null);
+        ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo();
 #else
         ITypeInfo GetTypeInfo();
 #endif

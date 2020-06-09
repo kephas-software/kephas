@@ -12,7 +12,6 @@ namespace Kephas.Services.Behaviors
 {
     using Kephas.Behaviors;
     using Kephas.Logging;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Base class for behavior rules controlling the enabled state of services.
@@ -24,10 +23,9 @@ namespace Kephas.Services.Behaviors
         /// <summary>
         /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TServiceContract}"/> class.
         /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        protected EnabledServiceBehaviorRuleBase(IRuntimeTypeRegistry typeRegistry, ILogManager? logManager = null)
-            : base(typeRegistry, logManager)
+        protected EnabledServiceBehaviorRuleBase(ILogManager? logManager = null)
+            : base(logManager)
         {
         }
 
@@ -80,10 +78,9 @@ namespace Kephas.Services.Behaviors
         /// <summary>
         /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TServiceContract, TServiceImplementation}"/> class.
         /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        protected EnabledServiceBehaviorRuleBase(IRuntimeTypeRegistry typeRegistry, ILogManager? logManager = null)
-            : base(typeRegistry, logManager)
+        protected EnabledServiceBehaviorRuleBase(ILogManager? logManager = null)
+            : base(logManager)
         {
         }
 

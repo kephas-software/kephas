@@ -33,15 +33,14 @@ namespace Kephas.Reflection
         /// Gets the <see cref="IRuntimeTypeInfo"/> for the provided <see cref="Type"/> instance.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The provided <see cref="Type"/>'s associated <see cref="IRuntimeTypeInfo"/>.
         /// </returns>
-        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this Type type, IRuntimeTypeRegistry? typeRegistry)
+        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this Type type)
         {
             Requires.NotNull(type, nameof(type));
 
-            return (typeRegistry ?? RuntimeTypeRegistry.Instance).GetRuntimeType(type);
+            return RuntimeTypeRegistry.Instance.GetRuntimeType(type);
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(type, nameof(type));
 
-            return type.GetTypeInfo().GetNonNullableType().AsType();
+            return IntrospectionExtensions.GetTypeInfo(type).GetNonNullableType().AsType();
         }
 
         /// <summary>
@@ -68,7 +67,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(type, nameof(type));
 
-            return type.GetTypeInfo().IsNullableType();
+            return IntrospectionExtensions.GetTypeInfo(type).IsNullableType();
         }
 
         /// <summary>
@@ -81,8 +80,7 @@ namespace Kephas.Reflection
         public static bool IsEnumerable(this Type type)
         {
             return type != null
-                   && typeof(IEnumerable).GetTypeInfo()
-                       .IsAssignableFrom(type.GetTypeInfo());
+                   && typeof(IEnumerable).IsAssignableFrom(type);
         }
 
         /// <summary>
@@ -99,14 +97,13 @@ namespace Kephas.Reflection
                 return false;
             }
 
-            var typeInfo = type.GetTypeInfo();
-            var collectionTypeInfo = typeof(ICollection<>).GetTypeInfo();
-            if (typeInfo.IsConstructedGenericOf(collectionTypeInfo))
+            var collectionType = typeof(ICollection<>);
+            if (type.IsConstructedGenericOf(collectionType))
             {
                 return true;
             }
 
-            return typeInfo.ImplementedInterfaces.Any(i => i.IsCollection());
+            return type.GetInterfaces().Any(i => i.IsCollection());
         }
 
         /// <summary>
@@ -123,14 +120,13 @@ namespace Kephas.Reflection
                 return false;
             }
 
-            var typeInfo = type.GetTypeInfo();
-            var dictionaryTypeInfo = typeof(IDictionary<,>).GetTypeInfo();
-            if (typeInfo.IsConstructedGenericOf(dictionaryTypeInfo))
+            var dictionaryType = typeof(IDictionary<,>);
+            if (type.IsConstructedGenericOf(dictionaryType))
             {
                 return true;
             }
 
-            return typeInfo.ImplementedInterfaces.Any(i => i.IsDictionary());
+            return type.GetInterfaces().Any(i => i.IsDictionary());
         }
 
         /// <summary>
@@ -143,8 +139,7 @@ namespace Kephas.Reflection
         public static bool IsQueryable(this Type type)
         {
             return type != null
-                   && typeof(IQueryable).GetTypeInfo()
-                       .IsAssignableFrom(type.GetTypeInfo());
+                   && typeof(IQueryable).IsAssignableFrom(type);
         }
 
         /// <summary>
@@ -194,18 +189,16 @@ namespace Kephas.Reflection
 
             bool IsRequestedEnumerable(Type t)
             {
-                var ti = t.GetTypeInfo();
-                return ti.IsGenericType && ti.GetGenericTypeDefinition() == enumerableGenericType;
+                return t.IsGenericType && t.GetGenericTypeDefinition() == enumerableGenericType;
             }
 
             var enumerableType = IsRequestedEnumerable(type)
                                      ? type
-                                     : type.GetTypeInfo()
-                                         .ImplementedInterfaces.SingleOrDefault(IsRequestedEnumerable);
+                                     : type.GetInterfaces().SingleOrDefault(IsRequestedEnumerable);
 
             return enumerableType == null
                        ? null
-                       : enumerableType.GetTypeInfo().GenericTypeArguments[0];
+                       : enumerableType.GenericTypeArguments[0];
         }
 
         /// <summary>
@@ -238,13 +231,12 @@ namespace Kephas.Reflection
         /// Assert.AreSame(type, typeof(IEnumerable&lt;char&gt;));
         /// </code>
         /// </example>
-        public static Type GetBaseConstructedGenericOf(this Type type, Type openGenericType)
+        public static Type? GetBaseConstructedGenericOf(this Type type, Type openGenericType)
         {
             Requires.NotNull(type, nameof(type));
             Requires.NotNull(openGenericType, nameof(openGenericType));
 
-            var openGenericTypeInfo = openGenericType.GetTypeInfo();
-            if (openGenericTypeInfo.IsClass)
+            if (openGenericType.IsClass)
             {
                 while (type != ObjectType)
                 {
@@ -253,12 +245,12 @@ namespace Kephas.Reflection
                         return type;
                     }
 
-                    type = type.GetTypeInfo().BaseType;
+                    type = type.BaseType;
                 }
             }
-            else if (openGenericTypeInfo.IsInterface)
+            else if (openGenericType.IsInterface)
             {
-                var implementedInterfaces = type.GetTypeInfo().ImplementedInterfaces;
+                var implementedInterfaces = type.GetInterfaces();
                 var constructedInterface = implementedInterfaces.FirstOrDefault(
                     t => t.IsConstructedGenericType && t.GetGenericTypeDefinition() == openGenericType);
                 return constructedInterface;
@@ -279,7 +271,28 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(type, nameof(type));
 
-            return type.GetTypeInfo().GetQualifiedFullName(stripVersionInfo);
+            var qualifiedFullName = type.AssemblyQualifiedName;
+            if (string.IsNullOrEmpty(qualifiedFullName))
+            {
+                return qualifiedFullName;
+            }
+
+            if (stripVersionInfo)
+            {
+                // find the second occurence of , and cut there.
+                var index = qualifiedFullName.IndexOf(',');
+                if (index > 0)
+                {
+                    index = qualifiedFullName.IndexOf(',', index + 1);
+                }
+
+                if (index > 0)
+                {
+                    qualifiedFullName = qualifiedFullName.Substring(0, index);
+                }
+            }
+
+            return qualifiedFullName;
         }
     }
 }

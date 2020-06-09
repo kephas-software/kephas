@@ -41,14 +41,14 @@ namespace Kephas.Model.Tests.Runtime
         public async Task GetElementInfosAsync()
         {
             var registrar = Substitute.For<IRuntimeModelRegistry>();
-            registrar.GetRuntimeElementsAsync(CancellationToken.None).Returns(Task.FromResult((IEnumerable<object>)new object[] { typeof(string).GetRuntimeTypeInfo(this.typeRegistry) }));
+            registrar.GetRuntimeElementsAsync(CancellationToken.None).Returns(Task.FromResult((IEnumerable<object>)new object[] { typeof(string).GetRuntimeTypeInfo() }));
 
             var stringInfoMock = Substitute.For<INamedElement>();
 
             var factory = Substitute.For<IRuntimeModelElementFactory>();
-            factory.TryCreateModelElement(Arg.Any<IModelConstructionContext>(), Arg.Is(typeof(string).GetRuntimeTypeInfo(this.typeRegistry))).Returns(stringInfoMock);
+            factory.TryCreateModelElement(Arg.Any<IModelConstructionContext>(), Arg.Is(typeof(string).GetRuntimeTypeInfo())).Returns(stringInfoMock);
 
-            var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { registrar }, this.typeRegistry);
+            var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { registrar });
 
             var elementInfos = (await provider.GetElementInfosAsync(Substitute.For<IModelConstructionContext>())).ToList();
 

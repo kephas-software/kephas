@@ -238,7 +238,7 @@ namespace Kephas.Core.Tests.Services
         {
 #if NETSTANDARD2_1
 #else
-            public ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo(null);
+            public ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo();
 #endif
         }
     }

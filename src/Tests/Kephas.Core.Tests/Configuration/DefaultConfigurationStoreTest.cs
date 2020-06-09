@@ -27,7 +27,7 @@ namespace Kephas.Core.Tests.Configuration
         [Test]
         public void Item_case_insensitive()
         {
-            var configStore = new DefaultConfigurationStore(this.typeRegistry);
+            var configStore = new DefaultConfigurationStore();
             configStore["myKey"] = "123";
 
             Assert.AreEqual("123", configStore["MyKey"]);

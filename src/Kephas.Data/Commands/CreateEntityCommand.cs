@@ -108,7 +108,7 @@ namespace Kephas.Data.Commands
         protected virtual object CreateEntity(ICreateEntityContext operationContext)
         {
             var activator = this.TryGetEntityActivator(operationContext.DataContext) ?? RuntimeActivator.Instance;
-            var entity = activator.CreateInstance(operationContext.EntityType.AsRuntimeTypeInfo(operationContext?.AmbientServices?.TypeRegistry));
+            var entity = activator.CreateInstance(operationContext.EntityType.AsRuntimeTypeInfo());
             return entity;
         }
 

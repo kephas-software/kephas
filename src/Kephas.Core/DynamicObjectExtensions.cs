@@ -32,7 +32,7 @@ namespace Kephas
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo(null);
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
             runtimeTypeInfo.SetValue(obj, propertyName, value);
         }
 
@@ -51,7 +51,7 @@ namespace Kephas
                 return false;
             }
 
-            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo(null);
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
             return runtimeTypeInfo.TrySetValue(obj, propertyName, value);
         }
 
@@ -65,7 +65,7 @@ namespace Kephas
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo(null);
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
             return runtimeTypeInfo.GetValue(obj, propertyName);
         }
 
@@ -82,7 +82,7 @@ namespace Kephas
         {
             Requires.NotNull(obj, nameof(obj));
 
-            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo(null);
+            var runtimeTypeInfo = obj.GetType().AsRuntimeTypeInfo();
             return runtimeTypeInfo.TryGetValue(obj, propertyName, out value);
         }
 
@@ -90,12 +90,11 @@ namespace Kephas
         /// Gets a runtime type information out of the provided instance.
         /// </summary>
         /// <param name="obj">The object.</param>
-        /// <param name="typeRegistry">The type registry.</param>
         /// <returns>A dynamic type information for the provided object.</returns>
-        public static IRuntimeTypeInfo GetRuntimeTypeInfo(this object obj, IRuntimeTypeRegistry? typeRegistry)
+        public static IRuntimeTypeInfo GetRuntimeTypeInfo(this object obj)
         {
             Requires.NotNull(obj, nameof(obj));
-            return obj.GetType().AsRuntimeTypeInfo(typeRegistry);
+            return obj.GetType().AsRuntimeTypeInfo();
         }
 
         /// <summary>

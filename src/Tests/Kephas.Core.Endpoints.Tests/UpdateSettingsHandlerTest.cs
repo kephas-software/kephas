@@ -6,7 +6,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using Kephas.Runtime;
 using Kephas.Threading.Tasks;
 
 namespace Kephas.Core.Endpoints.Tests
@@ -47,7 +46,7 @@ namespace Kephas.Core.Endpoints.Tests
                 .Returns(config);
             var typeResolver = new DefaultTypeResolver(() => new List<Assembly> { typeof(CoreSettings).Assembly });
 
-            var handler = new UpdateSettingsHandler(container, typeResolver, Substitute.For<ISerializationService>(), new RuntimeTypeRegistry());
+            var handler = new UpdateSettingsHandler(container, typeResolver, Substitute.For<ISerializationService>());
             var result = await handler.ProcessAsync(
                 new UpdateSettingsMessage { Settings = new CoreSettings { Task = new TaskSettings { DefaultTimeout = TimeSpan.FromMinutes(5) } } },
                 Substitute.For<IMessagingContext>(),
@@ -85,7 +84,7 @@ namespace Kephas.Core.Endpoints.Tests
                 .Returns(ci => Task.FromResult<object?>(
                     new CoreSettings { Task = new TaskSettings {DefaultTimeout = TimeSpan.FromMinutes(5) } }));
 #endif
-            var handler = new UpdateSettingsHandler(container, typeResolver, serializationService, new RuntimeTypeRegistry());
+            var handler = new UpdateSettingsHandler(container, typeResolver, serializationService);
             var result = await handler.ProcessAsync(
                 new UpdateSettingsMessage { SettingsType = "core", Settings = settingsString },
                 Substitute.For<IMessagingContext>(),

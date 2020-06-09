@@ -26,7 +26,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new PropertyConstructor();
             var context = this.GetConstructionContext(modelSpace);
-            var propertyInfo = typeof(TestModelElement).AsRuntimeTypeInfo(this.TypeRegistry).Properties["Age"];
+            var propertyInfo = typeof(TestModelElement).AsRuntimeTypeInfo().Properties["Age"];
             var modelElement = constructor.TryCreateModelElement(context, propertyInfo);
 
             return modelElement;

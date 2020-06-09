@@ -21,8 +21,6 @@ namespace Kephas.Services.Composition
 
     internal class AppServiceMetadataResolver : IAppServiceMetadataResolver
     {
-        private readonly IRuntimeTypeRegistry? typeRegistry;
-
         /// <summary>
         /// The attribute suffix.
         /// </summary>
@@ -46,10 +44,8 @@ namespace Kephas.Services.Composition
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadataResolver"/> class.
         /// </summary>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
-        internal AppServiceMetadataResolver(IRuntimeTypeRegistry? typeRegistry)
+        internal AppServiceMetadataResolver()
         {
-            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -59,7 +55,7 @@ namespace Kephas.Services.Composition
         /// Information describing the metadata value type.
         /// </value>
         private IRuntimeTypeInfo MetadataValueTypeInfo
-            => this.metadataValueTypeInfo ??= typeof(IMetadataValue).AsRuntimeTypeInfo(this.typeRegistry);
+            => this.metadataValueTypeInfo ??= typeof(IMetadataValue).AsRuntimeTypeInfo();
 
         /// <summary>
         /// Gets the metadata value properties which should be retrieved from the attribute.
@@ -70,7 +66,7 @@ namespace Kephas.Services.Composition
         /// </returns>
         public IDictionary<string, IPropertyInfo> GetMetadataValueProperties(Type attributeType)
         {
-            var attributeTypeInfo = attributeType.AsRuntimeTypeInfo(this.typeRegistry);
+            var attributeTypeInfo = attributeType.AsRuntimeTypeInfo();
 
             const string MetadataValuePropertiesName = "__MetadataValueProperties";
             if (attributeTypeInfo[MetadataValuePropertiesName] is IDictionary<string, IPropertyInfo> metadataValueProperties)

@@ -126,15 +126,14 @@ namespace Kephas.Reflection
         /// Gets the <see cref="IRuntimeTypeInfo"/> for the provided <see cref="TypeInfo"/> instance.
         /// </summary>
         /// <param name="typeInfo">The type information instance.</param>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The provided <see cref="TypeInfo"/>'s associated <see cref="IRuntimeTypeInfo"/>.
         /// </returns>
-        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this TypeInfo typeInfo, IRuntimeTypeRegistry? typeRegistry)
+        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this TypeInfo typeInfo)
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return (typeRegistry ?? RuntimeTypeRegistry.Instance).GetRuntimeType(typeInfo);
+            return RuntimeTypeRegistry.Instance.GetRuntimeType(typeInfo);
         }
 
         /// <summary>
@@ -147,7 +146,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return IsNullableType(typeInfo) ? typeInfo.GenericTypeArguments[0].GetTypeInfo() : typeInfo;
+            return IsNullableType(typeInfo) ? IntrospectionExtensions.GetTypeInfo(typeInfo.GenericTypeArguments[0]) : typeInfo;
         }
 
         /// <summary>
@@ -196,7 +195,7 @@ namespace Kephas.Reflection
                     }
 
                     type = typeInfo.BaseType;
-                    typeInfo = type.GetTypeInfo();
+                    typeInfo = IntrospectionExtensions.GetTypeInfo(type);
                 }
             }
             else if (openGenericTypeInfo.IsInterface)
@@ -204,7 +203,7 @@ namespace Kephas.Reflection
                 var implementedInterfaces = typeInfo.ImplementedInterfaces;
                 var constructedInterface = implementedInterfaces.FirstOrDefault(
                     t => t.IsConstructedGenericType && t.GetGenericTypeDefinition() == openGenericType);
-                return constructedInterface.GetTypeInfo();
+                return IntrospectionExtensions.GetTypeInfo(constructedInterface);
             }
 
             return null;
@@ -222,28 +221,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            var qualifiedFullName = typeInfo.AssemblyQualifiedName;
-            if (string.IsNullOrEmpty(qualifiedFullName))
-            {
-                return qualifiedFullName;
-            }
-
-            if (stripVersionInfo)
-            {
-                // find the second occurence of , and cut there.
-                var index = qualifiedFullName.IndexOf(',');
-                if (index > 0)
-                {
-                    index = qualifiedFullName.IndexOf(',', index + 1);
-                }
-
-                if (index > 0)
-                {
-                    qualifiedFullName = qualifiedFullName.Substring(0, index);
-                }
-            }
-
-            return qualifiedFullName;
+            return TypeExtensions.GetQualifiedFullName(typeInfo.AsType(), stripVersionInfo);
         }
     }
 }

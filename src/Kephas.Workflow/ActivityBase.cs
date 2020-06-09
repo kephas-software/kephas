@@ -15,7 +15,6 @@ namespace Kephas.Workflow
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Reflection;
-    using Kephas.Runtime;
     using Kephas.Workflow.Reflection;
 
     /// <summary>
@@ -61,14 +60,6 @@ namespace Kephas.Workflow
         public object Id { get; protected set; } = Guid.NewGuid();
 
         /// <summary>
-        /// Gets the type registry.
-        /// </summary>
-        protected virtual IRuntimeTypeRegistry? TypeRegistry
-        {
-            get => this.Context?.AmbientServices?.TypeRegistry;
-        }
-
-        /// <summary>
         /// Gets the type information for this instance.
         /// </summary>
         /// <returns>
@@ -88,6 +79,6 @@ namespace Kephas.Workflow
         /// Gets the type information (overridable implementation).
         /// </summary>
         /// <returns>The type information.</returns>
-        protected virtual ITypeInfo GetTypeInfoCore() => this.GetRuntimeTypeInfo(this.TypeRegistry)!;
+        protected virtual ITypeInfo GetTypeInfoCore() => this.GetRuntimeTypeInfo()!;
     }
 }

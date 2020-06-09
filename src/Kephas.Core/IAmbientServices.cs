@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas
 {
     using System;
@@ -22,6 +20,7 @@ namespace Kephas
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Contract interface for ambient services.

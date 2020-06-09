@@ -14,7 +14,6 @@ namespace Kephas.Behaviors
     using System.Threading.Tasks;
 
     using Kephas.Logging;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Base class for asynchronous behavior rules.
@@ -26,10 +25,9 @@ namespace Kephas.Behaviors
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncBehaviorRuleBase{TContext, TValue}"/> class.
         /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        protected AsyncBehaviorRuleBase(IRuntimeTypeRegistry typeRegistry, ILogManager? logManager = null)
-            : base(typeRegistry, logManager)
+        protected AsyncBehaviorRuleBase(ILogManager? logManager = null)
+            : base(logManager)
         {
         }
 

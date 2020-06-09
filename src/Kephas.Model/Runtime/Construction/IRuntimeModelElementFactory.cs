@@ -27,6 +27,6 @@ namespace Kephas.Model.Runtime.Construction
         /// <returns>
         /// A named element information or <c>null</c>.
         /// </returns>
-        INamedElement TryCreateModelElement(IModelConstructionContext constructionContext, object runtimeElement);
+        INamedElement? TryCreateModelElement(IModelConstructionContext constructionContext, object runtimeElement);
     }
 }

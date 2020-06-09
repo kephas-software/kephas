@@ -75,7 +75,7 @@ namespace Kephas.Data.LLBLGen.Commands
             var id = Convert.ToInt64(operationContext.Id);
             var dataContext = (LLBLGenDataContext)operationContext.DataContext;
             var cache = (LLBLGenCache)this.TryGetLocalCache(dataContext);
-            var runtimeEntityType = operationContext.EntityType.AsRuntimeTypeInfo(operationContext?.AmbientServices?.TypeRegistry);
+            var runtimeEntityType = operationContext.EntityType.AsRuntimeTypeInfo();
             var underlyingEntityType = (IRuntimeTypeInfo)this.entityActivator.GetImplementationType(runtimeEntityType);
 
             IEntity2? entity = null;

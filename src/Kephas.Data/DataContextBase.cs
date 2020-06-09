@@ -135,7 +135,7 @@ namespace Kephas.Data
             {
                 var entityType = typeof(T);
                 var implementationTypeInfo = this.EntityActivator.GetImplementationType(
-                    entityType.AsRuntimeTypeInfo(this.AmbientServices?.TypeRegistry),
+                    entityType.AsRuntimeTypeInfo(),
                     queryOperationContext);
                 var implementationType = ((IRuntimeTypeInfo)implementationTypeInfo).Type;
                 if (implementationType != entityType)

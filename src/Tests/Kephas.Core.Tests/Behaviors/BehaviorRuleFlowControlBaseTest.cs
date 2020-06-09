@@ -28,55 +28,43 @@ namespace Kephas.Core.Tests.Behaviors
         [Test]
         public void PriorityOrder_default()
         {
-            var behavior = new DefaultBehaviorRuleFlowControl(this.typeRegistry);
+            var behavior = new DefaultBehaviorRuleFlowControl();
             Assert.AreEqual(0, behavior.ProcessingPriority);
         }
 
         [Test]
         public void PriorityOrder_attribute()
         {
-            var behavior = new PriorityBehaviorRuleFlowControl(this.typeRegistry);
+            var behavior = new PriorityBehaviorRuleFlowControl();
             Assert.AreEqual(12, behavior.ProcessingPriority);
         }
 
         [Test]
         public void IsEndRule_default()
         {
-            var behavior = new DefaultBehaviorRuleFlowControl(this.typeRegistry);
+            var behavior = new DefaultBehaviorRuleFlowControl();
             Assert.IsFalse(behavior.IsEndRule);
         }
 
         [Test]
         public void IsEndRule_attribute()
         {
-            var behavior = new EndRuleBehaviorRuleFlowControl(this.typeRegistry);
+            var behavior = new EndRuleBehaviorRuleFlowControl();
             Assert.IsTrue(behavior.IsEndRule);
         }
 
         private class DefaultBehaviorRuleFlowControl : BehaviorRuleFlowControlBase
         {
-            public DefaultBehaviorRuleFlowControl(IRuntimeTypeRegistry typeRegistry)
-                : base(typeRegistry)
-            {
-            }
         }
 
         [ProcessingPriority(12)]
         private class PriorityBehaviorRuleFlowControl : BehaviorRuleFlowControlBase
         {
-            public PriorityBehaviorRuleFlowControl(IRuntimeTypeRegistry typeRegistry)
-                : base(typeRegistry)
-            {
-            }
         }
 
         [EndRule]
         private class EndRuleBehaviorRuleFlowControl : BehaviorRuleFlowControlBase
         {
-            public EndRuleBehaviorRuleFlowControl(IRuntimeTypeRegistry typeRegistry)
-                : base(typeRegistry)
-            {
-            }
         }
     }
 }

@@ -127,10 +127,10 @@ namespace Kephas.Workflow.Runtime
             var stateMachineInterface = this.Type.GetBaseConstructedGenericOf(typeof(IStateMachine<,>));
             if (stateMachineInterface == null)
             {
-                return typeof(object).AsRuntimeTypeInfo(this.TypeRegistry);
+                return typeof(object).AsRuntimeTypeInfo();
             }
 
-            return stateMachineInterface.GetGenericArguments()[1].AsRuntimeTypeInfo(this.TypeRegistry);
+            return stateMachineInterface.GetGenericArguments()[1].AsRuntimeTypeInfo();
         }
 
         private ITypeInfo? ComputeTargetType()
@@ -138,10 +138,10 @@ namespace Kephas.Workflow.Runtime
             var stateMachineInterface = this.Type.GetBaseConstructedGenericOf(typeof(IStateMachine<,>));
             if (stateMachineInterface == null)
             {
-                return typeof(object).AsRuntimeTypeInfo(this.TypeRegistry);
+                return typeof(object).AsRuntimeTypeInfo();
             }
 
-            return stateMachineInterface.GetGenericArguments()[0].AsRuntimeTypeInfo(this.TypeRegistry);
+            return stateMachineInterface.GetGenericArguments()[0].AsRuntimeTypeInfo();
         }
 
         private IPropertyInfo? ComputeTargetStateProperty()

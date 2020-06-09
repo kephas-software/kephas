@@ -142,12 +142,12 @@ namespace Kephas.Data.Tests
             var dataStore = Substitute.For<IDataStore>();
             var entityActivator = Substitute.For<IActivator>();
             entityActivator
-                .GetImplementationType(typeof(IEntity).AsRuntimeTypeInfo(null), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Entity).AsRuntimeTypeInfo(null));
+                .GetImplementationType(typeof(IEntity).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Entity).AsRuntimeTypeInfo());
 
             entityActivator
-                .GetImplementationType(typeof(Entity).AsRuntimeTypeInfo(null), Arg.Any<IContext>(), Arg.Any<bool>())
-                .Returns(typeof(Entity).AsRuntimeTypeInfo(null));
+                .GetImplementationType(typeof(Entity).AsRuntimeTypeInfo(), Arg.Any<IContext>(), Arg.Any<bool>())
+                .Returns(typeof(Entity).AsRuntimeTypeInfo());
 
             dataStore.EntityActivator.Returns(entityActivator);
             dataContext.Initialize(dataContext.CreateDataInitializationContext(dataStore));

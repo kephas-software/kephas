@@ -43,7 +43,7 @@ namespace Kephas.Composition.Lite.Internal
             if (serviceInfo.InstanceType != null)
             {
                 const string AppServiceMetadataKey = "__AppServiceMetadata";
-                var instanceTypeInfo = serviceInfo.InstanceType.AsRuntimeTypeInfo(typeRegistry);
+                var instanceTypeInfo = serviceInfo.InstanceType.AsRuntimeTypeInfo();
                 if (instanceTypeInfo[AppServiceMetadataKey] is IDictionary<string, object> savedMetadata)
                 {
                     metadata = savedMetadata;
@@ -67,7 +67,7 @@ namespace Kephas.Composition.Lite.Internal
                 metadata = new Dictionary<string, object>();
             }
 
-            return (TMetadata)typeof(TMetadata).AsRuntimeTypeInfo(typeRegistry)
+            return (TMetadata)typeof(TMetadata).AsRuntimeTypeInfo()
                 .CreateInstance(new object[] { metadata });
         }
 
@@ -101,7 +101,7 @@ namespace Kephas.Composition.Lite.Internal
         {
             // leave the conversion to RuntimeTypeInfo here
             // as it may be possible to use runtime added attributes
-            var metaAttrs = serviceImplementationType.AsRuntimeTypeInfo(typeRegistry).GetAttributes<Attribute>();
+            var metaAttrs = serviceImplementationType.AsRuntimeTypeInfo().GetAttributes<Attribute>();
             foreach (var metaAttr in metaAttrs)
             {
                 var attrType = metaAttr.GetType();

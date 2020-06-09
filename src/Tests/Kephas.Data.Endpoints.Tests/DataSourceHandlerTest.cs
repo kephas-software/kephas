@@ -44,7 +44,7 @@ namespace Kephas.Data.Endpoints.Tests
             var ambientServices = new AmbientServices(typeRegistry: this.typeRegistry);
             dataContext.AmbientServices.Returns(ambientServices);
             dataSpace[typeof(int)].Returns(dataContext);
-            dataSpace[typeof(int).AsRuntimeTypeInfo(this.typeRegistry)].Returns(dataContext);
+            dataSpace[typeof(int).AsRuntimeTypeInfo()].Returns(dataContext);
 
             var dataSpaceFactory = new ExportFactory<IDataSpace>(() => dataSpace);
             var dataSourceService = Substitute.For<IDataSourceService>();

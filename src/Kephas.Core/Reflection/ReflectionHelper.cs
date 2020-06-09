@@ -283,15 +283,14 @@ namespace Kephas.Reflection
         /// Gets the <see cref="IRuntimeAssemblyInfo"/> for the provided <see cref="Assembly"/> instance.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>
         /// The provided <see cref="Assembly"/>'s associated <see cref="IRuntimeAssemblyInfo"/>.
         /// </returns>
-        public static IRuntimeAssemblyInfo AsRuntimeAssemblyInfo(this Assembly assembly, IRuntimeTypeRegistry? typeRegistry)
+        public static IRuntimeAssemblyInfo AsRuntimeAssemblyInfo(this Assembly assembly)
         {
             Requires.NotNull(assembly, nameof(assembly));
 
-            return (typeRegistry ?? RuntimeTypeRegistry.Instance).GetRuntimeAssembly(assembly);
+            return RuntimeTypeRegistry.Instance.GetRuntimeAssembly(assembly);
         }
 
         /// <summary>
@@ -324,14 +323,13 @@ namespace Kephas.Reflection
         /// of its runtime type.
         /// </summary>
         /// <param name="obj">The object.</param>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <returns>A type information for the provided object.</returns>
-        public static ITypeInfo GetTypeInfo(this object obj, IRuntimeTypeRegistry? typeRegistry)
+        public static ITypeInfo GetTypeInfo(this object obj)
         {
             Requires.NotNull(obj, nameof(obj));
 
             var typeInfo = (obj as IInstance)?.GetTypeInfo();
-            return typeInfo ?? obj.GetType().AsRuntimeTypeInfo(typeRegistry);
+            return typeInfo ?? obj.GetType().AsRuntimeTypeInfo();
         }
     }
 }

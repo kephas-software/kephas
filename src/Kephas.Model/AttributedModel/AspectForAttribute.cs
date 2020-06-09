@@ -40,7 +40,7 @@ namespace Kephas.Model.AttributedModel
         /// <returns>A predicate to filter the classifiers based on the provided runtime types.</returns>
         private static Func<IClassifier, bool> GetRuntimeTypesFilter(Type[] runtimeTypes)
         {
-            var runtimeTypeInfos = runtimeTypes.Select(t => t.AsRuntimeTypeInfo(null)).ToList();
+            var runtimeTypeInfos = runtimeTypes.Select(t => t.AsRuntimeTypeInfo()).ToList();
             return
                 c =>
                 c.Parts.OfType<IRuntimeTypeInfo>()

@@ -61,8 +61,8 @@ namespace Kephas.Workflow.Tests
 
         public class TestStateMachine : StateMachineBase<TestEntity, TestState>
         {
-            public TestStateMachine(TestEntity target, IRuntimeTypeRegistry typeRegistry, ILogManager logManager = null)
-                : base(target, typeRegistry, logManager)
+            public TestStateMachine(TestEntity target, IRuntimeTypeRegistry typeRegistry)
+                : base(target, typeRegistry)
             {
             }
 

@@ -12,7 +12,6 @@ namespace Kephas.Core.Tests.Services.Behaviors
 {
     using Kephas.Behaviors;
     using Kephas.Composition;
-    using Kephas.Runtime;
     using Kephas.Services.Behaviors;
     using NSubstitute;
     using NUnit.Framework;
@@ -23,7 +22,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         [Test]
         public void CanApply_success()
         {
-            var behavior = new TestEnabledServiceBehaviorRule(new RuntimeTypeRegistry());
+            var behavior = new TestEnabledServiceBehaviorRule();
             var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<ICompositionContext>(), new TestService()));
             Assert.IsTrue(canApply);
         }
@@ -31,7 +30,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         [Test]
         public void CanApply_failure_mismatched_type()
         {
-            var behavior = new TestEnabledServiceBehaviorRule(new RuntimeTypeRegistry());
+            var behavior = new TestEnabledServiceBehaviorRule();
             var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<ICompositionContext>(), new AnotherTestService()));
             Assert.IsFalse(canApply);
         }
@@ -39,7 +38,7 @@ namespace Kephas.Core.Tests.Services.Behaviors
         [Test]
         public void CanApply_failure_mismatched_derived_type()
         {
-            var behavior = new TestEnabledServiceBehaviorRule(new RuntimeTypeRegistry());
+            var behavior = new TestEnabledServiceBehaviorRule();
             var canApply = behavior.CanApply(new ServiceBehaviorContext<ITestService>(Substitute.For<ICompositionContext>(), new DerivedTestService()));
             Assert.IsFalse(canApply);
         }
@@ -51,11 +50,6 @@ namespace Kephas.Core.Tests.Services.Behaviors
 
         private class TestEnabledServiceBehaviorRule : EnabledServiceBehaviorRuleBase<ITestService, TestService>
         {
-            public TestEnabledServiceBehaviorRule(IRuntimeTypeRegistry typeRegistry)
-                : base(typeRegistry)
-            {
-            }
-
             /// <summary>
             /// Gets the behavior value.
             /// </summary>

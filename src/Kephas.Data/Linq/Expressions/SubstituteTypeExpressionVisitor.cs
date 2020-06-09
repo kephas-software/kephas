@@ -62,7 +62,7 @@ namespace Kephas.Data.Linq.Expressions
             this.implementationTypeResolver = (t, ctx) =>
                 {
                     var implementationType = implementationTypeResolver?.Invoke(t, ctx)
-                                             ?? (activator?.GetImplementationType(t.AsRuntimeTypeInfo(context?.AmbientServices?.TypeRegistry), throwOnNotFound: false, activationContext: ctx) as IRuntimeTypeInfo)?.Type;
+                                             ?? (activator?.GetImplementationType(t.AsRuntimeTypeInfo(), throwOnNotFound: false, activationContext: ctx) as IRuntimeTypeInfo)?.Type;
                     return implementationType;
                 };
             this.constantHandlers = constantHandlers ?? GetDefaultSubstituteTypeConstantHandlers();
@@ -171,10 +171,10 @@ namespace Kephas.Data.Linq.Expressions
                 switch (node.Member)
                 {
                     case FieldInfo _:
-                        otherMember = concreteType.AsRuntimeTypeInfo(this.context?.AmbientServices?.TypeRegistry).Fields[memberName];
+                        otherMember = concreteType.AsRuntimeTypeInfo().Fields[memberName];
                         break;
                     case PropertyInfo _:
-                        otherMember = concreteType.AsRuntimeTypeInfo(this.context?.AmbientServices?.TypeRegistry).Properties[memberName];
+                        otherMember = concreteType.AsRuntimeTypeInfo().Properties[memberName];
                         break;
                     default:
                         return base.VisitMember(node);
@@ -347,10 +347,10 @@ namespace Kephas.Data.Linq.Expressions
                 return this.TryResolveImplementationType(constructedType);
             }
 
-            var newGenericTypeDefiniton = constructedType.GetGenericTypeDefinition();
+            var newGenericTypeDefinition = constructedType.GetGenericTypeDefinition();
             var constructedTypeInfo = constructedType.GetTypeInfo();
             var newGenericArgs = constructedTypeInfo.GenericTypeArguments.Select(t => this.TryResolveDeepImplementationType(t) ?? t).ToArray();
-            var newGenericType = newGenericTypeDefiniton.MakeGenericType(newGenericArgs);
+            var newGenericType = newGenericTypeDefinition.MakeGenericType(newGenericArgs);
             return newGenericType;
         }
 

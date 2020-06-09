@@ -42,10 +42,9 @@ namespace Kephas.Model.Tests.Runtime.Construction.Builders
                 RuntimeModelElementFactory = new DefaultRuntimeModelElementFactory(
                     new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>(),
                     new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata
-                    >>(),
-                    this.typeRegistry),
+                    >>()),
             };
-            var dynamicType = typeof(T).AsRuntimeTypeInfo(this.typeRegistry);
+            var dynamicType = typeof(T).AsRuntimeTypeInfo();
             return new ValueTypeBuilder(context, dynamicType);
         }
 

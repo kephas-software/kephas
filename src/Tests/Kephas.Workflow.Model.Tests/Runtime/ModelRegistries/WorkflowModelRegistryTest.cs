@@ -88,8 +88,8 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
         [ReturnType(typeof(int))]
         public class TestStateMachine : StateMachineBase<string, LogLevel>
         {
-            public TestStateMachine(string target, IRuntimeTypeRegistry typeRegistry, ILogManager? logManager = null)
-                : base(target, typeRegistry, logManager)
+            public TestStateMachine(string target, IRuntimeTypeRegistry typeRegistry)
+                : base(target, typeRegistry)
             {
             }
         }

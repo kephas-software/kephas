@@ -43,7 +43,7 @@ namespace Kephas.Data.LLBLGen
         /// <returns>The new original entity.</returns>
         protected override IExpando CreateOriginalEntity()
         {
-            var runtimeTypeInfo = this.Entity.GetTypeInfo(this.DataContext?.AmbientServices?.TypeRegistry);
+            var runtimeTypeInfo = this.Entity.GetTypeInfo();
             var typeInfo = this.modelTypeResolver.ResolveModelType(runtimeTypeInfo, throwOnNotFound: false) ?? runtimeTypeInfo;
             var originalValues = new Dictionary<string, object>();
             foreach (var prop in typeInfo.Properties)

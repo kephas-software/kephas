@@ -31,7 +31,6 @@ namespace Kephas.Core.Endpoints
         private readonly ICompositionContext compositionContext;
         private readonly ITypeResolver typeResolver;
         private readonly ISerializationService serializationService;
-        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateSettingsHandler"/> class.
@@ -39,17 +38,14 @@ namespace Kephas.Core.Endpoints
         /// <param name="compositionContext">The composition context.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="serializationService">The serialization service.</param>
-        /// <param name="typeRegistry">The type registry.</param>
         public UpdateSettingsHandler(
             ICompositionContext compositionContext,
             ITypeResolver typeResolver,
-            ISerializationService serializationService,
-            IRuntimeTypeRegistry typeRegistry)
+            ISerializationService serializationService)
         {
             this.compositionContext = compositionContext;
             this.typeResolver = typeResolver;
             this.serializationService = serializationService;
-            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -104,7 +100,7 @@ namespace Kephas.Core.Endpoints
 
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
             var configuration = this.compositionContext.GetExport(configurationType);
-            var updateMethod = (IRuntimeMethodInfo)configuration.GetRuntimeTypeInfo(typeRegistry)
+            var updateMethod = (IRuntimeMethodInfo)configuration.GetRuntimeTypeInfo()
                 .GetMember(nameof(IConfiguration<CoreSettings>.UpdateSettingsAsync));
             var result = (IOperationResult<bool>)(await updateMethod.InvokeAsync(configuration, new[] { settings, token }).PreserveThreadContext());
             return new ResponseMessage

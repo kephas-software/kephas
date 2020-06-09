@@ -54,7 +54,7 @@ namespace Kephas.Data.Behaviors
                 return DataValidationResult.Success;
             }
 
-            var typeInfo = entity.GetTypeInfo(operationContext.AmbientServices?.TypeRegistry);
+            var typeInfo = entity.GetTypeInfo();
             var validationFn = typeInfo[ValidationFnKey] as Func<object, IEntityEntry, IDataOperationContext, IDataValidationResult>;
             if (validationFn == null)
             {

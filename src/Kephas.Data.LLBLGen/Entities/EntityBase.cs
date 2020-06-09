@@ -214,7 +214,7 @@ namespace Kephas.Data.LLBLGen.Entities
         /// </returns>
         protected IRuntimeTypeInfo GetRuntimeTypeInfo()
         {
-            return this.runtimeTypeInfo ??= this.GetType().AsRuntimeTypeInfo(this.GetEntityEntry()?.DataContext?.AmbientServices?.TypeRegistry);
+            return this.runtimeTypeInfo ??= this.GetType().AsRuntimeTypeInfo();
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace Kephas.Data.LLBLGen.Entities
         /// </returns>
         protected virtual ITypeInfo ComputeTypeInfo()
         {
-            return this.GetType().GetAbstractTypeInfo(this.GetEntityEntry()?.DataContext?.AmbientServices?.TypeRegistry);
+            return this.GetType().GetAbstractTypeInfo();
         }
 
         /// <summary>

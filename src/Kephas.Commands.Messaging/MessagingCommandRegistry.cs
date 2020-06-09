@@ -85,7 +85,7 @@ namespace Kephas.Commands.Messaging
         /// <param name="t">The type.</param>
         /// <returns>The <see cref="IOperationInfo"/>.</returns>
         protected virtual IOperationInfo ToOperationInfo(Type t) =>
-            new MessageOperationInfo(this.typeRegistry, t.AsRuntimeTypeInfo(this.typeRegistry), this.LazyMessageProcessor);
+            new MessageOperationInfo(this.typeRegistry, t.AsRuntimeTypeInfo(), this.LazyMessageProcessor);
 
         private bool IsMessageType(Type type) => !type.IsAbstract
                                                  && typeof(IMessage).IsAssignableFrom(type)

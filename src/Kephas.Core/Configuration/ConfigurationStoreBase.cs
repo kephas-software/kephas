@@ -17,7 +17,6 @@ namespace Kephas.Configuration
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
-    using Kephas.Runtime;
 
     /// <summary>
     /// Abstract base class for configuration stores.
@@ -30,11 +29,9 @@ namespace Kephas.Configuration
         /// Initializes a new instance of the <see cref="ConfigurationStoreBase"/> class.
         /// </summary>
         /// <param name="store">The store.</param>
-        /// <param name="typeRegistry">The type serviceRegistry.</param>
-        protected ConfigurationStoreBase(IIndexable store, IRuntimeTypeRegistry typeRegistry)
+        protected ConfigurationStoreBase(IIndexable store)
         {
             this.InternalStore = store;
-            this.TypeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -44,11 +41,6 @@ namespace Kephas.Configuration
         /// The internal store.
         /// </value>
         protected IIndexable InternalStore { get; }
-
-        /// <summary>
-        /// Gets the type serviceRegistry.
-        /// </summary>
-        protected IRuntimeTypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Indexer to get or set items within this collection using array index syntax.
@@ -95,7 +87,7 @@ namespace Kephas.Configuration
         /// </returns>
         public object? TryGetSettings(Type settingsType)
         {
-            return this.TryGetOrAddSettings(settingsType, () => settingsType.AsRuntimeTypeInfo(this.TypeRegistry).CreateInstance());
+            return this.TryGetOrAddSettings(settingsType, () => settingsType.AsRuntimeTypeInfo().CreateInstance());
         }
 
         /// <summary>
@@ -174,7 +166,7 @@ namespace Kephas.Configuration
         /// </returns>
         protected virtual object CreateSettings(Type settingsType)
         {
-            var settingsTypeInfo = settingsType.AsRuntimeTypeInfo(this.TypeRegistry);
+            var settingsTypeInfo = settingsType.AsRuntimeTypeInfo();
             var settings = settingsTypeInfo.CreateInstance();
 
             return settings;

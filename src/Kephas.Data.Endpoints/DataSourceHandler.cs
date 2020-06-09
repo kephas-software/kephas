@@ -123,7 +123,7 @@ namespace Kephas.Data.Endpoints
                 throw new InvalidOperationException($"Could not resolve type '{entityTypeName}'.");
             }
 
-            return entityType.AsRuntimeTypeInfo(context.AmbientServices?.TypeRegistry);
+            return entityType.AsRuntimeTypeInfo();
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Kephas.Data.Endpoints
         {
             if (entityType is IRuntimeTypeInfo runtimeEntityType)
             {
-                return this.projectedTypeResolver.ResolveProjectedType(runtimeEntityType.Type).AsRuntimeTypeInfo(context.AmbientServices?.TypeRegistry);
+                return this.projectedTypeResolver.ResolveProjectedType(runtimeEntityType.Type).AsRuntimeTypeInfo();
             }
 
             return entityType;

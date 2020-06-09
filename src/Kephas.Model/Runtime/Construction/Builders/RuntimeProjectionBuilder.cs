@@ -49,7 +49,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// </returns>
         public RuntimeProjectionBuilder Dim<TModelDimensionElement>()
         {
-            this.projection.Add(typeof(TModelDimensionElement).AsRuntimeTypeInfo(this.constructionContext?.AmbientServices?.TypeRegistry));
+            this.projection.Add(typeof(TModelDimensionElement).AsRuntimeTypeInfo());
             return this;
         }
     }

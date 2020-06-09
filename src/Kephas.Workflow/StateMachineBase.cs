@@ -19,6 +19,7 @@ namespace Kephas.Workflow
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -30,24 +31,22 @@ namespace Kephas.Workflow
     /// </summary>
     /// <typeparam name="TTarget">Type of the target.</typeparam>
     /// <typeparam name="TState">Type of the state.</typeparam>
-    public abstract class StateMachineBase<TTarget, TState> : Loggable, IStateMachine<TTarget, TState>
+    public abstract class StateMachineBase<TTarget, TState> : Expando, IStateMachine<TTarget, TState>
         where TTarget : class
     {
-        private readonly IRuntimeTypeRegistry? typeRegistry;
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateMachineBase{TTarget, TState}"/> class.
         /// </summary>
         /// <param name="target">The target instance to control.</param>
-        /// <param name="typeRegistry">The type registry.</param>
-        /// <param name="logManager">Optional. Manager for log.</param>
-        protected StateMachineBase(TTarget target, IRuntimeTypeRegistry? typeRegistry, ILogManager? logManager = null)
-            : base(logManager)
+        /// <param name="typeRegistry">Optional. The type registry.</param>
+        protected StateMachineBase(TTarget target, IRuntimeTypeRegistry? typeRegistry = null)
         {
             Requires.NotNull(target, nameof(target));
 
             this.Target = target;
-            this.typeRegistry = typeRegistry;
+            this.typeRegistry = typeRegistry ?? RuntimeTypeRegistry.Instance;
         }
 
         /// <summary>
@@ -88,7 +87,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// The type information.
         /// </returns>
-        public virtual IStateMachineInfo GetTypeInfo() => (IStateMachineInfo)this.GetRuntimeTypeInfo(this.typeRegistry)!;
+        public virtual IStateMachineInfo GetTypeInfo() => (IStateMachineInfo)this.typeRegistry.GetRuntimeType(this.GetType());
 
         /// <summary>
         /// Gets the type information.
@@ -114,7 +113,7 @@ namespace Kephas.Workflow
 
             if (transitionInfo == null)
             {
-                throw new InvalidTransitionException($"Cound not identify transition from '{this.CurrentState}' to '{context.To}'");
+                throw new InvalidTransitionException($"Could not identify transition from '{this.CurrentState}' to '{context.To}'");
             }
 
             try
@@ -127,7 +126,7 @@ namespace Kephas.Workflow
             }
             catch (Exception ex)
             {
-                this.Logger.Error(ex, "Could not transition the state machine for {target} to '{state}' through '{transition}'.", this.Target, transitionInfo.To, transitionInfo.Name);
+                context.Logger.Error(ex, "Could not transition the state machine for {target} to '{state}' through '{transition}'.", this.Target, transitionInfo.To, transitionInfo.Name);
                 throw;
             }
         }
@@ -166,7 +165,7 @@ namespace Kephas.Workflow
             if (returnType.IsConstructedGenericOf(typeof(ValueTask<>)))
             {
                 var valueTaskObject = this.InvokeTransition(transitionInfo, context, cancellationToken)!;
-                var task = (Task)valueTaskObject.GetRuntimeTypeInfo(this.typeRegistry)
+                var task = (Task)valueTaskObject.GetRuntimeTypeInfo()
                             .Invoke(valueTaskObject, nameof(ValueTask<int>.AsTask), Array.Empty<object>())!;
                 return task.ContinueWith(t => t.GetPropertyValue(nameof(Task<int>.Result)), cancellationToken);
             }
