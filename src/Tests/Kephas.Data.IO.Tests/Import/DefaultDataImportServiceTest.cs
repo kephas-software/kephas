@@ -232,7 +232,7 @@ namespace Kephas.Data.IO.Tests.Import
         {
             var sourceDataContext = Substitute.For<IDataContext>();
             sourceDataContext.Attach(Arg.Any<object>())
-                .Returns(ci => new EntityEntry(ci.Arg<object>()));
+                .Returns(ci => new EntityEntry(ci.Arg<object>()) { DataContext = sourceDataContext });
 
             var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
             sourceDataContext.AmbientServices.Returns(ambientServices);
@@ -250,7 +250,7 @@ namespace Kephas.Data.IO.Tests.Import
                 .Returns(
                     ci =>
                         {
-                            var ei = new EntityEntry(ci.Arg<object>());
+                            var ei = new EntityEntry(ci.Arg<object>()) { DataContext = targetDataContext };
                             attachEntityCallback?.Invoke(ei);
                             return ei;
                         });

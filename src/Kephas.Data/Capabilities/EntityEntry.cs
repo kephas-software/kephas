@@ -81,7 +81,7 @@ namespace Kephas.Data.Capabilities
         /// <value>
         /// The original entity.
         /// </value>
-        public IExpando OriginalEntity => this.originalEntity ?? (this.originalEntity = this.CreateOriginalEntity());
+        public IExpando OriginalEntity => this.originalEntity ??= this.CreateOriginalEntity();
 
         /// <summary>
         /// Gets the identifier of the entity.

@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Workflow
 {
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Dynamic;
     using Kephas.Workflow.Reflection;
 
     /// <summary>
@@ -23,7 +22,7 @@ namespace Kephas.Workflow
     /// <remarks>
     /// A state machine instance may transition the state of the target multiple times.
     /// </remarks>
-    public interface IStateMachine : IInstance<IStateMachineInfo>
+    public interface IStateMachine : IExpando, IInstance<IStateMachineInfo>
     {
         /// <summary>
         /// Gets the target controlled by the state machine.
