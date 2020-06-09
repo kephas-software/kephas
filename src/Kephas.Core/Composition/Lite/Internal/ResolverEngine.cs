@@ -34,7 +34,7 @@ namespace Kephas.Composition.Lite.Internal
             this.registry = registry;
         }
 
-        public object GetService(Type serviceType)
+        public object? GetService(Type serviceType)
         {
             if (!this.ambientServicesRef.TryGetTarget(out var ambientServices))
             {

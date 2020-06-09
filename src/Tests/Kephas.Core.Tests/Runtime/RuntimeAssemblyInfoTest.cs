@@ -8,15 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Reflection;
-using NSubstitute;
-
 namespace Kephas.Core.Tests.Runtime
 {
     using System.Linq;
 
+    using Kephas.Reflection;
     using Kephas.Runtime;
-
+    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
@@ -39,10 +37,10 @@ namespace Kephas.Core.Tests.Runtime
         }
 
         [Test]
-        public void Types_declaring_container_set()
+        public void Types_declaring_container_set_and_identical()
         {
             var registry = new RuntimeTypeRegistry();
-            var assemblyInfo = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
+            var assemblyInfo = registry.GetRuntimeAssembly(typeof(RuntimeAssemblyInfoTest).Assembly);
             Assert.IsTrue(assemblyInfo.Types.All(t => t.DeclaringContainer == assemblyInfo));
         }
 
@@ -58,6 +56,33 @@ namespace Kephas.Core.Tests.Runtime
             var types = assemblyInfo.Types;
             Assert.AreEqual(1, types.Count());
             Assert.AreEqual("RuntimeAssemblyInfoTest", types.Single().Name);
+        }
+
+        [Test]
+        public void Equals()
+        {
+            var registry = new RuntimeTypeRegistry();
+            var assemblyInfo = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
+            var assemblyInfo2 = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
+            Assert.IsTrue(assemblyInfo.Equals(assemblyInfo2));
+        }
+
+        [Test]
+        public void op_Equality()
+        {
+            var registry = new RuntimeTypeRegistry();
+            var assemblyInfo = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
+            var assemblyInfo2 = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
+            Assert.IsTrue(assemblyInfo == assemblyInfo2);
+        }
+
+        [Test]
+        public void op_Inequality()
+        {
+            var registry = new RuntimeTypeRegistry();
+            var assemblyInfo = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
+            var assemblyInfo2 = new RuntimeAssemblyInfo(registry, typeof(RuntimeAssemblyInfoTest).Assembly, null);
+            Assert.IsFalse(assemblyInfo != assemblyInfo2);
         }
     }
 }

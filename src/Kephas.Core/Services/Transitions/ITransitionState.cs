@@ -42,10 +42,10 @@ namespace Kephas.Services.Transitions
         bool IsCompleted { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the transition is completed succcessfully.
+        /// Gets a value indicating whether the transition is completed successfully.
         /// </summary>
         /// <value>
-        /// <c>true</c> if the transition  is completed succcessfully; otherwise, <c>false</c>.
+        /// <c>true</c> if the transition  is completed successfully; otherwise, <c>false</c>.
         /// </value>
         bool IsCompletedSuccessfully { get; }
 
@@ -63,6 +63,6 @@ namespace Kephas.Services.Transitions
         /// <value>
         /// The exception.
         /// </value>
-        Exception Exception { get; }
+        Exception? Exception { get; }
     }
 }

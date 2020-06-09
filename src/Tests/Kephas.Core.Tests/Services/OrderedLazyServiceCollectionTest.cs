@@ -99,13 +99,13 @@ namespace Kephas.Core.Tests.Services
                         () => instance1,
                         new AppServiceMetadata(overridePriority: 3, processingPriority: 1)
                             {
-                                ServiceType = typeof(TestDerived),
+                                ServiceInstanceType = typeof(TestDerived),
                             }),
                     new Lazy<IInstance, AppServiceMetadata>(
                         () => instance2,
                         new AppServiceMetadata(overridePriority: 2, processingPriority: 2)
                             {
-                                ServiceType = typeof(Test),
+                                ServiceInstanceType = typeof(Test),
                             }),
                     new Lazy<IInstance, AppServiceMetadata>(
                         () => instance3,
@@ -114,7 +114,7 @@ namespace Kephas.Core.Tests.Services
                         () => instance4,
                         new AppServiceMetadata(overridePriority: 1, processingPriority: 1, isOverride: true)
                             {
-                                ServiceType = typeof(TestMostDerived),
+                                ServiceInstanceType = typeof(TestMostDerived),
                             }),
                 }).ToList();
 
@@ -139,13 +139,13 @@ namespace Kephas.Core.Tests.Services
                         () => instance1,
                         new AppServiceMetadata(overridePriority: 3, processingPriority: 1, isOverride: true)
                             {
-                                ServiceType = typeof(TestDerived),
+                                ServiceInstanceType = typeof(TestDerived),
                             }),
                     new Lazy<IInstance, AppServiceMetadata>(
                         () => instance2,
                         new AppServiceMetadata(overridePriority: 2, processingPriority: 2, isOverride: true)
                             {
-                                ServiceType = typeof(Test),
+                                ServiceInstanceType = typeof(Test),
                             }),
                     new Lazy<IInstance, AppServiceMetadata>(
                         () => instance3,
@@ -154,7 +154,7 @@ namespace Kephas.Core.Tests.Services
                         () => instance4,
                         new AppServiceMetadata(overridePriority: 1, processingPriority: 1, isOverride: true)
                             {
-                                ServiceType = typeof(TestMostDerived),
+                                ServiceInstanceType = typeof(TestMostDerived),
                             }),
                 }).ToList();
 

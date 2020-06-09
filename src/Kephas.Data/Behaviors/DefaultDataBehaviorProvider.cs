@@ -78,14 +78,13 @@ namespace Kephas.Data.Behaviors
         /// </returns>
         private IEnumerable<TBehavior> ComputeDataBehaviors<TBehavior>(Type type)
         {
-            var typeInfo = type.GetTypeInfo();
-            var behaviorTypeInfo = typeof(TBehavior).GetTypeInfo();
+            var behaviorType = typeof(TBehavior);
             var behaviors = (from f in this.dataBehaviorFactories
-                                 let entityTypeInfo = f.Metadata.EntityType.GetTypeInfo()
-                                 let serviceTypeInfo = f.Metadata.ServiceType.GetTypeInfo()
+                                 let entityType = f.Metadata.EntityType
+                                 let serviceInstanceType = f.Metadata.ServiceInstanceType
                                  where
-                                     entityTypeInfo.IsAssignableFrom(typeInfo)
-                                     && behaviorTypeInfo.IsAssignableFrom(serviceTypeInfo)
+                                     entityType.IsAssignableFrom(type)
+                                     && behaviorType.IsAssignableFrom(serviceInstanceType)
                                  orderby f.Metadata.ProcessingPriority
                                  select f.CreateExport().Value)
                              .Cast<TBehavior>()

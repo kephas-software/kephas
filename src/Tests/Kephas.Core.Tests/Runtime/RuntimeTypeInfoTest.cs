@@ -108,7 +108,7 @@ namespace Kephas.Core.Tests.Runtime
         }
 
         [Test]
-        public void op_Equals_two_instances_based_on_the_same_type()
+        public void op_Equality_two_instances_based_on_the_same_type()
         {
             var registry = new RuntimeTypeRegistry();
             var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
@@ -117,7 +117,7 @@ namespace Kephas.Core.Tests.Runtime
         }
 
         [Test]
-        public void op_Equals_two_instances_based_on_the_same_type_different_registries()
+        public void op_Equality_two_instances_based_on_the_same_type_different_registries()
         {
             var registry = new RuntimeTypeRegistry();
             var registry2 = new RuntimeTypeRegistry();
@@ -127,7 +127,7 @@ namespace Kephas.Core.Tests.Runtime
         }
 
         [Test]
-        public void op_Inequals_two_instances_based_on_the_same_type()
+        public void op_Inequality_two_instances_based_on_the_same_type()
         {
             var registry = new RuntimeTypeRegistry();
             var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
@@ -136,7 +136,7 @@ namespace Kephas.Core.Tests.Runtime
         }
 
         [Test]
-        public void op_Inequals_two_instances_based_on_the_same_type_different_registries()
+        public void op_Inequality_two_instances_based_on_the_same_type_different_registries()
         {
             var registry = new RuntimeTypeRegistry();
             var registry2 = new RuntimeTypeRegistry();

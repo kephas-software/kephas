@@ -386,11 +386,11 @@ namespace Kephas.Messaging.Distributed
             }
             catch (Exception ex)
             {
-                this.Logger.Warn(ex, "Error while trying to create and initialize router '{router}'.", f.Metadata.ServiceType);
+                this.Logger.Warn(ex, "Error while trying to create and initialize router '{router}'.", f.Metadata.ServiceInstanceType);
                 f.Metadata[InitializationException] = ex;
                 if (f.Metadata.IsOptional)
                 {
-                    this.Logger.Warn("Router '{router}' will be ignored.", f.Metadata.ServiceType);
+                    this.Logger.Warn("Router '{router}' will be ignored.", f.Metadata.ServiceInstanceType);
                     return null;
                 }
 

@@ -188,9 +188,9 @@ namespace Kephas.Core.Tests.Services.Composition
             Assert.IsTrue(metadata.ContainsKey("ProcessingPriority"));
             Assert.IsTrue(metadata.ContainsKey("OverridePriority"));
             Assert.IsTrue(metadata.ContainsKey("ServiceName"));
-            Assert.IsTrue(metadata.ContainsKey(nameof(AppServiceMetadata.ServiceType)));
+            Assert.IsTrue(metadata.ContainsKey(nameof(AppServiceMetadata.ServiceInstanceType)));
 
-            var valueGetter = (Func<Type, object>)metadata[nameof(AppServiceMetadata.ServiceType)];
+            var valueGetter = (Func<Type, object>)metadata[nameof(AppServiceMetadata.ServiceInstanceType)];
             Assert.AreEqual(typeof(IDefaultMetadataAppService), valueGetter(typeof(IDefaultMetadataAppService)));
             Assert.AreEqual(null, valueGetter(null));
 

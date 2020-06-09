@@ -54,7 +54,7 @@ namespace Kephas.Composition.Lite.Internal
                                    ? new Dictionary<string, object>()
                                    : new Dictionary<string, object>(serviceInfo.Metadata);
 
-                    metadata.Add(nameof(AppServiceMetadata.ServiceType), serviceInfo.InstanceType);
+                    metadata.Add(nameof(AppServiceMetadata.ServiceInstanceType), serviceInfo.InstanceType);
 
                     AddMetadataFromGenericServiceType(metadata, metadataResolver, serviceInfo.ServiceType, serviceInfo.InstanceType);
                     AddMetadataFromAttributes(metadata, typeRegistry, metadataResolver, serviceInfo.InstanceType);

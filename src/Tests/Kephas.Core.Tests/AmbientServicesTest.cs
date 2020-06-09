@@ -27,11 +27,10 @@ namespace Kephas.Core.Tests
     using Kephas.Composition.Lite.Conventions;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Composition;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -353,7 +352,7 @@ namespace Kephas.Core.Tests
             var service = ambientServices.GetService<IExportFactory<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
             Assert.AreEqual((int)Priority.High, service.Metadata.OverridePriority);
-            Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceType);
+            Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceInstanceType);
         }
 
         [Test]
@@ -378,7 +377,7 @@ namespace Kephas.Core.Tests
             var service = ambientServices.GetService<Lazy<IService, AppServiceMetadata>>();
             Assert.IsNotNull(service.Metadata);
             Assert.AreEqual((int)Priority.High, service.Metadata.OverridePriority);
-            Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceType);
+            Assert.AreEqual(typeof(DependentService), service.Metadata.ServiceInstanceType);
         }
 
         [Test]
@@ -445,15 +444,21 @@ namespace Kephas.Core.Tests
         [Test]
         public void GetAppServiceInfos_no_default_services()
         {
-            var ambientServices = new AmbientServices(registerDefaultServices: false);
+            var typeRegistry = new RuntimeTypeRegistry();
+            var ambientServices = new AmbientServices(registerDefaultServices: false, typeRegistry: typeRegistry);
             var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new CompositionRegistrationContext(ambientServices));
 
-            Assert.AreEqual(1, appServiceInfos.Count());
+            Assert.AreEqual(2, appServiceInfos.Count());
 
             var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IAmbientServices));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
             Assert.AreSame(ambientServices, info.InstanceFactory(null));
+
+            (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IRuntimeTypeRegistry));
+            Assert.IsNotNull(info);
+            Assert.IsNotNull(info.InstanceFactory);
+            Assert.AreSame(typeRegistry, info.InstanceFactory(null));
         }
 
         [Test]
