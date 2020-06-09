@@ -16,17 +16,23 @@ namespace Kephas.Data.LLBLGen.Tests.Entities
     using Kephas.Composition;
     using Kephas.Data.LLBLGen.Entities;
     using Kephas.Data.LLBLGen.Entities.Composition;
-
+    using Kephas.Runtime;
     using NUnit.Framework;
 
     [TestFixture]
     public class EntityModelProviderTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public EntityModelProviderTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void GetModelTypeInfos_empty()
         {
-            var provider =
-                new EntityModelProvider(new List<IExportFactory<IEntityFactory, EntityFactoryMetadata>>());
+            var provider = new EntityModelProvider(new List<IExportFactory<IEntityFactory, EntityFactoryMetadata>>(), this.typeRegistry);
             var typeInfos = provider.GetModelTypeInfos();
             Assert.AreEqual(0, typeInfos.Count());
         }
