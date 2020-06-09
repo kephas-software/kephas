@@ -25,7 +25,7 @@ namespace Kephas.Data.Capabilities
         /// <returns>
         /// The graph root.
         /// </returns>
-        IAggregatable GetGraphRoot();
+        IAggregatable? GetGraphRoot();
 
         /// <summary>
         /// Gets the flattened structural entity graph excluding the loose parts (only the internal structure).

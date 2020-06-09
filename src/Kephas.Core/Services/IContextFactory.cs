@@ -44,9 +44,6 @@ namespace Kephas.Services
         private static readonly MethodInfo CreateContextMethod =
             ReflectionHelper.GetGenericMethodOf(_ => ((IContextFactory)null!).CreateContext<string>((object[])null!));
 
-        private static ConcurrentDictionary<IContextFactory, ILogManager> logManagerMap
-            = new ConcurrentDictionary<IContextFactory, ILogManager>();
-
         /// <summary>
         /// Creates a typed context.
         /// </summary>
@@ -81,7 +78,8 @@ namespace Kephas.Services
                 return factory.LogManager;
             }
 
-            return logManagerMap.GetOrAdd(contextFactory, _ => contextFactory.CreateContext<Context>().AmbientServices.LogManager);
+            contextFactory.TryGetPropertyValue(nameof(ContextFactory.LogManager), out var logManager);
+            return logManager as ILogManager ?? LoggingHelper.DefaultLogManager;
         }
     }
 }

@@ -101,12 +101,12 @@ namespace Kephas.Data.Capabilities
         {
             get
             {
-                IDataContext? dataContext = null;
-                this.dataContextRef?.TryGetTarget(out dataContext);
+                var dataContext = this.TryGetDataContext();
                 if (dataContext == null)
                 {
                     throw new ObjectDisposedException("The entity entry is disposed.");
                 }
+
                 return dataContext;
             }
 
@@ -192,7 +192,7 @@ namespace Kephas.Data.Capabilities
         /// <summary>
         /// Gets a wrapper expando object over the entity, to access dynamic values from it.
         /// </summary>
-        protected IExpando ExpandoEntity => this.expandoEntity ?? (this.expandoEntity = this.Entity as IExpando ?? new Expando(this.Entity));
+        protected IExpando ExpandoEntity => this.expandoEntity ??= this.Entity as IExpando ?? new Expando(this.Entity);
 
         /// <summary>
         /// Gets the root of the entity graph.
@@ -200,7 +200,7 @@ namespace Kephas.Data.Capabilities
         /// <returns>
         /// The graph root.
         /// </returns>
-        public IAggregatable GetGraphRoot()
+        public IAggregatable? GetGraphRoot()
         {
             var entityGraph = this.TryGetEntityGraph();
             return entityGraph?.GetGraphRoot();
@@ -348,6 +348,17 @@ namespace Kephas.Data.Capabilities
         }
 
         /// <summary>
+        /// Tries to get the data context that created this entry.
+        /// </summary>
+        /// <returns>The data context or <c>null</c>.</returns>
+        protected virtual IDataContext? TryGetDataContext()
+        {
+            IDataContext? dataContext = null;
+            this.dataContextRef?.TryGetTarget(out dataContext);
+            return dataContext;
+        }
+
+        /// <summary>
         /// Gets the change state tracker.
         /// </summary>
         /// <returns>
@@ -399,7 +410,7 @@ namespace Kephas.Data.Capabilities
         /// </returns>
         protected virtual IExpando CreateOriginalEntity()
         {
-            var typeInfo = this.Entity.GetTypeInfo(this.DataContext?.AmbientServices?.TypeRegistry);
+            var typeInfo = this.Entity.GetTypeInfo(this.TryGetDataContext()?.AmbientServices?.TypeRegistry);
             var originalValues = new Dictionary<string, object>();
             foreach (var prop in typeInfo.Properties)
             {
