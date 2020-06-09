@@ -25,7 +25,7 @@ namespace Kephas.Data.Behaviors.Composition
         /// Initializes a new instance of the <see cref="DataBehaviorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public DataBehaviorMetadata(IDictionary<string, object> metadata)
+        public DataBehaviorMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)

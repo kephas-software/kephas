@@ -24,7 +24,7 @@ namespace Kephas.Data.Setup.Composition
         /// Initializes a new instance of the <see cref="DataInstallerMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public DataInstallerMetadata(IDictionary<string, object> metadata)
+        public DataInstallerMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)

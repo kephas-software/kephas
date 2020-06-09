@@ -25,7 +25,7 @@ namespace Kephas.Serialization.Composition
         /// Initializes a new instance of the <see cref="SerializerMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public SerializerMetadata(IDictionary<string, object> metadata)
+        public SerializerMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)

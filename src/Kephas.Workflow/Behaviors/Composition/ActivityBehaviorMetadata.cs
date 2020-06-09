@@ -26,7 +26,7 @@ namespace Kephas.Workflow.Behaviors.Composition
         /// Initializes a new instance of the <see cref="ActivityBehaviorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public ActivityBehaviorMetadata(IDictionary<string, object> metadata)
+        public ActivityBehaviorMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)

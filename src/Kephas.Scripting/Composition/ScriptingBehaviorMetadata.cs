@@ -25,7 +25,7 @@ namespace Kephas.Scripting.Composition
         /// Initializes a new instance of the <see cref="ScriptingBehaviorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public ScriptingBehaviorMetadata(IDictionary<string, object> metadata)
+        public ScriptingBehaviorMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)

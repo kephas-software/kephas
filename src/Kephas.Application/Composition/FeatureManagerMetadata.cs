@@ -24,7 +24,7 @@ namespace Kephas.Application.Composition
         /// Initializes a new instance of the <see cref="FeatureManagerMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public FeatureManagerMetadata(IDictionary<string, object> metadata)
+        public FeatureManagerMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)

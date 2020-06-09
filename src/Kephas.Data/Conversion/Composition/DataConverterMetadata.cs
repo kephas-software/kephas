@@ -24,7 +24,7 @@ namespace Kephas.Data.Conversion.Composition
         /// Initializes a new instance of the <see cref="DataConverterMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public DataConverterMetadata(IDictionary<string, object> metadata)
+        public DataConverterMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)

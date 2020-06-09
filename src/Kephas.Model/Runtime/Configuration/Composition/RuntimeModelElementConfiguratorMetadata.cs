@@ -26,7 +26,7 @@ namespace Kephas.Model.Runtime.Configuration.Composition
         /// Initializes a new instance of the <see cref="RuntimeModelElementConfiguratorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public RuntimeModelElementConfiguratorMetadata(IDictionary<string, object> metadata) 
+        public RuntimeModelElementConfiguratorMetadata(IDictionary<string, object?> metadata) 
             : base(metadata)
         {
             if (metadata == null)

@@ -30,7 +30,7 @@ namespace Kephas.Services.Composition
         /// Initializes a new instance of the <see cref="AppServiceMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public AppServiceMetadata(IDictionary<string, object> metadata)
+        public AppServiceMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)
@@ -42,7 +42,7 @@ namespace Kephas.Services.Composition
             this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, int>(metadata);
             this.ServiceName = this.GetMetadataValue<ServiceNameAttribute, string>(metadata);
             this.IsOverride = this.GetMetadataValue<OverrideAttribute, bool>(metadata);
-            this.ServiceType = (Type)metadata.TryGetValue(nameof(this.ServiceType));
+            this.ServiceType = (Type?)metadata.TryGetValue(nameof(this.ServiceType));
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Kephas.Services.Composition
         /// <typeparam name="TAttribute">The attribute type.</typeparam>
         /// <typeparam name="TValue">The value type.</typeparam>
         /// <returns>The metadata value if found, otherwise the default value.</returns>
-        protected TValue GetMetadataValue<TAttribute, TValue>(IDictionary<string, object> metadata, TValue defaultValue = default)
+        protected TValue GetMetadataValue<TAttribute, TValue>(IDictionary<string, object?> metadata, TValue defaultValue = default)
             where TAttribute : IMetadataValue<TValue>
         {
             var metadataName = MetadataResolver.GetMetadataNameFromAttributeType(typeof(TAttribute));
@@ -140,7 +140,7 @@ namespace Kephas.Services.Composition
                 return defaultValue;
             }
 
-            return (TValue)value;
+            return (TValue)value!;
         }
     }
 }

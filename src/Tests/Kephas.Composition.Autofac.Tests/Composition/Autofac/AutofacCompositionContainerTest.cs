@@ -324,7 +324,7 @@ namespace Kephas.Tests.Composition.Autofac
 
         public class TestMetadata : AppServiceMetadata
         {
-            public TestMetadata(IDictionary<string, object> metadata)
+            public TestMetadata(IDictionary<string, object?> metadata)
                 : base(metadata)
             {
             }

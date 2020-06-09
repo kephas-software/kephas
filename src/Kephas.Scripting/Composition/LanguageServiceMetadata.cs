@@ -25,7 +25,7 @@ namespace Kephas.Scripting.Composition
         /// Initializes a new instance of the <see cref="LanguageServiceMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public LanguageServiceMetadata(IDictionary<string, object> metadata)
+        public LanguageServiceMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)

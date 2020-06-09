@@ -25,7 +25,7 @@ namespace Kephas.Configuration.Providers.Composition
         /// Initializes a new instance of the <see cref="SettingsProviderMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public SettingsProviderMetadata(IDictionary<string, object> metadata)
+        public SettingsProviderMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)

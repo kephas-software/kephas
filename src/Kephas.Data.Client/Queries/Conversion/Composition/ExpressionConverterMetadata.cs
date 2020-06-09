@@ -25,7 +25,7 @@ namespace Kephas.Data.Client.Queries.Conversion.Composition
         /// Initializes a new instance of the <see cref="ExpressionConverterMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public ExpressionConverterMetadata(IDictionary<string, object> metadata)
+        public ExpressionConverterMetadata(IDictionary<string, object?> metadata)
             : base(metadata)
         {
             if (metadata == null)

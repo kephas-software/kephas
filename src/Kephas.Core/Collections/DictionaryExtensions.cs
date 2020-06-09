@@ -33,8 +33,7 @@ namespace Kephas.Collections
                 return defaultValue;
             }
 
-            TValue value;
-            return dictionary.TryGetValue(key, out value) ? value : defaultValue;
+            return dictionary.TryGetValue(key, out var value) ? value : defaultValue;
         }
     }
 }
