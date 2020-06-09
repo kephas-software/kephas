@@ -29,7 +29,7 @@ namespace Kephas.Diagnostics.Logging
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithDebugLogManager(this IAmbientServices ambientServices, Action<string, string, object, Exception>? logCallback = null, bool replaceDefault = true)
+        public static IAmbientServices WithDebugLogManager(this IAmbientServices ambientServices, Action<string, string, object, Exception?>? logCallback = null, bool replaceDefault = true)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 

@@ -23,14 +23,6 @@ namespace Kephas.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DuplicateKeyException"/> class.
         /// </summary>
-        public DuplicateKeyException()
-            : base(Strings.DuplicateKeyException_Message)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DuplicateKeyException"/> class.
-        /// </summary>
         /// <param name="keyName">The name of the key.</param>
         public DuplicateKeyException(string keyName)
             : base(Strings.DuplicateKeyException_Message)

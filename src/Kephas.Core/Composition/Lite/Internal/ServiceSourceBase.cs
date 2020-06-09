@@ -35,13 +35,13 @@ namespace Kephas.Composition.Lite.Internal
             IAmbientServices parent,
             Type serviceType)
         {
-            return GetServiceDescriptors(parent, serviceType, null);
+            return this.GetServiceDescriptors(parent, serviceType, null);
         }
 
         protected virtual IEnumerable<(IServiceInfo serviceInfo, Func<object> factory)> GetServiceDescriptors(
             IAmbientServices parent,
             Type serviceType,
-            Func<(IServiceInfo serviceInfo, Func<object> factory), Func<object>> selector)
+            Func<(IServiceInfo serviceInfo, Func<object> factory), Func<object>>? selector)
         {
             if (this.serviceRegistry.TryGet(serviceType, out var serviceInfo))
             {
@@ -66,7 +66,7 @@ namespace Kephas.Composition.Lite.Internal
             }
             else
             {
-                var source = serviceRegistry.Sources.FirstOrDefault(s => s.IsMatch(serviceType));
+                var source = this.serviceRegistry.Sources.FirstOrDefault(s => s.IsMatch(serviceType));
                 if (source != null)
                 {
                     foreach (var descriptor in source.GetServiceDescriptors(parent, serviceType))

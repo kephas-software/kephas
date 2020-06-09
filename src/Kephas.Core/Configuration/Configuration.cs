@@ -92,7 +92,7 @@ namespace Kephas.Configuration
             {
                 foreach (var settingsProvider in settingsProviders)
                 {
-                    var settings = (TSettings)settingsProvider.GetSettings(typeof(TSettings));
+                    var settings = (TSettings?)settingsProvider.GetSettings(typeof(TSettings));
                     if (settings != null)
                     {
                         return settings;

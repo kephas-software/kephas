@@ -10,7 +10,10 @@
 
 namespace Kephas.Collections
 {
+    using System;
     using System.Collections.Generic;
+
+    using Kephas.Diagnostics.Contracts;
 
     /// <summary>
     /// Extension methods for <see cref="IDictionary{TKey,TValue}"/>.
@@ -28,11 +31,12 @@ namespace Kephas.Collections
         /// <returns>The found value, or the default value.</returns>
         public static TValue TryGetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
         {
-            if (dictionary == null || key == null)
+            Requires.NotNull(dictionary, nameof(dictionary));
+            if (key == null)
             {
-                return defaultValue;
+                throw new ArgumentNullException(nameof(key));
             }
-
+ 
             return dictionary.TryGetValue(key, out var value) ? value : defaultValue;
         }
     }

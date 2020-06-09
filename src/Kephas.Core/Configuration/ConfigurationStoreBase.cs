@@ -24,7 +24,7 @@ namespace Kephas.Configuration
     /// </summary>
     public abstract class ConfigurationStoreBase : IConfigurationStore
     {
-        private IDictionary<Type, object> settingsMap = new Dictionary<Type, object>();
+        private readonly IDictionary<Type, object> settingsMap = new Dictionary<Type, object>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationStoreBase"/> class.
