@@ -42,9 +42,9 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             return new ModelConstructionContext(Substitute.For<ICompositionContext>())
             {
-                           ModelSpace = modelSpace ?? Substitute.For<IModelSpace>(),
-                           RuntimeModelElementFactory = factory ?? this.GetNullRuntimeModelElementFactory(),
-                       };
+                ModelSpace = modelSpace ?? Substitute.For<IModelSpace>(),
+                RuntimeModelElementFactory = factory ?? this.GetNullRuntimeModelElementFactory(),
+            };
         }
 
         public IRuntimeModelElementFactory GetTestRuntimeModelElementFactory()

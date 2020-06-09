@@ -15,6 +15,7 @@ namespace Kephas.Scheduling.Triggers
     using Kephas.Dynamic;
     using Kephas.Operations;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
 
@@ -24,6 +25,15 @@ namespace Kephas.Scheduling.Triggers
     public abstract class TriggerBase : Expando, ITrigger, IInitializable
     {
         private bool isDisposed = false;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TriggerBase"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        protected TriggerBase(IRuntimeTypeRegistry? typeRegistry = null)
+        {
+            this.TypeRegistry = typeRegistry;
+        }
 
         /// <summary>
         /// Occurs when the trigger is fired.
@@ -46,12 +56,17 @@ namespace Kephas.Scheduling.Triggers
         public object Id { get; protected set; } = Guid.NewGuid();
 
         /// <summary>
+        /// Gets the type registry.
+        /// </summary>
+        protected IRuntimeTypeRegistry? TypeRegistry { get; }
+
+        /// <summary>
         /// Gets type information.
         /// </summary>
         /// <returns>
         /// The type information.
         /// </returns>
-        public virtual ITriggerInfo GetTypeInfo() => (ITriggerInfo)this.GetRuntimeTypeInfo(this.GetTypeRegistry())!;
+        public virtual ITriggerInfo GetTypeInfo() => (ITriggerInfo)this.GetRuntimeTypeInfo(this.TypeRegistry)!;
 
         /// <summary>
         /// Gets type information.

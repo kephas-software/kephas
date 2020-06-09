@@ -29,13 +29,15 @@ namespace Kephas.Scheduling.Jobs
         private readonly Lazy<IJobInfo> lazyTypeInfo;
         private readonly Func<object?> operation;
         private readonly Func<CancellationToken, Task<object?>> asyncOperation;
+        private readonly IRuntimeTypeRegistry? typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FuncJob"/> class.
         /// </summary>
         /// <param name="operation">The operation.</param>
-        public FuncJob(Func<object?> operation)
-            : this(operation, () => new RuntimeFuncJobInfo(RuntimeTypeRegistry.Instance, operation))
+        /// <param name="typeRegistry">Optional. The type registry.</param>
+        public FuncJob(Func<object?> operation, IRuntimeTypeRegistry? typeRegistry = null)
+            : this(operation, () => new RuntimeFuncJobInfo(typeRegistry ?? RuntimeTypeRegistry.Instance, operation), typeRegistry)
         {
         }
 
@@ -43,8 +45,9 @@ namespace Kephas.Scheduling.Jobs
         /// Initializes a new instance of the <see cref="FuncJob"/> class.
         /// </summary>
         /// <param name="asyncOperation">The asynchronous operation.</param>
-        public FuncJob(Func<CancellationToken, Task<object?>> asyncOperation)
-            : this(asyncOperation, () => new RuntimeFuncJobInfo(RuntimeTypeRegistry.Instance, asyncOperation))
+        /// <param name="typeRegistry">Optional. The type registry.</param>
+        public FuncJob(Func<CancellationToken, Task<object?>> asyncOperation, IRuntimeTypeRegistry? typeRegistry = null)
+            : this(asyncOperation, () => new RuntimeFuncJobInfo(typeRegistry ?? RuntimeTypeRegistry.Instance, asyncOperation), typeRegistry)
         {
         }
 
@@ -52,12 +55,15 @@ namespace Kephas.Scheduling.Jobs
         /// Initializes a new instance of the <see cref="FuncJob"/> class.
         /// </summary>
         /// <param name="operation">The operation.</param>
-        public FuncJob(Action operation)
-            : this(() =>
-            {
-                operation();
-                return (object?)null;
-            })
+        /// <param name="typeRegistry">Optional. The type registry.</param>
+        public FuncJob(Action operation, IRuntimeTypeRegistry? typeRegistry = null)
+            : this(
+                () =>
+                    {
+                        operation();
+                        return (object?)null;
+                    },
+                typeRegistry)
         {
         }
 
@@ -66,11 +72,13 @@ namespace Kephas.Scheduling.Jobs
         /// </summary>
         /// <param name="operation">The operation.</param>
         /// <param name="typeInfoGetter">The type info getter.</param>
-        internal FuncJob(Func<object?> operation, Func<IJobInfo> typeInfoGetter)
+        /// <param name="typeRegistry">Optional. The type registry.</param>
+        internal FuncJob(Func<object?> operation, Func<IJobInfo> typeInfoGetter, IRuntimeTypeRegistry? typeRegistry = null)
         {
             this.operation = operation;
             this.asyncOperation = _ => operation.AsAsync();
             this.lazyTypeInfo = new Lazy<IJobInfo>(typeInfoGetter);
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -78,12 +86,19 @@ namespace Kephas.Scheduling.Jobs
         /// </summary>
         /// <param name="asyncOperation">The asynchronous operation.</param>
         /// <param name="typeInfoGetter">The type info getter.</param>
-        internal FuncJob(Func<CancellationToken, Task<object?>> asyncOperation, Func<IJobInfo> typeInfoGetter)
+        /// <param name="typeRegistry">Optional. The type registry.</param>
+        internal FuncJob(Func<CancellationToken, Task<object?>> asyncOperation, Func<IJobInfo> typeInfoGetter, IRuntimeTypeRegistry? typeRegistry = null)
         {
             this.asyncOperation = asyncOperation;
             this.operation = () => asyncOperation(default).GetResultNonLocking();
             this.lazyTypeInfo = new Lazy<IJobInfo>(typeInfoGetter);
+            this.typeRegistry = typeRegistry;
         }
+
+        /// <summary>
+        /// Gets the type registry.
+        /// </summary>
+        protected override IRuntimeTypeRegistry? TypeRegistry => this.typeRegistry;
 
         /// <summary>
         /// Executes the operation in the given context.
@@ -110,6 +125,6 @@ namespace Kephas.Scheduling.Jobs
         /// Gets the type information.
         /// </summary>
         /// <returns>The type information.</returns>
-        protected override ITypeInfo GetTypeInfoBase() => this.lazyTypeInfo.Value;
+        protected override ITypeInfo GetTypeInfoCore() => this.lazyTypeInfo.Value;
     }
 }

@@ -42,7 +42,7 @@ namespace Kephas.Scheduling.Jobs
         /// <returns>
         /// The type information.
         /// </returns>
-        public new IJobInfo GetTypeInfo() => (IJobInfo)this.GetTypeInfoBase();
+        public new IJobInfo GetTypeInfo() => (IJobInfo)this.GetTypeInfoCore();
 
         /// <summary>
         /// Releases the unmanaged resources used by the Kephas.Scheduling.JobBase and optionally

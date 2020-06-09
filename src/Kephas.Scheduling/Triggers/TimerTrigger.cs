@@ -30,7 +30,9 @@ namespace Kephas.Scheduling.Triggers
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerTrigger"/> class.
         /// </summary>
-        public TimerTrigger()
+        /// <param name="typeRegistry">Optional. The type registry.</param>
+        public TimerTrigger(IRuntimeTypeRegistry? typeRegistry = null)
+            : base(typeRegistry)
         {
         }
 
@@ -38,7 +40,9 @@ namespace Kephas.Scheduling.Triggers
         /// Initializes a new instance of the <see cref="TimerTrigger"/> class.
         /// </summary>
         /// <param name="id">The trigger ID.</param>
-        public TimerTrigger(object id)
+        /// <param name="typeRegistry">Optional. The type registry.</param>
+        public TimerTrigger(object id, IRuntimeTypeRegistry? typeRegistry = null)
+            : base(typeRegistry)
         {
             this.Id = id;
         }

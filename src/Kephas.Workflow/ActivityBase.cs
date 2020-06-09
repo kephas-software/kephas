@@ -61,12 +61,12 @@ namespace Kephas.Workflow
         public object Id { get; protected set; } = Guid.NewGuid();
 
         /// <summary>
-        /// Gets the type information for this instance.
+        /// Gets the type registry.
         /// </summary>
-        /// <returns>
-        /// The type information.
-        /// </returns>
-        public virtual IActivityInfo GetTypeInfo() => (IActivityInfo)this.GetTypeInfoBase();
+        protected virtual IRuntimeTypeRegistry? TypeRegistry
+        {
+            get => this.Context?.AmbientServices?.TypeRegistry;
+        }
 
         /// <summary>
         /// Gets the type information for this instance.
@@ -74,12 +74,20 @@ namespace Kephas.Workflow
         /// <returns>
         /// The type information.
         /// </returns>
-        ITypeInfo IInstance.GetTypeInfo() => this.GetTypeInfoBase();
+        public virtual IActivityInfo GetTypeInfo() => (IActivityInfo)this.GetTypeInfoCore();
+
+        /// <summary>
+        /// Gets the type information for this instance.
+        /// </summary>
+        /// <returns>
+        /// The type information.
+        /// </returns>
+        ITypeInfo IInstance.GetTypeInfo() => this.GetTypeInfoCore();
 
         /// <summary>
         /// Gets the type information (overridable implementation).
         /// </summary>
         /// <returns>The type information.</returns>
-        protected virtual ITypeInfo GetTypeInfoBase() => this.GetRuntimeTypeInfo(this.GetTypeRegistry())!;
+        protected virtual ITypeInfo GetTypeInfoCore() => this.GetRuntimeTypeInfo(this.TypeRegistry)!;
     }
 }
