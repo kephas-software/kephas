@@ -40,12 +40,12 @@ namespace Kephas.Data.Capabilities
         /// <summary>
         /// The expando entity.
         /// </summary>
-        private IExpando expandoEntity;
+        private IExpando? expandoEntity;
 
         /// <summary>
         /// The original entity.
         /// </summary>
-        private IExpando originalEntity;
+        private IExpando? originalEntity;
 
         /// <summary>
         /// Context for the data.
@@ -89,7 +89,7 @@ namespace Kephas.Data.Capabilities
         /// <value>
         /// The identifier of the entity.
         /// </value>
-        public object EntityId => this.TryGetEntityId();
+        public object? EntityId => this.TryGetEntityId();
 
         /// <summary>
         /// Gets or sets the entity owning data context.
@@ -411,7 +411,7 @@ namespace Kephas.Data.Capabilities
         protected virtual IExpando CreateOriginalEntity()
         {
             var typeInfo = this.Entity.GetTypeInfo(this.TryGetDataContext()?.AmbientServices?.TypeRegistry);
-            var originalValues = new Dictionary<string, object>();
+            var originalValues = new Dictionary<string, object?>();
             foreach (var prop in typeInfo.Properties)
             {
                 originalValues.Add(prop.Name, prop.GetValue(this.Entity));

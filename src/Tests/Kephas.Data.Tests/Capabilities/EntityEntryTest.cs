@@ -246,9 +246,9 @@ namespace Kephas.Data.Tests.Capabilities
         {
             var entity = "123";
             var entityEntry = new EntityEntry(entity)
-                                 {
-                                     ChangeState = ChangeState.Added
-                                 };
+            {
+                ChangeState = ChangeState.Added
+            };
 
             entityEntry.DiscardChanges();
 
@@ -287,9 +287,9 @@ namespace Kephas.Data.Tests.Capabilities
         {
             var entity = "123";
             var entityEntry = new EntityEntry(entity)
-                                 {
-                                     ChangeState = ChangeState.Deleted
-                                 };
+            {
+                ChangeState = ChangeState.Deleted
+            };
 
             entityEntry.DiscardChanges();
 
@@ -363,7 +363,7 @@ namespace Kephas.Data.Tests.Capabilities
 
         public class InstanceEntity : Expando, INotifyPropertyChanging, INotifyPropertyChanged, IInstance
         {
-            private readonly ITypeInfo typeInfo;
+            private readonly ITypeInfo? typeInfo;
 
             public InstanceEntity()
             {
@@ -374,24 +374,38 @@ namespace Kephas.Data.Tests.Capabilities
                 this.typeInfo = typeInfo;
             }
 
-            /// <summary>
-            /// Attempts to set the value with the given key.
-            /// </summary>
-            /// <remarks>
-            /// First of all, it is tried to set the property value to the inner object, if one is set.
-            /// The next try is to set the property value to the expando object itself.
-            /// Lastly, if still a property by the provided name cannot be found, the inner dictionary is used to set the value with the provided key.
-            /// </remarks>
-            /// <param name="key">The key.</param>
-            /// <param name="value">The value to set.</param>
-            /// <returns>
-            /// <c>true</c> if the value could be set, <c>false</c> otherwise.
-            /// </returns>
-            protected override bool TrySetValue(string key, object value)
+            protected override bool TrySetValue(string key, object? value)
             {
                 this.PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(key));
-                var result = base.TrySetValue(key, value);
+                bool result;
+                if (this.typeInfo == null)
+                {
+                    result = base.TrySetValue(key, value);
+                }
+                else
+                {
+                    this.typeInfo.Properties.Single(p => p.Name == key).SetValue(this, value);
+                    result = true;
+                }
+
                 this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(key));
+
+                return result;
+            }
+
+            protected override bool TryGetValue(string key, out object? value)
+            {
+                bool result;
+                if (this.typeInfo == null)
+                {
+                    result = base.TryGetValue(key, out value);
+                }
+                else
+                {
+                    value = this.typeInfo.Properties.Single(p => p.Name == key).GetValue(this);
+                    result = true;
+                }
+
                 return result;
             }
 

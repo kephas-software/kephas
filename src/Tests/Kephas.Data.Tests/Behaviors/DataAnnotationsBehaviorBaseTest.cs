@@ -17,7 +17,7 @@ namespace Kephas.Data.Tests.Behaviors
     using Kephas.Data.Capabilities;
     using Kephas.Reflection;
     using Kephas.Runtime;
-
+    using NSubstitute;
     using NUnit.Framework;
 
     using RangeAttribute = System.ComponentModel.DataAnnotations.RangeAttribute;
@@ -39,7 +39,7 @@ namespace Kephas.Data.Tests.Behaviors
             var testEntity = new TestEntity(typeInfo);
             var behavior = new StringDataAnnotationsBehavior();
 
-            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), null);
+            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), Substitute.For<IDataOperationContext>());
             Assert.AreEqual(1, result.Count());
 
             var validationItem = result.First();
@@ -54,7 +54,7 @@ namespace Kephas.Data.Tests.Behaviors
             var testEntity = new TestEntity(typeInfo) { Name = "gigi", Age = -1 };
             var behavior = new StringDataAnnotationsBehavior();
 
-            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), null);
+            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), Substitute.For<IDataOperationContext>());
             Assert.AreEqual(1, result.Count());
 
             var validationItem = result.First();
@@ -69,7 +69,7 @@ namespace Kephas.Data.Tests.Behaviors
             var testEntity = new TestEntity(typeInfo) { Name = null, Age = 200 };
             var behavior = new StringDataAnnotationsBehavior();
 
-            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), null);
+            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), Substitute.For<IDataOperationContext>());
             Assert.AreEqual(2, result.Count());
         }
 
@@ -80,7 +80,7 @@ namespace Kephas.Data.Tests.Behaviors
             var testEntity = new TestEntity(typeInfo) { Name = "gigi", Email = "a-a" };
             var behavior = new StringDataAnnotationsBehavior();
 
-            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), null).ToList();
+            var result = behavior.Validate(testEntity, new EntityEntry(testEntity), Substitute.For<IDataOperationContext>()).ToList();
             Assert.AreEqual(2, result.Count);
 
             var validationItem = result[0];

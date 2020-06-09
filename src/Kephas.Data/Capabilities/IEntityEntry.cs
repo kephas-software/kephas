@@ -34,7 +34,7 @@ namespace Kephas.Data.Capabilities
         /// <value>
         /// The identifier of the entity.
         /// </value>
-        object EntityId { get; }
+        object? EntityId { get; }
 
         /// <summary>
         /// Gets or sets the entity owning data context.
