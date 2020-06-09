@@ -39,8 +39,8 @@ namespace Kephas.Services
         private readonly ConcurrentDictionary<Type, IList<(ConstructorInfo ctor, ParameterInfo[] paramInfos)>> typeCache
             = new ConcurrentDictionary<Type, IList<(ConstructorInfo ctor, ParameterInfo[] paramInfos)>>();
 
-        private readonly ConcurrentDictionary<Type, ConcurrentDictionary<Signature, Func<object[], object>>> signatureCache
-            = new ConcurrentDictionary<Type, ConcurrentDictionary<Signature, Func<object[], object>>>();
+        private readonly ConcurrentDictionary<Type, ConcurrentDictionary<Signature, Func<object?[], object>>> signatureCache
+            = new ConcurrentDictionary<Type, ConcurrentDictionary<Signature, Func<object?[], object>>>();
 
         private readonly IList<(Type contractType, IAppServiceInfo appServiceInfo)> appServiceInfos;
 
@@ -84,12 +84,12 @@ namespace Kephas.Services
             }
 
             var signature = new Signature(args.Select(a => a?.GetType()));
-            var typeSignCache = this.signatureCache.GetOrAdd(contextType, _ => new ConcurrentDictionary<Signature, Func<object[], object>>());
+            var typeSignCache = this.signatureCache.GetOrAdd(contextType, _ => new ConcurrentDictionary<Signature, Func<object?[], object>>());
             var creatorFunc = typeSignCache.GetOrAdd(signature, _ => this.GetCreatorFunc(contextType, signature));
             return (TContext)creatorFunc(args);
         }
 
-        private Func<object[], object> GetCreatorFunc(Type contextType, Signature signature)
+        private Func<object?[], object> GetCreatorFunc(Type contextType, Signature signature)
         {
             var ctorInfos = this.typeCache.GetOrAdd(
                 contextType,

@@ -60,8 +60,8 @@ namespace Kephas.Dynamic
     {
         private object? innerObject;
         private IDictionary<string, object?> innerDictionary;
-        private Type innerObjectType;
-        private Type thisType;
+        private Type? innerObjectType;
+        private Type? thisType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpandoBase"/> class.
