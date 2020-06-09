@@ -89,6 +89,63 @@ namespace Kephas.Core.Tests.Runtime
         }
 
         [Test]
+        public void Equals_two_instances_based_on_the_same_type()
+        {
+            var registry = new RuntimeTypeRegistry();
+            var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
+            var runtimeTypeInfo2 = new RuntimeTypeInfo(registry, typeof(TestClass));
+            Assert.AreEqual(runtimeTypeInfo, runtimeTypeInfo2);
+        }
+
+        [Test]
+        public void Equals_two_instances_based_on_the_same_type_different_registries()
+        {
+            var registry = new RuntimeTypeRegistry();
+            var registry2 = new RuntimeTypeRegistry();
+            var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
+            var runtimeTypeInfo2 = new RuntimeTypeInfo(registry2, typeof(TestClass));
+            Assert.AreEqual(runtimeTypeInfo, runtimeTypeInfo2);
+        }
+
+        [Test]
+        public void op_Equals_two_instances_based_on_the_same_type()
+        {
+            var registry = new RuntimeTypeRegistry();
+            var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
+            var runtimeTypeInfo2 = new RuntimeTypeInfo(registry, typeof(TestClass));
+            Assert.IsTrue(runtimeTypeInfo == runtimeTypeInfo2);
+        }
+
+        [Test]
+        public void op_Equals_two_instances_based_on_the_same_type_different_registries()
+        {
+            var registry = new RuntimeTypeRegistry();
+            var registry2 = new RuntimeTypeRegistry();
+            var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
+            var runtimeTypeInfo2 = new RuntimeTypeInfo(registry2, typeof(TestClass));
+            Assert.IsTrue(runtimeTypeInfo == runtimeTypeInfo2);
+        }
+
+        [Test]
+        public void op_Inequals_two_instances_based_on_the_same_type()
+        {
+            var registry = new RuntimeTypeRegistry();
+            var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
+            var runtimeTypeInfo2 = new RuntimeTypeInfo(registry, typeof(TestClass));
+            Assert.IsFalse(runtimeTypeInfo != runtimeTypeInfo2);
+        }
+
+        [Test]
+        public void op_Inequals_two_instances_based_on_the_same_type_different_registries()
+        {
+            var registry = new RuntimeTypeRegistry();
+            var registry2 = new RuntimeTypeRegistry();
+            var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestClass));
+            var runtimeTypeInfo2 = new RuntimeTypeInfo(registry2, typeof(TestClass));
+            Assert.IsFalse(runtimeTypeInfo != runtimeTypeInfo2);
+        }
+
+        [Test]
         public void GetValue_instance_null_throws()
         {
             var registry = new RuntimeTypeRegistry();

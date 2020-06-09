@@ -295,7 +295,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
         }
 
         [Test]
-        [Ignore("Ignore until the CompositionConstructor attribute will be supported.")]
+        //[Ignore("Ignore until the CompositionConstructor attribute will be supported.")]
         public void GetExport_AppService_with_composition_constructor()
         {
             var builder = this.CreateCompositionContainerBuilderWithStringLogger();

@@ -36,7 +36,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Provides optimized and extensible access to a type's methods and properties at runtime.
     /// </summary>
-    public class RuntimeTypeInfo : RuntimeElementInfoBase, IRuntimeTypeInfo
+    public class RuntimeTypeInfo : RuntimeElementInfoBase, IRuntimeTypeInfo, IEquatable<RuntimeTypeInfo>
     {
         private static readonly Type RuntimeFieldInfoGenericType = typeof(RuntimeFieldInfo<,>);
         private static readonly Type RuntimeFieldInfoType = typeof(RuntimeFieldInfo);
@@ -302,6 +302,82 @@ namespace Kephas.Runtime
         /// </value>
         public IDictionary<string, ICollection<IRuntimeMethodInfo>> Methods => this.GetMethods();
 
+        /// <summary>
+        /// Determines whether the runtime types are based on the same type.
+        /// </summary>
+        /// <param name="left">The object on the left side.</param>
+        /// <param name="right">The object on the right side.</param>
+        /// <returns>True, if both runtime types are based on the same type, otherwise false.</returns>
+        public static bool operator ==(RuntimeTypeInfo? left, RuntimeTypeInfo? right)
+        {
+            return Equals(left, right);
+        }
+
+        /// <summary>
+        /// Determines whether the runtime types are not based on the same type.
+        /// </summary>
+        /// <param name="left">The object on the left side.</param>
+        /// <param name="right">The object on the right side.</param>
+        /// <returns>True, if the runtime types are not based on the same type, otherwise false.</returns>
+        public static bool operator !=(RuntimeTypeInfo? left, RuntimeTypeInfo? right)
+        {
+            return !Equals(left, right);
+        }
+
+        /// <summary>
+        /// Determines whether this runtime type is equal to the provided one.
+        /// </summary>
+        /// <param name="other">The other runtime type.</param>
+        /// <returns>True, if both runtime types are based on the same type, otherwise false.</returns>
+        public bool Equals(RuntimeTypeInfo? other)
+        {
+            return this.Equals((IRuntimeTypeInfo?) other);
+        }
+
+        /// <summary>
+        /// Determines whether the runtime types are based on the same type.
+        /// </summary>
+        /// <param name="other">The other runtime type.</param>
+        /// <returns>True, if both runtime types are based on the same type, otherwise false.</returns>
+        public bool Equals(IRuntimeTypeInfo? other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return this.Type == other.Type;
+        }
+
+        /// <summary>
+        /// Determines whether the runtime types are based on the same type.
+        /// </summary>
+        /// <param name="obj">The other object to compare with.</param>
+        /// <returns>True, if both runtime types are based on the same type, otherwise false.</returns>
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            return ReferenceEquals(this, obj) || (obj is IRuntimeTypeInfo other && this.Equals(other));
+        }
+
+        /// <summary>
+        /// Gets a hash code for this object.
+        /// </summary>
+        /// <returns>The hash code.</returns>
+        public override int GetHashCode()
+        {
+            return this.Type.GetHashCode();
+        }
+
 #if NETSTANDARD2_1
 #else
         /// <summary>
@@ -527,6 +603,18 @@ namespace Kephas.Runtime
         }
 
         /// <summary>
+        /// Gets the type's proper properties: public, non-static, and without parameters.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>An enumeration of property infos.</returns>
+        protected internal static IEnumerable<PropertyInfo> GetTypeProperties(Type type)
+        {
+            return type.GetRuntimeProperties()
+                .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
+                            && p.GetIndexParameters().Length == 0);
+        }
+
+        /// <summary>
         /// Creates the member infos.
         /// </summary>
         /// <param name="membersConfig">Optional. The members configuration.</param>
@@ -610,10 +698,7 @@ namespace Kephas.Runtime
                                        ? (Func<PropertyInfo, Type>)(prop => RuntimePropertyInfoType)
                                        : (prop => RuntimePropertyInfoGenericType.MakeGenericType(type, prop.PropertyType));
 
-            var runtimeMembers = type.GetRuntimeProperties()
-                .Where(p => p.GetMethod != null && !p.GetMethod.IsStatic && p.GetMethod.IsPublic
-                            && p.GetIndexParameters().Length == 0);
-
+            var runtimeMembers = GetTypeProperties(type);
             return this.CreateMembers<PropertyInfo, IRuntimePropertyInfo>(type, runtimeMembers, memberTypeGetter, criteria);
         }
 

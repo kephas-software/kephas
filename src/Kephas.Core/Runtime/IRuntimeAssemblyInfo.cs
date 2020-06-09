@@ -10,6 +10,7 @@
 
 namespace Kephas.Runtime
 {
+    using System;
     using System.Reflection;
 
     using Kephas.Reflection;
@@ -17,7 +18,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Interface for runtime assembly information.
     /// </summary>
-    public interface IRuntimeAssemblyInfo : IRuntimeElementInfo, IAssemblyInfo
+    public interface IRuntimeAssemblyInfo : IRuntimeElementInfo, IAssemblyInfo, IEquatable<IRuntimeAssemblyInfo>
     {
         /// <summary>
         /// Gets the underlying assembly information.

@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Runtime
 {
     using System;
@@ -21,7 +19,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Contract for a dynamic <see cref="TypeInfo"/>.
     /// </summary>
-    public interface IRuntimeTypeInfo : ITypeInfo, IRuntimeElementInfo
+    public interface IRuntimeTypeInfo : ITypeInfo, IRuntimeElementInfo, IEquatable<IRuntimeTypeInfo>
     {
         /// <summary>
         /// Gets the underlying <see cref="Type"/>.

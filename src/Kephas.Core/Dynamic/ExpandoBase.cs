@@ -24,6 +24,7 @@ namespace Kephas.Dynamic
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -205,6 +206,7 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TryGetMember(GetMemberBinder binder, out object? result)
         {
+            // if the member is not found, return null.
             this.TryGetValue(binder.Name, out result);
             return true;
         }
@@ -225,8 +227,11 @@ namespace Kephas.Dynamic
                 return true;
             }
 
-            throw new MemberAccessException(string.Format(Strings.RuntimePropertyInfo_SetValue_Exception, binder.Name,
-                this.innerObject != null ? this.GetInnerObjectType() : this.GetThisType()));
+            throw new MemberAccessException(
+                string.Format(
+                    Strings.RuntimePropertyInfo_SetValue_Exception,
+                    binder.Name,
+                    this.innerObject != null ? this.GetInnerObjectType() : this.GetThisType()));
         }
 
         /// <summary>
@@ -260,32 +265,40 @@ namespace Kephas.Dynamic
                 return true;
             }
 
-            bool TryInvokeTypeMember(Type type, object instance, out object? res)
+            bool TryInvokeTypeMember(Type type, object instance, bool recurseDynamic, out object? res)
             {
-                var methodInfo = type.GetMethod(binder.Name, BindingFlags.Instance);
+                var methodInfo = type.GetMethod(binder.Name, BindingFlags.Instance | BindingFlags.Public);
                 if (methodInfo != null)
                 {
                     res = methodInfo.Call(instance, args);
                     return true;
                 }
 
-                var propertyInfo = type.GetProperty(binder.Name, BindingFlags.Instance);
+                var propertyInfo = type.GetProperty(binder.Name, BindingFlags.Instance | BindingFlags.Public);
                 if (propertyInfo != null)
                 {
                     var delegateValue = propertyInfo.GetValue(instance);
                     return TryInvokeDelegateProperty(delegateValue, out res);
                 }
 
+                if (recurseDynamic && instance is DynamicObject dynInstance)
+                {
+                    if (dynInstance.TryInvokeMember(binder, args, out res))
+                    {
+                        return true;
+                    }
+                }
+
                 res = null;
                 return false;
             }
 
-            if (this.innerObject != null && TryInvokeTypeMember(this.GetInnerObjectType()!, this.innerObject, out result))
+            if (this.innerObject != null && TryInvokeTypeMember(this.GetInnerObjectType()!, this.innerObject, true, out result))
             {
                 return true;
             }
 
-            if (this != this.innerObject && TryInvokeTypeMember(this.GetThisType(), this, out result))
+            if (this != this.innerObject && TryInvokeTypeMember(this.GetThisType(), this, false, out result))
             {
                 return true;
             }
@@ -323,8 +336,7 @@ namespace Kephas.Dynamic
             // second, the values in the inner object
             if (this.innerObject != null)
             {
-                foreach (var prop in this.GetInnerObjectType()!.GetProperties(
-                    BindingFlags.Public | BindingFlags.Instance))
+                foreach (var prop in RuntimeTypeInfo.GetTypeProperties(this.GetInnerObjectType()!))
                 {
                     var propName = prop.Name;
                     var value = prop.GetValue(this.innerObject);
@@ -336,7 +348,7 @@ namespace Kephas.Dynamic
             // last, the values in this expando's properties
             if (this != this.innerObject)
             {
-                foreach (var prop in this.GetThisType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                foreach (var prop in RuntimeTypeInfo.GetTypeProperties(this.GetThisType()))
                 {
                     var propName = prop.Name;
                     var value = prop.GetValue(this);
@@ -365,7 +377,7 @@ namespace Kephas.Dynamic
         {
             bool? TryGetPropertyValue(Type type, object instance, out object? val)
             {
-                var propInfo = type.GetProperty(key, BindingFlags.Public | BindingFlags.Instance);
+                var propInfo = type.GetProperty(key, BindingFlags.Instance | BindingFlags.Public);
                 if (propInfo == null)
                 {
                     val = null;
@@ -423,7 +435,7 @@ namespace Kephas.Dynamic
         {
             bool? TrySetPropertyValue(Type type, object instance)
             {
-                var propInfo = type.GetProperty(key, BindingFlags.Public | BindingFlags.Instance);
+                var propInfo = type.GetProperty(key, BindingFlags.Instance | BindingFlags.Public);
                 if (propInfo == null)
                 {
                     return null;

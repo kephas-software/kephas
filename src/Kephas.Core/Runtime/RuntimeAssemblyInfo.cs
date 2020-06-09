@@ -21,7 +21,7 @@ namespace Kephas.Runtime
     /// <summary>
     /// Information about the runtime assembly. This class cannot be inherited.
     /// </summary>
-    public sealed class RuntimeAssemblyInfo : RuntimeElementInfoBase, IRuntimeAssemblyInfo
+    public sealed class RuntimeAssemblyInfo : RuntimeElementInfoBase, IRuntimeAssemblyInfo, IEquatable<RuntimeAssemblyInfo>
     {
         private readonly Assembly assembly;
         private readonly ITypeLoader typeLoader;
@@ -82,6 +82,88 @@ namespace Kephas.Runtime
         /// The declared types.
         /// </value>
         public IEnumerable<ITypeInfo> Types => this.GetTypes();
+
+        /// <summary>
+        /// Determines whether the runtime assemblies are based on the same assembly.
+        /// </summary>
+        /// <param name="left">The object on the left side.</param>
+        /// <param name="right">The object on the right side.</param>
+        /// <returns>True, if both runtime assemblies are based on the same assembly, otherwise false.</returns>
+        public static bool operator ==(RuntimeAssemblyInfo? left, RuntimeAssemblyInfo? right)
+        {
+            return Equals(left, right);
+        }
+
+        /// <summary>
+        /// Determines whether the runtime assemblies are not based on the same assembly.
+        /// </summary>
+        /// <param name="left">The object on the left side.</param>
+        /// <param name="right">The object on the right side.</param>
+        /// <returns>True, if the runtime assemblies are not based on the same assembly, otherwise false.</returns>
+        public static bool operator !=(RuntimeAssemblyInfo? left, RuntimeAssemblyInfo? right)
+        {
+            return !Equals(left, right);
+        }
+
+        /// <summary>
+        /// Determines whether this runtime assembly is equal to the provided one.
+        /// </summary>
+        /// <param name="other">The other runtime assembly.</param>
+        /// <returns>True, if both runtime assemblies are based on the same assembly, otherwise false.</returns>
+        public bool Equals(IRuntimeAssemblyInfo? other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return this.assembly.Equals(other.GetUnderlyingAssemblyInfo());
+        }
+
+        /// <summary>
+        /// Determines whether this runtime assembly is equal to the provided one.
+        /// </summary>
+        /// <param name="other">The other runtime assembly.</param>
+        /// <returns>True, if both runtime assemblies are based on the same assembly, otherwise false.</returns>
+        public bool Equals(RuntimeAssemblyInfo? other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return this.assembly.Equals(other.assembly);
+        }
+
+
+        /// <summary>
+        /// Determines whether this runtime assembly is equal to the provided one.
+        /// </summary>
+        /// <param name="obj">The other object.</param>
+        /// <returns>True, if both runtime assemblies are based on the same assembly, otherwise false.</returns>
+        public override bool Equals(object? obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is IRuntimeAssemblyInfo other && this.Equals(other));
+        }
+
+        /// <summary>
+        /// Gets a hash code for this object.
+        /// </summary>
+        /// <returns>The hash code.</returns>
+        public override int GetHashCode()
+        {
+            return this.assembly.GetHashCode();
+        }
 
         /// <summary>
         /// Gets the underlying member information.
