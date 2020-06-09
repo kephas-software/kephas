@@ -62,7 +62,7 @@ namespace Kephas.Data.Store
         /// <returns>
         /// The data store.
         /// </returns>
-        public IDataStore GetDataStore(string dataStoreName, IContext context = null)
+        public IDataStore GetDataStore(string dataStoreName, IContext? context = null)
         {
             Requires.NotNull(dataStoreName, nameof(dataStoreName));
 
@@ -92,7 +92,7 @@ namespace Kephas.Data.Store
         /// <returns>
         /// The data store name.
         /// </returns>
-        public string GetDataStoreName(Type entityType, IContext context = null)
+        public string GetDataStoreName(Type entityType, IContext? context = null)
         {
             Requires.NotNull(entityType, nameof(entityType));
 

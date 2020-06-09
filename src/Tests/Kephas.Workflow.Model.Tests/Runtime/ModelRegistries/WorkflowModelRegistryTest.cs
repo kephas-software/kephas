@@ -18,6 +18,7 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Runtime.AttributedModel;
     using Kephas.Testing;
     using Kephas.Workflow.Model.Runtime.ModelRegistries;
@@ -27,6 +28,13 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
     [TestFixture]
     public class WorkflowModelRegistryTest : TestBase
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public WorkflowModelRegistryTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public async Task GetRuntimeElementsAsync()
         {
@@ -80,8 +88,8 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
         [ReturnType(typeof(int))]
         public class TestStateMachine : StateMachineBase<string, LogLevel>
         {
-            public TestStateMachine(string target, ILogManager? logManager = null)
-                : base(target, logManager)
+            public TestStateMachine(string target, IRuntimeTypeRegistry typeRegistry, ILogManager? logManager = null)
+                : base(target, typeRegistry, logManager)
             {
             }
         }

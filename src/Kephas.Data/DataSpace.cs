@@ -29,7 +29,7 @@ namespace Kephas.Data
     {
         private readonly IDataContextFactory dataContextFactory;
         private readonly IDataStoreProvider dataStoreProvider;
-        private IContext initializationContext;
+        private IContext? initializationContext;
         private IDictionary<string, IDataContext> dataContextMap = new Dictionary<string, IDataContext>();
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Kephas.Data
         /// Initializes the service.
         /// </summary>
         /// <param name="context">An optional context for initialization.</param>
-        public virtual void Initialize(IContext context = null)
+        public virtual void Initialize(IContext? context = null)
         {
             this.initializationContext = context;
             if (this.Identity == null)
@@ -125,13 +125,13 @@ namespace Kephas.Data
                                               g => g.Key,
                                               g =>
                                                   {
-                                                      var initializationContext = new Context(this.CompositionContext)
+                                                      var initContext = new Context(this.CompositionContext)
                                                                                       {
                                                                                           Identity = this.Identity,
                                                                                       }.InitialData(g);
                                                       return this.dataContextFactory.CreateDataContext(
                                                           g.Key,
-                                                          initializationContext);
+                                                          initContext);
                                                   });
             }
         }

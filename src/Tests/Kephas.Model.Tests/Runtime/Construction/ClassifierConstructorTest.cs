@@ -15,7 +15,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
-
+    using Kephas.Runtime;
     using NUnit.Framework;
 
     [TestFixture]
@@ -25,7 +25,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new ClassifierConstructor();
             var context = this.GetConstructionContext();
-            var runtimeElement = typeof(TestContact).AsRuntimeTypeInfo();
+            var runtimeElement = typeof(TestContact).AsRuntimeTypeInfo(this.TypeRegistry);
             var modelElement = constructor.TryCreateModelElement(context, runtimeElement);
 
             return modelElement;

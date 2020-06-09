@@ -10,17 +10,26 @@
 
 namespace Kephas.Tests.Plugins.Transactions
 {
+    using Kephas.Plugins;
     using Kephas.Plugins.Transactions;
+    using Kephas.Runtime;
     using NUnit.Framework;
 
     [TestFixture]
     public class UndoCommandBaseTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public UndoCommandBaseTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void Parse_move_file()
         {
             var cmd = "move|file1|file2";
-            var command = UndoCommandBase.Parse(cmd);
+            var command = UndoCommandBase.Parse(cmd, this.CreatePluginContext());
 
             Assert.IsInstanceOf<MoveFileUndoCommand>(command);
             var moveCommand = (MoveFileUndoCommand)command;
@@ -32,7 +41,7 @@ namespace Kephas.Tests.Plugins.Transactions
         public void Parse_move_file_specials()
         {
             var cmd = "move|file1&bs;net&bs;replay&bs;this|file1&bs;net&bs;replay&bs;this&amp;that";
-            var command = UndoCommandBase.Parse(cmd);
+            var command = UndoCommandBase.Parse(cmd, this.CreatePluginContext());
 
             Assert.IsInstanceOf<MoveFileUndoCommand>(command);
             var moveCommand = (MoveFileUndoCommand)command;
@@ -52,6 +61,13 @@ namespace Kephas.Tests.Plugins.Transactions
         {
             var cmd = new MoveFileUndoCommand("file1\\net\\replay\\this", "file1\\net\\replay\\this&that").ToString();
             Assert.AreEqual("move|file1&bs;net&bs;replay&bs;this|file1&bs;net&bs;replay&bs;this&amp;that", cmd);
+        }
+
+        private IPluginContext CreatePluginContext()
+        {
+            var ambientServices = new AmbientServices(typeRegistry: this.typeRegistry);
+            var context = new PluginContext(ambientServices.CompositionContainer);
+            return context;
         }
     }
 }

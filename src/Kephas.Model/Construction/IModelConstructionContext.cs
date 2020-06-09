@@ -65,6 +65,6 @@ namespace Kephas.Model.Construction
         /// <value>
         /// A function for getting a model element.
         /// </value>
-        Func<IElementInfo, IElementInfo> TryGetModelElementInfo { get; set; }
+        Func<IElementInfo?, IElementInfo> TryGetModelElementInfo { get; set; }
     }
 }

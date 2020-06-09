@@ -20,22 +20,30 @@ namespace Kephas.Data.Endpoints.Tests
     using Kephas.Messaging;
     using Kephas.Model;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class DataSourceHandlerTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public DataSourceHandlerTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public async Task HandleAsync_data_source_context_properly_set()
         {
             var dataSpace = Substitute.For<IDataSpace>();
             var dataContext = Substitute.For<IDataContext>();
+            var ambientServices = new AmbientServices(typeRegistry: this.typeRegistry);
+            dataContext.AmbientServices.Returns(ambientServices);
             dataSpace[typeof(int)].Returns(dataContext);
-            dataSpace[typeof(int).AsRuntimeTypeInfo()].Returns(dataContext);
+            dataSpace[typeof(int).AsRuntimeTypeInfo(this.typeRegistry)].Returns(dataContext);
 
             var dataSpaceFactory = new ExportFactory<IDataSpace>(() => dataSpace);
             var dataSourceService = Substitute.For<IDataSourceService>();

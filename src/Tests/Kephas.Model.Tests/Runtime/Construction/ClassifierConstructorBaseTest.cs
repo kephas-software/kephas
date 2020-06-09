@@ -30,7 +30,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new TestClassifierConstructor();
             var context = this.GetConstructionContext(factory: this.GetTestRuntimeModelElementFactory());
-            var runtimeElement = typeof(TestContact).AsRuntimeTypeInfo();
+            var runtimeElement = typeof(TestContact).AsRuntimeTypeInfo(this.TypeRegistry);
             var modelElement = constructor.TryCreateModelElement(context, runtimeElement);
 
             return modelElement;

@@ -28,7 +28,7 @@ namespace Kephas.Data.Store
         /// <returns>
         /// The data store name and a flag indicating whether the matching was successful.
         /// </returns>
-        (string dataStoreName, bool canHandle) GetDataStoreName(Type entityType, IContext context = null);
+        (string dataStoreName, bool canHandle) GetDataStoreName(Type entityType, IContext? context = null);
 
         /// <summary>
         /// Gets the data store.
@@ -38,6 +38,6 @@ namespace Kephas.Data.Store
         /// <returns>
         /// The data store.
         /// </returns>
-        (IDataStore dataStore, bool canHandle) GetDataStore(string dataStoreName, IContext context = null);
+        (IDataStore dataStore, bool canHandle) GetDataStore(string dataStoreName, IContext? context = null);
     }
 }

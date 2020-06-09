@@ -16,8 +16,8 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Model.Elements;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -32,7 +32,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var constructor = new AppServiceTypeConstructor();
             var context = this.GetConstructionContext();
-            var runtimeElement = serviceType.AsRuntimeTypeInfo();
+            var runtimeElement = serviceType.AsRuntimeTypeInfo(this.TypeRegistry);
             var modelElement = constructor.TryCreateModelElement(context, runtimeElement);
 
             return modelElement;
@@ -46,7 +46,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             Assert.IsNotNull(modelElement);
             Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
-            Assert.AreSame(typeof(ISingletonTestAppService).AsRuntimeTypeInfo(), modelElement.Parts.First());
+            Assert.AreSame(typeof(ISingletonTestAppService).AsRuntimeTypeInfo(this.TypeRegistry), modelElement.Parts.First());
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             Assert.IsNotNull(modelElement);
             Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
-            Assert.AreSame(typeof(ITestAppService).AsRuntimeTypeInfo(), modelElement.Parts.First());
+            Assert.AreSame(typeof(ITestAppService).AsRuntimeTypeInfo(this.TypeRegistry), modelElement.Parts.First());
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             Assert.IsNotNull(modelElement);
             Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
-            Assert.AreSame(typeof(ITestGenericExportedService<>).AsRuntimeTypeInfo(), modelElement.Parts.First());
+            Assert.AreSame(typeof(ITestGenericExportedService<>).AsRuntimeTypeInfo(this.TypeRegistry), modelElement.Parts.First());
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             Assert.IsNotNull(modelElement);
             Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
-            Assert.AreSame(typeof(ITestGenericService<>).AsRuntimeTypeInfo(), modelElement.Parts.First());
+            Assert.AreSame(typeof(ITestGenericService<>).AsRuntimeTypeInfo(this.TypeRegistry), modelElement.Parts.First());
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             Assert.IsNotNull(modelElement);
             Assert.IsInstanceOf<AppServiceType>(modelElement);
             Assert.AreEqual(1, modelElement.Parts.Count());
-            Assert.AreSame(typeof(ITestOpenGenericService<>).AsRuntimeTypeInfo(), modelElement.Parts.First());
+            Assert.AreSame(typeof(ITestOpenGenericService<>).AsRuntimeTypeInfo(this.TypeRegistry), modelElement.Parts.First());
         }
 
         [SingletonAppServiceContract]

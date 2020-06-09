@@ -28,7 +28,7 @@ namespace Kephas.Data.Store
         /// <returns>
         /// The data store.
         /// </returns>
-        IDataStore GetDataStore(string dataStoreName, IContext context = null);
+        IDataStore GetDataStore(string dataStoreName, IContext? context = null);
 
         /// <summary>
         /// Gets the data store name for the provided entity type.
@@ -38,6 +38,6 @@ namespace Kephas.Data.Store
         /// <returns>
         /// The data store name.
         /// </returns>
-        string GetDataStoreName(Type entityType, IContext context = null);
+        string GetDataStoreName(Type entityType, IContext? context = null);
     }
 }

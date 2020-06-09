@@ -35,10 +35,10 @@ namespace Kephas.Data
         /// <param name="dataStoreName">Name of the data store. This identifies typically
         ///                             an entry in the configuration where connection information
         ///                             and other initialization data is provided.</param>
-        /// <param name="initializationContext">An initialization context (optional).</param>
+        /// <param name="initializationContext">Optional. An initialization context.</param>
         /// <returns>
         /// The newly created data context.
         /// </returns>
-        IDataContext CreateDataContext(string dataStoreName, IContext initializationContext = null);
+        IDataContext CreateDataContext(string dataStoreName, IContext? initializationContext = null);
     }
 }

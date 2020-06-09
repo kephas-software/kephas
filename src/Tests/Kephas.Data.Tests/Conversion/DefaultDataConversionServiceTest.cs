@@ -209,7 +209,7 @@ namespace Kephas.Data.Tests.Conversion
                     ci =>
                         {
                             var createContext = ci.Arg<ICreateEntityContext>();
-                            var target = createContext.EntityType.AsRuntimeTypeInfo().CreateInstance();
+                            var target = createContext.EntityType.AsRuntimeTypeInfo(null).CreateInstance();
                             return Task.FromResult<ICreateEntityResult>(new CreateEntityResult(target, null, null, null));
                         });
 

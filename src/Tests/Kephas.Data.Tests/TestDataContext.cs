@@ -71,7 +71,7 @@ namespace Kephas.Data.Tests
                             if (typeInfo.Type.IsInterface || typeInfo.Type.IsAbstract)
                             {
                                 var inst = Substitute.For(new[] { typeInfo.Type }, new object[0]);
-                                return inst.GetType().AsRuntimeTypeInfo();
+                                return inst.GetType().AsRuntimeTypeInfo(null);
                             }
 
                             return typeInfo;

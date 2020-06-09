@@ -47,7 +47,7 @@ namespace Kephas.Model.Tests.Models.GenericModel
             await provider.InitializeAsync();
 
             var modelSpace = provider.GetModelSpace();
-            var classifier = modelSpace.TryGetClassifier(typeof(IComplex<decimal, int>).AsRuntimeTypeInfo());
+            var classifier = modelSpace.TryGetClassifier(typeof(IComplex<decimal, int>).AsRuntimeTypeInfo(null));
             var complexClassifier = modelSpace.Classifiers.Single(c => c.Name == "Complex`2" && c.IsGenericTypeDefinition());
 
             Assert.IsNotNull(classifier);

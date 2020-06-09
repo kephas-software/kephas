@@ -19,9 +19,8 @@ namespace Kephas.Model.Tests.Runtime
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
-
+    using Kephas.Runtime;
     using NSubstitute;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -31,18 +30,25 @@ namespace Kephas.Model.Tests.Runtime
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class DefaultRuntimeModelInfoProviderTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public DefaultRuntimeModelInfoProviderTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public async Task GetElementInfosAsync()
         {
             var registrar = Substitute.For<IRuntimeModelRegistry>();
-            registrar.GetRuntimeElementsAsync(CancellationToken.None).Returns(Task.FromResult((IEnumerable<object>)new object[] { typeof(string).GetRuntimeTypeInfo() }));
+            registrar.GetRuntimeElementsAsync(CancellationToken.None).Returns(Task.FromResult((IEnumerable<object>)new object[] { typeof(string).GetRuntimeTypeInfo(this.typeRegistry) }));
 
             var stringInfoMock = Substitute.For<INamedElement>();
 
             var factory = Substitute.For<IRuntimeModelElementFactory>();
-            factory.TryCreateModelElement(Arg.Any<IModelConstructionContext>(), Arg.Is(typeof(string).GetRuntimeTypeInfo())).Returns(stringInfoMock);
+            factory.TryCreateModelElement(Arg.Any<IModelConstructionContext>(), Arg.Is(typeof(string).GetRuntimeTypeInfo(this.typeRegistry))).Returns(stringInfoMock);
 
-            var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { registrar });
+            var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { registrar }, this.typeRegistry);
 
             var elementInfos = (await provider.GetElementInfosAsync(Substitute.For<IModelConstructionContext>())).ToList();
 

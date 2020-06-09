@@ -49,7 +49,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public virtual async Task PublishAsync(object @event, IContext context, CancellationToken cancellationToken = default)
+        public virtual async Task PublishAsync(object @event, IContext? context, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
 
@@ -84,7 +84,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        public virtual IEventSubscription Subscribe(Func<object, bool> match, Func<object, IContext, CancellationToken, Task> callback)
+        public virtual IEventSubscription Subscribe(Func<object, bool> match, Func<object, IContext?, CancellationToken, Task> callback)
         {
             Requires.NotNull(match, nameof(match));
             Requires.NotNull(callback, nameof(callback));
@@ -115,7 +115,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        public virtual IEventSubscription Subscribe(ITypeInfo typeMatch, Func<object, IContext, CancellationToken, Task> callback)
+        public virtual IEventSubscription Subscribe(ITypeInfo typeMatch, Func<object, IContext?, CancellationToken, Task> callback)
         {
             Requires.NotNull(typeMatch, nameof(typeMatch));
 
@@ -176,6 +176,7 @@ namespace Kephas.Interaction
         private class EventSubscription : IEventSubscription
         {
             private readonly Action<EventSubscription> onDispose;
+            private bool disposed;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="EventSubscription"/> class.
@@ -183,7 +184,7 @@ namespace Kephas.Interaction
             /// <param name="match">Specifies the event match.</param>
             /// <param name="callback">The callback.</param>
             /// <param name="onDispose">The on dispose.</param>
-            public EventSubscription(Func<object, bool> match, Func<object, IContext, CancellationToken, Task> callback, Action<EventSubscription> onDispose)
+            public EventSubscription(Func<object, bool> match, Func<object, IContext?, CancellationToken, Task> callback, Action<EventSubscription> onDispose)
             {
                 this.Match = match;
                 this.Callback = callback;
@@ -204,7 +205,7 @@ namespace Kephas.Interaction
             /// <value>
             /// The callback.
             /// </value>
-            public Func<object, IContext, CancellationToken, Task> Callback { get; private set; }
+            public Func<object, IContext?, CancellationToken, Task> Callback { get; private set; }
 
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
@@ -212,12 +213,12 @@ namespace Kephas.Interaction
             /// </summary>
             public void Dispose()
             {
-                if (this.Callback == null)
+                if (this.disposed)
                 {
                     return;
                 }
 
-                this.Callback = null;
+                this.disposed = true;
                 this.onDispose(this);
             }
 

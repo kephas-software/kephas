@@ -22,14 +22,21 @@ namespace Kephas.Model.Tests
     using Kephas.Model.Runtime.Configuration.Composition;
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Runtime.Construction.Composition;
+    using Kephas.Runtime;
     using Kephas.Services;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class DefaultModelSpaceProviderTest : ModelTestBase
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public DefaultModelSpaceProviderTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public async Task InitializeAsync_Dimensions()
         {
@@ -70,7 +77,8 @@ namespace Kephas.Model.Tests
         {
             return new DefaultRuntimeModelElementFactory(
                 new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>(),
-                new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>());
+                new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>(),
+                this.typeRegistry);
         }
     }
 }

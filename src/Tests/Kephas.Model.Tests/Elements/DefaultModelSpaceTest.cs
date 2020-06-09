@@ -20,14 +20,20 @@ namespace Kephas.Model.Tests.Elements
     using Kephas.Model.Elements;
     using Kephas.Model.Elements.Annotations;
     using Kephas.Reflection;
-
+    using Kephas.Runtime;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class DefaultModelSpaceTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public DefaultModelSpaceTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void ComputeDimensions_2_dims()
         {
@@ -191,7 +197,7 @@ namespace Kephas.Model.Tests.Elements
             foreach (var propName in properties)
             {
                 var property = new Property(context, propName);
-                property.ValueType = typeof(string).AsRuntimeTypeInfo();
+                property.ValueType = typeof(string).AsRuntimeTypeInfo(this.typeRegistry);
                 ((IConstructibleElement)classifier).AddMember(property);
             }
 

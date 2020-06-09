@@ -52,6 +52,6 @@ namespace Kephas.Model
         /// <returns>
         /// The classifier, or <c>null</c> if the classifier was not found.
         /// </returns>
-        IClassifier TryGetClassifier(ITypeInfo typeInfo, IContext? findContext = null);
+        IClassifier? TryGetClassifier(ITypeInfo typeInfo, IContext? findContext = null);
     }
 }

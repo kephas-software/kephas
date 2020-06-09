@@ -10,6 +10,7 @@
 
 namespace Kephas.Scheduling.Tests.Runtime
 {
+    using Kephas.Runtime;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Runtime;
     using NUnit.Framework;
@@ -21,7 +22,7 @@ namespace Kephas.Scheduling.Tests.Runtime
         public void CreateInstance()
         {
             var execution = 0;
-            var jobInfo = new RuntimeFuncJobInfo(() => execution++);
+            var jobInfo = new RuntimeFuncJobInfo(new RuntimeTypeRegistry(),  () => execution++);
 
             var job1 = (FuncJob)jobInfo.CreateInstance();
             var job2 = (FuncJob)jobInfo.CreateInstance();

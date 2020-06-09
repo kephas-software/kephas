@@ -11,7 +11,6 @@
 namespace Kephas.Model.Tests.Runtime.Construction.Builders
 {
     using System.Collections.Generic;
-
     using Kephas.Composition;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
@@ -21,24 +20,32 @@ namespace Kephas.Model.Tests.Runtime.Construction.Builders
     using Kephas.Model.Runtime.Construction.Builders;
     using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Reflection;
-
+    using Kephas.Runtime;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
     public class ValueTypeBuilderTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public ValueTypeBuilderTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         public ValueTypeBuilder CreateBuilder<T>()
         {
             var context = new ModelConstructionContext(Substitute.For<ICompositionContext>())
             {
-                                  ModelSpace = Substitute.For<IModelSpace>(),
-                                  RuntimeModelElementFactory = new DefaultRuntimeModelElementFactory(
-                                        new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>(),
-                                        new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>())
-                              };
-            var dynamicType = typeof(T).AsRuntimeTypeInfo();
+                ModelSpace = Substitute.For<IModelSpace>(),
+                RuntimeModelElementFactory = new DefaultRuntimeModelElementFactory(
+                    new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>(),
+                    new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata
+                    >>(),
+                    this.typeRegistry),
+            };
+            var dynamicType = typeof(T).AsRuntimeTypeInfo(this.typeRegistry);
             return new ValueTypeBuilder(context, dynamicType);
         }
 

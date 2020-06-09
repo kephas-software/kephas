@@ -43,7 +43,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        IEventSubscription Subscribe(Func<object, bool> match, Func<object, IContext, CancellationToken, Task> callback);
+        IEventSubscription Subscribe(Func<object, bool> match, Func<object, IContext?, CancellationToken, Task> callback);
 
         /// <summary>
         /// Subscribes to the event(s) matching the provided type.
@@ -53,7 +53,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        IEventSubscription Subscribe(ITypeInfo typeMatch, Func<object, IContext, CancellationToken, Task> callback);
+        IEventSubscription Subscribe(ITypeInfo typeMatch, Func<object, IContext?, CancellationToken, Task> callback);
     }
 
     /// <summary>

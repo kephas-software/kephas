@@ -123,7 +123,7 @@ namespace Kephas.Model.Elements
         /// <returns>
         /// The classifier, or <c>null</c> if the classifier was not found.
         /// </returns>
-        public IClassifier TryGetClassifier(ITypeInfo typeInfo, IContext? findContext = null)
+        public IClassifier? TryGetClassifier(ITypeInfo typeInfo, IContext? findContext = null)
         {
             if (typeInfo is IClassifier classifier)
             {

@@ -82,7 +82,7 @@ namespace Kephas.Data
         /// <returns>
         /// The newly created data context.
         /// </returns>
-        public IDataContext CreateDataContext(string dataStoreName, IContext initializationContext = null)
+        public IDataContext CreateDataContext(string dataStoreName, IContext? initializationContext = null)
         {
             var dataStore = this.dataStoreProvider.GetDataStore(dataStoreName);
             var factory = this.factories.GetOrAdd(dataStoreName, _ => this.ComputeDataContextExportFactory(dataStore));
@@ -104,7 +104,7 @@ namespace Kephas.Data
         protected virtual IDataInitializationContext CreateDataInitializationContext(
             IDataContext dataContext,
             IDataStore dataStore,
-            IContext initializationContext)
+            IContext? initializationContext)
         {
             return new DataInitializationContext(dataContext, dataStore, initializationContext);
         }

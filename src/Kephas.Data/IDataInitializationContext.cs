@@ -33,6 +33,6 @@ namespace Kephas.Data
         /// <value>
         /// The initialization context.
         /// </value>
-        IContext InitializationContext { get; }
+        IContext? InitializationContext { get; }
     }
 }

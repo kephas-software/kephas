@@ -25,10 +25,17 @@ namespace Kephas.Data.Tests.Behaviors
     [TestFixture]
     public class DataAnnotationsBehaviorBaseTest
     {
+        private RuntimeTypeRegistry typeRegistry;
+
+        public DataAnnotationsBehaviorBaseTest()
+        {
+            this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
         [Test]
         public void Validate_RequiredAttribute()
         {
-            var typeInfo = new RuntimeTypeInfo(typeof(ITestEntity));
+            var typeInfo = new RuntimeTypeInfo(this.typeRegistry, typeof(ITestEntity));
             var testEntity = new TestEntity(typeInfo);
             var behavior = new StringDataAnnotationsBehavior();
 
@@ -43,7 +50,7 @@ namespace Kephas.Data.Tests.Behaviors
         [Test]
         public void Validate_RangeAttribute()
         {
-            var typeInfo = new RuntimeTypeInfo(typeof(ITestEntity));
+            var typeInfo = new RuntimeTypeInfo(this.typeRegistry, typeof(ITestEntity));
             var testEntity = new TestEntity(typeInfo) { Name = "gigi", Age = -1 };
             var behavior = new StringDataAnnotationsBehavior();
 
@@ -58,7 +65,7 @@ namespace Kephas.Data.Tests.Behaviors
         [Test]
         public void Validate_multiple_properties()
         {
-            var typeInfo = new RuntimeTypeInfo(typeof(ITestEntity));
+            var typeInfo = new RuntimeTypeInfo(this.typeRegistry, typeof(ITestEntity));
             var testEntity = new TestEntity(typeInfo) { Name = null, Age = 200 };
             var behavior = new StringDataAnnotationsBehavior();
 
@@ -69,7 +76,7 @@ namespace Kephas.Data.Tests.Behaviors
         [Test]
         public void Validate_multiple_attributes()
         {
-            var typeInfo = new RuntimeTypeInfo(typeof(ITestEntity));
+            var typeInfo = new RuntimeTypeInfo(this.typeRegistry, typeof(ITestEntity));
             var testEntity = new TestEntity(typeInfo) { Name = "gigi", Email = "a-a" };
             var behavior = new StringDataAnnotationsBehavior();
 

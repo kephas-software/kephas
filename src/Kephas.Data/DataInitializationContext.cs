@@ -23,11 +23,11 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="dataContext">The data context.</param>
         /// <param name="dataStore">The data store.</param>
-        /// <param name="initializationContext">The initialization context (optional).</param>
+        /// <param name="initializationContext">Optional. The initialization context.</param>
         public DataInitializationContext(
             IDataContext dataContext,
             IDataStore dataStore,
-            IContext initializationContext = null)
+            IContext? initializationContext = null)
             : base(dataContext)
         {
             this.DataStore = dataStore;
@@ -48,6 +48,6 @@ namespace Kephas.Data
         /// <value>
         /// The initialization context.
         /// </value>
-        public IContext InitializationContext { get; }
+        public IContext? InitializationContext { get; }
     }
 }
