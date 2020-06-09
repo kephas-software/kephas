@@ -30,13 +30,6 @@ namespace Kephas.Model.Tests
     [TestFixture]
     public class DefaultModelSpaceProviderTest : ModelTestBase
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public DefaultModelSpaceProviderTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public async Task InitializeAsync_Dimensions()
         {

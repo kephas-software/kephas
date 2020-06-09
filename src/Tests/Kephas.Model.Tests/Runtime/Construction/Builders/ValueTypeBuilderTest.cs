@@ -27,13 +27,6 @@ namespace Kephas.Model.Tests.Runtime.Construction.Builders
     [TestFixture]
     public class ValueTypeBuilderTest
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public ValueTypeBuilderTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         public ValueTypeBuilder CreateBuilder<T>()
         {
             var context = new ModelConstructionContext(Substitute.For<ICompositionContext>())

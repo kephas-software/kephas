@@ -26,13 +26,6 @@ namespace Kephas.Core.Tests.Activation
     [TestFixture]
     public class ActivatorBaseTest
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public ActivatorBaseTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void CreateInstance_no_args()
         {

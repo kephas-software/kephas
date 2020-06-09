@@ -29,20 +29,11 @@ namespace Kephas.Data.Endpoints.Tests
     [TestFixture]
     public class DataSourceHandlerTest : TestBase
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public DataSourceHandlerTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public async Task HandleAsync_data_source_context_properly_set()
         {
             var dataSpace = Substitute.For<IDataSpace>();
             var dataContext = Substitute.For<IDataContext>();
-            var ambientServices = new AmbientServices(typeRegistry: this.typeRegistry);
-            dataContext.AmbientServices.Returns(ambientServices);
             dataSpace[typeof(int)].Returns(dataContext);
             dataSpace[typeof(int).AsRuntimeTypeInfo()].Returns(dataContext);
 
@@ -81,7 +72,6 @@ namespace Kephas.Data.Endpoints.Tests
                               };
 
             var context = Substitute.For<IMessagingContext>();
-            context.AmbientServices.Returns(ambientServices);
             var result = await handler.ProcessAsync(message, context, default);
             var list = result.DataSource;
             Assert.AreEqual(2, list.Count);

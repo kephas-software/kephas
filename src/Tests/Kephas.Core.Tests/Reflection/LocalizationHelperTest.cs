@@ -21,13 +21,6 @@ namespace Kephas.Core.Tests.Reflection
     [TestFixture]
     public class LocalizationHelperTest
     {
-        private readonly RuntimeTypeRegistry typeRegistry;
-
-        public LocalizationHelperTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void GetLocalization_Type()
         {

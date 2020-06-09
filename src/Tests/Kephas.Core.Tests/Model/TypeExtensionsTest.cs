@@ -18,13 +18,6 @@ namespace Kephas.Core.Tests.Model
     [TestFixture]
     public class TypeExtensionsTest
     {
-        private readonly RuntimeTypeRegistry typeRegistry;
-
-        public TypeExtensionsTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void GetAbstractType_none()
         {

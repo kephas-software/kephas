@@ -17,13 +17,6 @@ namespace Kephas.Core.Tests.Configuration
     [TestFixture]
     public class DefaultConfigurationStoreTest
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public DefaultConfigurationStoreTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void Item_case_insensitive()
         {

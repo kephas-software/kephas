@@ -23,13 +23,6 @@ namespace Kephas.Core.Tests.Reflection
     [TestFixture]
     public class ReflectionHelperTest
     {
-        private readonly RuntimeTypeRegistry typeRegistry;
-
-        public ReflectionHelperTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void GetNonGenericName_non_generic()
         {

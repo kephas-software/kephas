@@ -22,13 +22,6 @@ namespace Kephas.Data.LLBLGen.Tests.Entities
     [TestFixture]
     public class EntityModelProviderTest
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public EntityModelProviderTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void GetModelTypeInfos_empty()
         {

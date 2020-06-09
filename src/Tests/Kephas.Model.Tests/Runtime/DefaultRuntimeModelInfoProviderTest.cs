@@ -30,13 +30,6 @@ namespace Kephas.Model.Tests.Runtime
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class DefaultRuntimeModelInfoProviderTest
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public DefaultRuntimeModelInfoProviderTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public async Task GetElementInfosAsync()
         {

@@ -223,8 +223,6 @@ namespace Kephas.Data.IO.Tests.Import
             dataSpace[typeof(TSource)].Returns(sourceDataContext);
             dataSpace[typeof(TTarget)].Returns(targetDataContext);
 
-            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            dataSpace.AmbientServices.Returns(ambientServices);
             return dataSpace;
         }
 
@@ -234,8 +232,6 @@ namespace Kephas.Data.IO.Tests.Import
             sourceDataContext.Attach(Arg.Any<object>())
                 .Returns(ci => new EntityEntry(ci.Arg<object>()) { DataContext = sourceDataContext });
 
-            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            sourceDataContext.AmbientServices.Returns(ambientServices);
             return sourceDataContext;
         }
 
@@ -255,8 +251,6 @@ namespace Kephas.Data.IO.Tests.Import
                             return ei;
                         });
 
-            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            targetDataContext.AmbientServices.Returns(ambientServices);
             return targetDataContext;
         }
     }

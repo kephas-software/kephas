@@ -28,13 +28,6 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
     public class ConstructorTestBase
     {
-        public ConstructorTestBase()
-        {
-            this.TypeRegistry = new RuntimeTypeRegistry();
-        }
-
-        public RuntimeTypeRegistry TypeRegistry { get; }
-
         /// <summary>
         /// Gets the construction context.
         /// </summary>

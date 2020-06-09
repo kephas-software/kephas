@@ -37,13 +37,6 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
     [TestFixture]
     public class DefaultClientQueryConverterTest
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public DefaultClientQueryConverterTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         [TestCase(arg: new string[] { "I", "saw", "the", "film", "Heidi" })]
         [TestCase(arg: new string[] { "Pippi", "Langstrumpf" })]

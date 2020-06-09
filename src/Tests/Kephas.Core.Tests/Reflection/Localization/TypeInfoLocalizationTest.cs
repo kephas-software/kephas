@@ -10,13 +10,6 @@
     [TestFixture]
     public class TypeInfoLocalizationTest
     {
-        private readonly RuntimeTypeRegistry typeRegistry;
-
-        public TypeInfoLocalizationTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void Name_from_attribute()
         {

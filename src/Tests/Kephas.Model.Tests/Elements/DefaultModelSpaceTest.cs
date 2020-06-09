@@ -27,13 +27,6 @@ namespace Kephas.Model.Tests.Elements
     [TestFixture]
     public class DefaultModelSpaceTest
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public DefaultModelSpaceTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void ComputeDimensions_2_dims()
         {

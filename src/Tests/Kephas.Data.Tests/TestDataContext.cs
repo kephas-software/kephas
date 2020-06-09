@@ -118,9 +118,6 @@ namespace Kephas.Data.Tests
         private static ICompositionContext CreateCompositionContext()
         {
             var compositionContext = Substitute.For<ICompositionContext>();
-            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
-            compositionContext.GetExport(typeof(IAmbientServices), Arg.Any<string>()).Returns(ambientServices);
             return compositionContext;
         }
 

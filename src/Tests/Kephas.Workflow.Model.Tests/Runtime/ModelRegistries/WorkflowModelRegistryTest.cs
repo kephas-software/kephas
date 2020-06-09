@@ -28,13 +28,6 @@ namespace Kephas.Workflow.Model.Tests.Runtime.ModelRegistries
     [TestFixture]
     public class WorkflowModelRegistryTest : TestBase
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public WorkflowModelRegistryTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public async Task GetRuntimeElementsAsync()
         {

@@ -8,13 +8,6 @@
     [TestFixture]
     public class PropertyInfoLocalizationTest
     {
-        private readonly RuntimeTypeRegistry typeRegistry;
-
-        public PropertyInfoLocalizationTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void Name_from_attribute()
         {

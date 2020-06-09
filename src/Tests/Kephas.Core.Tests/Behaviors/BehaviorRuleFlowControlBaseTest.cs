@@ -18,13 +18,6 @@ namespace Kephas.Core.Tests.Behaviors
     [TestFixture]
     public class BehaviorRuleFlowControlBaseTest
     {
-        private readonly RuntimeTypeRegistry typeRegistry;
-
-        public BehaviorRuleFlowControlBaseTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void PriorityOrder_default()
         {

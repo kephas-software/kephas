@@ -18,13 +18,6 @@ namespace Kephas.Tests.Plugins.Transactions
     [TestFixture]
     public class UndoCommandBaseTest
     {
-        private RuntimeTypeRegistry typeRegistry;
-
-        public UndoCommandBaseTest()
-        {
-            this.typeRegistry = new RuntimeTypeRegistry();
-        }
-
         [Test]
         public void Parse_move_file()
         {
@@ -65,7 +58,7 @@ namespace Kephas.Tests.Plugins.Transactions
 
         private IPluginContext CreatePluginContext()
         {
-            var ambientServices = new AmbientServices(typeRegistry: this.typeRegistry);
+            var ambientServices = new AmbientServices();
             var context = new PluginContext(ambientServices.CompositionContainer);
             return context;
         }

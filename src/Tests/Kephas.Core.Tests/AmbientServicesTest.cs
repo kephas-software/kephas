@@ -444,8 +444,7 @@ namespace Kephas.Core.Tests
         [Test]
         public void GetAppServiceInfos_no_default_services()
         {
-            var typeRegistry = new RuntimeTypeRegistry();
-            var ambientServices = new AmbientServices(registerDefaultServices: false, typeRegistry: typeRegistry);
+            var ambientServices = new AmbientServices(registerDefaultServices: false);
             var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new CompositionRegistrationContext(ambientServices));
 
             Assert.AreEqual(2, appServiceInfos.Count());
@@ -458,7 +457,7 @@ namespace Kephas.Core.Tests
             (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(IRuntimeTypeRegistry));
             Assert.IsNotNull(info);
             Assert.IsNotNull(info.InstanceFactory);
-            Assert.AreSame(typeRegistry, info.InstanceFactory(null));
+            Assert.AreSame(RuntimeTypeRegistry.Instance, info.InstanceFactory(null));
         }
 
         [Test]

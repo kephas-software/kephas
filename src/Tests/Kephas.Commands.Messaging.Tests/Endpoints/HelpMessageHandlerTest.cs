@@ -33,7 +33,7 @@ namespace Kephas.Commands.Messaging.Tests.Endpoints
         {
             this.typeRegistry = new RuntimeTypeRegistry();
         }
-        
+
         [Test]
         public async Task ProcessAsync_nullable_param()
         {
