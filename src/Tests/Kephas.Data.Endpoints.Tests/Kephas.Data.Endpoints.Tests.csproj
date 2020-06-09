@@ -38,6 +38,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Kephas.Data.Endpoints\Kephas.Data.Endpoints.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 
 </Project>

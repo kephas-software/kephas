@@ -22,11 +22,12 @@ namespace Kephas.Data.Endpoints.Tests
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
+    using Kephas.Testing;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class DataSourceHandlerTest
+    public class DataSourceHandlerTest : TestBase
     {
         private RuntimeTypeRegistry typeRegistry;
 
@@ -79,7 +80,9 @@ namespace Kephas.Data.Endpoints.Tests
                                   Options = options,
                               };
 
-            var result = await handler.ProcessAsync(message, Substitute.For<IMessagingContext>(), default);
+            var context = Substitute.For<IMessagingContext>();
+            context.AmbientServices.Returns(ambientServices);
+            var result = await handler.ProcessAsync(message, context, default);
             var list = result.DataSource;
             Assert.AreEqual(2, list.Count);
         }

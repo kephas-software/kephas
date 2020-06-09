@@ -26,11 +26,11 @@ namespace Kephas.Data.IO.Tests.Import
     using Kephas.Data.IO.Import;
     using Kephas.Model;
     using Kephas.Operations;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Testing;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -222,6 +222,9 @@ namespace Kephas.Data.IO.Tests.Import
             var dataSpace = Substitute.For<IDataSpace>();
             dataSpace[typeof(TSource)].Returns(sourceDataContext);
             dataSpace[typeof(TTarget)].Returns(targetDataContext);
+
+            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            dataSpace.AmbientServices.Returns(ambientServices);
             return dataSpace;
         }
 
@@ -231,6 +234,8 @@ namespace Kephas.Data.IO.Tests.Import
             sourceDataContext.Attach(Arg.Any<object>())
                 .Returns(ci => new EntityEntry(ci.Arg<object>()));
 
+            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            sourceDataContext.AmbientServices.Returns(ambientServices);
             return sourceDataContext;
         }
 
@@ -250,6 +255,8 @@ namespace Kephas.Data.IO.Tests.Import
                             return ei;
                         });
 
+            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            targetDataContext.AmbientServices.Returns(ambientServices);
             return targetDataContext;
         }
     }

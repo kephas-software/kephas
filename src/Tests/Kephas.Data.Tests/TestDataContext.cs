@@ -100,7 +100,7 @@ namespace Kephas.Data.Tests
             return initializationContext;
         }
 
-        protected override IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext = null)
+        protected override IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext)
         {
             return this.LocalCache.Values.Select(ei => ei.Entity).OfType<T>().AsQueryable();
         }
@@ -113,7 +113,16 @@ namespace Kephas.Data.Tests
         }
 
         private static ICompositionContext GetTestCompositionContext(ICompositionContext compositionContext)
-            => compositionContext ?? Substitute.For<ICompositionContext>();
+            => compositionContext ?? CreateCompositionContext();
+
+        private static ICompositionContext CreateCompositionContext()
+        {
+            var compositionContext = Substitute.For<ICompositionContext>();
+            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            compositionContext.GetExport(typeof(IAmbientServices), Arg.Any<string>()).Returns(ambientServices);
+            return compositionContext;
+        }
 
         private static IDataCommandProvider GetTestDataCommandProvider(IDataCommandProvider dataCommandProvider)
             => dataCommandProvider ?? Substitute.For<IDataCommandProvider>();

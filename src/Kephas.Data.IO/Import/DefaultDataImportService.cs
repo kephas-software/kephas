@@ -211,10 +211,9 @@ namespace Kephas.Data.IO.Import
             private async Task ImportAsManyAsPossibleAsync(IEnumerable<object> sourceEntities, IList<IDataImportBehavior> behaviors, IList<IDataImportBehavior> reversedBehaviors, CancellationToken cancellationToken = default)
             {
                 // ensure we run in a separate thread.
-                var importEntityEntries =
-                    await ((Func<List<IEntityEntry>>)(() => sourceEntities.Select(this.AttachSourceEntity).ToList()))
-                            .AsAsync(cancellationToken)
-                            .PreserveThreadContext();
+                await Task.Yield();
+
+                var importEntityEntries = sourceEntities.Select(this.AttachSourceEntity).ToList();
                 var percentageStep = 1f / importEntityEntries.Count;
                 foreach (var importEntityEntry in importEntityEntries)
                 {

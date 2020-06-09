@@ -145,7 +145,7 @@ namespace Kephas.Dynamic
             if (this.innerObject != null)
             {
                 var type = this.GetInnerObjectType();
-                foreach (var property in type!.GetProperties())
+                foreach (var property in RuntimeTypeInfo.GetTypeProperties(type!))
                 {
                     yield return property.Name;
                 }
@@ -154,7 +154,7 @@ namespace Kephas.Dynamic
             {
                 // then, check the properties in this object
                 var type = this.GetThisType();
-                foreach (var property in type.GetProperties())
+                foreach (var property in RuntimeTypeInfo.GetTypeProperties(type))
                 {
                     yield return property.Name;
                 }
