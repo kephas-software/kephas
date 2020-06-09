@@ -358,9 +358,10 @@ namespace Kephas.Core.Tests.Dynamic
             public WrapperExpando(object innerObject)
                 : base(innerObject)
             {
+                this.HasWrappedObject = Expando.GetDictionary(innerObject, false) != innerObject;
             }
 
-            public bool HasWrappedObject => this.GetInnerObjectType() != null;
+            public bool HasWrappedObject { get; }
         }
     }
 }

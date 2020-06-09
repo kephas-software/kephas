@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Reflection;
-
 namespace Kephas.Runtime
 {
     using Kephas.Diagnostics.Contracts;
@@ -43,11 +41,5 @@ namespace Kephas.Runtime
             this.TypeRegistry = typeRegistry;
             this.Logger = logger;
         }
-
-        /// <summary>
-        /// Gets the type registry.
-        /// </summary>
-        /// <returns>The type registry.</returns>
-        protected sealed override IRuntimeTypeRegistry? GetTypeRegistry() => this.TypeRegistry;
     }
 }

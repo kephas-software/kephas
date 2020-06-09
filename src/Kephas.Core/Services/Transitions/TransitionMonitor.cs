@@ -115,7 +115,7 @@ namespace Kephas.Services.Transitions
         /// <value>
         /// The exception.
         /// </value>
-        public Exception Exception { get; private set; }
+        public Exception? Exception { get; private set; }
 
         /// <summary>
         /// Asserts that the service is not started.

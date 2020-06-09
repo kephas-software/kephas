@@ -75,7 +75,7 @@ namespace Kephas.Dynamic
         /// off the internal dictionary and any public properties of this object.
         /// </summary>
         /// <param name="dictionary">The properties.</param>
-        public Expando(IDictionary<string, object> dictionary)
+        public Expando(IDictionary<string, object?> dictionary)
             : base(dictionary)
         {
             Requires.NotNull(dictionary, nameof(dictionary));
@@ -106,16 +106,16 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The dictionary.
         /// </returns>
-        private static IDictionary<string, object> GetDictionary(object? innerObject, bool isThreadSafe)
+        protected internal static IDictionary<string, object?> GetDictionary(object? innerObject, bool isThreadSafe)
         {
-            if (innerObject is IDictionary<string, object> innerDictionary)
+            if (innerObject is IDictionary<string, object?> innerDictionary)
             {
                 return innerDictionary;
             }
 
             return isThreadSafe
-                       ? (IDictionary<string, object>)new ConcurrentDictionary<string, object>()
-                       : new Dictionary<string, object>();
+                       ? (IDictionary<string, object?>)new ConcurrentDictionary<string, object?>()
+                       : new Dictionary<string, object?>();
         }
     }
 }

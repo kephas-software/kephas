@@ -169,7 +169,6 @@ namespace Kephas.Services
                     keyFunc,
                     f => f,
                     keyComparer);
-            return serviceFactories.OrderAsDictionary(keyFunc, f => f, keyComparer);
         }
 
         /// <summary>

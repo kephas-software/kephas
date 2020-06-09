@@ -23,7 +23,7 @@ namespace Kephas.Dynamic
     using System.Dynamic;
     using System.Linq;
     using System.Reflection;
- 
+    using System.Runtime.CompilerServices;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
     using Kephas.Resources;
@@ -58,36 +58,9 @@ namespace Kephas.Dynamic
     /// </summary>
     public abstract class ExpandoBase : DynamicObject, IExpando
     {
-        /// <summary>
-        /// Value of object passed in.
-        /// </summary>
         private object? innerObject;
-
-        /// <summary>
-        /// The inner dictionary for dynamic values.
-        /// </summary>
         private IDictionary<string, object?> innerDictionary;
-
-        /// <summary>
-        /// Cached dynamic type of the inner object.
-        /// </summary>
-        /// <remarks>
-        /// Do not use directly this field, instead use the <see cref="GetInnerObjectTypeInfo"/> method
-        /// which knows how to late-initialize it.
-        /// </remarks>
-        private ITypeInfo innerObjectTypeInfo;
-
         private Type innerObjectType;
-
-        /// <summary>
-        /// Cached dynamic type of this instance.
-        /// </summary>
-        /// <remarks>
-        /// Do not use directly this field, instead use the <see cref="GetThisTypeInfo"/> method
-        /// which knows how to late-initialize it.
-        /// </remarks>
-        private ITypeInfo thisTypeInfo;
-
         private Type thisType;
 
         /// <summary>
@@ -110,10 +83,10 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="innerObject">The instance to be extended.</param>
         /// <param name="innerDictionary">
-        /// The inner dictionary for holding dynamic values (optional).
+        /// Optional. The inner dictionary for holding dynamic values.
         /// If not provided, a new dictionary will be created.
         /// </param>
-        protected ExpandoBase(object innerObject, IDictionary<string, object?>? innerDictionary = null)
+        protected ExpandoBase(object? innerObject, IDictionary<string, object?>? innerDictionary = null)
         {
             Requires.NotNull(innerObject, nameof(innerObject));
 
@@ -515,6 +488,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The type of the inner object.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Type? GetInnerObjectType()
         {
             return this.innerObject == null
@@ -528,6 +502,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// The type of this expando object.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Type GetThisType()
         {
             return this.thisType ??= this.GetType();

@@ -36,8 +36,8 @@ namespace Kephas.Services.Composition
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            return ambientServices[AppServiceInfosKey] as
-                       IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)>;
+            return ambientServices[AppServiceInfosKey] as IEnumerable<(Type contractType, IAppServiceInfo appServiceInfo)>
+                ?? Array.Empty<(Type contractType, IAppServiceInfo appServiceInfo)>();
         }
 
         /// <summary>

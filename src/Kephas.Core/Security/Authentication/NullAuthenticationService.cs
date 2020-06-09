@@ -38,7 +38,7 @@ namespace Kephas.Security.Authentication
         /// </returns>
         public Task<IIdentity> AuthenticateAsync(
             ICredentials credentials,
-            Action<IAuthenticationContext> authConfig = null,
+            Action<IAuthenticationContext>? authConfig = null,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IIdentity>(null);
@@ -55,7 +55,7 @@ namespace Kephas.Security.Authentication
         /// </returns>
         public Task<IIdentity> GetIdentityAsync(
             object token,
-            Action<IContext> optionsConfig = null,
+            Action<IContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult<IIdentity>(null);
@@ -72,7 +72,7 @@ namespace Kephas.Security.Authentication
         /// </returns>
         public Task<object> GetTokenAsync(
             IIdentity identity,
-            Action<IContext> optionsConfig = null,
+            Action<IContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return Task.FromResult<object>(null);
@@ -86,7 +86,7 @@ namespace Kephas.Security.Authentication
         /// <returns>
         /// The identity.
         /// </returns>
-        public IIdentity Authenticate(ICredentials credentials, Action<IAuthenticationContext> authConfig = null)
+        public IIdentity Authenticate(ICredentials credentials, Action<IAuthenticationContext>? authConfig = null)
         {
             return null;
         }
@@ -99,7 +99,7 @@ namespace Kephas.Security.Authentication
         /// <returns>
         /// The identity.
         /// </returns>
-        public IIdentity GetIdentity(object token, Action<IContext> optionsConfig = null)
+        public IIdentity GetIdentity(object token, Action<IContext>? optionsConfig = null)
         {
             return null;
         }
@@ -112,7 +112,7 @@ namespace Kephas.Security.Authentication
         /// <returns>
         /// The token.
         /// </returns>
-        public object GetToken(IIdentity identity, Action<IContext> optionsConfig = null)
+        public object GetToken(IIdentity identity, Action<IContext>? optionsConfig = null)
         {
             return null;
         }

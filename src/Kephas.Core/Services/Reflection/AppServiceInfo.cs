@@ -122,7 +122,7 @@ namespace Kephas.Services.Reflection
         /// The metadata attributes.
         /// </value>
         /// <remarks>The metadata attributes are used to register the conventions for application services.</remarks>
-        public Type[] MetadataAttributes { get; set; }
+        public Type[] MetadataAttributes { get; set; } = Array.Empty<Type>();
 
         /// <summary>
         /// Gets the contract type of the export.

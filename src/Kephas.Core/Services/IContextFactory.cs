@@ -42,7 +42,7 @@ namespace Kephas.Services
     public static class ContextFactoryExtensions
     {
         private static readonly MethodInfo CreateContextMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => ((IContextFactory)null).CreateContext<string>((object[])null));
+            ReflectionHelper.GetGenericMethodOf(_ => ((IContextFactory)null!).CreateContext<string>((object[])null!));
 
         private static ConcurrentDictionary<IContextFactory, ILogManager> logManagerMap
             = new ConcurrentDictionary<IContextFactory, ILogManager>();
@@ -81,7 +81,7 @@ namespace Kephas.Services
                 return factory.LogManager;
             }
 
-            return logManagerMap.GetOrAdd(contextFactory, _ => contextFactory.CreateContext<Context>()?.AmbientServices.LogManager);
+            return logManagerMap.GetOrAdd(contextFactory, _ => contextFactory.CreateContext<Context>().AmbientServices.LogManager);
         }
     }
 }

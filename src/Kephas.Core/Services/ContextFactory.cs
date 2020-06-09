@@ -55,7 +55,7 @@ namespace Kephas.Services
             this.compositionContext = compositionContext;
             this.ambientServices = ambientServices;
             this.LogManager = logManager;
-            this.appServiceInfos = this.ambientServices.GetAppServiceInfos()?.ToList();
+            this.appServiceInfos = this.ambientServices.GetAppServiceInfos().ToList();
         }
 
         /// <summary>
