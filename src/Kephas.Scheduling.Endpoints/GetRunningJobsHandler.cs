@@ -38,13 +38,15 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>The response promise.</returns>
         public override async Task<GetRunningJobsResponseMessage> ProcessAsync(GetRunningJobsMessage message, IMessagingContext context, CancellationToken token)
         {
+            await Task.Yield();
+
             return new GetRunningJobsResponseMessage
             {
                 Jobs = this.scheduler.GetRunningJobs()
                     .Select(jobResult => new RunningJobData
                     {
                         JobId = jobResult.JobId,
-                        JobInfo = jobResult.JobInfo?.ToString(),
+                        JobInfo = jobResult.JobInfo.ToString(),
                         OperationState = jobResult.OperationState,
                         PercentCompleted = jobResult.PercentCompleted,
                         StartedAt = jobResult.StartedAt,

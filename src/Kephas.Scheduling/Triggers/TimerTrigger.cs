@@ -15,7 +15,6 @@ namespace Kephas.Scheduling.Triggers
     using System.Threading;
 
     using Kephas.Operations;
-    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -30,9 +29,7 @@ namespace Kephas.Scheduling.Triggers
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerTrigger"/> class.
         /// </summary>
-        /// <param name="typeRegistry">Optional. The type registry.</param>
-        public TimerTrigger(IRuntimeTypeRegistry? typeRegistry = null)
-            : base()
+        public TimerTrigger()
         {
         }
 
@@ -40,9 +37,7 @@ namespace Kephas.Scheduling.Triggers
         /// Initializes a new instance of the <see cref="TimerTrigger"/> class.
         /// </summary>
         /// <param name="id">The trigger ID.</param>
-        /// <param name="typeRegistry">Optional. The type registry.</param>
-        public TimerTrigger(object id, IRuntimeTypeRegistry? typeRegistry = null)
-            : base()
+        public TimerTrigger(object id)
         {
             this.Id = id;
         }
@@ -121,9 +116,10 @@ namespace Kephas.Scheduling.Triggers
                 ? $" *{this.Count}"
                 : string.Empty;
             var interval = this.Interval.HasValue
-                ? $" -{this.GetNormalizedInterval():c}"
+                ? $" @{this.GetNormalizedInterval():c}"
                 : string.Empty;
-            return $"{this.GetType().Name}:{this.Id}{period}{times}{interval}";
+            var enabled = this.IsEnabled ? "enabled" : "disabled";
+            return $"{this.GetType().Name}:{this.Id}{period}{times}{interval}/{enabled}";
         }
 
         /// <summary>

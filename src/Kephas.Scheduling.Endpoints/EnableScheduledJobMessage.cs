@@ -16,5 +16,10 @@ namespace Kephas.Scheduling.Endpoints
     [DisplayInfo(Description = "Enables the specified scheduled job.")]
     public class EnableScheduledJobMessage : IMessage
     {
+        /// <summary>
+        /// Gets or sets the ID of the scheduled job to be enabled.
+        /// </summary>
+        [DisplayInfo(Description = "The job or the ID of the scheduled job to be enabled.")]
+        public object? Job { get; set; }
     }
 }

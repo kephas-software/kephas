@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Scheduling.Runtime
 {
     using System;
@@ -17,6 +15,7 @@ namespace Kephas.Scheduling.Runtime
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Runtime;
     using Kephas.Scheduling.Jobs;
 
     /// <summary>

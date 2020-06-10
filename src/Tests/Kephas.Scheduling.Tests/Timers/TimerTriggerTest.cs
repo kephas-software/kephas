@@ -97,7 +97,7 @@ namespace Kephas.Scheduling.Tests.Timers
             };
 
             var triggerString = trigger.ToString();
-            Assert.AreEqual("TimerTrigger:144 -00:00:03", triggerString);
+            Assert.AreEqual("TimerTrigger:144 @00:00:03", triggerString);
         }
 
         private void AssertInterval(IList<long> fires, long milliseconds)

@@ -15,6 +15,7 @@ namespace Kephas.Scheduling.Reflection
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data;
     using Kephas.Dynamic;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Triggers;
@@ -24,7 +25,7 @@ namespace Kephas.Scheduling.Reflection
     /// <summary>
     /// Interface for job information.
     /// </summary>
-    public interface IJobInfo : IActivityInfo
+    public interface IJobInfo : IActivityInfo, IIdentifiable
     {
         /// <summary>
         /// Gets the job triggers.

@@ -44,5 +44,10 @@ namespace Kephas.Scheduling.Endpoints
         /// Gets or sets the triggers.
         /// </summary>
         public string[] Triggers { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the scheduled job is enabled.
+        /// </summary>
+        public bool IsEnabled { get; set; }
     }
 }

@@ -5,10 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Kephas.Scheduling.Endpoints
 {
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -39,6 +38,8 @@ namespace Kephas.Scheduling.Endpoints
         /// <returns>The response promise.</returns>
         public override async Task<GetScheduledJobsResponseMessage> ProcessAsync(GetScheduledJobsMessage message, IMessagingContext context, CancellationToken token)
         {
+            await Task.Yield();
+
             return new GetScheduledJobsResponseMessage
             {
                 Jobs = this.scheduler.GetScheduledJobs()
@@ -46,6 +47,7 @@ namespace Kephas.Scheduling.Endpoints
                     {
                         JobInfo = jobInfo.ToString(),
                         Triggers = jobInfo.Triggers.Select(t => t.ToString()).ToArray(),
+                        IsEnabled = jobInfo.Triggers.Any(t => t.IsEnabled),
                     })
                     .ToArray(),
             };

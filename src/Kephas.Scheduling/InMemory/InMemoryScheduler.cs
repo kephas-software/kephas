@@ -16,7 +16,6 @@ namespace Kephas.Scheduling.InMemory
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -42,12 +41,17 @@ namespace Kephas.Scheduling.InMemory
         private readonly List<IEventSubscription> subscriptions = new List<IEventSubscription>();
 
         private readonly
-            ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationToken, IJobResult> triggerAction)> activeTriggers
-                = new ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationToken, IJobResult> triggerAction)>();
+            ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationToken, IJobResult> triggerAction)>
+            activeTriggers
+                = new ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationToken, IJobResult> triggerAction)
+                >();
 
         private readonly
             ConcurrentDictionary<object, (IJobResult jobResult, CancellationTokenSource cancellationSource)> activeJobs
-                = new ConcurrentDictionary<object, (IJobResult jobResult, CancellationTokenSource cancellationSource)>();
+                = new ConcurrentDictionary<object, (IJobResult jobResult, CancellationTokenSource cancellationSource)
+                >();
+
+        private readonly ConcurrentQueue<IJobResult> completedJobs = new ConcurrentQueue<IJobResult>();
 
         private readonly List<IJobInfo> scheduledJobs = new List<IJobInfo>();
 
@@ -133,24 +137,104 @@ namespace Kephas.Scheduling.InMemory
         /// <summary>
         /// Gets the scheduled jobs.
         /// </summary>
-        /// <returns>An enumeration of scheduled jobs.</returns>
-        public IEnumerable<IJobInfo> GetScheduledJobs()
+        /// <returns>A query over the scheduled jobs.</returns>
+        public IQueryable<IJobInfo> GetScheduledJobs()
         {
             lock (this.scheduledJobs)
             {
-                return this.scheduledJobs.ToArray();
+                return this.scheduledJobs.ToArray().AsQueryable();
             }
         }
 
         /// <summary>
         /// Gets the running jobs.
         /// </summary>
-        /// <returns>An enumeration of running jobs.</returns>
-        public IEnumerable<IJobResult> GetRunningJobs()
+        /// <returns>A query over the running jobs.</returns>
+        public IQueryable<IJobResult> GetRunningJobs()
         {
             return this.activeJobs.Values
                 .Select(j => j.jobResult)
-                .ToList();
+                .ToList()
+                .AsQueryable();
+        }
+
+        /// <summary>
+        /// Gets the completed jobs.
+        /// </summary>
+        /// <returns>A query over the completed jobs.</returns>
+        public IQueryable<IJobResult> GetCompletedJobs()
+        {
+            return this.completedJobs.ToList().AsQueryable();
+        }
+
+        /// <summary>
+        /// Disables all the triggers of the scheduled job asynchronously.
+        /// </summary>
+        /// <param name="job">The ID of the job or the job to be disabled.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding an operation result.</returns>
+        public async Task<IOperationResult> DisableScheduledJobAsync(object job, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(job, nameof(job));
+
+            await Task.Yield();
+
+            if (job is IJobInfo jobInfo)
+            {
+                jobInfo.Triggers.ForEach(t => t.IsEnabled = false);
+            }
+            else
+            {
+                lock (this.scheduledJobs)
+                {
+                    jobInfo = this.scheduledJobs.FirstOrDefault(j => j.Id.Equals(job));
+                    if (jobInfo == null)
+                    {
+                        return new OperationResult().Fail(new KeyNotFoundException($"Job with ID '{job}' was not found."));
+                    }
+
+                    jobInfo.Triggers.ForEach(t => t.IsEnabled = false);
+                }
+            }
+
+            return new OperationResult()
+                .MergeMessage($"Job with ID '{job}' was disabled.")
+                .Complete();
+        }
+
+        /// <summary>
+        /// Enables all the triggers of the scheduled job asynchronously.
+        /// </summary>
+        /// <param name="job">The ID of the job or the job to be enabled.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding an operation result.</returns>
+        public async Task<IOperationResult> EnableScheduledJobAsync(object job, CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(job, nameof(job));
+
+            await Task.Yield();
+
+            if (job is IJobInfo jobInfo)
+            {
+                jobInfo.Triggers.ForEach(t => t.IsEnabled = true);
+            }
+            else
+            {
+                lock (this.scheduledJobs)
+                {
+                    jobInfo = this.scheduledJobs.FirstOrDefault(j => j.Id.Equals(job));
+                    if (jobInfo == null)
+                    {
+                        return new OperationResult().Fail(new KeyNotFoundException($"Job with ID '{job}' was not found."));
+                    }
+
+                    jobInfo.Triggers.ForEach(t => t.IsEnabled = true);
+                }
+            }
+
+            return new OperationResult()
+                .MergeMessage($"Job with ID '{job}' was enabled.")
+                .Complete();
         }
 
         /// <summary>
@@ -216,7 +300,8 @@ namespace Kephas.Scheduling.InMemory
                 }
 
                 // upon completion, remove the job from the active collection.
-                jobResult.AsTask().ContinueWith(
+                var jobTask = jobResult.AsTask();
+                jobTask.ContinueWith(
                     t =>
                     {
                         if (jobResult is JobResult jobResultClass)
@@ -226,12 +311,13 @@ namespace Kephas.Scheduling.InMemory
                         }
 
                         this.activeJobs.TryRemove(jobResult.JobId!, out _);
+                        this.completedJobs.Enqueue(jobResult);
                     });
 
                 // also, upon completion, remove the job from the active collection.
                 if (args.CompleteCallback != null)
                 {
-                    jobResult.AsTask().ContinueWith(t => args.CompleteCallback(jobResult), cancellationSource.Token);
+                    jobTask.ContinueWith(t => args.CompleteCallback(jobResult), cancellationSource.Token);
                 }
             }
 
@@ -285,7 +371,8 @@ namespace Kephas.Scheduling.InMemory
 
             if (!this.activeTriggers.TryRemove(triggerId, out var tuple))
             {
-                this.Logger.Warn("Trigger with ID '{triggerId}' was already removed from the list of active triggers.", triggerId);
+                this.Logger.Warn("Trigger with ID '{triggerId}' was already removed from the list of active triggers.",
+                    triggerId);
             }
             else
             {
@@ -337,18 +424,20 @@ namespace Kephas.Scheduling.InMemory
         {
             if (e.JobInfo == null && e.JobInfoId == null)
             {
-                throw new ArgumentNullException(nameof(e.JobInfo), $"Either the {nameof(e.JobInfo)} or {nameof(e.JobInfoId)} must be provided.");
+                throw new ArgumentNullException(nameof(e.JobInfo),
+                    $"Either the {nameof(e.JobInfo)} or {nameof(e.JobInfoId)} must be provided.");
             }
 
-            this.Logger.Info("Cancelling jobs and triggers based on job information '{jobInfo}'...", e.JobInfo ?? e.JobInfoId);
+            this.Logger.Info("Cancelling jobs and triggers based on job information '{jobInfo}'...",
+                e.JobInfo ?? e.JobInfoId);
 
             e.JobInfo?.Triggers.ForEach(t => this.CancelTrigger(t.Id));
 
             var matchingActiveJobs = (e.JobInfo == null
-                ? this.activeJobs.Where(kv => e.JobInfoId.Equals(kv.Value.jobResult.JobInfoId))
-                : this.activeJobs.Where(kv => e.JobInfo.Equals(kv.Value.jobResult.JobInfo)))
-                    .Select(kv => kv.Key)
-                    .ToList();
+                    ? this.activeJobs.Where(kv => e.JobInfoId.Equals(kv.Value.jobResult.JobInfoId))
+                    : this.activeJobs.Where(kv => e.JobInfo.Equals(kv.Value.jobResult.JobInfo)))
+                .Select(kv => kv.Key)
+                .ToList();
 
             matchingActiveJobs.ForEach(this.CancelJob);
         }
@@ -379,7 +468,7 @@ namespace Kephas.Scheduling.InMemory
             Action<IActivityContext>? options,
             CancellationToken cancellationToken)
         {
-            var job = (IJob)jobInfo.CreateInstance();
+            var job = (IJob) jobInfo.CreateInstance();
             job.Target = target;
             job.Arguments = arguments;
             var startedAt = DateTimeOffset.Now;

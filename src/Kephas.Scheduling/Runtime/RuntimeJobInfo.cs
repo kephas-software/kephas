@@ -39,6 +39,11 @@ namespace Kephas.Scheduling.Runtime
         }
 
         /// <summary>
+        /// Gets the job information ID.
+        /// </summary>
+        public object Id { get; } = Guid.NewGuid().ToString();
+
+        /// <summary>
         /// Gets the job triggers.
         /// </summary>
         /// <value>

@@ -10,8 +10,11 @@
 
 namespace Kephas.Scheduling
 {
-    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
+    using Kephas.Operations;
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
@@ -25,13 +28,35 @@ namespace Kephas.Scheduling
         /// <summary>
         /// Gets the scheduled jobs.
         /// </summary>
-        /// <returns>An enumeration of scheduled jobs.</returns>
-        IEnumerable<IJobInfo> GetScheduledJobs();
+        /// <returns>A query over the scheduled jobs.</returns>
+        IQueryable<IJobInfo> GetScheduledJobs();
 
         /// <summary>
         /// Gets the running jobs.
         /// </summary>
-        /// <returns>An enumeration of running jobs.</returns>
-        IEnumerable<IJobResult> GetRunningJobs();
+        /// <returns>A query over the running jobs.</returns>
+        IQueryable<IJobResult> GetRunningJobs();
+
+        /// <summary>
+        /// Gets the completed jobs.
+        /// </summary>
+        /// <returns>A query over the completed jobs.</returns>
+        IQueryable<IJobResult> GetCompletedJobs();
+
+        /// <summary>
+        /// Disables all the triggers of the scheduled job asynchronously.
+        /// </summary>
+        /// <param name="job">The ID of the job or the job to be disabled.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding an operation result.</returns>
+        Task<IOperationResult> DisableScheduledJobAsync(object job, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Enables all the triggers of the scheduled job asynchronously.
+        /// </summary>
+        /// <param name="job">The ID of the job or the job to be enabled.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding an operation result.</returns>
+        Task<IOperationResult> EnableScheduledJobAsync(object job, CancellationToken cancellationToken = default);
     }
 }

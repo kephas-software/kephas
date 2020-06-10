@@ -76,7 +76,8 @@ namespace Kephas.Scheduling.Triggers
         /// </returns>
         public override string ToString()
         {
-            return $"{this.GetTypeInfo().Name} ({this.Id})";
+            var enabled = this.IsEnabled ? "enabled" : "disabled";
+            return $"{this.GetTypeInfo().Name} ({this.Id})/{enabled}";
         }
 
         /// <summary>
