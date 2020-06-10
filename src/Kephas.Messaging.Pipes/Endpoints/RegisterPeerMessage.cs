@@ -18,9 +18,9 @@ namespace Kephas.Messaging.Pipes.Endpoints
         public string? AppInstanceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the input pipe.
+        /// Gets or sets the name of the channel.
         /// </summary>
-        public string? InputPipeName { get; set; }
+        public string? ChannelName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the server hosting the pipe.
@@ -36,6 +36,6 @@ namespace Kephas.Messaging.Pipes.Endpoints
         /// <summary>
         /// Gets or sets the peers.
         /// </summary>
-        public string[] Peers { get; set; }
+        public RegisterPeerMessage[] Peers { get; set; }
     }
 }

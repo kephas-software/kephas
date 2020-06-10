@@ -5,12 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Threading;
-
 namespace Kephas.Messaging.Pipes.Routing
 {
+    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.IO;
     using System.IO.Pipes;
     using System.Linq;
     using System.Text;
@@ -20,6 +20,7 @@ namespace Kephas.Messaging.Pipes.Routing
     using Kephas.Application;
     using Kephas.Collections;
     using Kephas.Configuration;
+    using Kephas.IO;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
@@ -28,6 +29,7 @@ namespace Kephas.Messaging.Pipes.Routing
     using Kephas.Messaging.Pipes.Endpoints;
     using Kephas.Serialization;
     using Kephas.Services;
+    using Kephas.Threading;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -41,17 +43,18 @@ namespace Kephas.Messaging.Pipes.Routing
         private readonly ISerializationService serializationService;
         private bool pipesInitialized;
 
-        private string inputChannelName;
-        private string? rootInputChannelName;
-        private NamedPipeServerStream? input;
-        private NamedPipeServerStream? rootInput;
-        private NamedPipeClientStream rootOutput;
-        private Lock writeLock = new Lock();
+        private string? rootInChannelName;
 
-        private ConcurrentDictionary<string, NamedPipeClientStream> peerOutputs
-            = new ConcurrentDictionary<string, NamedPipeClientStream>();
+        private string inChannelName;
+        private NamedPipeServerStream? inChannel;
+        private Task? inListenTask;
 
-        private IList<string> peers = new List<string>();
+        private CancellationTokenSource? disposeSource;
+
+        private ConcurrentDictionary<string, PeerChannel> peerOutChannels
+            = new ConcurrentDictionary<string, PeerChannel>();
+
+        private Lock? outWriteLock;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PipeAppMessageRouter"/> class.
@@ -59,25 +62,18 @@ namespace Kephas.Messaging.Pipes.Routing
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="handlerRegistry">The message handler registry.</param>
         /// <param name="pipesConfiguration">The configuration for pipes.</param>
         /// <param name="serializationService">The serialization service.</param>
         public PipeAppMessageRouter(
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor,
-            IMessageHandlerRegistry handlerRegistry,
             IConfiguration<PipesSettings> pipesConfiguration,
             ISerializationService serializationService)
             : base(contextFactory, appRuntime, messageProcessor)
         {
             this.pipesConfiguration = pipesConfiguration;
             this.serializationService = serializationService;
-            if (this.AppRuntime.IsRoot())
-            {
-                handlerRegistry.RegisterHandler<RegisterPeerMessage>(this.HandleRegisterPeerAsync);
-                handlerRegistry.RegisterHandler<RegisterPeerResponseMessage>(this.HandleRegisterPeerResponse);
-            }
         }
 
         /// <summary>
@@ -102,30 +98,41 @@ namespace Kephas.Messaging.Pipes.Routing
         /// <returns>The asynchronous result.</returns>
         protected virtual async Task InitializePipesAsync(CancellationToken cancellationToken)
         {
+            this.outWriteLock = new Lock();
+            this.disposeSource = new CancellationTokenSource();
+
             var pipesNS = this.pipesConfiguration.Settings.Namespace;
-            this.rootInputChannelName = string.IsNullOrEmpty(pipesNS) ? ChannelType : $"{pipesNS}_{ChannelType}";
+            this.rootInChannelName = string.IsNullOrEmpty(pipesNS) ? ChannelType : $"{pipesNS}_{ChannelType}";
 
-            this.inputChannelName = this.GetChannelName(new Endpoint(appInstanceId: this.AppRuntime.GetAppInstanceId()!));
-            this.input = this.OpenNamedPipeServerStream(this.inputChannelName);
+            this.inChannelName = this.AppRuntime.IsRoot()
+                ? this.rootInChannelName
+                : $"{this.rootInChannelName}_{this.AppRuntime.GetAppInstanceId()}";
+            this.inChannel = this.OpenNamedPipeServerStream(this.inChannelName);
+            this.inListenTask = this.StartListeningAsync(this.inChannel, this.disposeSource.Token);
 
-            this.peers.Add(this.inputChannelName);
+            var selfPeerChannel = new PeerChannel(
+                this.AppRuntime.GetAppInstanceId(),
+                ".",
+                this.inChannelName,
+                this.OpenNamedPipeClientStream(".", this.inChannelName));
+            this.peerOutChannels.TryAdd(selfPeerChannel.AppInstanceId, selfPeerChannel);
 
-            if (this.AppRuntime.IsRoot())
+            if (!this.AppRuntime.IsRoot())
             {
-                this.rootInput = this.OpenNamedPipeServerStream(this.rootInputChannelName);
-            }
-            else
-            {
-                this.rootOutput = this.OpenNamedPipeClientStream(
+                // create a channel to root only for the initial RegisterPeer invocation.
+                // afterwards, the root will answer with a list of peers.
+                using var rootOutChannel = this.OpenNamedPipeClientStream(
                     this.pipesConfiguration.Settings.ServerName,
-                    this.rootInputChannelName);
+                    this.rootInChannelName);
 
                 var registerMessage = new RegisterPeerMessage
                 {
                     AppInstanceId = this.AppRuntime.GetAppInstanceId(),
                     ServerName = this.pipesConfiguration.Settings.ServerName,
-                    InputPipeName = this.inputChannelName,
+                    ChannelName = this.inChannelName,
                 };
+
+                await this.PublishAsync(registerMessage, rootOutChannel).PreserveThreadContext();
             }
 
             this.pipesInitialized = true;
@@ -167,27 +174,21 @@ namespace Kephas.Messaging.Pipes.Routing
             }
 
             var groups = msgRecipients
-                .SelectMany(r => this.GetChannelName(r).Split('\t').Select(c => (channelName: c, recipient: r)))
-                .GroupBy(cr => cr.channelName)
-                .Select(g => (channelName: g.Key, recipients: g.Select(gr => gr.recipient).Distinct().ToList()))
+                .SelectMany(r => this.GetChannelName(r).Split('\t').Select(c => (appInstanceId: c, recipient: r)))
+                .GroupBy(cr => cr.appInstanceId)
+                .Select(g => (appInstanceId: g.Key, recipients: g.Select(gr => gr.recipient).Distinct().ToList()))
                 .ToList();
 
             if (groups.Count == 1)
             {
-                var serializedMessage = await this.serializationService
-                    .SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true), cancellationToken)
-                    .PreserveThreadContext();
-                await this.PublishAsync(serializedMessage, groups[0].channelName, brokeredMessage.IsOneWay)
+                await this.PublishAsync(brokeredMessage, new[] { groups[0].appInstanceId })
                     .PreserveThreadContext();
             }
             else
             {
-                foreach (var (channelName, recipients) in groups)
+                foreach (var (appInstanceId, recipients) in groups)
                 {
-                    var serializedMessage = await this.serializationService
-                        .SerializeAsync(brokeredMessage.Clone(recipients), ctx => ctx.IncludeTypeInfo(true), cancellationToken)
-                        .PreserveThreadContext();
-                    await this.PublishAsync(serializedMessage, channelName, brokeredMessage.IsOneWay)
+                    await this.PublishAsync(brokeredMessage.Clone(recipients), new[] { appInstanceId })
                         .PreserveThreadContext();
                 }
             }
@@ -216,16 +217,20 @@ namespace Kephas.Messaging.Pipes.Routing
         /// <summary>
         /// Opens the named pipe server stream and starts listening to it.
         /// </summary>
-        /// <param name="pipeName">The pipe name.</param>
+        /// <param name="channelName">The channel name.</param>
         /// <returns>The server stream.</returns>
-        protected virtual NamedPipeServerStream OpenNamedPipeServerStream(string pipeName)
+        protected virtual NamedPipeServerStream OpenNamedPipeServerStream(string channelName)
         {
             var stream = new NamedPipeServerStream(
-                pipeName,
-                PipeDirection.InOut,
+                channelName,
+                PipeDirection.In,
                 1,
                 PipeTransmissionMode.Message,
-                PipeOptions.Asynchronous);
+                PipeOptions.Asynchronous)
+            {
+                ReadMode = PipeTransmissionMode.Message,
+            };
+
             return stream;
         }
 
@@ -233,20 +238,26 @@ namespace Kephas.Messaging.Pipes.Routing
         /// Opens the named pipe client stream.
         /// </summary>
         /// <param name="serverName">The server name.</param>
-        /// <param name="pipeName">The pipe name.</param>
+        /// <param name="channelName">The channel name.</param>
         /// <returns>The server stream.</returns>
-        protected virtual NamedPipeClientStream OpenNamedPipeClientStream(string serverName, string pipeName)
+        protected virtual NamedPipeClientStream OpenNamedPipeClientStream(string? serverName, string channelName)
         {
+            serverName ??= ".";
             var stream = new NamedPipeClientStream(
                 serverName,
-                pipeName,
+                channelName,
                 PipeDirection.Out,
-                PipeOptions.Asynchronous);
+                PipeOptions.Asynchronous)
+            {
+                ReadMode = PipeTransmissionMode.Message,
+            };
+
+            stream.Connect();
             return stream;
         }
 
         /// <summary>
-        /// Disposes the pipes.
+        /// Disposes the pipes and the whole infrastructure.
         /// </summary>
         protected virtual void DisposePipes()
         {
@@ -255,35 +266,41 @@ namespace Kephas.Messaging.Pipes.Routing
                 return;
             }
 
-            this.input?.Dispose();
-            this.input = null;
+            // cancel the dispose source to start cancelling the reading.
+            this.disposeSource?.Cancel();
+            this.disposeSource = null;
 
-            if (this.AppRuntime.IsRoot())
-            {
-                this.rootInput?.Dispose();
-                this.rootInput = null;
-            }
+            // dispose the input channel and listening task
+            this.inListenTask?.Dispose();
+            this.inChannel?.Dispose();
+            this.inChannel = null;
 
+            // notify peers that it is closing
             var unregisterMessage = new UnregisterPeerMessage
             {
                 AppInstanceId = this.AppRuntime.GetAppInstanceId(),
-                InputPipeName = this.inputChannelName,
+                ChannelName = this.inChannelName,
                 ServerName = this.pipesConfiguration.Settings.ServerName,
             };
-            var brokeredMessage = new BrokeredMessage(unregisterMessage)
-            {
-                Sender = new Endpoint(appInstanceId: this.AppRuntime.GetAppInstanceId()),
-                IsOneWay = true,
-            };
-            var unregisterMessageString = this.serializationService.Serialize(brokeredMessage, ctx => ctx.IncludeTypeInfo(true));
+            this.PublishAsync(
+                    unregisterMessage,
+                    this.peerOutChannels.Values
+                        .Where(c => c.ChannelName != this.inChannelName)
+                        .Select(c => c.AppInstanceId)
+                        .ToArray())
+                .WaitNonLocking();
 
-            foreach (var peer in this.peers)
+            // dispose the peer output channels
+            foreach (var peerOutChannel in this.peerOutChannels.Values)
             {
-                if (peer != this.inputChannelName)
-                {
-                    this.PublishAsync(unregisterMessageString, peer, true).WaitNonLocking();
-                }
+                peerOutChannel.Stream.Dispose();
             }
+
+            this.peerOutChannels.Clear();
+
+            // dispose the write lock
+            this.outWriteLock?.Dispose();
+            this.outWriteLock = null;
 
             this.pipesInitialized = false;
         }
@@ -304,79 +321,193 @@ namespace Kephas.Messaging.Pipes.Routing
 
             return string.IsNullOrEmpty(recipient.AppInstanceId)
                 ? string.IsNullOrEmpty(recipient.AppId)
-                    ? string.Join("\t", this.peers)
-                    : string.Join("\t", this.peers.Where(p => p.StartsWith($"{this.rootInputChannelName}_{recipient.AppId}")))
-                : $"{this.rootInputChannelName}_{recipient.AppInstanceId}";
+                    ? string.Join("\t", this.peerOutChannels.Values.Select(c => c.AppInstanceId))
+                    : string.Join("\t", this.peerOutChannels.Values.Where(p => p.AppInstanceId.StartsWith(recipient.AppId)).Select(c => c.AppInstanceId))
+                : recipient.AppInstanceId;
         }
 
-        private async Task PublishAsync(string serializedMessage, string channelName, bool oneWay)
+        private async Task PublishAsync(object message, IEnumerable<string> appInstanceIds)
         {
-            var message = Encoding.UTF8.GetBytes(serializedMessage);
-            var pipes = channelName.Split('\t');
-            foreach (var pipe in pipes)
+            var serializedMessage = await this.serializationService
+                .SerializeAsync(message, ctx => ctx.IncludeTypeInfo(true))
+                .PreserveThreadContext();
+            var messageBytes = Encoding.UTF8.GetBytes(serializedMessage);
+            foreach (var appInstanceId in appInstanceIds)
             {
-                if (this.peerOutputs.TryGetValue(pipe, out var peerOutput))
+                if (this.peerOutChannels.TryGetValue(appInstanceId, out var peerChannel))
                 {
-                    await this.writeLock.EnterAsync(async () =>
-                    {
-                        await peerOutput.WriteAsync(message, 0, message.Length).PreserveThreadContext();
-                        await peerOutput.FlushAsync().PreserveThreadContext();
-                    }).PreserveThreadContext();
+                    await this.PublishAsync(messageBytes, peerChannel.Stream).PreserveThreadContext();
                 }
                 else
                 {
-                    // TODO - peer not found.
+                    this.Logger.Warn("Peer '{peer}' not registered.", appInstanceId);
                 }
             }
         }
 
-        private async Task<IMessage?> HandleRegisterPeerAsync(RegisterPeerMessage message, IMessagingContext context, CancellationToken cancellationToken)
+        private async Task PublishAsync(object message, Stream peerOutput)
         {
-            if (string.IsNullOrEmpty(message.InputPipeName))
-            {
-                this.Logger.Error($"Received a peer registration without an input pipe name for '{message.AppInstanceId}'");
-                return null;
-            }
-
-            this.peers.Add(message.InputPipeName);
-            this.peerOutputs.TryAdd(
-                message.InputPipeName,
-                this.OpenNamedPipeClientStream(message.ServerName, message.InputPipeName));
-
-            this.Logger.Info($"Received a peer registration with input pipe '{message.ServerName}/{message.InputPipeName}' for '{message.AppInstanceId}'");
-
-            var response = new RegisterPeerResponseMessage { Peers = this.peers.ToArray() };
-            var brokeredResponse = new BrokeredMessage(response)
-            {
-                Recipients = new[] { new Endpoint(appInstanceId: message.AppInstanceId) },
-                Sender = new Endpoint(appInstanceId: this.AppRuntime.GetAppInstanceId()),
-                IsOneWay = true,
-            };
-
-            var responseString = await this.serializationService
-                .SerializeAsync(brokeredResponse, ctx => ctx.IncludeTypeInfo(true), cancellationToken)
+            var messageString = await this.serializationService
+                .SerializeAsync(message, ctx => ctx.IncludeTypeInfo(true))
                 .PreserveThreadContext();
-            await this.PublishAsync(responseString, message.InputPipeName, true).PreserveThreadContext();
-
-            return null;
+            var messageBytes = Encoding.UTF8.GetBytes(messageString);
+            await this.PublishAsync(messageBytes, peerOutput).PreserveThreadContext();
         }
 
-        private IMessage? HandleRegisterPeerResponse(RegisterPeerResponseMessage message, IMessagingContext context)
+        private async Task PublishAsync(byte[] messageBytes, Stream peerOutput)
         {
-            var newPeers = new HashSet<string>(message.Peers);
-            newPeers.AddRange(this.peers);
-            newPeers.ExceptWith(this.peers);
-            this.peers.AddRange(newPeers);
-
-            foreach (var newPeer in newPeers)
+            await this.outWriteLock!.EnterAsync(async () =>
             {
-                // TODO get the server name, too
-                this.peerOutputs.TryAdd(
-                    newPeer,
-                    this.OpenNamedPipeClientStream(".", newPeer));
+                await peerOutput.WriteAsync(messageBytes, 0, messageBytes.Length).PreserveThreadContext();
+                await peerOutput.FlushAsync().PreserveThreadContext();
+            }).PreserveThreadContext();
+        }
+
+        private async Task HandleRegisterPeerAsync(RegisterPeerMessage message, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrEmpty(message.ChannelName))
+            {
+                this.Logger.Error("Received a peer registration without an input pipe name for '{peer}'", message.AppInstanceId);
+                return;
             }
 
-            return null;
+            if (this.peerOutChannels.Values.Any(c => c.AppInstanceId == message.AppInstanceId))
+            {
+                this.Logger.Warn("Peer '{peer}' already registered with channel '{channel}'", message.AppInstanceId, $"{message.ServerName}/{message.ChannelName}");
+                return;
+            }
+
+            var peerChannel = new PeerChannel(
+                message.AppInstanceId,
+                message.ServerName,
+                message.ChannelName,
+                this.OpenNamedPipeClientStream(message.ServerName, message.ChannelName!));
+            this.peerOutChannels.TryAdd(peerChannel.AppInstanceId, peerChannel);
+
+            this.Logger.Info("Received a peer registration with input pipe '{channel}' for '{peer}'", $"{message.ServerName}/{message.ChannelName}", message.AppInstanceId);
+
+            if (this.AppRuntime.IsRoot())
+            {
+                var response = new RegisterPeerResponseMessage
+                {
+                    Peers = this.peerOutChannels.Values
+                        .Select(c => new RegisterPeerMessage
+                            {
+                                AppInstanceId = c.AppInstanceId,
+                                ServerName = c.ServerName,
+                                ChannelName = c.ChannelName,
+                            }).ToArray(),
+                };
+
+                await this.PublishAsync(response, peerChannel.Stream).PreserveThreadContext();
+            }
+
+            return;
+        }
+
+        private async Task HandleRegisterPeerResponseAsync(RegisterPeerResponseMessage message, CancellationToken cancellationToken)
+        {
+            var newPeers = new HashSet<string>(message.Peers.Select(p => p.AppInstanceId));
+            newPeers.ExceptWith(this.peerOutChannels.Keys);
+
+            foreach (var registerMessage in message.Peers.Where(p => newPeers.Contains(p.AppInstanceId)))
+            {
+                await this.HandleRegisterPeerAsync(registerMessage, cancellationToken).PreserveThreadContext();
+            }
+        }
+
+        private void HandleUnregisterPeerMessage(UnregisterPeerMessage message)
+        {
+            if (this.peerOutChannels.TryRemove(message.AppInstanceId, out var channel))
+            {
+                channel.Stream.Dispose();
+            }
+        }
+
+        private async Task StartListeningAsync(NamedPipeServerStream channel, CancellationToken cancellationToken)
+        {
+            await Task.Yield();
+            await channel.WaitForConnectionAsync(cancellationToken).PreserveThreadContext();
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    var messageString = await this.ReadMessageAsync(channel, cancellationToken).PreserveThreadContext();
+                    var message = await this.serializationService
+                        .DeserializeAsync(messageString, cancellationToken: cancellationToken)
+                        .PreserveThreadContext();
+
+                    switch (message)
+                    {
+                        case RegisterPeerResponseMessage registerResponse:
+                            await this.HandleRegisterPeerResponseAsync(registerResponse, cancellationToken)
+                                .PreserveThreadContext();
+                            break;
+                        case RegisterPeerMessage registerMessage:
+                            await this.HandleRegisterPeerAsync(registerMessage, cancellationToken)
+                                .PreserveThreadContext();
+                            break;
+                        case UnregisterPeerMessage unregisterMessage:
+                            this.HandleUnregisterPeerMessage(unregisterMessage);
+                            break;
+                        case IBrokeredMessage brokeredMessage:
+                            this.RouteInputAsync(brokeredMessage, this.AppContext, cancellationToken)
+                                .ContinueWith(
+                                    t => this.Logger.Error(t.Exception, "Error while routing from input '{message}'.", brokeredMessage),
+                                    TaskContinuationOptions.OnlyOnFaulted);
+                            break;
+                        default:
+                            this.Logger.Warn("Unsupported message '{message}'.", messageString);
+                            break;
+                    }
+                }
+                catch (OperationCanceledException)
+                    when (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Error(ex, "Error while processing the request from client.");
+                }
+            }
+        }
+
+        private async Task<string> ReadMessageAsync(NamedPipeServerStream channel, CancellationToken cancellationToken)
+        {
+            var buffer = new byte[256];
+            using var memStream = new MemoryStream(1000);
+            do
+            {
+                var numBytes = await channel.ReadAsync(buffer, 0, buffer.Length, cancellationToken).PreserveThreadContext();
+                memStream.Write(buffer, 0, numBytes);
+            }
+            while (!channel.IsMessageComplete);
+
+            memStream.Position = 0;
+            var bytes = memStream.ReadAllBytes();
+
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        private struct PeerChannel
+        {
+            public PeerChannel(string appInstanceId, string serverName, string channelName, NamedPipeClientStream stream)
+            {
+                this.AppInstanceId = appInstanceId;
+                this.ServerName = serverName;
+                this.ChannelName = channelName;
+                this.Stream = stream;
+            }
+
+            public string AppInstanceId { get; set; }
+
+            public string ServerName { get; set; }
+
+            public string ChannelName { get; set; }
+
+            public NamedPipeClientStream Stream { get; set; }
         }
     }
 }

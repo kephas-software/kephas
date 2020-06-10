@@ -1,4 +1,11 @@
-﻿namespace Kephas.Messaging.Pipes.Endpoints
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UnregisterPeerMessage.cs" company="Kephas Software SRL">
+//   Copyright (c) Kephas Software SRL. All rights reserved.
+//   Licensed under the MIT license. See LICENSE file in the project root for full license information.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Kephas.Messaging.Pipes.Endpoints
 {
     /// <summary>
     /// Message for registering a peer.
@@ -11,9 +18,9 @@
         public string? AppInstanceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the input pipe.
+        /// Gets or sets the name of the channel.
         /// </summary>
-        public string? InputPipeName { get; set; }
+        public string? ChannelName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the server hosting the pipe.
