@@ -265,7 +265,7 @@ namespace Kephas.Messaging.Pipes.Routing
             this.disposeSource = null;
 
             // dispose the input channel and listening task
-            this.inListenTask?.Dispose();
+            // this.inListenTask?.Dispose();
             this.inChannel?.Dispose();
             this.inChannel = null;
 

@@ -48,15 +48,21 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
-                parts: new[] { typeof(PipesSettingsProvider) });
+                    .WithStaticAppRuntime(
+                        isRoot: true,
+                        appId: masterId,
+                        appInstanceId: masterInstanceId),
+                        parts: new[] { typeof(PipesSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
+                    .WithStaticAppRuntime(
+                        isRoot: false,
+                        appId: slaveId,
+                        appInstanceId: slaveInstanceId),
                 parts: new[] { typeof(PipesSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
@@ -89,7 +95,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithDebugLogManager((logger, level, msg, ex) => sbMaster.AppendLine($"[{logger}] {level} {msg} {ex}"))
-                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId, assemblyFilter: this.IsNotTestAssembly),
+                    .WithStaticAppRuntime(isRoot: true, appId: masterId, appInstanceId: masterInstanceId, assemblyFilter: this.IsNotTestAssembly),
                 parts: new[] { typeof(PipesSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
@@ -99,7 +105,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithDebugLogManager((logger, level, msg, ex) => sbSlave.AppendLine($"[{logger}] {level} {msg} {ex}"))
-                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId, assemblyFilter: this.IsNotTestAssembly),
+                    .WithStaticAppRuntime(isRoot: false, appId: slaveId, appInstanceId: slaveInstanceId, assemblyFilter: this.IsNotTestAssembly),
                 parts: new[] { typeof(PipesSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
@@ -128,13 +134,13 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         }
 
         [Test]
-        public async Task DispatchAsync_pair_request_response_redis_unavailable()
+        public async Task DispatchAsync_pair_request_response_pipes_unavailable()
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
+                    .WithStaticAppRuntime(isRoot: true, appId: masterId, appInstanceId: masterInstanceId),
                 parts: new[] { typeof(PipesSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
@@ -142,7 +148,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
+                    .WithStaticAppRuntime(isRoot: false, appId: slaveId, appInstanceId: slaveInstanceId),
                 parts: new[] { typeof(PipesSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
@@ -167,13 +173,13 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
         }
 
         [Test]
-        public async Task DispatchAsync_pair_request_response_redis_unavailable_multiple()
+        public async Task DispatchAsync_pair_request_response_pipes_unavailable_multiple()
         {
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
+                    .WithStaticAppRuntime(isRoot: true, appId: masterId, appInstanceId: masterInstanceId),
                 parts: new[] { typeof(PipesSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
@@ -181,7 +187,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
+                    .WithStaticAppRuntime(isRoot: false, appId: slaveId, appInstanceId: slaveInstanceId),
                 parts: new[] { typeof(PipesSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
