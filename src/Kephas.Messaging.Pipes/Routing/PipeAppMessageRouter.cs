@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Threading;
+
 namespace Kephas.Messaging.Pipes.Routing
 {
     using System.Collections.Concurrent;
@@ -44,6 +46,7 @@ namespace Kephas.Messaging.Pipes.Routing
         private NamedPipeServerStream? input;
         private NamedPipeServerStream? rootInput;
         private NamedPipeClientStream rootOutput;
+        private Lock writeLock = new Lock();
 
         private ConcurrentDictionary<string, NamedPipeClientStream> peerOutputs
             = new ConcurrentDictionary<string, NamedPipeClientStream>();
@@ -103,9 +106,9 @@ namespace Kephas.Messaging.Pipes.Routing
             this.rootInputChannelName = string.IsNullOrEmpty(pipesNS) ? ChannelType : $"{pipesNS}_{ChannelType}";
 
             this.inputChannelName = this.GetChannelName(new Endpoint(appInstanceId: this.AppRuntime.GetAppInstanceId()!));
-            this.input = this.OpenNamedPipeServerStream(inputChannelName);
+            this.input = this.OpenNamedPipeServerStream(this.inputChannelName);
 
-            this.peers.Add(inputChannelName);
+            this.peers.Add(this.inputChannelName);
 
             if (this.AppRuntime.IsRoot())
             {
@@ -123,8 +126,6 @@ namespace Kephas.Messaging.Pipes.Routing
                     ServerName = this.pipesConfiguration.Settings.ServerName,
                     InputPipeName = this.inputChannelName,
                 };
-                
-                
             }
 
             this.pipesInitialized = true;
@@ -316,7 +317,11 @@ namespace Kephas.Messaging.Pipes.Routing
             {
                 if (this.peerOutputs.TryGetValue(pipe, out var peerOutput))
                 {
-                    await peerOutput.WriteAsync(message, 0, message.Length).PreserveThreadContext();
+                    await this.writeLock.EnterAsync(async () =>
+                    {
+                        await peerOutput.WriteAsync(message, 0, message.Length).PreserveThreadContext();
+                        await peerOutput.FlushAsync().PreserveThreadContext();
+                    }).PreserveThreadContext();
                 }
                 else
                 {
