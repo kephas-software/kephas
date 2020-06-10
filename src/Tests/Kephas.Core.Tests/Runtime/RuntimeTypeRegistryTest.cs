@@ -20,7 +20,7 @@ namespace Kephas.Core.Tests.Runtime
         public void GetRuntimeType_non_generic()
         {
             var registry = new RuntimeTypeRegistry();
-            var typeInfo = registry.GetRuntimeType(typeof(string));
+            var typeInfo = registry.GetTypeInfo(typeof(string));
 
             Assert.IsFalse(typeInfo.IsGenericType());
         }
@@ -29,7 +29,7 @@ namespace Kephas.Core.Tests.Runtime
         public void Types_declaring_container_set()
         {
             var registry = new RuntimeTypeRegistry();
-            var assemblyInfo = registry.GetRuntimeAssembly(typeof(RuntimeAssemblyInfoTest).Assembly);
+            var assemblyInfo = registry.GetAssemblyInfo(typeof(RuntimeAssemblyInfoTest).Assembly);
             Assert.IsTrue(assemblyInfo.Types.All(t => t.DeclaringContainer == assemblyInfo));
         }
     }

@@ -40,6 +40,7 @@ namespace Kephas.Commands.Messaging.Reflection
         {
             Requires.NotNull(messageType, nameof(messageType));
             Requires.NotNull(lazyMessageProcessor, nameof(lazyMessageProcessor));
+            Requires.NotNull(typeRegistry, nameof(typeRegistry));
 
             this.MessageType = messageType;
             this.typeRegistry = typeRegistry;
@@ -59,7 +60,8 @@ namespace Kephas.Commands.Messaging.Reflection
                 .ToArray();
 
             messageType.Annotations.ForEach(this.AddAnnotation);
-            this.ReturnType = this.Annotations.OfType<ReturnTypeAttribute>().FirstOrDefault()?.Value?.AsRuntimeTypeInfo();
+            var returnType = this.Annotations.OfType<ReturnTypeAttribute>().FirstOrDefault()?.Value ?? typeof(object);
+            this.ReturnType = this.typeRegistry.GetTypeInfo(returnType);
         }
 
         /// <summary>

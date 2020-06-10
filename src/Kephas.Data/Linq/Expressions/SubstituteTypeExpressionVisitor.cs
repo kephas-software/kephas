@@ -29,24 +29,9 @@ namespace Kephas.Data.Linq.Expressions
     /// </summary>
     public class SubstituteTypeExpressionVisitor : ExpressionVisitor
     {
-        /// <summary>
-        /// The parameters map.
-        /// </summary>
         private readonly IDictionary<ParameterExpression, ParameterExpression> parametersMap = new Dictionary<ParameterExpression, ParameterExpression>();
-
-        /// <summary>
-        /// The implementation type resolver.
-        /// </summary>
-        private readonly Func<Type, IContext?, Type?>? implementationTypeResolver;
-
-        /// <summary>
-        /// The generic handlers.
-        /// </summary>
+        private readonly Func<Type, IContext, Type?>? implementationTypeResolver;
         private readonly IEnumerable<ISubstituteTypeConstantHandler>? constantHandlers;
-
-        /// <summary>
-        /// The context.
-        /// </summary>
         private readonly IContext? context;
 
         /// <summary>
@@ -56,7 +41,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <param name="activator">The activator (optional).</param>
         /// <param name="constantHandlers">The constant handlers (optional).</param>
         /// <param name="context">The context (optional).</param>
-        public SubstituteTypeExpressionVisitor(Func<Type, IContext?, Type?>? implementationTypeResolver = null, IActivator? activator = null, IEnumerable<ISubstituteTypeConstantHandler>? constantHandlers = null, IContext? context = null)
+        public SubstituteTypeExpressionVisitor(Func<Type, IContext, Type?>? implementationTypeResolver = null, IActivator? activator = null, IEnumerable<ISubstituteTypeConstantHandler>? constantHandlers = null, IContext? context = null)
         {
             this.context = context;
             this.implementationTypeResolver = (t, ctx) =>
@@ -180,7 +165,7 @@ namespace Kephas.Data.Linq.Expressions
                         return base.VisitMember(node);
                 }
 
-                var expr = this.Visit(node.Expression);
+                var expr = this.Visit(node.Expression!);
                 if (expr.Type.GetTypeInfo().IsInterface)
                 {
                     return node;
@@ -335,7 +320,7 @@ namespace Kephas.Data.Linq.Expressions
         /// <returns>
         /// A Type.
         /// </returns>
-        protected virtual Type? TryResolveDeepImplementationType(Type constructedType)
+        protected virtual Type? TryResolveDeepImplementationType(Type? constructedType)
         {
             if (constructedType == null)
             {

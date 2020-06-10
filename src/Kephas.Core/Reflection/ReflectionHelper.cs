@@ -290,7 +290,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(assembly, nameof(assembly));
 
-            return RuntimeTypeRegistry.Instance.GetRuntimeAssembly(assembly);
+            return RuntimeTypeRegistry.Instance.GetAssemblyInfo(assembly);
         }
 
         /// <summary>

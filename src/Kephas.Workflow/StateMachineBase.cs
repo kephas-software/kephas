@@ -87,7 +87,7 @@ namespace Kephas.Workflow
         /// <returns>
         /// The type information.
         /// </returns>
-        public virtual IStateMachineInfo GetTypeInfo() => (IStateMachineInfo)this.typeRegistry.GetRuntimeType(this.GetType());
+        public virtual IStateMachineInfo GetTypeInfo() => (IStateMachineInfo)this.typeRegistry.GetTypeInfo(this.GetType());
 
         /// <summary>
         /// Gets the type information.

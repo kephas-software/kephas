@@ -67,7 +67,7 @@ namespace Kephas.Security.Authorization.Runtime
                 .SelectMany(attr => attr.PermissionTypes)
                 .Union(new List<Type>(this.Type.GetInterfaces()) { this.Type.BaseType }
                     .Where(t => t != null))
-                .Select(t => this.TypeRegistry.GetRuntimeType(t))
+                .Select(t => this.TypeRegistry.GetTypeInfo(t))
                 .OfType<IPermissionInfo>()
                 .Distinct()
                 .ToList()
@@ -84,7 +84,7 @@ namespace Kephas.Security.Authorization.Runtime
         {
             get => this.requiredPermissions ??= this.GetAttributes<RequiresPermissionAttribute>()
                 .SelectMany(attr => attr.PermissionTypes)
-                .Select(t => this.TypeRegistry.GetRuntimeType(t))
+                .Select(t => this.TypeRegistry.GetTypeInfo(t))
                 .OfType<IPermissionInfo>()
                 .Distinct()
                 .ToList()

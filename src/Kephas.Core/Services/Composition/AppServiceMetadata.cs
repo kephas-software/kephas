@@ -16,6 +16,7 @@ namespace Kephas.Services.Composition
     using Kephas.Collections;
     using Kephas.Composition.Metadata;
     using Kephas.Model.AttributedModel;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     /// <summary>
@@ -23,7 +24,7 @@ namespace Kephas.Services.Composition
     /// </summary>
     public class AppServiceMetadata : ExportMetadataBase
     {
-        private static readonly IAppServiceMetadataResolver MetadataResolver = new AppServiceMetadataResolver();
+        private static readonly IAppServiceMetadataResolver MetadataResolver = new AppServiceMetadataResolver(RuntimeTypeRegistry.Instance);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadata"/> class.
@@ -52,7 +53,7 @@ namespace Kephas.Services.Composition
         /// <param name="serviceName">Optional. The name of the service.</param>
         /// <param name="isOverride">Optional. Indicates whether the service overrides its base.</param>
         public AppServiceMetadata(int processingPriority = 0, int overridePriority = 0, string? serviceName = null, bool isOverride = false)
-            : base(null)
+            : base(new Dictionary<string, object?>())
         {
             this.ProcessingPriority = processingPriority;
             this.OverridePriority = overridePriority;
@@ -99,7 +100,7 @@ namespace Kephas.Services.Composition
         /// <value>
         /// The type of the service.
         /// </value>
-        public Type ServiceInstanceType { get; set; }
+        public Type? ServiceInstanceType { get; set; }
 
         /// <summary>
         /// Gets or sets the service dependencies.

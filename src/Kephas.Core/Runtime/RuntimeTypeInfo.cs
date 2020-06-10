@@ -252,7 +252,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => this.declaringContainer ??= this.TypeRegistry.GetRuntimeAssembly(this.TypeInfo.Assembly);
+        public IElementInfo DeclaringContainer => this.declaringContainer ??= this.TypeRegistry.GetAssemblyInfo(this.TypeInfo.Assembly);
 
         /// <summary>
         /// Gets the type.
@@ -578,7 +578,7 @@ namespace Kephas.Runtime
         public ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null)
         {
             var constructedType = this.TypeInfo.MakeGenericType(typeArguments.Cast<IRuntimeTypeInfo>().Select(t => t.Type).ToArray());
-            return this.TypeRegistry.GetRuntimeType(constructedType);
+            return this.TypeRegistry.GetTypeInfo(constructedType);
         }
 
         /// <summary>
@@ -760,10 +760,10 @@ namespace Kephas.Runtime
             var baseTypeInfos = new List<ITypeInfo>();
             if (typeInfo.BaseType != null)
             {
-                baseTypeInfos.Add(typeInfo.BaseType.AsRuntimeTypeInfo());
+                baseTypeInfos.Add(this.TypeRegistry.GetTypeInfo(typeInfo.BaseType));
             }
 
-            typeInfo.ImplementedInterfaces.ForEach(i => baseTypeInfos.Add(i.AsRuntimeTypeInfo()));
+            typeInfo.ImplementedInterfaces.ForEach(i => baseTypeInfos.Add(this.TypeRegistry.GetTypeInfo(i)));
 
             return new ReadOnlyCollection<ITypeInfo>(baseTypeInfos);
         }
@@ -772,7 +772,7 @@ namespace Kephas.Runtime
         {
             if (typeInfo.IsGenericType && !typeInfo.IsGenericTypeDefinition)
             {
-                return this.TypeRegistry.GetRuntimeType(typeInfo.GetGenericTypeDefinition());
+                return this.TypeRegistry.GetTypeInfo(typeInfo.GetGenericTypeDefinition());
             }
 
             return null;
@@ -813,7 +813,7 @@ namespace Kephas.Runtime
                 return Array.Empty<ITypeInfo>();
             }
 
-            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)this.TypeRegistry.GetRuntimeType(a)).ToList());
+            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)this.TypeRegistry.GetTypeInfo(a)).ToList());
         }
 
         /// <summary>
@@ -831,7 +831,7 @@ namespace Kephas.Runtime
                 return Array.Empty<ITypeInfo>();
             }
 
-            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)this.TypeRegistry.GetRuntimeType(a)).ToList());
+            return new ReadOnlyCollection<ITypeInfo>(args.Select(a => (ITypeInfo)this.TypeRegistry.GetTypeInfo(a)).ToList());
         }
 
         /// <summary>

@@ -117,8 +117,8 @@ namespace Kephas.Core.Tests.Reflection
         [Test]
         public void GetDeclaredMembers()
         {
-            var typeREgistry = new RuntimeTypeRegistry();
-            var typeInfo = typeof(IRuntimeElementInfo).AsRuntimeTypeInfo();
+            var typeRegistry = new RuntimeTypeRegistry();
+            var typeInfo = typeRegistry.GetTypeInfo(typeof(IRuntimeElementInfo));
 
             var declaredMembers = typeInfo.GetDeclaredMembers().ToList();
             Assert.AreEqual(1, declaredMembers.Count);

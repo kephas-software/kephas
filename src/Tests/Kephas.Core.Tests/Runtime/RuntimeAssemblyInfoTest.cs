@@ -40,7 +40,7 @@ namespace Kephas.Core.Tests.Runtime
         public void Types_declaring_container_set_and_identical()
         {
             var registry = new RuntimeTypeRegistry();
-            var assemblyInfo = registry.GetRuntimeAssembly(typeof(RuntimeAssemblyInfoTest).Assembly);
+            var assemblyInfo = registry.GetAssemblyInfo(typeof(RuntimeAssemblyInfoTest).Assembly);
             Assert.IsTrue(assemblyInfo.Types.All(t => t.DeclaringContainer == assemblyInfo));
         }
 

@@ -66,8 +66,8 @@ namespace Kephas.Services.Composition
 
             var appServiceContracts = appServiceContractsInfos.Select(e => e.contractType).ToList();
 
-            var typeRegistry = registrationContext.AmbientServices?.TypeRegistry;
-            var metadataResolver = new AppServiceMetadataResolver();
+            var typeRegistry = registrationContext.AmbientServices?.TypeRegistry ?? RuntimeTypeRegistry.Instance;
+            var metadataResolver = new AppServiceMetadataResolver(typeRegistry);
             foreach (var appServiceContractInfo in appServiceContractsInfos)
             {
                 var appServiceContract = appServiceContractInfo.contractType;
@@ -87,8 +87,7 @@ namespace Kephas.Services.Composition
                         appServiceContract,
                         conventions,
                         typeInfos,
-                        logger,
-                        typeRegistry);
+                        logger);
                     if (partConventionsBuilder != null)
                     {
                         this.ConfigurePartBuilder(partConventionsBuilder, appServiceContract, appServiceInfo, appServiceContracts, metadataResolver, logger);
@@ -501,8 +500,7 @@ namespace Kephas.Services.Composition
             Type serviceContract,
             IConventionsBuilder conventions,
             IEnumerable<Type> typeInfos,
-            ILogger logger,
-            IRuntimeTypeRegistry? typeRegistry)
+            ILogger logger)
         {
             var serviceContractType = serviceContract;
 
@@ -722,7 +720,7 @@ namespace Kephas.Services.Composition
             return typeInfo.IsClass
                    && !typeInfo.IsAbstract
                    && !typeInfo.IsNestedPrivate
-                   && typeInfo.AsRuntimeTypeInfo().GetAttribute<ExcludeFromCompositionAttribute>() == null;
+                   && typeInfo.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null;
         }
 
         /// <summary>

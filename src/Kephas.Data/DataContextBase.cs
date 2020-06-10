@@ -38,7 +38,7 @@ namespace Kephas.Data
     {
         private static readonly MethodInfo QueryMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IDataContext)null).Query<IIdentifiable>(null));
 
-        private readonly IDataBehaviorProvider dataBehaviorProvider;
+        private readonly IDataBehaviorProvider? dataBehaviorProvider;
         private readonly IDataCommandProvider dataCommandProvider;
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace Kephas.Data
         /// <param name="localCache">Optional. The local cache. If not provided, a new <see cref="DataContextCache"/> will be created.</param>
         protected DataContextBase(
             ICompositionContext compositionContext,
-            IDataCommandProvider dataCommandProvider = null,
-            IDataBehaviorProvider dataBehaviorProvider = null,
-            IDataContextCache localCache = null)
+            IDataCommandProvider? dataCommandProvider = null,
+            IDataBehaviorProvider? dataBehaviorProvider = null,
+            IDataContextCache? localCache = null)
             : base(compositionContext)
         {
             this.dataBehaviorProvider = dataBehaviorProvider;
@@ -126,7 +126,7 @@ namespace Kephas.Data
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        public virtual IQueryable<T> Query<T>(Action<IQueryOperationContext> queryConfig = null)
+        public virtual IQueryable<T> Query<T>(Action<IQueryOperationContext>? queryConfig = null)
             where T : class
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
@@ -393,7 +393,7 @@ namespace Kephas.Data
         /// <returns>
         /// The new query operation context.
         /// </returns>
-        protected virtual QueryOperationContext CreateQueryOperationContext(Action<IQueryOperationContext> queryConfig)
+        protected virtual QueryOperationContext CreateQueryOperationContext(Action<IQueryOperationContext>? queryConfig)
         {
             return new QueryOperationContext(this).Merge(queryConfig);
         }

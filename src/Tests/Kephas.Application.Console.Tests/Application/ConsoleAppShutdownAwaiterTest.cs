@@ -40,7 +40,7 @@ namespace Kephas.Application.Console.Tests.Application
             var shell = Substitute.For<ICommandShell>();
             var eventHub = Substitute.For<IEventHub>();
             Func<object, IContext, CancellationToken, Task> callback = null;
-            eventHub.Subscribe(Arg.Any<ITypeInfo>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
+            eventHub.Subscribe(Arg.Any<Type>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
                 .Returns(ci =>
                 {
                     callback = ci.Arg<Func<object, IContext, CancellationToken, Task>>();

@@ -108,7 +108,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo? DeclaringContainer => this.TypeRegistry.GetRuntimeType(this.MethodInfo.DeclaringType);
+        public IElementInfo? DeclaringContainer => this.TypeRegistry.GetTypeInfo(this.MethodInfo.DeclaringType);
 
         /// <summary>
         /// Gets the method info.
@@ -121,7 +121,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        ITypeInfo IOperationInfo.ReturnType => this.TypeRegistry.GetRuntimeType(this.MethodInfo.ReturnType);
+        ITypeInfo IOperationInfo.ReturnType => this.TypeRegistry.GetTypeInfo(this.MethodInfo.ReturnType);
 
         /// <summary>
         /// Gets the return type of the method.
@@ -129,7 +129,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The return type of the method.
         /// </value>
-        public IRuntimeTypeInfo ReturnType => this.TypeRegistry.GetRuntimeType(this.MethodInfo.ReturnType);
+        public IRuntimeTypeInfo ReturnType => this.TypeRegistry.GetTypeInfo(this.MethodInfo.ReturnType);
 
         /// <summary>
         /// Gets the states from which the transitions starts.

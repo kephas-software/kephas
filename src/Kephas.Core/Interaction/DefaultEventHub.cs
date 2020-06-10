@@ -115,7 +115,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        public virtual IEventSubscription Subscribe(ITypeInfo typeMatch, Func<object, IContext?, CancellationToken, Task> callback)
+        public virtual IEventSubscription Subscribe(Type typeMatch, Func<object, IContext?, CancellationToken, Task> callback)
         {
             Requires.NotNull(typeMatch, nameof(typeMatch));
 
@@ -165,9 +165,9 @@ namespace Kephas.Interaction
         /// <returns>
         /// A function delegate that yields a bool.
         /// </returns>
-        protected virtual Func<object, bool> GetTypeMatch(ITypeInfo typeMatch)
+        protected virtual Func<object, bool> GetTypeMatch(Type typeMatch)
         {
-            return e => typeMatch.AsType() == e.GetType();
+            return e => typeMatch == e.GetType();
         }
 
         /// <summary>

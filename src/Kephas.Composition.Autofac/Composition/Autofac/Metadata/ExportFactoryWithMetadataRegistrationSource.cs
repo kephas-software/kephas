@@ -14,7 +14,7 @@ namespace Kephas.Composition.Autofac.Metadata
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using System.Runtime.CompilerServices;
     using global::Autofac;
     using global::Autofac.Builder;
     using global::Autofac.Core;
@@ -22,6 +22,7 @@ namespace Kephas.Composition.Autofac.Metadata
     using Kephas.Composition.ExportFactories;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// An export factory with metadata registration source.
@@ -29,7 +30,18 @@ namespace Kephas.Composition.Autofac.Metadata
     public class ExportFactoryWithMetadataRegistrationSource : IRegistrationSource
     {
         private static readonly MethodInfo CreateMetaRegistrationMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ExportFactoryWithMetadataRegistrationSource.CreateMetaRegistration<string, string>(null, null, null));
+            _ => ((ExportFactoryWithMetadataRegistrationSource)null).CreateMetaRegistration<string, string>(null!, null!, null!));
+
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExportFactoryWithMetadataRegistrationSource"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        public ExportFactoryWithMetadataRegistrationSource(IRuntimeTypeRegistry typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the registrations provided by this source are 1:1 adapters on
@@ -68,7 +80,7 @@ namespace Kephas.Composition.Autofac.Metadata
             var registrationCreator = CreateMetaRegistrationMethod.MakeGenericMethod(valueType, metadataType);
 
             return registrationAccessor(valueService)
-                .Select(v => registrationCreator.Call(null, service, valueService, v))
+                .Select(v => registrationCreator.Call(this, service, valueService, v))
                 .Cast<IComponentRegistration>();
         }
 
@@ -83,7 +95,7 @@ namespace Kephas.Composition.Autofac.Metadata
             return "IExportFactory<T, TMetadata> support";
         }
 
-        private static IComponentRegistration CreateMetaRegistration<T, TMetadata>(Service providedService, Service valueService, IComponentRegistration valueRegistration)
+        private IComponentRegistration CreateMetaRegistration<T, TMetadata>(Service providedService, Service valueService, IComponentRegistration valueRegistration)
         {
             var rb = RegistrationBuilder
                 .ForDelegate((c, p) =>
@@ -95,8 +107,8 @@ namespace Kephas.Composition.Autofac.Metadata
                                 var request = new ResolveRequest(valueService, valueRegistration, p);
                                 return (T)lifetimeScope.ResolveComponent(request);
                             },
-                            (TMetadata)typeof(TMetadata)
-                                .AsRuntimeTypeInfo()
+                            (TMetadata)this.typeRegistry
+                                .GetTypeInfo(typeof(TMetadata))
                                 .CreateInstance(new object[] { valueRegistration.Target.Metadata }));
                     })
                 .As(providedService)

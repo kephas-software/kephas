@@ -165,7 +165,7 @@ namespace Kephas.Testing
                         }
                     });
 
-            eventHub.Subscribe(Arg.Any<ITypeInfo>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
+            eventHub.Subscribe(Arg.Any<Type>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
                 .Returns(
                     ci =>
                     {

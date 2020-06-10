@@ -780,7 +780,7 @@ namespace Kephas
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            var builderType = typeof(TContainerBuilder).AsRuntimeTypeInfo();
+            var builderType = ambientServices.TypeRegistry.GetTypeInfo(typeof(TContainerBuilder));
             var context = new CompositionRegistrationContext(ambientServices);
 
             var containerBuilder = (TContainerBuilder)builderType.CreateInstance(new[] { context });

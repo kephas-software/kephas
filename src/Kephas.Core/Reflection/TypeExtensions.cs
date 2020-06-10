@@ -40,7 +40,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(type, nameof(type));
 
-            return RuntimeTypeRegistry.Instance.GetRuntimeType(type);
+            return RuntimeTypeRegistry.Instance.GetTypeInfo(type);
         }
 
         /// <summary>

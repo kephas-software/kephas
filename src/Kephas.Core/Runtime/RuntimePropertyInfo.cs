@@ -69,7 +69,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.DeclaringType);
+        public IElementInfo DeclaringContainer => this.TypeRegistry.GetTypeInfo(this.PropertyInfo.DeclaringType);
 
         /// <summary>
         /// Gets the property information.
@@ -93,7 +93,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the property.
         /// </value>
-        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.PropertyType);
+        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetTypeInfo(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Gets the type of the property.
@@ -101,7 +101,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the property.
         /// </value>
-        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.PropertyType);
+        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetTypeInfo(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Gets a value indicating whether the property can be written to.

@@ -94,7 +94,7 @@ namespace Kephas.Composition.Autofac.Hosting
             var autofacBuilder = ((IAutofacContainerBuilderProvider)conventions).GetContainerBuilder();
 
             autofacBuilder.RegisterSource(new ExportFactoryRegistrationSource());
-            autofacBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource());
+            autofacBuilder.RegisterSource(new ExportFactoryWithMetadataRegistrationSource(this.RegistrationContext.AmbientServices.TypeRegistry));
 
             foreach (var builderConfig in this.builderConfigs)
             {

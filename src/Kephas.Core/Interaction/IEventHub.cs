@@ -53,7 +53,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        IEventSubscription Subscribe(ITypeInfo typeMatch, Func<object, IContext?, CancellationToken, Task> callback);
+        IEventSubscription Subscribe(Type typeMatch, Func<object, IContext?, CancellationToken, Task> callback);
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ namespace Kephas.Interaction
             Requires.NotNull(eventHub, nameof(eventHub));
             Requires.NotNull(callback, nameof(callback));
 
-            return eventHub.Subscribe(typeof(TEvent).AsRuntimeTypeInfo(), (e, ctx, token) => callback((TEvent)e, ctx, token));
+            return eventHub.Subscribe(typeof(TEvent), (e, ctx, token) => callback((TEvent)e, ctx, token));
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Kephas.Interaction
             Requires.NotNull(callback, nameof(callback));
 
             return eventHub.Subscribe(
-                typeof(TEvent).AsRuntimeTypeInfo(),
+                typeof(TEvent),
                 (e, ctx, token) =>
                     {
                         callback((TEvent)e, ctx);

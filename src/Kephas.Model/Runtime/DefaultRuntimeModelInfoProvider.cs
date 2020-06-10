@@ -41,15 +41,23 @@ namespace Kephas.Model.Runtime
         /// </summary>
         /// <param name="runtimeModelElementFactory">The runtime model info factory.</param>
         /// <param name="modelRegistries">The model registries.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         public DefaultRuntimeModelInfoProvider(
             IRuntimeModelElementFactory runtimeModelElementFactory,
-            ICollection<IRuntimeModelRegistry> modelRegistries)
+            ICollection<IRuntimeModelRegistry> modelRegistries,
+            IRuntimeTypeRegistry typeRegistry)
             : base(runtimeModelElementFactory)
         {
             Requires.NotNull(modelRegistries, nameof(modelRegistries));
 
             this.modelRegistries = modelRegistries;
+            this.TypeRegistry = typeRegistry;
         }
+
+        /// <summary>
+        /// Gets the type registry.
+        /// </summary>
+        protected IRuntimeTypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Tries to get an <see cref="IElementInfo"/> of the model space based on the provided native element information.
@@ -144,8 +152,8 @@ namespace Kephas.Model.Runtime
         {
             return runtimeElement switch
             {
-                TypeInfo runtimeTypeInfo => runtimeTypeInfo.AsRuntimeTypeInfo(),
-                Type runtimeType => runtimeType.AsRuntimeTypeInfo(),
+                TypeInfo runtimeTypeInfo => this.TypeRegistry.GetTypeInfo(runtimeTypeInfo.AsType()),
+                Type runtimeType => this.TypeRegistry.GetTypeInfo(runtimeType),
                 _ => runtimeElement as IRuntimeTypeInfo
             };
         }

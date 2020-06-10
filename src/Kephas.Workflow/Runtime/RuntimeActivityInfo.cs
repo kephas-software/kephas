@@ -193,7 +193,7 @@ namespace Kephas.Workflow.Runtime
         private ITypeInfo ComputeReturnType()
         {
             var returnTypeAttr = this.Type.GetCustomAttribute<ReturnTypeAttribute>();
-            return this.TypeRegistry.GetRuntimeType(returnTypeAttr?.Value ?? typeof(void));
+            return this.TypeRegistry.GetTypeInfo(returnTypeAttr?.Value ?? typeof(void));
         }
 
         /// <summary>

@@ -87,7 +87,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.DeclaringType);
+        public IElementInfo DeclaringContainer => this.TypeRegistry.GetTypeInfo(this.PropertyInfo.DeclaringType);
 
         /// <summary>
         /// Gets information describing the parameter.
@@ -138,7 +138,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.PropertyType);
+        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetTypeInfo(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Gets the type of the field.
@@ -146,7 +146,7 @@ namespace Kephas.Workflow.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetRuntimeType(this.PropertyInfo.PropertyType);
+        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetTypeInfo(this.PropertyInfo.PropertyType);
 
         /// <summary>
         /// Sets the specified value.

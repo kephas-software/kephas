@@ -36,8 +36,6 @@ namespace Kephas.Composition.Hosting
     public abstract class CompositionContainerBuilderBase<TBuilder> : ICompositionContainerBuilder
         where TBuilder : CompositionContainerBuilderBase<TBuilder>
     {
-        private readonly ICompositionRegistrationContext context;
-
         private HashSet<Assembly> compositionAssemblies;
         private HashSet<Assembly> conventionAssemblies;
 
@@ -52,7 +50,7 @@ namespace Kephas.Composition.Hosting
             var ambientServices = context.AmbientServices;
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            this.context = context;
+            this.RegistrationContext = context;
 
             this.LogManager = ambientServices.LogManager;
             this.AssertRequiredService(this.LogManager);
@@ -125,6 +123,11 @@ namespace Kephas.Composition.Hosting
         /// The serviceRegistry.
         /// </value>
         protected AppServiceInfoRegistry Registry { get; } = new AppServiceInfoRegistry();
+
+        /// <summary>
+        /// Gets the registration context.
+        /// </summary>
+        protected ICompositionRegistrationContext RegistrationContext { get; }
 
         /// <summary>
         /// Adds the assemblies containing the conventions.
@@ -332,9 +335,9 @@ namespace Kephas.Composition.Hosting
         {
             Requires.NotNull(conventionsRegistrar, nameof(conventionsRegistrar));
 
-            var registrars = this.context.Registrars?.ToList() ?? new List<IConventionsRegistrar>();
+            var registrars = this.RegistrationContext.Registrars?.ToList() ?? new List<IConventionsRegistrar>();
             registrars.Add(conventionsRegistrar);
-            this.context.Registrars = registrars;
+            this.RegistrationContext.Registrars = registrars;
 
             return (TBuilder)this;
         }
@@ -345,7 +348,7 @@ namespace Kephas.Composition.Hosting
         /// <returns>A new container with the provided configuration.</returns>
         public virtual ICompositionContext CreateContainer()
         {
-            ICompositionContext container = null;
+            ICompositionContext? container = null;
             Profiler.WithInfoStopwatch(
                 () =>
                 {
@@ -355,7 +358,7 @@ namespace Kephas.Composition.Hosting
                 },
                 this.Logger);
 
-            return container;
+            return container!;
         }
 
         /// <summary>
@@ -414,7 +417,7 @@ namespace Kephas.Composition.Hosting
             Profiler.WithInfoStopwatch(
                 () =>
                 {
-                    conventions.RegisterConventionsFrom(assemblies, parts, this.context);
+                    conventions.RegisterConventionsFrom(assemblies, parts, this.RegistrationContext);
                 },
                 this.Logger);
 

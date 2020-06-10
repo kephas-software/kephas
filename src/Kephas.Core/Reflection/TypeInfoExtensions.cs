@@ -133,7 +133,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return RuntimeTypeRegistry.Instance.GetRuntimeType(typeInfo);
+            return RuntimeTypeRegistry.Instance.GetTypeInfo(typeInfo);
         }
 
         /// <summary>

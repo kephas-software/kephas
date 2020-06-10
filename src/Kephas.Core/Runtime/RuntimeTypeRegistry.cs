@@ -11,7 +11,7 @@ namespace Kephas.Runtime
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Reflection;
-
+    using System.Xml;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
@@ -88,12 +88,29 @@ namespace Kephas.Runtime
             }
         }
 
+        /// <inheritdoc/>
+        public ITypeInfo? GetTypeInfo(object typeToken, bool throwOnNotFound = true)
+        {
+            Requires.NotNull(typeToken, nameof(typeToken));
+
+            if (typeToken is Type type)
+            {
+                return this.GetTypeInfo(type);
+            }
+            else if (typeToken is TypeInfo typeInfo)
+            {
+                return this.GetTypeInfo(typeInfo);
+            }
+
+            throw new NotSupportedException($"Only type tokens of type '{nameof(Type)}' and '{nameof(TypeInfo)}' are supported, while '{typeToken.GetType()}' was provided.");
+        }
+
         /// <summary>
         /// Gets the runtime type.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>A runtime type.</returns>
-        public IRuntimeTypeInfo GetRuntimeType(Type type)
+        public IRuntimeTypeInfo GetTypeInfo(Type type)
         {
             Requires.NotNull(type, nameof(type));
 
@@ -105,7 +122,7 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         /// <returns>A runtime assembly.</returns>
-        public IRuntimeAssemblyInfo GetRuntimeAssembly(Assembly assembly)
+        public IRuntimeAssemblyInfo GetAssemblyInfo(Assembly assembly)
         {
             Requires.NotNull(assembly, nameof(assembly));
 

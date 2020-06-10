@@ -25,6 +25,7 @@ namespace Kephas.Testing.Composition
     using Kephas.Diagnostics.Logging;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
 
     /// <summary>
     /// Base class for tests using composition.
@@ -41,7 +42,7 @@ namespace Kephas.Testing.Composition
         public virtual ContainerBuilder WithExportProviders(ContainerBuilder configuration)
         {
             configuration.RegisterSource(new ExportFactoryRegistrationSource());
-            configuration.RegisterSource(new ExportFactoryWithMetadataRegistrationSource());
+            configuration.RegisterSource(new ExportFactoryWithMetadataRegistrationSource(RuntimeTypeRegistry.Instance));
             return configuration;
         }
 

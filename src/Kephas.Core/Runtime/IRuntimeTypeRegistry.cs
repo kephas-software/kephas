@@ -11,31 +11,31 @@ namespace Kephas.Runtime
     using System.Reflection;
 
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Dynamic;
+    using Kephas.Reflection;
 
     /// <summary>
     /// The interface for the runtime type serviceRegistry.
     /// </summary>
-    public interface IRuntimeTypeRegistry : IExpando
+    public interface IRuntimeTypeRegistry : ITypeRegistry
     {
         /// <summary>
         /// Gets the runtime type.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>A runtime type.</returns>
-        IRuntimeTypeInfo GetRuntimeType(Type type);
+        IRuntimeTypeInfo GetTypeInfo(Type type);
 
 #if NETSTANDARD2_1
         /// <summary>
-        /// Gets the runtime type.
+        /// Gets the runtime type information.
         /// </summary>
         /// <param name="typeInfo">The type information.</param>
         /// <returns>A runtime type.</returns>
-        IRuntimeTypeInfo GetRuntimeType(TypeInfo typeInfo)
+        IRuntimeTypeInfo GetTypeInfo(TypeInfo typeInfo)
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return this.GetRuntimeType(typeInfo.AsType());
+            return this.GetTypeInfo(typeInfo.AsType());
         }
 #endif
 
@@ -44,7 +44,7 @@ namespace Kephas.Runtime
         /// </summary>
         /// <param name="assembly">The assembly.</param>
         /// <returns>A runtime assembly.</returns>
-        IRuntimeAssemblyInfo GetRuntimeAssembly(Assembly assembly);
+        IRuntimeAssemblyInfo GetAssemblyInfo(Assembly assembly);
 
         /// <summary>
         /// Registers a factory used to create <see cref="IRuntimeTypeInfo"/> instances.
@@ -66,16 +66,16 @@ namespace Kephas.Runtime
     public static class RuntimeTypeRegistryExtensions
     {
         /// <summary>
-        /// Gets the runtime type.
+        /// Gets the runtime type information.
         /// </summary>
         /// <param name="typeRegistry">The type serviceRegistry.</param>
         /// <param name="typeInfo">The type information.</param>
         /// <returns>A runtime type.</returns>
-        public static IRuntimeTypeInfo GetRuntimeType(this IRuntimeTypeRegistry typeRegistry, TypeInfo typeInfo)
+        public static IRuntimeTypeInfo GetTypeInfo(this IRuntimeTypeRegistry typeRegistry, TypeInfo typeInfo)
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return typeRegistry.GetRuntimeType(typeInfo.AsType());
+            return typeRegistry.GetTypeInfo(typeInfo.AsType());
         }
     }
 #endif

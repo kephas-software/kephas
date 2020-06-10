@@ -335,7 +335,7 @@ namespace Kephas.Core.Tests.Runtime
             var runtimeTypeInfo = new RuntimeTypeInfo(registry, typeof(TestDerivedClass));
 
             Assert.AreEqual(1, runtimeTypeInfo.BaseTypes.Count());
-            Assert.AreSame(typeof(TestClass).AsRuntimeTypeInfo(), runtimeTypeInfo.BaseTypes.First());
+            Assert.AreSame(registry.GetTypeInfo(typeof(TestClass)), runtimeTypeInfo.BaseTypes.First());
         }
 
         [Test]
@@ -346,9 +346,9 @@ namespace Kephas.Core.Tests.Runtime
 
             var bases = runtimeTypeInfo.BaseTypes.ToList();
             Assert.AreEqual(3, bases.Count);
-            Assert.AreSame(typeof(TestClass).AsRuntimeTypeInfo(), bases[0]);
-            Assert.AreSame(typeof(IEnumerable<int>).AsRuntimeTypeInfo(), bases[1]);
-            Assert.AreSame(typeof(IEnumerable).AsRuntimeTypeInfo(), bases[2]);
+            Assert.AreSame(registry.GetTypeInfo(typeof(TestClass)), bases[0]);
+            Assert.AreSame(registry.GetTypeInfo(typeof(IEnumerable<int>)), bases[1]);
+            Assert.AreSame(registry.GetTypeInfo(typeof(IEnumerable)), bases[2]);
         }
 
         [Test]

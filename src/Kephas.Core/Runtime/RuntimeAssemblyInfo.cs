@@ -219,7 +219,7 @@ namespace Kephas.Runtime
         private IList<ITypeInfo> CreateTypeInfos(Assembly assembly)
         {
             var assemblyTypes = this.typeLoader.GetExportedTypes(assembly);
-            return assemblyTypes.Select(t => (ITypeInfo)this.TypeRegistry.GetRuntimeType(t)).ToList();
+            return assemblyTypes.Select(t => (ITypeInfo)this.TypeRegistry.GetTypeInfo(t)).ToList();
         }
 
         /// <summary>

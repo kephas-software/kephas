@@ -68,7 +68,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The declaring element.
         /// </value>
-        public IElementInfo DeclaringContainer => this.TypeRegistry.GetRuntimeType(this.FieldInfo.DeclaringType);
+        public IElementInfo DeclaringContainer => this.TypeRegistry.GetTypeInfo(this.FieldInfo.DeclaringType);
 
         /// <summary>
         /// Gets the field information.
@@ -92,7 +92,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetRuntimeType(this.FieldInfo.FieldType);
+        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetTypeInfo(this.FieldInfo.FieldType);
 
         /// <summary>
         /// Gets the type of the field.
@@ -100,7 +100,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetRuntimeType(this.FieldInfo.FieldType);
+        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetTypeInfo(this.FieldInfo.FieldType);
 
 #if NETSTANDARD2_1
 #else

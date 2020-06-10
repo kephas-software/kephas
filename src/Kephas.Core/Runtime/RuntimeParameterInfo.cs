@@ -133,7 +133,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetRuntimeType(this.ParameterInfo.ParameterType);
+        public IRuntimeTypeInfo ValueType => this.TypeRegistry.GetTypeInfo(this.ParameterInfo.ParameterType);
 
         /// <summary>
         /// Gets the type of the field.
@@ -141,7 +141,7 @@ namespace Kephas.Runtime
         /// <value>
         /// The type of the field.
         /// </value>
-        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetRuntimeType(this.ParameterInfo.ParameterType);
+        ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetTypeInfo(this.ParameterInfo.ParameterType);
 
         /// <summary>
         /// Sets the specified value.

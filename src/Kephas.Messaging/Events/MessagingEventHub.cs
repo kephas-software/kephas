@@ -85,11 +85,11 @@ namespace Kephas.Messaging.Events
         /// <returns>
         /// A function delegate that yields a bool.
         /// </returns>
-        protected override Func<object, bool> GetTypeMatch(ITypeInfo typeMatch)
+        protected override Func<object, bool> GetTypeMatch(Type typeMatch)
         {
             var match = new MessageMatch
             {
-                MessageType = typeMatch.AsType(),
+                MessageType = typeMatch,
                 MessageTypeMatching = MessageTypeMatching.Type,
             };
             return e => this.messageMatchService.IsMatch(match, e.GetType(), this.messageMatchService.GetMessageType(e), this.messageMatchService.GetMessageId(e));

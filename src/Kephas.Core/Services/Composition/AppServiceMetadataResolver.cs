@@ -36,16 +36,16 @@ namespace Kephas.Services.Composition
         /// </summary>
         private const string TypeSuffix = "Type";
 
-        /// <summary>
-        /// Information describing the metadata value type.
-        /// </summary>
+        private readonly IRuntimeTypeRegistry typeRegistry;
         private IRuntimeTypeInfo? metadataValueTypeInfo;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceMetadataResolver"/> class.
         /// </summary>
-        internal AppServiceMetadataResolver()
+        /// <param name="typeRegistry">The type registry.</param>
+        internal AppServiceMetadataResolver(IRuntimeTypeRegistry typeRegistry)
         {
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Kephas.Services.Composition
         /// Information describing the metadata value type.
         /// </value>
         private IRuntimeTypeInfo MetadataValueTypeInfo
-            => this.metadataValueTypeInfo ??= typeof(IMetadataValue).AsRuntimeTypeInfo();
+            => this.metadataValueTypeInfo ??= this.typeRegistry.GetTypeInfo(typeof(IMetadataValue));
 
         /// <summary>
         /// Gets the metadata value properties which should be retrieved from the attribute.
@@ -66,7 +66,7 @@ namespace Kephas.Services.Composition
         /// </returns>
         public IDictionary<string, IPropertyInfo> GetMetadataValueProperties(Type attributeType)
         {
-            var attributeTypeInfo = attributeType.AsRuntimeTypeInfo();
+            var attributeTypeInfo = this.typeRegistry.GetTypeInfo(attributeType);
 
             const string MetadataValuePropertiesName = "__MetadataValueProperties";
             if (attributeTypeInfo[MetadataValuePropertiesName] is IDictionary<string, IPropertyInfo> metadataValueProperties)
