@@ -118,9 +118,11 @@ namespace Kephas.Licensing
         /// <returns>
         /// An asynchronous result that yields the check license result.
         /// </returns>
-        public virtual Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
+        public virtual async Task<ILicenseCheckResult> CheckLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
         {
-            return ((Func<ILicenseCheckResult>)(() => this.CheckLicense(appIdentity))).AsAsync(cancellationToken: cancellationToken);
+            await Task.Yield();
+
+            return this.CheckLicense(appIdentity, context);
         }
 
         /// <summary>
@@ -145,9 +147,11 @@ namespace Kephas.Licensing
         /// <returns>
         /// An asynchronous result that yields the license data.
         /// </returns>
-        public virtual Task<LicenseData?> GetLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
+        public virtual async Task<LicenseData?> GetLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default)
         {
-            return ((Func<LicenseData?>)(() => this.GetLicense(appIdentity))).AsAsync(cancellationToken: cancellationToken);
+            await Task.Yield();
+
+            return this.GetLicense(appIdentity, context);
         }
 
         /// <summary>

@@ -99,12 +99,14 @@ namespace Kephas.Scripting.Python
         {
             // http://putridparrot.com/blog/hosting-ironpython-in-a-c-application/
 
-            args = args ?? new Expando();
-            scriptGlobals = scriptGlobals ?? new ScriptGlobals { Args = args };
+            args ??= new Expando();
+            scriptGlobals ??= new ScriptGlobals { Args = args };
 
             var (scope, source) = this.PrepareScope(script, scriptGlobals);
 
-            var result = await ((Func<dynamic>)(() => source.Execute(scope))).AsAsync(cancellationToken).PreserveThreadContext();
+            await Task.Yield();
+
+            var result = source.Execute(scope);
             var returnValue = this.GetReturnValue(result, scope);
             return returnValue;
         }

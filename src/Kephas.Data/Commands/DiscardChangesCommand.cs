@@ -70,9 +70,10 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A promise of a <see cref="T:Kephas.Data.Commands.IDataCommandResult" />.
         /// </returns>
-        public override Task<IDataCommandResult> ExecuteAsync(IDiscardChangesContext operationContext, CancellationToken cancellationToken = default)
+        public override async Task<IDataCommandResult> ExecuteAsync(IDiscardChangesContext operationContext, CancellationToken cancellationToken = default)
         {
-            return ((Func<IDataCommandResult>)(() => this.Execute(operationContext))).AsAsync();
+            await Task.Yield();
+            return this.Execute(operationContext);
         }
 
         /// <summary>

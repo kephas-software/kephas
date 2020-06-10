@@ -84,16 +84,15 @@ namespace Kephas.Scripting.Lua
         /// </returns>
         public async Task<object> ExecuteAsync(IScript script, IScriptGlobals scriptGlobals = null, IExpando args = null, IContext executionContext = null, CancellationToken cancellationToken = default)
         {
-            args = args ?? new Expando();
-            scriptGlobals = scriptGlobals ?? new ScriptGlobals { Args = args };
+            args ??= new Expando();
+            scriptGlobals ??= new ScriptGlobals { Args = args };
 
             var (scope, source) = this.PrepareScope(script, scriptGlobals);
 
-            var result = await ((Func<object[]>)(() =>
-            {
-                var chunk = this.engine.CompileChunk(source, "dynamicCode", new LuaCompileOptions());
-                return chunk.Run(scope);
-            })).AsAsync(cancellationToken).PreserveThreadContext();
+            await Task.Yield();
+
+            var chunk = this.engine.CompileChunk(source, "dynamicCode", new LuaCompileOptions());
+            var result = chunk.Run(scope);
             var returnValue = this.GetReturnValue(result, scope);
             return returnValue;
         }

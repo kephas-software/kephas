@@ -48,9 +48,11 @@ namespace Kephas.Operations
         /// <returns>
         /// An object.
         /// </returns>
-        Task<object?> ExecuteAsync(IContext? context = null, CancellationToken cancellationToken = default)
+        async Task<object?> ExecuteAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
-            return ((Func<object?>)(() => this.Execute(context))).AsAsync(cancellationToken);
+            await Task.Yield();
+
+            return this.Execute(context);
         }
 #endif
     }
@@ -87,7 +89,7 @@ namespace Kephas.Operations
         /// <returns>
         /// An object.
         /// </returns>
-        public static Task<object?> ExecuteAsync(
+        public static async Task<object?> ExecuteAsync(
             this IOperation operation,
             IContext? context = null,
             CancellationToken cancellationToken = default)
@@ -96,10 +98,12 @@ namespace Kephas.Operations
 
             if (operation is IAsyncOperation asyncOperation)
             {
-                return asyncOperation.ExecuteAsync(context, cancellationToken);
+                return await asyncOperation.ExecuteAsync(context, cancellationToken).PreserveThreadContext();
             }
 
-            return ((Func<object?>)(() => operation.Execute(context))).AsAsync(cancellationToken);
+            await Task.Yield();
+
+            return operation.Execute(context);
         }
     }
 #endif
