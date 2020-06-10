@@ -58,6 +58,7 @@ namespace Kephas.Plugins.Application
         ///                           application location is considered.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
         /// <param name="licenseFolders">Optional. The license folders.</param>
+        /// <param name="isRoot">Optional. Indicates whether the application instance is the root.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -73,6 +74,7 @@ namespace Kephas.Plugins.Application
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
             IEnumerable<string>? licenseFolders = null,
+            bool? isRoot = null,
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
@@ -81,7 +83,7 @@ namespace Kephas.Plugins.Application
             string? pluginsFolder = null,
             string? targetFramework = null,
             IPluginRepository? pluginRepository = null)
-            : base(getLogger, checkLicense, assemblyFilter, appFolder, configFolders, licenseFolders, appId, appInstanceId, appVersion, appArgs)
+            : base(getLogger, checkLicense, assemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);

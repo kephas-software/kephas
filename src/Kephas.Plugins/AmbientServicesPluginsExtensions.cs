@@ -35,6 +35,7 @@ namespace Kephas
         ///                           location is used.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
         /// <param name="licenseFolders">Optional. The license folders.</param>
+        /// <param name="isRoot">Indicates whether the application instance is the root.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -52,6 +53,7 @@ namespace Kephas
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
             IEnumerable<string>? licenseFolders = null,
+            bool? isRoot = null,
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
@@ -70,6 +72,7 @@ namespace Kephas
                     appFolder,
                     configFolders,
                     licenseFolders,
+                    isRoot,
                     appId,
                     appInstanceId,
                     appVersion,

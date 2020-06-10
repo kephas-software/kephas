@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Application
 {
     using System;
@@ -39,6 +37,7 @@ namespace Kephas.Application
         /// <param name="appFolder">Optional. The application location.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
         /// <param name="licenseFolders">Optional. The license folders.</param>
+        /// <param name="isRoot">Optional. Indicates whether the application instance is the root.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -52,6 +51,7 @@ namespace Kephas.Application
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
             IEnumerable<string>? licenseFolders = null,
+            bool? isRoot = null,
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
@@ -66,6 +66,7 @@ namespace Kephas.Application
                 appFolder,
                 configFolders,
                 licenseFolders,
+                isRoot,
                 appId,
                 appInstanceId,
                 appVersion);
@@ -86,6 +87,7 @@ namespace Kephas.Application
         /// <param name="appFolder">Optional. The application location.</param>
         /// <param name="configFolders">Optional. The configuration folders.</param>
         /// <param name="licenseFolders">Optional. The license folders.</param>
+        /// <param name="isRoot">Optional. Indicates whether the application instance is the root.</param>
         /// <param name="appId">Optional. Identifier for the application.</param>
         /// <param name="appInstanceId">Optional. Identifier for the application instance.</param>
         /// <param name="appVersion">Optional. The application version.</param>
@@ -99,6 +101,7 @@ namespace Kephas.Application
             string? appFolder = null,
             IEnumerable<string>? configFolders = null,
             IEnumerable<string>? licenseFolders = null,
+            bool? isRoot = null,
             string? appId = null,
             string? appInstanceId = null,
             string? appVersion = null,
@@ -113,6 +116,7 @@ namespace Kephas.Application
                 appFolder,
                 configFolders,
                 licenseFolders,
+                isRoot,
                 appId,
                 appInstanceId,
                 appVersion);

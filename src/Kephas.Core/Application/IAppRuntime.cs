@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Application
 {
     using System;
@@ -126,6 +124,16 @@ namespace Kephas.Application
     /// </summary>
     public static class AppRuntimeExtensions
     {
+        /// <summary>
+        /// Gets the identifier of the application.
+        /// </summary>
+        /// <param name="appRuntime">The app runtime to act on.</param>
+        /// <returns>
+        /// The identifier of the application.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsRoot(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.IsRootKey] as bool? ?? false;
+
         /// <summary>
         /// Gets the identifier of the application.
         /// </summary>
