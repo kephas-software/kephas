@@ -55,7 +55,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The recipients.
         /// </value>
-        IEnumerable<IEndpoint> Recipients { get; set; }
+        IEnumerable<IEndpoint>? Recipients { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this message is one way.
@@ -100,7 +100,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The custom properties.
         /// </value>
-        IDictionary<string, object> Properties { get; set; }
+        IDictionary<string, object>? Properties { get; set; }
 
         /// <summary>
         /// Gets or sets the priority.

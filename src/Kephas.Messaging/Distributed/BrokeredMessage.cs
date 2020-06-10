@@ -34,7 +34,7 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         public BrokeredMessage()
         {
-            this.Id = Guid.NewGuid().ToString("N");
+            this.id = Guid.NewGuid().ToString("N");
             this.Timeout = DefaultTimeout;
         }
 
@@ -47,7 +47,7 @@ namespace Kephas.Messaging.Distributed
         {
             Requires.NotNull(message, nameof(message));
 
-            this.Content = message.ToMessage();
+            this.Content = message.ToMessage()!;
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The recipients.
         /// </value>
-        public IEnumerable<IEndpoint> Recipients { get; set; }
+        public IEnumerable<IEndpoint>? Recipients { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this message is one way.
@@ -171,7 +171,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The custom properties.
         /// </value>
-        public IDictionary<string, object> Properties { get; set; }
+        public IDictionary<string, object>? Properties { get; set; }
 
         /// <summary>
         /// Gets or sets the priority.
@@ -199,8 +199,8 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public object this[string key]
         {
-            get => (this.Properties ?? (this.Properties = new Dictionary<string, object>()))[key];
-            set => (this.Properties ?? (this.Properties = new Dictionary<string, object>()))[key] = value;
+            get => (this.Properties ??= new Dictionary<string, object>())[key];
+            set => (this.Properties ??= new Dictionary<string, object>())[key] = value;
         }
 
         /// <summary>

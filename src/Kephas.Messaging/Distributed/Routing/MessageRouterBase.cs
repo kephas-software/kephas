@@ -113,7 +113,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public async Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public async Task InitializeAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
             this.InitializationMonitor.AssertIsNotStarted();
 
@@ -154,7 +154,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        public virtual async Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        public virtual async Task<(RoutingInstruction action, IMessage? reply)> DispatchAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
             Requires.NotNull(context, nameof(context));
@@ -175,7 +175,7 @@ namespace Kephas.Messaging.Distributed.Routing
             }
 
             (RoutingInstruction action, IMessage reply) result = default;
-            Exception exception = null;
+            Exception? exception = null;
             try
             {
                 result = await this.RouteOutputAsync(brokeredMessage, context, cancellationToken)

@@ -36,7 +36,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        Task<(RoutingInstruction action, IMessage reply)> DispatchAsync(
+        Task<(RoutingInstruction action, IMessage? reply)> DispatchAsync(
             IBrokeredMessage brokeredMessage,
             IDispatchingContext context,
             CancellationToken cancellationToken);

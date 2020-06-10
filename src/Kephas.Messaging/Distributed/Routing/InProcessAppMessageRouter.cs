@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InProcessMessageRouter.cs" company="Kephas Software SRL">
+// <copyright file="InProcessAppMessageRouter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -28,7 +28,7 @@ namespace Kephas.Messaging.Distributed.Routing
     /// </summary>
     [ProcessingPriority(Priority.Lowest)]
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
-    public class InProcessAppMessageRouter : MessageRouterBase, IAsyncInitializable
+    public class InProcessAppMessageRouter : MessageRouterBase
     {
         /// <summary>
         /// The channel type handled by the <see cref="InProcessAppMessageRouter"/>.
@@ -156,7 +156,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected override async Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        protected override async Task<(RoutingInstruction action, IMessage? reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 

@@ -13,9 +13,9 @@ namespace Kephas.Messaging
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+
     using Kephas.Composition.AttributedModel;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Messaging.Messages;
 
     /// <summary>
     /// A function message handler.
@@ -25,13 +25,13 @@ namespace Kephas.Messaging
     public class FuncMessageHandler<TMessage> : MessageHandlerBase<TMessage, IMessage>
         where TMessage : class
     {
-        private readonly Func<TMessage, IMessagingContext, CancellationToken, Task<IMessage>> handlerFunction;
+        private readonly Func<TMessage, IMessagingContext, CancellationToken, Task<IMessage?>> handlerFunction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FuncMessageHandler{TMessage}"/> class.
         /// </summary>
         /// <param name="handlerFunction">The handler function.</param>
-        public FuncMessageHandler(Func<TMessage, IMessagingContext, CancellationToken, Task<IMessage>> handlerFunction)
+        public FuncMessageHandler(Func<TMessage, IMessagingContext, CancellationToken, Task<IMessage?>> handlerFunction)
         {
             Requires.NotNull(handlerFunction, nameof(handlerFunction));
 
@@ -47,7 +47,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override Task<IMessage> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
+        public override Task<IMessage?> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
             return this.handlerFunction(message, context, token);
         }

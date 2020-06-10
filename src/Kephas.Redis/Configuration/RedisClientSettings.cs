@@ -29,6 +29,6 @@ namespace Kephas.Redis.Configuration
         /// <value>
         /// The application namespace.
         /// </value>
-        public string Namespace { get; set; }
+        public string? Namespace { get; set; }
     }
 }

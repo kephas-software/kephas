@@ -43,13 +43,13 @@ namespace Kephas.Messaging.Redis.Routing
         private readonly IConfiguration<RedisClientSettings> redisConfiguration;
         private readonly IEventHub eventHub;
         private ISubscriber publisher;
-        private IConnectionMultiplexer subConnection;
+        private IConnectionMultiplexer? subConnection;
         private ISubscriber subscriber;
         private string redisRootChannelName;
-        private IConnectionMultiplexer pubConnection;
+        private IConnectionMultiplexer? pubConnection;
         private bool isRedisChannelInitialized;
-        private IEventSubscription redisClientStartedSubscription;
-        private IEventSubscription redisClientStoppingSubscription;
+        private IEventSubscription? redisClientStartedSubscription;
+        private IEventSubscription? redisClientStoppingSubscription;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RedisAppMessageRouter"/> class.
@@ -85,7 +85,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected override async Task InitializeCoreAsync(IContext context, CancellationToken cancellationToken = default)
+        protected override async Task InitializeCoreAsync(IContext context, CancellationToken cancellationToken)
         {
             await base.InitializeCoreAsync(context, cancellationToken).PreserveThreadContext();
 
@@ -188,7 +188,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected override async Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
+        protected override async Task<(RoutingInstruction action, IMessage? reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken)
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
@@ -206,21 +206,21 @@ namespace Kephas.Messaging.Redis.Routing
 
                 if (groups.Count == 1)
                 {
-                    var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true)).PreserveThreadContext();
+                    var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true), cancellationToken).PreserveThreadContext();
                     await this.PublishAsync(serializedMessage, groups[0].channelName, brokeredMessage.IsOneWay).PreserveThreadContext();
                 }
                 else
                 {
                     foreach (var (channelName, recipients) in groups)
                     {
-                        var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage.Clone(recipients), ctx => ctx.IncludeTypeInfo(true)).PreserveThreadContext();
+                        var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage.Clone(recipients), ctx => ctx.IncludeTypeInfo(true), cancellationToken).PreserveThreadContext();
                         await this.PublishAsync(serializedMessage, channelName, brokeredMessage.IsOneWay).PreserveThreadContext();
                     }
                 }
             }
             else
             {
-                var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true)).PreserveThreadContext();
+                var serializedMessage = await this.serializationService.SerializeAsync(brokeredMessage, ctx => ctx.IncludeTypeInfo(true), cancellationToken).PreserveThreadContext();
                 await this.PublishAsync(serializedMessage, this.redisRootChannelName, brokeredMessage.IsOneWay).PreserveThreadContext();
             }
 
@@ -280,7 +280,7 @@ namespace Kephas.Messaging.Redis.Routing
 
             if (this.isRedisChannelInitialized)
             {
-                this.redisConnectionManager.DisposeConnection(this.pubConnection);
+                this.redisConnectionManager.DisposeConnection(this.pubConnection!);
                 this.pubConnection = null;
 
                 try
@@ -289,14 +289,14 @@ namespace Kephas.Messaging.Redis.Routing
                 }
                 catch (OperationCanceledException ex)
                 {
-                    this.Logger.Warn(ex, $"Redis subscription cancelation was canceled.");
+                    this.Logger.Warn(ex, $"Redis subscription cancellation was canceled.");
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, $"Errors occured during Redis subscription cancelation.");
+                    this.Logger.Error(ex, $"Errors occured during Redis subscription cancellation.");
                 }
 
-                this.redisConnectionManager.DisposeConnection(this.subConnection);
+                this.redisConnectionManager.DisposeConnection(this.subConnection!);
                 this.subConnection = null;
 
                 this.isRedisChannelInitialized = false;

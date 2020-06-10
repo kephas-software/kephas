@@ -57,7 +57,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// This message handler registry.
         /// </returns>
-        public static IMessageHandlerRegistry RegisterHandler<TMessage>(this IMessageHandlerRegistry @this, Func<TMessage, IMessagingContext, CancellationToken, Task<IMessage>> handlerFunction)
+        public static IMessageHandlerRegistry RegisterHandler<TMessage>(this IMessageHandlerRegistry @this, Func<TMessage, IMessagingContext, CancellationToken, Task<IMessage?>> handlerFunction)
             where TMessage : class
         {
             Requires.NotNull(@this, nameof(@this));
@@ -78,7 +78,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// This message handler registry.
         /// </returns>
-        public static IMessageHandlerRegistry RegisterHandler<TMessage>(this IMessageHandlerRegistry @this, Func<TMessage, IMessagingContext, IMessage> handlerFunction)
+        public static IMessageHandlerRegistry RegisterHandler<TMessage>(this IMessageHandlerRegistry @this, Func<TMessage, IMessagingContext, IMessage?> handlerFunction)
             where TMessage : class
         {
             Requires.NotNull(@this, nameof(@this));
