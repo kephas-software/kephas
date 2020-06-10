@@ -1,14 +1,14 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RedisAppMessageRouterTest.cs" company="Kephas Software SRL">
+// <copyright file="PipesAppMessageRouterTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>
-//   Implements the redis application message router test class.
+//   Implements the pipes application message router test class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Redis.Tests.Routing
+namespace Kephas.Messaging.Pipes.Tests.Routing
 {
     using System;
     using System.Linq;
@@ -23,21 +23,20 @@ namespace Kephas.Messaging.Redis.Tests.Routing
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Messages;
-    using Kephas.Messaging.Redis.Routing;
-    using Kephas.Redis.Configuration;
-    using Kephas.Services;
+    using Kephas.Messaging.Pipes.Configuration;
+    using Kephas.Messaging.Pipes.Routing;
     using NUnit.Framework;
 
     using AppContext = Kephas.Application.AppContext;
 
     [TestFixture]
-    public class RedisAppMessageRouterTest : RedisMessagingTestBase
+    public class PipesAppMessageRouterTest : PipesMessagingTestBase
     {
         [Test]
         public void Composition()
         {
             var container = this.CreateContainer();
-            var router = container.GetExports<IMessageRouter>().OfType<RedisAppMessageRouter>().SingleOrDefault();
+            var router = container.GetExports<IMessageRouter>().OfType<PipesAppMessageRouter>().SingleOrDefault();
 
             Assert.IsNotNull(router);
         }
@@ -50,7 +49,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                parts: new[] { typeof(PipesSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
@@ -58,7 +57,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                parts: new[] { typeof(PipesSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
@@ -91,7 +90,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 new AmbientServices()
                     .WithDebugLogManager((logger, level, msg, ex) => sbMaster.AppendLine($"[{logger}] {level} {msg} {ex}"))
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId, assemblyFilter: this.IsNotTestAssembly),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                parts: new[] { typeof(PipesSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
             var sbSlave = new StringBuilder();
@@ -101,7 +100,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 new AmbientServices()
                     .WithDebugLogManager((logger, level, msg, ex) => sbSlave.AppendLine($"[{logger}] {level} {msg} {ex}"))
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId, assemblyFilter: this.IsNotTestAssembly),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                parts: new[] { typeof(PipesSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
@@ -136,7 +135,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                parts: new[] { typeof(PipesSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
@@ -144,7 +143,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                parts: new[] { typeof(PipesSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
@@ -175,7 +174,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: masterId, appInstanceId: masterInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                parts: new[] { typeof(PipesSettingsProvider) });
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
             var slaveId = $"Slave-{Guid.NewGuid():N}";
@@ -183,7 +182,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithStaticAppRuntime(appId: slaveId, appInstanceId: slaveInstanceId),
-                parts: new[] { typeof(RedisSettingsProvider) });
+                parts: new[] { typeof(PipesSettingsProvider) });
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
             await this.InitializeAppAsync(masterContainer);
@@ -224,16 +223,16 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 new AppContext(container.GetExport<IAmbientServices>(), container.GetExport<IAppRuntime>()));
         }
 
-        public class RedisSettingsProvider : ISettingsProvider
+        public class PipesSettingsProvider : ISettingsProvider
         {
             public object GetSettings(Type settingsType)
             {
-                if (settingsType == typeof(RedisClientSettings))
+                if (settingsType == typeof(PipesSettingsProvider))
                 {
-                    return new RedisClientSettings
+                    return new PipesSettings
                     {
                         Namespace = "unit-test",
-                        ConnectionString = "localhost",
+                        ServerName = "localhost",
                     };
                 }
 

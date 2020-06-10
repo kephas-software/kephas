@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RedisMessagingTestBase.cs" company="Kephas Software SRL">
+// <copyright file="PipesMessagingTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,18 +8,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Redis.Tests
+namespace Kephas.Messaging.Pipes.Tests
 {
     using System.Collections.Generic;
     using System.Reflection;
 
     using Kephas.Application;
-    using Kephas.Messaging.Redis.Routing;
-    using Kephas.Redis;
+    using Kephas.Messaging.Pipes.Routing;
     using Kephas.Serialization.Json;
     using Kephas.Testing.Composition;
 
-    public abstract class RedisMessagingTestBase : CompositionTestBase
+    public abstract class PipesMessagingTestBase : CompositionTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {
@@ -27,8 +26,7 @@ namespace Kephas.Messaging.Redis.Tests
             {
                 typeof(IAppManager).Assembly,                   // Kephas.Application
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
-                typeof(IRedisConnectionManager).Assembly,       // Kephas.Redis
-                typeof(RedisAppMessageRouter).Assembly,         // Kephas.Messaging.Redis
+                typeof(PipesAppMessageRouter).Assembly,         // Kephas.Messaging.Pipes
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };
         }

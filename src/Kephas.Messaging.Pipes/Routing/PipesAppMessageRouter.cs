@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PipeAppMessageRouter.cs" company="Kephas Software SRL">
+// <copyright file="PipesAppMessageRouter.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,7 +18,6 @@ namespace Kephas.Messaging.Pipes.Routing
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Collections;
     using Kephas.Configuration;
     using Kephas.IO;
     using Kephas.Logging;
@@ -37,7 +36,7 @@ namespace Kephas.Messaging.Pipes.Routing
     /// </summary>
     [ProcessingPriority(Priority.Low + 1000)]
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
-    public class PipeAppMessageRouter : InProcessAppMessageRouter
+    public class PipesAppMessageRouter : InProcessAppMessageRouter
     {
         private readonly IConfiguration<PipesSettings> pipesConfiguration;
         private readonly ISerializationService serializationService;
@@ -57,14 +56,14 @@ namespace Kephas.Messaging.Pipes.Routing
         private Lock? outWriteLock;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PipeAppMessageRouter"/> class.
+        /// Initializes a new instance of the <see cref="PipesAppMessageRouter"/> class.
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="pipesConfiguration">The configuration for pipes.</param>
         /// <param name="serializationService">The serialization service.</param>
-        public PipeAppMessageRouter(
+        public PipesAppMessageRouter(
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
             IMessageProcessor messageProcessor,
@@ -223,13 +222,10 @@ namespace Kephas.Messaging.Pipes.Routing
         {
             var stream = new NamedPipeServerStream(
                 channelName,
-                PipeDirection.In,
-                1,
+                PipeDirection.InOut,
+                10,
                 PipeTransmissionMode.Message,
-                PipeOptions.Asynchronous)
-            {
-                ReadMode = PipeTransmissionMode.Message,
-            };
+                PipeOptions.Asynchronous);
 
             return stream;
         }
@@ -246,13 +242,11 @@ namespace Kephas.Messaging.Pipes.Routing
             var stream = new NamedPipeClientStream(
                 serverName,
                 channelName,
-                PipeDirection.Out,
-                PipeOptions.Asynchronous)
-            {
-                ReadMode = PipeTransmissionMode.Message,
-            };
+                PipeDirection.InOut,
+                PipeOptions.Asynchronous);
 
             stream.Connect();
+            stream.ReadMode = PipeTransmissionMode.Message;
             return stream;
         }
 
