@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
@@ -14,9 +14,9 @@
 
         <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
         <Description>
-            Provides distributed message routing over Redis using StackExchange.Redis.
+            Provides distributed message routing over named pipes.
             Typically used areas and classes/interfaces/services:
-            - RedisAppMessageRouter.
+            - PipeAppMessageRouter.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>
@@ -33,7 +33,7 @@
             Please check https://github.com/kephas-software/kephas/releases for the change log.
             Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
         </PackageReleaseNotes>
-        <PackageTags>kephas messaging request response servicelayer events redis</PackageTags>
+        <PackageTags>kephas messaging request response servicelayer events pipe</PackageTags>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -65,12 +65,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Properties\**" />
-      <EmbeddedResource Remove="Properties\**" />
-      <None Remove="Properties\**" />
-    </ItemGroup>
-
-    <ItemGroup>
         <None Remove="stylecop.json" />
     </ItemGroup>
 
@@ -80,10 +74,9 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="StackExchange.Redis" Version="2.0.601" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -93,7 +86,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
-        <ProjectReference Include="..\Kephas.Redis\Kephas.Redis.csproj" />
     </ItemGroup>
 
     <ItemGroup>
