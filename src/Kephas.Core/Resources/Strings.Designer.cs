@@ -19,7 +19,7 @@ namespace Kephas.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -334,9 +334,18 @@ namespace Kephas.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The context type &apos;{0}&apos; must be an instatiable class..
         /// </summary>
-        public static string ContextFactory_CreateContext_ContextTypeMustBeAnInstatiable {
+        public static string ContextFactory_CreateContext_ContextTypeMustBeInstatiable {
             get {
-                return ResourceManager.GetString("ContextFactory_CreateContext_ContextTypeMustBeAnInstatiable", resourceCulture);
+                return ResourceManager.GetString("ContextFactory_CreateContext_ContextTypeMustBeInstatiable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arguments may not be null when instatiating context of type &apos;{0}&apos;..
+        /// </summary>
+        public static string ContextFactory_CreateContext_NonNullArguments {
+            get {
+                return ResourceManager.GetString("ContextFactory_CreateContext_NonNullArguments", resourceCulture);
             }
         }
         

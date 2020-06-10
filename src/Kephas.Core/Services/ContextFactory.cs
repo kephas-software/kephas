@@ -74,16 +74,21 @@ namespace Kephas.Services
         /// <returns>
         /// The new context.
         /// </returns>
-        public TContext CreateContext<TContext>(params object?[] args)
+        public TContext CreateContext<TContext>(params object[] args)
             where TContext : class
         {
             var contextType = typeof(TContext);
             if (!contextType.IsClass || contextType.IsAbstract)
             {
-                throw new ArgumentException(Strings.ContextFactory_CreateContext_ContextTypeMustBeAnInstatiable.FormatWith(contextType));
+                throw new ArgumentException(Strings.ContextFactory_CreateContext_ContextTypeMustBeInstatiable.FormatWith(contextType));
             }
 
-            var signature = new Signature(args.Select(a => a?.GetType()));
+            if (args.Any(a => a == null))
+            {
+                throw new ArgumentException(Strings.ContextFactory_CreateContext_NonNullArguments.FormatWith(contextType));
+            }
+
+            var signature = new Signature(args.Select(a => a.GetType()));
             var typeSignCache = this.signatureCache.GetOrAdd(contextType, _ => new ConcurrentDictionary<Signature, Func<object?[], object>>());
             var creatorFunc = typeSignCache.GetOrAdd(signature, _ => this.GetCreatorFunc(contextType, signature));
             return (TContext)creatorFunc(args);
@@ -113,7 +118,7 @@ namespace Kephas.Services
             throw new InvalidOperationException(Strings.ContextFactory_GetCreatorFunc_CannotFindMatchingConstructor.FormatWith(signature, contextType));
         }
 
-        private (List<int> argIndexMap, List<Func<object>> argResolverMap) GetSignatureMaps(Signature signature, ParameterInfo[] paramInfos)
+        private (List<int>? argIndexMap, List<Func<object>>? argResolverMap) GetSignatureMaps(Signature signature, ParameterInfo[] paramInfos)
         {
             var argIndexMap = new List<int>();
             var argResolverMap = new List<Func<object>>

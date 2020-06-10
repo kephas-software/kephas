@@ -348,8 +348,11 @@
   <data name="ConfigurationStoreSettingsProvider_SettingsTypeMismatch_Exception" xml:space="preserve">
     <value>The stored settings type '{0}' differs from the requested settings type '{1}'.</value>
   </data>
-  <data name="ContextFactory_CreateContext_ContextTypeMustBeAnInstatiable" xml:space="preserve">
+  <data name="ContextFactory_CreateContext_ContextTypeMustBeInstatiable" xml:space="preserve">
     <value>The context type '{0}' must be an instatiable class.</value>
+  </data>
+  <data name="ContextFactory_CreateContext_NonNullArguments" xml:space="preserve">
+    <value>Arguments may not be null when instatiating context of type '{0}'.</value>
   </data>
   <data name="ContextFactory_GetCreatorFunc_CannotFindMatchingConstructor" xml:space="preserve">
     <value>Cannot find a matching constructor for signature {0} in type '{1}'.</value>
