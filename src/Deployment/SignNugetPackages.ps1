@@ -40,6 +40,7 @@ $paths = @(
     "..\Kephas.Mail.MailKit",
     "..\Kephas.Messaging",
     "..\Kephas.Messaging.Model",
+    "..\Kephas.Messaging.Pipes",
     "..\Kephas.Messaging.Redis",
     "..\Kephas.Model",
     "..\Kephas.Npgsql",
