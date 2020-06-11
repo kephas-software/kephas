@@ -316,6 +316,22 @@ namespace Kephas.Serialization.Json.Tests
         }
 
         [Test]
+        public async Task DeserializeAsync_with_serialized_types_expando_extended_members()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity"",""description"":""John Doe"", ""gigi"": ""belogea""}";
+            var obj = await serializer.DeserializeAsync(serializedObj);
+
+            Assert.IsInstanceOf<ExpandoEntity>(obj);
+
+            var testEntity = (ExpandoEntity)obj;
+
+            Assert.AreEqual("John Doe", testEntity.Description);
+            Assert.AreEqual("belogea", testEntity["gigi"]);
+        }
+
+        [Test]
         public async Task DeserializeAsync_with_in_string_provided_type_no_assembly_name()
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
