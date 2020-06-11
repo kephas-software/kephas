@@ -13,6 +13,7 @@ namespace Kephas.Core.Tests.Application
     using System.Linq;
 
     using Kephas.Application;
+    using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
@@ -21,6 +22,19 @@ namespace Kephas.Core.Tests.Application
     [TestFixture]
     public class StaticAppRuntimeTest
     {
+        [Test]
+        public void Constructor_set_app_id_and_instance_id()
+        {
+            var appEnv = new StaticAppRuntime(
+                appArgs: new Expando
+                {
+                    [StaticAppRuntime.AppIdKey] = "test",
+                    [StaticAppRuntime.AppInstanceIdKey] = "test-2",
+                });
+            Assert.AreEqual("test", appEnv.GetAppId());
+            Assert.AreEqual("test-2", appEnv.GetAppInstanceId());
+        }
+
         [Test]
         public void GetAppAssemblies_filter()
         {

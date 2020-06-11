@@ -108,7 +108,7 @@ namespace Kephas.Application
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        Task IAsyncInitializable.InitializeAsync(IContext context, CancellationToken cancellationToken)
+        Task IAsyncInitializable.InitializeAsync(IContext? context, CancellationToken cancellationToken)
         {
             return this.InitializeAsync(GetAppContext(context), cancellationToken);
         }
@@ -121,7 +121,7 @@ namespace Kephas.Application
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task IAsyncFinalizable.FinalizeAsync(IContext context, CancellationToken cancellationToken)
+        Task IAsyncFinalizable.FinalizeAsync(IContext? context, CancellationToken cancellationToken)
         {
             return this.FinalizeAsync(GetAppContext(context), cancellationToken);
         }
@@ -153,7 +153,7 @@ namespace Kephas.Application
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IAppContext GetAppContext(IContext context)
+        private static IAppContext GetAppContext(IContext? context)
         {
             return context is IAppContext appContext
                 ? appContext

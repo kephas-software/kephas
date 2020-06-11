@@ -44,47 +44,47 @@ namespace Kephas.Application
         /// <summary>
         /// The default configuration folder.
         /// </summary>
-        public const string DefaultConfigFolder = "Config";
+        public static readonly string DefaultConfigFolder = "Config";
 
         /// <summary>
         /// The default license folder.
         /// </summary>
-        public const string DefaultLicenseFolder = "Licenses";
+        public static readonly string DefaultLicenseFolder = "Licenses";
 
         /// <summary>
         /// The application identifier key.
         /// </summary>
-        public const string AppIdentityKey = "AppIdentity";
+        public static readonly string AppIdentityKey = "AppIdentity";
 
         /// <summary>
         /// The application identifier key.
         /// </summary>
-        public const string AppIdKey = "AppId";
+        public static readonly string AppIdKey = "AppId";
 
         /// <summary>
         /// The application instance identifier key.
         /// </summary>
-        public const string AppInstanceIdKey = "AppInstanceId";
+        public static readonly string AppInstanceIdKey = "AppInstanceId";
 
         /// <summary>
         /// The application version key.
         /// </summary>
-        public const string AppVersionKey = "AppVersion";
+        public static readonly string AppVersionKey = "AppVersion";
 
         /// <summary>
         /// The root application identifier key.
         /// </summary>
-        public const string IsRootKey = "IsRoot";
+        public static readonly string IsRootKey = "IsRoot";
 
         /// <summary>
         /// A pattern specifying the assembly file search.
         /// </summary>
-        protected const string AssemblyFileSearchPattern = "*.dll";
+        protected static readonly string AssemblyFileSearchPattern = "*.dll";
 
         /// <summary>
         /// The assembly file extension.
         /// </summary>
-        protected const string AssemblyFileExtension = ".dll";
+        protected static readonly string AssemblyFileExtension = ".dll";
 
         private readonly Func<string, ILogger> getLogger;
         private readonly ConcurrentDictionary<object, IEnumerable<Assembly>> assemblyResolutionCache =
@@ -138,7 +138,12 @@ namespace Kephas.Application
             this.licenseFolders = licenseFolders;
 
             this.InitializationMonitor = new InitializationMonitor<IAppRuntime>(this.GetType());
-            this.InitializeAppProperties(Assembly.GetEntryAssembly(), isRoot, appId, appInstanceId, appVersion);
+            this.InitializeAppProperties(
+                Assembly.GetEntryAssembly(),
+                isRoot,
+                appId ?? appArgs?[AppIdKey]?.ToString(),
+                appInstanceId ?? appArgs?[AppInstanceIdKey]?.ToString(),
+                appVersion);
 
             this[AppIdentityKey] = new AppIdentity(this[AppIdKey] as string, this[AppVersionKey] as string);
         }
