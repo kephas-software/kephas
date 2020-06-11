@@ -62,7 +62,7 @@ namespace Kephas.Application
             this.ServiceBehaviorProvider = serviceBehaviorProvider ?? new DefaultServiceBehaviorProvider(compositionContext);
             this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories == null
                                                      ? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>()
-                                                     : this.ServiceBehaviorProvider.WhereEnabled(appLifecycleBehaviorFactories).ToList();
+                                                     : this.ServiceBehaviorProvider.WhereEnabled(appLifecycleBehaviorFactories).Order().ToList();
 
             this.EnsureMetadataHasFeatureInfo(featureManagerFactories);
             this.FeatureManagerFactories = featureManagerFactories == null
@@ -71,7 +71,7 @@ namespace Kephas.Application
 
             this.FeatureLifecycleBehaviorFactories = featureLifecycleBehaviorFactories == null
                                                          ? new List<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>()
-                                                         : this.ServiceBehaviorProvider.WhereEnabled(featureLifecycleBehaviorFactories).ToList();
+                                                         : this.ServiceBehaviorProvider.WhereEnabled(featureLifecycleBehaviorFactories).Order().ToList();
         }
 
         /// <summary>
@@ -141,7 +141,6 @@ namespace Kephas.Application
 
                         var orderedBehaviors = this.AppLifecycleBehaviorFactories
                             .Select(factory => factory.CreateExport())
-                            .OrderBy(export => export.Metadata.ProcessingPriority)
                             .ToList();
 
                         await this.BeforeAppInitializeAsync(orderedBehaviors, appContext, cancellationToken).PreserveThreadContext();
@@ -184,18 +183,18 @@ namespace Kephas.Application
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        var orderedBehaviors = this.AppLifecycleBehaviorFactories
+                        var reversedOrderBehaviors = this.AppLifecycleBehaviorFactories
                             .Select(factory => factory.CreateExport())
-                            .OrderByDescending(export => export.Metadata.ProcessingPriority)
+                            .Reverse()
                             .ToList();
 
-                        await this.BeforeAppFinalizeAsync(orderedBehaviors, appContext, cancellationToken).PreserveThreadContext();
+                        await this.BeforeAppFinalizeAsync(reversedOrderBehaviors, appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
 
                         await this.FinalizeFeaturesAsync(appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        await this.AfterAppFinalizeAsync(orderedBehaviors, appContext, cancellationToken).PreserveThreadContext();
+                        await this.AfterAppFinalizeAsync(reversedOrderBehaviors, appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
                     },
                     this.Logger).PreserveThreadContext();
@@ -274,11 +273,6 @@ namespace Kephas.Application
 
             var orderedBehaviors = this.FeatureLifecycleBehaviorFactories
                                           .Select(factory => factory.CreateExport())
-                                          .OrderBy(export => export.Metadata.ProcessingPriority)
-                                          .ToList();
-
-            var reverseOrderedBehaviors = orderedBehaviors
-                                          .OrderByDescending(export => export.Metadata.ProcessingPriority)
                                           .ToList();
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -298,7 +292,7 @@ namespace Kephas.Application
                         {
                             await this.BeforeFeatureInitializeAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                             await this.InitializeFeatureAsync(featureManager, appContext, cancellationToken).PreserveThreadContext();
-                            await this.AfterFeatureInitializeAsync(reverseOrderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
+                            await this.AfterFeatureInitializeAsync(orderedBehaviors, appContext, featureManagerMetadata, cancellationToken).PreserveThreadContext();
                         },
                         this.Logger,
                         "Initialize feature " + featureIdentifier).PreserveThreadContext();
@@ -459,16 +453,15 @@ namespace Kephas.Application
         /// </returns>
         protected virtual async Task FinalizeFeaturesAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
+            // the feature manager are in the right order for initializing, now reverse that order
             var reversedOrderedFeatureManagers = this.FeatureManagerFactories
                                           .Select(factory => factory.CreateExport())
+                                          .Reverse()
                                           .ToList();
-
-            // the feature manager are in the right order for initializing, now reverse that order
-            reversedOrderedFeatureManagers.Reverse();
 
             var reverseOrderedBehaviors = this.FeatureLifecycleBehaviorFactories
                                           .Select(factory => factory.CreateExport())
-                                          .OrderByDescending(export => export.Metadata.ProcessingPriority)
+                                          .Reverse()
                                           .ToList();
 
             cancellationToken.ThrowIfCancellationRequested();
