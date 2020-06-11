@@ -17,7 +17,7 @@ namespace Kephas.Application.Configuration
         /// <summary>
         /// Gets or sets the settings for the application instances.
         /// </summary>
-        IDictionary<string, AppInstanceSettings> Instances { get; set; } = new Dictionary<string, AppInstanceSettings>();
+        public IDictionary<string, AppInstanceSettings> Instances { get; set; } = new Dictionary<string, AppInstanceSettings>();
     }
 
     /// <summary>
