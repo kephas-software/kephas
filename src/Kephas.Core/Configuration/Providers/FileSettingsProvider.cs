@@ -79,7 +79,9 @@ namespace Kephas.Configuration.Providers
         /// </value>
         protected ISerializationService SerializationService { get; }
 
-        /// <summary>Gets the settings with the provided type.</summary>
+        /// <summary>
+        /// Gets the settings with the provided type.
+        /// </summary>
         /// <param name="settingsType">Type of the settings.</param>
         /// <returns>The settings.</returns>
         public virtual object? GetSettings(Type settingsType)

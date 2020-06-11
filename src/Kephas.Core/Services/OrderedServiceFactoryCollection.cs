@@ -105,7 +105,7 @@ namespace Kephas.Services
             // get the overridden services which should be eliminated
             var overriddenTypes = orderedFactories
                 .Where(f => f.Metadata.IsOverride && f.Metadata.ServiceInstanceType?.BaseType != null)
-                .Select(f => f.Metadata.ServiceInstanceType.BaseType)
+                .Select(f => f.Metadata.ServiceInstanceType?.BaseType)
                 .ToList();
             if (overriddenTypes.Count == 0)
             {
