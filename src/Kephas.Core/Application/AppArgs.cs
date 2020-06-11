@@ -53,9 +53,70 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="AppArgs"/> class.
         /// </summary>
         /// <param name="argValues">The argument values.</param>
-        public AppArgs(IDictionary<string, object> argValues)
+        public AppArgs(IDictionary<string, object?> argValues)
             : base(argValues)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppArgs"/> class.
+        /// </summary>
+        /// <param name="args">The argument values.</param>
+        public AppArgs(IExpando args)
+            : this(args.ToDictionary())
+        {
+        }
+
+        /// <summary>
+        /// Converts the provided expando arguments to <see cref="IAppArgs"/>.
+        /// </summary>
+        /// <param name="args">The expando arguments.</param>
+        /// <returns>The same instance, if it is convertible to <see cref="IAppArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
+        public static IAppArgs AsAppArgs(IExpando args)
+        {
+            Requires.NotNull(args, nameof(args));
+            return args is IAppArgs appArgs ? appArgs : new AppArgs(args);
+        }
+
+        /// <summary>
+        /// Converts this app arguments list to a list of string arguments for use in command lines.
+        /// </summary>
+        /// <returns>A list of string arguments.</returns>
+        public virtual IEnumerable<string> ToArgs()
+        {
+            return ToArgs(this.ToDictionary());
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Join(" ", this.ToArgs());
+        }
+
+        /// <summary>
+        /// Converts the app arguments list to a list of string arguments for use in command lines.
+        /// </summary>
+        /// <param name="arguments">The arguments as a dictionary.</param>
+        /// <returns>A list of string arguments.</returns>
+        protected static IEnumerable<string> ToArgs(IDictionary<string, object?> arguments)
+        {
+            static string ToParamValue(object? o) =>
+                o switch
+                {
+                    null => string.Empty,
+                    bool boolean => $"={boolean.ToString().ToLower()}",
+                    int integer => $"={integer}",
+                    DateTime dateTime => $"=\"{dateTime:s}\"",
+                    DateTimeOffset dateTimeOffset => $"=\"{dateTimeOffset:s}\"",
+                    _ => $"=\"{o?.ToString().Replace("\"", "\"\"")}\""
+                };
+
+            return arguments.Select(a => $"{a.Key}{ToParamValue(a.Value)}");
         }
 
         /// <summary>
@@ -65,7 +126,7 @@ namespace Kephas.Application
         /// <returns>
         /// The calculated arguments.
         /// </returns>
-        protected static IDictionary<string, object> ComputeArgs(string commandLine)
+        protected static IDictionary<string, object?> ComputeArgs(string commandLine)
         {
             Requires.NotNull(commandLine, nameof(commandLine));
 
@@ -80,14 +141,14 @@ namespace Kephas.Application
         /// <returns>
         /// The calculated arguments.
         /// </returns>
-        protected static IDictionary<string, object> ComputeArgs(IEnumerable<string> appArgs)
+        protected static IDictionary<string, object?> ComputeArgs(IEnumerable<string> appArgs)
         {
             Requires.NotNull(appArgs, nameof(appArgs));
 
-            var cmdArgs = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            var cmdArgs = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
 
             var key = string.Empty;
-            object value = null;
+            object? value = null;
             var expectedValue = false;
 
             using var enumerator = appArgs.GetEnumerator();
@@ -159,7 +220,7 @@ namespace Kephas.Application
                 }
             }
 
-            if(expectedValue)
+            if (expectedValue)
             {
                 cmdArgs[key] = true;
             }

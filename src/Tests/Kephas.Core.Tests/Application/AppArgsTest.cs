@@ -10,7 +10,12 @@
 
 namespace Kephas.Core.Tests.Application
 {
+    using System;
+    using System.Linq;
+
     using Kephas.Application;
+    using Kephas.Dynamic;
+    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
@@ -96,6 +101,48 @@ namespace Kephas.Core.Tests.Application
             Assert.AreEqual("there", args["Hi"]);
             Assert.AreEqual("World", args["Hello"]);
             Assert.AreEqual("True", args["coming"]);
+        }
+
+        [Test]
+        public void AppArgs_expando()
+        {
+            var expando = new Expando { ["gigi"] = "belogea" };
+            var args = new AppArgs(expando);
+
+            Assert.AreEqual("belogea", args["gigi"]);
+        }
+
+        [Test]
+        public void ToArgs_multiple()
+        {
+            var args = new AppArgs(string.Empty)
+            {
+                ["b"] = true,
+                ["empty"] = string.Empty,
+                ["date"] = new DateTime(2020, 12, 25),
+                ["int"] = 3,
+            };
+
+            var argArray = args.ToArgs().ToArray();
+            Assert.AreEqual("b=true", argArray[0]);
+            Assert.AreEqual("empty=\"\"", argArray[1]);
+            Assert.AreEqual("date=\"2020-12-25T00:00:00\"", argArray[2]);
+            Assert.AreEqual("int=3", argArray[3]);
+        }
+
+        [Test]
+        public void AsAppArgs_same()
+        {
+            var args = Substitute.For<IAppArgs>();
+            Assert.AreSame(args, AppArgs.AsAppArgs(args));
+        }
+
+        [Test]
+        public void AsAppArgs_different()
+        {
+            var args = new Expando();
+            var appArgs = AppArgs.AsAppArgs(args);
+            Assert.AreNotSame(args, appArgs);
         }
     }
 }

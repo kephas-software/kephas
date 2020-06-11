@@ -10,6 +10,8 @@
 
 namespace Kephas.Application
 {
+    using System.Collections.Generic;
+
     using Kephas.Dynamic;
 
     /// <summary>
@@ -17,5 +19,10 @@ namespace Kephas.Application
     /// </summary>
     public interface IAppArgs : IExpando
     {
+        /// <summary>
+        /// Converts this app arguments list to a list of string arguments for use in command lines.
+        /// </summary>
+        /// <returns>A list of string arguments.</returns>
+        IEnumerable<string> ToArgs();
     }
 }
