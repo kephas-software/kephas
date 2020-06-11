@@ -72,8 +72,8 @@ namespace Kephas.Orchestration.Endpoints
             if ((message.AppInstanceId == this.appRuntime.GetAppInstanceId() && (message.AppId == this.appRuntime.GetAppId() || string.IsNullOrEmpty(message.AppId)))
                 || (message.AppId == this.appRuntime.GetAppId() && string.IsNullOrEmpty(message.AppInstanceId)))
             {
-                await this.eventHub.PublishAsync(new ShutdownSignal("Handle stop app role."), context).PreserveThreadContext();
-                response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Termination request received. Good bye!";
+                await this.eventHub.PublishAsync(new ShutdownSignal("Handle stop app instance."), context, token).PreserveThreadContext();
+                response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Shutdown request received. Good bye!";
             }
             else
             {
@@ -83,7 +83,7 @@ namespace Kephas.Orchestration.Endpoints
                     ctx => ctx.Impersonate(context),
                     cancellationToken: token).PreserveThreadContext();
 
-                response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Termination request received, but it is addressed to another application instance(s). Delegated to {message.AppId}/{message.AppInstanceId}.";
+                response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Shutdown request received, but it is addressed to another application instance(s). Delegated to {message.AppId}/{message.AppInstanceId}.";
             }
 
             return response;

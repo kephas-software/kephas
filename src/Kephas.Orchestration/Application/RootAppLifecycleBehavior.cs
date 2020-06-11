@@ -73,7 +73,35 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public override async Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        {
+            return this.StartWorkerProcessesAsync(appContext, cancellationToken);
+        }
+
+        /// <summary>
+        /// Interceptor called before the application starts its asynchronous finalization.
+        /// </summary>
+        /// <remarks>
+        /// To interrupt finalization, simply throw any appropriate exception.
+        /// Caution! Interrupting the finalization may cause the application to remain in an undefined state.
+        /// </remarks>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        public override Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        {
+            return this.StopWorkerProcessesAsync(appContext, cancellationToken);
+        }
+
+        /// <summary>
+        /// Starts the worker processes asynchronously.
+        /// </summary>
+        /// <param name="appContext">The application context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An asynchronous result.</returns>
+        protected virtual async Task StartWorkerProcessesAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             if (!this.appRuntime.IsRoot())
             {
@@ -127,16 +155,12 @@ namespace Kephas.Orchestration.Application
         }
 
         /// <summary>
-        /// Interceptor called before the application starts its asynchronous finalization.
+        /// Stops the worker processes asynchronously.
         /// </summary>
-        /// <remarks>
-        /// To interrupt finalization, simply throw any appropriate exception.
-        /// Caution! Interrupting the finalization may cause the application to remain in an undefined state.
-        /// </remarks>
-        /// <param name="appContext">Context for the application.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>A Task.</returns>
-        public override async Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        /// <param name="appContext">The application context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An asynchronous result.</returns>
+        protected virtual async Task StopWorkerProcessesAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             if (!this.appRuntime.IsRoot())
             {
@@ -220,6 +244,8 @@ namespace Kephas.Orchestration.Application
 
                 workerProcessResult.Dispose();
             }
+
+            this.WorkerProcesses.Clear();
         }
 
         /// <summary>
