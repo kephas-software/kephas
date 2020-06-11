@@ -31,9 +31,9 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result that yields the response message.
         /// </returns>
-        Task<IMessage> DispatchAsync(
+        Task<IMessage?> DispatchAsync(
             object message,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
     }
 }

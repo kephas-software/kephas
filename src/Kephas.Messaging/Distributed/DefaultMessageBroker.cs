@@ -20,6 +20,7 @@ namespace Kephas.Messaging.Distributed
 
     using Kephas.Application;
     using Kephas.Data;
+    using Kephas.Dynamic;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Distributed.Routing.Composition;
@@ -86,60 +87,59 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result that yields the response message.
         /// </returns>
-        public Task<IMessage> DispatchAsync(
+        public Task<IMessage?> DispatchAsync(
             object message,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             this.initMonitor.AssertIsCompletedSuccessfully();
 
-            using (var context = this.CreateDispatchingContext(message, optionsConfig))
+            using var context = this.CreateDispatchingContext(message, optionsConfig);
+
+            var brokeredMessage = context.BrokeredMessage;
+
+            if (brokeredMessage.Content == null && string.IsNullOrEmpty(brokeredMessage.ReplyToMessageId))
             {
-                var brokeredMessage = context.BrokeredMessage;
+                throw new ArgumentNullException(
+                    nameof(brokeredMessage),
+                    Strings.BrokeredMessage_ContentNullWhenNotReply_Exception
+                        .FormatWith(brokeredMessage, nameof(DispatchingContextExtensions.ReplyTo)));
+            }
 
-                if (brokeredMessage.Content == null && string.IsNullOrEmpty(brokeredMessage.ReplyToMessageId))
-                {
-                    throw new ArgumentNullException(
-                        nameof(brokeredMessage),
-                        Strings.BrokeredMessage_ContentNullWhenNotReply_Exception
-                            .FormatWith(brokeredMessage, nameof(DispatchingContextExtensions.ReplyTo)));
-                }
+            if (!(brokeredMessage.Recipients?.Any() ?? false) && !(brokeredMessage.Content is IEvent || brokeredMessage.IsOneWay))
+            {
+                throw new ArgumentException(
+                    Strings.BrokeredMessage_RecipientRequired_Exception.FormatWith(brokeredMessage),
+                    nameof(brokeredMessage));
+            }
 
-                if (!(brokeredMessage.Recipients?.Any() ?? false) && !(brokeredMessage.Content is IEvent || brokeredMessage.IsOneWay))
-                {
-                    throw new ArgumentException(
-                        Strings.BrokeredMessage_RecipientRequired_Exception.FormatWith(brokeredMessage),
-                        nameof(brokeredMessage));
-                }
+            if ((brokeredMessage.Recipients?.Count() ?? 2) > 1 && !brokeredMessage.IsOneWay)
+            {
+                throw new ArgumentException(
+                    Strings.BrokeredMessage_RecipientRequired_Exception.FormatWith(brokeredMessage),
+                    nameof(brokeredMessage));
+            }
 
-                if ((brokeredMessage.Recipients?.Count() ?? 2) > 1 && !brokeredMessage.IsOneWay)
-                {
-                    throw new ArgumentException(
-                        Strings.BrokeredMessage_RecipientRequired_Exception.FormatWith(brokeredMessage),
-                        nameof(brokeredMessage));
-                }
-
-                if (brokeredMessage.IsOneWay)
-                {
-                    this.LogBeforeSend(brokeredMessage);
-                    this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
-                        .ContinueWith(
-                            t => this.Logger.Error(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
-                            TaskContinuationOptions.OnlyOnFaulted);
-                    return Task.FromResult((IMessage)null);
-                }
-
-                var completionSource = this.GetTaskCompletionSource(brokeredMessage);
-
+            if (brokeredMessage.IsOneWay)
+            {
                 this.LogBeforeSend(brokeredMessage);
                 this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
                     .ContinueWith(
                         t => this.Logger.Error(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
                         TaskContinuationOptions.OnlyOnFaulted);
-
-                // Returns an awaiter for the answer, must pair with the reply ID.
-                return completionSource.Task;
+                return Task.FromResult((IMessage)null);
             }
+
+            var completionSource = this.GetTaskCompletionSource(brokeredMessage);
+
+            this.LogBeforeSend(brokeredMessage);
+            this.RouterDispatchAsync(brokeredMessage, context, cancellationToken)
+                .ContinueWith(
+                    t => this.Logger.Error(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
+                    TaskContinuationOptions.OnlyOnFaulted);
+
+            // Returns an awaiter for the answer, must pair with the reply ID.
+            return completionSource.Task;
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Kephas.Messaging.Distributed
             this.initMonitor.Complete();
         }
 
-        private Regex GetReceiverMatch(Type receiverMatchProviderType, IContext context)
+        private Regex? GetReceiverMatch(Type receiverMatchProviderType, IContext context)
         {
             if (!typeof(IReceiverMatchProvider).IsAssignableFrom(receiverMatchProviderType))
             {
@@ -192,7 +192,7 @@ namespace Kephas.Messaging.Distributed
             return this.GetReceiverMatch(receiverMatch, context);
         }
 
-        private Regex GetReceiverMatch(string receiverMatch, IContext context)
+        private Regex? GetReceiverMatch(string receiverMatch, IContext context)
         {
             return string.IsNullOrEmpty(receiverMatch)
                 ? null
@@ -248,10 +248,9 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The new dispatching context.
         /// </returns>
-        protected virtual IDispatchingContext CreateDispatchingContext(object message, Action<IDispatchingContext> optionsConfig = null)
+        protected virtual IDispatchingContext CreateDispatchingContext(object message, Action<IDispatchingContext>? optionsConfig = null)
         {
-            var context = this.contextFactory.CreateContext<DispatchingContext>(message);
-            optionsConfig?.Invoke(context);
+            var context = this.contextFactory.CreateContext<DispatchingContext>(message).Merge(optionsConfig);
             return context;
         }
 
