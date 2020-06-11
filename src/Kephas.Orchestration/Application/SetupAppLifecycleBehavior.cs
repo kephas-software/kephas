@@ -77,7 +77,21 @@ namespace Kephas.Orchestration.Application
                 return;
             }
 
+            // get the commands to execute and clear the list of commands
+            // so that, if necessary, they can be added by the executed commands
             var setupCommands = new List<object>(appSettings.SetupCommands);
+            try
+            {
+                appSettings.SetupCommands = null;
+                await this.systemConfiguration.UpdateSettingsAsync(cancellationToken: cancellationToken)
+                    .PreserveThreadContext();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while updating the system settings for '{app}/{appInstance}'", appId, this.appRuntime.GetAppInstanceId());
+            }
+
+            // execute the commands
             foreach (var cmd in setupCommands)
             {
                 try
@@ -97,17 +111,6 @@ namespace Kephas.Orchestration.Application
                 {
                     this.Logger.Error(ex, "Error while executing the setup command '{command}'", cmd);
                 }
-            }
-
-            try
-            {
-                appSettings.SetupCommands = null;
-                await this.systemConfiguration.UpdateSettingsAsync(cancellationToken: cancellationToken)
-                    .PreserveThreadContext();
-            }
-            catch (Exception ex)
-            {
-                this.Logger.Error(ex, "Error while updating the system settings for '{app}/{appInstance}'", appId, this.appRuntime.GetAppInstanceId());
             }
         }
 

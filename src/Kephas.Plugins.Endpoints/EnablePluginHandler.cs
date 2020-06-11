@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnableMessageHandler.cs" company="Kephas Software SRL">
+// <copyright file="EnablePluginHandler.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -24,17 +24,17 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An enable plugin message handler.
     /// </summary>
-    public class EnableMessageHandler : MessageHandlerBase<EnablePluginMessage, ResponseMessage>
+    public class EnablePluginHandler : MessageHandlerBase<EnablePluginMessage, ResponseMessage>
     {
         private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EnableMessageHandler"/> class.
+        /// Initializes a new instance of the <see cref="EnablePluginHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">Manager for plugins.</param>
         /// <param name="appContext">Context for the application.</param>
-        public EnableMessageHandler(IPluginManager pluginManager, IAppContext appContext)
+        public EnablePluginHandler(IPluginManager pluginManager, IAppContext appContext)
         {
             this.pluginManager = pluginManager;
             this.appContext = appContext;
