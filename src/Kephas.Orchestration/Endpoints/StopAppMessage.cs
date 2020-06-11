@@ -12,10 +12,13 @@ namespace Kephas.Orchestration.Endpoints
 {
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// A stop application message.
     /// </summary>
+    [RequiresPermission(typeof(AppAdminPermission))]
     public class StopAppMessage : IMessage
     {
         /// <summary>
@@ -24,7 +27,7 @@ namespace Kephas.Orchestration.Endpoints
         /// <value>
         /// The identifier of the application.
         /// </value>
-        public string AppId { get; set; }
+        public string? AppId { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the application instance.
@@ -32,7 +35,7 @@ namespace Kephas.Orchestration.Endpoints
         /// <value>
         /// The identifier of the application instance.
         /// </value>
-        public string AppInstanceId { get; set; }
+        public string? AppInstanceId { get; set; }
     }
 
     /// <summary>
