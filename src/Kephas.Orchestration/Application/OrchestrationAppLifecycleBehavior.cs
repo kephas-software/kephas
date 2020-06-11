@@ -67,7 +67,6 @@ namespace Kephas.Orchestration.Application
             }
             catch (Exception ex)
             {
-                // TODO localization
                 this.Logger.Error(ex, Strings.ApplicationStartedEvent_Exception);
             }
         }

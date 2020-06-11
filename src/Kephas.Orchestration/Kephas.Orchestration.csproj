@@ -78,6 +78,7 @@
         <ProjectReference Include="..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Messaging\Kephas.Messaging.csproj" />
+        <ProjectReference Include="..\Kephas.Commands\Kephas.Commands.csproj" />
     </ItemGroup>
 
     <ItemGroup>
