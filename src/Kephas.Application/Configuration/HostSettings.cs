@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StartupSettings.cs" company="Kephas Software SRL">
+// <copyright file="HostSettings.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,23 +7,21 @@
 
 namespace Kephas.Application.Configuration
 {
-    using System.Collections.Generic;
+    using Kephas.Dynamic;
 
     /// <summary>
-    /// Settings for the application startup.
+    /// Settings for the hosting.
     /// </summary>
-    public class StartupSettings
+    public class HostSettings : Expando
     {
         /// <summary>
-        /// Gets or sets the settings for the application instances.
+        /// Gets or sets a value indicating whether the application should run as a service (Windows service or Unix daemon).
         /// </summary>
-        public IDictionary<string, AppInstanceSettings> Instances { get; set; } = new Dictionary<string, AppInstanceSettings>();
-    }
+        public bool RunAsService { get; set; }
 
-    /// <summary>
-    /// Settings for the application instances.
-    /// </summary>
-    public class AppInstanceSettings
-    {
+        /// <summary>
+        /// Gets or sets the urls to listen to.
+        /// </summary>
+        public string[]? Urls { get; set; }
     }
 }
