@@ -111,8 +111,8 @@ namespace Kephas.Application.Console
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    var (command, args) = this.ParseCommandLine(commandLine);
-                    var result = await this.commandProcessor.ProcessAsync(command, args, context, cancellationToken).PreserveThreadContext();
+                    var command = this.ParseCommandLine(commandLine);
+                    var result = await this.commandProcessor.ProcessAsync(command.Name, command.Args, context, cancellationToken).PreserveThreadContext();
                     await this.WriteCommandOutputAsync(result, cancellationToken).PreserveThreadContext();
 
                     cancellationToken.ThrowIfCancellationRequested();
@@ -166,14 +166,7 @@ namespace Kephas.Application.Console
         /// <returns>
         /// A Tuple consisting of the command and the command arguments.
         /// </returns>
-        protected virtual (string command, IExpando args) ParseCommandLine(string commandLine)
-        {
-            var commandIndex = commandLine.IndexOf(" ");
-            var command = commandIndex <= 0 ? commandLine : commandLine.Substring(0, commandIndex);
-            commandLine = commandIndex <= 0 ? string.Empty : commandLine.Substring(commandIndex).Trim();
-            var commandArgs = new AppArgs(commandLine);
-            return (command, commandArgs);
-        }
+        protected virtual Command ParseCommandLine(string commandLine) => new Command(commandLine);
 
         /// <summary>
         /// Writes a command output asynchronous.
