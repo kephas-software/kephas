@@ -34,6 +34,11 @@ namespace Kephas.Orchestration
         public string AppInstanceId { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the application instance is the root.
+        /// </summary>
+        public bool IsRoot { get; set; }
+
+        /// <summary>
         /// Gets or sets the aupported app features.
         /// </summary>
         /// <value>

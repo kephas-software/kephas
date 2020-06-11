@@ -33,6 +33,7 @@ namespace Kephas.Orchestration.Application
                        {
                            AppId = appRuntime.GetAppId(),
                            AppInstanceId = appRuntime.GetAppInstanceId(),
+                           IsRoot = appRuntime.IsRoot(),
                            ProcessId = Process.GetCurrentProcess().Id,
                            Features = appRuntime.GetFeatures().Select(f => f.Name).ToArray(),
                            HostName = appRuntime.GetHostName(),
