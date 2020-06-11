@@ -20,6 +20,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Configuration;
     using Kephas.Diagnostics;
     using Kephas.Dynamic;
+    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Services;
@@ -34,7 +35,9 @@ namespace Kephas.Orchestration.Application
     {
         private readonly IAppRuntime appRuntime;
         private readonly IOrchestrationManager orchestrationManager;
-        private Timer supervisorTimer;
+        private readonly IEventHub eventHub;
+        private Timer? supervisorTimer;
+        private IEventSubscription? restartSubscription;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RootAppLifecycleBehavior"/> class.
@@ -42,16 +45,19 @@ namespace Kephas.Orchestration.Application
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="orchestrationManager">The orchestration manager.</param>
         /// <param name="systemConfiguration">The system configuration.</param>
+        /// <param name="eventHub">The event hub.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public RootAppLifecycleBehavior(
             IAppRuntime appRuntime,
             IOrchestrationManager orchestrationManager,
             IConfiguration<SystemSettings> systemConfiguration,
+            IEventHub eventHub,
             ILogManager? logManager = null)
             : base(logManager)
         {
             this.appRuntime = appRuntime;
             this.orchestrationManager = orchestrationManager;
+            this.eventHub = eventHub;
             this.SystemConfiguration = systemConfiguration;
         }
 
@@ -63,7 +69,7 @@ namespace Kephas.Orchestration.Application
         /// <summary>
         /// Gets or sets the worker processes.
         /// </summary>
-        protected IList<ProcessStartResult> WorkerProcesses { get; set; }
+        protected IList<ProcessStartResult>? WorkerProcesses { get; set; }
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous initialization.
@@ -73,9 +79,10 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public override Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override async Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            return this.StartWorkerProcessesAsync(appContext, cancellationToken);
+            await this.StartWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+            this.restartSubscription = this.eventHub.Subscribe<RestartSignal>((signal, ctx, token) => this.HandleRestartSignalAsync(signal, appContext, token));
         }
 
         /// <summary>
@@ -148,7 +155,7 @@ namespace Kephas.Orchestration.Application
             }
 
             this.supervisorTimer = new Timer(
-                _ => this.SuperviseWorkerProcessesAsync(appContext),
+                _ => this.SuperviseWorkerProcessesAsync(appContext, cancellationToken),
                 null,
                 TimeSpan.FromMinutes(1),
                 TimeSpan.FromSeconds(30));
@@ -167,7 +174,15 @@ namespace Kephas.Orchestration.Application
                 return;
             }
 
-            this.supervisorTimer?.Dispose();
+            if (this.supervisorTimer != null)
+            {
+#if NETSTANDARD2_1
+                await this.supervisorTimer.DisposeAsync().PreserveThreadContext();
+#else
+                this.supervisorTimer.Dispose();
+#endif
+                this.supervisorTimer = null;
+            }
 
             if (this.WorkerProcesses == null)
             {
@@ -211,25 +226,13 @@ namespace Kephas.Orchestration.Application
 
                 var workerProcess = workerProcessResult.Process;
                 var workerProcessInfo = $"{workerProcess.StartInfo.FileName} {workerProcess.StartInfo.Arguments}";
-                if (!acknowledgedProcesses.Contains(workerProcess.Id))
+                try
                 {
-                    logger.Warn($"Worker application process '${workerProcessInfo}' (#{workerProcess.Id}) did not respond to the stop command, trying to kill it.");
-                    try
+                    if (!acknowledgedProcesses.Contains(workerProcess.Id))
                     {
-                        var secondsToWait = this.WaitForExit(workerProcess);
-                        if (!workerProcess.HasExited)
-                        {
-                            logger.Warn($"Worker process '${workerProcessInfo}' (#{workerProcess.Id}) did not exit in the first {secondsToWait}s, killing it.");
-                            workerProcess.Kill();
-                        }
+                        logger.Warn($"Worker application process '${workerProcessInfo}' (#{workerProcess.Id}) did not respond to the stop command, trying to kill it.");
                     }
-                    catch (Exception ex)
-                    {
-                        logger.Error(ex, $"Errors occurred when trying to kill worker application process '${workerProcessInfo}' (#{workerProcess.Id}).");
-                    }
-                }
-                else
-                {
+
                     var secondsToWait = this.WaitForExit(workerProcess);
                     if (workerProcess.HasExited)
                     {
@@ -240,6 +243,10 @@ namespace Kephas.Orchestration.Application
                         logger.Warn($"Worker process '${workerProcessInfo}' (#{workerProcess.Id}) did not exit in the first {secondsToWait}s, killing it.");
                         workerProcess.Kill();
                     }
+                }
+                catch (Exception ex)
+                {
+                    logger.Error(ex, $"Errors occurred when trying to kill worker application process '${workerProcessInfo}' (#{workerProcess.Id}).");
                 }
 
                 workerProcessResult.Dispose();
@@ -267,10 +274,11 @@ namespace Kephas.Orchestration.Application
         /// Supervise the worker processes asynchronously.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task SuperviseWorkerProcessesAsync(IAppContext appContext)
+        protected virtual async Task SuperviseWorkerProcessesAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
             foreach (var processStartResult in this.WorkerProcesses.ToList()
                 .Where(processStartResult => processStartResult.Process.HasExited))
@@ -283,14 +291,29 @@ namespace Kephas.Orchestration.Application
                 // TODO localization
                 this.Logger.Error("The worker application instance {app} exited prematurely. Trying to restart it...", appInfo.Identity.Id);
 
-                this.WorkerProcesses.Remove(processStartResult);
-                var newProcessStartResult = await this.StartWorkerProcessAsync(appInfo, appContext, CancellationToken.None).PreserveThreadContext();
-                this.WorkerProcesses.Add(newProcessStartResult);
-
-                if (newProcessStartResult.StartException != null)
+                try
                 {
-                    // TODO localization
-                    this.Logger.Fatal(processStartResult.StartException, "Errors occurred when trying to re-start a worker process ({app}).", appInfo.Identity.Id);
+                    this.WorkerProcesses.Remove(processStartResult);
+                    var newProcessStartResult = await this.StartWorkerProcessAsync(appInfo, appContext, CancellationToken.None).PreserveThreadContext();
+                    this.WorkerProcesses.Add(newProcessStartResult);
+
+                    if (newProcessStartResult.StartException != null)
+                    {
+                        // TODO localization
+                        this.Logger.Fatal(
+                            processStartResult.StartException,
+                            "Errors occurred when trying to re-start a worker process ({app}).",
+                            appInfo.Identity.Id);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    this.Logger.Warn("Cancellation received while trying to restart {app}.", appInfo.Identity.Id);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Error(ex, "Error while trying to restart {app}.", appInfo.Identity.Id);
                 }
             }
         }
@@ -339,6 +362,29 @@ namespace Kephas.Orchestration.Application
 
             var message = result[nameof(StopAppResponseMessage)] as StopAppResponseMessage;
             return message!;
+        }
+
+        private async Task HandleRestartSignalAsync(RestartSignal restartSignal, IAppContext appContext, CancellationToken cancellationToken)
+        {
+            this.Logger.Warn("Restarting the worker application instances...");
+            try
+            {
+                await this.StopWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while stopping the worker application instances.");
+            }
+
+            try
+            {
+                await this.StartWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+                this.Logger.Info("Worker application instances restarted successfully.");
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while restarting the worker application instances.");
+            }
         }
 
         private int WaitForExit(Process workerProcess)
