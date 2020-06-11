@@ -141,8 +141,4 @@
       </EmbeddedResource>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Application\Interaction\" />
-    </ItemGroup>
-
 </Project>

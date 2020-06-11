@@ -59,7 +59,7 @@ namespace Kephas.Plugins.Endpoints
 
             return new ResponseMessage
             {
-                Message = $"Plugin {message.Id} enabled.",
+                Message = $"Plugin {message.Id} enabled. It will be loaded the next time you restart the system.",
             };
         }
     }

@@ -59,7 +59,7 @@ namespace Kephas.Plugins.Endpoints
 
             return new ResponseMessage
             {
-                Message = $"Plugin {message.Id} disabled.",
+                Message = $"Plugin {message.Id} disabled. It will be skipped the next time you restart the system.",
             };
         }
     }
