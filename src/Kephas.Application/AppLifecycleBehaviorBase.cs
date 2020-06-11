@@ -28,6 +28,15 @@ namespace Kephas.Application
         private bool isInitialized;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AppLifecycleBehaviorBase"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. The log manager.</param>
+        protected AppLifecycleBehaviorBase(ILogManager? logManager = null)
+            : base(logManager)
+        {
+        }
+
+        /// <summary>
         /// Interceptor called before the application starts its asynchronous initialization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
@@ -66,7 +75,7 @@ namespace Kephas.Application
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// The asynchronous result.
         /// </returns>
         Task IAppLifecycleBehavior.AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken)
         {
@@ -80,7 +89,7 @@ namespace Kephas.Application
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// The asynchronous result.
         /// </returns>
         public virtual Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
@@ -97,7 +106,7 @@ namespace Kephas.Application
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// The asynchronous result.
         /// </returns>
         Task IAppLifecycleBehavior.BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken)
         {
@@ -115,7 +124,7 @@ namespace Kephas.Application
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// The asynchronous result.
         /// </returns>
         public virtual Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
