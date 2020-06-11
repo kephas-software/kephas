@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Application.Configuration;
+
 namespace Kephas.Orchestration
 {
     using System;
@@ -217,7 +219,9 @@ namespace Kephas.Orchestration
         /// </returns>
         public virtual async Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, Action<IContext> optionsConfig = null, CancellationToken cancellationToken = default)
         {
-            var processedArguments = this.GetAppExecutableArgs(appInfo);
+            await Task.Yield();
+
+            var processedArguments = this.GetAppExecutableArgs(appInfo, arguments);
             var executablePath = this.GetAppExecutablePath(appInfo);
 
             var processStarter = this.CreateProcessStarterFactory(appInfo, arguments, optionsConfig)
@@ -227,6 +231,7 @@ namespace Kephas.Orchestration
                 .CreateProcessStarter();
 
             var processStartResult = await processStarter.StartAsync(cancellationToken: cancellationToken).PreserveThreadContext();
+            processStartResult[nameof(AppInfo)] = appInfo;
             return processStartResult;
         }
 
@@ -430,7 +435,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// The application key.
         /// </returns>
-        protected virtual string GetAppKey(IRuntimeAppInfo appInfo)
+        protected virtual string? GetAppKey(IRuntimeAppInfo appInfo)
         {
             if (appInfo == null || (appInfo.AppId == null && appInfo.AppInstanceId == null))
             {
@@ -457,12 +462,18 @@ namespace Kephas.Orchestration
         /// Gets the app executable arguments.
         /// </summary>
         /// <param name="appInfo">Information describing the application.</param>
+        /// <param name="arguments">The executable arguments.</param>
         /// <returns>
         /// The app executable arguments.
         /// </returns>
-        protected virtual IEnumerable<string> GetAppExecutableArgs(IAppInfo appInfo)
+        protected virtual IEnumerable<string> GetAppExecutableArgs(IAppInfo appInfo, IExpando arguments)
         {
-            yield break;
+            var appArgs = new AppArgs(string.Empty)
+            {
+                [AppRuntimeBase.AppIdKey] = appInfo.Identity.Id,
+            }.Merge(arguments);
+
+            return appArgs.ToArgs();
         }
 
         /// <summary>
