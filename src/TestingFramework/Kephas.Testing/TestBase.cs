@@ -170,11 +170,11 @@ namespace Kephas.Testing
                     ci =>
                     {
                         var subscription = Substitute.For<IEventSubscription>();
-                        var match = ci.Arg<ITypeInfo>();
+                        var match = ci.Arg<Type>();
                         var func = ci.Arg<Func<object, IContext, CancellationToken, Task>>();
                         dict.Add(subscription, (e, c, t) =>
                         {
-                            if (match.AsType() == e.GetType())
+                            if (match == e.GetType())
                             {
                                 return func(e, c, t);
                             }
