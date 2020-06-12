@@ -20,5 +20,13 @@ namespace Kephas.Application.Configuration
         /// Gets or sets the settings for the application instances.
         /// </summary>
         public IDictionary<string, AppSettings> Instances { get; set; } = new Dictionary<string, AppSettings>();
+
+        /// <summary>
+        /// Gets or sets the commands to be executed upon startup, when the application is started for the first time.
+        /// </summary>
+        /// <remarks>
+        /// The application will take care to remove the executed commands from this list once they were executed.
+        /// </remarks>
+        public object[]? SetupCommands { get; set; }
     }
 }

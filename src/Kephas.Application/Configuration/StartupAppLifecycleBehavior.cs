@@ -74,9 +74,9 @@ namespace Kephas.Application.Configuration
         /// </summary>
         /// <param name="signal">The signal.</param>
         /// <returns>The ID of the application.</returns>
-        protected virtual string GetAppId(ScheduleStartupCommandSignal signal)
+        protected virtual string? GetAppId(ScheduleStartupCommandSignal signal)
         {
-            return signal.AppId ?? "setup";
+            return signal.AppId;
         }
 
         private async Task HandleScheduleStartupCommandSignalAsync(ScheduleStartupCommandSignal signal, IAppContext appContext, CancellationToken token)
@@ -84,16 +84,27 @@ namespace Kephas.Application.Configuration
             var settings = this.systemConfiguration.Settings;
             settings.Instances ??= new Dictionary<string, AppSettings>();
             var appId = this.GetAppId(signal);
-            if (!settings.Instances.TryGetValue(appId, out var appSettings))
+            if (string.IsNullOrEmpty(appId))
             {
-                settings.Instances[appId] = appSettings = new AppSettings();
+                var commands = settings.SetupCommands == null
+                    ? new List<object>()
+                    : new List<object>(settings.SetupCommands);
+                commands.Add(signal.Command);
+                settings.SetupCommands = commands.ToArray();
             }
+            else
+            {
+                if (!settings.Instances.TryGetValue(appId, out var appSettings))
+                {
+                    settings.Instances[appId] = appSettings = new AppSettings();
+                }
 
-            var commands = appSettings.SetupCommands == null
-                ? new List<object>()
-                : new List<object>(appSettings.SetupCommands);
-            commands.Add(signal.Command);
-            appSettings.SetupCommands = commands.ToArray();
+                var commands = appSettings.SetupCommands == null
+                    ? new List<object>()
+                    : new List<object>(appSettings.SetupCommands);
+                commands.Add(signal.Command);
+                appSettings.SetupCommands = commands.ToArray();
+            }
 
             await this.systemConfiguration.UpdateSettingsAsync(cancellationToken: token).PreserveThreadContext();
         }
