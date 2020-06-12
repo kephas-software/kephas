@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SetupAppLifecycleBehavior.cs" company="Kephas Software SRL">
+// <copyright file="CommandsAppSetupHandler.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,14 +20,14 @@ namespace Kephas.Orchestration.Application
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Application lifecycle behavior for setting up the application.
+    /// Application setup handler which executes the setup commands.
     /// </summary>
-    [ProcessingPriority(Priority.Highest)]
-    public class SetupAppLifecycleBehavior : AppLifecycleBehaviorBase
+    public class CommandsAppSetupHandler : Loggable, IAppSetupHandler
     {
         private readonly IAppRuntime appRuntime;
         private readonly IConfiguration<SystemSettings> systemConfiguration;
@@ -36,7 +36,7 @@ namespace Kephas.Orchestration.Application
         private readonly IEventHub eventHub;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SetupAppLifecycleBehavior"/> class.
+        /// Initializes a new instance of the <see cref="CommandsAppSetupHandler"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="systemConfiguration">The system configuration.</param>
@@ -44,14 +44,13 @@ namespace Kephas.Orchestration.Application
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="logManager">Optional. The log manager.</param>
-        public SetupAppLifecycleBehavior(
+        public CommandsAppSetupHandler(
             IAppRuntime appRuntime,
             IConfiguration<SystemSettings> systemConfiguration,
             ICommandProcessor commandProcessor,
             IMessageProcessor messageProcessor,
             IEventHub eventHub,
             ILogManager? logManager = null)
-            : base(logManager)
         {
             this.appRuntime = appRuntime;
             this.systemConfiguration = systemConfiguration;
@@ -61,30 +60,30 @@ namespace Kephas.Orchestration.Application
         }
 
         /// <summary>
-        /// Interceptor called after the application completes its asynchronous initialization.
+        /// Performs one step in the application setup.
         /// </summary>
-        /// <param name="appContext">Context for the application.</param>
+        /// <param name="appContext">The application context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>
-        /// The asynchronous result.
-        /// </returns>
-        public override async Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
+        public virtual async Task<IOperationResult> SetupAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            await this.ExecuteRootSetupCommandsAsync(appContext, cancellationToken).PreserveThreadContext();
-            await this.ExecuteInstanceSetupCommandsAsync(appContext, cancellationToken).PreserveThreadContext();
+            return new OperationResult()
+                .MergeAll(await this.ExecuteRootSetupCommandsAsync(appContext, cancellationToken).PreserveThreadContext())
+                .MergeAll(await this.ExecuteInstanceSetupCommandsAsync(appContext, cancellationToken).PreserveThreadContext())
+                .Complete();
         }
 
-        private async Task ExecuteRootSetupCommandsAsync(IAppContext appContext, CancellationToken cancellationToken)
+        private async Task<IOperationResult> ExecuteRootSetupCommandsAsync(IContext appContext, CancellationToken cancellationToken)
         {
             if (!this.appRuntime.IsRoot())
             {
-                return;
+                return new OperationResult().Complete();
             }
 
             var settings = this.systemConfiguration.Settings;
             if ((settings.SetupCommands?.Length ?? 0) == 0)
             {
-                return;
+                return new OperationResult().Complete();
             }
 
             // get the commands to execute and clear the list of commands
@@ -106,21 +105,21 @@ namespace Kephas.Orchestration.Application
             }
 
             // execute the commands
-            await this.ExecuteSetupCommandsAsync(setupCommands, appContext, cancellationToken).PreserveThreadContext();
+            return await this.ExecuteSetupCommandsAsync(setupCommands, appContext, cancellationToken).PreserveThreadContext();
         }
 
-        private async Task ExecuteInstanceSetupCommandsAsync(IAppContext appContext, CancellationToken cancellationToken)
+        private async Task<IOperationResult> ExecuteInstanceSetupCommandsAsync(IContext appContext, CancellationToken cancellationToken)
         {
             var appId = this.appRuntime.GetAppId()!;
             var systemSettings = this.systemConfiguration.Settings;
             if (systemSettings.Instances == null)
             {
-                return;
+                return new OperationResult().Complete();
             }
 
             if (!systemSettings.Instances.TryGetValue(appId, out var appSettings) || appSettings.SetupCommands == null)
             {
-                return;
+                return new OperationResult().Complete();
             }
 
             // get the commands to execute and clear the list of commands
@@ -142,11 +141,12 @@ namespace Kephas.Orchestration.Application
             }
 
             // execute the commands
-            await this.ExecuteSetupCommandsAsync(setupCommands, appContext, cancellationToken).PreserveThreadContext();
+            return await this.ExecuteSetupCommandsAsync(setupCommands, appContext, cancellationToken).PreserveThreadContext();
         }
 
-        private async Task ExecuteSetupCommandsAsync(IEnumerable<object> setupCommands, IAppContext appContext, CancellationToken cancellationToken)
+        private async Task<IOperationResult> ExecuteSetupCommandsAsync(IEnumerable<object> setupCommands, IContext appContext, CancellationToken cancellationToken)
         {
+            var opResult = new OperationResult();
             foreach (var cmd in setupCommands)
             {
                 try
@@ -164,12 +164,15 @@ namespace Kephas.Orchestration.Application
                 }
                 catch (Exception ex)
                 {
+                    opResult.MergeException(new AggregateException($"Error while executing the setup command '{cmd}'", ex));
                     this.Logger.Error(ex, "Error while executing the setup command '{command}'", cmd);
                 }
             }
+
+            return opResult.Complete();
         }
 
-        private async Task<object?> ExecuteCommandAsync(object? cmd, IAppContext appContext, CancellationToken cancellationToken)
+        private async Task<object?> ExecuteCommandAsync(object? cmd, IContext appContext, CancellationToken cancellationToken)
         {
             switch (cmd)
             {
