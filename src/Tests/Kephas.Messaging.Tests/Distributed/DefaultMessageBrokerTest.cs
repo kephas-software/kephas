@@ -125,9 +125,8 @@ namespace Kephas.Messaging.Tests.Distributed
                 return Substitute.For<IMessage>();
             });
 
-            var brokeredMessage = new BrokeredMessage
+            var brokeredMessage = new BrokeredMessage(new TimeoutMessage())
             {
-                Content = new TimeoutMessage(),
                 Timeout = TimeSpan.FromMilliseconds(30),
                 Recipients = new[] { Endpoint.CreateAppInstanceEndpoint(appRuntime) },
             };

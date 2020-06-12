@@ -37,7 +37,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// An asynchronous result that yields the response message.
         /// </returns>
-        Task<IMessage> ProcessAsync(IMessage message, Action<IMessagingContext> optionsConfig = null, CancellationToken token = default);
+        Task<IMessage?> ProcessAsync(IMessage message, Action<IMessagingContext> optionsConfig = null, CancellationToken token = default);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// An asynchronous result that yields the response message.
         /// </returns>
-        public static Task<IMessage> ProcessAsync(this IMessageProcessor @this, object message, Action<IMessagingContext> optionsConfig = null, CancellationToken token = default)
+        public static Task<IMessage?> ProcessAsync(this IMessageProcessor @this, object message, Action<IMessagingContext> optionsConfig = null, CancellationToken token = default)
         {
             Requires.NotNull(@this, nameof(@this));
             Requires.NotNull(message, nameof(message));

@@ -165,16 +165,15 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
             var messageBroker = await GetMessageBrokerAsync(container);
             var messageProcessor = (TestMessageProcessor)container.GetExport<IMessageProcessor>();
             var disposable = Substitute.For<IDisposable>();
-            var added = false;
+            var calls = 0;
             messageProcessor.ProcessingContextConfigurator = (msg, ctx) =>
+            {
+                Interlocked.Increment(ref calls);
+                if (calls == 1)
                 {
-                    if (!added)
-                    {
-                        ctx.AddResource(disposable);
-                    }
-
-                    added = true;
-                };
+                    ctx.AddResource(disposable);
+                }
+            };
 
             var pingBack = await messageBroker.DispatchAsync(
                 new BrokeredMessage

@@ -81,56 +81,49 @@ namespace Kephas.Messaging
         /// <returns>
         /// An asynchronous result that yields the response message.
         /// </returns>
-        public async Task<IMessage> ProcessAsync(IMessage message, Action<IMessagingContext> optionsConfig = null, CancellationToken token = default)
+        public async Task<IMessage?> ProcessAsync(IMessage message, Action<IMessagingContext> optionsConfig = null, CancellationToken token = default)
         {
             Requires.NotNull(message, nameof(message));
 
             var (behaviors, reversedBehaviors) = this.GetOrderedBehaviors(message);
-            var localContext = this.CreateProcessingContext(message, optionsConfig);
+            using var localContext = this.CreateProcessingContext(message, optionsConfig);
 
-            try
+            foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers(message))
             {
-                foreach (var messageHandler in this.handlerRegistry.ResolveMessageHandlers(message))
+                using (messageHandler)
                 {
-                    using (messageHandler)
+                    localContext.Message = message;
+                    localContext.Handler = messageHandler;
+
+                    try
                     {
-                        localContext.Message = message;
-                        localContext.Handler = messageHandler;
-
-                        try
-                        {
-                            await this.ApplyBeforeProcessBehaviorsAsync(behaviors, localContext, token)
-                                .PreserveThreadContext();
-
-                            var response = await messageHandler.ProcessAsync(message, localContext, token)
-                                               .PreserveThreadContext();
-                            localContext.Response = response;
-                        }
-                        catch (Exception ex)
-                        {
-                            localContext.Exception = ex;
-                        }
-                        finally
-                        {
-                            // restore the message and handler that could be changed
-                            // by a nested message processor ProcessAsync call.
-                            localContext.Handler = messageHandler;
-                            localContext.Message = message;
-                        }
-
-                        await this.ApplyAfterProcessBehaviorsAsync(reversedBehaviors, localContext, token)
+                        await this.ApplyBeforeProcessBehaviorsAsync(behaviors, localContext, token)
                             .PreserveThreadContext();
-                    }
-                }
 
-                return localContext.Exception != null
-                           ? throw localContext.Exception
-                           : localContext.Response;
+                        var response = await messageHandler.ProcessAsync(message, localContext, token)
+                                           .PreserveThreadContext();
+                        localContext.Response = response;
+                    }
+                    catch (Exception ex)
+                    {
+                        localContext.Exception = ex;
+                    }
+                    finally
+                    {
+                        // restore the message and handler that could be changed
+                        // by a nested message processor ProcessAsync call.
+                        localContext.Handler = messageHandler;
+                        localContext.Message = message;
+                    }
+
+                    await this.ApplyAfterProcessBehaviorsAsync(reversedBehaviors, localContext, token)
+                        .PreserveThreadContext();
+                }
             }
-            finally
-            {
-                localContext?.Dispose();
-            }
+
+            return localContext.Exception != null
+                       ? throw localContext.Exception
+                       : localContext.Response;
         }
 
         /// <summary>

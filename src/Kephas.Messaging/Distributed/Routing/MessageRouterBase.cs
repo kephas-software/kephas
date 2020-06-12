@@ -113,14 +113,14 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public async Task InitializeAsync(IContext? context = null, CancellationToken cancellationToken = default)
+        public async Task InitializeAsync(IContext? context, CancellationToken cancellationToken = default)
         {
             this.InitializationMonitor.AssertIsNotStarted();
 
             var messageRouterName = this.GetType().Name;
             this.Logger.Info("Starting the {router} message router...", messageRouterName);
 
-            this.AppContext = context;
+            this.AppContext = context!;
 
             this.InitializationMonitor.Start();
 
@@ -257,7 +257,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task InitializeCoreAsync(IContext context, CancellationToken cancellationToken)
+        protected virtual Task InitializeCoreAsync(IContext? context, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
@@ -277,7 +277,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual async Task<(RoutingInstruction action, IMessage reply)> RouteInputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
+        protected virtual async Task<(RoutingInstruction action, IMessage? reply)> RouteInputAsync(IBrokeredMessage brokeredMessage, IContext context, CancellationToken cancellationToken)
         {
             try
             {
@@ -308,30 +308,28 @@ namespace Kephas.Messaging.Distributed.Routing
                     .ToList();
 
                 // for remote recipients redirect the message to the output.
-                RoutingInstruction remoteInstruction = RoutingInstruction.None;
-                IMessage remoteReply = null;
+                var remoteInstruction = RoutingInstruction.None;
+                IMessage? remoteReply = null;
                 if (remoteRecipients?.Any() ?? false)
                 {
                     var remoteMessage = !localRecipients.Any()
                         ? brokeredMessage
                         : brokeredMessage.Clone(remoteRecipients);
-                    using (var redirectContext = this.ContextFactory.CreateContext<DispatchingContext>(remoteMessage))
+                    using var redirectContext = this.ContextFactory.CreateContext<DispatchingContext>(remoteMessage);
+                    redirectContext.Impersonate(context);
+
+                    remoteMessage.TraceOutputRoute(this, appInstanceId);
+                    if (this.Logger.IsTraceEnabled())
                     {
-                        redirectContext.Impersonate(context);
-
-                        remoteMessage.TraceOutputRoute(this, appInstanceId);
-                        if (this.Logger.IsTraceEnabled())
-                        {
-                            this.Logger.Trace("Routing message {message} through: {messageTrace}.", remoteMessage, remoteMessage.Trace);
-                        }
-
-                        (remoteInstruction, remoteReply) = await this.RouteOutputAsync(remoteMessage, redirectContext, cancellationToken).PreserveThreadContext();
+                        this.Logger.Trace("Routing message {message} through: {messageTrace}.", remoteMessage, remoteMessage.Trace);
                     }
+
+                    (remoteInstruction, remoteReply) = await this.RouteOutputAsync(remoteMessage, redirectContext, cancellationToken).PreserveThreadContext();
                 }
 
                 // for local recipients, handle the request here
-                RoutingInstruction localInstruction = RoutingInstruction.None;
-                IMessage localReply = null;
+                var localInstruction = RoutingInstruction.None;
+                IMessage? localReply = null;
                 if ((localRecipients?.Any() ?? false) || !(brokeredMessage.Recipients?.Any() ?? false))
                 {
                     var localMessage = brokeredMessage.Recipients == null || !(remoteRecipients?.Any() ?? false)
@@ -347,7 +345,7 @@ namespace Kephas.Messaging.Distributed.Routing
                     }
                     else
                     {
-                        IMessage reply = null;
+                        IMessage? reply = null;
                         try
                         {
                             reply = await this.ProcessAsync(localMessage, context, cancellationToken).PreserveThreadContext();
@@ -359,18 +357,16 @@ namespace Kephas.Messaging.Distributed.Routing
 
                         // after processing requests expecting an answer, redirect the reply
                         // through the same infrastructure back to caller.
-                        using (var replyContext = this.ContextFactory.CreateContext<DispatchingContext>(reply))
+                        using var replyContext = this.ContextFactory.CreateContext<DispatchingContext>(reply);
+                        replyContext.Impersonate(context).ReplyTo(brokeredMessage);
+
+                        replyContext.BrokeredMessage.TraceOutputRoute(this, appInstanceId);
+                        if (this.Logger.IsTraceEnabled())
                         {
-                            replyContext.Impersonate(context).ReplyTo(brokeredMessage);
-
-                            replyContext.BrokeredMessage.TraceOutputRoute(this, appInstanceId);
-                            if (this.Logger.IsTraceEnabled())
-                            {
-                                this.Logger.Trace("Routing message {message} through: {messageTrace}.", replyContext.BrokeredMessage, replyContext.BrokeredMessage.Trace);
-                            }
-
-                            (localInstruction, localReply) = await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
+                            this.Logger.Trace("Routing message {message} through: {messageTrace}.", replyContext.BrokeredMessage, replyContext.BrokeredMessage.Trace);
                         }
+
+                        (localInstruction, localReply) = await this.RouteOutputAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
                     }
                 }
 
