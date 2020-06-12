@@ -99,6 +99,9 @@ namespace Kephas.Orchestration.Application
         /// </returns>
         public override Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
+            this.restartSubscription?.Dispose();
+            this.restartSubscription = null;
+
             return this.StopWorkerProcessesAsync(appContext, cancellationToken);
         }
 
