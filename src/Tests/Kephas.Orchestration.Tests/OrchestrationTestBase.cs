@@ -13,9 +13,9 @@ namespace Kephas.Orchestration.Tests
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Commands;
     using Kephas.Messaging;
     using Kephas.Testing.Application;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -27,6 +27,7 @@ namespace Kephas.Orchestration.Tests
                                 {
                                     typeof(IMessageProcessor).Assembly,
                                     typeof(IOrchestrationManager).Assembly,
+                                    typeof(ICommandProcessor).Assembly,
                                 };
             return assemblies;
         }
