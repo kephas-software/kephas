@@ -7,39 +7,20 @@
 
 namespace Kephas.Application
 {
-    using Kephas.ExceptionHandling;
     using Kephas.Interaction;
 
     /// <summary>
     /// Signal for restarting the application. This class cannot be inherited.
     /// </summary>
-    public sealed class RestartSignal : ISignal
+    public sealed class RestartSignal : SignalBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RestartSignal"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="severity">Optional. The severity.</param>
-        public RestartSignal(string message, SeverityLevel severity = SeverityLevel.Info)
+        public RestartSignal(string? message = null)
+            : base(message ?? "Signalled an application restart.")
         {
-            this.Message = message;
-            this.Severity = severity;
         }
-
-        /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string Message { get; }
-
-        /// <summary>
-        /// Gets the severity.
-        /// </summary>
-        /// <value>
-        /// The severity.
-        /// </value>
-        public SeverityLevel Severity { get; }
     }
 }

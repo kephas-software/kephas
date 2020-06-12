@@ -25,7 +25,7 @@ namespace Kephas.Workflow.Interaction
         /// Initializes a new instance of the <see cref="ResumeNextActivitySignal"/> class.
         /// </summary>
         public ResumeNextActivitySignal()
-            : this($"Signal {typeof(ResumeNextActivitySignal).Name}.")
+            : this($"Signal {nameof(ResumeNextActivitySignal)}.")
         {
         }
 

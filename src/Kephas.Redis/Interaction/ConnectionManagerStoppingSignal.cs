@@ -16,33 +16,16 @@ namespace Kephas.Redis.Interaction
     /// <summary>
     /// The Redis connection manager stopping signal. Issued before the manager starts finalization/disposal.
     /// </summary>
-    public class ConnectionManagerStoppingSignal : ISignal
+    public class ConnectionManagerStoppingSignal : SignalBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectionManagerStoppingSignal"/> class.
         /// </summary>
         /// <param name="message">Optional. The message.</param>
         /// <param name="severity">Optional. The severity.</param>
-        public ConnectionManagerStoppingSignal(string message = null, SeverityLevel severity = SeverityLevel.Info)
+        public ConnectionManagerStoppingSignal(string? message = null, SeverityLevel severity = SeverityLevel.Info)
+            : base(message ?? "The Redis connection manager is stopping.", severity)
         {
-            this.Message = message ?? "The Redis connection manager is stopping.";
-            this.Severity = severity;
         }
-
-        /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string Message { get; }
-
-        /// <summary>
-        /// Gets the severity.
-        /// </summary>
-        /// <value>
-        /// The severity.
-        /// </value>
-        public SeverityLevel Severity { get; }
     }
 }

@@ -16,33 +16,16 @@ namespace Kephas.Application
     /// <summary>
     /// Signal for terminating the application. This class cannot be inherited.
     /// </summary>
-    public sealed class ShutdownSignal : ISignal
+    public sealed class ShutdownSignal : SignalBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ShutdownSignal"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="severity">Optional. The severity.</param>
-        public ShutdownSignal(string message, SeverityLevel severity = SeverityLevel.Info)
+        public ShutdownSignal(string? message = null, SeverityLevel severity = SeverityLevel.Info)
+            : base(message ?? "Signalling an application shutdown.")
         {
-            this.Message = message;
-            this.Severity = severity;
         }
-
-        /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string Message { get; }
-
-        /// <summary>
-        /// Gets the severity.
-        /// </summary>
-        /// <value>
-        /// The severity.
-        /// </value>
-        public SeverityLevel Severity { get; }
     }
 }

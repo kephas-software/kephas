@@ -16,33 +16,16 @@ namespace Kephas.Redis.Interaction
     /// <summary>
     /// The Redis connection manager started signal. Issued after the manager completed initialization.
     /// </summary>
-    public class ConnectionManagerStartedSignal : ISignal
+    public class ConnectionManagerStartedSignal : SignalBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectionManagerStartedSignal"/> class.
         /// </summary>
         /// <param name="message">Optional. The message.</param>
         /// <param name="severity">Optional. The severity.</param>
-        public ConnectionManagerStartedSignal(string message = null, SeverityLevel severity = SeverityLevel.Info)
+        public ConnectionManagerStartedSignal(string? message = null, SeverityLevel severity = SeverityLevel.Info)
+            : base(message ?? "The Redis connection manager is started.", severity)
         {
-            this.Message = message ?? "The Redis connection manager is started.";
-            this.Severity = severity;
         }
-
-        /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string Message { get; }
-
-        /// <summary>
-        /// Gets the severity.
-        /// </summary>
-        /// <value>
-        /// The severity.
-        /// </value>
-        public SeverityLevel Severity { get; }
     }
 }

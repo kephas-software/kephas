@@ -17,7 +17,7 @@ namespace Kephas.Plugins.Interaction
     /// <summary>
     /// An initializing plugin signal.
     /// </summary>
-    public class InitializingPluginSignal : ISignal
+    public class InitializingPluginSignal : SignalBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InitializingPluginSignal"/> class.
@@ -26,10 +26,10 @@ namespace Kephas.Plugins.Interaction
         /// <param name="context">The context.</param>
         /// <param name="message">Optional. The message.</param>
         public InitializingPluginSignal(AppIdentity pluginId, IPluginContext context, string? message = null)
+            : base(message ?? $"Plugin {pluginId} is being initialized.")
         {
             this.PluginId = pluginId;
             this.Context = context;
-            this.Message = message;
         }
 
         /// <summary>
@@ -47,21 +47,5 @@ namespace Kephas.Plugins.Interaction
         /// The context.
         /// </value>
         public IPluginContext Context { get; }
-
-        /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string? Message { get; }
-
-        /// <summary>
-        /// Gets the severity.
-        /// </summary>
-        /// <value>
-        /// The severity.
-        /// </value>
-        public SeverityLevel Severity => SeverityLevel.Info;
     }
 }

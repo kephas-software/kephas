@@ -31,7 +31,7 @@ namespace Kephas.Workflow.Interaction
         ///                                from which the retry should continue.</param>
         /// <param name="maxRetryCount">Optional. The maximum number of retries.</param>
         public RetryActivitySignal(IActivityContext? activityContext = null, int? maxRetryCount = null)
-            : this($"Signal {typeof(RetryActivitySignal).Name}.", activityContext, maxRetryCount)
+            : this($"Signal {nameof(RetryActivitySignal)}.", activityContext, maxRetryCount)
         {
         }
 
