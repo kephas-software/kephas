@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppRuntimePluginsExtensionsTest.cs" company="Kephas Software SRL">
+// <copyright file="AppRuntimeExtensionsTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,12 +15,11 @@ namespace Kephas.Tests
     using System.Linq;
 
     using Kephas.Dynamic;
-    using Kephas.Plugins;
     using Kephas.Plugins.Application;
     using NUnit.Framework;
 
     [TestFixture]
-    public class AppRuntimePluginsExtensionsTest
+    public class AppRuntimeExtensionsTest
     {
         [Test]
         public void GetPluginsLocation_default()

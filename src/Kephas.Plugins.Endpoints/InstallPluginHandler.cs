@@ -11,12 +11,14 @@
 namespace Kephas.Plugins.Endpoints
 {
     using System;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Interaction;
     using Kephas.Dynamic;
+    using Kephas.ExceptionHandling;
+    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
@@ -30,16 +32,26 @@ namespace Kephas.Plugins.Endpoints
     {
         private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
+        private readonly IAppRuntime appRuntime;
+        private readonly IEventHub eventHub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InstallPluginHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">Manager for plugins.</param>
         /// <param name="appContext">Context for the application.</param>
-        public InstallPluginHandler(IPluginManager pluginManager, IAppContext appContext)
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="eventHub">The event hub.</param>
+        public InstallPluginHandler(
+            IPluginManager pluginManager,
+            IAppContext appContext,
+            IAppRuntime appRuntime,
+            IEventHub eventHub)
         {
             this.pluginManager = pluginManager;
             this.appContext = appContext;
+            this.appRuntime = appRuntime;
+            this.eventHub = eventHub;
         }
 
         /// <summary>
@@ -51,8 +63,20 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(InstallPluginMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<ResponseMessage?> ProcessAsync(InstallPluginMessage message, IMessagingContext context, CancellationToken token)
         {
+            if (this.appRuntime.PluginsEnabled())
+            {
+                var signal = new ScheduleStartupCommandSignal(message);
+                await this.eventHub.PublishAsync(signal, context, token).PreserveThreadContext();
+
+                return new ResponseMessage
+                {
+                    Message = $"The {nameof(InstallPluginMessage)} cannot be processed because the plugins are enabled. It has been rescheduled to be executed after the application restart.",
+                    Severity = SeverityLevel.Warning,
+                };
+            }
+
             this.appContext.Logger.Info("Installing plugin {plugin} {version}...", message.Id, message.Version);
 
             AppIdentity? pluginIdentity;

@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Application.Reflection;
-using Kephas.Versioning;
-
 namespace Kephas.Plugins.Endpoints
 {
     using System;
@@ -20,13 +17,18 @@ namespace Kephas.Plugins.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Interaction;
+    using Kephas.Application.Reflection;
     using Kephas.Dynamic;
+    using Kephas.ExceptionHandling;
+    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Operations;
     using Kephas.Plugins;
     using Kephas.Threading.Tasks;
+    using Kephas.Versioning;
 
     /// <summary>
     /// An update plugin message handler.
@@ -35,16 +37,26 @@ namespace Kephas.Plugins.Endpoints
     {
         private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
+        private readonly IAppRuntime appRuntime;
+        private readonly IEventHub eventHub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdatePluginHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">Manager for plugins.</param>
         /// <param name="appContext">Context for the application.</param>
-        public UpdatePluginHandler(IPluginManager pluginManager, IAppContext appContext)
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="eventHub">The event hub.</param>
+        public UpdatePluginHandler(
+            IPluginManager pluginManager,
+            IAppContext appContext,
+            IAppRuntime appRuntime,
+            IEventHub eventHub)
         {
             this.pluginManager = pluginManager;
             this.appContext = appContext;
+            this.appRuntime = appRuntime;
+            this.eventHub = eventHub;
         }
 
         /// <summary>
@@ -56,8 +68,20 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage> ProcessAsync(UpdatePluginMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<ResponseMessage?> ProcessAsync(UpdatePluginMessage message, IMessagingContext context, CancellationToken token)
         {
+            if (this.appRuntime.PluginsEnabled())
+            {
+                var signal = new ScheduleStartupCommandSignal(message);
+                await this.eventHub.PublishAsync(signal, context, token).PreserveThreadContext();
+
+                return new ResponseMessage
+                {
+                    Message = $"The {nameof(UpdatePluginMessage)} cannot be processed because the plugins are enabled. It has been rescheduled to be executed after the application restart.",
+                    Severity = SeverityLevel.Warning,
+                };
+            }
+
             var toUpdate = await this.GetPackagesToUpdateAsync(message, token).PreserveThreadContext();
 
             if (toUpdate.Count == 0)
