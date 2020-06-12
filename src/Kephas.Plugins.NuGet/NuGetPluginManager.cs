@@ -671,7 +671,7 @@ namespace Kephas.Plugins.NuGet
                 Directory.Delete(libFolder, recursive: true);
             }
 
-            return new OperationResult().MergeMessage($"Binaries of {packageId} installed successfully.");
+            return new OperationResult().MergeMessage($"Binaries of {packageId} installed successfully.").Complete();
         }
 
         /// <summary>

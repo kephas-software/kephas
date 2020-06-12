@@ -7,13 +7,12 @@
 
 namespace Kephas.Application.Interaction
 {
-    using Kephas.ExceptionHandling;
     using Kephas.Interaction;
 
     /// <summary>
     /// Signal for scheduling a startup command.
     /// </summary>
-    public class ScheduleStartupCommandSignal : ISignal
+    public class ScheduleStartupCommandSignal : SignalBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ScheduleStartupCommandSignal"/> class.
@@ -21,6 +20,7 @@ namespace Kephas.Application.Interaction
         /// <param name="command">The command to be scheduled.</param>
         /// <param name="appId">The ID of the app for which the startup command should be added.</param>
         public ScheduleStartupCommandSignal(object command, string? appId = null)
+            : base("Schedule command.")
         {
             this.Command = command;
             this.AppId = appId;
@@ -35,15 +35,5 @@ namespace Kephas.Application.Interaction
         /// The command to be scheduled.
         /// </summary>
         public object Command { get; }
-
-        /// <summary>
-        /// The signal message.
-        /// </summary>
-        public string Message { get; } = "Schedule a command.";
-
-        /// <summary>
-        /// The severity.
-        /// </summary>
-        public SeverityLevel Severity { get; } = SeverityLevel.Info;
     }
 }
