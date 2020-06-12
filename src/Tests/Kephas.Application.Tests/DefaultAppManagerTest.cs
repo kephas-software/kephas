@@ -380,12 +380,12 @@ namespace Kephas.Application.Tests
             Assert.AreEqual(8, order.Count);
             Assert.AreEqual("Before2", order[0]);
             Assert.AreEqual("Before1", order[1]);
-            Assert.AreEqual("After1", order[2]);
-            Assert.AreEqual("After2", order[3]);
+            Assert.AreEqual("After2", order[2]);
+            Assert.AreEqual("After1", order[3]);
             Assert.AreEqual("Before2", order[4]);
             Assert.AreEqual("Before1", order[5]);
-            Assert.AreEqual("After1", order[6]);
-            Assert.AreEqual("After2", order[7]);
+            Assert.AreEqual("After2", order[6]);
+            Assert.AreEqual("After1", order[7]);
         }
 
         [Test]
@@ -657,14 +657,14 @@ namespace Kephas.Application.Tests
             Assert.AreEqual(3, order[2]);
 
             Assert.AreEqual(10, behaviors.Count);
-            Assert.AreEqual("BeforeFin 2", behaviors[0]);
-            Assert.AreEqual("BeforeFin 3", behaviors[1]);
-            Assert.AreEqual("AfterFin 2", behaviors[2]);
-            Assert.AreEqual("AfterFin 3", behaviors[3]);
-            Assert.AreEqual("BeforeFin 1", behaviors[4]);
-            Assert.AreEqual("BeforeFin 3", behaviors[5]);
-            Assert.AreEqual("AfterFin 1", behaviors[6]);
-            Assert.AreEqual("AfterFin 3", behaviors[7]);
+            Assert.AreEqual("BeforeFin 3", behaviors[0]);
+            Assert.AreEqual("BeforeFin 2", behaviors[1]);
+            Assert.AreEqual("AfterFin 3", behaviors[2]);
+            Assert.AreEqual("AfterFin 2", behaviors[3]);
+            Assert.AreEqual("BeforeFin 3", behaviors[4]);
+            Assert.AreEqual("BeforeFin 1", behaviors[5]);
+            Assert.AreEqual("AfterFin 3", behaviors[6]);
+            Assert.AreEqual("AfterFin 1", behaviors[7]);
             Assert.AreEqual("BeforeFin 3", behaviors[8]);
             Assert.AreEqual("AfterFin 3", behaviors[9]);
         }

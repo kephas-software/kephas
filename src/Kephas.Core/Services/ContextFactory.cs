@@ -83,12 +83,12 @@ namespace Kephas.Services
                 throw new ArgumentException(Strings.ContextFactory_CreateContext_ContextTypeMustBeInstatiable.FormatWith(contextType));
             }
 
-            if (args.Any(a => a == null))
-            {
-                throw new ArgumentException(Strings.ContextFactory_CreateContext_NonNullArguments.FormatWith(contextType));
-            }
+            // if (args.Any(a => a == null))
+            // {
+            //     throw new ArgumentException(Strings.ContextFactory_CreateContext_NonNullArguments.FormatWith(contextType));
+            // }
 
-            var signature = new Signature(args.Select(a => a.GetType()));
+            var signature = new Signature(args.Select(a => a?.GetType()));
             var typeSignCache = this.signatureCache.GetOrAdd(contextType, _ => new ConcurrentDictionary<Signature, Func<object?[], object>>());
             var creatorFunc = typeSignCache.GetOrAdd(signature, _ => this.GetCreatorFunc(contextType, signature));
             return (TContext)creatorFunc(args);
