@@ -47,11 +47,6 @@ namespace Kephas.Application.Configuration
         public object[]? ShutdownCommands { get; set; }
 
         /// <summary>
-        /// Gets or sets the executable to start. If not set, a clone of the same application will be started.
-        /// </summary>
-        public string? Executable { get; set; }
-
-        /// <summary>
         /// Gets or sets the settings for hosting.
         /// </summary>
         public HostSettings? Host { get; set; }
