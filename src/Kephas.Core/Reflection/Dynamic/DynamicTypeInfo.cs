@@ -49,10 +49,9 @@ namespace Kephas.Reflection.Dynamic
         /// Initializes a new instance of the <see cref="DynamicTypeInfo"/> class.
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
-        public DynamicTypeInfo(DynamicTypeRegistry? typeRegistry = null)
+        public DynamicTypeInfo(ITypeRegistry? typeRegistry = null)
         {
-            this.TypeRegistry = typeRegistry ??= DynamicTypeRegistry.Null;
-            typeRegistry.AddTypeInfo(this);
+            this.TypeRegistry = typeRegistry ?? DynamicTypeRegistry.Null;
         }
 
         /// <summary>

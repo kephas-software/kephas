@@ -20,9 +20,9 @@ namespace Kephas.Reflection.Dynamic
         private readonly ConcurrentDictionary<object, ITypeInfo> types = new ConcurrentDictionary<object, ITypeInfo>();
 
         /// <summary>
-        /// Gets a type registry that does nothing.
+        /// Gets a dynamic type registry that does nothing.
         /// </summary>
-        public static DynamicTypeRegistry Null { get; } = new NullDynamicTypeRegistry();
+        public static ITypeRegistry Null { get; } = new NullDynamicTypeRegistry();
 
         /// <summary>
         /// Gets the type information based on the type token.
