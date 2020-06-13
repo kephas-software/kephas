@@ -25,17 +25,6 @@ namespace Kephas.Reflection.Dynamic
         public static DynamicTypeRegistry Null { get; } = new NullDynamicTypeRegistry();
 
         /// <summary>
-        /// Adds the type information to the registry.
-        /// </summary>
-        /// <param name="typeInfo">The type information.</param>
-        /// <returns>This registry.</returns>
-        public virtual DynamicTypeRegistry AddTypeInfo(DynamicTypeInfo typeInfo)
-        {
-            this.types.TryAdd(typeInfo.Id, typeInfo);
-            return this;
-        }
-
-        /// <summary>
         /// Gets the type information based on the type token.
         /// </summary>
         /// <param name="typeToken">The type token.</param>
@@ -51,9 +40,20 @@ namespace Kephas.Reflection.Dynamic
             return typeInfo;
         }
 
+        /// <summary>
+        /// Adds the type information to the registry.
+        /// </summary>
+        /// <param name="typeInfo">The type information.</param>
+        /// <returns>This registry.</returns>
+        protected internal virtual DynamicTypeRegistry AddTypeInfo(DynamicTypeInfo typeInfo)
+        {
+            this.types.TryAdd(typeInfo.Id, typeInfo);
+            return this;
+        }
+
         private class NullDynamicTypeRegistry : DynamicTypeRegistry
         {
-            public override DynamicTypeRegistry AddTypeInfo(DynamicTypeInfo typeInfo) => this;
+            protected internal override DynamicTypeRegistry AddTypeInfo(DynamicTypeInfo typeInfo) => this;
 
             public override ITypeInfo? GetTypeInfo(object typeToken, bool throwOnNotFound = true) => null;
         }
