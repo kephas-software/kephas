@@ -16,13 +16,16 @@ namespace Kephas.Orchestration.Application
 
     using Kephas.Application;
     using Kephas.Application.Configuration;
+    using Kephas.Application.Interaction;
     using Kephas.Application.Reflection;
     using Kephas.Configuration;
     using Kephas.Diagnostics;
     using Kephas.Dynamic;
     using Kephas.Interaction;
     using Kephas.Logging;
+    using Kephas.Messaging.Events;
     using Kephas.Orchestration.Endpoints;
+    using Kephas.Orchestration.Interaction;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -35,6 +38,8 @@ namespace Kephas.Orchestration.Application
     {
         private Timer? supervisorTimer;
         private IEventSubscription? restartSubscription;
+        private IEventSubscription? setupQuerySubscription;
+        private bool enableAppSetup = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RootAppLifecycleBehavior"/> class.
@@ -84,6 +89,23 @@ namespace Kephas.Orchestration.Application
         protected IList<ProcessStartResult>? WorkerProcesses { get; set; }
 
         /// <summary>
+        /// Interceptor called before the application starts its asynchronous initialization.
+        /// </summary>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        /// <remarks>
+        /// To interrupt the application initialization, simply throw an appropriate exception.
+        /// </remarks>
+        public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        {
+            this.setupQuerySubscription = this.EventHub.Subscribe<AppSetupQueryEvent>((e, c) => e.SetupEnabled = e.SetupEnabled && this.enableAppSetup);
+            return base.BeforeAppInitializeAsync(appContext, cancellationToken);
+        }
+
+        /// <summary>
         /// Interceptor called after the application completes its asynchronous initialization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
@@ -115,6 +137,22 @@ namespace Kephas.Orchestration.Application
             this.restartSubscription = null;
 
             return this.StopWorkerProcessesAsync(appContext, cancellationToken);
+        }
+
+        /// <summary>
+        /// Interceptor called after the application completes its asynchronous finalization.
+        /// </summary>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// A Task.
+        /// </returns>
+        public override Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        {
+            this.setupQuerySubscription?.Dispose();
+            this.setupQuerySubscription = null;
+
+            return base.AfterAppFinalizeAsync(appContext, cancellationToken);
         }
 
         /// <summary>
@@ -153,6 +191,8 @@ namespace Kephas.Orchestration.Application
                     this.Logger.Info("Skipping worker application {app}, configured not to start automatically.", appId);
                     continue;
                 }
+
+                this.enableAppSetup = false;
 
                 var appInfo = new AppInfo(appId) { [nameof(AppSettings)] = appSettings };
                 startTasks.Add(this.StartWorkerProcessAsync(appInfo, appContext, cancellationToken));
@@ -268,6 +308,8 @@ namespace Kephas.Orchestration.Application
             }
 
             this.WorkerProcesses.Clear();
+
+            this.enableAppSetup = true;
         }
 
         /// <summary>
