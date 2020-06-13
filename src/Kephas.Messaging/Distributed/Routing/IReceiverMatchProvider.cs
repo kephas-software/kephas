@@ -27,6 +27,6 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The receiver match expression.
         /// </returns>
-        string GetReceiverMatch(IContext context = null);
+        string GetReceiverMatch(IContext? context = null);
     }
 }

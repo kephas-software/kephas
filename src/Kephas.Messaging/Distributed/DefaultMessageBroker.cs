@@ -150,7 +150,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public virtual async Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public virtual async Task InitializeAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
             this.initMonitor.Start();
 
@@ -170,7 +170,7 @@ namespace Kephas.Messaging.Distributed
 
             this.routerMap = asyncRouterMap
                                 .Where(m => m.asyncRouter.Result != null)
-                                .Select(m => (m.regex, m.isFallback, m.asyncRouter.Result))
+                                .Select(m => (m.regex, m.isFallback, m.asyncRouter.Result!))
                                 .ToList();
             foreach (var map in this.routerMap)
             {
@@ -178,25 +178,6 @@ namespace Kephas.Messaging.Distributed
             }
 
             this.initMonitor.Complete();
-        }
-
-        private Regex? GetReceiverMatch(Type receiverMatchProviderType, IContext context)
-        {
-            if (!typeof(IReceiverMatchProvider).IsAssignableFrom(receiverMatchProviderType))
-            {
-                throw new InvalidOperationException(Strings.DefaultMessageBroker_BadReceiverMatchProviderType_Exception.FormatWith(receiverMatchProviderType, typeof(IReceiverMatchProvider)));
-            }
-
-            var provider = (IReceiverMatchProvider)this.contextFactory.CreateContext(receiverMatchProviderType);
-            var receiverMatch = provider.GetReceiverMatch(context);
-            return this.GetReceiverMatch(receiverMatch, context);
-        }
-
-        private Regex? GetReceiverMatch(string receiverMatch, IContext context)
-        {
-            return string.IsNullOrEmpty(receiverMatch)
-                ? null
-                : new Regex(receiverMatch, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         }
 
         /// <summary>
@@ -207,7 +188,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public virtual async Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public virtual async Task FinalizeAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
             foreach (var map in this.routerMap)
             {
@@ -363,13 +344,32 @@ namespace Kephas.Messaging.Distributed
             }
         }
 
-        private async Task<IMessageRouter> TryCreateRouterAsync(Lazy<IMessageRouter, MessageRouterMetadata> f, IContext context, CancellationToken cancellationToken)
+        private Regex? GetReceiverMatch(Type receiverMatchProviderType, IContext? context)
+        {
+            if (!typeof(IReceiverMatchProvider).IsAssignableFrom(receiverMatchProviderType))
+            {
+                throw new InvalidOperationException(Strings.DefaultMessageBroker_BadReceiverMatchProviderType_Exception.FormatWith(receiverMatchProviderType, typeof(IReceiverMatchProvider)));
+            }
+
+            var provider = (IReceiverMatchProvider)this.contextFactory.CreateContext(receiverMatchProviderType);
+            var receiverMatch = provider.GetReceiverMatch(context);
+            return this.GetReceiverMatch(receiverMatch, context);
+        }
+
+        private Regex? GetReceiverMatch(string receiverMatch, IContext? context)
+        {
+            return string.IsNullOrEmpty(receiverMatch)
+                ? null
+                : new Regex(receiverMatch, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        }
+
+        private async Task<IMessageRouter?> TryCreateRouterAsync(Lazy<IMessageRouter, MessageRouterMetadata> f, IContext? context, CancellationToken cancellationToken)
         {
             const string InitializationException = nameof(InitializationException);
 
             if (f.Metadata[InitializationException] is Exception initEx)
             {
-                return f.Metadata.IsOptional ? (IMessageRouter)null : throw initEx;
+                return f.Metadata.IsOptional ? (IMessageRouter?)null : throw initEx;
             }
 
             if (f.IsValueCreated)
