@@ -155,7 +155,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public virtual async Task InitializeAsync(IContext context, CancellationToken cancellationToken = default)
+        public virtual async Task InitializeAsync(IContext? context, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(context, nameof(context));
 
@@ -176,7 +176,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public virtual Task FinalizeAsync(IContext context, CancellationToken cancellationToken = default)
+        public virtual Task FinalizeAsync(IContext? context, CancellationToken cancellationToken = default)
         {
             if (this.timer == null)
             {
@@ -201,7 +201,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields the live apps.
         /// </returns>
-        public virtual Task<IEnumerable<IRuntimeAppInfo>> GetLiveAppsAsync(Action<IContext> optionsConfig = null, CancellationToken cancellationToken = default)
+        public virtual Task<IEnumerable<IRuntimeAppInfo>> GetLiveAppsAsync(Action<IContext>? optionsConfig = null, CancellationToken cancellationToken = default)
         {
             var apps = this.LiveApps.Values.Select(v => v.AppInfo).ToArray();
             return Task.FromResult<IEnumerable<IRuntimeAppInfo>>(apps);
@@ -217,7 +217,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        public virtual async Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, Action<IContext> optionsConfig = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> StartAppAsync(IAppInfo appInfo, IExpando arguments, Action<IContext>? optionsConfig = null, CancellationToken cancellationToken = default)
         {
             await Task.Yield();
 
@@ -244,7 +244,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result that yields an operation result.
         /// </returns>
-        public virtual async Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, Action<IContext> optionsConfig = null, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> StopAppAsync(IRuntimeAppInfo runtimeAppInfo, Action<IContext>? optionsConfig = null, CancellationToken cancellationToken = default)
         {
             this.Logger.Info("Stopping application {appInstanceId}...", runtimeAppInfo.AppInstanceId);
 

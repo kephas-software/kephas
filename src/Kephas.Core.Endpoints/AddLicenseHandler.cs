@@ -44,7 +44,7 @@ namespace Kephas.Core.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage?> ProcessAsync(AddLicenseMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<ResponseMessage> ProcessAsync(AddLicenseMessage message, IMessagingContext context, CancellationToken token)
         {
             await Task.Yield();
 
