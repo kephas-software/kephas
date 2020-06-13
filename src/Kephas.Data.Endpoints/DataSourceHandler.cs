@@ -93,25 +93,24 @@ namespace Kephas.Data.Endpoints
             var entityType = this.ResolveEntityType(message.EntityType, context);
             var property = this.ResolveProperty(entityType, message.Property);
 
-            using (var dataSpace = this.dataSpaceFactory.CreateInitializedValue(context))
-            {
-                var projectedType = this.ResolveProjectedEntityType(entityType, context);
-                var dataContext = dataSpace[projectedType];
-                var dataSourceContext = new DataSourceContext(dataContext, entityType, projectedType)
-                                            {
-                                                Options = message.Options,
-                                            };
-                dataSourceContext.Merge(message.Options);
-                var dataSource = await this.dataSourceService.GetDataSourceAsync(
-                                     property,
-                                     dataSourceContext,
-                                     token).PreserveThreadContext();
+            using var dataSpace = this.dataSpaceFactory.CreateInitializedValue(context);
 
-                return new DataSourceResponseMessage
-                {
-                    DataSource = dataSource?.ToList(),
-                };
-            }
+            var projectedType = this.ResolveProjectedEntityType(entityType, context);
+            var dataContext = dataSpace[projectedType];
+            var dataSourceContext = new DataSourceContext(dataContext, entityType, projectedType)
+            {
+                Options = message.Options,
+            };
+            dataSourceContext.Merge(message.Options);
+            var dataSource = await this.dataSourceService.GetDataSourceAsync(
+                property,
+                dataSourceContext,
+                token).PreserveThreadContext();
+
+            return new DataSourceResponseMessage
+            {
+                DataSource = dataSource?.ToList(),
+            };
         }
 
         /// <summary>

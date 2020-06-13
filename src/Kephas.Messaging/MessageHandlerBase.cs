@@ -47,7 +47,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        public abstract Task<TResponse?> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
+        public abstract Task<TResponse> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token);
 
         /// <summary>
         /// Processes the provided message asynchronously and returns a response promise.
