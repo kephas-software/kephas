@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Application.Configuration;
-
 namespace Kephas.Orchestration
 {
     using System;
@@ -22,6 +20,7 @@ namespace Kephas.Orchestration
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
     using Kephas.Composition;
     using Kephas.Diagnostics;
@@ -36,6 +35,7 @@ namespace Kephas.Orchestration
     using Kephas.Orchestration.Application;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Orchestration.Interaction;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -222,10 +222,10 @@ namespace Kephas.Orchestration
             await Task.Yield();
 
             var processedArguments = this.GetAppExecutableArgs(appInfo, arguments);
-            var executablePath = this.GetAppExecutablePath(appInfo);
+            var (executableFile, runtime) = this.GetAppExecutableInfo(appInfo);
 
             var processStarter = this.CreateProcessStarterFactory(appInfo, arguments, optionsConfig)
-                .WithManagedExecutable(executablePath)
+                .WithManagedExecutable(executableFile, runtime)
                 .WithArguments(processedArguments.ToArray())
                 .WithWorkingDirectory(this.AppRuntime.GetAppLocation())
                 .CreateProcessStarter();
@@ -446,16 +446,38 @@ namespace Kephas.Orchestration
         }
 
         /// <summary>
-        /// Gets the app executable path.
+        /// Gets the app executable runtime and entry module path.
         /// </summary>
         /// <param name="appInfo">Information describing the application.</param>
         /// <returns>
-        /// The app executable path.
+        /// The app executable runtime and entry module path.
         /// </returns>
-        protected virtual string GetAppExecutablePath(IAppInfo appInfo)
+        protected virtual (string executablePath, string? runtime) GetAppExecutableInfo(IAppInfo appInfo)
         {
-            var entryAssembly = Assembly.GetEntryAssembly();
-            return entryAssembly.Location;
+#if NET461
+            var isNetCore = false;
+#else
+            var isNetCore = RuntimeEnvironment.IsNetCore;
+#endif
+            var entryAssemblyLocation = Assembly.GetEntryAssembly().Location;
+            var currentProcess = Process.GetCurrentProcess();
+            if (isNetCore)
+            {
+                var isDotNet = currentProcess.ProcessName == "dotnet";
+                if (!isDotNet)
+                {
+                    return (currentProcess.MainModule.FileName, null);
+                }
+
+                return (entryAssemblyLocation, currentProcess.ProcessName);
+            }
+
+            if (RuntimeEnvironment.IsMonoRuntime())
+            {
+                return (entryAssemblyLocation, currentProcess.ProcessName);
+            }
+
+            return (entryAssemblyLocation, null);
         }
 
         /// <summary>
