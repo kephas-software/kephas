@@ -565,7 +565,7 @@ namespace Kephas.Application
         {
             if (!string.IsNullOrEmpty(appId))
             {
-                return appId;
+                return appId!;
             }
 
             if (entryAssembly == null)
