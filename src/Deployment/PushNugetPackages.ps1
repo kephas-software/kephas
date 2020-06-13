@@ -1,6 +1,7 @@
 param (
     [string]$version = $( Read-Host "Please provide package version" ),
-    [string]$build = "Release"
+    [string]$build = "Release",
+    [string]$apiKey = ""
 )
 
 function get-packagename([string]$pathname) {
@@ -69,5 +70,10 @@ $paths = @(
 foreach ($path in $paths) {
     $packagename = get-packagename $path
     $packagepath = "..\$path\bin\$build\$packagename.$version.nupkg"
-    .\NuGet.exe push $packagepath 
+    if ($apiKey == "") {
+        .\NuGet.exe push $packagepath 
+    }
+    else {
+        .\NuGet.exe push -ApiKey $apiKey $packagepath 
+    }
 }
