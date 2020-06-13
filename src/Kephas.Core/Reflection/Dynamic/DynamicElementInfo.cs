@@ -15,6 +15,7 @@ namespace Kephas.Reflection.Dynamic
     using System.Linq;
 
     using Kephas.ComponentModel.DataAnnotations;
+    using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection.Localization;

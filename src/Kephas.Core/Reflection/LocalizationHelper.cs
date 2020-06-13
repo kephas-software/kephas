@@ -75,7 +75,7 @@ namespace Kephas.Reflection
         {
             Requires.NotNull(typeInfo, nameof(typeInfo));
 
-            return GetLocalization(typeInfo.AsRuntimeTypeInfo());
+            return GetLocalization(typeInfo.AsType().AsRuntimeTypeInfo());
         }
 
         /// <summary>

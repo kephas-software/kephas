@@ -123,20 +123,6 @@ namespace Kephas.Reflection
 #endif
 
         /// <summary>
-        /// Gets the <see cref="IRuntimeTypeInfo"/> for the provided <see cref="TypeInfo"/> instance.
-        /// </summary>
-        /// <param name="typeInfo">The type information instance.</param>
-        /// <returns>
-        /// The provided <see cref="TypeInfo"/>'s associated <see cref="IRuntimeTypeInfo"/>.
-        /// </returns>
-        public static IRuntimeTypeInfo AsRuntimeTypeInfo(this TypeInfo typeInfo)
-        {
-            Requires.NotNull(typeInfo, nameof(typeInfo));
-
-            return RuntimeTypeRegistry.Instance.GetTypeInfo(typeInfo);
-        }
-
-        /// <summary>
         /// Gets the type wrapped by the <see cref="Nullable{T}"/> or,
         /// if the type is not a nullable type, the type itself.
         /// </summary>

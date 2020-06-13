@@ -14,6 +14,7 @@ namespace Kephas.Reflection.Dynamic
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Data;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Resources;
@@ -22,7 +23,7 @@ namespace Kephas.Reflection.Dynamic
     /// <summary>
     /// Dynamic type information.
     /// </summary>
-    public class DynamicTypeInfo : DynamicElementInfo, ITypeInfo
+    public class DynamicTypeInfo : DynamicElementInfo, ITypeInfo, IIdentifiable
     {
         /// <summary>
         /// The list of members.
@@ -43,6 +44,24 @@ namespace Kephas.Reflection.Dynamic
         /// The list of base types.
         /// </summary>
         private readonly IList<ITypeInfo> baseTypes = new List<ITypeInfo>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicTypeInfo"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        public DynamicTypeInfo(DynamicTypeRegistry? typeRegistry = null)
+        {
+            this.TypeRegistry = typeRegistry ??= DynamicTypeRegistry.Null;
+            typeRegistry.AddTypeInfo(this);
+        }
+
+        /// <summary>
+        /// Gets the identifier for this instance.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public object Id { get; protected internal set; } = Guid.NewGuid();
 
         /// <summary>
         /// Gets the full name of the element.
@@ -115,6 +134,8 @@ namespace Kephas.Reflection.Dynamic
         /// The members.
         /// </value>
         public IEnumerable<IElementInfo> Members => this.members;
+
+        public ITypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Gets a member by the provided name.

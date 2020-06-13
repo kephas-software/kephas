@@ -33,7 +33,7 @@ namespace Kephas.Application.Reflection
         {
             Requires.NotNull(identity, nameof(AppIdentity));
 
-            this.Identity = identity;
+            this.Id = this.Identity = identity;
             this.FullName = this.Name = identity.Id;
             this.Description = description;
             this.Tags = tags ?? Array.Empty<string>();
