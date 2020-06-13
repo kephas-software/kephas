@@ -33,12 +33,10 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An update plugin message handler.
     /// </summary>
-    public class UpdatePluginHandler : MessageHandlerBase<UpdatePluginMessage, ResponseMessage>
+    public class UpdatePluginHandler : PluginHandlerBase<UpdatePluginMessage, ResponseMessage>
     {
-        private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
         private readonly IAppRuntime appRuntime;
-        private readonly IEventHub eventHub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdatePluginHandler"/> class.
@@ -47,16 +45,17 @@ namespace Kephas.Plugins.Endpoints
         /// <param name="appContext">Context for the application.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
         public UpdatePluginHandler(
             IPluginManager pluginManager,
             IAppContext appContext,
             IAppRuntime appRuntime,
-            IEventHub eventHub)
+            IEventHub eventHub,
+            ILogManager? logManager = null)
+            : base(pluginManager, eventHub, logManager)
         {
-            this.pluginManager = pluginManager;
             this.appContext = appContext;
             this.appRuntime = appRuntime;
-            this.eventHub = eventHub;
         }
 
         /// <summary>
@@ -68,12 +67,12 @@ namespace Kephas.Plugins.Endpoints
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override async Task<ResponseMessage?> ProcessAsync(UpdatePluginMessage message, IMessagingContext context, CancellationToken token)
+        public override async Task<ResponseMessage> ProcessAsync(UpdatePluginMessage message, IMessagingContext context, CancellationToken token)
         {
-            if (this.appRuntime.PluginsEnabled())
+            if (!await this.CanSetupPluginsAsync(context, token).PreserveThreadContext())
             {
                 var signal = new ScheduleStartupCommandSignal(message);
-                await this.eventHub.PublishAsync(signal, context, token).PreserveThreadContext();
+                await this.EventHub.PublishAsync(signal, context, token).PreserveThreadContext();
 
                 return new ResponseMessage
                 {
@@ -125,14 +124,14 @@ namespace Kephas.Plugins.Endpoints
             List<AppIdentity> toUpdate;
             if (message.Id.Equals(UpdatePluginMessage.All, StringComparison.InvariantCultureIgnoreCase))
             {
-                var installedPlugins = this.pluginManager.GetInstalledPlugins().ToList();
+                var installedPlugins = this.PluginManager.GetInstalledPlugins().ToList();
 
                 if (UpdatePluginMessage.LatestVersion.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
                 {
                     var availablePackages = new List<IAppInfo>();
                     foreach (var installedPlugin in installedPlugins)
                     {
-                        var availablePackage = await this.pluginManager.GetLatestAvailablePluginVersionAsync(installedPlugin.Identity, message.IncludePrerelease, token).PreserveThreadContext();
+                        var availablePackage = await this.PluginManager.GetLatestAvailablePluginVersionAsync(installedPlugin.Identity, message.IncludePrerelease, token).PreserveThreadContext();
                         if (availablePackage != null && availablePackage.Identity.Version != installedPlugin.Identity.Version)
                         {
                             availablePackages.Add(availablePackage);
@@ -153,7 +152,7 @@ namespace Kephas.Plugins.Endpoints
             }
             else
             {
-                var installedPlugin = this.pluginManager.GetInstalledPlugins()
+                var installedPlugin = this.PluginManager.GetInstalledPlugins()
                     .FirstOrDefault(p => p.Identity.Id.Equals(message.Id, StringComparison.OrdinalIgnoreCase));
                 if (installedPlugin == null)
                 {
@@ -161,7 +160,7 @@ namespace Kephas.Plugins.Endpoints
                 }
                 else if (UpdatePluginMessage.LatestVersion.Equals(message.Version, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var availablePackage = await this.pluginManager.GetLatestAvailablePluginVersionAsync(new AppIdentity(message.Id), message.IncludePrerelease, token).PreserveThreadContext();
+                    var availablePackage = await this.PluginManager.GetLatestAvailablePluginVersionAsync(new AppIdentity(message.Id), message.IncludePrerelease, token).PreserveThreadContext();
                     toUpdate = availablePackage != null && availablePackage.Identity.Version != installedPlugin.Identity.Version
                         ? new List<AppIdentity> { availablePackage.Identity }
                         : new List<AppIdentity>();
@@ -186,7 +185,7 @@ namespace Kephas.Plugins.Endpoints
                     pluginIdentity.Id,
                     pluginIdentity.Version);
 
-                var result = await this.pluginManager
+                var result = await this.PluginManager
                     .UpdatePluginAsync(pluginIdentity, ctx => ctx.Merge(context), token)
                     .PreserveThreadContext();
 

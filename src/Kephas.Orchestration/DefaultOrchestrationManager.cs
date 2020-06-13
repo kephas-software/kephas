@@ -377,7 +377,10 @@ namespace Kephas.Orchestration
 
             if (appEvent.AppInfo.AppId == this.AppRuntime.GetAppId() && appEvent.AppInfo.AppInstanceId == this.AppRuntime.GetAppInstanceId())
             {
-                this.timer = new Timer(this.OnHeartbeat, context, this.TimerDueTime, this.TimerPeriod);
+                if (this.timer == null)
+                {
+                    this.timer = new Timer(this.OnHeartbeat, context, this.TimerDueTime, this.TimerPeriod);
+                }
             }
 
             this.LiveApps.AddOrUpdate(appKey, appEvent, (_, ai) => appEvent);

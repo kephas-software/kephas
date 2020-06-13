@@ -27,12 +27,10 @@ namespace Kephas.Plugins.Endpoints
     /// <summary>
     /// An enable plugin message handler.
     /// </summary>
-    public class EnablePluginHandler : MessageHandlerBase<EnablePluginMessage, ResponseMessage>
+    public class EnablePluginHandler : PluginHandlerBase<EnablePluginMessage, ResponseMessage>
     {
-        private readonly IPluginManager pluginManager;
         private readonly IAppContext appContext;
         private readonly IAppRuntime appRuntime;
-        private readonly IEventHub eventHub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnablePluginHandler"/> class.
@@ -41,16 +39,17 @@ namespace Kephas.Plugins.Endpoints
         /// <param name="appContext">Context for the application.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
         public EnablePluginHandler(
             IPluginManager pluginManager,
             IAppContext appContext,
             IAppRuntime appRuntime,
-            IEventHub eventHub)
+            IEventHub eventHub,
+            ILogManager? logManager = null)
+            : base(pluginManager, eventHub, logManager)
         {
-            this.pluginManager = pluginManager;
             this.appContext = appContext;
             this.appRuntime = appRuntime;
-            this.eventHub = eventHub;
         }
 
         /// <summary>
@@ -64,10 +63,10 @@ namespace Kephas.Plugins.Endpoints
         /// </returns>
         public override async Task<ResponseMessage> ProcessAsync(EnablePluginMessage message, IMessagingContext context, CancellationToken token)
         {
-            if (this.appRuntime.PluginsEnabled())
+            if (!await this.CanSetupPluginsAsync(context, token).PreserveThreadContext())
             {
                 var signal = new ScheduleStartupCommandSignal(message);
-                await this.eventHub.PublishAsync(signal, context, token).PreserveThreadContext();
+                await this.EventHub.PublishAsync(signal, context, token).PreserveThreadContext();
 
                 return new ResponseMessage
                 {
@@ -78,7 +77,7 @@ namespace Kephas.Plugins.Endpoints
 
             this.appContext.Logger.Info("Enabling plugin {plugin}...", message.Id);
 
-            var result = await this.pluginManager.EnablePluginAsync(new AppIdentity(message.Id), ctx => ctx.Merge(context), token).PreserveThreadContext();
+            var result = await this.PluginManager.EnablePluginAsync(new AppIdentity(message.Id), ctx => ctx.Merge(context), token).PreserveThreadContext();
 
             this.appContext.Logger.Info("Plugin {plugin} enabled.", message.Id);
 
