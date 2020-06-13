@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas.Configuration
 {
     using System;
@@ -29,9 +31,10 @@ namespace Kephas.Configuration
         /// Initializes a new instance of the <see cref="ConfigurationStoreBase"/> class.
         /// </summary>
         /// <param name="store">The store.</param>
-        protected ConfigurationStoreBase(IIndexable store)
+        protected ConfigurationStoreBase(IIndexable store, IRuntimeTypeRegistry typeRegistry)
         {
             this.InternalStore = store;
+            this.TypeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -41,6 +44,11 @@ namespace Kephas.Configuration
         /// The internal store.
         /// </value>
         protected IIndexable InternalStore { get; }
+
+        /// <summary>
+        /// Gets the type registry.
+        /// </summary>
+        protected IRuntimeTypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Indexer to get or set items within this collection using array index syntax.
@@ -87,7 +95,7 @@ namespace Kephas.Configuration
         /// </returns>
         public object? TryGetSettings(Type settingsType)
         {
-            return this.TryGetOrAddSettings(settingsType, () => settingsType.AsRuntimeTypeInfo().CreateInstance());
+            return this.TryGetOrAddSettings(settingsType, () => this.TypeRegistry.GetTypeInfo(settingsType).CreateInstance());
         }
 
         /// <summary>
@@ -166,7 +174,7 @@ namespace Kephas.Configuration
         /// </returns>
         protected virtual object CreateSettings(Type settingsType)
         {
-            var settingsTypeInfo = settingsType.AsRuntimeTypeInfo();
+            var settingsTypeInfo = this.TypeRegistry.GetTypeInfo(settingsType);
             var settings = settingsTypeInfo.CreateInstance();
 
             return settings;

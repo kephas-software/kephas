@@ -30,20 +30,23 @@ namespace Kephas.Data.LLBLGen.Commands
     [DataContextType(typeof(LLBLGenDataContext))]
     public class LLBLGenFindCommand : FindCommand
     {
-        /// <summary>
-        /// The entity activator.
-        /// </summary>
         private readonly IActivator entityActivator;
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LLBLGenFindCommand"/> class.
         /// </summary>
         /// <param name="entityActivator">The entity activator.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public LLBLGenFindCommand(IEntityActivator entityActivator, ILogManager logManager = null)
+        public LLBLGenFindCommand(
+            IEntityActivator entityActivator,
+            IRuntimeTypeRegistry typeRegistry,
+            ILogManager logManager = null)
             : base(logManager)
         {
             this.entityActivator = entityActivator;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -59,7 +62,7 @@ namespace Kephas.Data.LLBLGen.Commands
             IFindContext operationContext,
             CancellationToken cancellationToken)
         {
-            Exception exception = null;
+            Exception? exception = null;
 
             if (Id.IsEmpty(operationContext.Id))
             {
@@ -75,7 +78,7 @@ namespace Kephas.Data.LLBLGen.Commands
             var id = Convert.ToInt64(operationContext.Id);
             var dataContext = (LLBLGenDataContext)operationContext.DataContext;
             var cache = (LLBLGenCache)this.TryGetLocalCache(dataContext);
-            var runtimeEntityType = operationContext.EntityType.AsRuntimeTypeInfo();
+            var runtimeEntityType = this.typeRegistry.GetTypeInfo(operationContext.EntityType);
             var underlyingEntityType = (IRuntimeTypeInfo)this.entityActivator.GetImplementationType(runtimeEntityType);
 
             IEntity2? entity = null;

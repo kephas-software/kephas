@@ -93,9 +93,9 @@ namespace Kephas.Messaging.Tests.Distributed
             var appRuntime = container.GetExport<IAppRuntime>();
             var messageBroker = await this.GetMessageBrokerAsync(container);
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
-            handlerRegistry.RegisterHandler<TimeoutMessage>((msg, ctx) =>
+            handlerRegistry.RegisterHandler<TimeoutMessage>(async (msg, ctx, token) =>
             {
-                Thread.Sleep(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(10), token);
                 return Substitute.For<IMessage>();
             });
 
@@ -119,9 +119,9 @@ namespace Kephas.Messaging.Tests.Distributed
             ((LoggableMessageBroker)messageBroker).SetLogger(logger);
 
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
-            handlerRegistry.RegisterHandler<TimeoutMessage>((msg, ctx) =>
+            handlerRegistry.RegisterHandler<TimeoutMessage>(async (msg, ctx, token) =>
             {
-                Thread.Sleep(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(10), token);
                 return Substitute.For<IMessage>();
             });
 
@@ -180,16 +180,15 @@ namespace Kephas.Messaging.Tests.Distributed
             var messageBroker = await this.GetMessageBrokerAsync(container);
             var messageProcessor = (TestMessageProcessor)container.GetExport<IMessageProcessor>();
             var disposable = Substitute.For<IDisposable>();
-            var added = false;
+            var calls = 0;
             messageProcessor.ProcessingContextConfigurator = (msg, ctx) =>
+            {
+                Interlocked.Increment(ref calls);
+                if (calls == 1)
                 {
-                    if (!added)
-                    {
-                        ctx.AddResource(disposable);
-                    }
-
-                    added = true;
-                };
+                    ctx.AddResource(disposable);
+                }
+            };
 
             var pingBack = await messageBroker.DispatchAsync(
                 new BrokeredMessage

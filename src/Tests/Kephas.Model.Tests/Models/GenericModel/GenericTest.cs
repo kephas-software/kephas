@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas.Model.Tests.Models.GenericModel
 {
     using System.Linq;
@@ -42,12 +44,13 @@ namespace Kephas.Model.Tests.Models.GenericModel
         public async Task TryGetClassifier_generic_inheritance()
         {
             var container = this.CreateContainerForModel(typeof(IComplex<,>), typeof(IIntComplex), typeof(IFloatComplex));
+            var typeRegistry = container.GetExport<IRuntimeTypeRegistry>();
             var provider = container.GetExport<IModelSpaceProvider>();
 
             await provider.InitializeAsync();
 
             var modelSpace = provider.GetModelSpace();
-            var classifier = modelSpace.TryGetClassifier(typeof(IComplex<decimal, int>).AsRuntimeTypeInfo());
+            var classifier = modelSpace.TryGetClassifier(typeRegistry.GetTypeInfo(typeof(IComplex<decimal, int>)));
             var complexClassifier = modelSpace.Classifiers.Single(c => c.Name == "Complex`2" && c.IsGenericTypeDefinition());
 
             Assert.IsNotNull(classifier);

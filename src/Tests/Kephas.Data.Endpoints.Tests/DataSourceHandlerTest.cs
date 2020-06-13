@@ -32,10 +32,11 @@ namespace Kephas.Data.Endpoints.Tests
         [Test]
         public async Task HandleAsync_data_source_context_properly_set()
         {
+            var typeRegistry = new RuntimeTypeRegistry();
             var dataSpace = Substitute.For<IDataSpace>();
             var dataContext = Substitute.For<IDataContext>();
             dataSpace[typeof(int)].Returns(dataContext);
-            dataSpace[typeof(int).AsRuntimeTypeInfo()].Returns(dataContext);
+            dataSpace[typeRegistry.GetTypeInfo(typeof(int))].Returns(dataContext);
 
             var dataSpaceFactory = new ExportFactory<IDataSpace>(() => dataSpace);
             var dataSourceService = Substitute.For<IDataSourceService>();
@@ -48,7 +49,7 @@ namespace Kephas.Data.Endpoints.Tests
             projectedTypeResolver.ResolveProjectedType(typeof(string), Arg.Any<IContext>(), Arg.Any<bool>())
                 .Returns(typeof(int));
 
-            var handler = new DataSourceHandler(dataSpaceFactory, dataSourceService, typeResolver, projectedTypeResolver);
+            var handler = new DataSourceHandler(dataSpaceFactory, dataSourceService, typeResolver, projectedTypeResolver, typeRegistry);
 
             dataSourceService.GetDataSourceAsync(Arg.Any<IPropertyInfo>(), Arg.Any<IDataSourceContext>(), Arg.Any<CancellationToken>())
                 .Returns(

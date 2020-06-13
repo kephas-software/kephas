@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas.Data.MongoDB
 {
     using System;
@@ -31,11 +33,10 @@ namespace Kephas.Data.MongoDB
     [SupportedDataStoreKinds(DataStoreKind.MongoDB)]
     public class MongoDataContext : DataContextBase
     {
-        /// <summary>
-        /// The mongo clients.
-        /// </summary>
         private static readonly ConcurrentDictionary<string, MongoClient> MongoClients =
-          new ConcurrentDictionary<string, MongoClient>();
+            new ConcurrentDictionary<string, MongoClient>();
+
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoDataContext"/> class.
@@ -43,9 +44,15 @@ namespace Kephas.Data.MongoDB
         /// <param name="compositionContext">The composition context.</param>
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="dataBehaviorProvider">The data behavior provider.</param>
-        public MongoDataContext(ICompositionContext compositionContext, IDataCommandProvider dataCommandProvider, IDataBehaviorProvider dataBehaviorProvider)
+        /// <param name="typeRegistry">The type registry.</param>
+        public MongoDataContext(
+            ICompositionContext compositionContext,
+            IDataCommandProvider dataCommandProvider,
+            IDataBehaviorProvider dataBehaviorProvider,
+            IRuntimeTypeRegistry typeRegistry)
             : base(compositionContext, dataCommandProvider, dataBehaviorProvider)
         {
+            this.typeRegistry = typeRegistry;
             Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
             Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
@@ -90,8 +97,8 @@ namespace Kephas.Data.MongoDB
         protected override IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext)
         {
             var nativeQuery = this.Database.GetCollection<T>(this.GetCollectionName(typeof(T))).AsQueryable();
-            var provider = new MongoQueryProvider(queryOperationContext, nativeQuery.Provider);
-            var query = new MongoQuery<T>(provider, nativeQuery);
+            var provider = new MongoQueryProvider(queryOperationContext, nativeQuery.Provider, this.typeRegistry);
+            var query = new MongoQuery<T>(provider, nativeQuery, this.typeRegistry);
             return query;
         }
 

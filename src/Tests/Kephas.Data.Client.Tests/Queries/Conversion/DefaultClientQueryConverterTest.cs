@@ -43,7 +43,11 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_int_constants(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.EqConverter() });
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.EqConverter() },
+                new RuntimeTypeRegistry());
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -65,7 +69,11 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             var typeResolver = this.GetTypeResolverMock(data);
             var eqConverter = this.EqConverter();
             var altEqConverter = this.GetExpressionConverter(eqConverter.Metadata.Operator, args => LinqExpression.NotEqual(args[0], args[1]), overridePriority: -100);
-            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { eqConverter, altEqConverter });
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { eqConverter, altEqConverter },
+                new RuntimeTypeRegistry());
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -85,7 +93,11 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_member_access(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.GtConverter() });
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.GtConverter() },
+                new RuntimeTypeRegistry());
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -104,7 +116,11 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_member_access_missing(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.GtConverter() });
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.GtConverter() },
+                new RuntimeTypeRegistry());
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -120,14 +136,19 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         [TestCase(arg: new string[] { "Pippi", "Langstrumpf" })]
         public void ConvertQuery_member_access_missing_no_member_access_convention(string[] data)
         {
+            var typeRegistry = new RuntimeTypeRegistry();
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.GtConverter(), this.MemberAccessConverter() });
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.GtConverter(), this.MemberAccessConverter(typeRegistry) },
+                typeRegistry);
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
                             {
                                 EntityType = "item-type",
-                                Filter = new Expression { Op = ">", Args = new List<object> { new Expression { Op = "$m", Args = new List<object> { ".count" } }, 3 } }
+                                Filter = new Expression { Op = ">", Args = new List<object> { new Expression { Op = "$m", Args = new List<object> { ".count" } }, 3 } },
                             };
 
             Assert.Throws<MissingMemberException>(() => converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext)));
@@ -141,7 +162,11 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_nary_operator_without_arguments(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.AndConverter() });
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.AndConverter() },
+                new RuntimeTypeRegistry());
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -163,7 +188,11 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_orderby_asc(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.AscConverter() });
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.AscConverter() },
+                new RuntimeTypeRegistry());
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -190,14 +219,19 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         [TestCase(arg: new string[] { "hi" })]
         public void ConvertQuery_orderby_desc_no_member_access_convention(string[] data)
         {
+            var typeRegistry = new RuntimeTypeRegistry();
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.DescConverter(), this.MemberAccessConverter() });
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.DescConverter(), this.MemberAccessConverter(typeRegistry) },
+                typeRegistry);
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
             {
                 EntityType = "item-type",
-                Order = new Expression { Op = "$orderby", Args = new List<object> { new Expression { Op = "$desc", Args = new List<object> { new Expression { Op = "$m", Args = new List<object> { ".Length" } } } } } }
+                Order = new Expression { Op = "$orderby", Args = new List<object> { new Expression { Op = "$desc", Args = new List<object> { new Expression { Op = "$m", Args = new List<object> { ".Length" } } } } } },
             };
 
             var queryable = (IQueryable<string>)converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext));
@@ -219,13 +253,17 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_orderby_desc(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.DescConverter() });
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.DescConverter() },
+                new RuntimeTypeRegistry());
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
             {
                 EntityType = "item-type",
-                Order = new Expression { Op = "$orderby", Args = new List<object> { new Expression { Op = "$desc", Args = new List<object> { ".Length" } } } }
+                Order = new Expression { Op = "$orderby", Args = new List<object> { new Expression { Op = "$desc", Args = new List<object> { ".Length" } } } },
             };
 
             var queryable = (IQueryable<string>)converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext) { UseMemberAccessConvention = true });
@@ -244,7 +282,11 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
         public void ConvertQuery_operator_not_supported(string[] data)
         {
             var typeResolver = this.GetTypeResolverMock(data);
-            var converter = new DefaultClientQueryConverter(typeResolver, this.GetIdempotentProjectedTypeResolver(), new[] { this.GtConverter() });
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.GtConverter() },
+                new RuntimeTypeRegistry());
 
             var dataContext = this.GetDataContextMock(data);
             var query = new ClientQuery
@@ -287,9 +329,9 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => new DescExpressionConverter(), new ExpressionConverterMetadata(DescExpressionConverter.Operator));
         }
 
-        private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> MemberAccessConverter()
+        private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> MemberAccessConverter(IRuntimeTypeRegistry typeRegistry)
         {
-            return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => new MemberAccessExpressionConverter(), new ExpressionConverterMetadata(MemberAccessExpressionConverter.Operator));
+            return new ExportFactory<IExpressionConverter, ExpressionConverterMetadata>(() => new MemberAccessExpressionConverter(typeRegistry), new ExpressionConverterMetadata(MemberAccessExpressionConverter.Operator));
         }
 
         private IExportFactory<IExpressionConverter, ExpressionConverterMetadata> AscConverter()

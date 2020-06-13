@@ -75,11 +75,11 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
         {
             var container = this.CreateContainer();
             var appRuntime = container.GetExport<IAppRuntime>();
-            var messageBroker = await GetMessageBrokerAsync(container);
+            var messageBroker = await this.GetMessageBrokerAsync(container);
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
-            handlerRegistry.RegisterHandler<TimeoutMessage>((msg, ctx) =>
+            handlerRegistry.RegisterHandler<TimeoutMessage>(async (msg, ctx, token) =>
             {
-                Thread.Sleep(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(10), token);
                 return Substitute.For<IMessage>();
             });
 
@@ -97,15 +97,15 @@ namespace Kephas.Messaging.Tests.Autofac.Distributed
             var sb = new StringBuilder();
             var logger = GetLogger<IMessageBroker>(sb);
 
-            var container = CreateContainer(parts: new[] { typeof(LoggableMessageBroker) });
+            var container = this.CreateContainer(parts: new[] { typeof(LoggableMessageBroker) });
             var appRuntime = container.GetExport<IAppRuntime>();
-            var messageBroker = await GetMessageBrokerAsync(container);
+            var messageBroker = await this.GetMessageBrokerAsync(container);
             ((LoggableMessageBroker)messageBroker).SetLogger(logger);
 
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
-            handlerRegistry.RegisterHandler<TimeoutMessage>((msg, ctx) =>
+            handlerRegistry.RegisterHandler<TimeoutMessage>(async (msg, ctx, token) =>
             {
-                Thread.Sleep(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(10), token);
                 return Substitute.For<IMessage>();
             });
 

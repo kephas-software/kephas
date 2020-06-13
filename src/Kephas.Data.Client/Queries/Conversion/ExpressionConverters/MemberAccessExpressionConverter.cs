@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+using Kephas.Runtime;
+
 namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
 {
     using System;
@@ -24,12 +27,23 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
     [Operator(Operator)]
     public class MemberAccessExpressionConverter : IExpressionConverter
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
         /// <summary>
         /// The operator for descending sort.
         /// </summary>
         public const string Operator = "$m";
 
         private const char MemberOperator = '.';
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemberAccessExpressionConverter"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The type registry.</param>
+        public MemberAccessExpressionConverter(IRuntimeTypeRegistry typeRegistry)
+        {
+            this.typeRegistry = typeRegistry;
+        }
 
         /// <summary>
         /// Converts the provided expression to a LINQ expression.
@@ -50,7 +64,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
             var arg = args[0];
             if (arg is ConstantExpression constExprArg)
             {
-                return MakeMemberAccessExpression(constExprArg.Value, clientItemType, lambdaArg);
+                return MakeMemberAccessExpression(constExprArg.Value, clientItemType, lambdaArg, this.typeRegistry);
             }
 
             // TODO localization
@@ -63,10 +77,11 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
         /// <param name="arg">The argument.</param>
         /// <param name="clientItemType">The client item type.</param>
         /// <param name="lambdaArg">The lambda argument.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <returns>
         /// A LINQ expression.
         /// </returns>
-        internal static Expression MakeMemberAccessExpression(object arg, Type clientItemType, ParameterExpression lambdaArg)
+        internal static Expression MakeMemberAccessExpression(object arg, Type clientItemType, ParameterExpression lambdaArg, IRuntimeTypeRegistry typeRegistry)
         {
             var memberName = (string)arg;
             Requires.NotNullOrEmpty(memberName, nameof(memberName));
@@ -78,7 +93,7 @@ namespace Kephas.Data.Client.Queries.Conversion.ExpressionConverters
 
             memberName = memberName.ToPascalCase();
 
-            var queryItemTypeInfo = lambdaArg.Type.AsRuntimeTypeInfo();
+            var queryItemTypeInfo = typeRegistry.GetTypeInfo(lambdaArg.Type);
             if (!queryItemTypeInfo.Properties.TryGetValue(memberName, out var propertyInfo))
             {
                 throw new MissingMemberException(string.Format(Strings.DefaultClientQueryConverter_MissingMember_Exception, memberName, queryItemTypeInfo));

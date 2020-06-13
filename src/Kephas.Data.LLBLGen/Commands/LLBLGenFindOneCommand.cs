@@ -29,20 +29,23 @@ namespace Kephas.Data.LLBLGen.Commands
     [DataContextType(typeof(LLBLGenDataContext))]
     public class LLBLGenFindOneCommand : FindOneCommand
     {
-        /// <summary>
-        /// The entity activator.
-        /// </summary>
         private readonly IActivator entityActivator;
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LLBLGenFindOneCommand"/> class.
         /// </summary>
         /// <param name="entityActivator">The entity activator.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public LLBLGenFindOneCommand(IEntityActivator entityActivator, ILogManager logManager = null)
+        public LLBLGenFindOneCommand(
+            IEntityActivator entityActivator,
+            IRuntimeTypeRegistry typeRegistry,
+            ILogManager logManager = null)
             : base(logManager)
         {
             this.entityActivator = entityActivator;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -65,7 +68,7 @@ namespace Kephas.Data.LLBLGen.Commands
             var localCache = (LLBLGenCache)this.TryGetLocalCache(dataContext);
             if (localCache != null)
             {
-                var runtimeEntityType = findContext.EntityType.AsRuntimeTypeInfo();
+                var runtimeEntityType = this.typeRegistry.GetTypeInfo(findContext.EntityType);
                 var underlyingEntityType = (IRuntimeTypeInfo)this.entityActivator.GetImplementationType(runtimeEntityType);
                 result = localCache.GetAll(underlyingEntityType.Type).Cast<T>()
                     .Where(criteria.Compile())

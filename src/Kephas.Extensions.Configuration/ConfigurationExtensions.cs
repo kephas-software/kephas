@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConfigurationServiceCollectionExtensions.cs" company="Kephas Software SRL">
+// <copyright file="ConfigurationExtensions.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -32,7 +32,7 @@ namespace Kephas.Extensions.Configuration
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
-            ambientServices.Register<IConfigurationStore>(new ConfigurationStore(configuration));
+            ambientServices.Register<IConfigurationStore>(new ConfigurationStore(configuration, ambientServices.TypeRegistry));
 
             return ambientServices;
         }

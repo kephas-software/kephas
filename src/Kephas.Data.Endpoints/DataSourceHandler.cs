@@ -50,6 +50,8 @@ namespace Kephas.Data.Endpoints
         /// </summary>
         private readonly IProjectedTypeResolver projectedTypeResolver;
 
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSourceHandler"/> class.
         /// </summary>
@@ -57,7 +59,13 @@ namespace Kephas.Data.Endpoints
         /// <param name="dataSourceService">The data source service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="projectedTypeResolver">The projected type resolver.</param>
-        public DataSourceHandler(IExportFactory<IDataSpace> dataSpaceFactory, IDataSourceService dataSourceService, ITypeResolver typeResolver, IProjectedTypeResolver projectedTypeResolver)
+        /// <param name="typeRegistry">The type registry.</param>
+        public DataSourceHandler(
+            IExportFactory<IDataSpace> dataSpaceFactory,
+            IDataSourceService dataSourceService,
+            ITypeResolver typeResolver,
+            IProjectedTypeResolver projectedTypeResolver,
+            IRuntimeTypeRegistry typeRegistry)
         {
             Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
             Requires.NotNull(dataSourceService, nameof(dataSourceService));
@@ -68,6 +76,7 @@ namespace Kephas.Data.Endpoints
             this.dataSourceService = dataSourceService;
             this.typeResolver = typeResolver;
             this.projectedTypeResolver = projectedTypeResolver;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -123,7 +132,7 @@ namespace Kephas.Data.Endpoints
                 throw new InvalidOperationException($"Could not resolve type '{entityTypeName}'.");
             }
 
-            return entityType.AsRuntimeTypeInfo();
+            return this.typeRegistry.GetTypeInfo(entityType);
         }
 
         /// <summary>
@@ -139,7 +148,7 @@ namespace Kephas.Data.Endpoints
         {
             if (entityType is IRuntimeTypeInfo runtimeEntityType)
             {
-                return this.projectedTypeResolver.ResolveProjectedType(runtimeEntityType.Type).AsRuntimeTypeInfo();
+                return this.typeRegistry.GetTypeInfo(this.projectedTypeResolver.ResolveProjectedType(runtimeEntityType.Type));
             }
 
             return entityType;

@@ -77,9 +77,9 @@ namespace Kephas.Messaging.Tests.Mef.Distributed
             var appRuntime = container.GetExport<IAppRuntime>();
             var messageBroker = await GetMessageBrokerAsync(container);
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
-            handlerRegistry.RegisterHandler<TimeoutMessage>((msg, ctx) =>
+            handlerRegistry.RegisterHandler<TimeoutMessage>(async (msg, ctx, token) =>
             {
-                Thread.Sleep(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(10), token);
                 return Substitute.For<IMessage>();
             });
 
@@ -103,9 +103,9 @@ namespace Kephas.Messaging.Tests.Mef.Distributed
             ((LoggableMessageBroker)messageBroker).SetLogger(logger);
 
             var handlerRegistry = container.GetExport<IMessageHandlerRegistry>();
-            handlerRegistry.RegisterHandler<TimeoutMessage>((msg, ctx) =>
+            handlerRegistry.RegisterHandler<TimeoutMessage>(async (msg, ctx, token) =>
             {
-                Thread.Sleep(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(10), token);
                 return Substitute.For<IMessage>();
             });
 

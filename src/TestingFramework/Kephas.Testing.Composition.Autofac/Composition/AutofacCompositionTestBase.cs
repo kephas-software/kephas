@@ -49,10 +49,10 @@ namespace Kephas.Testing.Composition
         public virtual AutofacCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
         {
             var log = new StringBuilder();
-            logManager = logManager ?? new DebugLogManager((logger, level, message, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
-            appRuntime = appRuntime ?? this.CreateDefaultAppRuntime(logManager);
+            logManager ??= new DebugLogManager((logger, level, message, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
+            appRuntime ??= this.CreateDefaultAppRuntime(logManager);
 
-            ambientServices = ambientServices ?? new AmbientServices();
+            ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
             ambientServices
                 .Register(logManager)
                 .WithAppRuntime(appRuntime)
@@ -71,7 +71,7 @@ namespace Kephas.Testing.Composition
             IEnumerable<Type> parts = null,
             Action<AutofacCompositionContainerBuilder> config = null)
         {
-            ambientServices = ambientServices ?? new AmbientServices();
+            ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
             var containerBuilder = WithContainerBuilder(ambientServices)
                     .WithAssemblies(GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? new Assembly[0])

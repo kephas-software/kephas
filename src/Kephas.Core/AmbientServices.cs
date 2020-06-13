@@ -55,12 +55,13 @@ namespace Kephas
         /// Initializes a new instance of the <see cref="AmbientServices"/> class.
         /// </summary>
         /// <param name="registerDefaultServices">Optional. True to register default services.</param>
-        public AmbientServices(bool registerDefaultServices = true)
+        /// <param name="typeRegistry">Optional. The type registry.</param>
+        public AmbientServices(bool registerDefaultServices = true, IRuntimeTypeRegistry? typeRegistry = null)
         {
             this.Register<IAmbientServices>(b => b.WithInstance(this).ExternallyOwned(true))
                 .Register<ICompositionContext>(b => b.WithInstance(this.AsCompositionContext()).ExternallyOwned(true));
 
-            var typeRegistry = RuntimeTypeRegistry.Instance;
+            typeRegistry ??= RuntimeTypeRegistry.Instance;
             this
                 .Register<IRuntimeTypeRegistry>(typeRegistry);
 

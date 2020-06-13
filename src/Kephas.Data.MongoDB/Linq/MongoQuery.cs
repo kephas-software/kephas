@@ -13,10 +13,10 @@ namespace Kephas.Data.MongoDB.Linq
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Data.Linq;
-
     using global::MongoDB.Driver;
     using global::MongoDB.Driver.Linq;
+    using Kephas.Data.Linq;
+    using Kephas.Runtime;
 
     /// <summary>
     /// A mongo query adapter.
@@ -24,14 +24,21 @@ namespace Kephas.Data.MongoDB.Linq
     /// <typeparam name="T">The entity type.</typeparam>
     public class MongoQuery<T> : DataContextQuery<T>, IMongoQueryable<T>
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoQuery{T}"/> class.
         /// </summary>
         /// <param name="queryProvider">The query provider.</param>
         /// <param name="nativeQuery">The native query.</param>
-        public MongoQuery(MongoQueryProvider queryProvider, IMongoQueryable<T> nativeQuery)
+        /// <param name="typeRegistry">The type registry.</param>
+        public MongoQuery(
+            MongoQueryProvider queryProvider,
+            IMongoQueryable<T> nativeQuery,
+            IRuntimeTypeRegistry typeRegistry)
             : base(queryProvider, nativeQuery)
         {
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>

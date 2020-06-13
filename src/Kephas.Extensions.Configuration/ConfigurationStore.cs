@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas.Extensions.Configuration
 {
     using System.ComponentModel;
@@ -26,8 +28,9 @@ namespace Kephas.Extensions.Configuration
         /// Initializes a new instance of the <see cref="ConfigurationStore"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public ConfigurationStore(IConfiguration configuration)
-            : base(new ConfigurationAdapter(configuration))
+        /// <param name="typeRegistry">The type registry.</param>
+        public ConfigurationStore(IConfiguration configuration, IRuntimeTypeRegistry typeRegistry)
+            : base(new ConfigurationAdapter(configuration), typeRegistry)
         {
         }
 

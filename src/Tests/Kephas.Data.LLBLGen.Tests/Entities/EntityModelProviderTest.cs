@@ -25,7 +25,9 @@ namespace Kephas.Data.LLBLGen.Tests.Entities
         [Test]
         public void GetModelTypeInfos_empty()
         {
-            var provider = new EntityModelProvider(new List<IExportFactory<IEntityFactory, EntityFactoryMetadata>>());
+            var provider = new EntityModelProvider(
+                new List<IExportFactory<IEntityFactory, EntityFactoryMetadata>>(),
+                new RuntimeTypeRegistry());
             var typeInfos = provider.GetModelTypeInfos();
             Assert.AreEqual(0, typeInfos.Count());
         }

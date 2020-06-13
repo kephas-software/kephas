@@ -23,10 +23,9 @@ namespace Kephas.Data.Client.Tests.Queries
     using Kephas.Data.Conversion;
     using Kephas.Model;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -179,7 +178,14 @@ namespace Kephas.Data.Client.Tests.Queries
                 IProjectedTypeResolver projectedTypeResolver = null,
                 Func<IDataContext> dataContextCreator = null,
                 Func<IDataContext> clientDataContextCreator = null)
-                : base(contextFactory, clientQueryConverter, conversionService, typeResolver, projectedTypeResolver ?? GetProjectedTypeResolver(), GetDataSpaceFactory(dataContextCreator, clientDataContextCreator))
+                : base(
+                    contextFactory,
+                    clientQueryConverter,
+                    conversionService,
+                    typeResolver,
+                    projectedTypeResolver ?? GetProjectedTypeResolver(),
+                    GetDataSpaceFactory(dataContextCreator, clientDataContextCreator),
+                    new RuntimeTypeRegistry())
             {
             }
 

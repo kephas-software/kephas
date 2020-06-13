@@ -24,6 +24,7 @@ namespace Kephas.Data.Client.Queries
     using Kephas.Diagnostics.Contracts;
     using Kephas.Model;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -49,13 +50,15 @@ namespace Kephas.Data.Client.Queries
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="projectedTypeResolver">The projected type resolver.</param>
         /// <param name="dataSpaceFactory">The data space factory.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         public DefaultClientQueryProcessor(
             IContextFactory contextFactory,
             IClientQueryConverter clientQueryConverter,
             IDataConversionService conversionService,
             ITypeResolver typeResolver,
             IProjectedTypeResolver projectedTypeResolver,
-            IExportFactory<IDataSpace> dataSpaceFactory)
+            IExportFactory<IDataSpace> dataSpaceFactory,
+            IRuntimeTypeRegistry typeRegistry)
         {
             Requires.NotNull(contextFactory, nameof(contextFactory));
             Requires.NotNull(clientQueryConverter, nameof(clientQueryConverter));
@@ -65,6 +68,7 @@ namespace Kephas.Data.Client.Queries
             Requires.NotNull(dataSpaceFactory, nameof(dataSpaceFactory));
 
             this.DataSpaceFactory = dataSpaceFactory;
+            this.TypeRegistry = typeRegistry;
             this.ContextFactory = contextFactory;
             this.ClientQueryConverter = clientQueryConverter;
             this.ConversionService = conversionService;
@@ -76,6 +80,11 @@ namespace Kephas.Data.Client.Queries
         /// Gets the data space factory.
         /// </summary>
         public IExportFactory<IDataSpace> DataSpaceFactory { get; }
+
+        /// <summary>
+        /// Gets the type registry.
+        /// </summary>
+        public IRuntimeTypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Gets the context factory.
@@ -191,34 +200,30 @@ namespace Kephas.Data.Client.Queries
         {
             var mappings = new List<(TClientEntity clientEntity, TEntity entity)>();
 
-            using (var dataSpace = this.DataSpaceFactory.CreateInitializedValue(executionContext))
+            using var dataSpace = this.DataSpaceFactory.CreateInitializedValue(executionContext);
+            var dataContext = dataSpace[executionContext.EntityType];
+            var queryConversionContext = new ClientQueryConversionContext(dataContext)
             {
-                var dataContext = dataSpace[executionContext.EntityType];
-                var queryConversionContext = new ClientQueryConversionContext(dataContext)
-                {
-                    Options = executionContext.Options,
-                };
-                executionContext.QueryConversionConfig?.Invoke(queryConversionContext);
-                var query = (IQueryable<TEntity>)this.ClientQueryConverter.ConvertQuery(clientQuery, queryConversionContext);
-                var entities = await query.ToListAsync(token).PreserveThreadContext();
+                Options = executionContext.Options,
+            };
+            executionContext.QueryConversionConfig?.Invoke(queryConversionContext);
+            var query = (IQueryable<TEntity>)this.ClientQueryConverter.ConvertQuery(clientQuery, queryConversionContext);
+            var entities = await query.ToListAsync(token).PreserveThreadContext();
 
-                // skip the conversion if the same types provided
-                if (typeof(TClientEntity) == typeof(TEntity))
-                {
-                    return entities.Cast<object>().ToList();
-                }
+            // skip the conversion if the same types provided
+            if (typeof(TClientEntity) == typeof(TEntity))
+            {
+                return entities.Cast<object>().ToList();
+            }
 
-                var clientEntityTypeInfo = typeof(TClientEntity).AsRuntimeTypeInfo();
-                foreach (var entity in entities)
-                {
-                    using (var context = new DataConversionContext(dataSpace, this.ConversionService)
-                            .RootTargetType(clientEntityTypeInfo.Type))
-                    {
-                        executionContext?.DataConversionConfig?.Invoke(entity, context);
-                        var result = await this.ConversionService.ConvertAsync(entity, clientEntityTypeInfo.CreateInstance(), context, token).PreserveThreadContext();
-                        mappings.Add(((TClientEntity)result.Target, entity));
-                    }
-                }
+            var clientEntityTypeInfo = this.TypeRegistry.GetTypeInfo(typeof(TClientEntity));
+            foreach (var entity in entities)
+            {
+                using var context = new DataConversionContext(dataSpace, this.ConversionService)
+                    .RootTargetType(clientEntityTypeInfo.Type);
+                executionContext?.DataConversionConfig?.Invoke(entity, context);
+                var result = await this.ConversionService.ConvertAsync(entity, clientEntityTypeInfo.CreateInstance(), context, token).PreserveThreadContext();
+                mappings.Add(((TClientEntity)result.Target, entity));
             }
 
             return mappings.Select(m => (object)m.clientEntity).ToArray();
