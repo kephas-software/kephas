@@ -26,6 +26,7 @@ namespace Kephas.Messaging.Pipes.Routing
     using Kephas.Messaging.Distributed.Routing;
     using Kephas.Messaging.Pipes.Configuration;
     using Kephas.Messaging.Pipes.Endpoints;
+    using Kephas.Model.AttributedModel;
     using Kephas.Serialization;
     using Kephas.Services;
     using Kephas.Threading;
@@ -34,6 +35,7 @@ namespace Kephas.Messaging.Pipes.Routing
     /// <summary>
     /// A message router over named pipes.
     /// </summary>
+    [Override]
     [ProcessingPriority(Priority.Low + 1000)]
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
     public class PipesAppMessageRouter : InProcessAppMessageRouter

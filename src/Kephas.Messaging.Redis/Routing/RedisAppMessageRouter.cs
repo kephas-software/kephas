@@ -23,6 +23,7 @@ namespace Kephas.Messaging.Redis.Routing
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Distributed.Routing;
+    using Kephas.Model.AttributedModel;
     using Kephas.Redis;
     using Kephas.Redis.Configuration;
     using Kephas.Redis.Interaction;
@@ -34,6 +35,7 @@ namespace Kephas.Messaging.Redis.Routing
     /// <summary>
     /// The Redis message router.
     /// </summary>
+    [Override]
     [ProcessingPriority(Priority.Low)]
     [MessageRouter(ReceiverMatch = ChannelType + ":.*", IsFallback = true)]
     public class RedisAppMessageRouter : InProcessAppMessageRouter
