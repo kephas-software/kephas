@@ -70,7 +70,7 @@ $paths = @(
 foreach ($path in $paths) {
     $packagename = get-packagename $path
     $packagepath = "..\$path\bin\$build\$packagename.$version.nupkg"
-    if ($apiKey == "") {
+    if ($apiKey -eq "") {
         .\NuGet.exe push $packagepath 
     }
     else {
