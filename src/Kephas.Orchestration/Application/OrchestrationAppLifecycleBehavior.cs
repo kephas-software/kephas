@@ -16,6 +16,7 @@ namespace Kephas.Orchestration.Application
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Orchestration.Interaction;
@@ -30,23 +31,27 @@ namespace Kephas.Orchestration.Application
     public class OrchestrationAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
         private readonly IAppRuntime appRuntime;
-
         private readonly IMessageBroker messageBroker;
+        private readonly IEventHub eventHub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OrchestrationAppLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageBroker">The application event publisher.</param>
+        /// <param name="eventHub">The event hub.</param>
         public OrchestrationAppLifecycleBehavior(
             IAppRuntime appRuntime,
-            IMessageBroker messageBroker)
+            IMessageBroker messageBroker,
+            IEventHub eventHub)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(eventHub, nameof(eventHub));
 
             this.appRuntime = appRuntime;
             this.messageBroker = messageBroker;
+            this.eventHub = eventHub;
         }
 
         /// <summary>
@@ -60,6 +65,11 @@ namespace Kephas.Orchestration.Application
             try
             {
                 var appStartedEvent = this.CreateAppStartedEvent();
+
+                // first of all notify its own manager that it started...
+                await this.eventHub.PublishAsync(appStartedEvent, appContext, cancellationToken).PreserveThreadContext();
+
+                // ...then the peers.
                 await this.messageBroker.PublishAsync(
                     appStartedEvent,
                     ctx => ctx.Impersonate(appContext),
