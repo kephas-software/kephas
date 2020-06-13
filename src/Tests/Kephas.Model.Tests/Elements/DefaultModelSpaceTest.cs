@@ -112,7 +112,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeClassifiers_aspect_classifier()
         {
-            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
+            var context = this.CreateModelConstructionContext();
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -140,7 +140,7 @@ namespace Kephas.Model.Tests.Elements
         [Test]
         public void ComputeClassifiers_classifier_with_aspect()
         {
-            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
+            var context = this.CreateModelConstructionContext();
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -155,6 +155,15 @@ namespace Kephas.Model.Tests.Elements
 
             var classifier = classifiers.Single(c => c.Name == "Contact");
             Assert.AreEqual(3, classifier.Properties.Count());
+        }
+
+        private ModelConstructionContext CreateModelConstructionContext()
+        {
+            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            var compositionContext = Substitute.For<ICompositionContext>();
+            compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            var context = new ModelConstructionContext(compositionContext);
+            return context;
         }
 
         private IList<IElementInfo> CreateModelDimension(IModelConstructionContext context, string dimensionName, bool isAggregatable, int index, IEnumerable<string> dimensionElements)

@@ -145,20 +145,44 @@ namespace Kephas.Model.Elements
             var classifiers = constructionContext?.ConstructedClassifiers ?? this.Classifiers;
             var isNew = false;
             (classifier, isNew) = this.TryComputeClassifier(typeInfo, classifiers, constructionContext);
-            if (classifier != null)
+            if (classifier == null)
             {
-                // set the cached value.
-                typeInfo[cacheKey] = classifier;
+                return classifier;
+            }
 
-                if (isNew)
-                {
-                    // TODO lock the list to avoid problems in multi threaded environments
-                    var listClassifiers = classifiers as IList<IClassifier>;
-                    listClassifiers?.Add(classifier);
-                }
+            // set the cached value.
+            typeInfo[cacheKey] = classifier;
+
+            if (isNew)
+            {
+                // TODO lock the list to avoid problems in multi threaded environments
+                var listClassifiers = classifiers as IList<IClassifier>;
+                listClassifiers?.Add(classifier);
             }
 
             return classifier;
+        }
+
+        /// <summary>
+        /// Gets the type information based on the type token.
+        /// </summary>
+        /// <param name="typeToken">The type token.</param>
+        /// <param name="throwOnNotFound">If true and if the type information is not found based on the provided token, throws an exception.</param>
+        /// <returns>The type information.</returns>
+        public ITypeInfo? GetTypeInfo(object typeToken, bool throwOnNotFound = true)
+        {
+            var classifier = typeToken switch
+            {
+                Type type => this.TryGetClassifier(
+                    this.ConstructionContext.AmbientServices.TypeRegistry.GetTypeInfo(type)),
+                ITypeInfo typeInfo => this.TryGetClassifier(typeInfo),
+                _ => throw new NotSupportedException(
+                    $"Token type {typeToken?.GetType()} not supported. Try providing a {nameof(Type)} or a {nameof(ITypeInfo)}.")
+            };
+
+            return classifier == null && throwOnNotFound
+                ? throw new KeyNotFoundException($"Element with token '{typeToken}' was not found.")
+                : classifier;
         }
 
         /// <summary>
@@ -442,5 +466,6 @@ namespace Kephas.Model.Elements
 
             return constructedGenericsDependencies;
         }
+
     }
 }

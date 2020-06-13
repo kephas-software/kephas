@@ -18,7 +18,7 @@ namespace Kephas.Model
     /// <summary>
     /// The model space is the root model element.
     /// </summary>
-    public interface IModelSpace : IModelElement
+    public interface IModelSpace : IModelElement, ITypeRegistry
     {
         /// <summary>
         /// Gets the dimensions.
