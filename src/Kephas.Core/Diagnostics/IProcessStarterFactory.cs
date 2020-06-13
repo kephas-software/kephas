@@ -44,11 +44,12 @@ namespace Kephas.Diagnostics
         /// <summary>
         /// Sets the executable file as a managed process.
         /// </summary>
-        /// <param name="executableFile">Full pathname of the executable file.</param>
+        /// <param name="executableFile">Full pathname of the executable file or the entry assembly.</param>
+        /// <param name="runtime">Optional. The runtime executing the entry assembly.</param>
         /// <returns>
         /// This <see cref="IProcessStarterFactory"/>.
         /// </returns>
-        IProcessStarterFactory WithManagedExecutable(string executableFile);
+        IProcessStarterFactory WithManagedExecutable(string executableFile, string? runtime = null);
 
         /// <summary>
         /// Sets the executable file as an operating system native process.

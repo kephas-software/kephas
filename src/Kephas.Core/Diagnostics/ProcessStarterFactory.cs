@@ -94,10 +94,11 @@ namespace Kephas.Diagnostics
         /// Sets the executable file as a managed process.
         /// </summary>
         /// <param name="executableFile">Full pathname of the executable file.</param>
+        /// <param name="runtime">Optional. The runtime executing the entry assembly.</param>
         /// <returns>
         /// This <see cref="IProcessStarterFactory"/>.
         /// </returns>
-        public IProcessStarterFactory WithManagedExecutable(string executableFile)
+        public IProcessStarterFactory WithManagedExecutable(string executableFile, string? runtime = null)
         {
             if (!string.IsNullOrEmpty(this.executableFile))
             {
@@ -105,13 +106,14 @@ namespace Kephas.Diagnostics
             }
 
             this.executableFile = executableFile;
-            if (RuntimeEnvironment.IsWindows())
+
+            if (string.IsNullOrEmpty(runtime))
             {
                 this.processStartInfo.FileName = executableFile;
             }
             else
             {
-                this.processStartInfo.FileName = "mono";
+                this.processStartInfo.FileName = runtime;
                 this.arguments.Insert(0, executableFile);
             }
 
