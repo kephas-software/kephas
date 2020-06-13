@@ -13,7 +13,6 @@ namespace Kephas.Model.Elements
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
 
@@ -29,29 +28,9 @@ namespace Kephas.Model.Elements
     internal static class ModelHelper
     {
         /// <summary>
-        /// The empty classifier enumeration.
-        /// </summary>
-        public static readonly IReadOnlyList<IClassifier> EmptyClassifiers = Array.Empty<IClassifier>();
-
-        /// <summary>
-        /// The empty model element enumeration.
-        /// </summary>
-        public static readonly IReadOnlyList<IModelElement> EmptyModelElements = Array.Empty<IModelElement>();
-
-        /// <summary>
-        /// The empty annotations.
-        /// </summary>
-        public static readonly IReadOnlyList<IAnnotation> EmptyAnnotations = Array.Empty<IAnnotation>();
-
-        /// <summary>
         /// The name discriminators.
         /// </summary>
         private static readonly ConcurrentDictionary<Type, string> NameDiscriminators = new ConcurrentDictionary<Type, string>();
-
-        /// <summary>
-        /// The empty projection.
-        /// </summary>
-        private static readonly IReadOnlyList<IRuntimeTypeInfo> EmptyProjection = new List<IRuntimeTypeInfo>();
 
         /// <summary>
         /// Gets the member name discriminator for the provided type.
@@ -87,7 +66,7 @@ namespace Kephas.Model.Elements
         {
             if (element == null)
             {
-                return EmptyProjection;
+                return Array.Empty<IRuntimeTypeInfo>();
             }
 
             return (IReadOnlyList<IRuntimeTypeInfo>)element["RuntimeProjection"];

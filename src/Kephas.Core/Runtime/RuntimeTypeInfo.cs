@@ -239,6 +239,11 @@ namespace Kephas.Runtime
         IEnumerable<IElementInfo> ITypeInfo.Members => this.Members.Values;
 
         /// <summary>
+        /// Gets the container type registry.
+        /// </summary>
+        ITypeRegistry ITypeInfo.TypeRegistry => this.TypeRegistry;
+
+        /// <summary>
         /// Gets the element annotations.
         /// </summary>
         /// <value>

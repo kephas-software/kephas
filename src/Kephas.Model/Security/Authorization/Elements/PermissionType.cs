@@ -49,7 +49,7 @@ namespace Kephas.Model.Security.Authorization.Elements
         /// <value>
         /// The granted permissions.
         /// </value>
-        public IEnumerable<IPermissionInfo> GrantedPermissions { get; private set; }
+        public IEnumerable<IPermissionInfo> GrantedPermissions { get; private set; } = Array.Empty<IPermissionInfo>();
 
         /// <summary>
         /// Gets the required permissions to access this permission.
@@ -57,7 +57,7 @@ namespace Kephas.Model.Security.Authorization.Elements
         /// <value>
         /// The required permissions.
         /// </value>
-        public IEnumerable<IPermissionInfo> RequiredPermissions { get; private set; }
+        public IEnumerable<IPermissionInfo> RequiredPermissions { get; private set; } = Array.Empty<IPermissionInfo>();
 
         /// <summary>
         /// Gets the scoping.
@@ -97,6 +97,7 @@ namespace Kephas.Model.Security.Authorization.Elements
             this.Scoping = permInfoPart?.Scoping ?? Scoping.Global;
             this.TokenName = permInfoPart?.TokenName ?? this.Name;
 
+            var typeRegistry = constructionContext.AmbientServices.TypeRegistry;
             this.GrantedPermissions = this.BaseMixins
                 .OfType<IPermissionInfo>()
                 .ToList()
@@ -106,7 +107,7 @@ namespace Kephas.Model.Security.Authorization.Elements
                     attr => attr.PermissionTypes
                         .Select(
                             t => constructionContext.ModelSpace.TryGetClassifier(
-                                t.AsRuntimeTypeInfo(),
+                                typeRegistry.GetTypeInfo(t),
                                 constructionContext)))
                 .OfType<IPermissionInfo>()
                 .Distinct()
@@ -131,11 +132,12 @@ namespace Kephas.Model.Security.Authorization.Elements
                 return baseTypes;
             }
 
+            var typeRegistry = constructionContext.AmbientServices.TypeRegistry;
             var grantedPermTypes = new HashSet<ITypeInfo>(
                 grantedAttrs
                     .Where(a => a.PermissionTypes != null)
                     .SelectMany(a => a.PermissionTypes)
-                    .Select(t => t.AsRuntimeTypeInfo()));
+                    .Select(t => typeRegistry.GetTypeInfo(t)));
 
             var grantedTypes = constructionContext.ModelSpace.Classifiers
                                 .OfType<IPermissionType>()

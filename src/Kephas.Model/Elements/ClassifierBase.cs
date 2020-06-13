@@ -62,9 +62,9 @@ namespace Kephas.Model.Elements
         protected ClassifierBase(IModelConstructionContext constructionContext, string name)
             : base(constructionContext, name)
         {
-            this.baseTypes = ModelHelper.EmptyClassifiers;
-            this.BaseMixins = ModelHelper.EmptyClassifiers;
-            this.GenericTypeArguments = ModelHelper.EmptyClassifiers;
+            this.baseTypes = Array.Empty<ITypeInfo>();
+            this.BaseMixins = Array.Empty<IClassifier>();
+            this.GenericTypeArguments = Array.Empty<ITypeInfo>();
         }
 
         /// <summary>
@@ -148,6 +148,11 @@ namespace Kephas.Model.Elements
         IEnumerable<ITypeInfo> ITypeInfo.BaseTypes => this.baseTypes;
 
         /// <summary>
+        /// Gets the container type registry.
+        /// </summary>
+        ITypeRegistry ITypeInfo.TypeRegistry => this.ModelSpace;
+
+        /// <summary>
         /// Gets a read-only list of <see cref="ITypeInfo"/> objects that represent the type parameters of a generic type definition (open generic).
         /// </summary>
         /// <value>
@@ -161,7 +166,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The generic arguments.
         /// </value>
-        public IReadOnlyList<ITypeInfo> GenericTypeArguments { get; private set; } = Array.Empty<ITypeInfo>();
+        public IReadOnlyList<ITypeInfo> GenericTypeArguments { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="ITypeInfo"/> object that represents a generic type definition from which the current generic type can be constructed.

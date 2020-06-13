@@ -8,12 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Model.Elements
 {
+    using System;
     using System.Collections.Generic;
-
     using Kephas.Model.Construction;
 
     /// <summary>
@@ -49,6 +47,6 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The element annotations.
         /// </value>
-        public override IEnumerable<IAnnotation> Annotations => ModelHelper.EmptyAnnotations;
+        public override IEnumerable<IAnnotation> Annotations => Array.Empty<IAnnotation>();
     }
 }

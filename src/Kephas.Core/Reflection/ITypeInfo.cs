@@ -87,6 +87,11 @@ namespace Kephas.Reflection
         IEnumerable<IElementInfo> Members { get; }
 
         /// <summary>
+        /// Gets the container type registry.
+        /// </summary>
+        ITypeRegistry TypeRegistry { get; }
+
+        /// <summary>
         /// Gets a member by the provided name.
         /// </summary>
         /// <param name="name">The member name.</param>

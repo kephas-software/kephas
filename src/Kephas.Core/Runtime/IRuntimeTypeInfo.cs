@@ -40,7 +40,7 @@ namespace Kephas.Runtime
         /// <summary>
         /// Gets the container type registry.
         /// </summary>
-        IRuntimeTypeRegistry TypeRegistry { get; }
+        new IRuntimeTypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Gets the default value of the type.

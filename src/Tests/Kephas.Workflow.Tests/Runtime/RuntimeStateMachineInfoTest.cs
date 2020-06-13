@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Workflow.Tests.Runtime
 {
     using System.Linq;
@@ -17,6 +15,7 @@ namespace Kephas.Workflow.Tests.Runtime
 
     using Kephas.Operations;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Workflow.AttributedModel;
     using Kephas.Workflow.Runtime;
     using NUnit.Framework;
@@ -52,7 +51,7 @@ namespace Kephas.Workflow.Tests.Runtime
         {
             var stateMachineInfo = new RuntimeStateMachineInfo(this.typeRegistry, typeof(IPluginStateMachine));
 
-            Assert.AreEqual(typeof(IPlugin).AsRuntimeTypeInfo(), stateMachineInfo.TargetType);
+            Assert.AreEqual(this.typeRegistry.GetTypeInfo(typeof(IPlugin)), stateMachineInfo.TargetType);
         }
 
         [Test]
@@ -60,7 +59,7 @@ namespace Kephas.Workflow.Tests.Runtime
         {
             var stateMachineInfo = new RuntimeStateMachineInfo(this.typeRegistry, typeof(IPluginStateMachine));
 
-            Assert.AreEqual(typeof(IPlugin).AsRuntimeTypeInfo().Properties["State"], stateMachineInfo.TargetStateProperty);
+            Assert.AreEqual(this.typeRegistry.GetTypeInfo(typeof(IPlugin)).Properties["State"], stateMachineInfo.TargetStateProperty);
         }
 
         public enum PluginState
