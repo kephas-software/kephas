@@ -33,9 +33,6 @@ namespace Kephas.Orchestration.Application
     [ProcessingPriority(Priority.Lowest)]
     public class RootAppLifecycleBehavior : AppLifecycleBehaviorBase
     {
-        private readonly IAppRuntime appRuntime;
-        private readonly IOrchestrationManager orchestrationManager;
-        private readonly IEventHub eventHub;
         private Timer? supervisorTimer;
         private IEventSubscription? restartSubscription;
 
@@ -55,11 +52,26 @@ namespace Kephas.Orchestration.Application
             ILogManager? logManager = null)
             : base(logManager)
         {
-            this.appRuntime = appRuntime;
-            this.orchestrationManager = orchestrationManager;
-            this.eventHub = eventHub;
+            this.AppRuntime = appRuntime;
+            this.OrchestrationManager = orchestrationManager;
+            this.EventHub = eventHub;
             this.SystemConfiguration = systemConfiguration;
         }
+
+        /// <summary>
+        /// Gets the application runtime.
+        /// </summary>
+        protected IAppRuntime AppRuntime { get; }
+
+        /// <summary>
+        /// Gets the orchestration manager.
+        /// </summary>
+        protected IOrchestrationManager OrchestrationManager { get; }
+
+        /// <summary>
+        /// Gets the event hub.
+        /// </summary>
+        protected IEventHub EventHub { get; }
 
         /// <summary>
         /// Gets the system configuration.
@@ -82,7 +94,7 @@ namespace Kephas.Orchestration.Application
         public override async Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
             await this.StartWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
-            this.restartSubscription = this.eventHub.Subscribe<RestartSignal>((signal, ctx, token) => this.HandleRestartSignalAsync(signal, appContext, token));
+            this.restartSubscription = this.EventHub.Subscribe<RestartSignal>((signal, ctx, token) => this.HandleRestartSignalAsync(signal, appContext, token));
         }
 
         /// <summary>
@@ -113,7 +125,7 @@ namespace Kephas.Orchestration.Application
         /// <returns>An asynchronous result.</returns>
         protected virtual async Task StartWorkerProcessesAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            if (!this.appRuntime.IsRoot())
+            if (!this.AppRuntime.IsRoot())
             {
                 return;
             }
@@ -125,7 +137,7 @@ namespace Kephas.Orchestration.Application
             }
 
             var liveApps =
-                (await this.orchestrationManager.GetLiveAppsAsync(cancellationToken: cancellationToken)
+                (await this.OrchestrationManager.GetLiveAppsAsync(cancellationToken: cancellationToken)
                     .PreserveThreadContext())
                 .ToList();
             var startTasks = new List<Task<ProcessStartResult>>();
@@ -172,7 +184,7 @@ namespace Kephas.Orchestration.Application
         /// <returns>An asynchronous result.</returns>
         protected virtual async Task StopWorkerProcessesAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            if (!this.appRuntime.IsRoot())
+            if (!this.AppRuntime.IsRoot())
             {
                 return;
             }
@@ -195,13 +207,13 @@ namespace Kephas.Orchestration.Application
 
             var logger = appContext.Logger ?? this.Logger;
             var liveApps =
-                (await this.orchestrationManager.GetLiveAppsAsync(ctx => ctx.Impersonate(appContext), cancellationToken)
+                (await this.OrchestrationManager.GetLiveAppsAsync(ctx => ctx.Impersonate(appContext), cancellationToken)
                     .PreserveThreadContext())
                 .ToList();
 
             this.Logger.Info($"Stopping worker application instances: {string.Join(", ", liveApps.Select(r => r.AppInstanceId))}");
 
-            var rootAppId = this.appRuntime.GetAppId();
+            var rootAppId = this.AppRuntime.GetAppId();
             var stopTasks = new List<Task<StopAppResponseMessage>>();
             foreach (var runtimeAppInfo in liveApps)
             {
@@ -266,7 +278,7 @@ namespace Kephas.Orchestration.Application
         protected virtual IEnumerable<KeyValuePair<string, AppSettings>> GetWorkerSettings(IEnumerable<IRuntimeAppInfo> liveApps)
         {
             // get all the workers which are not already started and are not root.
-            var rootAppId = this.appRuntime.GetAppId()!;
+            var rootAppId = this.AppRuntime.GetAppId()!;
             var appInstanceEntries = this.SystemConfiguration.Settings.Instances ?? new Dictionary<string, AppSettings>();
             return appInstanceEntries
                 .Where(appInstanceEntry => !rootAppId.Equals(appInstanceEntry.Key, StringComparison.OrdinalIgnoreCase)
@@ -330,7 +342,7 @@ namespace Kephas.Orchestration.Application
         /// <returns>An asynchronous result yielding the <see cref="ProcessStartResult"/>.</returns>
         protected virtual async Task<ProcessStartResult> StartWorkerProcessAsync(IAppInfo appInfo, IAppContext appContext, CancellationToken cancellationToken)
         {
-            return (ProcessStartResult) await this.orchestrationManager
+            return (ProcessStartResult) await this.OrchestrationManager
                 .StartAppAsync(appInfo, new Expando(), ctx => ctx.Merge(appContext), CancellationToken.None)
                 .PreserveThreadContext();
         }
@@ -359,7 +371,7 @@ namespace Kephas.Orchestration.Application
                 return new StopAppResponseMessage { ProcessId = runtimeAppInfo.ProcessId };
             }
 
-            var result = await this.orchestrationManager
+            var result = await this.OrchestrationManager
                 .StopAppAsync(runtimeAppInfo, ctx => ctx.Impersonate(appContext), cancellationToken)
                 .PreserveThreadContext();
 
