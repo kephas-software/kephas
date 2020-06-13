@@ -32,15 +32,8 @@ namespace Kephas.Messaging
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageHandlerBase{TMessage, TResponse}"/> class.
         /// </summary>
-        protected MessageHandlerBase()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageHandlerBase{TMessage, TResponse}"/> class.
-        /// </summary>
         /// <param name="logManager">Manager for log.</param>
-        protected MessageHandlerBase(ILogManager logManager)
+        protected MessageHandlerBase(ILogManager? logManager = null)
             : base(logManager)
         {
         }
