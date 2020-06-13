@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas.Workflow
 {
     using System;
@@ -35,19 +37,23 @@ namespace Kephas.Workflow
     {
         private readonly IContextFactory contextFactory;
         private readonly ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories;
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultWorkflowProcessor"/> class.
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="behaviorFactories">The behavior factories.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         public DefaultWorkflowProcessor(
             IContextFactory contextFactory,
-            ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories)
+            ICollection<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>> behaviorFactories,
+            IRuntimeTypeRegistry typeRegistry)
             : base(contextFactory)
         {
             this.contextFactory = contextFactory;
             this.behaviorFactories = behaviorFactories;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -250,7 +256,7 @@ namespace Kephas.Workflow
         {
             // TODO fix the check of the activity type
             var behaviors = this.behaviorFactories
-                .Where(f => f.Metadata.ActivityType == null || activityInfo == f.Metadata.ActivityType.AsRuntimeTypeInfo())
+                .Where(f => f.Metadata.ActivityType == null || activityInfo == this.typeRegistry.GetTypeInfo(f.Metadata.ActivityType))
                 .Order()
                 .GetServices()
                 .ToList();

@@ -38,6 +38,11 @@ namespace Kephas.Runtime
         TypeInfo TypeInfo { get; }
 
         /// <summary>
+        /// Gets the container type registry.
+        /// </summary>
+        IRuntimeTypeRegistry TypeRegistry { get; }
+
+        /// <summary>
         /// Gets the default value of the type.
         /// </summary>
         /// <value>

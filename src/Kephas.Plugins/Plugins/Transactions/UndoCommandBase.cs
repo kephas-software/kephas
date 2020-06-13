@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Services;
-
 namespace Kephas.Plugins.Transactions
 {
     using System;
@@ -53,13 +51,13 @@ namespace Kephas.Plugins.Transactions
         /// </summary>
         /// <param name="name">The command name.</param>
         /// <param name="args">The command arguments.</param>
-        public UndoCommandBase(string name, params string[] args)
+        protected UndoCommandBase(string name, params string[] args)
         {
             this.Index = Interlocked.Increment(ref index);
             this.Name = name;
             this.Args = args;
 
-            Activators.TryAdd(name, (ctorArgs, ctx) => (UndoCommandBase)this.GetType().AsRuntimeTypeInfo().CreateInstance(new object[] { ctorArgs }));
+            Activators.TryAdd(name, (ctorArgs, ctx) => (UndoCommandBase)Activator.CreateInstance(this.GetType(), new object[] { ctorArgs }));
         }
 
         /// <summary>

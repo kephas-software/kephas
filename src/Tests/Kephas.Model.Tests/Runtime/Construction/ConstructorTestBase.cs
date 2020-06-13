@@ -57,7 +57,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
 
             var configurators = new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>();
 
-            var factory = new DefaultRuntimeModelElementFactory(constructors, configurators);
+            var factory = new DefaultRuntimeModelElementFactory(constructors, configurators, new RuntimeTypeRegistry());
             return factory;
         }
 

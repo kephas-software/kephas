@@ -27,7 +27,7 @@ namespace Kephas.Plugins.Transactions
         /// <param name="sourceFile">The source file.</param>
         /// <param name="targetFile">The target file.</param>
         public MoveFileUndoCommand(string sourceFile, string targetFile)
-            : base(CommandName, new string[] { sourceFile, targetFile })
+            : base(CommandName, new[] { sourceFile, targetFile })
         {
         }
 

@@ -16,13 +16,12 @@ namespace Kephas.Workflow.Tests
 
     using Kephas.Composition;
     using Kephas.Dynamic;
+    using Kephas.Runtime;
     using Kephas.Testing;
     using Kephas.Workflow.Behaviors;
     using Kephas.Workflow.Behaviors.Composition;
     using Kephas.Workflow.Reflection;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -32,7 +31,7 @@ namespace Kephas.Workflow.Tests
         public async Task ExecuteAsync_basic_flow()
         {
             var ctxFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), Substitute.For<IWorkflowProcessor>()));
-            var processor = new DefaultWorkflowProcessor(ctxFactory, new List<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>>());
+            var processor = new DefaultWorkflowProcessor(ctxFactory, new List<IExportFactory<IActivityBehavior, ActivityBehaviorMetadata>>(), new RuntimeTypeRegistry());
 
             var activityInfo = Substitute.For<IActivityInfo>();
             var activity = Substitute.For<IActivity>();

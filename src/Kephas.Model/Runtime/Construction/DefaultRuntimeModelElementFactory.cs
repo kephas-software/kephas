@@ -30,14 +30,7 @@ namespace Kephas.Model.Runtime.Construction
     [OverridePriority(Priority.Low)]
     public class DefaultRuntimeModelElementFactory : IRuntimeModelElementFactory
     {
-        /// <summary>
-        /// The element information factories.
-        /// </summary>
         private readonly IDictionary<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata> modelElementConstructors;
-
-        /// <summary>
-        /// The model element configurators.
-        /// </summary>
         private readonly IDictionary<IRuntimeTypeInfo, List<IRuntimeModelElementConfigurator>> modelElementConfigurators;
 
         /// <summary>
@@ -45,9 +38,11 @@ namespace Kephas.Model.Runtime.Construction
         /// </summary>
         /// <param name="modelElementConstructors">The element information export factories.</param>
         /// <param name="modelElementConfigurators">The model element configurators.</param>
+        /// <param name="typeRegistry">The type registry.</param>
         public DefaultRuntimeModelElementFactory(
             ICollection<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>> modelElementConstructors,
-            ICollection<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>> modelElementConfigurators)
+            ICollection<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>> modelElementConfigurators,
+            IRuntimeTypeRegistry typeRegistry)
         {
             Requires.NotNull(modelElementConstructors, nameof(modelElementConstructors));
 
@@ -60,7 +55,7 @@ namespace Kephas.Model.Runtime.Construction
                  group cfg by cfg.Metadata.RuntimeElementType
                  into cfgGroup
                 select cfgGroup).ToDictionary(
-                     g => g.Key.AsRuntimeTypeInfo(),
+                     g => typeRegistry.GetTypeInfo(g.Key),
                      g => g.OrderBy(e => e.Metadata.ProcessingPriority).Select(e => e.CreateExport().Value).ToList());
         }
 

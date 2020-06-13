@@ -30,7 +30,7 @@ namespace Kephas.Model.Runtime.Construction.Builders
         /// <param name="constructionContext">Context for the construction.</param>
         /// <param name="runtimeElement">The runtime element.</param>
         public ValueTypeBuilder(IModelConstructionContext constructionContext, Type runtimeElement)
-            : this(constructionContext, runtimeElement.AsRuntimeTypeInfo())
+            : this(constructionContext, constructionContext.AmbientServices.TypeRegistry.GetTypeInfo(runtimeElement))
         {
         }
 

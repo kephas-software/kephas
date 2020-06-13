@@ -70,7 +70,8 @@ namespace Kephas.Model.Tests
         {
             return new DefaultRuntimeModelElementFactory(
                 new List<IExportFactory<IRuntimeModelElementConstructor, RuntimeModelElementConstructorMetadata>>(),
-                new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>());
+                new List<IExportFactory<IRuntimeModelElementConfigurator, RuntimeModelElementConfiguratorMetadata>>(),
+                new RuntimeTypeRegistry());
         }
     }
 }

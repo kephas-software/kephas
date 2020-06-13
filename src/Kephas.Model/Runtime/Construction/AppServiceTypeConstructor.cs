@@ -55,7 +55,8 @@ namespace Kephas.Model.Runtime.Construction
                 appServiceAttr = appServiceInfos.FirstOrDefault(i => i.contractType == runtimeElement.Type).appServiceInfo;
             }
 
-            var appServiceRuntimeElement = appServiceAttr?.ContractType?.AsRuntimeTypeInfo() ?? runtimeElement;
+            var contractType = appServiceAttr?.ContractType;
+            var appServiceRuntimeElement = contractType == null ? runtimeElement : runtimeElement.TypeRegistry.GetTypeInfo(contractType);
 
             return new AppServiceType(constructionContext, appServiceAttr, this.TryComputeName(appServiceRuntimeElement, constructionContext));
         }

@@ -36,13 +36,11 @@ namespace Kephas.Model.Runtime.Construction.Annotations
         protected override Annotation TryCreateModelElementCore(IModelConstructionContext constructionContext, Attribute runtimeElement)
         {
             var annotationType = typeof(AttributeAnnotation<>).MakeGenericType(runtimeElement.GetType());
-            var annotation = annotationType.AsRuntimeTypeInfo().CreateInstance(
-                new object[]
-                {
-                    constructionContext,
-                    this.TryComputeNameCore(runtimeElement, constructionContext),
-                    runtimeElement,
-                });
+            var annotation = Activator.CreateInstance(
+                annotationType,
+                constructionContext,
+                this.TryComputeNameCore(runtimeElement, constructionContext),
+                runtimeElement);
             return (Annotation)annotation;
         }
     }

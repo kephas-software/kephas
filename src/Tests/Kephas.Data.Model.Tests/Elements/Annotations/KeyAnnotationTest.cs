@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Runtime;
+
 namespace Kephas.Data.Model.Tests.Elements.Annotations
 {
     using System;
@@ -34,7 +36,10 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
         [Test]
         public void Configure()
         {
-            var context = new ModelConstructionContext(Substitute.For<ICompositionContext>());
+            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            var compositionContext = Substitute.For<ICompositionContext>();
+            compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
+            var context = new ModelConstructionContext(compositionContext);
             var modelSpace = new DefaultModelSpace(context);
             context.ModelSpace = modelSpace;
 
@@ -68,7 +73,7 @@ namespace Kephas.Data.Model.Tests.Elements.Annotations
             foreach (var propName in properties)
             {
                 var property = new Property(context, propName);
-                property.ValueType = typeof(string).AsRuntimeTypeInfo();
+                property.ValueType = context.AmbientServices.TypeRegistry.GetTypeInfo(typeof(string));
                 ((IConstructibleElement)classifier).AddMember(property);
             }
 

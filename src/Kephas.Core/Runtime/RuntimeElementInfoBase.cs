@@ -17,11 +17,6 @@ namespace Kephas.Runtime
     public abstract class RuntimeElementInfoBase : Expando, IExpando
     {
         /// <summary>
-        /// Gets the container type serviceRegistry.
-        /// </summary>
-        protected internal readonly IRuntimeTypeRegistry TypeRegistry;
-
-        /// <summary>
         /// Gets the logger.
         /// </summary>
         protected readonly ILogger? Logger;
@@ -41,5 +36,10 @@ namespace Kephas.Runtime
             this.TypeRegistry = typeRegistry;
             this.Logger = logger;
         }
+
+        /// <summary>
+        /// Gets the container type registry.
+        /// </summary>
+        public IRuntimeTypeRegistry TypeRegistry { get; }
     }
 }
