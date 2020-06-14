@@ -48,18 +48,21 @@ namespace Kephas.Orchestration.Application
         /// <param name="orchestrationManager">The orchestration manager.</param>
         /// <param name="systemConfiguration">The system configuration.</param>
         /// <param name="eventHub">The event hub.</param>
+        /// <param name="appSetupService">The application setup service.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public RootAppLifecycleBehavior(
             IAppRuntime appRuntime,
             IOrchestrationManager orchestrationManager,
             IConfiguration<SystemSettings> systemConfiguration,
             IEventHub eventHub,
+            IAppSetupService appSetupService,
             ILogManager? logManager = null)
             : base(logManager)
         {
             this.AppRuntime = appRuntime;
             this.OrchestrationManager = orchestrationManager;
             this.EventHub = eventHub;
+            AppSetupService = appSetupService;
             this.SystemConfiguration = systemConfiguration;
         }
 
@@ -77,6 +80,11 @@ namespace Kephas.Orchestration.Application
         /// Gets the event hub.
         /// </summary>
         protected IEventHub EventHub { get; }
+
+        /// <summary>
+        /// Gets the application setup service.
+        /// </summary>
+        protected IAppSetupService AppSetupService { get; }
 
         /// <summary>
         /// Gets the system configuration.
@@ -431,6 +439,15 @@ namespace Kephas.Orchestration.Application
             catch (Exception ex)
             {
                 this.Logger.Error(ex, "Error while stopping the worker application instances.");
+            }
+
+            try
+            {
+                await this.AppSetupService.SetupAsync(appContext, cancellationToken).PreserveThreadContext();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while setting up the application during the restart procedure.");
             }
 
             try
