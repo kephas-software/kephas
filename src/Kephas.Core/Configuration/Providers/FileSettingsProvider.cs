@@ -106,7 +106,7 @@ namespace Kephas.Configuration.Providers
         /// <param name="settings">The settings to be updated.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+        public virtual async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(settings, nameof(settings));
 
@@ -129,7 +129,7 @@ namespace Kephas.Configuration.Providers
                 ctx => ctx
                     .Indent(true)
                     .MediaType(mediaType)
-                    .IncludeTypeInfo(false),
+                    .IncludeTypeInfo(true),
                 cancellationToken: cancellationToken)
                 .PreserveThreadContext();
 
