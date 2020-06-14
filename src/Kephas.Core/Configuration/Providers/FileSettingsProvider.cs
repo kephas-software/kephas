@@ -129,7 +129,7 @@ namespace Kephas.Configuration.Providers
                 ctx => ctx
                     .Indent(true)
                     .MediaType(mediaType)
-                    .IncludeTypeInfo(true),
+                    .IncludeTypeInfo(false),
                 cancellationToken: cancellationToken)
                 .PreserveThreadContext();
 
