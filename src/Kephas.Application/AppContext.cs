@@ -12,6 +12,7 @@ namespace Kephas.Application
 {
     using System;
 
+    using Kephas.Commands;
     using Kephas.Services;
 
     /// <summary>
@@ -28,11 +29,11 @@ namespace Kephas.Application
         public AppContext(
             IAmbientServices ambientServices,
             IAppRuntime appRuntime = null,
-            IAppArgs appArgs = null)
+            IArgs appArgs = null)
             : base(ambientServices)
         {
-            this.AppRuntime = appRuntime ?? this.AmbientServices?.AppRuntime;
-            this.AppArgs = appArgs ?? new AppArgs();
+            this.AppRuntime = appRuntime ?? this.AmbientServices?.AppRuntime!;
+            this.AppArgs = appArgs ?? new Args();
         }
 
         /// <summary>
@@ -46,7 +47,7 @@ namespace Kephas.Application
         /// <value>
         /// The application arguments.
         /// </value>
-        public IAppArgs AppArgs { get; }
+        public IArgs AppArgs { get; }
 
         /// <summary>
         /// Gets or sets the application root exception.

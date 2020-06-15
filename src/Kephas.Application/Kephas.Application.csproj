@@ -16,10 +16,11 @@
         <Description>
             Provides an abstract infrastructure for applications based on Kephas Framework.
             Typically used areas and classes/interfaces/services:
-            - AppBase, IAppArgs, AppArgs.
+            - AppBase, IAppContext.
             - IAppManager, DefaultAppManager.
             - IFeatureManager, FeatureManagerBase.
             - Interaction: FeatureStartedEvent, FeatureStartingEvent, FeatureStoppedEvent, FeatureStoppingEvent.
+            - Configuration: SystemSettings, AppSettings, HostSettings.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>

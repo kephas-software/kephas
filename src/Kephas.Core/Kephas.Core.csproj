@@ -19,7 +19,7 @@
             - Ambient services: IAmbientServices, AmbientServices.
             - Dynamic reflection: RuntimeTypeInfo.
             - Composition/Dependency Injection: ICompositionContext, LiteCompositionContainerBuilder, IExportFactory.
-            - Application management: IAppRuntime, StaticAppRuntime, DynamicAppRuntime, IAppLifecyclebehavior.
+            - Application management: IAppRuntime, StaticAppRuntime, DynamicAppRuntime, IAppLifecyclebehavior, AppIdentity.
             - Serialization: ISerializationService.
             - Operations: IOperation, OperationResult.
             - Services: SingletonAppServiceContractAttribute, AppServiceContractAttribute, OverridePriorityAttribute, ProcessingPriorityAttribute.
@@ -28,7 +28,8 @@
             - Cryptography: IEncryptionService, IHashingService.
             - Data: IIdentifiable, IIdGenerator.
             - Diagnostics: Profiler, IProcessStarter.
-            - Interaction: IEventHub.
+            - Interaction: IEventHub, ISignal.
+            - Commands: Command, IArgs, Args.
 
             Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
         </Description>

@@ -7,7 +7,6 @@
 
 namespace Kephas.Commands
 {
-    using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
@@ -37,7 +36,7 @@ namespace Kephas.Commands
             Requires.NotNullOrEmpty(name, nameof(name));
 
             this.Name = name;
-            this.Args = args ?? new AppArgs();
+            this.Args = args ?? new Args();
         }
 
         /// <summary>
@@ -60,6 +59,13 @@ namespace Kephas.Commands
             return new Command(commandLine);
         }
 
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return $"{this.Name} {this.Args.AsArgs()}";
+        }
+
         /// <summary>
         /// Parses the command line and returns the parts.
         /// </summary>
@@ -70,7 +76,7 @@ namespace Kephas.Commands
             var commandIndex = commandLine.IndexOf(" ");
             var name = commandIndex <= 0 ? commandLine : commandLine.Substring(0, commandIndex);
             commandLine = commandIndex <= 0 ? string.Empty : commandLine.Substring(commandIndex).Trim();
-            var commandArgs = new AppArgs(commandLine);
+            var commandArgs = new Args(commandLine);
             return (name, commandArgs);
         }
     }

@@ -16,6 +16,7 @@ namespace Kephas.Application
     using System.Runtime.CompilerServices;
 
     using Kephas.Application.Reflection;
+    using Kephas.Commands;
     using Kephas.Diagnostics.Contracts;
 
     /// <summary>
@@ -62,7 +63,7 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Register the application arguments as <see cref="IAppArgs"/> service.
+        /// Register the application arguments as <see cref="IArgs"/> service.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="args">The application arguments.</param>
@@ -74,11 +75,11 @@ namespace Kephas.Application
             // register the app args if not already registered or the raw args are provided
             if (args != null)
             {
-                ambientServices.Register<IAppArgs>(b => b.WithInstance(new AppArgs(args)));
+                ambientServices.Register<IArgs>(b => b.WithInstance(new Args(args)));
             }
-            else if (!ambientServices.IsRegistered(typeof(IAppArgs)))
+            else if (!ambientServices.IsRegistered(typeof(IArgs)))
             {
-                ambientServices.Register<IAppArgs>(b => b.WithInstance(new AppArgs()));
+                ambientServices.Register<IArgs>(b => b.WithInstance(new Args()));
             }
 
             return ambientServices;

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppArgs.cs" company="Kephas Software SRL">
+// <copyright file="Args.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,83 +8,71 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application
+namespace Kephas.Commands
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
     /// <summary>
     /// Settings retrieved from the application command line arguments.
     /// </summary>
-    public class AppArgs : Expando, IAppArgs
+    public class Args : Expando, IArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppArgs"/> class.
+        /// Initializes a new instance of the <see cref="Args"/> class.
         /// </summary>
-        public AppArgs()
+        public Args()
             : this(ComputeArgs(Environment.GetCommandLineArgs()))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppArgs"/> class.
+        /// Initializes a new instance of the <see cref="Args"/> class.
         /// </summary>
         /// <param name="appArgs">The application arguments.</param>
-        public AppArgs(IEnumerable<string> appArgs)
+        public Args(IEnumerable<string> appArgs)
             : this(ComputeArgs(appArgs))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppArgs"/> class.
+        /// Initializes a new instance of the <see cref="Args"/> class.
         /// </summary>
         /// <param name="commandLine">The command line.</param>
-        public AppArgs(string commandLine)
+        public Args(string commandLine)
             : this(ComputeArgs(commandLine))
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppArgs"/> class.
+        /// Initializes a new instance of the <see cref="Args"/> class.
         /// </summary>
         /// <param name="argValues">The argument values.</param>
-        public AppArgs(IDictionary<string, object?> argValues)
+        public Args(IDictionary<string, object?> argValues)
             : base(argValues)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppArgs"/> class.
+        /// Initializes a new instance of the <see cref="Args"/> class.
         /// </summary>
         /// <param name="args">The argument values.</param>
-        public AppArgs(IExpando args)
+        public Args(IExpando args)
             : this(args.ToDictionary())
         {
-        }
-
-        /// <summary>
-        /// Converts the provided expando arguments to <see cref="IAppArgs"/>.
-        /// </summary>
-        /// <param name="args">The expando arguments.</param>
-        /// <returns>The same instance, if it is convertible to <see cref="IAppArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
-        public static IAppArgs AsAppArgs(IExpando args)
-        {
-            Requires.NotNull(args, nameof(args));
-            return args is IAppArgs appArgs ? appArgs : new AppArgs(args);
         }
 
         /// <summary>
         /// Converts this app arguments list to a list of string arguments for use in command lines.
         /// </summary>
         /// <returns>A list of string arguments.</returns>
-        public virtual IEnumerable<string> ToArgs()
+        public virtual IEnumerable<string> ToCommandArgs()
         {
-            return ToArgs(this.ToDictionary());
+            return this.ToDictionary().ToCommandArgs();
         }
 
         /// <summary>
@@ -95,28 +83,7 @@ namespace Kephas.Application
         /// </returns>
         public override string ToString()
         {
-            return string.Join(" ", this.ToArgs());
-        }
-
-        /// <summary>
-        /// Converts the app arguments list to a list of string arguments for use in command lines.
-        /// </summary>
-        /// <param name="arguments">The arguments as a dictionary.</param>
-        /// <returns>A list of string arguments.</returns>
-        protected static IEnumerable<string> ToArgs(IDictionary<string, object?> arguments)
-        {
-            static string ToParamValue(object? o) =>
-                o switch
-                {
-                    null => string.Empty,
-                    bool boolean => $"={boolean.ToString().ToLower()}",
-                    int integer => $"={integer}",
-                    DateTime dateTime => $"=\"{dateTime:s}\"",
-                    DateTimeOffset dateTimeOffset => $"=\"{dateTimeOffset:s}\"",
-                    _ => $"=\"{o?.ToString().Replace("\"", "\"\"")}\""
-                };
-
-            return arguments.Select(a => $"{a.Key}{ToParamValue(a.Value)}");
+            return string.Join(" ", this.ToCommandArgs());
         }
 
         /// <summary>

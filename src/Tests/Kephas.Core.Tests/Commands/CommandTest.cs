@@ -5,8 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Commands.Tests
+namespace Kephas.Core.Tests.Commands
 {
+    using Kephas.Commands;
+
     using NUnit.Framework;
 
     [TestFixture]

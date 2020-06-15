@@ -14,10 +14,11 @@ namespace Kephas.Application.AspNetCore
     using Kephas.Application;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Kephas.Commands;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
-    /// The OWIN web application context.
+    /// The ASP.NET application context.
     /// </summary>
     public class AspNetAppContext : AppContext, IAspNetAppContext
     {
@@ -35,7 +36,7 @@ namespace Kephas.Application.AspNetCore
             IConfiguration configuration,
             IAmbientServices ambientServices = null,
             IAppRuntime appRuntime = null,
-            IAppArgs appArgs = null)
+            IArgs appArgs = null)
             : base(ambientServices, appRuntime, appArgs)
         {
             this.HostEnvironment = hostEnvironment;

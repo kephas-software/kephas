@@ -15,6 +15,7 @@ namespace Kephas.Application
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Commands;
     using Kephas.Logging;
     using Kephas.Resources;
     using Kephas.Threading.Tasks;
@@ -388,7 +389,7 @@ namespace Kephas.Application
         {
             var appContext = new AppContext(
                                      ambientServices,
-                                     appArgs: ambientServices.GetService<IAppArgs>())
+                                     appArgs: ambientServices.GetService<IArgs>())
             {
                 Logger = this.Logger,
             };

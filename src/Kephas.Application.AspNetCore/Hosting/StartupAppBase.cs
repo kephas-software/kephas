@@ -14,6 +14,7 @@ namespace Kephas.Application.AspNetCore.Hosting
     using System.Threading.Tasks;
 
     using Kephas.Application.AspNetCore.Configuration;
+    using Kephas.Commands;
     using Kephas.Extensions.Configuration;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
@@ -200,7 +201,7 @@ namespace Kephas.Application.AspNetCore.Hosting
                 this.HostEnvironment,
                 this.Configuration,
                 this.AmbientServices,
-                appArgs: ambientServices.GetService<IAppArgs>());
+                appArgs: ambientServices.GetService<IArgs>());
             return appContext;
         }
     }
