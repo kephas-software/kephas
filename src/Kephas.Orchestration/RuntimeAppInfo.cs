@@ -12,10 +12,12 @@ namespace Kephas.Orchestration
 {
     using System.Collections.Generic;
 
+    using Kephas.Dynamic;
+
     /// <summary>
     /// Runtime information about the application.
     /// </summary>
-    public class RuntimeAppInfo : IRuntimeAppInfo
+    public class RuntimeAppInfo : Expando, IRuntimeAppInfo
     {
         /// <summary>
         /// Gets or sets the identifier of the application.
