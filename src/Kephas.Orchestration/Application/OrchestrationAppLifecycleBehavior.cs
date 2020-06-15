@@ -74,6 +74,8 @@ namespace Kephas.Orchestration.Application
                     appStartedEvent,
                     ctx => ctx.Impersonate(appContext),
                     cancellationToken).PreserveThreadContext();
+
+                this.Logger.Debug("Notified itself and peers that it is started.");
             }
             catch (Exception ex)
             {

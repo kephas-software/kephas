@@ -164,9 +164,11 @@ namespace Kephas.Orchestration
 
             await this.InitializeLiveAppsAsync(cancellationToken).PreserveThreadContext();
 
-            this.appStartedSubscription = this.EventHub.Subscribe<AppStartedEvent>(this.OnAppStartedAsync);
-            this.appStoppedSubscription = this.EventHub.Subscribe<AppStoppedEvent>(this.OnAppStoppedAsync);
-            this.appHeartbeatSubscription = this.EventHub.Subscribe<AppHeartbeatEvent>(this.OnAppHeartbeatAsync);
+            this.appStartedSubscription = this.EventHub.Subscribe<AppStartedEvent>(this.HandleAppStartedAsync);
+            this.appStoppedSubscription = this.EventHub.Subscribe<AppStoppedEvent>(this.HandleAppStoppedAsync);
+            this.appHeartbeatSubscription = this.EventHub.Subscribe<AppHeartbeatEvent>(this.HandleAppHeartbeatAsync);
+
+            this.Logger.Debug("The orchestration manager is initialized.");
         }
 
         /// <summary>
@@ -366,7 +368,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task OnAppStartedAsync(AppStartedEvent appEvent, IContext context, CancellationToken cancellationToken)
+        protected virtual Task HandleAppStartedAsync(AppStartedEvent appEvent, IContext context, CancellationToken cancellationToken)
         {
             this.Logger.Info("App started: {appInstance}.", appEvent?.AppInfo);
 
@@ -397,7 +399,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task OnAppStoppedAsync(AppStoppedEvent appEvent, IContext context, CancellationToken cancellationToken)
+        protected virtual Task HandleAppStoppedAsync(AppStoppedEvent appEvent, IContext context, CancellationToken cancellationToken)
         {
             this.Logger.Info("App stopped: {appInstance}.", appEvent?.AppInfo);
 
@@ -420,7 +422,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task OnAppHeartbeatAsync(AppHeartbeatEvent appEvent, IContext context, CancellationToken cancellationToken)
+        protected virtual Task HandleAppHeartbeatAsync(AppHeartbeatEvent appEvent, IContext context, CancellationToken cancellationToken)
         {
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)

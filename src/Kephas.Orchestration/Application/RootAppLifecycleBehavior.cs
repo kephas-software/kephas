@@ -62,7 +62,7 @@ namespace Kephas.Orchestration.Application
             this.AppRuntime = appRuntime;
             this.OrchestrationManager = orchestrationManager;
             this.EventHub = eventHub;
-            AppSetupService = appSetupService;
+            this.AppSetupService = appSetupService;
             this.SystemConfiguration = systemConfiguration;
         }
 
