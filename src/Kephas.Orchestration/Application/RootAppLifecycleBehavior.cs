@@ -281,7 +281,7 @@ namespace Kephas.Orchestration.Application
                                             .ToList();
             foreach (var workerProcessResult in this.WorkerProcesses)
             {
-                if (workerProcessResult.StartException == null)
+                if (workerProcessResult.StartException != null)
                 {
                     workerProcessResult.Dispose();
                     continue;
