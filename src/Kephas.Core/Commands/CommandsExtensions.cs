@@ -19,7 +19,6 @@ namespace Kephas.Commands
     /// </summary>
     public static class CommandsExtensions
     {
-
         /// <summary>
         /// Converts the provided expando arguments to <see cref="IArgs"/>.
         /// </summary>
@@ -29,6 +28,17 @@ namespace Kephas.Commands
         {
             Requires.NotNull(args, nameof(args));
             return args is IArgs appArgs ? appArgs : new Args(args);
+        }
+
+        /// <summary>
+        /// Converts the provided expando arguments to <see cref="IArgs"/>.
+        /// </summary>
+        /// <param name="args">The expando arguments.</param>
+        /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
+        public static IArgs AsArgs(this IDictionary<string, object?> args)
+        {
+            Requires.NotNull(args, nameof(args));
+            return new Args(args);
         }
 
         /// <summary>

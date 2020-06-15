@@ -156,8 +156,8 @@ namespace Kephas.Application
                     args.Remove(propInfo.Name);
                 }
             }
-            
-            return $"{commandName} {args.ToCommandArgs()}";
+
+            return $"{commandName} {args.AsArgs()}";
         }
     }
 }
