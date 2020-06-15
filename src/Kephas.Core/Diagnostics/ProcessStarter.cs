@@ -16,6 +16,7 @@ namespace Kephas.Diagnostics
     using System.Threading.Tasks;
 
     using Kephas.Logging;
+    using Kephas.Operations;
 
     /// <summary>
     /// A process starter.

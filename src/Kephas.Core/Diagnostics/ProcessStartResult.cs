@@ -20,7 +20,7 @@ namespace Kephas.Diagnostics
     /// <summary>
     /// Encapsulates the result of the process start.
     /// </summary>
-    public class ProcessStartResult : OperationResult, IDisposable
+    public class ProcessStartResult : OperationResult<Process>, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessStartResult"/> class.
@@ -28,16 +28,24 @@ namespace Kephas.Diagnostics
         /// <param name="process">The process.</param>
         /// <param name="startException">The start exception (optional).</param>
         public ProcessStartResult(Process process, Exception? startException = null)
+            : base(process)
         {
             Requires.NotNull(process, nameof(process));
 
             this.ErrorData = new StringBuilder();
             this.OutputData = new StringBuilder();
 
-            this.Process = process;
             this.Process.OutputDataReceived += (s, a) => this.OutputData.Append(a.Data);
             this.Process.ErrorDataReceived += (s, a) => this.ErrorData.Append(a.Data);
-            this.StartException = startException;
+            if (startException == null)
+            {
+                this.Complete();
+            }
+            else
+            {
+                this.StartException = startException;
+                this.Fail(startException);
+            }
         }
 
         /// <summary>
@@ -46,7 +54,7 @@ namespace Kephas.Diagnostics
         /// <value>
         /// The process.
         /// </value>
-        public Process Process { get; }
+        public Process Process => this.Value;
 
         /// <summary>
         /// Gets the start exception.
@@ -71,6 +79,18 @@ namespace Kephas.Diagnostics
         /// Information describing the output.
         /// </value>
         public StringBuilder OutputData { get; set; }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var processName = this.Process.HasExited ? "<exited>" : this.Process.ProcessName;
+            return $"{processName} {base.ToString()}";
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged
