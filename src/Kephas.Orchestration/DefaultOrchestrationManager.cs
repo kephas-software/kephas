@@ -510,6 +510,7 @@ namespace Kephas.Orchestration
             var appArgs = new Args(string.Empty)
             {
                 [AppRuntimeBase.AppIdKey] = appInfo.Identity.Id,
+                [AppRuntimeBase.AppInstanceIdKey] = appInfo[AppRuntimeBase.AppInstanceIdKey],
             }.Merge(arguments);
 
             return appArgs.ToCommandArgs();

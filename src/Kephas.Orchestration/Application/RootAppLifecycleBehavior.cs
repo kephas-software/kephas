@@ -40,6 +40,7 @@ namespace Kephas.Orchestration.Application
         private IEventSubscription? restartSubscription;
         private IEventSubscription? setupQuerySubscription;
         private bool enableAppSetup = true;
+        private int workerCounter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RootAppLifecycleBehavior"/> class.
@@ -202,7 +203,9 @@ namespace Kephas.Orchestration.Application
 
                 this.enableAppSetup = false;
 
-                var appInfo = new AppInfo(appId) { [nameof(AppSettings)] = appSettings };
+                var counter = Interlocked.Increment(ref this.workerCounter);
+                var appInstanceId = $"{appId}-{counter}";
+                var appInfo = new AppInfo(appId) { [nameof(AppSettings)] = appSettings, [AppRuntimeBase.AppInstanceIdKey] = appInstanceId };
                 startTasks.Add(this.StartWorkerProcessAsync(appInfo, appSettings, appContext, cancellationToken));
             }
 
