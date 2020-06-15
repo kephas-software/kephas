@@ -14,7 +14,6 @@ namespace Kephas.Diagnostics
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Logging;
     using Kephas.Operations;
 
@@ -51,9 +50,13 @@ namespace Kephas.Diagnostics
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task<ProcessStartResult> StartAsync(Action<Process>? config = null, CancellationToken cancellationToken = default)
+        public async Task<ProcessStartResult> StartAsync(
+            Action<Process>? config = null,
+            CancellationToken cancellationToken = default)
         {
             var processStartInfo = this.ProcessStartInfo;
+
+            await Task.Yield();
 
             var processCommandLine = $"{this.ProcessStartInfo.FileName} {this.ProcessStartInfo.Arguments}";
 
@@ -61,36 +64,31 @@ namespace Kephas.Diagnostics
 
             var process = new Process { StartInfo = processStartInfo };
 
-            var taskCompletionSource = new TaskCompletionSource<ProcessStartResult>();
+            try
+            {
+                // allow notifications over Exited & the other events.
+                process.EnableRaisingEvents = true;
 
-            Task.Factory.StartNew(
-                () =>
+                config?.Invoke(process);
+
+                var started = process.Start();
+                if (!started)
                 {
-                    try
-                    {
-                        // allow notifications over Exited & the other events.
-                        process.EnableRaisingEvents = true;
+                    this.Logger.Fatal(
+                        "There was an error starting process {commandLine}. The runtime indicated that the process did not start.",
+                        processCommandLine);
+                    throw new ProcessStartException(
+                        $"There was an error starting process {processCommandLine}. The runtime indicated that the process did not start.");
+                }
 
-                        config?.Invoke(process);
+                this.Logger.Info("Started '{commandLine}' (#{processId}).", processCommandLine, process.Id);
 
-                        var started = process.Start();
-                        if (!started)
-                        {
-                            this.Logger.Fatal("There was an error starting process {commandLine}. The runtime indicated that the process did not start.", processCommandLine);
-                            throw new ProcessStartException($"There was an error starting process {processCommandLine}. The runtime indicated that the process did not start.");
-                        }
-
-                        this.Logger.Info("Started '{commandLine}' (#{processId}).", processCommandLine, process.Id);
-
-                        taskCompletionSource.SetResult(new ProcessStartResult(process));
-                    }
-                    catch (Exception ex)
-                    {
-                        taskCompletionSource.SetResult(new ProcessStartResult(process, ex));
-                    }
-                }, cancellationToken);
-
-            return taskCompletionSource.Task;
+                return new ProcessStartResult(process);
+            }
+            catch (Exception ex)
+            {
+                return new ProcessStartResult(process, ex);
+            }
         }
     }
 }
