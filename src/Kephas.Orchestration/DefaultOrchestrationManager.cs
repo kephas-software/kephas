@@ -524,7 +524,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// The new process starter factory.
         /// </returns>
-        protected virtual IProcessStarterFactory CreateProcessStarterFactory(IAppInfo appInfo, IExpando arguments, Action<IContext> optionsConfig = null)
+        protected virtual IProcessStarterFactory CreateProcessStarterFactory(IAppInfo appInfo, IExpando arguments, Action<IContext>? optionsConfig = null)
             => this.processStarterFactoryFactory.CreateExportedValue();
 
         /// <summary>

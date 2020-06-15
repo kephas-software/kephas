@@ -20,6 +20,11 @@ namespace Kephas.Application.Configuration
         public bool AutoStart { get; set; } = true;
 
         /// <summary>
+        /// Get or sets the application startup args.
+        /// </summary>
+        public Expando? Args { get; set; }
+
+        /// <summary>
         /// Gets or sets the features which are enabled by the application instance.
         /// </summary>
         /// <remarks>

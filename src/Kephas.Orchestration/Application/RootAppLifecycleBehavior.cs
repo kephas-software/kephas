@@ -203,7 +203,7 @@ namespace Kephas.Orchestration.Application
                 this.enableAppSetup = false;
 
                 var appInfo = new AppInfo(appId) { [nameof(AppSettings)] = appSettings };
-                startTasks.Add(this.StartWorkerProcessAsync(appInfo, appContext, cancellationToken));
+                startTasks.Add(this.StartWorkerProcessAsync(appInfo, appSettings, appContext, cancellationToken));
             }
 
             this.WorkerProcesses = (await Task.WhenAll(startTasks).PreserveThreadContext()).ToList();
@@ -359,7 +359,8 @@ namespace Kephas.Orchestration.Application
                 try
                 {
                     this.WorkerProcesses.Remove(processStartResult);
-                    var newProcessStartResult = await this.StartWorkerProcessAsync(appInfo, appContext, CancellationToken.None).PreserveThreadContext();
+                    var appSettings = appInfo[nameof(AppSettings)] as AppSettings;
+                    var newProcessStartResult = await this.StartWorkerProcessAsync(appInfo, appSettings, appContext, CancellationToken.None).PreserveThreadContext();
                     this.WorkerProcesses.Add(newProcessStartResult);
 
                     if (newProcessStartResult.StartException != null)
@@ -387,13 +388,18 @@ namespace Kephas.Orchestration.Application
         /// Starts the worker process asynchronously.
         /// </summary>
         /// <param name="appInfo">The application information.</param>
+        /// <param name="appSettings">The application settings.</param>
         /// <param name="appContext">The application context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>An asynchronous result yielding the <see cref="ProcessStartResult"/>.</returns>
-        protected virtual async Task<ProcessStartResult> StartWorkerProcessAsync(IAppInfo appInfo, IAppContext appContext, CancellationToken cancellationToken)
+        protected virtual async Task<ProcessStartResult> StartWorkerProcessAsync(
+            IAppInfo appInfo,
+            AppSettings? appSettings,
+            IAppContext appContext,
+            CancellationToken cancellationToken)
         {
-            return (ProcessStartResult) await this.OrchestrationManager
-                .StartAppAsync(appInfo, new Expando(), ctx => ctx.Merge(appContext), CancellationToken.None)
+            return (ProcessStartResult)await this.OrchestrationManager
+                .StartAppAsync(appInfo, appSettings?.Args ?? new Expando(), ctx => ctx.Merge(appContext), CancellationToken.None)
                 .PreserveThreadContext();
         }
 
