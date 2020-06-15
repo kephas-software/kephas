@@ -5,15 +5,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Configuration
+namespace Kephas.Application
 {
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application.Configuration;
     using Kephas.Application.Interaction;
+    using Kephas.Commands;
     using Kephas.Configuration;
     using Kephas.Interaction;
+    using Kephas.Runtime;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -23,6 +26,7 @@ namespace Kephas.Application.Configuration
     {
         private readonly IEventHub eventHub;
         private readonly IConfiguration<SystemSettings> systemConfiguration;
+        private readonly IRuntimeTypeRegistry typeRegistry;
         private IEventSubscription? scheduleCommandSubscription;
 
         /// <summary>
@@ -30,10 +34,15 @@ namespace Kephas.Application.Configuration
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="systemConfiguration">The system configuration.</param>
-        public StartupAppLifecycleBehavior(IEventHub eventHub, IConfiguration<SystemSettings> systemConfiguration)
+        /// <param name="typeRegistry">The type registry.</param>
+        public StartupAppLifecycleBehavior(
+            IEventHub eventHub,
+            IConfiguration<SystemSettings> systemConfiguration,
+            IRuntimeTypeRegistry typeRegistry)
         {
             this.eventHub = eventHub;
             this.systemConfiguration = systemConfiguration;
+            this.typeRegistry = typeRegistry;
         }
 
         /// <summary>
@@ -89,7 +98,7 @@ namespace Kephas.Application.Configuration
                 var commands = settings.SetupCommands == null
                     ? new List<object>()
                     : new List<object>(settings.SetupCommands);
-                commands.Add(signal.Command);
+                commands.Add(this.FormatCommand(signal.Command));
                 settings.SetupCommands = commands.ToArray();
             }
             else
@@ -102,11 +111,53 @@ namespace Kephas.Application.Configuration
                 var commands = appSettings.SetupCommands == null
                     ? new List<object>()
                     : new List<object>(appSettings.SetupCommands);
-                commands.Add(signal.Command);
+                commands.Add(this.FormatCommand(signal.Command));
                 appSettings.SetupCommands = commands.ToArray();
             }
 
             await this.systemConfiguration.UpdateSettingsAsync(cancellationToken: token).PreserveThreadContext();
+        }
+
+        private object FormatCommand(object rawCommand)
+        {
+            // TODO extract this in a service or a collection of services
+            // specialized in formatting commands to be persisted in the configuration.
+            return rawCommand switch
+            {
+                string stringCommand => stringCommand,
+                _ => this.FormatMessageCommand(rawCommand),
+            };
+        }
+
+        private string FormatMessageCommand(object rawCommand)
+        {
+            var commandTypeInfo = this.typeRegistry.GetTypeInfo(rawCommand.GetType());
+            var commandName = commandTypeInfo.Name;
+            var wellKnownEndings = new[] { "Message", "Event" };
+            foreach (var ending in wellKnownEndings)
+            {
+                if (commandName.EndsWith(ending))
+                {
+#if NETSTANDARD2_1
+                    commandName = commandName[0..^ending.Length];
+#else
+                    commandName = commandName.Substring(0, commandName.Length - ending.Length);
+#endif
+                    break;
+                }
+            }
+
+            var args = rawCommand.ToExpando()!.ToDictionary();
+            var defaultArgs = commandTypeInfo.CreateInstance().ToExpando()!;
+            foreach (var propInfo in commandTypeInfo.Properties.Values)
+            {
+                if (Equals(args[propInfo.Name], defaultArgs[propInfo.Name]))
+                {
+                    args.Remove(propInfo.Name);
+                }
+            }
+            
+            return $"{commandName} {args.ToCommandArgs()}";
         }
     }
 }

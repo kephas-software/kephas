@@ -22,6 +22,7 @@ namespace Kephas.Orchestration
     using Kephas.Application;
     using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
+    using Kephas.Commands;
     using Kephas.Composition;
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
@@ -493,12 +494,12 @@ namespace Kephas.Orchestration
         /// </returns>
         protected virtual IEnumerable<string> GetAppExecutableArgs(IAppInfo appInfo, IExpando arguments)
         {
-            var appArgs = new AppArgs(string.Empty)
+            var appArgs = new Args(string.Empty)
             {
                 [AppRuntimeBase.AppIdKey] = appInfo.Identity.Id,
             }.Merge(arguments);
 
-            return appArgs.ToArgs();
+            return appArgs.ToCommandArgs();
         }
 
         /// <summary>
