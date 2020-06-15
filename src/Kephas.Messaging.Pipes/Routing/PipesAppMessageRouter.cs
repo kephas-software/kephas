@@ -229,6 +229,7 @@ namespace Kephas.Messaging.Pipes.Routing
                 PipeTransmissionMode.Message,
                 PipeOptions.Asynchronous);
 
+            this.Logger.Debug("Pipe {channel} is open (server mode).", channelName);
             return stream;
         }
 
@@ -249,6 +250,8 @@ namespace Kephas.Messaging.Pipes.Routing
 
             stream.Connect();
             stream.ReadMode = PipeTransmissionMode.Message;
+
+            this.Logger.Debug("Pipe {server}/{channel} is open (client mode).", serverName, channelName);
             return stream;
         }
 
@@ -290,6 +293,7 @@ namespace Kephas.Messaging.Pipes.Routing
             foreach (var peerOutChannel in this.peerOutChannels.Values)
             {
                 peerOutChannel.Stream.Dispose();
+                this.Logger.Debug("Pipe {server}/{channel} disposed.", peerOutChannel.ServerName, peerOutChannel.ChannelName);
             }
 
             this.peerOutChannels.Clear();
@@ -476,10 +480,12 @@ namespace Kephas.Messaging.Pipes.Routing
             using var memStream = new MemoryStream(1000);
             do
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 var numBytes = await channel.ReadAsync(buffer, 0, buffer.Length, cancellationToken).PreserveThreadContext();
                 memStream.Write(buffer, 0, numBytes);
             }
-            while (!channel.IsMessageComplete);
+            while (!cancellationToken.IsCancellationRequested && !channel.IsMessageComplete);
 
             memStream.Position = 0;
             var bytes = memStream.ReadAllBytes();
