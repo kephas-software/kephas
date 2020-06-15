@@ -58,7 +58,7 @@ namespace Kephas.Orchestration.Endpoints
             if (this.appRuntime.IsRoot())
             {
                 await this.eventHub.PublishAsync(new RestartSignal("Handle restart."), context, token).PreserveThreadContext();
-                response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Restart request received. Good bye!";
+                response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Application restarted.";
             }
             else if (message.ShouldRedirect)
             {

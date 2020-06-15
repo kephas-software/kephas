@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Configuration;
+using Kephas.Orchestration.Configuration;
+
 namespace Kephas.Orchestration
 {
     using System;
@@ -20,7 +23,6 @@ namespace Kephas.Orchestration
     using System.Threading.Tasks;
 
     using Kephas.Application;
-    using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
     using Kephas.Commands;
     using Kephas.Composition;
@@ -31,7 +33,6 @@ namespace Kephas.Orchestration
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
-    using Kephas.Messaging.Events;
     using Kephas.Operations;
     using Kephas.Orchestration.Application;
     using Kephas.Orchestration.Endpoints;
@@ -48,7 +49,7 @@ namespace Kephas.Orchestration
     {
         private readonly IExportFactory<IProcessStarterFactory> processStarterFactoryFactory;
 
-        private Timer timer;
+        private Timer heartbeatTimer;
         private IEventSubscription appStartedSubscription;
         private IEventSubscription appStoppedSubscription;
         private IEventSubscription appHeartbeatSubscription;
@@ -61,14 +62,16 @@ namespace Kephas.Orchestration
         /// <param name="messageBroker">The message broker.</param>
         /// <param name="messageProcessor">The message processor.</param>
         /// <param name="processStarterFactoryFactory">Factory for the process starter factory.</param>
-        /// <param name="logManager">Manager for log.</param>
+        /// <param name="configuration">The orchestration configuration.</param>
+        /// <param name="logManager">Optional. Manager for log.</param>
         public DefaultOrchestrationManager(
             IAppRuntime appRuntime,
             IEventHub eventHub,
             IMessageBroker messageBroker,
             IMessageProcessor messageProcessor,
             IExportFactory<IProcessStarterFactory> processStarterFactoryFactory,
-            ILogManager logManager)
+            IConfiguration<OrchestrationSettings> configuration,
+            ILogManager? logManager = null)
             : base(logManager)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
@@ -81,7 +84,10 @@ namespace Kephas.Orchestration
             this.EventHub = eventHub;
             this.MessageBroker = messageBroker;
             this.MessageProcessor = messageProcessor;
+            this.Configuration = configuration;
             this.processStarterFactoryFactory = processStarterFactoryFactory;
+
+            this.HeartbeatDueTime = this.HeartbeatInterval = this.Configuration.Settings.HeartbeatInterval;
         }
 
         /// <summary>
@@ -125,20 +131,25 @@ namespace Kephas.Orchestration
         public IMessageProcessor MessageProcessor { get; }
 
         /// <summary>
-        /// Gets or sets the timer due time.
+        /// Gets the orchestration configuration.
         /// </summary>
-        /// <value>
-        /// The timer due time.
-        /// </value>
-        protected internal TimeSpan TimerDueTime { get; set; } = TimeSpan.FromSeconds(10);
+        public IConfiguration<OrchestrationSettings> Configuration { get; }
 
         /// <summary>
-        /// Gets or sets the timer period.
+        /// Gets or sets the heartbeat timer due time.
         /// </summary>
         /// <value>
-        /// The timer period.
+        /// The timer heartbeat  due time.
         /// </value>
-        protected internal TimeSpan TimerPeriod { get; set; } = TimeSpan.FromSeconds(10);
+        protected internal TimeSpan HeartbeatDueTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the heartbeat timer period.
+        /// </summary>
+        /// <value>
+        /// The heartbeat timer period.
+        /// </value>
+        protected internal TimeSpan HeartbeatInterval { get; set; }
 
         /// <summary>
         /// Gets the live apps cache.
@@ -181,13 +192,13 @@ namespace Kephas.Orchestration
         /// </returns>
         public virtual Task FinalizeAsync(IContext? context, CancellationToken cancellationToken = default)
         {
-            if (this.timer == null)
+            if (this.heartbeatTimer == null)
             {
                 // not properly initialized, possibly abnormal program termination.
                 return Task.CompletedTask;
             }
 
-            this.timer.Dispose();
+            this.heartbeatTimer.Dispose();
 
             this.appStartedSubscription?.Dispose();
             this.appStoppedSubscription?.Dispose();
@@ -317,7 +328,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// The OS process.
         /// </returns>
-        protected virtual Process TryGetProcess(IRuntimeAppInfo runtimeAppInfo)
+        protected virtual Process? TryGetProcess(IRuntimeAppInfo runtimeAppInfo)
         {
             try
             {
@@ -380,9 +391,9 @@ namespace Kephas.Orchestration
 
             if (appEvent.AppInfo.AppId == this.AppRuntime.GetAppId() && appEvent.AppInfo.AppInstanceId == this.AppRuntime.GetAppInstanceId())
             {
-                if (this.timer == null)
+                if (this.heartbeatTimer == null)
                 {
-                    this.timer = new Timer(this.OnHeartbeat, context, this.TimerDueTime, this.TimerPeriod);
+                    this.heartbeatTimer = new Timer(this.OnHeartbeat, context, this.HeartbeatDueTime, this.HeartbeatInterval);
                 }
             }
 

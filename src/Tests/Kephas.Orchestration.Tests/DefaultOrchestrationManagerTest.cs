@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Configuration;
+using Kephas.Orchestration.Configuration;
+
 namespace Kephas.Orchestration.Tests
 {
     using System;
@@ -56,8 +59,8 @@ namespace Kephas.Orchestration.Tests
 
             var appManager = container.GetExport<IAppManager>();
             var orchManager = (DefaultOrchestrationManager)container.GetExport<IOrchestrationManager>();
-            orchManager.TimerDueTime = TimeSpan.FromMilliseconds(100);
-            orchManager.TimerPeriod = TimeSpan.FromMilliseconds(100);
+            orchManager.HeartbeatDueTime = TimeSpan.FromMilliseconds(100);
+            orchManager.HeartbeatInterval = TimeSpan.FromMilliseconds(100);
             var registry = container.GetExport<IMessageHandlerRegistry>();
 
             AppHeartbeatEvent heartbeat = null;
@@ -85,15 +88,19 @@ namespace Kephas.Orchestration.Tests
             var compositionContext = Substitute.For<ICompositionContext>();
             var appContext = new Context(compositionContext);
 
+            var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
+            config.Settings.Returns(new OrchestrationSettings());
+
             var manager = new DefaultOrchestrationManager(
                 appRuntime, 
                 eventHub, 
                 messageBroker, 
                 Substitute.For<IMessageProcessor>(), 
                 Substitute.For<IExportFactory<IProcessStarterFactory>>(),
+                config,
                 Substitute.For<ILogManager>());
-            manager.TimerDueTime = TimeSpan.FromMilliseconds(100);
-            manager.TimerPeriod = TimeSpan.FromMilliseconds(100);
+            manager.HeartbeatDueTime = TimeSpan.FromMilliseconds(100);
+            manager.HeartbeatInterval = TimeSpan.FromMilliseconds(100);
 
             var messages = new List<object>();
 
