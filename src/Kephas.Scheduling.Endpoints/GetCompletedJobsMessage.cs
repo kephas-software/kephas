@@ -46,7 +46,7 @@ namespace Kephas.Scheduling.Endpoints
         /// <summary>
         /// Gets or sets the jobs data.
         /// </summary>
-        public RunningJobData[] Jobs { get; set; }
+        public CompletedJobData[] Jobs { get; set; }
     }
 
     /// <summary>
