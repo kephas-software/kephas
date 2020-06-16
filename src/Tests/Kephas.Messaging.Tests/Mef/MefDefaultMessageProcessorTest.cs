@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DefaultMessageProcessorTest.cs" company="Kephas Software SRL">
+// <copyright file="MefDefaultMessageProcessorTest.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Tests
+namespace Kephas.Messaging.Tests.Mef
 {
     using System;
     using System.Collections.Generic;
@@ -21,7 +21,6 @@ namespace Kephas.Messaging.Tests
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
-    using Kephas.Composition.Lite.Hosting;
     using Kephas.Composition.Mef;
     using Kephas.Composition.Mef.Hosting;
     using Kephas.Dynamic;
@@ -46,13 +45,13 @@ namespace Kephas.Messaging.Tests
     /// </summary>
     [TestFixture]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
-    public class DefaultMessageProcessorTest : CompositionTestBase
+    public class MefDefaultMessageProcessorTest : MefCompositionTestBase
     {
         public override ICompositionContext CreateContainer(
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<LiteCompositionContainerBuilder> config = null,
+            Action<SystemCompositionContainerBuilder> config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {

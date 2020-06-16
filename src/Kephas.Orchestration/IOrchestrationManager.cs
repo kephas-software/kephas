@@ -27,6 +27,12 @@ namespace Kephas.Orchestration
     public interface IOrchestrationManager
     {
         /// <summary>
+        /// Gets the root application instance ID.
+        /// </summary>
+        /// <returns>The root application instance ID.</returns>
+        string GetRootAppInstanceId();
+
+        /// <summary>
         /// Gets the live apps asynchronously.
         /// </summary>
         /// <param name="optionsConfig">Optional. The options configuration.</param>

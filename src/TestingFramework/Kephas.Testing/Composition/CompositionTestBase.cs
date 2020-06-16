@@ -43,7 +43,10 @@ namespace Kephas.Testing.Composition
         /// <returns>
         /// A LiteCompositionContainerBuilder.
         /// </returns>
-        public virtual LiteCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
+        public virtual LiteCompositionContainerBuilder WithContainerBuilder(
+            IAmbientServices? ambientServices = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
             var log = new StringBuilder();
             logManager ??= ambientServices?.LogManager ?? new DebugLogManager((logger, level, message, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
@@ -75,6 +78,8 @@ namespace Kephas.Testing.Composition
         /// <param name="assemblies">Optional. A variable-length parameters list containing assemblies.</param>
         /// <param name="parts">Optional. The parts.</param>
         /// <param name="config">Optional. The configuration.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        /// <param name="appRuntime">Optional. The application runtime.</param>
         /// <returns>
         /// The new container.
         /// </returns>
@@ -82,10 +87,12 @@ namespace Kephas.Testing.Composition
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<LiteCompositionContainerBuilder> config = null)
+            Action<LiteCompositionContainerBuilder> config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
             ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            var containerBuilder = this.WithContainerBuilder(ambientServices)
+            var containerBuilder = this.WithContainerBuilder(ambientServices, logManager, appRuntime)
                     .WithAssemblies(this.GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? new Assembly[0])
                     .WithParts(parts ?? new Type[0]);

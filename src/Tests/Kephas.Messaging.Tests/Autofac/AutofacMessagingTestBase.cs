@@ -20,11 +20,11 @@ namespace Kephas.Messaging.Tests
     using Kephas.Composition.ExportFactories;
     using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Configuration;
+    using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Security.Authentication;
     using Kephas.Services;
     using Kephas.Testing.Application;
-
     using NSubstitute;
 
     public class AutofacMessagingTestBase : AutofacApplicationTestBase
@@ -33,7 +33,9 @@ namespace Kephas.Messaging.Tests
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<AutofacCompositionContainerBuilder> config = null)
+            Action<AutofacCompositionContainerBuilder> config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */

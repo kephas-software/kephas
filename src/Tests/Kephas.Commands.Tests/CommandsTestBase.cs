@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ConsoleTestBase.cs" company="Kephas Software SRL">
+// <copyright file="CommandsTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,11 +18,18 @@ namespace Kephas.Commands.Tests
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Lite.Hosting;
+    using Kephas.Logging;
     using Kephas.Testing.Composition;
 
     public abstract class CommandsTestBase : CompositionTestBase
     {
-        public override ICompositionContext CreateContainer(IAmbientServices ambientServices = null, IEnumerable<Assembly> assemblies = null, IEnumerable<Type> parts = null, Action<LiteCompositionContainerBuilder> config = null)
+        public override ICompositionContext CreateContainer(
+            IAmbientServices ambientServices = null,
+            IEnumerable<Assembly> assemblies = null,
+            IEnumerable<Type> parts = null,
+            Action<LiteCompositionContainerBuilder> config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
             ambientServices = ambientServices ?? new AmbientServices();
             if (!ambientServices.IsRegistered(typeof(IAppContext)))

@@ -14,7 +14,9 @@ namespace Kephas.Messaging.Pipes.Tests
     using System.Reflection;
 
     using Kephas.Application;
+    using Kephas.Commands;
     using Kephas.Messaging.Pipes.Routing;
+    using Kephas.Orchestration;
     using Kephas.Serialization.Json;
     using Kephas.Testing.Composition;
 
@@ -27,6 +29,8 @@ namespace Kephas.Messaging.Pipes.Tests
                 typeof(IAppManager).Assembly,                   // Kephas.Application
                 typeof(IMessageProcessor).Assembly,             // Kephas.Messaging
                 typeof(PipesAppMessageRouter).Assembly,         // Kephas.Messaging.Pipes
+                typeof(IOrchestrationManager).Assembly,         // Kephas.Orchestration
+                typeof(ICommandProcessor).Assembly,             // Kephas.Commands
                 typeof(JsonSerializer).Assembly,                // Kephas.Serialization.NewtonsoftJson
             };
         }

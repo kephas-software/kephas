@@ -18,12 +18,19 @@ namespace Kephas.Commands.Messaging.Tests
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Lite.Hosting;
+    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Testing.Composition;
 
     public abstract class CommandsTestBase : CompositionTestBase
     {
-        public override ICompositionContext CreateContainer(IAmbientServices ambientServices = null, IEnumerable<Assembly> assemblies = null, IEnumerable<Type> parts = null, Action<LiteCompositionContainerBuilder> config = null)
+        public override ICompositionContext CreateContainer(
+            IAmbientServices ambientServices = null,
+            IEnumerable<Assembly> assemblies = null,
+            IEnumerable<Type> parts = null,
+            Action<LiteCompositionContainerBuilder> config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
             ambientServices ??= new AmbientServices();
             if (!ambientServices.IsRegistered(typeof(IAppContext)))

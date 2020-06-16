@@ -23,9 +23,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Dynamic;
     using Kephas.Interaction;
     using Kephas.Logging;
-    using Kephas.Messaging.Events;
     using Kephas.Orchestration.Endpoints;
-    using Kephas.Orchestration.Interaction;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 

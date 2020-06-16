@@ -28,7 +28,7 @@ namespace Kephas.Application
         /// <param name="version">The feature version (optional).</param>
         /// <param name="isRequired">True if this feature is required, false if not (optional).</param>
         /// <param name="dependencies">The feature dependencies (optional).</param>
-        public FeatureInfoAttribute(string feature, string version = null, bool isRequired = false, string[] dependencies = null)
+        public FeatureInfoAttribute(string feature, string? version = null, bool isRequired = false, string[]? dependencies = null)
         {
             Requires.NotNullOrEmpty(feature, nameof(feature));
 

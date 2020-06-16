@@ -8,34 +8,28 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Configuration;
-using Kephas.Orchestration.Configuration;
-
 namespace Kephas.Orchestration.Tests
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Commands;
     using Kephas.Composition;
+    using Kephas.Configuration;
     using Kephas.Diagnostics;
-    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Distributed;
-    using Kephas.Messaging.Events;
+    using Kephas.Orchestration.Configuration;
     using Kephas.Orchestration.Interaction;
-    using Kephas.Reflection;
-    using Kephas.Security.Authentication;
     using Kephas.Services;
-
     using NSubstitute;
-
     using NUnit.Framework;
+
     using AppContext = Kephas.Application.AppContext;
 
     [TestFixture]

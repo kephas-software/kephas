@@ -46,7 +46,20 @@ namespace Kephas.Testing.Composition
             return configuration;
         }
 
-        public virtual AutofacCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
+        /// <summary>
+        /// Creates a container builder for further configuration.
+        /// </summary>
+        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance
+        ///                               will be created as linked to the newly created container.</param>
+        /// <param name="logManager">Optional. Manager for log.</param>
+        /// <param name="appRuntime">Optional. The application runtime.</param>
+        /// <returns>
+        /// An AutofacCompositionContainerBuilder.
+        /// </returns>
+        public virtual AutofacCompositionContainerBuilder WithContainerBuilder(
+            IAmbientServices? ambientServices = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
             var log = new StringBuilder();
             logManager ??= new DebugLogManager((logger, level, message, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
@@ -65,14 +78,28 @@ namespace Kephas.Testing.Composition
             return CreateContainer(assemblies: (IEnumerable<Assembly>)assemblies);
         }
 
+        /// <summary>
+        /// Creates a container for the provided convention assemblies and parts.
+        /// </summary>
+        /// <param name="ambientServices">Optional. The ambient services. If not provided, a new instance will be created as linked to the newly created container.</param>
+        /// <param name="assemblies">Optional. A variable-length parameters list containing assemblies.</param>
+        /// <param name="parts">Optional. The parts.</param>
+        /// <param name="config">Optional. The configuration.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        /// <param name="appRuntime">Optional. The application runtime.</param>
+        /// <returns>
+        /// The new container.
+        /// </returns>
         public virtual ICompositionContext CreateContainer(
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<AutofacCompositionContainerBuilder> config = null)
+            Action<AutofacCompositionContainerBuilder> config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
             ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            var containerBuilder = WithContainerBuilder(ambientServices)
+            var containerBuilder = WithContainerBuilder(ambientServices, logManager, appRuntime)
                     .WithAssemblies(GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? new Assembly[0])
                     .WithParts(parts ?? new Type[0]);

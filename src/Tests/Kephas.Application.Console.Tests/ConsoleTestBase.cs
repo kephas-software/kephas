@@ -18,11 +18,18 @@ namespace Kephas.Application.Console.Tests
     using Kephas.Commands;
     using Kephas.Composition;
     using Kephas.Composition.Lite.Hosting;
+    using Kephas.Logging;
     using Kephas.Testing.Composition;
 
     public abstract class ConsoleTestBase : CompositionTestBase
     {
-        public override ICompositionContext CreateContainer(IAmbientServices ambientServices = null, IEnumerable<Assembly> assemblies = null, IEnumerable<Type> parts = null, Action<LiteCompositionContainerBuilder> config = null)
+        public override ICompositionContext CreateContainer(
+            IAmbientServices ambientServices = null,
+            IEnumerable<Assembly> assemblies = null,
+            IEnumerable<Type> parts = null,
+            Action<LiteCompositionContainerBuilder> config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
             ambientServices ??= new AmbientServices();
             if (!ambientServices.IsRegistered(typeof(IAppContext)))

@@ -28,8 +28,8 @@ namespace Kephas.Application
         /// <param name="appArgs">Optional. The application arguments.</param>
         public AppContext(
             IAmbientServices ambientServices,
-            IAppRuntime appRuntime = null,
-            IArgs appArgs = null)
+            IAppRuntime? appRuntime = null,
+            IArgs? appArgs = null)
             : base(ambientServices)
         {
             this.AppRuntime = appRuntime ?? this.AmbientServices?.AppRuntime!;

@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Configuration;
-using Kephas.Orchestration.Configuration;
-
 namespace Kephas.Orchestration
 {
     using System;
@@ -26,6 +23,7 @@ namespace Kephas.Orchestration
     using Kephas.Application.Reflection;
     using Kephas.Commands;
     using Kephas.Composition;
+    using Kephas.Configuration;
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -35,6 +33,7 @@ namespace Kephas.Orchestration
     using Kephas.Messaging.Distributed;
     using Kephas.Operations;
     using Kephas.Orchestration.Application;
+    using Kephas.Orchestration.Configuration;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Orchestration.Interaction;
     using Kephas.Runtime;
@@ -47,12 +46,18 @@ namespace Kephas.Orchestration
     [OverridePriority(Priority.Low)]
     public class DefaultOrchestrationManager : Loggable, IOrchestrationManager, IAsyncInitializable, IAsyncFinalizable
     {
+        /// <summary>
+        /// The root application instance identifier key.
+        /// </summary>
+        public static readonly string RootArgName = "Root";
+
         private readonly IExportFactory<IProcessStarterFactory> processStarterFactoryFactory;
 
         private Timer heartbeatTimer;
         private IEventSubscription appStartedSubscription;
         private IEventSubscription appStoppedSubscription;
         private IEventSubscription appHeartbeatSubscription;
+        private Lazy<string> lazyRootAppInstanceId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOrchestrationManager"/> class.
@@ -88,52 +93,9 @@ namespace Kephas.Orchestration
             this.processStarterFactoryFactory = processStarterFactoryFactory;
 
             this.HeartbeatDueTime = this.HeartbeatInterval = this.Configuration.Settings.HeartbeatInterval;
+
+            this.lazyRootAppInstanceId = new Lazy<string>(this.ComputeRootAppInstanceId);
         }
-
-        /// <summary>
-        /// Gets a context for the application.
-        /// </summary>
-        /// <value>
-        /// The application context.
-        /// </value>
-        public IContext AppContext { get; private set; }
-
-        /// <summary>
-        /// Gets the application runtime.
-        /// </summary>
-        /// <value>
-        /// The application runtime.
-        /// </value>
-        public IAppRuntime AppRuntime { get; private set; }
-
-        /// <summary>
-        /// Gets the event hub.
-        /// </summary>
-        /// <value>
-        /// The event hub.
-        /// </value>
-        public IEventHub EventHub { get; }
-
-        /// <summary>
-        /// Gets the message broker.
-        /// </summary>
-        /// <value>
-        /// The message broker.
-        /// </value>
-        public IMessageBroker MessageBroker { get; }
-
-        /// <summary>
-        /// Gets the message processor.
-        /// </summary>
-        /// <value>
-        /// The message processor.
-        /// </value>
-        public IMessageProcessor MessageProcessor { get; }
-
-        /// <summary>
-        /// Gets the orchestration configuration.
-        /// </summary>
-        public IConfiguration<OrchestrationSettings> Configuration { get; }
 
         /// <summary>
         /// Gets or sets the heartbeat timer due time.
@@ -150,6 +112,51 @@ namespace Kephas.Orchestration
         /// The heartbeat timer period.
         /// </value>
         protected internal TimeSpan HeartbeatInterval { get; set; }
+
+        /// <summary>
+        /// Gets a context for the application.
+        /// </summary>
+        /// <value>
+        /// The application context.
+        /// </value>
+        protected IAppContext AppContext { get; private set; }
+
+        /// <summary>
+        /// Gets the application runtime.
+        /// </summary>
+        /// <value>
+        /// The application runtime.
+        /// </value>
+        protected IAppRuntime AppRuntime { get; private set; }
+
+        /// <summary>
+        /// Gets the event hub.
+        /// </summary>
+        /// <value>
+        /// The event hub.
+        /// </value>
+        protected IEventHub EventHub { get; }
+
+        /// <summary>
+        /// Gets the message broker.
+        /// </summary>
+        /// <value>
+        /// The message broker.
+        /// </value>
+        protected IMessageBroker MessageBroker { get; }
+
+        /// <summary>
+        /// Gets the message processor.
+        /// </summary>
+        /// <value>
+        /// The message processor.
+        /// </value>
+        protected IMessageProcessor MessageProcessor { get; }
+
+        /// <summary>
+        /// Gets the orchestration configuration.
+        /// </summary>
+        protected IConfiguration<OrchestrationSettings> Configuration { get; }
 
         /// <summary>
         /// Gets the live apps cache.
@@ -169,9 +176,14 @@ namespace Kephas.Orchestration
         /// </returns>
         public virtual async Task InitializeAsync(IContext? context, CancellationToken cancellationToken = default)
         {
-            Requires.NotNull(context, nameof(context));
-
-            this.AppContext = context;
+            if (context is IAppContext appContext)
+            {
+                this.AppContext = appContext;
+            }
+            else
+            {
+                throw new ArgumentException($"Expected an instance of {nameof(IAppContext)}.", nameof(context));
+            }
 
             await this.InitializeLiveAppsAsync(cancellationToken).PreserveThreadContext();
 
@@ -206,6 +218,12 @@ namespace Kephas.Orchestration
 
             return Task.CompletedTask;
         }
+
+        /// <summary>
+        /// Gets the root application instance ID.
+        /// </summary>
+        /// <returns>The root application instance ID.</returns>
+        public virtual string GetRootAppInstanceId() => this.lazyRootAppInstanceId.Value;
 
         /// <summary>
         /// Gets the live apps asynchronously.
@@ -513,6 +531,7 @@ namespace Kephas.Orchestration
             {
                 [AppRuntimeBase.AppIdKey] = appInfo.Identity.Id,
                 [AppRuntimeBase.AppInstanceIdKey] = appInfo[AppRuntimeBase.AppInstanceIdKey],
+                [RootArgName] = this.GetRootAppInstanceId(),
             }.Merge(arguments);
 
             return appArgs.ToCommandArgs();
@@ -559,6 +578,40 @@ namespace Kephas.Orchestration
                 AppId = runtimeAppInfo.AppId,
                 AppInstanceId = runtimeAppInfo.AppInstanceId,
             };
+        }
+
+        /// <summary>
+        /// Computes the ID of the root application instance.
+        /// </summary>
+        /// <returns>The root application instance ID.</returns>
+        protected virtual string ComputeRootAppInstanceId()
+        {
+            this.EnsureInitialized();
+
+            if (this.AppRuntime.IsRoot())
+            {
+                return this.AppRuntime.GetAppInstanceId()!;
+            }
+
+            var rootId = this.AppContext.AppArgs[RootArgName] as string;
+            if (!string.IsNullOrEmpty(rootId))
+            {
+                return rootId!;
+            }
+
+            return new StaticAppRuntime(isRoot: true).GetAppInstanceId()!;
+        }
+
+        /// <summary>
+        /// Checks whether the service is initialized and, if not, throws an <see cref="ServiceNotInitializedException"/>.
+        /// </summary>
+        /// <exception cref="ServiceNotInitializedException">The service is not initialized. Consider invoking the <see cref="InitializeAsync"/> method.</exception>
+        protected void EnsureInitialized()
+        {
+            if (this.AppContext == null)
+            {
+                throw new ServiceNotInitializedException($"The {this.GetType().Name} service is not initialized.");
+            }
         }
     }
 }

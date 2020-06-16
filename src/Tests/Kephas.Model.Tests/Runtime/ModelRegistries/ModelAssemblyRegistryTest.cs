@@ -19,6 +19,7 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
     using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.Lite.Hosting;
+    using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.ModelRegistries;
@@ -38,7 +39,9 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             IAmbientServices ambientServices = null,
             IEnumerable<Assembly> assemblies = null,
             IEnumerable<Type> parts = null,
-            Action<LiteCompositionContainerBuilder> config = null)
+            Action<LiteCompositionContainerBuilder> config = null,
+            ILogManager? logManager = null,
+            IAppRuntime? appRuntime = null)
         {
             var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
             assemblyList.Add(typeof(ModelAssemblyRegistry).GetTypeInfo().Assembly); /* Kephas.Model */

@@ -26,7 +26,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="name">The feature name.</param>
         /// <param name="version">The feature version.</param>
-        public FeatureRef(string name, string version)
+        public FeatureRef(string name, string? version)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
@@ -48,7 +48,7 @@ namespace Kephas.Application
         /// <value>
         /// The feature version.
         /// </value>
-        public Version Version { get; }
+        public Version? Version { get; }
 
         /// <summary>
         /// Returns a value indicating whether the provided feature is a match for this feature reference.

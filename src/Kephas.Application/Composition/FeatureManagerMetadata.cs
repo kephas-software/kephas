@@ -41,7 +41,7 @@ namespace Kephas.Application.Composition
         /// <param name="featureInfo">Optional. Information describing the feature.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public FeatureManagerMetadata(FeatureInfo featureInfo = null, int processingPriority = 0, int overridePriority = 0)
+        public FeatureManagerMetadata(FeatureInfo? featureInfo = null, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.FeatureInfo = featureInfo;
