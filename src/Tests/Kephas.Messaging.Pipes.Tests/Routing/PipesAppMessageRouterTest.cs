@@ -17,6 +17,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Commands;
     using Kephas.Composition;
     using Kephas.Configuration.Providers;
     using Kephas.Diagnostics.Logging;
@@ -58,11 +59,12 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
+            var slaveArgs = new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
-                    .RegisterAppArgs(new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" }),
+                    .RegisterAppArgs(slaveArgs),
                 parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: false,
@@ -70,8 +72,8 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
-            await this.InitializeAppAsync(masterContainer, new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
-            await this.InitializeAppAsync(slaveContainer);
+            await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
+            await this.InitializeAppAsync(slaveContainer, slaveArgs);
 
             var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
 
@@ -98,24 +100,33 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithDebugLogManager((logger, level, msg, ex) => sbMaster.AppendLine($"[{logger}] {level} {msg} {ex}"))
-                    .WithStaticAppRuntime(isRoot: true, appId: masterId, appInstanceId: masterInstanceId, assemblyFilter: this.IsNotTestAssembly),
-                parts: new[] { typeof(PipesSettingsProvider) });
+                    .WithDebugLogManager((logger, level, msg, ex) => sbMaster.AppendLine($"[{logger}] {level} {msg} {ex}")),
+                parts: new[] { typeof(PipesSettingsProvider) },
+                appRuntime: new StaticAppRuntime(
+                    isRoot: true,
+                    appId: masterId,
+                    appInstanceId: masterInstanceId,
+                    defaultAssemblyFilter: this.IsNotTestAssembly));
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
+            var slaveArgs = new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" };
             var sbSlave = new StringBuilder();
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
                     .WithDebugLogManager((logger, level, msg, ex) => sbSlave.AppendLine($"[{logger}] {level} {msg} {ex}"))
-                    .WithStaticAppRuntime(isRoot: false, appId: slaveId, appInstanceId: slaveInstanceId, assemblyFilter: this.IsNotTestAssembly)
-                    .RegisterAppArgs(new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" }),
-                parts: new[] { typeof(PipesSettingsProvider) });
+                    .RegisterAppArgs(slaveArgs),
+                parts: new[] { typeof(PipesSettingsProvider) },
+                appRuntime: new StaticAppRuntime(
+                    isRoot: false,
+                    appId: slaveId,
+                    appInstanceId: slaveInstanceId,
+                    defaultAssemblyFilter: this.IsNotTestAssembly));
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
-            await this.InitializeAppAsync(masterContainer, new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
-            await this.InitializeAppAsync(slaveContainer);
+            await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
+            await this.InitializeAppAsync(slaveContainer, slaveArgs);
 
             var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
 
@@ -144,22 +155,29 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateContainer(
-                new AmbientServices()
-                    .WithStaticAppRuntime(isRoot: true, appId: masterId, appInstanceId: masterInstanceId),
-                parts: new[] { typeof(PipesSettingsProvider) });
+                new AmbientServices(),
+                parts: new[] { typeof(PipesSettingsProvider) },
+                appRuntime: new StaticAppRuntime(
+                    isRoot: true,
+                    appId: masterId,
+                    appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
+            var slaveArgs = new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithStaticAppRuntime(isRoot: false, appId: slaveId, appInstanceId: slaveInstanceId)
-                    .RegisterAppArgs(new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" }),
-                parts: new[] { typeof(PipesSettingsProvider) });
+                    .RegisterAppArgs(slaveArgs),
+                parts: new[] { typeof(PipesSettingsProvider) },
+                appRuntime: new StaticAppRuntime(
+                    isRoot: false,
+                    appId: slaveId,
+                    appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
-            await this.InitializeAppAsync(masterContainer, new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
-            await this.InitializeAppAsync(slaveContainer);
+            await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
+            await this.InitializeAppAsync(slaveContainer, slaveArgs);
 
             var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
 
@@ -184,22 +202,29 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterId = $"Master-{Guid.NewGuid():N}";
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateContainer(
-                new AmbientServices()
-                    .WithStaticAppRuntime(isRoot: true, appId: masterId, appInstanceId: masterInstanceId),
-                parts: new[] { typeof(PipesSettingsProvider) });
+                new AmbientServices(),
+                parts: new[] { typeof(PipesSettingsProvider) },
+                appRuntime: new StaticAppRuntime(
+                    isRoot: true,
+                    appId: masterId,
+                    appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
+            var slaveArgs = new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithStaticAppRuntime(isRoot: false, appId: slaveId, appInstanceId: slaveInstanceId)
-                    .RegisterAppArgs(new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" }),
-                parts: new[] { typeof(PipesSettingsProvider) });
+                    .RegisterAppArgs(slaveArgs),
+                parts: new[] { typeof(PipesSettingsProvider) },
+                appRuntime: new StaticAppRuntime(
+                    isRoot: false,
+                    appId: slaveId,
+                    appInstanceId: slaveInstanceId));
             var slaveRuntime = slaveContainer.GetExport<IAppRuntime>();
 
-            await this.InitializeAppAsync(masterContainer, new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
-            await this.InitializeAppAsync(slaveContainer);
+            await this.InitializeAppAsync(masterContainer, slaveAppInfo: new RuntimeAppInfo { AppId = slaveId, AppInstanceId = slaveInstanceId });
+            await this.InitializeAppAsync(slaveContainer, slaveArgs);
 
             var masterMessageBroker = masterContainer.GetExport<IMessageBroker>();
 
@@ -222,10 +247,13 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             }
         }
 
-        private async Task InitializeAppAsync(ICompositionContext container, IRuntimeAppInfo? slaveAppInfo = null)
+        private async Task InitializeAppAsync(ICompositionContext container, string[]? appArgs = null, IRuntimeAppInfo? slaveAppInfo = null)
         {
             var appManager = container.GetExport<IAppManager>();
-            var appContext = new AppContext(container.GetExport<IAmbientServices>(), container.GetExport<IAppRuntime>());
+            var appContext = new AppContext(
+                container.GetExport<IAmbientServices>(),
+                container.GetExport<IAppRuntime>(),
+                appArgs == null ? null : new Args(appArgs));
             await appManager.InitializeAppAsync(appContext);
 
             if (slaveAppInfo != null)
