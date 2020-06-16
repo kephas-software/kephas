@@ -11,6 +11,7 @@
 namespace Kephas.Diagnostics.Logging
 {
     using System;
+    using System.Text;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
@@ -29,11 +30,27 @@ namespace Kephas.Diagnostics.Logging
         /// <returns>
         /// This <paramref name="ambientServices"/>.
         /// </returns>
-        public static IAmbientServices WithDebugLogManager(this IAmbientServices ambientServices, Action<string, string, object, Exception?>? logCallback = null, bool replaceDefault = true)
+        public static IAmbientServices WithDebugLogManager(this IAmbientServices ambientServices, Action<string, string, object, object?[], Exception?>? logCallback = null, bool replaceDefault = true)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             return ambientServices.WithLogManager(new DebugLogManager(logCallback), replaceDefault);
+        }
+
+        /// <summary>
+        /// Sets the debug log manager to the ambient services.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="stringBuilder">The string builder.</param>
+        /// <param name="replaceDefault">Optional. True to replace <see cref="LoggingHelper.DefaultLogManager"/>.</param>
+        /// <returns>
+        /// This <paramref name="ambientServices"/>.
+        /// </returns>
+        public static IAmbientServices WithDebugLogManager(this IAmbientServices ambientServices, StringBuilder stringBuilder, bool replaceDefault = true)
+        {
+            Requires.NotNull(ambientServices, nameof(ambientServices));
+
+            return ambientServices.WithLogManager(new DebugLogManager(stringBuilder), replaceDefault);
         }
     }
 }

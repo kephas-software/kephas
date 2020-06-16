@@ -62,7 +62,7 @@ namespace Kephas.Testing.Composition
             IAppRuntime? appRuntime = null)
         {
             var log = new StringBuilder();
-            logManager ??= new DebugLogManager((logger, level, message, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
+            logManager ??= new DebugLogManager((logger, level, message, args, ex) => log.AppendLine($"[{logger}] [{level}] {message}{ex}"));
             appRuntime ??= this.CreateDefaultAppRuntime(logManager);
 
             ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());

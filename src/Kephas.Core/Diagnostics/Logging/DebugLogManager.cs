@@ -12,6 +12,7 @@ namespace Kephas.Diagnostics.Logging
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Text;
 
     using Kephas.Logging;
 
@@ -23,7 +24,7 @@ namespace Kephas.Diagnostics.Logging
         /// <summary>
         /// The log callback.
         /// </summary>
-        private readonly Action<string, string, object, Exception?>? logCallback;
+        private readonly Action<string, string, object, object?[], Exception?>? logCallback;
 
         /// <summary>
         /// The cached loggers.
@@ -33,10 +34,23 @@ namespace Kephas.Diagnostics.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="DebugLogManager"/> class.
         /// </summary>
-        /// <param name="logCallback">The log callback (optional).</param>
-        public DebugLogManager(Action<string, string, object, Exception?>? logCallback = null)
+        /// <param name="logCallback">optional. The log callback.</param>
+        public DebugLogManager(Action<string, string, object, object?[], Exception?>? logCallback = null)
         {
             this.logCallback = logCallback;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DebugLogManager"/> class.
+        /// </summary>
+        /// <param name="stringBuilder">The string builder.</param>
+        public DebugLogManager(StringBuilder stringBuilder)
+            : this(
+                (logger, level, message, args, exception)
+                    => stringBuilder
+                        .AppendFormat("[{0}] [{1}] {2}{3} {4}", logger, level, message, " (" + string.Join(", ", args) + ")", exception)
+                        .AppendLine())
+        {
         }
 
         /// <summary>
@@ -62,7 +76,7 @@ namespace Kephas.Diagnostics.Logging
         internal class DebugLogger : ILogger
         {
             private readonly string name;
-            private readonly Action<string, string, object, Exception?>? logCallback;
+            private readonly Action<string, string, object, object?[], Exception?>? logCallback;
             private readonly Func<LogLevel> logLevelGetter;
 
             /// <summary>
@@ -71,7 +85,7 @@ namespace Kephas.Diagnostics.Logging
             /// <param name="name">The name.</param>
             /// <param name="logCallback">The log callback.</param>
             /// <param name="logLevelGetter">Getter function for the log level.</param>
-            public DebugLogger(string name, Action<string, string, object, Exception?>? logCallback, Func<LogLevel> logLevelGetter)
+            public DebugLogger(string name, Action<string, string, object, object?[], Exception?>? logCallback, Func<LogLevel> logLevelGetter)
             {
                 this.name = name;
                 this.logCallback = logCallback;
@@ -102,27 +116,18 @@ namespace Kephas.Diagnostics.Logging
             /// </returns>
             public bool Log(LogLevel level, Exception? exception, string? messageFormat, params object?[] args)
             {
-                return this.LogCore(level.ToString(), messageFormat, exception);
+                return this.LogCore(level.ToString(), messageFormat, args, exception);
             }
 
-            /// <summary>
-            /// Logs the message.
-            /// </summary>
-            /// <param name="level">The level.</param>
-            /// <param name="message">The message.</param>
-            /// <param name="exception">The exception.</param>
-            /// <returns>
-            /// True if the log operation succeeded, false if it failed.
-            /// </returns>
-            private bool LogCore(string level, object message, Exception? exception = null)
+            private bool LogCore(string level, object message, object?[] args, Exception? exception = null)
             {
                 if (this.logCallback == null)
                 {
-                    System.Diagnostics.Debug.WriteLine("{0}: {1}: {2} {3}", this.name, level, message, exception);
+                    System.Diagnostics.Debug.WriteLine("{0}: {1}: {2} ({3}) {4}", this.name, level, message, string.Join(", ", args), exception);
                 }
                 else
                 {
-                    this.logCallback(this.name, level, message, exception);
+                    this.logCallback(this.name, level, message, args, exception);
                 }
 
                 return true;

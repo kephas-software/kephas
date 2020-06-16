@@ -100,7 +100,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var masterInstanceId = $"{masterId}-{Guid.NewGuid():N}";
             var masterContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithDebugLogManager((logger, level, msg, ex) => sbMaster.AppendLine($"[{logger}] {level} {msg} {ex}")),
+                    .WithDebugLogManager(sbMaster),
                 parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
                     isRoot: true,
@@ -115,7 +115,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
                 new AmbientServices()
-                    .WithDebugLogManager((logger, level, msg, ex) => sbSlave.AppendLine($"[{logger}] {level} {msg} {ex}"))
+                    .WithDebugLogManager(sbSlave)
                     .RegisterAppArgs(slaveArgs),
                 parts: new[] { typeof(PipesSettingsProvider) },
                 appRuntime: new StaticAppRuntime(
