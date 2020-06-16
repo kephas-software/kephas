@@ -7,11 +7,18 @@
 
 namespace Kephas.Messaging.Pipes.Configuration
 {
+    using System;
+
     /// <summary>
     /// Settings for communication over pipes.
     /// </summary>
     public class PipesSettings
     {
+        /// <summary>
+        /// Gets or sets the connection timeout.
+        /// </summary>
+        public TimeSpan ConnectionTimeout { get; set; } = TimeSpan.FromSeconds(10);
+
         /// <summary>
         /// Gets or sets the server hosting the root.
         /// </summary>
