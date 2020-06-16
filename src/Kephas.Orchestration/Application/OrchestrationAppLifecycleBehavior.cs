@@ -112,7 +112,7 @@ namespace Kephas.Orchestration.Application
         {
             return new AppStartedEvent
                        {
-                           AppInfo = this.appRuntime.GetAppInfo(),
+                           AppInfo = this.appRuntime.GetRuntimeAppInfo(),
                            Timestamp = DateTimeOffset.Now,
                        };
         }
@@ -121,7 +121,7 @@ namespace Kephas.Orchestration.Application
         {
             return new AppStoppedEvent
                        {
-                           AppInfo = this.appRuntime.GetAppInfo(),
+                           AppInfo = this.appRuntime.GetRuntimeAppInfo(),
                            Timestamp = DateTimeOffset.Now,
                        };
         }

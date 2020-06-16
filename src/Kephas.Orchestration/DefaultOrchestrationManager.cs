@@ -244,6 +244,8 @@ namespace Kephas.Orchestration
                 .WithWorkingDirectory(this.AppRuntime.GetAppLocation())
                 .CreateProcessStarter();
 
+            await this.EventHub.PublishAsync(new AppStartingEvent { AppInfo = appInfo.GetRuntimeAppInfo() }, this.AppContext, cancellationToken).PreserveThreadContext();
+
             var processStartResult = await processStarter.StartAsync(cancellationToken: cancellationToken).PreserveThreadContext();
             processStartResult[nameof(AppInfo)] = appInfo;
             return processStartResult;
@@ -538,7 +540,7 @@ namespace Kephas.Orchestration
         {
             return new AppHeartbeatEvent
             {
-                AppInfo = this.AppRuntime.GetAppInfo(),
+                AppInfo = this.AppRuntime.GetRuntimeAppInfo(),
                 Timestamp = DateTimeOffset.Now,
             };
         }

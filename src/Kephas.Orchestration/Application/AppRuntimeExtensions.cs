@@ -14,6 +14,7 @@ namespace Kephas.Orchestration.Application
     using System.Linq;
 
     using Kephas.Application;
+    using Kephas.Application.Reflection;
 
     /// <summary>
     /// Extension methods for <see cref="IAppRuntime"/>.
@@ -21,13 +22,13 @@ namespace Kephas.Orchestration.Application
     public static class AppRuntimeExtensions
     {
         /// <summary>
-        /// An IAppManifest extension method that gets application information.
+        /// Gets the application information for the provided runtime.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <returns>
         /// The application information.
         /// </returns>
-        public static IRuntimeAppInfo GetAppInfo(this IAppRuntime appRuntime)
+        public static IRuntimeAppInfo GetRuntimeAppInfo(this IAppRuntime appRuntime)
         {
             return new RuntimeAppInfo
                        {
@@ -39,6 +40,23 @@ namespace Kephas.Orchestration.Application
                            HostName = appRuntime.GetHostName(),
                            HostAddress = appRuntime.GetHostAddress().ToString(),
                        };
+        }
+
+        /// <summary>
+        /// Gets the application information for the provided <see cref="IAppInfo"/>.
+        /// </summary>
+        /// <param name="appInfo">The application runtime.</param>
+        /// <returns>
+        /// The application information.
+        /// </returns>
+        public static IRuntimeAppInfo GetRuntimeAppInfo(this IAppInfo appInfo)
+        {
+            return new RuntimeAppInfo
+            {
+                AppId = appInfo.Identity.Id,
+                AppInstanceId = appInfo[AppRuntimeBase.AppInstanceIdKey] as string,
+                IsRoot = false,
+            };
         }
     }
 }
