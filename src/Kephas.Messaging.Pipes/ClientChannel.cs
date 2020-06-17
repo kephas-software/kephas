@@ -89,35 +89,24 @@ namespace Kephas.Messaging.Pipes
         /// <param name="message">The message being sent.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The asynchronous result.</returns>
-        public Task WriteAsync(string message, CancellationToken cancellationToken)
+        public async Task WriteAsync(string message, CancellationToken cancellationToken)
         {
-            var messageBytes = Encoding.UTF8.GetBytes(message);
-            return this.WriteAsync(messageBytes, cancellationToken);
-        }
+            var bytes = Encoding.UTF8.GetBytes(message);
 
-        /// <summary>
-        /// Writes the bytes to the pipe asynchronously.
-        /// </summary>
-        /// <param name="messageBytes">The bytes being sent.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        public async Task WriteAsync(byte[] messageBytes, CancellationToken cancellationToken)
-        {
-            // TODO optimize to write in parallel to multiple outs, do not block with this global async lock.
             await this.writeLock.EnterAsync(async () =>
             {
                 try
                 {
-                    this.Logger.Trace("Writing message ({messageLength}) to {channel}...", messageBytes.Length, this.ChannelName);
+                    this.Logger.Trace("Writing message ({messageLength}) to {channel}...", bytes.Length, this.ChannelName);
 
-                    await this.Stream.WriteAsync(messageBytes, 0, messageBytes.Length, cancellationToken).PreserveThreadContext();
+                    await this.Stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).PreserveThreadContext();
                     await this.Stream.FlushAsync(cancellationToken).PreserveThreadContext();
 
-                    this.Logger.Trace("Written message ({messageLength}) to {channel}.", messageBytes.Length, this.ChannelName);
+                    this.Logger.Trace("Written message ({messageLength}) to {channel}.", bytes.Length, this.ChannelName);
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.Error(ex, "Error while writing message ({messageLength}) to {channel}.", messageBytes.Length, this.ChannelName);
+                    this.Logger.Error(ex, "Error while writing message ({messageLength}) to {channel}.", bytes.Length, this.ChannelName);
                     throw;
                 }
             }).PreserveThreadContext();
