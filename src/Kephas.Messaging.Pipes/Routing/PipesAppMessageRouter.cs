@@ -381,12 +381,20 @@ namespace Kephas.Messaging.Pipes.Routing
             // TODO optimize to write in parallel to multiple outs, do not block with this global async lock.
             await this.outWriteLock!.EnterAsync(async () =>
             {
-                this.Logger.Trace("Writing message ({messageLength}) to {channel}...", messageBytes.Length, channelName);
+                try
+                {
+                    this.Logger.Trace("Writing message ({messageLength}) to {channel}...", messageBytes.Length, channelName);
 
-                await peerOutput.WriteAsync(messageBytes, 0, messageBytes.Length).PreserveThreadContext();
-                await peerOutput.FlushAsync().PreserveThreadContext();
+                    await peerOutput.WriteAsync(messageBytes, 0, messageBytes.Length).PreserveThreadContext();
+                    await peerOutput.FlushAsync().PreserveThreadContext();
 
-                this.Logger.Trace("Written message ({messageLength}) to {channel}.", messageBytes.Length, channelName);
+                    this.Logger.Trace("Written message ({messageLength}) to {channel}.", messageBytes.Length, channelName);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Error(ex, "Error while writing message ({messageLength}) to {channel}.", messageBytes.Length, channelName);
+                    throw;
+                }
             }).PreserveThreadContext();
         }
 
