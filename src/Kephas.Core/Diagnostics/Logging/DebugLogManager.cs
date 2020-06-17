@@ -48,7 +48,13 @@ namespace Kephas.Diagnostics.Logging
             : this(
                 (logger, level, message, args, exception)
                     => stringBuilder
-                        .AppendFormat("[{0}] [{1}] {2}{3} {4}", logger, level, message, " (" + string.Join(", ", args) + ")", exception)
+                        .AppendFormat(
+                            "[{0}] [{1}] {2}{3}. {4}",
+                            logger,
+                            level,
+                            message,
+                            args?.Length > 0 ? " (" + string.Join(", ", args) + ")" : null,
+                            exception)
                         .AppendLine())
         {
         }
