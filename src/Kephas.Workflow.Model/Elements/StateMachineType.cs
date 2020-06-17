@@ -107,7 +107,7 @@ namespace Kephas.Workflow.Model.Elements
         /// <returns>
         /// An asynchronous result that yields the transition.
         /// </returns>
-        public Task<object> TransitionAsync(IStateMachine stateMachine, object targetState, ITransitionInfo? transitionInfo, IExpando? arguments, ITransitionContext context, CancellationToken cancellationToken = default)
+        public Task<object?> TransitionAsync(IStateMachine stateMachine, object targetState, ITransitionInfo? transitionInfo, IExpando? arguments, ITransitionContext context, CancellationToken cancellationToken = default)
         {
             return stateMachine.GetTypeInfo().TransitionAsync(stateMachine, targetState, transitionInfo, arguments, context, cancellationToken);
         }
