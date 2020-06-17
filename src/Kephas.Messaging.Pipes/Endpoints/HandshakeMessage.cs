@@ -15,11 +15,11 @@ namespace Kephas.Messaging.Pipes.Endpoints
         /// <summary>
         /// Gets or sets the source.
         /// </summary>
-        public string Source { get; set; }
+        public string? Source { get; set; }
 
         /// <summary>
         /// Gets or sets the target.
         /// </summary>
-        public string Target { get; set; }
+        public string? Target { get; set; }
     }
 }
