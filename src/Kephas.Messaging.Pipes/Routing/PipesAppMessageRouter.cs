@@ -59,6 +59,7 @@ namespace Kephas.Messaging.Pipes.Routing
         private Lock? outWriteLock;
         private IEventSubscription? appStartingSubscription;
         private IEventSubscription? appStoppedSubscription;
+        private IEventSubscription? appStartedSubscription;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PipesAppMessageRouter"/> class.
@@ -98,8 +99,7 @@ namespace Kephas.Messaging.Pipes.Routing
         {
             await base.InitializeCoreAsync(context, cancellationToken).PreserveThreadContext();
 
-            IEventSubscription? appStartedSubscription = null;
-            appStartedSubscription = this.eventHub.Subscribe<AppStartedEvent>(
+            this.appStartedSubscription = this.eventHub.Subscribe<AppStartedEvent>(
                 async (e, ctx, token) =>
                 {
                     if (e.AppInfo.AppInstanceId != this.AppRuntime.GetAppInstanceId())
@@ -112,7 +112,8 @@ namespace Kephas.Messaging.Pipes.Routing
 
                     await this.InitializePipesAsync(cancellationToken).PreserveThreadContext();
 
-                    appStartedSubscription?.Dispose();
+                    this.appStartedSubscription?.Dispose();
+                    this.appStartedSubscription = null;
                 });
         }
 
@@ -141,7 +142,8 @@ namespace Kephas.Messaging.Pipes.Routing
 
                 await this.PublishAsync(
                         new JoinPeerMessage(),
-                        rootOutChannel.Stream!)
+                        rootOutChannel.Stream!,
+                        rootOutChannel.ChannelName)
                     .PreserveThreadContext();
             }
 
@@ -241,7 +243,6 @@ namespace Kephas.Messaging.Pipes.Routing
                 PipeTransmissionMode.Message,
                 PipeOptions.Asynchronous);
 
-            this.Logger.Debug("Pipe {channel} is open (server mode).", channelName);
             return stream;
         }
 
@@ -263,6 +264,8 @@ namespace Kephas.Messaging.Pipes.Routing
 
             try
             {
+                this.Logger.Debug("Connecting to pipe {server}/{channel}...", serverName, channelName);
+
                 await stream.ConnectAsync((int)this.pipesConfiguration.Settings.ConnectionTimeout.TotalMilliseconds, cancellationToken).PreserveThreadContext();
                 stream.ReadMode = PipeTransmissionMode.Message;
 
@@ -340,7 +343,8 @@ namespace Kephas.Messaging.Pipes.Routing
             IBrokeredMessage message,
             IDispatchingContext context,
             string appInstanceId,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            string channelName)
         {
             if (this.peerOutChannels.TryGetValue(appInstanceId, out var peerChannel))
             {
@@ -353,7 +357,7 @@ namespace Kephas.Messaging.Pipes.Routing
                     .SerializeAsync(message, ctx => ctx.IncludeTypeInfo(true), cancellationToken)
                     .PreserveThreadContext();
                 var messageBytes = Encoding.UTF8.GetBytes(serializedMessage);
-                await this.PublishAsync(messageBytes, peerChannel.Stream!).PreserveThreadContext();
+                await this.PublishAsync(messageBytes, peerChannel.Stream!, channelName).PreserveThreadContext();
             }
             else
             {
@@ -363,16 +367,16 @@ namespace Kephas.Messaging.Pipes.Routing
             return (RoutingInstruction.None, null);
         }
 
-        private async Task PublishAsync(object message, Stream peerOutput)
+        private async Task PublishAsync(object message, Stream peerOutput, string channelName)
         {
             var messageString = await this.serializationService
                 .SerializeAsync(message, ctx => ctx.IncludeTypeInfo(true))
                 .PreserveThreadContext();
             var messageBytes = Encoding.UTF8.GetBytes(messageString);
-            await this.PublishAsync(messageBytes, peerOutput).PreserveThreadContext();
+            await this.PublishAsync(messageBytes, peerOutput, channelName).PreserveThreadContext();
         }
 
-        private async Task PublishAsync(byte[] messageBytes, Stream peerOutput)
+        private async Task PublishAsync(byte[] messageBytes, Stream peerOutput, string channelName)
         {
             // TODO optimize to write in parallel to multiple outs, do not block with this global async lock.
             await this.outWriteLock!.EnterAsync(async () =>
@@ -385,16 +389,25 @@ namespace Kephas.Messaging.Pipes.Routing
         private async Task StartListeningAsync(
             string peerAppInstanceId,
             NamedPipeServerStream channel,
+            string channelName,
             CancellationToken cancellationToken)
         {
             await Task.Yield();
+
+            this.Logger.Debug("Waiting for connection on {channel} (server mode)...", channelName);
+
             await channel.WaitForConnectionAsync(cancellationToken).PreserveThreadContext();
+
+            this.Logger.Debug("Client connected on {channel} (server mode).", channelName);
 
             while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
                     var messageString = await this.ReadMessageAsync(channel, cancellationToken).PreserveThreadContext();
+
+                    this.Logger.Debug("Message arrived on {channel} (server mode): {message}...", channelName, messageString.Substring(0, 20));
+
                     var message = await this.serializationService
                         .DeserializeAsync(messageString, cancellationToken: cancellationToken)
                         .PreserveThreadContext();
@@ -503,7 +516,8 @@ namespace Kephas.Messaging.Pipes.Routing
                 {
                     await this.PublishAsync(
                         new HandshakeMessage { Target = appInfo.AppInstanceId },
-                        senderChannel.Stream!).PreserveThreadContext();
+                        senderChannel.Stream!,
+                        senderChannel.ChannelName).PreserveThreadContext();
                 }
                 catch (Exception ex)
                 {
@@ -544,7 +558,8 @@ namespace Kephas.Messaging.Pipes.Routing
                                 .PreserveThreadContext())
                             .ToArray(),
                     },
-                    peerChannel.Stream!).PreserveThreadContext();
+                    peerChannel.Stream!,
+                    peerChannel.ChannelName).PreserveThreadContext();
             }
             catch (Exception ex)
             {
@@ -615,11 +630,7 @@ namespace Kephas.Messaging.Pipes.Routing
                 : await this.OpenNamedPipeClientStreamAsync(".", channelName, cancellationToken).PreserveThreadContext();
             this.peerOutChannels.TryAdd(
                 peerAppInstanceId,
-                peerChannel = new PeerChannel(
-                    peerAppInstanceId,
-                    ".",
-                    channelName,
-                    channel));
+                peerChannel = new PeerChannel(peerAppInstanceId, ".", channelName, channel));
             return (peerChannel, false);
         }
 
@@ -643,7 +654,7 @@ namespace Kephas.Messaging.Pipes.Routing
 
             var channelName = this.GetInChannelName(peerAppInstanceId);
             var channel = this.OpenNamedPipeServerStream(channelName);
-            var listenTask = this.StartListeningAsync(peerAppInstanceId, channel, this.disposeSource!.Token);
+            var listenTask = this.StartListeningAsync(peerAppInstanceId, channel, channelName, this.disposeSource!.Token);
 
             this.serverInChannels.TryAdd(
                 peerAppInstanceId,
