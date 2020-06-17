@@ -99,6 +99,11 @@ namespace Kephas.Messaging.Pipes
                 {
                     this.Logger.Trace("Writing message ({messageLength}) to {channel}...", bytes.Length, this.ChannelName);
 
+                    if (!this.Stream.IsConnected)
+                    {
+                        throw new PipesMessagingException($"{this.ChannelName} disconnected from server.");
+                    }
+
                     await this.Stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).PreserveThreadContext();
                     await this.Stream.FlushAsync(cancellationToken).PreserveThreadContext();
 
