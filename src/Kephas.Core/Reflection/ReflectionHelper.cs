@@ -268,12 +268,9 @@ namespace Kephas.Reflection
         /// <returns>
         /// The assembly location directory.
         /// </returns>
-        public static string? GetLocationDirectory(this Assembly assembly)
+        public static string GetLocationDirectory(this Assembly assembly)
         {
-            if (assembly == null || string.IsNullOrEmpty(assembly.Location))
-            {
-                return null;
-            }
+            Requires.NotNull(assembly, nameof(assembly));
 
             var location = Path.GetDirectoryName(assembly.Location);
             return location;
