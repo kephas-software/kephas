@@ -13,6 +13,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using System;
     using System.Collections.Generic;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Model.Construction;
@@ -23,7 +24,6 @@ namespace Kephas.Model.Tests.Runtime.Construction
     using Kephas.Model.Runtime.Construction.Annotations;
     using Kephas.Model.Runtime.Construction.Composition;
     using Kephas.Runtime;
-
     using NSubstitute;
 
     public class ConstructorTestBase
@@ -40,7 +40,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
             IModelSpace modelSpace = null,
             IRuntimeModelElementFactory factory = null)
         {
-            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            var ambientServices = new AmbientServices(typeRegistry: new RuntimeTypeRegistry()).WithStaticAppRuntime();
             var compositionContext = Substitute.For<ICompositionContext>();
             compositionContext.GetExport<IAmbientServices>(Arg.Any<string>()).Returns(ambientServices);
             return new ModelConstructionContext(compositionContext)

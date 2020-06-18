@@ -18,8 +18,7 @@ namespace Kephas.Orchestration.Tests
     using Kephas.Testing.Application;
     using NUnit.Framework;
 
-    [TestFixture]
-    public class OrchestrationTestBase : ApplicationTestBase
+    public abstract class OrchestrationTestBase : ApplicationTestBase
     {
         public override IEnumerable<Assembly> GetDefaultConventionAssemblies()
         {

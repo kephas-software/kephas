@@ -11,6 +11,7 @@
 namespace Kephas.Core.Tests.Commands
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Kephas.Commands;
@@ -21,6 +22,14 @@ namespace Kephas.Core.Tests.Commands
     [TestFixture]
     public class ArgsTest
     {
+        [Test]
+        public void Args_empty()
+        {
+            var args = new Args();
+            var dictArgs = args.ToDictionary();
+            Assert.AreEqual(0, dictArgs.Count);
+        }
+
         [Test]
         public void Args_string()
         {
@@ -104,12 +113,27 @@ namespace Kephas.Core.Tests.Commands
         }
 
         [Test]
-        public void Args_expando()
+        public void Args_expando_and_case_insensitive()
         {
             var expando = new Expando { ["gigi"] = "belogea" };
             var args = new Args(expando);
 
             Assert.AreEqual("belogea", args["gigi"]);
+            Assert.AreEqual("belogea", args["GigI"]);
+            Assert.AreEqual(1, args.ToDictionary().Count);
+        }
+
+        [Test]
+        public void Args_dictionary_and_case_insensitive()
+        {
+            var argsDictionary = new Dictionary<string, object?> { { "hi", "There" }, { "Gigi", "Belogea"} };
+            var args = new Args(argsDictionary);
+
+            Assert.AreEqual("There", args["HI"]);
+            Assert.AreEqual("There", args["hi"]);
+            Assert.AreEqual("Belogea", args["gigi"]);
+            Assert.AreEqual("Belogea", args["GigI"]);
+            Assert.AreEqual(2, args.ToDictionary().Count);
         }
 
         [Test]

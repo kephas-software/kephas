@@ -429,7 +429,7 @@ namespace Kephas.Core.Tests
         [Test]
         public void GetAppServiceInfos_default_services()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = (AmbientServices)new AmbientServices().WithStaticAppRuntime();
             var appServiceInfos = ambientServices.GetAppServiceInfos(new List<Type>(), new CompositionRegistrationContext(ambientServices));
 
             var (c, info) = appServiceInfos.SingleOrDefault(i => i.contractType == typeof(ILogManager));
@@ -473,7 +473,7 @@ namespace Kephas.Core.Tests
         [Test]
         public void GetAppServiceInfos_all_services_for_lite_composition_when_null_registration_context()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = (AmbientServices)new AmbientServices().WithStaticAppRuntime();
             ambientServices[LiteConventionsBuilder.LiteCompositionKey] = true;
             var appServiceInfos = ambientServices.GetAppServiceInfos(null, null);
 

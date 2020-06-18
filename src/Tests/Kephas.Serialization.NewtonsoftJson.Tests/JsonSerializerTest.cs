@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Application;
+
 namespace Kephas.Serialization.Json.Tests
 {
     using System;
@@ -391,9 +393,11 @@ namespace Kephas.Serialization.Json.Tests
         [Test]
         public async Task JsonSerializer_Composition()
         {
-            var ambientServices = new AmbientServices().BuildWithSystemComposition(
-                b =>
-                b.WithAssemblies(new[] { typeof(ISerializationService).GetTypeInfo().Assembly, typeof(JsonSerializer).GetTypeInfo().Assembly }));
+            var ambientServices = new AmbientServices()
+                .WithStaticAppRuntime()
+                .BuildWithSystemComposition(
+                    b =>
+                    b.WithAssemblies(new[] { typeof(ISerializationService).GetTypeInfo().Assembly, typeof(JsonSerializer).GetTypeInfo().Assembly }));
             var serializers = ambientServices.CompositionContainer.GetExportFactories<ISerializer, SerializerMetadata>();
             var jsonSerializer = serializers.SingleOrDefault(s => s.Metadata.MediaType == typeof(JsonMediaType))?.CreateExportedValue();
 

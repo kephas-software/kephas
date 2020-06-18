@@ -50,7 +50,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var modelElement = (ClassifierBase<IClassifier>)this.TryCreateTestModelElement();
 
-            Assert.AreEqual(3, modelElement.Members.Count());
+            Assert.AreEqual(4, modelElement.Members.Count());
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Kephas.Model.Tests.Runtime.Construction
         {
             var modelElement = (ClassifierBase<IClassifier>)this.TryCreateTestModelElement();
 
-            Assert.AreEqual(1, modelElement.Annotations.Count());
+            Assert.AreEqual(2, modelElement.Annotations.Count());
         }
 
         [Test]

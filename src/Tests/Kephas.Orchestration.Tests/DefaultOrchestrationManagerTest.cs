@@ -71,6 +71,7 @@ namespace Kephas.Orchestration.Tests
         [Test]
         public async Task InitializeAsync_Heartbeat()
         {
+            var ambientServices = new AmbientServices();
             var messageBroker = Substitute.For<IMessageBroker>();
             var appRuntime = Substitute.For<IAppRuntime>();
             appRuntime[AppRuntimeBase.AppIdKey].Returns("hi");
@@ -80,7 +81,8 @@ namespace Kephas.Orchestration.Tests
             var eventHub = this.CreateEventHubMock();
 
             var compositionContext = Substitute.For<ICompositionContext>();
-            var appContext = new Context(compositionContext);
+            ambientServices.WithAppRuntime(appRuntime).WithCompositionContainer(compositionContext);
+            var appContext = new AppContext(ambientServices);
 
             var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
             config.Settings.Returns(new OrchestrationSettings());

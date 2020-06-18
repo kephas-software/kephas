@@ -527,7 +527,7 @@ namespace Kephas.Orchestration
         /// </returns>
         protected virtual IEnumerable<string> GetAppExecutableArgs(IAppInfo appInfo, IExpando arguments)
         {
-            var appArgs = new Args(string.Empty)
+            var appArgs = new Args
             {
                 [AppRuntimeBase.AppIdKey] = appInfo.Identity.Id,
                 [AppRuntimeBase.AppInstanceIdKey] = appInfo[AppRuntimeBase.AppInstanceIdKey],

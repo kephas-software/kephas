@@ -14,6 +14,7 @@ namespace Kephas.Commands
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
@@ -26,7 +27,7 @@ namespace Kephas.Commands
         /// Initializes a new instance of the <see cref="Args"/> class.
         /// </summary>
         public Args()
-            : this(ComputeArgs(Environment.GetCommandLineArgs()))
+            : this(ComputeArgs(string.Empty))
         {
         }
 
@@ -53,7 +54,7 @@ namespace Kephas.Commands
         /// </summary>
         /// <param name="argValues">The argument values.</param>
         public Args(IDictionary<string, object?> argValues)
-            : base(argValues)
+            : base(ComputeArgs(argValues))
         {
         }
 
@@ -62,7 +63,7 @@ namespace Kephas.Commands
         /// </summary>
         /// <param name="args">The argument values.</param>
         public Args(IExpando args)
-            : this(args.ToDictionary())
+            : base(ComputeArgs(args.ToDictionary()))
         {
         }
 
@@ -89,6 +90,22 @@ namespace Kephas.Commands
         /// <summary>
         /// Calculates the arguments as a dictionary of values.
         /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns>
+        /// The calculated arguments.
+        /// </returns>
+        protected static IDictionary<string, object?> ComputeArgs(IDictionary<string, object?> args)
+        {
+            Requires.NotNull(args, nameof(args));
+
+            var dictionary = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+            dictionary.AddRange(args);
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Calculates the arguments as a dictionary of values.
+        /// </summary>
         /// <param name="commandLine">The command line.</param>
         /// <returns>
         /// The calculated arguments.
@@ -104,13 +121,13 @@ namespace Kephas.Commands
         /// <summary>
         /// Calculates the arguments as a dictionary of values.
         /// </summary>
-        /// <param name="appArgs">The application arguments.</param>
+        /// <param name="args">The application arguments.</param>
         /// <returns>
         /// The calculated arguments.
         /// </returns>
-        protected static IDictionary<string, object?> ComputeArgs(IEnumerable<string> appArgs)
+        protected static IDictionary<string, object?> ComputeArgs(IEnumerable<string> args)
         {
-            Requires.NotNull(appArgs, nameof(appArgs));
+            Requires.NotNull(args, nameof(args));
 
             var cmdArgs = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
 
@@ -118,7 +135,7 @@ namespace Kephas.Commands
             object? value = null;
             var expectedValue = false;
 
-            using var enumerator = appArgs.GetEnumerator();
+            using var enumerator = args.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 var currentArg = enumerator.Current;
