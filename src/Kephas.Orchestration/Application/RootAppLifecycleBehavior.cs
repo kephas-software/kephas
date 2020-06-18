@@ -262,12 +262,12 @@ namespace Kephas.Orchestration.Application
 
             this.Logger.Info($"Stopping worker application instances: {string.Join(", ", liveApps.Select(r => r.AppInstanceId))}");
 
-            var rootAppId = this.AppRuntime.GetAppId();
+            var rootAppInstanceId = this.AppRuntime.GetAppInstanceId();
             var stopTasks = new List<Task<StopAppResponseMessage>>();
             foreach (var runtimeAppInfo in liveApps)
             {
                 // we are the master now, ignore this live app role
-                if (runtimeAppInfo.AppId == rootAppId)
+                if (runtimeAppInfo.AppInstanceId == rootAppInstanceId)
                 {
                     continue;
                 }
@@ -423,9 +423,7 @@ namespace Kephas.Orchestration.Application
             var workerProcess = this.WorkerProcesses.FirstOrDefault(p => this.TryGetProcessId(p) == runtimeAppInfo.ProcessId);
             if (workerProcess?.Process.HasExited ?? true)
             {
-                this.Logger.Warn($"Worker process '${runtimeAppInfo.AppId}/{runtimeAppInfo.AppInstanceId}' (#{runtimeAppInfo.ProcessId}) exited prematurely. A stop message will not be sent anymore.");
-
-                return new StopAppResponseMessage { ProcessId = runtimeAppInfo.ProcessId };
+                this.Logger.Warn($"Worker process '${runtimeAppInfo.AppId}/{runtimeAppInfo.AppInstanceId}' (#{runtimeAppInfo.ProcessId}) exited prematurely or not started by the root.");
             }
 
             var result = await this.OrchestrationManager
