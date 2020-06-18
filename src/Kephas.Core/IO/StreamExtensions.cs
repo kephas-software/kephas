@@ -66,7 +66,7 @@ namespace Kephas.IO
             using var mem = new MemoryStream();
 
             // read all bytes
-            const int ChunkSize = 1000;
+            const int ChunkSize = 1024;
             var buffer = new byte[ChunkSize];
             var readLength = 0;
             while ((readLength = input.Read(buffer, 0, ChunkSize)) > 0)
@@ -92,7 +92,7 @@ namespace Kephas.IO
             using var mem = new MemoryStream();
 
             // read all bytes
-            const int ChunkSize = 1000;
+            const int ChunkSize = 1024;
             var buffer = new byte[ChunkSize];
             var readLength = 0;
             while ((readLength = await input.ReadAsync(buffer, 0, ChunkSize, cancellationToken).PreserveThreadContext()) > 0)

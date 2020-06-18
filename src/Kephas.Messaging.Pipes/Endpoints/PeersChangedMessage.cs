@@ -15,6 +15,11 @@ namespace Kephas.Messaging.Pipes.Endpoints
     public class PeersChangedMessage
     {
         /// <summary>
+        /// Gets or sets the ID of the application instance sending this message.
+        /// </summary>
+        public string AppInstanceId { get; set; }
+        
+        /// <summary>
         /// Gets or sets the live apps.
         /// </summary>
         public IRuntimeAppInfo[]? Apps { get; set; }

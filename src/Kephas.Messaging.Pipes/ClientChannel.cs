@@ -16,7 +16,6 @@ namespace Kephas.Messaging.Pipes
     using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Messaging.Pipes.Configuration;
-    using Kephas.Threading;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -25,7 +24,6 @@ namespace Kephas.Messaging.Pipes
     internal class ClientChannel : ChannelBase
     {
         private readonly IConfiguration<PipesSettings> pipesConfiguration;
-        private readonly Lock writeLock;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientChannel"/> class.
@@ -35,13 +33,26 @@ namespace Kephas.Messaging.Pipes
         /// <param name="channelName">The channel name.</param>
         /// <param name="pipesConfiguration">The pipes configuration.</param>
         /// <param name="logger">The logger.</param>
-        public ClientChannel(string appInstanceId, string? serverName, string channelName, IConfiguration<PipesSettings> pipesConfiguration, ILogger logger)
-            : base(appInstanceId, channelName, logger)
+        /// <param name="isSelf">Indicates whether this is a dummy channel to itself.</param>
+        public ClientChannel(
+            string appInstanceId,
+            string? serverName,
+            string channelName,
+            IConfiguration<PipesSettings> pipesConfiguration,
+            ILogger logger,
+            bool isSelf)
+            : base(channelName, logger)
         {
             this.pipesConfiguration = pipesConfiguration;
+            this.AppInstanceId = appInstanceId;
             this.ServerName = serverName ?? ".";
-            this.writeLock = new Lock();
+            this.IsSelf = isSelf;
         }
+
+        /// <summary>
+        /// Gets the application instance ID.
+        /// </summary>
+        public string AppInstanceId { get; }
 
         /// <summary>
         /// Gets the server name.
@@ -51,14 +62,53 @@ namespace Kephas.Messaging.Pipes
         /// <summary>
         /// Gets a value indicating whether the channel is to itself.
         /// </summary>
-        public virtual bool IsSelf => false;
+        public virtual bool IsSelf { get; }
+
+        /// <summary>
+        /// Writes the bytes to the pipe asynchronously.
+        /// </summary>
+        /// <param name="message">The message being sent.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The asynchronous result.</returns>
+        public virtual async Task WriteAsync(string message, CancellationToken cancellationToken)
+        {
+            if (this.IsSelf)
+            {
+                throw new PipesMessagingException($"Cannot write messages in a {this.GetType()} channel.");
+            }
+
+            var bytes = Encoding.UTF8.GetBytes(message);
+
+            using var stream = await this.OpenAsync(cancellationToken).PreserveThreadContext();
+
+            try
+            {
+                this.Logger.Trace("Writing message ({messageLength}) to {channel}...", bytes.Length, this.ChannelName);
+
+                if (!stream.IsConnected)
+                {
+                    throw new PipesMessagingException($"{this.ChannelName} disconnected from server.");
+                }
+
+                await stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).PreserveThreadContext();
+                await stream.FlushAsync(cancellationToken).PreserveThreadContext();
+                stream.WaitForPipeDrain();
+
+                this.Logger.Trace("Written message ({messageLength}) to {channel}.", bytes.Length, this.ChannelName);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while writing message ({messageLength}) to {channel}.", bytes.Length, this.ChannelName);
+                throw;
+            }
+        }
 
         /// <summary>
         /// Opens the channel asynchronously.
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        public virtual async Task OpenAsync(CancellationToken cancellationToken)
+        /// <returns>The asynchronous result yielding the open pipe stream.</returns>
+        private async Task<NamedPipeClientStream> OpenAsync(CancellationToken cancellationToken)
         {
             var stream = new NamedPipeClientStream(
                 this.ServerName,
@@ -74,88 +124,13 @@ namespace Kephas.Messaging.Pipes
                 stream.ReadMode = PipeTransmissionMode.Message;
 
                 this.Logger.Debug("Connected to pipe {server}/{channel} (client mode).", this.ServerName, this.ChannelName);
-                this.Stream = stream;
+                return stream;
             }
             catch (Exception ex)
             {
                 this.Logger.Error(ex, "Error while connecting to {server}/{channel} (client mode).", this.ServerName, this.ChannelName);
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Writes the bytes to the pipe asynchronously.
-        /// </summary>
-        /// <param name="message">The message being sent.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        public async Task WriteAsync(string message, CancellationToken cancellationToken)
-        {
-            var bytes = Encoding.UTF8.GetBytes(message);
-
-            await this.writeLock.EnterAsync(async () =>
-            {
-                try
-                {
-                    this.Logger.Trace("Writing message ({messageLength}) to {channel}...", bytes.Length, this.ChannelName);
-
-                    if (!this.Stream.IsConnected)
-                    {
-                        throw new PipesMessagingException($"{this.ChannelName} disconnected from server.");
-                    }
-
-                    await this.Stream.WriteAsync(bytes, 0, bytes.Length, cancellationToken).PreserveThreadContext();
-                    await this.Stream.FlushAsync(cancellationToken).PreserveThreadContext();
-
-                    this.Logger.Trace("Written message ({messageLength}) to {channel}.", bytes.Length, this.ChannelName);
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.Error(ex, "Error while writing message ({messageLength}) to {channel}.", bytes.Length, this.ChannelName);
-                    throw;
-                }
-            }).PreserveThreadContext();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                this.writeLock.Dispose();
-            }
-
-            base.Dispose(disposing);
-        }
-    }
-
-    internal class SelfClientChannel : ClientChannel
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SelfClientChannel"/> class.
-        /// </summary>
-        /// <param name="appInstanceId">The application instance ID.</param>
-        /// <param name="serverName">The server name.</param>
-        /// <param name="channelName">The channel name.</param>
-        /// <param name="pipesConfiguration">The pipes configuration.</param>
-        /// <param name="logger">The logger.</param>
-        public SelfClientChannel(string appInstanceId, string? serverName, string channelName, IConfiguration<PipesSettings> pipesConfiguration, ILogger logger)
-            : base(appInstanceId, serverName, channelName, pipesConfiguration, logger)
-        {
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the channel is to itself.
-        /// </summary>
-        public override bool IsSelf => true;
-
-        /// <summary>
-        /// Opens the channel asynchronously.
-        /// </summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        public override Task OpenAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
         }
     }
 }

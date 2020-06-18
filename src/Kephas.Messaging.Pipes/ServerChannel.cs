@@ -23,7 +23,6 @@ namespace Kephas.Messaging.Pipes
     /// </summary>
     internal class ServerChannel : ChannelBase
     {
-        private readonly Func<ServerChannel, CancellationToken, Task> connectionEstablished;
         private readonly Func<ServerChannel, string, CancellationToken, Task> messageReceived;
         private readonly CancellationToken cancellationToken;
         private Task? listenTask;
@@ -31,25 +30,19 @@ namespace Kephas.Messaging.Pipes
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerChannel"/> class.
         /// </summary>
-        /// <param name="appInstanceId">The application instance ID.</param>
         /// <param name="channelName">The channel name.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="connectionEstablished">The callback for when the connection with the client is established.</param>
         /// <param name="messageReceived">The callback for when the message is received.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         public ServerChannel(
-            string appInstanceId,
             string channelName,
             ILogger logger,
-            Func<ServerChannel, CancellationToken, Task> connectionEstablished,
             Func<ServerChannel, string, CancellationToken, Task> messageReceived,
             CancellationToken cancellationToken)
             : base(
-                appInstanceId,
                 channelName,
                 logger)
         {
-            this.connectionEstablished = connectionEstablished;
             this.messageReceived = messageReceived;
             this.cancellationToken = cancellationToken;
         }
@@ -59,84 +52,96 @@ namespace Kephas.Messaging.Pipes
         /// </summary>
         public virtual void Open()
         {
-            this.Stream = new NamedPipeServerStream(
-                this.ChannelName,
-                PipeDirection.InOut,
-                NamedPipeServerStream.MaxAllowedServerInstances,
-                PipeTransmissionMode.Message,
-                PipeOptions.Asynchronous);
-            this.listenTask = this.StartListeningAsync(this.connectionEstablished, this.messageReceived, this.cancellationToken);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                this.Stream?.WaitForPipeDrain();
-            }
-
-            base.Dispose(disposing);
+            this.listenTask = this.StartListeningAsync(this.messageReceived, this.cancellationToken);
         }
 
         private async Task StartListeningAsync(
-            Func<ServerChannel, CancellationToken, Task> connectionEstablished,
             Func<ServerChannel, string, CancellationToken, Task> messageReceived,
             CancellationToken cancellationToken)
         {
             await Task.Yield();
 
             var channelName = this.ChannelName;
+
+            using var stream = new NamedPipeServerStream(
+                this.ChannelName,
+                PipeDirection.InOut,
+                NamedPipeServerStream.MaxAllowedServerInstances,
+                PipeTransmissionMode.Message,
+                PipeOptions.Asynchronous);
+
             this.Logger.Debug("Waiting for connection on {channel} (server mode)...", channelName);
 
-            await ((NamedPipeServerStream)this.Stream).WaitForConnectionAsync(cancellationToken).PreserveThreadContext();
-
-            this.Logger.Debug("Client connected on {channel} (server mode).", channelName);
-
-            await connectionEstablished(this, cancellationToken).PreserveThreadContext();
-
-            while (!cancellationToken.IsCancellationRequested)
+            var connectSuccessful = false;
+            try
             {
-                try
-                {
-                    var messageString = await this.ReadAsync(cancellationToken).PreserveThreadContext();
+                await stream.WaitForConnectionAsync(cancellationToken).PreserveThreadContext();
 
-                    if (this.Logger.IsDebugEnabled())
-                    {
-                        this.Logger.Debug("Message arrived on {channel} (server mode): '{message}'.", channelName, messageString.Substring(0, 50) + "...");
-                    }
+                this.Logger.Debug("Client connected on {channel} (server mode).", channelName);
 
-                    await messageReceived(this, messageString, cancellationToken).PreserveThreadContext();
-                }
-                catch (OperationCanceledException)
-                    when (cancellationToken.IsCancellationRequested)
+                cancellationToken.ThrowIfCancellationRequested();
+
+                connectSuccessful = true;
+            }
+            catch (OperationCanceledException)
+                when (cancellationToken.IsCancellationRequested)
+            {
+                this.Logger.Warn("Connection cancelled while processing the request from client on {channel}.", channelName);
+                return;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while waiting for connection on {channel}.", channelName);
+            }
+
+            // client connection is successful, prepare for the next client connection.
+            this.listenTask = this.StartListeningAsync(messageReceived, cancellationToken);
+
+            if (!connectSuccessful)
+            {
+                // if the client connection is not successful, skip reading from the channel.
+                return;
+            }
+
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var messageString = await this.ReadAsync(stream, cancellationToken).PreserveThreadContext();
+
+                if (this.Logger.IsDebugEnabled())
                 {
-                    break;
+                    this.Logger.Debug(
+                        "Message arrived on {channel} (server mode): '{message}'.",
+                        channelName,
+                        messageString.Substring(0, 50) + "...");
                 }
-                catch (Exception ex)
-                {
-                    this.Logger.Error(ex, "Error while processing the request from client.");
-                }
+
+                await messageReceived(this, messageString, cancellationToken).PreserveThreadContext();
+            }
+            catch (OperationCanceledException)
+                when (cancellationToken.IsCancellationRequested)
+            {
+                this.Logger.Warn("Read cancelled while processing the request from client on {channel}.", channelName);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while processing the request from client on {channel}.", channelName);
             }
         }
 
-        /// <summary>
-        /// Reads a message from the pipe asynchronously.
-        /// </summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result yielding the read message.</returns>
-        private async Task<string> ReadAsync(CancellationToken cancellationToken)
+        private async Task<string> ReadAsync(PipeStream stream, CancellationToken cancellationToken)
         {
-            var channel = this.Stream!;
-            var buffer = new byte[256];
-            using var memStream = new MemoryStream(1000);
+            var buffer = new byte[2048];
+            using var memStream = new MemoryStream(4096);
             do
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var numBytes = await channel.ReadAsync(buffer, 0, buffer.Length, cancellationToken).PreserveThreadContext();
+                var numBytes = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).PreserveThreadContext();
                 memStream.Write(buffer, 0, numBytes);
             }
-            while (!cancellationToken.IsCancellationRequested && !channel.IsMessageComplete);
+            while (!cancellationToken.IsCancellationRequested && !stream.IsMessageComplete);
 
             memStream.Position = 0;
             var bytes = memStream.ReadAllBytes();

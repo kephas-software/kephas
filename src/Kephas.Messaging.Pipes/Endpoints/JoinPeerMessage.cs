@@ -12,5 +12,9 @@ namespace Kephas.Messaging.Pipes.Endpoints
     /// </summary>
     public class JoinPeerMessage
     {
+        /// <summary>
+        /// Gets or sets the ID of the application instance joining the system.
+        /// </summary>
+        public string AppInstanceId { get; set; }
     }
 }
