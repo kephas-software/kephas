@@ -35,9 +35,9 @@ namespace Kephas.Logging.Serilog
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
             logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty(
-                "AppId", this.appRuntime.GetAppId()));
+                "App", this.appRuntime.GetAppId()));
             logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty(
-                "AppInstanceId", this.appRuntime.GetAppInstanceId()));
+                "AppInstance", this.appRuntime.GetAppInstanceId()));
         }
     }
 }

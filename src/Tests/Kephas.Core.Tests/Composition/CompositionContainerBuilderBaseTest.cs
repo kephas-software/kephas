@@ -70,7 +70,7 @@ namespace Kephas.Core.Tests.Composition
         public class TestCompositionContainerBuilder : CompositionContainerBuilderBase<TestCompositionContainerBuilder>
         {
             public TestCompositionContainerBuilder(IAmbientServices ambientServices = null)
-                : base(new CompositionRegistrationContext(ambientServices ?? new AmbientServices()))
+                : base(new CompositionRegistrationContext(ambientServices ?? new AmbientServices().WithStaticAppRuntime()))
             {
             }
 

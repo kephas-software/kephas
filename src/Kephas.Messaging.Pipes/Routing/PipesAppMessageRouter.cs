@@ -262,22 +262,16 @@ namespace Kephas.Messaging.Pipes.Routing
             string appInstanceId,
             CancellationToken cancellationToken)
         {
-            if (this.outChannels.TryGetValue(appInstanceId, out var clientChannel))
+            var (clientChannel, _) = this.EnsureOutChannel(appInstanceId);
+            if (clientChannel.IsSelf)
             {
-                if (clientChannel.IsSelf)
-                {
-                    return await base.RouteOutputAsync(message, context, cancellationToken).PreserveThreadContext();
-                }
+                return await base.RouteOutputAsync(message, context, cancellationToken).PreserveThreadContext();
+            }
 
-                var serializedMessage = await this.serializationService
-                    .SerializeAsync(message, ctx => ctx.IncludeTypeInfo(true), cancellationToken)
-                    .PreserveThreadContext();
-                await clientChannel.WriteAsync(serializedMessage!, cancellationToken).PreserveThreadContext();
-            }
-            else
-            {
-                this.Logger.Warn("Peer '{peer}' not registered.", appInstanceId);
-            }
+            var serializedMessage = await this.serializationService
+                .SerializeAsync(message, ctx => ctx.IncludeTypeInfo(true), cancellationToken)
+                .PreserveThreadContext();
+            await clientChannel.WriteAsync(serializedMessage!, cancellationToken).PreserveThreadContext();
 
             return (RoutingInstruction.None, null);
         }
