@@ -8,10 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Application.AspNetCore
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
