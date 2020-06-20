@@ -14,6 +14,7 @@ namespace Kephas.Application.Console
     using System.Threading.Tasks;
 
     using Kephas.Interaction;
+    using Kephas.Logging;
     using Kephas.Services;
 
     /// <summary>
@@ -29,8 +30,12 @@ namespace Kephas.Application.Console
         /// </summary>
         /// <param name="shell">The shell.</param>
         /// <param name="eventHub">The event hub.</param>
-        public ConsoleAppShutdownAwaiter(ICommandShell shell, IEventHub eventHub)
-            : base(eventHub)
+        /// <param name="logManager">Optional. The log manager.</param>
+        public ConsoleAppShutdownAwaiter(
+            ICommandShell shell,
+            IEventHub eventHub,
+            ILogManager? logManager = null)
+            : base(eventHub, logManager)
         {
             this.shell = shell;
         }

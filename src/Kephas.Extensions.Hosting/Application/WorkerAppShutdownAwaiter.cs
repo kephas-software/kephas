@@ -15,6 +15,7 @@ namespace Kephas.Extensions.Hosting.Application
 
     using Kephas.Application;
     using Kephas.Interaction;
+    using Kephas.Logging;
     using Kephas.Model.AttributedModel;
     using Kephas.Services;
     using Microsoft.Extensions.Hosting;
@@ -31,8 +32,9 @@ namespace Kephas.Extensions.Hosting.Application
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="host">Optional. The host.</param>
-        public WorkerAppShutdownAwaiter(IEventHub eventHub, IHost? host = null)
-            : base(eventHub)
+        /// <param name="logManager">Optional. The log manager.</param>
+        public WorkerAppShutdownAwaiter(IEventHub eventHub, IHost? host = null, ILogManager? logManager = null)
+            : base(eventHub, logManager)
         {
             this.Host = host;
         }

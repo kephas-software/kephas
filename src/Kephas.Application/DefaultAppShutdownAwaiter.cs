@@ -16,6 +16,7 @@ namespace Kephas.Application
     using System.Threading.Tasks;
 
     using Kephas.Interaction;
+    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Kephas.Application
     /// A default application shutdown awaiter.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class DefaultAppShutdownAwaiter : IAppShutdownAwaiter
+    public class DefaultAppShutdownAwaiter : Loggable, IAppShutdownAwaiter
     {
         private readonly CancellationTokenSource cancellationTokenSource;
         private readonly IEventSubscription shutdownSubscription;
@@ -35,7 +36,9 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="DefaultAppShutdownAwaiter"/> class.
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
-        public DefaultAppShutdownAwaiter(IEventHub eventHub)
+        /// <param name="logManager">Optional. The log manager.</param>
+        public DefaultAppShutdownAwaiter(IEventHub eventHub, ILogManager? logManager = null)
+            : base(logManager)
         {
             this.shutdownSubscription = eventHub.Subscribe<ShutdownSignal>((e, ctx) => this.HandleShutdownSignal());
             this.cancellationTokenSource = new CancellationTokenSource();
