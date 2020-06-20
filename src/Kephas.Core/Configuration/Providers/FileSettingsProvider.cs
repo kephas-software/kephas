@@ -121,7 +121,7 @@ namespace Kephas.Configuration.Providers
             }
 
             this.Logger.Debug(result.Messages.First().Message);
-            using var fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
+            using var fileStream = new FileStream(filePath, FileMode.Truncate, FileAccess.Write);
             using var fileWriter = new StreamWriter(fileStream);
             await this.SerializationService.SerializeAsync(
                 settings,
