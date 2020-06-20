@@ -14,8 +14,10 @@ namespace Kephas.Application.AspNetCore
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Interaction;
     using Kephas.Operations;
     using Kephas.Services;
+    using Microsoft.Extensions.Hosting;
 
     /// <summary>
     /// An ASP net application shutdown awaiter.
@@ -23,6 +25,20 @@ namespace Kephas.Application.AspNetCore
     [OverridePriority(Priority.High)]
     public class AspNetAppShutdownAwaiter : IAppShutdownAwaiter
     {
+        private readonly IHostApplicationLifetime appLifetime;
+        private IEventSubscription shutdownSubscription;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AspNetAppShutdownAwaiter"/> class.
+        /// </summary>
+        /// <param name="eventHub">The event hub.</param>
+        /// <param name="appLifetime">The application lifetime.</param>
+        public AspNetAppShutdownAwaiter(IEventHub eventHub, IHostApplicationLifetime appLifetime)
+        {
+            this.appLifetime = appLifetime;
+            this.shutdownSubscription = eventHub.Subscribe<ShutdownSignal>((e, ctx) => this.HandleShutdownSignal());
+        }
+
         /// <summary>
         /// Waits for the application termination asynchronously.
         /// </summary>
@@ -33,6 +49,14 @@ namespace Kephas.Application.AspNetCore
         public Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken = default)
         {
             return Task.FromResult<(IOperationResult result, AppShutdownInstruction instruction)>((new OperationResult { OperationState = OperationState.InProgress }, AppShutdownInstruction.Ignore));
+        }
+
+        /// <summary>
+        /// Handles the shutdown signal.
+        /// </summary>
+        protected virtual void HandleShutdownSignal()
+        {
+            this.appLifetime.StopApplication();
         }
     }
 }

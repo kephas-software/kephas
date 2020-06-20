@@ -47,9 +47,9 @@ namespace Kephas.Application.Console
         /// Initializes the service.
         /// </summary>
         /// <param name="context">Optional. An optional context for initialization.</param>
-        public virtual void Initialize(IContext context = null)
+        public virtual void Initialize(IContext? context = null)
         {
-            this.AppContext = context;
+            this.AppContext = context!;
         }
 
         /// <summary>
