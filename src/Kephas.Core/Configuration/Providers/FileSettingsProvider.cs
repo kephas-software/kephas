@@ -121,17 +121,16 @@ namespace Kephas.Configuration.Providers
             }
 
             this.Logger.Debug(result.Messages.First().Message);
-            using var fileStream = new FileStream(filePath, FileMode.Truncate, FileAccess.Write);
-            using var fileWriter = new StreamWriter(fileStream);
-            await this.SerializationService.SerializeAsync(
+
+            var settingsString = await this.SerializationService.SerializeAsync(
                 settings,
-                fileWriter,
                 ctx => ctx
                     .Indent(true)
                     .MediaType(mediaType)
                     .IncludeTypeInfo(false),
                 cancellationToken: cancellationToken)
                 .PreserveThreadContext();
+            File.WriteAllText(filePath, settingsString);
 
             this.Logger.Info("Settings '{settingsType}' updated.", settingsType);
         }
