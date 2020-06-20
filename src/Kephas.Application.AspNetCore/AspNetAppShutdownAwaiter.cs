@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Kephas.Application.AspNetCore
 {
     using System.Threading;
@@ -15,6 +17,7 @@ namespace Kephas.Application.AspNetCore
 
     using Kephas.Application;
     using Kephas.Interaction;
+    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
     using Microsoft.Extensions.Hosting;
@@ -23,7 +26,7 @@ namespace Kephas.Application.AspNetCore
     /// An ASP net application shutdown awaiter.
     /// </summary>
     [OverridePriority(Priority.High)]
-    public class AspNetAppShutdownAwaiter : IAppShutdownAwaiter
+    public class AspNetAppShutdownAwaiter : Loggable, IAppShutdownAwaiter
     {
         private readonly IHostApplicationLifetime appLifetime;
         private IEventSubscription shutdownSubscription;
@@ -33,7 +36,9 @@ namespace Kephas.Application.AspNetCore
         /// </summary>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="appLifetime">The application lifetime.</param>
-        public AspNetAppShutdownAwaiter(IEventHub eventHub, IHostApplicationLifetime appLifetime)
+        /// <param name="logManager">Optional. The log manager.</param>
+        public AspNetAppShutdownAwaiter(IEventHub eventHub, IHostApplicationLifetime appLifetime, ILogManager? logManager = null)
+            : base(logManager)
         {
             this.appLifetime = appLifetime;
             this.shutdownSubscription = eventHub.Subscribe<ShutdownSignal>((e, ctx) => this.HandleShutdownSignal());
@@ -56,7 +61,15 @@ namespace Kephas.Application.AspNetCore
         /// </summary>
         protected virtual void HandleShutdownSignal()
         {
-            this.appLifetime.StopApplication();
+            try
+            {
+                this.appLifetime.StopApplication();
+                this.shutdownSubscription.Dispose();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, "Error while stopping the application");
+            }
         }
     }
 }
