@@ -23,14 +23,14 @@ namespace Kephas.Core.Tests.Application
         }
 
         [Test]
-        public void LogLevel_empty()
+        public void LogMinimumLevel_empty()
         {
             var args = new AppArgs("");
             Assert.IsNull(args.LogMinimumLevel);
         }
 
         [Test]
-        public void LogLevel_parsed()
+        public void LogMinimumLevel_parsed()
         {
             var args = new AppArgs("-loglevel debug");
             Assert.AreEqual(LogLevel.Debug, args.LogMinimumLevel);
