@@ -46,11 +46,6 @@ namespace Kephas.Orchestration
     [OverridePriority(Priority.Low)]
     public class DefaultOrchestrationManager : Loggable, IOrchestrationManager, IAsyncInitializable, IAsyncFinalizable
     {
-        /// <summary>
-        /// The root application instance identifier key.
-        /// </summary>
-        public static readonly string RootArgName = "Root";
-
         private readonly IExportFactory<IProcessStarterFactory> processStarterFactoryFactory;
 
         private Timer heartbeatTimer;
@@ -529,9 +524,9 @@ namespace Kephas.Orchestration
         {
             var appArgs = new Args
             {
-                [AppRuntimeBase.AppIdKey] = appInfo.Identity.Id,
-                [AppRuntimeBase.AppInstanceIdKey] = appInfo[AppRuntimeBase.AppInstanceIdKey],
-                [RootArgName] = this.GetRootAppInstanceId(),
+                [AppArgs.AppIdArgName] = appInfo.Identity.Id,
+                [AppArgs.AppInstanceIdArgName] = appInfo[AppRuntimeBase.AppInstanceIdKey],
+                [AppArgs.RootArgName] = this.GetRootAppInstanceId(),
             }.Merge(arguments);
 
             return appArgs.ToCommandArgs();
@@ -593,7 +588,7 @@ namespace Kephas.Orchestration
                 return this.AppRuntime.GetAppInstanceId()!;
             }
 
-            var rootId = this.AppContext.AppArgs[RootArgName] as string;
+            var rootId = this.AppContext.AppArgs[AppArgs.RootArgName] as string;
             if (!string.IsNullOrEmpty(rootId))
             {
                 return rootId!;

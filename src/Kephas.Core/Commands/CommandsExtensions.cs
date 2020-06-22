@@ -5,12 +5,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Kephas.Commands
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
 
@@ -22,12 +22,36 @@ namespace Kephas.Commands
         /// <summary>
         /// Converts the provided expando arguments to <see cref="IArgs"/>.
         /// </summary>
+        /// <typeparam name="TArgs">The arguments type.</typeparam>
+        /// <param name="args">The expando arguments.</param>
+        /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
+        public static TArgs AsArgs<TArgs>(this IExpando args)
+        {
+            Requires.NotNull(args, nameof(args));
+            return args is TArgs appArgs ? appArgs : (TArgs)Activator.CreateInstance(typeof(TArgs), args);
+        }
+
+        /// <summary>
+        /// Converts the provided expando arguments to <see cref="IArgs"/>.
+        /// </summary>
         /// <param name="args">The expando arguments.</param>
         /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
         public static IArgs AsArgs(this IExpando args)
         {
             Requires.NotNull(args, nameof(args));
             return args is IArgs appArgs ? appArgs : new Args(args);
+        }
+
+        /// <summary>
+        /// Converts the provided expando arguments to <see cref="IArgs"/>.
+        /// </summary>
+        /// <typeparam name="TArgs">The arguments type.</typeparam>
+        /// <param name="args">The expando arguments.</param>
+        /// <returns>The same instance, if it is convertible to <see cref="IArgs"/>, otherwise app args constructed on the provided <paramref name="args"/>.</returns>
+        public static TArgs AsArgs<TArgs>(this IDictionary<string, object?> args)
+        {
+            Requires.NotNull(args, nameof(args));
+            return (TArgs)Activator.CreateInstance(typeof(TArgs), args);
         }
 
         /// <summary>
@@ -67,14 +91,14 @@ namespace Kephas.Commands
                 o switch
                 {
                     null => string.Empty,
-                    bool boolean => $"={boolean.ToString().ToLower()}",
-                    int integer => $"={integer}",
-                    DateTime dateTime => $"=\"{dateTime:s}\"",
-                    DateTimeOffset dateTimeOffset => $"=\"{dateTimeOffset:s}\"",
-                    _ => $"=\"{o?.ToString().Replace("\"", "\"\"")}\""
+                    bool boolean => $"{boolean.ToString().ToLower()}",
+                    int integer => $"{integer}",
+                    DateTime dateTime => $"\"{dateTime:s}\"",
+                    DateTimeOffset dateTimeOffset => $"\"{dateTimeOffset:s}\"",
+                    _ => $"\"{o?.ToString().Replace("\"", "\"\"")}\""
                 };
 
-            return arguments.Select(a => $"{a.Key}{ToParamValue(a.Value)}");
+            return arguments.Select(a => $"-{a.Key} {ToParamValue(a.Value)}");
         }
     }
 }

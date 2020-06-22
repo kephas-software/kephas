@@ -5,8 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.Tests
+namespace Kephas.Core.Tests.Application
 {
+    using Kephas.Application;
+    using Kephas.Logging;
     using NUnit.Framework;
 
     [TestFixture]
@@ -18,6 +20,20 @@ namespace Kephas.Application.Tests
             var args = new AppArgs();
             var dictArgs = args.ToDictionary();
             Assert.Greater(dictArgs.Count, 0);
+        }
+
+        [Test]
+        public void LogLevel_empty()
+        {
+            var args = new AppArgs("");
+            Assert.IsNull(args.LogMinimumLevel);
+        }
+
+        [Test]
+        public void LogLevel_parsed()
+        {
+            var args = new AppArgs("-loglevel debug");
+            Assert.AreEqual(LogLevel.Debug, args.LogMinimumLevel);
         }
     }
 }
