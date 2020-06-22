@@ -129,5 +129,10 @@ namespace Kephas.Application
         /// Gets a value indicating whether the application is executed as a Windows service (or Linux daemon).
         /// </summary>
         public virtual bool RunAsService => this.HasDynamicMember(ServiceArgName);
+
+        /// <summary>
+        /// Gets a value indicating whether this application instance is the root.
+        /// </summary>
+        public virtual bool RunAsRoot => !this.HasDynamicMember(RootArgName) && !this.HasDynamicMember(AppIdArgName);
     }
 }

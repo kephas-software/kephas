@@ -39,5 +39,10 @@ namespace Kephas.Application
         /// Gets a value indicating whether the application is executed as a Windows service (or Linux daemon).
         /// </summary>
         bool RunAsService { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this application instance is the root.
+        /// </summary>
+        bool RunAsRoot { get; }
     }
 }
