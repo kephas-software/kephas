@@ -26,6 +26,11 @@ namespace Kephas.Application
     public interface IAppRuntime : IExpando
     {
         /// <summary>
+        /// Gets the application arguments.
+        /// </summary>
+        IAppArgs AppArgs { get; }
+
+        /// <summary>
         /// Gets the application location (directory where the executing application lies).
         /// </summary>
         /// <returns>

@@ -23,7 +23,6 @@ namespace Kephas.Application
 
     using Kephas.Collections;
     using Kephas.Dynamic;
-    using Kephas.IO;
     using Kephas.Licensing;
     using Kephas.Logging;
     using Kephas.Reflection;
@@ -59,12 +58,12 @@ namespace Kephas.Application
         /// <summary>
         /// The application identifier key.
         /// </summary>
-        public static readonly string AppIdKey = "AppId";
+        public static readonly string AppIdKey = nameof(IAppArgs.AppId);
 
         /// <summary>
         /// The application instance identifier key.
         /// </summary>
-        public static readonly string AppInstanceIdKey = "AppInstanceId";
+        public static readonly string AppInstanceIdKey = nameof(IAppArgs.AppInstanceId);
 
         /// <summary>
         /// The application version key.
@@ -130,6 +129,9 @@ namespace Kephas.Application
             IExpando? appArgs = null)
             : base(isThreadSafe: true)
         {
+            this.AppArgs = appArgs == null
+                ? new AppArgs()
+                : appArgs as IAppArgs ?? new AppArgs(appArgs);
             this.getLogger = getLogger ?? NullLogManager.GetNullLogger;
             this.CheckLicense = checkLicense ?? ((appid, ctx) => new LicenseCheckResult(appid, true));
             this.AssemblyFilter = defaultAssemblyFilter ?? (a => !a.IsSystemAssembly());
@@ -141,12 +143,17 @@ namespace Kephas.Application
             this.InitializeAppProperties(
                 Assembly.GetEntryAssembly(),
                 isRoot,
-                appId ?? appArgs?[AppIdKey]?.ToString(),
-                appInstanceId ?? appArgs?[AppInstanceIdKey]?.ToString(),
+                appId ?? this.AppArgs.AppId,
+                appInstanceId ?? this.AppArgs.AppInstanceId,
                 appVersion);
 
             this[AppIdentityKey] = new AppIdentity(this[AppIdKey] as string, this[AppVersionKey] as string);
         }
+
+        /// <summary>
+        /// Gets the application arguments.
+        /// </summary>
+        public IAppArgs AppArgs { get; }
 
         /// <summary>
         /// Gets the logger.

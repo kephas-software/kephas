@@ -389,7 +389,7 @@ namespace Kephas.Application
         {
             var appContext = new AppContext(
                                      ambientServices,
-                                     appArgs: ambientServices.GetService<IArgs>())
+                                     appArgs: ambientServices.GetService<IAppArgs>())
             {
                 Logger = this.Logger,
             };

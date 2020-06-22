@@ -201,7 +201,7 @@ namespace Kephas.Application.AspNetCore.Hosting
                 this.HostEnvironment,
                 this.Configuration,
                 this.AmbientServices,
-                appArgs: ambientServices.GetService<IArgs>());
+                appArgs: ambientServices.GetService<IAppArgs>());
             return appContext;
         }
     }
