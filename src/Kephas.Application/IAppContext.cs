@@ -31,7 +31,7 @@ namespace Kephas.Application
         /// <value>
         /// The application arguments.
         /// </value>
-        IArgs AppArgs { get; }
+        IAppArgs AppArgs { get; }
 
         /// <summary>
         /// Gets or sets the application root exception.

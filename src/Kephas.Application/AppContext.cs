@@ -29,11 +29,11 @@ namespace Kephas.Application
         public AppContext(
             IAmbientServices ambientServices,
             IAppRuntime? appRuntime = null,
-            IArgs? appArgs = null)
+            IAppArgs? appArgs = null)
             : base(ambientServices)
         {
             this.AppRuntime = appRuntime ?? this.AmbientServices?.AppRuntime!;
-            this.AppArgs = appArgs ?? new Args();
+            this.AppArgs = appArgs ?? new AppArgs();
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Kephas.Application
         /// <value>
         /// The application arguments.
         /// </value>
-        public IArgs AppArgs { get; }
+        public IAppArgs AppArgs { get; }
 
         /// <summary>
         /// Gets or sets the application root exception.

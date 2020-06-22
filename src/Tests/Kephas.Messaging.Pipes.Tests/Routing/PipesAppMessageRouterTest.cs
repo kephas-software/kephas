@@ -59,7 +59,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
-            var slaveArgs = new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" };
+            var slaveArgs = new[] { $"-{AppArgs.RootArgName} {masterInstanceId}" };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
@@ -109,7 +109,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     defaultAssemblyFilter: this.IsNotTestAssembly));
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
-            var slaveArgs = new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" };
+            var slaveArgs = new[] { $"{AppArgs.RootArgName}={masterInstanceId}" };
             var sbSlave = new StringBuilder();
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
@@ -163,7 +163,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
-            var slaveArgs = new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" };
+            var slaveArgs = new[] { $"{AppArgs.RootArgName}={masterInstanceId}" };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
@@ -210,7 +210,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                     appInstanceId: masterInstanceId));
             var masterRuntime = masterContainer.GetExport<IAppRuntime>();
 
-            var slaveArgs = new[] { $"{DefaultOrchestrationManager.RootArgName}={masterInstanceId}" };
+            var slaveArgs = new[] { $"{AppArgs.RootArgName}={masterInstanceId}" };
             var slaveId = $"Slave-{Guid.NewGuid():N}";
             var slaveInstanceId = $"{slaveId}-{Guid.NewGuid():N}";
             var slaveContainer = this.CreateContainer(
@@ -253,7 +253,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
             var appContext = new AppContext(
                 container.GetExport<IAmbientServices>(),
                 container.GetExport<IAppRuntime>(),
-                appArgs == null ? null : new Args(appArgs));
+                appArgs == null ? null : new AppArgs(appArgs));
             await appManager.InitializeAppAsync(appContext);
 
             if (slaveAppInfo != null)
