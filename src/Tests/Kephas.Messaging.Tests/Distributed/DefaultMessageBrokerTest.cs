@@ -65,11 +65,12 @@ namespace Kephas.Messaging.Tests.Distributed
         }
 
         [Test]
-        public async Task InitializeAsync_ignore_router_error()
+        public async Task InitializeAsync_override_router()
         {
-            var container = this.CreateContainer(parts: new[] { typeof(OptionalMessageRouter) });
+            var container = this.CreateContainer(parts: new[] { typeof(OverrideMessageRouter) });
             var messageBroker = (DefaultMessageBroker)container.GetExport<IMessageBroker>();
-            messageBroker.
+            
+            // TODO ensure that the InProcessMessageRouter is overwritten.
             await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
         }
 

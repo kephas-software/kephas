@@ -34,6 +34,6 @@ namespace Kephas.Model.AttributedModel
         /// <value>
         /// The metadata value.
         /// </value>
-        bool IMetadataValue<bool>.Value => true;
+        public bool Value => true;
     }
 }
