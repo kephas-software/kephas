@@ -63,6 +63,7 @@ namespace Kephas.Dynamic
         private IDictionary<string, object?> innerDictionary;
         private Type? innerObjectType;
         private Type? thisType;
+        private bool ignoreCase;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpandoBase"/> class.
@@ -107,6 +108,11 @@ namespace Kephas.Dynamic
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.InitializeExpando(innerObject, innerDictionary);
         }
+
+        /// <summary>
+        /// Gets the inner dictionary.
+        /// </summary>
+        protected IDictionary<string, object?> InnerDictionary => this.innerDictionary;
 
         /// <summary>
         /// Convenience method that provides a string Indexer to the Properties collection AND the
@@ -267,14 +273,14 @@ namespace Kephas.Dynamic
 
             bool TryInvokeTypeMember(Type type, object instance, bool recurseDynamic, out object? res)
             {
-                var methodInfo = type.GetMethod(binder.Name, BindingFlags.Instance | BindingFlags.Public);
+                var methodInfo = this.TryGetMethodInfo(type, binder.Name);
                 if (methodInfo != null)
                 {
                     res = methodInfo.Call(instance, args);
                     return true;
                 }
 
-                var propertyInfo = type.GetProperty(binder.Name, BindingFlags.Instance | BindingFlags.Public);
+                var propertyInfo = this.TryGetPropertyInfo(type, binder.Name);
                 if (propertyInfo != null)
                 {
                     var delegateValue = propertyInfo.GetValue(instance);
@@ -377,7 +383,7 @@ namespace Kephas.Dynamic
         {
             bool? TryGetPropertyValue(Type type, object instance, out object? val)
             {
-                var propInfo = type.GetProperty(key, BindingFlags.Instance | BindingFlags.Public);
+                var propInfo = this.TryGetPropertyInfo(type, key);
                 if (propInfo == null)
                 {
                     val = null;
@@ -435,7 +441,7 @@ namespace Kephas.Dynamic
         {
             bool? TrySetPropertyValue(Type type, object instance)
             {
-                var propInfo = type.GetProperty(key, BindingFlags.Instance | BindingFlags.Public);
+                var propInfo = this.TryGetPropertyInfo(type, key);
                 if (propInfo == null)
                 {
                     return null;
@@ -484,6 +490,48 @@ namespace Kephas.Dynamic
         }
 
         /// <summary>
+        /// Tries to get the MethodInfo for the provided type and key.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="key">The key, typically the property name.</param>
+        /// <param name="ignoreCase">
+        /// Optional. Indicates whether case insensitive matching should be used.
+        /// If not set, the default value inferred from the inner dictionary is used.
+        /// </param>
+        /// <returns>A MethodInfo or <c>null</c>.</returns>
+        protected virtual MethodInfo? TryGetMethodInfo(Type type, string key, bool? ignoreCase = null)
+        {
+            var flags = BindingFlags.Instance | BindingFlags.Public;
+            if (ignoreCase ?? this.ignoreCase)
+            {
+                flags |= BindingFlags.IgnoreCase;
+            }
+
+            return type.GetMethod(key, flags);
+        }
+
+        /// <summary>
+        /// Tries to get the PropertyInfo for the provided type and key.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="key">The key, typically the property name.</param>
+        /// <param name="ignoreCase">
+        /// Optional. Indicates whether case insensitive matching should be used.
+        /// If not set, the default value inferred from the inner dictionary is used.
+        /// </param>
+        /// <returns>A PropertyInfo or <c>null</c>.</returns>
+        protected virtual PropertyInfo? TryGetPropertyInfo(Type type, string key, bool? ignoreCase = null)
+        {
+            var flags = BindingFlags.Instance | BindingFlags.Public;
+            if (ignoreCase ?? this.ignoreCase)
+            {
+                flags |= BindingFlags.IgnoreCase;
+            }
+
+            return type.GetProperty(key, flags);
+        }
+
+        /// <summary>
         /// Initializes the expando with the provided instance.
         /// </summary>
         /// <param name="instance">The instance.</param>
@@ -492,6 +540,13 @@ namespace Kephas.Dynamic
         {
             this.innerObject = instance;
             this.innerDictionary = dictionary ?? new Dictionary<string, object?>();
+            if (this.innerDictionary is Dictionary<string, object?> dict)
+            {
+                var comparer = dict.Comparer;
+                this.ignoreCase = comparer == StringComparer.OrdinalIgnoreCase
+                                         || comparer == StringComparer.CurrentCultureIgnoreCase
+                                         || comparer == StringComparer.InvariantCultureIgnoreCase;
+            }
         }
 
         /// <summary>
