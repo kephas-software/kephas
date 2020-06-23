@@ -33,12 +33,12 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the log level, if set.
         /// </summary>
-        LogLevel? LogMinimumLevel { get; }
+        LogLevel? LogLevel { get; }
 
         /// <summary>
         /// Gets the environment name.
         /// </summary>
-        public string? Env { get; }
+        public string? Environment { get; }
 
         /// <summary>
         /// Gets a value indicating whether the application is executed as a Windows service (or Linux daemon).

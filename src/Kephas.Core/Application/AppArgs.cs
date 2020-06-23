@@ -11,6 +11,7 @@ namespace Kephas.Application
     using System.Collections.Generic;
 
     using Kephas.Commands;
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Dynamic;
     using Kephas.Logging;
 
@@ -53,7 +54,7 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="AppArgs"/> class.
         /// </summary>
         public AppArgs()
-            : base(ComputeArgs(Environment.GetCommandLineArgs()))
+            : base(ComputeArgs(System.Environment.GetCommandLineArgs()))
         {
         }
 
@@ -96,21 +97,35 @@ namespace Kephas.Application
         /// <summary>
         /// Gets or sets the application ID.
         /// </summary>
-        public string? AppId { get; set; }
+        public string? AppId
+        {
+            get => this[AppIdArgName] as string;
+            set => this[AppIdArgName] = value;
+        }
 
         /// <summary>
         /// Gets or sets the application instance ID.
         /// </summary>
-        public string? AppInstanceId { get; set; }
+        public string? AppInstanceId
+        {
+            get => this[AppInstanceIdArgName] as string;
+            set => this[AppInstanceIdArgName] = value;
+        }
 
         /// <summary>
         /// Gets or sets the environment name.
         /// </summary>
-        public string? Env { get; set; }
+        [DisplayInfo(ShortName = "Env")]
+        public string? Environment
+        {
+            get => this[EnvArgName] as string;
+            set => this[EnvArgName] = value;
+        }
 
         /// <summary>
         /// Gets or sets the ID of the root application instance, if set.
         /// </summary>
+        [DisplayInfo(ShortName = "Root")]
         public string? RootAppInstanceId
         {
             get => this[RootArgName] as string;
@@ -120,7 +135,8 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the log level, if set.
         /// </summary>
-        public virtual LogLevel? LogMinimumLevel
+        [DisplayInfo(ShortName = "LogLevel")]
+        public virtual LogLevel? LogLevel
         {
             get
             {
@@ -149,6 +165,6 @@ namespace Kephas.Application
         /// Gets a value indicating whether the application is in development mode.
         /// </summary>
         public virtual bool IsDevelopment =>
-            string.Equals("Development", this[EnvArgName] as string, StringComparison.OrdinalIgnoreCase);
+            string.Equals(AppRuntimeBase.DevelopmentEnvironment, this[EnvArgName] as string, StringComparison.OrdinalIgnoreCase);
     }
 }

@@ -344,7 +344,7 @@ namespace Kephas.Orchestration
         {
             this.EnsureInitialized();
 
-            return this.AppContext.AppArgs.Env;
+            return this.AppContext.AppArgs.Environment;
         }
 
         /// <summary>

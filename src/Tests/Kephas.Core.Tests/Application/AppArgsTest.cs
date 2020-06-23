@@ -23,17 +23,17 @@ namespace Kephas.Core.Tests.Application
         }
 
         [Test]
-        public void LogMinimumLevel_empty()
+        public void LogLevel_empty()
         {
             var args = new AppArgs("");
-            Assert.IsNull(args.LogMinimumLevel);
+            Assert.IsNull(args.LogLevel);
         }
 
         [Test]
-        public void LogMinimumLevel_parsed()
+        public void LogLevel_parsed()
         {
             var args = new AppArgs("-loglevel debug");
-            Assert.AreEqual(LogLevel.Debug, args.LogMinimumLevel);
+            Assert.AreEqual(LogLevel.Debug, args.LogLevel);
         }
 
         [Test]
@@ -41,6 +41,20 @@ namespace Kephas.Core.Tests.Application
         {
             var args = new AppArgs("-appid test");
             Assert.IsTrue(args.RunAsRoot);
+        }
+
+        [Test]
+        public void AppId_case_insensitive()
+        {
+            var args = new AppArgs("-appid test");
+            Assert.AreEqual("test", args.AppId);
+        }
+
+        [Test]
+        public void AppInstanceId_case_insensitive()
+        {
+            var args = new AppArgs("-appInstanceid test-1");
+            Assert.AreEqual("test-1", args.AppInstanceId);
         }
 
         [Test]

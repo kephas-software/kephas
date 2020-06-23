@@ -181,7 +181,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <returns>A value indicating whether the running environment is development.</returns>
-        public static bool IsDevelopment(this IAppRuntime appRuntime) => string.Equals("Development", appRuntime.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
+        public static bool IsDevelopment(this IAppRuntime appRuntime) => string.Equals(AppRuntimeBase.DevelopmentEnvironment, appRuntime.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
 
         /// <summary>
         /// Gets the identifier of the application instance.
