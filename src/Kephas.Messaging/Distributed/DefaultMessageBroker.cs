@@ -41,15 +41,14 @@ namespace Kephas.Messaging.Distributed
         /// The dictionary for message synchronization.
         /// </summary>
         private readonly
-            ConcurrentDictionary<string, (CancellationTokenSource cancellationTokenSource,
+            ConcurrentDictionary<string, (CancellationTokenSource? cancellationTokenSource,
                 TaskCompletionSource<IMessage?> taskCompletionSource)> messageSyncDictionary =
-                new ConcurrentDictionary<string, (CancellationTokenSource, TaskCompletionSource<IMessage?>)>();
+                new ConcurrentDictionary<string, (CancellationTokenSource?, TaskCompletionSource<IMessage?>)>();
 
         private readonly IContextFactory contextFactory;
-        private readonly IAppRuntime appRuntime;
         private readonly IOrderedLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
-        private ICollection<(Regex regex, bool isFallback, IMessageRouter router)> routerMap;
+        private ICollection<(Regex? regex, bool isFallback, IMessageRouter router)> routerMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageBroker"/> class.
@@ -65,9 +64,8 @@ namespace Kephas.Messaging.Distributed
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());
             this.contextFactory = contextFactory;
-            this.appRuntime = appRuntime;
             this.routerFactories = routerFactories.Order();
-            this.Id = $"{this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}";
+            this.Id = $"{appRuntime.GetAppId()}/{appRuntime.GetAppInstanceId()}";
         }
 
         /// <summary>
@@ -192,18 +190,7 @@ namespace Kephas.Messaging.Distributed
             foreach (var map in this.routerMap)
             {
                 map.router.ReplyReceived -= this.HandleReplyReceived;
-                if (map.router is IAsyncFinalizable asyncFinRouter)
-                {
-                    await asyncFinRouter.FinalizeAsync(context, cancellationToken).PreserveThreadContext();
-                }
-                else if (map.router is IFinalizable finRouter)
-                {
-                    finRouter.Finalize(context);
-                }
-                else if (map.router is IDisposable disposableRouter)
-                {
-                    disposableRouter.Dispose();
-                }
+                await ServiceHelper.FinalizeAsync(map.router, cancellationToken: cancellationToken).PreserveThreadContext();
             }
 
             this.initMonitor.Reset();
@@ -280,12 +267,10 @@ namespace Kephas.Messaging.Distributed
             IDispatchingContext sendingContext,
             CancellationToken cancellationToken)
         {
-            using (var replyContext = this.CreateDispatchingContext(
+            using var replyContext = this.CreateDispatchingContext(
                 reply,
-                ctx => ctx.Impersonate(sendingContext).ReplyTo(message)))
-            {
-                await this.RouterDispatchAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
-            }
+                ctx => ctx.Impersonate(sendingContext).ReplyTo(message));
+            await this.RouterDispatchAsync(replyContext.BrokeredMessage, replyContext, cancellationToken).PreserveThreadContext();
         }
 
         /// <summary>
@@ -330,7 +315,7 @@ namespace Kephas.Messaging.Distributed
 
             this.LogOnReceive(replyMessage);
 
-            syncEntry.cancellationTokenSource.Dispose();
+            syncEntry.cancellationTokenSource?.Dispose();
 
             if (replyMessage.Content is ExceptionResponseMessage exceptionMessage)
             {
@@ -365,7 +350,6 @@ namespace Kephas.Messaging.Distributed
         private async Task<IMessageRouter?> TryCreateRouterAsync(Lazy<IMessageRouter, MessageRouterMetadata> f, IContext? context, CancellationToken cancellationToken)
         {
             const string InitializationException = nameof(InitializationException);
-
             if (f.Metadata[InitializationException] is Exception initEx)
             {
                 return f.Metadata.IsOptional ? (IMessageRouter?)null : throw initEx;
@@ -398,7 +382,7 @@ namespace Kephas.Messaging.Distributed
 
         private void HandleReplyReceived(object sender, ReplyReceivedEventArgs e)
         {
-            this.ReceiveReply(sender as IMessageRouter, e.Message, e.Context);
+            this.ReceiveReply((IMessageRouter)sender, e.Message, e.Context);
         }
 
         /// <summary>
@@ -410,7 +394,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The asynchronous result that yields the action, reply, and router.
         /// </returns>
-        private async Task<ICollection<(RoutingInstruction action, IMessage reply, IMessageRouter router)>> CollectRouterDispatchResultsAsync(
+        private async Task<ICollection<(RoutingInstruction action, IMessage? reply, IMessageRouter router)>> CollectRouterDispatchResultsAsync(
             IBrokeredMessage brokeredMessage,
             IDispatchingContext context,
             CancellationToken cancellationToken)
@@ -483,7 +467,7 @@ namespace Kephas.Messaging.Distributed
 
         private TaskCompletionSource<IMessage?> GetTaskCompletionSource(IBrokeredMessage brokeredMessage)
         {
-            var taskCompletionSource = new TaskCompletionSource<IMessage>();
+            var taskCompletionSource = new TaskCompletionSource<IMessage?>();
 
             var brokeredMessageId = brokeredMessage.Id;
             var cancellationTokenSource = brokeredMessage.Timeout.HasValue
