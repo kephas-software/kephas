@@ -73,6 +73,8 @@ namespace Kephas.Messaging.Distributed.Routing
         /// </returns>
         protected override async Task InitializeCoreAsync(IContext? context, CancellationToken cancellationToken)
         {
+            await Task.Yield();
+
             this.RootChannelName = this.ComputeRootChannelName();
             this.messageQueue = Channels.GetOrAdd(this.RootChannelName, _ => new MessageQueue(this.ContextFactory, this.RootChannelName));
             this.messageQueue.MessageArrived += this.HandleMessageArrivedAsync;

@@ -428,7 +428,7 @@ namespace Kephas.Messaging.Distributed.Routing
         /// <returns>
         /// The asynchronous result yielding an action to take further and an optional reply.
         /// </returns>
-        protected abstract Task<(RoutingInstruction action, IMessage reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken);
+        protected abstract Task<(RoutingInstruction action, IMessage? reply)> RouteOutputAsync(IBrokeredMessage brokeredMessage, IDispatchingContext context, CancellationToken cancellationToken);
 
         /// <summary>
         /// Raises the reply received event.

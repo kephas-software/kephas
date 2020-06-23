@@ -42,12 +42,12 @@ namespace Kephas.Messaging.Distributed
         /// </summary>
         private readonly
             ConcurrentDictionary<string, (CancellationTokenSource cancellationTokenSource,
-                TaskCompletionSource<IMessage> taskCompletionSource)> messageSyncDictionary =
-                new ConcurrentDictionary<string, (CancellationTokenSource, TaskCompletionSource<IMessage>)>();
+                TaskCompletionSource<IMessage?> taskCompletionSource)> messageSyncDictionary =
+                new ConcurrentDictionary<string, (CancellationTokenSource, TaskCompletionSource<IMessage?>)>();
 
         private readonly IContextFactory contextFactory;
         private readonly IAppRuntime appRuntime;
-        private readonly ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories;
+        private readonly IOrderedLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
         private ICollection<(Regex regex, bool isFallback, IMessageRouter router)> routerMap;
 
@@ -66,7 +66,7 @@ namespace Kephas.Messaging.Distributed
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());
             this.contextFactory = contextFactory;
             this.appRuntime = appRuntime;
-            this.routerFactories = routerFactories;
+            this.routerFactories = routerFactories.Order();
             this.Id = $"{this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}";
         }
 
@@ -127,7 +127,7 @@ namespace Kephas.Messaging.Distributed
                     .ContinueWith(
                         t => this.Logger.Error(Strings.DefaultMessageBroker_ErrorsOccurredWhileSending_Exception, brokeredMessage),
                         TaskContinuationOptions.OnlyOnFaulted);
-                return Task.FromResult((IMessage)null);
+                return Task.FromResult<IMessage?>(null);
             }
 
             var completionSource = this.GetTaskCompletionSource(brokeredMessage);
@@ -155,7 +155,6 @@ namespace Kephas.Messaging.Distributed
             this.initMonitor.Start();
 
             var asyncRouterMap = this.routerFactories
-                .Order()
                 .Select(f => (
                     regex: string.IsNullOrEmpty(f.Metadata.ReceiverMatch)
                         ? f.Metadata.ReceiverMatchProviderType == null
@@ -459,7 +458,7 @@ namespace Kephas.Messaging.Distributed
             return routerTasks.Select(rt => (rt.task.Result.action, rt.task.Result.reply, rt.router)).ToArray();
         }
 
-        private async Task<(RoutingInstruction action, IMessage reply)> GetRouterDispatchResultAsync(
+        private async Task<(RoutingInstruction action, IMessage? reply)> GetRouterDispatchResultAsync(
             IBrokeredMessage brokeredMessage,
             IDispatchingContext context,
             IMessageRouter router,
@@ -476,13 +475,13 @@ namespace Kephas.Messaging.Distributed
             if (context.InputRouter == router && !string.IsNullOrEmpty(brokeredMessage.ReplyToMessageId))
             {
                 this.Logger.Warn(Strings.DefaultMessageBroker_ReplyToMessageNotFound_Exception, brokeredMessage);
-                return (RoutingInstruction.None, (IMessage)null);
+                return (RoutingInstruction.None, (IMessage?)null);
             }
 
             return await router.DispatchAsync(brokeredMessage, context, cancellationToken).PreserveThreadContext();
         }
 
-        private TaskCompletionSource<IMessage> GetTaskCompletionSource(IBrokeredMessage brokeredMessage)
+        private TaskCompletionSource<IMessage?> GetTaskCompletionSource(IBrokeredMessage brokeredMessage)
         {
             var taskCompletionSource = new TaskCompletionSource<IMessage>();
 

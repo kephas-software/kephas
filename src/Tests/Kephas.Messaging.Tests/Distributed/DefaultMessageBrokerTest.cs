@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Model.AttributedModel;
+
 namespace Kephas.Messaging.Tests.Distributed
 {
     using System;
@@ -59,6 +61,15 @@ namespace Kephas.Messaging.Tests.Distributed
         {
             var container = this.CreateContainer(parts: new[] { typeof(OptionalMessageRouter) });
             var messageBroker = container.GetExport<IMessageBroker>();
+            await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
+        }
+
+        [Test]
+        public async Task InitializeAsync_ignore_router_error()
+        {
+            var container = this.CreateContainer(parts: new[] { typeof(OptionalMessageRouter) });
+            var messageBroker = (DefaultMessageBroker)container.GetExport<IMessageBroker>();
+            messageBroker.
             await (messageBroker as IAsyncInitializable).InitializeAsync(new Context(container));
         }
 
@@ -374,6 +385,16 @@ namespace Kephas.Messaging.Tests.Distributed
             {
                 this.ProcessingContextConfigurator?.Invoke(context.Message, context);
                 return base.ApplyBeforeProcessBehaviorsAsync(behaviors, context, token);
+            }
+        }
+
+        [MessageRouter(IsOptional = true)]
+        [Override]
+        public class OverrideMessageRouter : InProcessAppMessageRouter
+        {
+            public OverrideMessageRouter(IContextFactory contextFactory, IAppRuntime appRuntime, IMessageProcessor messageProcessor)
+                : base(contextFactory, appRuntime, messageProcessor)
+            {
             }
         }
 
