@@ -32,7 +32,7 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the name of the Env application argument.
         /// </summary>
-        public static readonly string EnvArgName = "Env";
+        public static readonly string EnvArgName = AppRuntimeBase.EnvKey;
 
         /// <summary>
         /// Gets the name of the AppId application argument.

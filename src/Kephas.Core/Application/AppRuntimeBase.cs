@@ -56,6 +56,11 @@ namespace Kephas.Application
         public static readonly string AppIdentityKey = "AppIdentity";
 
         /// <summary>
+        /// The environment name key.
+        /// </summary>
+        public static readonly string EnvKey = "Env";
+
+        /// <summary>
         /// The application identifier key.
         /// </summary>
         public static readonly string AppIdKey = nameof(IAppArgs.AppId);
@@ -145,7 +150,8 @@ namespace Kephas.Application
                 isRoot ?? this.AppArgs.RunAsRoot,
                 appId ?? this.AppArgs.AppId,
                 appInstanceId ?? this.AppArgs.AppInstanceId,
-                appVersion);
+                appVersion,
+                this.AppArgs.Env);
 
             this[AppIdentityKey] = new AppIdentity(this[AppIdKey] as string, this[AppVersionKey] as string);
         }
@@ -409,7 +415,14 @@ namespace Kephas.Application
         /// <param name="appId">Identifier for the application.</param>
         /// <param name="appInstanceId">Identifier for the application instance.</param>
         /// <param name="appVersion">The application version.</param>
-        protected virtual void InitializeAppProperties(Assembly entryAssembly, bool? isRoot, string? appId, string? appInstanceId, string? appVersion)
+        /// <param name="environment">The environment.</param>
+        protected virtual void InitializeAppProperties(
+            Assembly entryAssembly,
+            bool? isRoot,
+            string? appId,
+            string? appInstanceId,
+            string? appVersion,
+            string? environment)
         {
             this[IsRootKey] = isRoot ??= string.IsNullOrEmpty(appId);
             this[AppIdKey] = appId = this.GetAppId(entryAssembly, appId);
@@ -419,6 +432,7 @@ namespace Kephas.Application
                                                             : $"{appId}-{Guid.NewGuid():N}"
                                                         : appInstanceId;
             this[AppVersionKey] = string.IsNullOrEmpty(appVersion) ? (entryAssembly?.GetName().Version.ToString() ?? "0.0.0.0") : appVersion;
+            this[EnvKey] = environment;
         }
 
 #if NET461

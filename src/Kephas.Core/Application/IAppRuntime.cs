@@ -170,6 +170,20 @@ namespace Kephas.Application
         public static AppIdentity? GetAppIdentity(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.AppIdentityKey] as AppIdentity;
 
         /// <summary>
+        /// Gets the running environment.
+        /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <returns>The running environment.</returns>
+        public static string? GetEnvironment(this IAppRuntime appRuntime) => appRuntime?[AppRuntimeBase.EnvKey] as string;
+
+        /// <summary>
+        /// Gets a value indicating whether the running environment is development.
+        /// </summary>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <returns>A value indicating whether the running environment is development.</returns>
+        public static bool IsDevelopment(this IAppRuntime appRuntime) => string.Equals("Development", appRuntime.GetEnvironment(), StringComparison.OrdinalIgnoreCase);
+
+        /// <summary>
         /// Gets the identifier of the application instance.
         /// </summary>
         /// <param name="appRuntime">The app runtime to act on.</param>
