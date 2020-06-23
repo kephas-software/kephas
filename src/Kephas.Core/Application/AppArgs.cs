@@ -101,7 +101,7 @@ namespace Kephas.Application
         /// <summary>
         /// Gets or sets the ID of the root application instance, if set.
         /// </summary>
-        public string? RootAppId
+        public string? RootAppInstanceId
         {
             get => this[RootArgName] as string;
             set => this[RootArgName] = value;
@@ -133,6 +133,6 @@ namespace Kephas.Application
         /// <summary>
         /// Gets a value indicating whether this application instance is the root.
         /// </summary>
-        public virtual bool RunAsRoot => !this.HasDynamicMember(RootArgName) && !this.HasDynamicMember(AppIdArgName);
+        public virtual bool RunAsRoot => string.IsNullOrEmpty(this.RootAppInstanceId);
     }
 }

@@ -588,13 +588,13 @@ namespace Kephas.Orchestration
                 return this.AppRuntime.GetAppInstanceId()!;
             }
 
-            var rootId = this.AppContext.AppArgs[AppArgs.RootArgName] as string;
+            var rootId = this.AppContext.AppArgs.RootAppInstanceId;
             if (!string.IsNullOrEmpty(rootId))
             {
                 return rootId!;
             }
 
-            return new StaticAppRuntime(isRoot: true).GetAppInstanceId()!;
+            throw new OrchestrationException($"Cannot identify the ID of the root application instance. Possible resolution: add '-{AppArgs.RootArgName} <root-instance-id>' to the application startup arguments.");
         }
 
         /// <summary>

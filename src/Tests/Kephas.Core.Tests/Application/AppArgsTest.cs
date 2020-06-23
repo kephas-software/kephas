@@ -35,5 +35,19 @@ namespace Kephas.Core.Tests.Application
             var args = new AppArgs("-loglevel debug");
             Assert.AreEqual(LogLevel.Debug, args.LogMinimumLevel);
         }
+
+        [Test]
+        public void RunAsRoot_true()
+        {
+            var args = new AppArgs("-appid test");
+            Assert.IsTrue(args.RunAsRoot);
+        }
+
+        [Test]
+        public void RunAsRoot_false()
+        {
+            var args = new AppArgs("-root test");
+            Assert.IsFalse(args.RunAsRoot);
+        }
     }
 }

@@ -142,7 +142,7 @@ namespace Kephas.Application
             this.InitializationMonitor = new InitializationMonitor<IAppRuntime>(this.GetType());
             this.InitializeAppProperties(
                 Assembly.GetEntryAssembly(),
-                isRoot,
+                isRoot ?? this.AppArgs.RunAsRoot,
                 appId ?? this.AppArgs.AppId,
                 appInstanceId ?? this.AppArgs.AppInstanceId,
                 appVersion);

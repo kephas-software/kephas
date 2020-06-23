@@ -28,7 +28,7 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the ID of the root application instance, if set.
         /// </summary>
-        string? RootAppId { get; }
+        string? RootAppInstanceId { get; }
 
         /// <summary>
         /// Gets the log level, if set.

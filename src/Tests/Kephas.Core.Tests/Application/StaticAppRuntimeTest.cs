@@ -25,22 +25,22 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void Constructor_set_app_id_and_instance_id()
         {
-            var appEnv = new StaticAppRuntime(
+            var appRuntime = new StaticAppRuntime(
                 appArgs: new Expando
                 {
                     [StaticAppRuntime.AppIdKey] = "test",
                     [StaticAppRuntime.AppInstanceIdKey] = "test-2",
                 });
-            Assert.AreEqual("test", appEnv.GetAppId());
-            Assert.AreEqual("test-2", appEnv.GetAppInstanceId());
+            Assert.AreEqual("test", appRuntime.GetAppId());
+            Assert.AreEqual("test-2", appRuntime.GetAppInstanceId());
         }
 
         [Test]
         public void GetAppAssemblies_filter()
         {
-            var appEnv = new StaticAppRuntime();
-            ((IInitializable)appEnv).Initialize();
-            var assemblies = appEnv.GetAppAssemblies(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
+            var appRuntime = new StaticAppRuntime();
+            ((IInitializable)appRuntime).Initialize();
+            var assemblies = appRuntime.GetAppAssemblies(n => !n.IsSystemAssembly() && !n.FullName.StartsWith("JetBrains"));
             var assemblyList = assemblies.ToList();
 
             Assert.AreEqual(2, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
@@ -50,9 +50,9 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void GetAppAssemblies_no_filter()
         {
-            var appEnv = new StaticAppRuntime();
-            ((IInitializable)appEnv).Initialize();
-            var assemblies = appEnv.GetAppAssemblies();
+            var appRuntime = new StaticAppRuntime();
+            ((IInitializable)appRuntime).Initialize();
+            var assemblies = appRuntime.GetAppAssemblies();
             var assemblyList = assemblies.ToList();
 
             Assert.AreEqual(2, assemblyList.Count(a => a.FullName.StartsWith("Kephas")));
@@ -61,17 +61,17 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void GetAppId_and_version()
         {
-            var appEnv = new StaticAppRuntime(appId: "hello-app", appVersion: "1.0.0-beta");
+            var appRuntime = new StaticAppRuntime(appId: "hello-app", appVersion: "1.0.0-beta");
 
-            Assert.AreEqual("hello-app", appEnv.GetAppId());
-            Assert.AreEqual("1.0.0-beta", appEnv.GetAppVersion());
+            Assert.AreEqual("hello-app", appRuntime.GetAppId());
+            Assert.AreEqual("1.0.0-beta", appRuntime.GetAppVersion());
         }
 
         [Test]
         public void GetAppConfigLocations_default()
         {
-            var appEnv = new StaticAppRuntime(appFolder: "/root");
-            var configLocations = appEnv.GetAppConfigLocations();
+            var appRuntime = new StaticAppRuntime(appFolder: "/root");
+            var configLocations = appRuntime.GetAppConfigLocations();
 
             Assert.AreEqual(1, configLocations.Count());
 
@@ -88,8 +88,8 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void GetAppConfigLocations_configured()
         {
-            var appEnv = new StaticAppRuntime(appFolder: "/root", configFolders: new[] { "../my/config", "config" });
-            var configLocations = appEnv.GetAppConfigLocations();
+            var appRuntime = new StaticAppRuntime(appFolder: "/root", configFolders: new[] { "../my/config", "config" });
+            var configLocations = appRuntime.GetAppConfigLocations();
 
             Assert.AreEqual(2, configLocations.Count());
 
@@ -108,8 +108,8 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void GetAppConfigLocations_configured_distinct()
         {
-            var appEnv = new StaticAppRuntime(appFolder: "/root", configFolders: new[] { "../my/config", "../my/config", "config" });
-            var configLocations = appEnv.GetAppConfigLocations();
+            var appRuntime = new StaticAppRuntime(appFolder: "/root", configFolders: new[] { "../my/config", "../my/config", "config" });
+            var configLocations = appRuntime.GetAppConfigLocations();
 
             Assert.AreEqual(2, configLocations.Count());
 
@@ -128,14 +128,35 @@ namespace Kephas.Core.Tests.Application
         [Test]
         public void GetAppFramework()
         {
-            var appEnv = new StaticAppRuntime();
-            var appFramework = appEnv.GetAppFramework();
+            var appRuntime = new StaticAppRuntime();
+            var appFramework = appRuntime.GetAppFramework();
 
 #if NET461
             Assert.AreEqual("net461", appFramework);
 #else
             Assert.IsTrue(appFramework.StartsWith("netcoreapp"), "Expected a .NET Core app framework.");
 #endif
+        }
+
+        [Test]
+        public void IsRoot_true()
+        {
+            var appRuntime = new StaticAppRuntime();
+            Assert.IsTrue(appRuntime.IsRoot());
+        }
+
+        [Test]
+        public void IsRoot_true_with_appID()
+        {
+            var appRuntime = new StaticAppRuntime(isRoot: true, appId: "root");
+            Assert.IsTrue(appRuntime.IsRoot());
+        }
+
+        [Test]
+        public void IsRoot_false()
+        {
+            var appRuntime = new StaticAppRuntime(isRoot: false);
+            Assert.IsFalse(appRuntime.IsRoot());
         }
     }
 }
