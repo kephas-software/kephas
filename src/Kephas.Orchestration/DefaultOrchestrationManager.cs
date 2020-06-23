@@ -337,6 +337,17 @@ namespace Kephas.Orchestration
         }
 
         /// <summary>
+        /// Gets the environment in which the application is running.
+        /// </summary>
+        /// <returns>The environment name.</returns>
+        protected virtual string? GetEnvironment()
+        {
+            this.EnsureInitialized();
+
+            return this.AppContext.AppArgs.Env;
+        }
+
+        /// <summary>
         /// Tries to get the OS process.
         /// </summary>
         /// <param name="runtimeAppInfo">Information describing the runtime application.</param>
@@ -527,6 +538,7 @@ namespace Kephas.Orchestration
                 [AppArgs.AppIdArgName] = appInfo.Identity.Id,
                 [AppArgs.AppInstanceIdArgName] = appInfo[AppRuntimeBase.AppInstanceIdKey],
                 [AppArgs.RootArgName] = this.GetRootAppInstanceId(),
+                [AppArgs.EnvArgName] = this.GetEnvironment(),
             }.Merge(arguments);
 
             return appArgs.ToCommandArgs();

@@ -30,6 +30,11 @@ namespace Kephas.Application
         public static readonly string ServiceArgName = "Service";
 
         /// <summary>
+        /// Gets the name of the Env application argument.
+        /// </summary>
+        public static readonly string EnvArgName = "Env";
+
+        /// <summary>
         /// Gets the name of the AppId application argument.
         /// </summary>
         public static readonly string AppIdArgName = AppRuntimeBase.AppIdKey;
@@ -99,6 +104,11 @@ namespace Kephas.Application
         public string? AppInstanceId { get; set; }
 
         /// <summary>
+        /// Gets or sets the environment name.
+        /// </summary>
+        public string? Env { get; set; }
+
+        /// <summary>
         /// Gets or sets the ID of the root application instance, if set.
         /// </summary>
         public string? RootAppInstanceId
@@ -134,5 +144,11 @@ namespace Kephas.Application
         /// Gets a value indicating whether this application instance is the root.
         /// </summary>
         public virtual bool RunAsRoot => string.IsNullOrEmpty(this.RootAppInstanceId);
+
+        /// <summary>
+        /// Gets a value indicating whether the application is in development mode.
+        /// </summary>
+        public virtual bool IsDevelopment =>
+            string.Equals("Development", this[EnvArgName] as string, StringComparison.OrdinalIgnoreCase);
     }
 }
