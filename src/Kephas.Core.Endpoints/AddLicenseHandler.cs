@@ -59,6 +59,11 @@ namespace Kephas.Core.Endpoints
             }
 
             var licensesFolder = this.appRuntime.GetAppLicenseLocations().First();
+            if (!Directory.Exists(licensesFolder))
+            {
+                Directory.CreateDirectory(licensesFolder);
+            }
+
             var fileName = Path.Combine(licensesFolder, message.Name);
             string? oldFileRename = null;
             if (File.Exists(fileName))
