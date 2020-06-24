@@ -14,10 +14,10 @@ namespace Kephas.Application.AspNetCore.Hosting
     using System.Threading.Tasks;
 
     using Kephas.Application.AspNetCore.Configuration;
-    using Kephas.Commands;
     using Kephas.Extensions.Configuration;
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Logging;
+    using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
@@ -138,11 +138,13 @@ namespace Kephas.Application.AspNetCore.Hosting
             IApplicationBuilder app,
             IHostApplicationLifetime appLifetime)
         {
+            var env = this.HostEnvironment;
+            var appContext = (IAspNetAppContext)this.AppContext;
+            this.Logger.Info("{app} is running in the {environment} environment.", appContext.AppRuntime.GetAppInstanceId(), env.EnvironmentName);
+
             this.AmbientServices
                 .Register(app)
                 .Register(appLifetime);
-
-            var appContext = (IAspNetAppContext)this.AppContext;
 
             // ensure upon request processing that the bootstrapping procedure is done.
             app.Use(async (context, next) =>
