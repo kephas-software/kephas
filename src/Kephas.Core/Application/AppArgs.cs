@@ -165,6 +165,6 @@ namespace Kephas.Application
         /// Gets a value indicating whether the application is in development mode.
         /// </summary>
         public virtual bool IsDevelopment =>
-            string.Equals(AppRuntimeBase.DevelopmentEnvironment, this[EnvArgName] as string, StringComparison.OrdinalIgnoreCase);
+            string.Equals(EnvironmentName.Development, this[EnvArgName] as string, StringComparison.OrdinalIgnoreCase);
     }
 }

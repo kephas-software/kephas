@@ -81,21 +81,6 @@ namespace Kephas.Application
         public static readonly string IsRootKey = "IsRoot";
 
         /// <summary>
-        /// The development environment name.
-        /// </summary>
-        public static readonly string DevelopmentEnvironment = "Development";
-
-        /// <summary>
-        /// The production environment name.
-        /// </summary>
-        public static readonly string ProductionEnvironment = "Production";
-
-        /// <summary>
-        /// The test environment name.
-        /// </summary>
-        public static readonly string TestEnvironment = "Test";
-
-        /// <summary>
         /// A pattern specifying the assembly file search.
         /// </summary>
         protected static readonly string AssemblyFileSearchPattern = "*.dll";
