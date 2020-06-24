@@ -25,6 +25,11 @@ namespace Kephas.Application.Configuration
         public Expando? Args { get; set; }
 
         /// <summary>
+        /// Gets or sets the environment variables to set for the child process.
+        /// </summary>
+        public Expando? EnvironmentVariables { get; set; }
+
+        /// <summary>
         /// Gets or sets the features which are enabled by the application instance.
         /// </summary>
         /// <remarks>

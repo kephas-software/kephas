@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Application.Configuration;
+using Kephas.Collections;
+
 namespace Kephas.Orchestration
 {
     using System;
@@ -248,14 +251,19 @@ namespace Kephas.Orchestration
         {
             await Task.Yield();
 
+            var appSettings = appInfo[nameof(AppSettings)] as AppSettings;
             var processedArguments = this.GetAppExecutableArgs(appInfo, arguments);
             var (executableFile, runtime) = this.GetAppExecutableInfo(appInfo);
 
-            var processStarter = this.CreateProcessStarterFactory(appInfo, arguments, optionsConfig)
+            var processStarterFactory = this.CreateProcessStarterFactory(appInfo, arguments, optionsConfig)
                 .WithManagedExecutable(executableFile, runtime)
                 .WithArguments(processedArguments.ToArray())
-                .WithWorkingDirectory(this.AppRuntime.GetAppLocation())
-                .CreateProcessStarter();
+                .WithWorkingDirectory(this.AppRuntime.GetAppLocation());
+
+            var envVariables = appSettings?.EnvironmentVariables?.ToDictionary();
+            envVariables?.ForEach(envVar => processStarterFactory.WithEnvironmentVariable(envVar.Key, envVar.Value?.ToString() ?? string.Empty));
+
+            var processStarter = processStarterFactory.CreateProcessStarter();
 
             await this.EventHub.PublishAsync(new AppStartingEvent { AppInfo = appInfo.GetRuntimeAppInfo() }, this.AppContext, cancellationToken).PreserveThreadContext();
 
