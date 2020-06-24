@@ -61,7 +61,7 @@ namespace Kephas.Diagnostics
         IProcessStarterFactory WithNativeExecutable(string executableFile);
 
         /// <summary>
-        /// Adds further confiuguration to the process information.
+        /// Adds further configuration to the process information.
         /// </summary>
         /// <param name="config">The configuration.</param>
         /// <returns>
