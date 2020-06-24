@@ -8,9 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Application.Configuration;
-using Kephas.Collections;
-
 namespace Kephas.Orchestration
 {
     using System;
@@ -23,7 +20,9 @@ namespace Kephas.Orchestration
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Application.Configuration;
     using Kephas.Application.Reflection;
+    using Kephas.Collections;
     using Kephas.Commands;
     using Kephas.Composition;
     using Kephas.Configuration;
