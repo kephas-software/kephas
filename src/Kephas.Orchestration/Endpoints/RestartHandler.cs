@@ -28,6 +28,7 @@ namespace Kephas.Orchestration.Endpoints
         private readonly IAppRuntime appRuntime;
         private readonly IEventHub eventHub;
         private readonly IMessageBroker messageBroker;
+        private readonly Lazy<IOrchestrationManager> lazyOrchestrationManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RestartHandler"/> class.
@@ -35,11 +36,17 @@ namespace Kephas.Orchestration.Endpoints
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="messageBroker">The message broker.</param>
-        public RestartHandler(IAppRuntime appRuntime, IEventHub eventHub, IMessageBroker messageBroker)
+        /// <param name="lazyOrchestrationManager">The lazy orchestration manager.</param>
+        public RestartHandler(
+            IAppRuntime appRuntime,
+            IEventHub eventHub,
+            IMessageBroker messageBroker,
+            Lazy<IOrchestrationManager> lazyOrchestrationManager)
         {
             this.appRuntime = appRuntime;
             this.eventHub = eventHub;
             this.messageBroker = messageBroker;
+            this.lazyOrchestrationManager = lazyOrchestrationManager;
         }
 
         /// <summary>
@@ -60,13 +67,12 @@ namespace Kephas.Orchestration.Endpoints
                 await this.eventHub.PublishAsync(new RestartSignal("Handle restart."), context, token).PreserveThreadContext();
                 response.Message = $"App instance {this.appRuntime.GetAppId()}/{this.appRuntime.GetAppInstanceId()}: Application restarted.";
             }
-            else if (message.ShouldRedirect)
+            else
             {
                 // redirect only once.
-                message.ShouldRedirect = false;
                 await this.messageBroker.ProcessOneWayAsync(
                     message,
-                    new Endpoint(),
+                    new Endpoint(appInstanceId: this.lazyOrchestrationManager.Value.GetRootAppInstanceId()),
                     ctx => ctx.Impersonate(context),
                     cancellationToken: token).PreserveThreadContext();
 

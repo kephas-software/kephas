@@ -19,9 +19,5 @@ namespace Kephas.Orchestration.Endpoints
     [RequiresPermission(typeof(AppAdminPermission))]
     public class RestartMessage : IMessage
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether the message should be redirected to the root.
-        /// </summary>
-        public bool ShouldRedirect { get; set; } = true;
     }
 }
