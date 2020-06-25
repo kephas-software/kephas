@@ -51,6 +51,7 @@ namespace Kephas.Orchestration.Application
             IMessageProcessor messageProcessor,
             IEventHub eventHub,
             ILogManager? logManager = null)
+            : base(logManager)
         {
             this.appRuntime = appRuntime;
             this.systemConfiguration = systemConfiguration;
@@ -92,7 +93,7 @@ namespace Kephas.Orchestration.Application
             try
             {
                 settings.SetupCommands = null;
-                await this.systemConfiguration.UpdateSettingsAsync(cancellationToken: cancellationToken)
+                await this.systemConfiguration.UpdateSettingsAsync(context: appContext, cancellationToken: cancellationToken)
                     .PreserveThreadContext();
             }
             catch (Exception ex)
@@ -128,7 +129,7 @@ namespace Kephas.Orchestration.Application
             try
             {
                 appSettings.SetupCommands = null;
-                await this.systemConfiguration.UpdateSettingsAsync(cancellationToken: cancellationToken)
+                await this.systemConfiguration.UpdateSettingsAsync(context: appContext, cancellationToken: cancellationToken)
                     .PreserveThreadContext();
             }
             catch (Exception ex)
