@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Application;
-
 namespace Kephas.Serialization.Json.Tests
 {
     using System;
@@ -19,6 +17,7 @@ namespace Kephas.Serialization.Json.Tests
     using System.Reflection;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Dynamic;
     using Kephas.Logging;
@@ -27,9 +26,7 @@ namespace Kephas.Serialization.Json.Tests
     using Kephas.Serialization.Composition;
     using Kephas.Serialization.Json;
     using Kephas.Services;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     /// <summary>
@@ -208,6 +205,32 @@ namespace Kephas.Serialization.Json.Tests
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity"",""description"":""John Doe""}", serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_with_type_property()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestWithType
+            {
+                Type = typeof(string),
+            };
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestWithType"",""type"":""System.String""}", serializedObj);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_with_type_property()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+
+            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestWithType"",""type"":""System.String""}";
+            var obj = (TestWithType)await serializer.DeserializeAsync(serializedObj);
+
+            Assert.AreEqual(typeof(string), obj.Type);
         }
 
         [Test]
@@ -414,6 +437,11 @@ namespace Kephas.Serialization.Json.Tests
         public class ExpandoEntity : Expando
         {
             public string Description { get; set; }
+        }
+
+        public class TestWithType
+        {
+            public Type Type { get; set; }
         }
     }
 }

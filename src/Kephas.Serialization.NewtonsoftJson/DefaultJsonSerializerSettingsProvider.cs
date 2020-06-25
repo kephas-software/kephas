@@ -39,7 +39,7 @@ namespace Kephas.Serialization.Json
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="logManager">Manager for log.</param>
-        /// <param name="jsonConverters">Optional. The JSON converters (optional).</param>
+        /// <param name="jsonConverters">Optional. The JSON converters.</param>
         public DefaultJsonSerializerSettingsProvider(
             ITypeResolver typeResolver,
             ILogManager logManager,
@@ -54,6 +54,7 @@ namespace Kephas.Serialization.Json
                                                      new DateTimeJsonConverter(),
                                                      new TimeSpanJsonConverter(),
                                                      new StringEnumJsonConverter(),
+                                                     new TypeJsonConverter(typeResolver),
                                                  };
             this.TypeResolver = typeResolver;
             this.logManager = logManager;
