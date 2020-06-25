@@ -56,7 +56,7 @@ namespace Kephas.Application.Tests
 
             await eventHub.PublishAsync(new ScheduleStartupCommandSignal(new HelloMessage { To = "gigi", Likes = 3 }), Substitute.For<IContext>(), default);
             Assert.AreEqual(1, settings.SetupCommands.Length);
-            Assert.AreEqual("Hello To=\"gigi\" Likes=3", settings.SetupCommands[0]);
+            Assert.AreEqual("Hello -To \"gigi\" -Likes 3", settings.SetupCommands[0]);
 
             config.Received(1).UpdateSettingsAsync(null, Arg.Any<IContext>(), Arg.Any<CancellationToken>());
         }

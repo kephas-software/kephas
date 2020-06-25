@@ -184,9 +184,10 @@ namespace Kephas.Core.Tests.Services.Composition
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.TypeConventionsBuilders[typeof(DefaultMetadataAppService)];
             var metadata = testBuilder.ExportBuilder.Metadata;
 
-            Assert.AreEqual(4, metadata.Count);
+            Assert.AreEqual(5, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("ProcessingPriority"));
             Assert.IsTrue(metadata.ContainsKey("OverridePriority"));
+            Assert.IsTrue(metadata.ContainsKey("Override"));
             Assert.IsTrue(metadata.ContainsKey("ServiceName"));
             Assert.IsTrue(metadata.ContainsKey(nameof(AppServiceMetadata.ServiceInstanceType)));
 
@@ -239,7 +240,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             var metadata = testBuilder.ExportBuilder.Metadata;
 
-            Assert.AreEqual(5, metadata.Count);
+            Assert.AreEqual(6, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("TType"));
 
             var valueGetter = (Func<Type, object>)metadata["TType"];
@@ -264,7 +265,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)conventions.MatchingConventionsBuilders.Values.First();
             var metadata = testBuilder.ExportBuilder.Metadata;
 
-            Assert.AreEqual(6, metadata.Count);
+            Assert.AreEqual(7, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("FromType"));
             Assert.IsTrue(metadata.ContainsKey("ToType"));
 
@@ -325,7 +326,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var metadata = testBuilder.ExportBuilder.Metadata;
 
-            Assert.AreEqual(4, metadata.Count);
+            Assert.AreEqual(5, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("ProcessingPriority"));
 
             var valueGetter = (Func<Type, object>)metadata["ProcessingPriority"];
@@ -357,7 +358,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var metadata = testBuilder.ExportBuilder.Metadata;
 
-            Assert.AreEqual(5, metadata.Count);
+            Assert.AreEqual(6, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("CustomValueMetadata"));
 
             var valueGetter = (Func<Type, object>)metadata["CustomValueMetadata"];
@@ -389,7 +390,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var metadata = testBuilder.ExportBuilder.Metadata;
 
-            Assert.AreEqual(5, metadata.Count);
+            Assert.AreEqual(6, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("CustomValueMetadata"));
 
             var valueGetter = (Func<Type, object>)metadata["CustomValueMetadata"];
@@ -421,7 +422,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var testBuilder = (CompositionContainerBuilderBaseTest.TestPartConventionsBuilder)builderEntry.Value;
             var metadata = testBuilder.ExportBuilder.Metadata;
 
-            Assert.AreEqual(6, metadata.Count);
+            Assert.AreEqual(7, metadata.Count);
             Assert.IsTrue(metadata.ContainsKey("CustomNamedValueMetadataName"));
             Assert.IsTrue(metadata.ContainsKey("Icon"));
             Assert.IsFalse(metadata.ContainsKey("CustomNamedValueMetadataDescription"));
