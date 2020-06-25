@@ -102,7 +102,7 @@ namespace Kephas.Core.Endpoints
             var configuration = this.compositionContext.GetExport(configurationType);
             var updateMethod = (IRuntimeMethodInfo)configuration.GetRuntimeTypeInfo()
                 .GetMember(nameof(IConfiguration<CoreSettings>.UpdateSettingsAsync));
-            var result = (IOperationResult<bool>)(await updateMethod.InvokeAsync(configuration, new[] { settings, token }).PreserveThreadContext());
+            var result = (IOperationResult<bool>)(await updateMethod.InvokeAsync(configuration, new[] { settings, context, token }).PreserveThreadContext());
             return new ResponseMessage
             {
                 Message = result.HasErrors()

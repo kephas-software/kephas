@@ -5,11 +5,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using Kephas.Threading.Tasks;
-
 namespace Kephas.Core.Endpoints.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Threading;
@@ -22,6 +20,8 @@ namespace Kephas.Core.Endpoints.Tests
     using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Serialization;
+    using Kephas.Services;
+    using Kephas.Threading.Tasks;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -33,7 +33,7 @@ namespace Kephas.Core.Endpoints.Tests
         {
             var settings = new CoreSettings();
             var config = Substitute.For<IConfiguration<CoreSettings>>();
-            config.UpdateSettingsAsync(Arg.Any<CoreSettings>(), Arg.Any<CancellationToken>())
+            config.UpdateSettingsAsync(Arg.Any<CoreSettings>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci =>
                 {
                     var success = ci.Arg<CoreSettings>().Task.DefaultTimeout == TimeSpan.FromMinutes(5);
@@ -60,7 +60,7 @@ namespace Kephas.Core.Endpoints.Tests
         {
             var settings = new CoreSettings();
             var config = Substitute.For<IConfiguration<CoreSettings>>();
-            config.UpdateSettingsAsync(Arg.Any<CoreSettings>(), Arg.Any<CancellationToken>())
+            config.UpdateSettingsAsync(Arg.Any<CoreSettings>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci =>
                 {
                     var success = ci.Arg<CoreSettings>().Task.DefaultTimeout == TimeSpan.FromMinutes(5);

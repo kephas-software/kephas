@@ -115,7 +115,7 @@ namespace Kephas.Application
                 appSettings.SetupCommands = commands.ToArray();
             }
 
-            await this.systemConfiguration.UpdateSettingsAsync(cancellationToken: token).PreserveThreadContext();
+            await this.systemConfiguration.UpdateSettingsAsync(context: appContext, cancellationToken: token).PreserveThreadContext();
         }
 
         private object FormatCommand(object rawCommand)
