@@ -8,22 +8,23 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Kephas.Core.Tests.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Composition;
     using Kephas.Composition.ExportFactories;
     using Kephas.Configuration;
+    using Kephas.Configuration.Interaction;
     using Kephas.Configuration.Providers;
     using Kephas.Configuration.Providers.Composition;
     using Kephas.Core.Tests;
+    using Kephas.Interaction;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -38,9 +39,9 @@ namespace Kephas.Core.Tests.Configuration
 
             var selector = new DefaultSettingsProviderSelector(new List<IExportFactory<ISettingsProvider, SettingsProviderMetadata>>
                                                                {
-                                                                   new ExportFactory<ISettingsProvider, SettingsProviderMetadata>(() => configProvider1, new SettingsProviderMetadata(null))
+                                                                   new ExportFactory<ISettingsProvider, SettingsProviderMetadata>(() => configProvider1, new SettingsProviderMetadata(null)),
                                                                });
-            var configuration = new Configuration<Config1>(selector);
+            var configuration = new Configuration<Config1>(selector, Substitute.For<IAppRuntime>(), new Lazy<IEventHub>(() => Substitute.For<IEventHub>()));
 
             var result = configuration.Settings;
             Assert.AreSame(settings, result);
@@ -60,9 +61,9 @@ namespace Kephas.Core.Tests.Configuration
             var selector = new DefaultSettingsProviderSelector(new List<IExportFactory<ISettingsProvider, SettingsProviderMetadata>>
                                                                {
                                                                    new ExportFactory<ISettingsProvider, SettingsProviderMetadata>(() => configProvider1, new SettingsProviderMetadata(typeof(Config1))),
-                                                                   new ExportFactory<ISettingsProvider, SettingsProviderMetadata>(() => configProvider2, new SettingsProviderMetadata(typeof(Config2)))
+                                                                   new ExportFactory<ISettingsProvider, SettingsProviderMetadata>(() => configProvider2, new SettingsProviderMetadata(typeof(Config2))),
                                                                });
-            var configuration = new Configuration<Config2>(selector);
+            var configuration = new Configuration<Config2>(selector, Substitute.For<IAppRuntime>(), new Lazy<IEventHub>(() => Substitute.For<IEventHub>()));
 
             var result = configuration.Settings;
             Assert.AreSame(settings2, result);
@@ -76,6 +77,42 @@ namespace Kephas.Core.Tests.Configuration
 
             var config = container.GetExport<IConfiguration<TestSettings>>();
             Assert.AreSame(TestConfigurationProvider.Settings, config.Settings);
+        }
+
+        [Test]
+        public async Task Composition_Configuration_change_signal_skipped_when_not_changed()
+        {
+            // specific provider
+            var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
+            var eventHub = container.GetExport<IEventHub>();
+            var appRuntime = container.GetExport<IAppRuntime>();
+            var configChanged = 0;
+            using var subscription = eventHub.Subscribe<ConfigurationChangedSignal>(
+                (s, ctx) =>
+                    configChanged += s.SourceAppInstanceId == appRuntime.GetAppInstanceId() && s.SettingsType == typeof(TestSettings) ? 1 : 0);
+
+            var config = container.GetExport<IConfiguration<TestSettings>>();
+            await config.UpdateSettingsAsync();
+
+            Assert.AreEqual(0, configChanged);
+        }
+
+        [Test]
+        public async Task Composition_Configuration_change_signal_when_changed()
+        {
+            // specific provider
+            var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
+            var eventHub = container.GetExport<IEventHub>();
+            var appRuntime = container.GetExport<IAppRuntime>();
+            var configChanged = 0;
+            using var subscription = eventHub.Subscribe<ConfigurationChangedSignal>(
+                (s, ctx) =>
+                    configChanged += s.SourceAppInstanceId == appRuntime.GetAppInstanceId() && s.SettingsType == typeof(TestSettings) ? 1 : 0);
+
+            var config = container.GetExport<IConfiguration<TestSettings>>();
+            await config.UpdateSettingsAsync(new TestSettings());
+
+            Assert.AreEqual(1, configChanged);
         }
 
         public class TestSettings

@@ -37,6 +37,7 @@ namespace Kephas.Configuration
         /// Updates the settings in the configuration store.
         /// </summary>
         /// <param name="settings">Optional. The settings to be updated. If no settings are provided, the current settings are used for the update.</param>
+        /// <param name="context">Optional. The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A <see cref="Task"/> representing the asynchronous operation yielding an operation result
@@ -44,6 +45,7 @@ namespace Kephas.Configuration
         /// </returns>
         Task<IOperationResult<bool>> UpdateSettingsAsync(
             TSettings? settings = null,
+            IContext? context = null,
             CancellationToken cancellationToken = default);
     }
 }
