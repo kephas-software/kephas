@@ -140,6 +140,42 @@ namespace Kephas.Serialization.Json.Tests
         }
 
         [Test]
+        public async Task SerializeAsync_without_null_values()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = null,
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeNullValues = false };
+            var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\"$type\":\"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\"name\":\"John Doe\"}",
+                serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_with_null_values()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new TestEntity
+            {
+                Name = "John Doe",
+                PersonalSite = null,
+            };
+            var serializationContext = new SerializationContext(Substitute.For<ICompositionContext>(), Substitute.For<ISerializationService>(), typeof(JsonMediaType)) { IncludeNullValues = true };
+            var serializedObj = await serializer.SerializeAsync(obj, serializationContext);
+
+            Assert.AreEqual(
+                "{\"$type\":\"Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity\",\"name\":\"John Doe\",\"personalSite\":null}",
+                serializedObj);
+        }
+
+        [Test]
         public void Serialize_with_type_info()
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());

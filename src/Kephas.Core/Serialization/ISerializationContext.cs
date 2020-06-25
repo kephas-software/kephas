@@ -70,6 +70,15 @@ namespace Kephas.Serialization
         /// If a value is not provided, the default serializer settings are used.
         /// </value>
         bool? IncludeTypeInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether null values should be included.
+        /// </summary>
+        /// <value>
+        /// True to include null values, false otherwise.
+        /// If a value is not provided, the default serializer settings are used.
+        /// </value>
+        bool? IncludeNullValues { get; set; }
     }
 
     /// <summary>
@@ -112,6 +121,25 @@ namespace Kephas.Serialization
             Requires.NotNull(context, nameof(context));
 
             context.IncludeTypeInfo = value;
+            return context;
+        }
+
+        /// <summary>
+        /// Sets a value indicating whether to include null values in the serialized value.
+        /// </summary>
+        /// <typeparam name="TContext">Actual type of the serialization context.</typeparam>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="value">True to include null values, false otherwise.</param>
+        /// <returns>
+        /// This <see cref="ISerializationContext"/>.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TContext IncludeNullValues<TContext>(this TContext context, bool value)
+            where TContext : class, ISerializationContext
+        {
+            Requires.NotNull(context, nameof(context));
+
+            context.IncludeNullValues = value;
             return context;
         }
 

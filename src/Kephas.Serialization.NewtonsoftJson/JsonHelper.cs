@@ -64,7 +64,16 @@ namespace Kephas.Serialization.Json
 
             if (context.IncludeTypeInfo.HasValue)
             {
-                settings.TypeNameHandling = context.IncludeTypeInfo.Value ? TypeNameHandling.Objects : TypeNameHandling.None;
+                settings.TypeNameHandling = context.IncludeTypeInfo.Value
+                    ? TypeNameHandling.Objects
+                    : TypeNameHandling.None;
+            }
+
+            if (context.IncludeNullValues.HasValue)
+            {
+                settings.NullValueHandling = context.IncludeNullValues.Value
+                    ? NullValueHandling.Include
+                    : NullValueHandling.Ignore;
             }
 
             var options = context[JsonOptionsKey] as Action<JsonSerializerSettings>;

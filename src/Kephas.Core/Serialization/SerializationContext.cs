@@ -86,5 +86,14 @@ namespace Kephas.Serialization
         /// If a value is not provided, the default serializer settings are used.
         /// </value>
         public bool? IncludeTypeInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether null values should be included.
+        /// </summary>
+        /// <value>
+        /// True to include null values, false otherwise.
+        /// If a value is not provided, the default serializer settings are used.
+        /// </value>
+        public bool? IncludeNullValues { get; set; }
     }
 }
