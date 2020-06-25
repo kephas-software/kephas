@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging;
+
 namespace Kephas.Configuration
 {
     using System;
@@ -50,7 +52,8 @@ namespace Kephas.Configuration
         public Configuration(
             ISettingsProviderSelector settingsProviderSelector,
             IAppRuntime appRuntime,
-            Lazy<IEventHub> lazyEventHub)
+            Lazy<IEventHub> lazyEventHub,
+            ILogManager? logManager = null)
         {
             Requires.NotNull(settingsProviderSelector, nameof(settingsProviderSelector));
             Requires.NotNull(appRuntime, nameof(appRuntime));
@@ -59,6 +62,7 @@ namespace Kephas.Configuration
             this.settingsProviderSelector = settingsProviderSelector;
             this.appRuntime = appRuntime;
             this.lazyEventHub = lazyEventHub;
+            this.Logger = logManager?.GetLogger(this.GetType());
         }
 
         /// <summary>
@@ -68,6 +72,11 @@ namespace Kephas.Configuration
         /// The settings.
         /// </value>
         public TSettings Settings => this.settings ??= this.ComputeSettings();
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        protected ILogger? Logger { get; }
 
         /// <summary>
         /// Updates the settings in the configuration store.
@@ -96,6 +105,8 @@ namespace Kephas.Configuration
                 ?.FirstOrDefault();
             if (settingsProvider != null)
             {
+                this.Logger.Info("Updating {settingsType}...", typeof(TSettings));
+
                 await settingsProvider.UpdateSettingsAsync(settings, cancellationToken).PreserveThreadContext();
                 this.settings = settings;
 
@@ -108,6 +119,9 @@ namespace Kephas.Configuration
                     },
                     context!,
                     cancellationToken).PreserveThreadContext();
+
+                this.Logger.Info("{settingsType} updated...", typeof(TSettings));
+
                 return true.ToOperationResult();
             }
 

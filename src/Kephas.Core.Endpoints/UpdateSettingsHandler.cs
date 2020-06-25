@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging;
+
 namespace Kephas.Core.Endpoints
 {
     using System;
@@ -38,10 +40,13 @@ namespace Kephas.Core.Endpoints
         /// <param name="compositionContext">The composition context.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="serializationService">The serialization service.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
         public UpdateSettingsHandler(
             ICompositionContext compositionContext,
             ITypeResolver typeResolver,
-            ISerializationService serializationService)
+            ISerializationService serializationService,
+            ILogManager? logManager = null)
+            : base(logManager)
         {
             this.compositionContext = compositionContext;
             this.typeResolver = typeResolver;
