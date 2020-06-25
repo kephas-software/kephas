@@ -127,7 +127,8 @@ namespace Kephas.Configuration.Providers
                 ctx => ctx
                     .Indent(true)
                     .MediaType(mediaType)
-                    .IncludeTypeInfo(false),
+                    .IncludeTypeInfo(false)
+                    .IncludeNullValues(false),
                 cancellationToken: cancellationToken)
                 .PreserveThreadContext();
             File.WriteAllText(filePath, settingsString);
