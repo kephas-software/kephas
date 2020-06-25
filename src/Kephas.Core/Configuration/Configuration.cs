@@ -143,7 +143,7 @@ namespace Kephas.Configuration
 
         private Task HandleConfigurationChangeAsync(ConfigurationChangedSignal signal, IContext context, CancellationToken cancellationToken)
         {
-            if ((signal.SettingsType != null && signal.SettingsType != typeof(TSettings))
+            if (signal.SettingsType != typeof(TSettings)
                     || signal.SourceAppInstanceId == this.appRuntime.GetAppInstanceId())
             {
                 return Task.CompletedTask;

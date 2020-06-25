@@ -92,6 +92,9 @@ namespace Kephas.Orchestration.Application
                 return;
             }
 
+            this.Logger.Info("Notify other peers that the configuration for {settingsType} changed.", signal.SettingsType);
+
+            // notify the other peers (and myself, for now) that the configuration has changed
             await this.messageBroker.PublishAsync(
                     signal,
                     ctx => ctx.Impersonate(context),
