@@ -15,7 +15,6 @@ namespace Kephas.Orchestration.Application
 
     using Kephas.Application;
     using Kephas.Services;
-    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Manager for orchestration features.
@@ -28,9 +27,6 @@ namespace Kephas.Orchestration.Application
         /// </summary>
         public const string FeatureName = "Orchestration";
 
-        /// <summary>
-        /// Manager for orchestration.
-        /// </summary>
         private readonly IOrchestrationManager orchestrationManager;
 
         /// <summary>
