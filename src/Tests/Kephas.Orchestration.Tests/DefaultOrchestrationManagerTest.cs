@@ -57,8 +57,8 @@ namespace Kephas.Orchestration.Tests
             orchManager.HeartbeatInterval = TimeSpan.FromMilliseconds(100);
             var registry = container.GetExport<IMessageHandlerRegistry>();
 
-            AppHeartbeatEvent heartbeat = null;
-            registry.RegisterHandler<AppHeartbeatEvent>((e, ctx) => heartbeat = e);
+            AppHeartbeatEvent? heartbeat = null;
+            registry.RegisterHandler<AppHeartbeatEvent>((e, ctx) => (heartbeat = e).ToEvent());
 
             await appManager.InitializeAppAsync(new AppContext(ambientServices));
             await Task.Delay(TimeSpan.FromMilliseconds(400));

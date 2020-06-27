@@ -17,7 +17,7 @@ namespace Kephas.Orchestration.Interaction
     /// <summary>
     /// Interface for application event.
     /// </summary>
-    public interface IAppEvent : IEvent
+    public interface IAppEvent
     {
         /// <summary>
         /// Gets or sets runtime information describing the application.
