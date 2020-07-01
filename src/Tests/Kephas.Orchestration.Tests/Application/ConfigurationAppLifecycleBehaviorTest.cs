@@ -43,7 +43,7 @@ namespace Kephas.Orchestration.Tests.Application
             var signal = new ConfigurationChangedSignal("test")
             {
                 SourceAppInstanceId = appRuntime.GetAppInstanceId(),
-                SettingsType = typeof(string),
+                SettingsType = typeof(string).FullName,
             };
 
             await eventHub.PublishAsync(signal, Substitute.For<IContext>());

@@ -114,7 +114,7 @@ namespace Kephas.Configuration
                     new ConfigurationChangedSignal(
                         $"Configuration of {typeof(TSettings).Name} changed by {this.appRuntime.GetAppInstanceId()}.")
                     {
-                        SettingsType = typeof(TSettings),
+                        SettingsType = typeof(TSettings).FullName,
                         SourceAppInstanceId = this.appRuntime.GetAppInstanceId(),
                     },
                     context!,
@@ -157,7 +157,7 @@ namespace Kephas.Configuration
 
         private Task HandleConfigurationChangeAsync(ConfigurationChangedSignal signal, IContext context, CancellationToken cancellationToken)
         {
-            if (signal.SettingsType != typeof(TSettings)
+            if (signal.SettingsType != typeof(TSettings).FullName
                     || signal.SourceAppInstanceId == this.appRuntime.GetAppInstanceId())
             {
                 return Task.CompletedTask;

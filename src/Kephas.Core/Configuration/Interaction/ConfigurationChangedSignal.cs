@@ -7,8 +7,6 @@
 
 namespace Kephas.Configuration.Interaction
 {
-    using System;
-
     using Kephas.ExceptionHandling;
     using Kephas.Interaction;
 
@@ -36,9 +34,13 @@ namespace Kephas.Configuration.Interaction
         }
 
         /// <summary>
-        /// Gets or sets the settings type.
+        /// Gets or sets the full name of the settings type.
         /// </summary>
-        public Type? SettingsType { get; set; }
+        /// <remarks>
+        /// Do not use a type object because, across app instances, the settings type may not be loaded,
+        /// for example due to not loading certain plugins.
+        /// </remarks>
+        public string? SettingsType { get; set; }
 
         /// <summary>
         /// Gets or sets the app instance ID which is source for the change.
