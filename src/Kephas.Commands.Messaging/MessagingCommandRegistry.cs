@@ -30,9 +30,6 @@ namespace Kephas.Commands.Messaging
     [OverridePriority(Priority.Low)]
     public class MessagingCommandRegistry : ICommandRegistry
     {
-        private readonly IAppRuntime appRuntime;
-        private readonly ITypeLoader typeLoader;
-        private readonly IRuntimeTypeRegistry typeRegistry;
         private IList<IOperationInfo>? commandTypes;
 
         /// <summary>
@@ -48,11 +45,26 @@ namespace Kephas.Commands.Messaging
             Lazy<IMessageProcessor> lazyMessageProcessor,
             IRuntimeTypeRegistry typeRegistry)
         {
-            this.appRuntime = appRuntime;
-            this.typeLoader = typeLoader;
-            this.typeRegistry = typeRegistry;
+            this.AppRuntime = appRuntime;
+            this.TypeLoader = typeLoader;
+            this.TypeRegistry = typeRegistry;
             this.LazyMessageProcessor = lazyMessageProcessor;
         }
+
+        /// <summary>
+        /// Gets the application runtime.
+        /// </summary>
+        protected IAppRuntime AppRuntime { get; }
+
+        /// <summary>
+        /// Gets the type loader.
+        /// </summary>
+        protected ITypeLoader TypeLoader { get; }
+
+        /// <summary>
+        /// Gets the type registry.
+        /// </summary>
+        protected IRuntimeTypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Gets the lazy message processor.
@@ -68,8 +80,8 @@ namespace Kephas.Commands.Messaging
         /// </returns>
         public virtual IEnumerable<IOperationInfo> GetCommandTypes(string? commandPattern = null)
         {
-            this.commandTypes ??= this.appRuntime.GetAppAssemblies()
-                                            .SelectMany(a => this.typeLoader.GetExportedTypes(a).Where(this.IsMessageType))
+            this.commandTypes ??= this.AppRuntime.GetAppAssemblies()
+                                            .SelectMany(a => this.TypeLoader.GetExportedTypes(a).Where(this.IsMessageType))
                                             .Select(this.ToOperationInfo)
                                             .ToList()
                                             .AsReadOnly();
@@ -85,7 +97,7 @@ namespace Kephas.Commands.Messaging
         /// <param name="t">The type.</param>
         /// <returns>The <see cref="IOperationInfo"/>.</returns>
         protected virtual IOperationInfo ToOperationInfo(Type t) =>
-            new MessageOperationInfo(this.typeRegistry, this.typeRegistry.GetTypeInfo(t), this.LazyMessageProcessor);
+            new MessageOperationInfo(this.TypeRegistry, this.TypeRegistry.GetTypeInfo(t), this.LazyMessageProcessor);
 
         private bool IsMessageType(Type type) => !type.IsAbstract
                                                  && typeof(IMessage).IsAssignableFrom(type)
