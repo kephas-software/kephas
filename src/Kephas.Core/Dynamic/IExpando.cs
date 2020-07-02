@@ -42,8 +42,8 @@ namespace Kephas.Dynamic
         /// Converts the expando to a dictionary having as keys the property names and as values the
         /// respective properties' values.
         /// </summary>
-        /// <param name="keyFunc">The key transformation function (optional).</param>
-        /// <param name="valueFunc">The value transformation function (optional).</param>
+        /// <param name="keyFunc">Optional. The key transformation function.</param>
+        /// <param name="valueFunc">Optional. The value transformation function.</param>
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>

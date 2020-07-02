@@ -9,6 +9,7 @@ namespace Kephas.Application
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Kephas.Commands;
     using Kephas.ComponentModel.DataAnnotations;
@@ -63,8 +64,7 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appArgs">The application arguments.</param>
         public AppArgs(IEnumerable<string> appArgs)
-            : base(appArgs)
-        {
+            : base(appArgs)        {
         }
 
         /// <summary>

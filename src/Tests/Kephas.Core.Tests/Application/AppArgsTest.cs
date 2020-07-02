@@ -63,5 +63,26 @@ namespace Kephas.Core.Tests.Application
             var args = new AppArgs("-root test");
             Assert.IsFalse(args.RunAsRoot);
         }
+
+        [Test]
+        public void ToDictionary_string()
+        {
+            var args = new AppArgs("-Hi=there -Hello=\"World\"");
+            var dictArgs = args.ToDictionary();
+            Assert.AreEqual(2, dictArgs.Count);
+            Assert.AreEqual("there", args["Hi"]);
+            Assert.AreEqual("World", args["Hello"]);
+        }
+
+        [Test]
+        public void ToDictionary_string_special_separators()
+        {
+            var args = new AppArgs("-Hi=there \t-Hello=\"World\" \r\n-coming=True");
+            var dictArgs = args.ToDictionary();
+            Assert.AreEqual(3, dictArgs.Count);
+            Assert.AreEqual("there", args["Hi"]);
+            Assert.AreEqual("World", args["Hello"]);
+            Assert.AreEqual("True", args["coming"]);
+        }
     }
 }
