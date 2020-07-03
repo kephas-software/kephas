@@ -1,0 +1,279 @@
+    Core
+        Added more logging for configuration change flow.
+        Added support for including/excluding null values from serialization.
+        Exclude null values when serializing configuration files.
+        Added AppSettings.EnvironmentVariables to configure child process start.
+        Extracted the environment names to EnvironmentName class (core).
+        Added ConfigurationChangedSignal. Upon receiving this signal, the Configuration resets the inner settings to make way for reloading them again (if not issued by self). Also, when updating the settings, the configuration issues the ConfigurationChangedSignal.
+        Added IContext to the IConfiguration.UpdateSettingsAsync parameters.
+        Added IAppArgs.RunAsRoot
+        Added IAppArgs.Environment and IsDevelopment, renamed LogMinimumLevel to LogLevel.
+        Added GetEnvironment() and IsDevelopment() to IAppRuntime extensions.
+        Fixed the OverrideAttribute - did not provide any value.
+        ExpandoBase is now case insensitive if the underlying dictionary is case insensitive. Additionaly, TryGetPropertyInfo and TryGetMethodInfo can be overridden to provide the desired behavior and InnerDictionary is now a protected member.
+        Args support settings dynamic values only in the inner dictionary, not in the object properties. AppArgs will delegate in custom properties the call to the dictionary.
+        IAppArgs.Env renamed to Environment, LogMinimumLevel to LogLevel.
+        Fixed the FileSettingsProvider when updating config file.
+        Added AppArgs with constant argument names. Moved AppArgs from Application to Core.
+        Breaking change: the AmbientServices does not register by default an application runtime, it must be explicitely set using one of WithStatic/WithDynamic/WithPluginsAppRuntime extension methods (or a custom flavor).
+        Breaking change: Args() will initialize an empty arguments collection, while AppArgs() will initialize the arguments from application command line.
+        Fix: Args area now always case insensitive, no matter how initialized.
+        Improved DebugLogManager and added constructor with StringBuilder.
+        Renamed I/AppArgs to I/Args and moved from Application to Commands namespace.
+        Added AppSetupQueryEvent for querying whether application setup is possible.
+        Made DynamicTypeRegistry.AddTypeInfo protected internal.
+        Made DynamicTypeRegistry.AddTypeInfo protected internal. Simplified the flow in DynamicTypeInfo constructor.
+        Improved all signal definitions and derived from SignalBase (if not exception).
+        Added in Core IAppSetupService/Handler for setting up the application.
+        Added ITypeInfo.TypeRegistry.
+        Added DynamicTypeRegistry, made DynamicTypeInfo identifiable.
+        Moved AppArgs from Kephas.Application to Kephas.Core.
+        Added AppArgs.ToArgs() : IEnumerable.
+        Added support for initialization of AppId and AppInstanceId from the command args.
+        AmbientServices provides TypeRegistry: IRuntimeTypeRegistry.
+        Breaking change: ExpandoBase simplified, replaced GetThisTypeInfo() with GetThisType(), replaced GetInnerObjectTypeInfo() with GetInnerObjectType().
+        Added Equality operators for RuntimeTypeInfo and RuntimeAssemblyInfo.
+        Breaking change: renamed AppServiceMetadata.ServiceType to ServiceInstanceType. Causes DI container problems due to conflict with the existing ServiceType property name.
+        Added interface ITypeRegistry implemented by IRuntimeTypeRegistry.
+        Added support for microservices:
+            IAppRuntime.IsRoot() - is true if no AppId parameter was passed in to command args, or if isRoot parameter is true.
+            For root, the AppInstanceId == AppId.
+        Added the token type in the ToString() emthod of PermissionType and RuntimePermissionInfo.
+        Breaking change: Removed string based permissions in SupportsPermissionsAttribute.
+        Breaking change: renamed AppServiceMetadata.AppServiceImplementationType to ServiceType (simplicity).
+        Breaking change: HashingServiceBase.Hash(value, ...) does not accept null values anymore.
+        Added support for permissions in core. Identify the permissions when they implement IPermission (for the RuntimePermissionTypeInfo).
+        Added IPermission marker interface for permissions.
+        Added AppAdmin and System permissions.
+        Added IPermissionInfo interface, RuntimePermissionInfo implementation, and AuthorizationTypeInfoFactory for PermissionInfo registration.
+        Added IToken(TokenName: string) to be implemented by permission metadata (and not only).
+        Breaking change: Removed the permission strings from the RequiresPermissionAttribute and GrantsPermissionAttribute.
+        Made OperationResult.Elapsed/PercentCompleted virtual to override in JobResult.
+        Improved QualifiedFullName to split the type name by Name and Namespace.
+        Improved the DefaultTypeLoader to cache the exported types for an assembly.
+        RuntimeAssemblyInfo uses as type loader the DefaultTypeLoader.Instance value.
+        Added support in DefaultTypeResolver to resolve types only by name, as long as they are not ambiguous.
+        NEW: Added support for updating/persisting the settings.
+        NEW IConfiguration.UpdateSettingsAsync(settings) is the API for updating the settings.
+        Added Versioning support. AppIdentity now returns a SemanticVersion. Used also in the plugins.
+        Added support in SemanticVersion for parsing versions with hotfix/revision number. Used for backward compatibility. If the Hotfix part is 0 (zero), it is ignored.
+        Added VersionRange. Supports also expressions like :2.*, *:2.*, and 2.*:.
+        NEW: When a service is annotated with [Override] attribute, it will override its base type in the following situations:
+            when the service contract does not allow multiple instances.
+            when invoking Order() on a collection of service export factories or lazy services (both with metadata).
+            In both cases the overriden service will be replaced by the override, in case it is not overridden itself. Important things to notice:
+                Without ordering the service collection, all services are returned, including the overridden ones. This is very probable to change in the future, so that even without applying the oder the overridden service to not be returned.
+        NEW: Added default implementations for IInstance.GetTypeInfo() for .NET Standard 2.1.
+        Added IOperationResult.Fail(), T.ToOperationResult, Exception.ToOperationResult() extension methods.
+        Added OperationAbortedException.
+        Added Profiler.With(Warning/Info/Debug)StopWatch/Async extension methods.
+        Breaking change: renamed IOperationResult.ReturnValue to Value, for better consistency with the intent and other .NET classes (like Lazy or Nullable).
+        Added LockHelper static class for async lock support.
+        Breaking change: Renamed ambientServices.WithCompositionContainer to ambientServices.BuildWith* (Autofac/Lite/SystemComposition) to provide a more clear semantics about what the methods do (they build and set the container to the ambient services).
+        Added TaskHelper.GetResult(), improved EnsureCompletedSuccessfully().
+        Added IOperation.ExecuteAsync() extension for net461.
+        Fixed RuntimeTypeInfo.CreateInstance with mismatched arguments.
+        Extracted CreateInstance from ITypeInfo to IPrototype, so that operations can create instances.
+        Added IOperationInfo.InvokeAsync() extension method, which knows to await for returned tasks.
+        Renamed DynamicMethodInfo to DynamicOperationInfo.
+        Implemented OperationResult.Exceptions/Messages.Clear().
+        Breaking change: Renamed TypeDisplayAttribute to DisplayInfoAttribute and targeted all member infos.
+        Added ElementInfoHelper.GetDisplayInfo(elementInfo) to extract annotation based display information.
+        Added IElementInfo.GetDisplayInfo() to let the implementation decide where from the display information is retrieved. Defaults to ElementInfoHelper.GetDisplayInfo(this).
+        Refactored Kephas.Reflection.Localization to take advantage of the GetDisplayInfo new methods.
+        Added RuntimeEnvironment.IsDomainJoinedMachine.
+        Added Task.GetResultType(): Type extension method.
+        Added support for OperationResults based on tasks. Made operation results awaitable.
+        Fixed TaskHelper.WaitNonLocking() when the provided task is canceled already when the method is called.
+        Fixed OperationResult when initialized from task - properly synchronized the state.
+        Made RuntimeTypeInfo.CreateInstance overridable, added nullability constraints support.
+        Added ToPrioritizedDictionary for Lazy<T, TMetadata>.
+
+    Core.Endpoints
+        AddLicenseHandler: create the license folder if it does not exist.
+        Added ConfigurationChangedHandler. Upon processing the ConfigurationChangedSignal, the handler issues the ConfigurationChangedSignal as an internal event, if the issuer was not itself.
+        Added AddLicence endpoint for uploading a license to the license folder.
+		Requires AppAdmin permission for the following endpoints: SetLogLevel, UpdateSettings.
+        Added endpoint for UpdateSettings.
+        NEW: Added GetSettings endpoint, where a settings type must be provided.
+
+    Orchestration
+        Removed the IEvent marker interface from AppHeartbeat/AppStarted/AppStarting/AppStopped events. So they will not show up as executable commands.
+        Added ConfigurationAppLifecycleBehavior in Orchestration. Whenever the configuration changes, it notifies the peers about the change, so that they can reload it.
+        Fix RootAppLifecycleBehavior - should stop all live processes, even if not created by itself.
+        RootAppLifecycleBehavior: Fix killing worker processes.
+        Added OrchestrationSettings for heartbeat interval.
+        Made IRuntimeAppInfo expando.
+        Added startup arguments for the worker processes.
+        Upon startup, the OrchestrationLifecycleBehavior should notify its own process about starting up.
+        Root and Plugins AppLifecycleBehaviors subscribe to the AppSetupQueryEvent and notify about setup being able to be performed.
+        Breaking change: IProcessStarterFactory accepts for a managed executable also the runtime.
+        Breaking change: the DefaultOrchestrationManager.GetAppExecutable is renamed to GetAppExecutableInfo and returns a tuple containing also the runtime, if applicable.
+        Added CommandsAppSetupHandler to handle the setup commands.
+        NEW: implementation of the RootAppLifecycleBehavior which should start the worker processes.
+        Added IRuntimeAppInfo.IsRoot.
+        Added the RestartSignal + restart endpoint.
+        Added the RestartSignal handling in the RootAppLifecycleBehavior.
+
+    Commands
+        Added Command class to parse command lines.
+        Refactored Kephas.Commands to use command registries providing IOperationInfos. The Messaging registry implementation provides dynamically created MessageOperationInfos which invoke the message processor.Refactored Kephas.Commands to use command registries providing IOperationInfos. The Messaging registry implementation provides dynamically created MessageOperationInfos which invoke the message processor.
+        New: Extracted the commands infrastructure from Kephas.Application.Console to Kephas.Commands and Kephas.Commands.Messaging. They could be used, for example, in other kinds of applications, like ASP.NET Core.
+
+    Commands.Messaging
+        Made MessagingCommandRegistry easier to inherit.
+        Added support for extending the MessagingCommandRegistry, for custom MessageOperationInfos.
+        Added support for extending the MessagingOperationInfo/MessageParameterInfo.
+        Extended the HelpMessageHandler to display the short name of the command if available.
+        Made the MessageOperationInfo consider the short name when instantiating a new message based on the provided args.
+
+    Serialization
+        Optimized the serialization async methods.
+        Made the serialization context Indent and IncludeTypeInfo properties nullable. The semantic is that when they are not set, the default serializer settings are used.
+
+    Serialization.NewtonsoftJson
+        Added TypeJsonConverter to handle Type properties. It serializes only the full name, no assembly reference.
+        Changed the TimeSpanJsonConverter value writing to use the TimeSpan "c" format, not the XML duration convention.
+        Added possibility to configure the JSON serialization/deserialization using custom options.
+        Added IJsonSerializerSettingsProvider.ConfigureJsonSerializerSettings(settings) to support ASP.NET core scenarios.
+        BREAKING CHANGE: Renamed Assembly/Package Kephas.Serialization.Json to Kephas.Serialization.NewtonsoftJson
+
+    Messaging
+        The DefaultMessageBroker orders the routers upon startup.
+        Made the Pipes and Redis message routers override the InProcess base.
+        Made MessageExtensions.ToMessage and ToEvent public.
+
+    Messaging.Pipes
+        Added more logging in PipesAppMessageRouter.
+        NEW: first working version.
+        Added primary implementation of Kephas.Messaging.Pipes: distributed messaging using named pipes.
+
+    Application
+        Made Shutdown awaiters inherit from Loggable.
+        Changed AppArgs: IAppArgs in IAppContext.
+        Breaking change: Ambient services register the application arguments as service with key IAppArgs.
+        new AppArgs : Args class. The empty constructor will initialize from the command line arguments.
+        Made ProcessStartResult extend OperationResult. Also ensured the state is properly set.
+        Made ProcessStarter use Task.Yield instead of Task.Run
+        Fixed RootAppLifecycleBehavior to include the setup step in restart.
+        Formatted the message startup commands to command lines in the SetupAppLifecycleBehavior.
+        Added SetupCommands at root level in SystemSettings.
+        Added SetupAppLifecycleBehavior to start the IAppSetupService after successful initialization (as first service).
+        Added SystemSettings to hold the settings of all application instances.
+        Added FeatureEnabledServiceBehavior, which enables in an application instance only the features enabled in the system settings.
+        Added SetupAppLifecycleBehavior to execute the setup commands from the configuration file upon app startup.
+        Breaking change: Fix the order of execution of feature behaviors in feature initialization. Also, added support for [Override] behaviors, both in app and feature lifetime behaviors.
+        Added ScheduleStartupCommandSignal to add a startup command after a restart. All plugin operations reschedule the command after app restart.
+        Added StartupAppLifecycleBehavior to handle the schedule the setup commands.
+        Added support for allowing application termination over a cancellation token. AppBase may be provided with a CancellationTokenSource in the constructor, otherwise it will create one.
+        Added AppBase.AppLifetimeTokenSource to control the application lifetime.
+        Breaking change: Refactored AppBase:
+            renamed InitializePrerequisites to BeforeAppManagerInitialize()
+            added AfterAppManagerInitialize(), Before/AfterAppManagerFinalize()
+            renamed ConfigureAmbientServices to BuildServicesContainer.
+        Added ambientServices.RegisterAppArgs(args) extension method.
+        Improved support for command line args: [-]-key value, [-]-key=value, /key value, /key=value, key=value, [[-]-]key[=true] (AppArgs).
+        BREAKING CHANGE: Arguments in command line without value receive by default the boolean "true" value.
+        Ensure that the DefaultAppShutdownAwaiter has the elapsed time set.
+
+    Application.Console
+        Fixed the MessagingCommandProcessor after AppArgs changed.
+
+    Logging.Serilog
+        AppLogEventEnricher improvements.
+
+    Scheduling
+        Added JobInfo/JobInfoId in IJobResult.
+        Added ISchedulerClient.CancelJobInfoAsync for cancelling all jobs and triggers related to a job info.
+        InMemoryScheduler now removes from the active jobs the completed ones.
+        InMemoryScheduler, upon startup, sets the StartedAt property and upon completion sets the EndedAt and PercentCompleted.
+        Added support for friendly name in the RuntimeFuncJobInfo.
+        Changed the TimerTrigger EndToStart protocol by expecting a callback on completion. The return value from the scheduler indicates merely that the job has started. It was required to add a callback when the job ended.
+        Added TriggerBase.ToString(). Also, OnFire() does not fire the event if the trigger is disabled.
+        Added IScheduler.GetScheduledJobs/GetRunningJobs methods.
+        Added Kephas.Scheduling.Endpoints project.
+        Added more logging to InMemoryScheduler, also more stable.
+        Added TimerTrigger.ToString().
+        Added the target to IJobInfo.ExecuteAsync()
+        Added RuntimeTriggerInfo.
+        Added support for nullable cotnracts in Kephas.Scheduling.
+        Added ISchedulerClient and InMemorySchedulerClient.
+        Added primary implementation of an in memory scheduler.
+        Completed the TimerTrigger.
+
+    Scheduling.Endpoints
+        Added the GetCompletedJobs endpoint.
+        Added the GetLiveApps endpoint.
+        Implemented the Enable/DisableScheduledJob endpoints and the corresponding methods in IScheduler.
+        Added GetRunningJobs and GetScheduledJobs endpoints
+
+    Plugins
+        Added PluginsAppSetupHandler to handle the pending plugin uninstallations and initializations.
+        Added extension method IPluginManager.GetLatestAvailablePluginVersionAsync().
+		Added ErrorCode to InvalidPluginDataException.
+		Made PluginManagerBase.GetInstalledPlugins() more error tollerant when there are problems with the plugin data (like checksum errors).
+		IPluginRepository.GetPluginData and PluginData.Parse support a new parameter: throwOnInvalid. In case of invalid information, the returned plugin data will have the Corrupt state.
+        Breaking change: Changed the PluginData to take advantage of the HashCodeGenerator.
+        Added ShortNames for IncludePrerelease and SearchTerm in plugin messages.
+        Fixed MoveFileUndoCommand upon undo, did not replace the file/crashed when the (original) source file existed.
+
+    Plugins.Endpoints
+        Plugin operations query over AppSetupQueryEvent whether the setup can be performed before initiating the operation.
+        Disable/EnablePlugin, Install/Uninstall/UpdatePlugin.
+        Improved UpdatePlugin endpoint to not update a plugin if the same version is already installed.
+        Added support for installing a plugin's latest version in the InstallPlugin endpoint.
+        Display info changes for UpdatePlugin message.
+
+    Plugins.NuGet
+        Fix NuGetPluginManager when ordering by version.
+
+    Model
+        Made IModelSpace inherit from ITypeRegistry.
+        Added PermissionsModelRegistry. Added tests for WorkflowModelRegistry and PermissionsModelRegistry.
+        Made PermissionTypeAttribute and PermissionType implement IToken.
+        Identifies the permissions defined with the PermissionInfoAttribute and adds them to model.
+
+    Extensions.Configuration
+        OptionsSettingsProviderBase.GetSettings returns null if the options service is not registered.
+
+    Extensions.Hosting
+        Added classes for host configuration support before app configuration.
+        Added HostBuilderExtensions (renamed from HostBuilderFactory) to configure the host builder.
+
+    Data
+        Added the following data permissions: create, read, update, delete, query, use.
+
+    Data I/O
+        Refactored the Data I/O to take advantage of the awaitable capabilities of the operation result.
+
+    AspNetCore
+        Added logging to the StartupAppBase to output the environment name.
+        Made AspNetAppShutdownAwaiter handle the ShutdownSignal.
+        Improved the StartupBase for use with WindowsService.
+        Fixed the container registration for ASP.NET Core 3.1
+        Do not dispose the ambient services in web host stopping, only in stopped.
+        Fixed ASP.NET Core application hang upon shutdown.
+
+    Application.AspNetCore
+        Breaking change: Renamed StartupBase to StartupAppBase.
+        Added AuthenticatedControllerBase.
+        Fixed AspNetCore project description.
+        Added WebHostBuilderExtensions
+            webHostBuilder.UseAmbientServices() uses the registered information to configure the web host builder, like the application name.
+
+    Workflow
+        Added ActivityAbortedException.
+        Fixed the implementation of ActivityType.ExecuteAsync and RuntimeActivityInfo.ExecuteAsync.
+        Added IActivityContext.Timeout and considered this in the WorkflowProcessor.
+        Added IActivityContext.Timeout(timeout) extension method.
+        DefaultWorkflowProcessor.GetExecutionArgumentsAsync returns now always a non-null value.
+        Implemented a better strategy for DefaultWorkflowProcessor.ExecuteActivityAsync.
+        Fixed the GetTypeInfo() along the inheritance chain in Activities.
+        Made IActivity identifiable.
+
+    TextProcessing
+        Breaking change: refactored the IOcrProcessor to return an OcrResult instead of string.
+        Improve the OcrResult, add OcrResult.ToString() which extracts the text as multiple lines with words. Refactored OcrResult to match a broader scope of OCR tools.
+
+    Composition.Mef
+        Breaking change: Renamed MefComposition to SystemComposition* classes.
