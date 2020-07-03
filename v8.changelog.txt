@@ -8,7 +8,7 @@
         Added IContext to the IConfiguration.UpdateSettingsAsync parameters.
         Added IAppArgs.RunAsRoot
         Added IAppArgs.Environment and IsDevelopment, renamed LogMinimumLevel to LogLevel.
-        Added GetEnvironmanet() and IsDevelopment() to IAppRuntime extensions.
+        Added GetEnvironment() and IsDevelopment() to IAppRuntime extensions.
         Fixed the OverrideAttribute - did not provide any value.
         ExpandoBase is now case insensitive if the underlying dictionary is case insensitive. Additionaly, TryGetPropertyInfo and TryGetMethodInfo can be overridden to provide the desired behavior and InnerDictionary is now a protected member.
         Args support settings dynamic values only in the inner dictionary, not in the object properties. AppArgs will delegate in custom properties the call to the dictionary.
@@ -38,7 +38,6 @@
         Added support for microservices:
             IAppRuntime.IsRoot() - is true if no AppId parameter was passed in to command args, or if isRoot parameter is true.
             For root, the AppInstanceId == AppId.
-        Gave up the INamed interface, integrated back into in IElementInfo. The permission will use IToken.
         Added the token type in the ToString() emthod of PermissionType and RuntimePermissionInfo.
         Breaking change: Removed string based permissions in SupportsPermissionsAttribute.
         Breaking change: renamed AppServiceMetadata.AppServiceImplementationType to ServiceType (simplicity).
@@ -58,7 +57,6 @@
         NEW IConfiguration.UpdateSettingsAsync(settings) is the API for updating the settings.
         Added Versioning support. AppIdentity now returns a SemanticVersion. Used also in the plugins.
         Added support in SemanticVersion for parsing versions with hotfix/revision number. Used for backward compatibility. If the Hotfix part is 0 (zero), it is ignored.
-        Fixed the DefaultLicensingManager after changes with semantic version.
         Added VersionRange. Supports also expressions like :2.*, *:2.*, and 2.*:.
         NEW: When a service is annotated with [Override] attribute, it will override its base type in the following situations:
             when the service contract does not allow multiple instances.
@@ -71,7 +69,7 @@
         Added Profiler.With(Warning/Info/Debug)StopWatch/Async extension methods.
         Breaking change: renamed IOperationResult.ReturnValue to Value, for better consistency with the intent and other .NET classes (like Lazy or Nullable).
         Added LockHelper static class for async lock support.
-        Breaking Change: renamed ambientServices.BuildCompositionContainer to .BuildWith, for a better readability.
+        Breaking change: Renamed ambientServices.WithCompositionContainer to ambientServices.BuildWith* (Autofac/Lite/SystemComposition) to provide a more clear semantics about what the methods do (they build and set the container to the ambient services).
         Added TaskHelper.GetResult(), improved EnsureCompletedSuccessfully().
         Added IOperation.ExecuteAsync() extension for net461.
         Fixed RuntimeTypeInfo.CreateInstance with mismatched arguments.
@@ -83,14 +81,13 @@
         Added ElementInfoHelper.GetDisplayInfo(elementInfo) to extract annotation based display information.
         Added IElementInfo.GetDisplayInfo() to let the implementation decide where from the display information is retrieved. Defaults to ElementInfoHelper.GetDisplayInfo(this).
         Refactored Kephas.Reflection.Localization to take advantage of the GetDisplayInfo new methods.
-        Breaking change: Renamed ambientServices.WithCompositionContainer to ambientServices.BuildCompositionContainer to provide a more clear semantics about what the methods do (they build and set the container to the ambient services).
         Added RuntimeEnvironment.IsDomainJoinedMachine.
         Added Task.GetResultType(): Type extension method.
         Added support for OperationResults based on tasks. Made operation results awaitable.
         Fixed TaskHelper.WaitNonLocking() when the provided task is canceled already when the method is called.
         Fixed OperationResult when initialized from task - properly synchronized the state.
         Made RuntimeTypeInfo.CreateInstance overridable, added nullability constraints support.
-        Added nullability constraints support for IAsync/Initializable/Finalizable.
+        Added ToPrioritizedDictionary for Lazy<T, TMetadata>.
 
     Core.Endpoints
         AddLicenseHandler: create the license folder if it does not exist.
@@ -103,7 +100,6 @@
     Orchestration
         Removed the IEvent marker interface from AppHeartbeat/AppStarted/AppStarting/AppStopped events. So they will not show up as executable commands.
         Added ConfigurationAppLifecycleBehavior in Orchestration. Whenever the configuration changes, it notifies the peers about the change, so that they can reload it.
-        The restart handler does not need ShouldRedirect flag anymore.
         Fix RootAppLifecycleBehavior - should stop all live processes, even if not created by itself.
         RootAppLifecycleBehavior: Fix killing worker processes.
         Added OrchestrationSettings for heartbeat interval.
@@ -121,7 +117,7 @@
 
     Commands
         Added Command class to parse command lines.
-        Refactored Kephas.Commands to use command registries providing IOperationInfos. The Messaging registry implementation provides dynamically created MessageOperationInfos which invoke the message processor.
+        Refactored Kephas.Commands to use command registries providing IOperationInfos. The Messaging registry implementation provides dynamically created MessageOperationInfos which invoke the message processor.Refactored Kephas.Commands to use command registries providing IOperationInfos. The Messaging registry implementation provides dynamically created MessageOperationInfos which invoke the message processor.
         New: Extracted the commands infrastructure from Kephas.Application.Console to Kephas.Commands and Kephas.Commands.Messaging. They could be used, for example, in other kinds of applications, like ASP.NET Core.
 
     Commands.Messaging
@@ -133,7 +129,6 @@
 
     Serialization
         Optimized the serialization async methods.
-        Added ToPrioritizedDictionary for Lazy<T, TMetadata>.
         Made the serialization context Indent and IncludeTypeInfo properties nullable. The semantic is that when they are not set, the default serializer settings are used.
 
     Serialization.NewtonsoftJson
@@ -158,7 +153,6 @@
         Changed AppArgs: IAppArgs in IAppContext.
         Breaking change: Ambient services register the application arguments as service with key IAppArgs.
         new AppArgs : Args class. The empty constructor will initialize from the command line arguments.
-        Fixed the StartupAppLifecycleBehavior.
         Made ProcessStartResult extend OperationResult. Also ensured the state is properly set.
         Made ProcessStarter use Task.Yield instead of Task.Run
         Fixed RootAppLifecycleBehavior to include the setup step in restart.
