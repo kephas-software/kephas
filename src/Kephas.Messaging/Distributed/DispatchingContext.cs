@@ -99,7 +99,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The new endpoint.
         /// </returns>
-        public virtual IEndpoint CreateAppInstanceEndpoint(string endpointId = null, string scheme = null)
+        public virtual IEndpoint CreateAppInstanceEndpoint(string? endpointId = null, string? scheme = null)
         {
             return Endpoint.CreateAppInstanceEndpoint(this.AppRuntime, endpointId, scheme: scheme);
         }

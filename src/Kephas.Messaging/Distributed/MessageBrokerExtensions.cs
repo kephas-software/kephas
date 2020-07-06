@@ -43,7 +43,7 @@ namespace Kephas.Messaging.Distributed
         public static Task PublishAsync(
             this IMessageBroker messageBroker,
             object @event,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
@@ -70,7 +70,7 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object @event,
             IEndpoint recipient,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
@@ -98,7 +98,7 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object @event,
             IEnumerable<IEndpoint> recipients,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
@@ -120,7 +120,7 @@ namespace Kephas.Messaging.Distributed
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task PublishAsync<TEvent>(
             this IMessageBroker messageBroker,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
             where TEvent : class, new()
         {
@@ -143,7 +143,7 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             string eventId,
             IExpando eventArgs,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }, optionsConfig, cancellationToken);
@@ -159,7 +159,7 @@ namespace Kephas.Messaging.Distributed
         public static void Publish(
             this IMessageBroker messageBroker,
             object @event,
-            Action<IDispatchingContext> optionsConfig = null)
+            Action<IDispatchingContext>? optionsConfig = null)
         {
             messageBroker.PublishAsync(@event, optionsConfig).WaitNonLocking();
         }
@@ -173,7 +173,7 @@ namespace Kephas.Messaging.Distributed
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Publish<TEvent>(
             this IMessageBroker messageBroker,
-            Action<IDispatchingContext> optionsConfig = null)
+            Action<IDispatchingContext>? optionsConfig = null)
             where TEvent : class, new()
         {
             messageBroker.PublishAsync(new TEvent(), optionsConfig).WaitNonLocking();
@@ -194,7 +194,7 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object @event,
             IEndpoint recipient,
-            Action<IDispatchingContext> optionsConfig = null)
+            Action<IDispatchingContext>? optionsConfig = null)
         {
             Requires.NotNull(@event, nameof(@event));
             Requires.NotNull(recipient, nameof(recipient));
@@ -214,7 +214,7 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             string eventId,
             IExpando eventArgs,
-            Action<IDispatchingContext> optionsConfig = null)
+            Action<IDispatchingContext>? optionsConfig = null)
         {
             messageBroker.PublishAsync(new IdentifiableEvent { Id = eventId, EventArgs = eventArgs }, optionsConfig).WaitNonLocking();
         }
@@ -233,7 +233,7 @@ namespace Kephas.Messaging.Distributed
         public static Task<IMessage?> ProcessAsync(
             this IMessageBroker messageBroker,
             object message,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return messageBroker.DispatchAsync(message, optionsConfig, cancellationToken);
@@ -254,7 +254,7 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object message,
             IEndpoint recipient,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(recipient, nameof(recipient));
@@ -277,7 +277,7 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object message,
             IEnumerable<IEndpoint> recipients,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(recipients, nameof(recipients));
@@ -299,7 +299,7 @@ namespace Kephas.Messaging.Distributed
         public static Task<IMessage?> ProcessOneWayAsync(
             this IMessageBroker messageBroker,
             object message,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             return messageBroker.DispatchAsync(message, ctx => ctx.OneWay().Merge(optionsConfig), cancellationToken);
@@ -321,7 +321,7 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object message,
             IEndpoint recipient,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(recipient, nameof(recipient));
@@ -345,7 +345,7 @@ namespace Kephas.Messaging.Distributed
             this IMessageBroker messageBroker,
             object message,
             IEnumerable<IEndpoint> recipients,
-            Action<IDispatchingContext> optionsConfig = null,
+            Action<IDispatchingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(recipients, nameof(recipients));

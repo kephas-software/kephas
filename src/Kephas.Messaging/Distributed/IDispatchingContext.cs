@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The new endpoint.
         /// </returns>
-        IEndpoint CreateAppInstanceEndpoint(string endpointId = null, string scheme = null);
+        IEndpoint CreateAppInstanceEndpoint(string? endpointId = null, string? scheme = null);
     }
 
     /// <summary>

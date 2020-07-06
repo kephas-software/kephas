@@ -56,7 +56,7 @@ namespace Kephas.Messaging.Distributed
         /// <param name="appInstanceId">Optional. The identifier of the application instance.</param>
         /// <param name="endpointId">Optional. The identifier of the endpoint.</param>
         /// <param name="scheme">Optional. The scheme.</param>
-        public Endpoint(string appId = null, string appInstanceId = null, string endpointId = null, string scheme = null)
+        public Endpoint(string? appId = null, string? appInstanceId = null, string? endpointId = null, string? scheme = null)
         {
             this.Scheme = scheme ?? AppScheme;
             this.AppId = appId;
@@ -91,7 +91,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the endpoint.
         /// </value>
-        public string EndpointId { get; private set; }
+        public string? EndpointId { get; private set; }
 
         /// <summary>
         /// Gets the identifier of the application instance.
@@ -99,7 +99,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the application instance.
         /// </value>
-        public string AppInstanceId { get; private set; }
+        public string? AppInstanceId { get; private set; }
 
         /// <summary>
         /// Gets the identifier of the application.
@@ -107,7 +107,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the application.
         /// </value>
-        public string AppId { get; private set; }
+        public string? AppId { get; private set; }
 
         /// <summary>
         /// Gets the scheme.
@@ -115,7 +115,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The scheme.
         /// </value>
-        public string Scheme { get; private set; }
+        public string? Scheme { get; private set; }
 
         /// <summary>
         /// Implicit cast that converts the given Endpoint to a string.
@@ -124,7 +124,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The result of the operation.
         /// </returns>
-        public static implicit operator string(Endpoint endpoint) => endpoint?.ToString();
+        public static implicit operator string?(Endpoint? endpoint) => endpoint?.ToString();
 
         /// <summary>
         /// Implicit cast that converts the given string to an Endpoint.
@@ -133,7 +133,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The result of the operation.
         /// </returns>
-        public static implicit operator Endpoint(string endpoint) => endpoint == null ? null : new Endpoint(new Uri(endpoint));
+        public static implicit operator Endpoint?(string? endpoint) => endpoint == null ? null : new Endpoint(new Uri(endpoint));
 
         /// <summary>
         /// Implicit cast that converts the given Endpoint to an URI.
@@ -142,7 +142,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The result of the operation.
         /// </returns>
-        public static implicit operator Uri(Endpoint endpoint) => endpoint?.Url;
+        public static implicit operator Uri?(Endpoint? endpoint) => endpoint?.Url;
 
         /// <summary>
         /// Implicit cast that converts the given URI to an Endpoint.
@@ -151,7 +151,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The result of the operation.
         /// </returns>
-        public static implicit operator Endpoint(Uri endpoint) => endpoint == null ? null : new Endpoint(endpoint);
+        public static implicit operator Endpoint?(Uri? endpoint) => endpoint == null ? null : new Endpoint(endpoint);
 
         /// <summary>
         /// Creates a new application instance endpoint.
@@ -162,7 +162,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// An endpoint.
         /// </returns>
-        public static IEndpoint CreateAppInstanceEndpoint(IAppRuntime appRuntime, string endpointId = null, string scheme = null)
+        public static IEndpoint CreateAppInstanceEndpoint(IAppRuntime appRuntime, string? endpointId = null, string? scheme = null)
         {
             return new Endpoint(appRuntime.GetAppId(), appRuntime.GetAppInstanceId(), endpointId, scheme: scheme);
         }
@@ -174,17 +174,7 @@ namespace Kephas.Messaging.Distributed
             return this.Url?.ToString() ?? string.Empty;
         }
 
-        /// <summary>
-        /// Calculates the application scheme URL.
-        /// </summary>
-        /// <param name="scheme">The scheme.</param>
-        /// <param name="appId">The identifier of the application (optional).</param>
-        /// <param name="appInstanceId">The identifier of the application instance (optional).</param>
-        /// <param name="endpointId">The identifier of the endpoint (optional).</param>
-        /// <returns>
-        /// The calculated application scheme URL.
-        /// </returns>
-        private Uri ComputeAppSchemeUrl(string scheme, string appId, string appInstanceId, string endpointId)
+        private Uri ComputeAppSchemeUrl(string? scheme, string? appId, string? appInstanceId, string? endpointId)
         {
             var uriBuilder = new UriBuilder
                                  {
@@ -195,14 +185,7 @@ namespace Kephas.Messaging.Distributed
             return uriBuilder.Uri;
         }
 
-        /// <summary>
-        /// Calculates the application endpoint.
-        /// </summary>
-        /// <param name="url">The endpoint URL.</param>
-        /// <returns>
-        /// The calculated application endpoint.
-        /// </returns>
-        private (string scheme, string appId, string appInstanceId, string endpointId) ComputeAppEndpoint(Uri url)
+        private (string? scheme, string? appId, string? appInstanceId, string? endpointId) ComputeAppEndpoint(Uri url)
         {
             var pathSegments = url.Segments;
             var appId = this.GetPathSegment(pathSegments, 1);
@@ -211,15 +194,7 @@ namespace Kephas.Messaging.Distributed
             return (url.Scheme, appId, appInstanceId, endpointId);
         }
 
-        /// <summary>
-        /// Gets the path segment with the provided index.
-        /// </summary>
-        /// <param name="segments">The segments.</param>
-        /// <param name="index">Zero-based index of the.</param>
-        /// <returns>
-        /// The path segment.
-        /// </returns>
-        private string GetPathSegment(string[] segments, int index)
+        private string? GetPathSegment(string[] segments, int index)
         {
             if (segments.Length <= index)
             {
