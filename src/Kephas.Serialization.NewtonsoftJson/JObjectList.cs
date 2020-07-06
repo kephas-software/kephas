@@ -20,7 +20,7 @@ namespace Kephas.Serialization.Json
     /// <summary>
     /// List of j objects.
     /// </summary>
-    public class JObjectList : IList<object>
+    public class JObjectList : IList<object?>
     {
         private readonly JArray array;
 
@@ -60,7 +60,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// The element at the specified index.
         /// </returns>
-        public object this[int index]
+        public object? this[int index]
         {
             get => this.array[index].Unwrap();
             set => this.array[index] = value.Wrap();
@@ -70,7 +70,7 @@ namespace Kephas.Serialization.Json
         /// Adds a new item.
         /// </summary>
         /// <param name="item">The item to add.</param>
-        public void Add(object item)
+        public void Add(object? item)
         {
             this.array.Add(item.Wrap());
         }
@@ -90,12 +90,20 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// True if the object is in this collection, false if not.
         /// </returns>
-        public bool Contains(object item)
+        public bool Contains(object? item)
         {
             return this.array.Contains(item.Wrap());
         }
 
-        void ICollection<object>.CopyTo(object[] array, int arrayIndex)
+        /// <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.</summary>
+        /// <param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
+        /// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// <paramref name="array" /> is <see langword="null" />.</exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">
+        /// <paramref name="arrayIndex" /> is less than 0.</exception>
+        /// <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
+        void ICollection<object?>.CopyTo(object?[] array, int arrayIndex)
         {
             throw new NotSupportedException();
         }
@@ -106,7 +114,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// The enumerator.
         /// </returns>
-        public IEnumerator<object> GetEnumerator()
+        public IEnumerator<object?> GetEnumerator()
         {
             return this.array.Select(e => e.Unwrap()).GetEnumerator();
         }
@@ -120,7 +128,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// The index of <paramref name="item">item</paramref> if found in the list; otherwise, -1.
         /// </returns>
-        public int IndexOf(object item)
+        public int IndexOf(object? item)
         {
             return this.array.IndexOf(item.Wrap());
         }
@@ -136,7 +144,7 @@ namespace Kephas.Serialization.Json
         /// <param name="index">The zero-based index at which item should be inserted.</param>
         /// <param name="item">The object to insert into the
         ///                    <see cref="T:System.Collections.Generic.IList`1"></see>.</param>
-        public void Insert(int index, object item)
+        public void Insert(int index, object? item)
         {
             this.array.Insert(index, item.Wrap());
         }
@@ -148,7 +156,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// True if it succeeds, false if it fails.
         /// </returns>
-        public bool Remove(object item)
+        public bool Remove(object? item)
         {
             return this.array.Remove(item.Wrap());
         }

@@ -20,7 +20,7 @@ namespace Kephas.Serialization.Json
     /// <summary>
     /// Dictionary of objects.
     /// </summary>
-    public class JObjectDictionary : IDictionary<string, object>
+    public class JObjectDictionary : IDictionary<string, object?>
     {
         private readonly JObject obj;
 
@@ -59,7 +59,7 @@ namespace Kephas.Serialization.Json
         /// An <see cref="T:System.Collections.Generic.ICollection`1"></see> containing the values in the
         /// object that implements <see cref="T:System.Collections.Generic.IDictionary`2"></see>.
         /// </value>
-        public ICollection<object> Values => this.obj.Properties().Select(prop => prop.Value.Unwrap()).ToList();
+        public ICollection<object?> Values => this.obj.Properties().Select(prop => prop.Value.Unwrap()).ToList();
 
         /// <summary>
         /// Gets the number of items in this dictionary.
@@ -84,7 +84,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// The element with the specified key.
         /// </returns>
-        public object this[string key]
+        public object? this[string key]
         {
             get => this.obj[key].Unwrap();
             set => this.obj[key] = value.Wrap();
@@ -103,14 +103,14 @@ namespace Kephas.Serialization.Json
         ///                                                  is read-only.</exception>
         /// <param name="key">The object to use as the key of the element to add.</param>
         /// <param name="value">The object to use as the value of the element to add.</param>
-        public void Add(string key, object value) => this.obj.Add(key, value.Wrap());
+        public void Add(string key, object? value) => this.obj.Add(key, value.Wrap());
 
         /// <summary>
         /// Adds an element with the provided key and value to the
         /// <see cref="T:System.Collections.Generic.IDictionary`2"></see>.
         /// </summary>
         /// <param name="item">The item to add.</param>
-        void ICollection<KeyValuePair<string, object>>.Add(KeyValuePair<string, object> item)
+        void ICollection<KeyValuePair<string, object?>>.Add(KeyValuePair<string, object?> item)
             => this.obj.Add(item.Key, item.Value.Wrap());
 
         /// <summary>
@@ -118,17 +118,34 @@ namespace Kephas.Serialization.Json
         /// </summary>
         public void Clear() => this.obj.RemoveAll();
 
-        bool ICollection<KeyValuePair<string, object>>.Contains(KeyValuePair<string, object> item)
+        /// <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.</summary>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+        /// <returns>
+        /// <see langword="true" /> if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />.</returns>
+        bool ICollection<KeyValuePair<string, object?>>.Contains(KeyValuePair<string, object?> item)
         {
             throw new NotSupportedException();
         }
 
-        void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
+        /// <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.</summary>
+        /// <param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
+        /// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// <paramref name="array" /> is <see langword="null" />.</exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException">
+        /// <paramref name="arrayIndex" /> is less than 0.</exception>
+        /// <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
+        void ICollection<KeyValuePair<string, object?>>.CopyTo(KeyValuePair<string, object?>[] array, int arrayIndex)
         {
             throw new NotSupportedException();
         }
 
-        bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> item)
+        /// <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+        /// <returns>
+        /// <see langword="true" /> if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />. This method also returns <see langword="false" /> if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
+        bool ICollection<KeyValuePair<string, object?>>.Remove(KeyValuePair<string, object?> item)
         {
             throw new NotSupportedException();
         }
@@ -146,7 +163,7 @@ namespace Kephas.Serialization.Json
         /// <see cref="T:System.Collections.Generic.IDictionary`2"></see> contains an element with the
         /// specified key; otherwise, false.
         /// </returns>
-        public bool TryGetValue(string key, out object value)
+        public bool TryGetValue(string key, out object? value)
         {
             var exists = this.obj.TryGetValue(key, out var token);
             value = token.Unwrap();
@@ -159,9 +176,9 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// The enumerator.
         /// </returns>
-        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+        public IEnumerator<KeyValuePair<string, object?>> GetEnumerator()
         {
-            return this.obj.Properties().Select(p => new KeyValuePair<string, object>(p.Name, p.Value.Unwrap())).GetEnumerator();
+            return this.obj.Properties().Select(p => new KeyValuePair<string, object?>(p.Name, p.Value?.Unwrap())).GetEnumerator();
         }
 
         /// <summary>

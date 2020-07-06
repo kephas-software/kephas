@@ -89,7 +89,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// An object.
         /// </returns>
-        internal static object Unwrap(this JToken value)
+        internal static object? Unwrap(this JToken value)
         {
             if (value is JObject jobj)
             {
@@ -116,7 +116,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// A JToken.
         /// </returns>
-        internal static JToken Wrap(this object obj)
+        internal static JToken Wrap(this object? obj)
         {
             return obj is JToken token ? token : JToken.FromObject(obj);
         }
