@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Kephas.Orchestration.Tests
 {
     using System;
@@ -118,7 +120,7 @@ namespace Kephas.Orchestration.Tests
             await manager.FinalizeAsync(appContext);
 
             CollectionAssert.IsNotEmpty(messages);
-            CollectionAssert.AllItemsAreInstancesOfType(messages, typeof(AppHeartbeatEvent));
+            CollectionAssert.AllItemsAreInstancesOfType(messages.Select(m => m.GetContent()), typeof(AppHeartbeatEvent));
         }
     }
 }
