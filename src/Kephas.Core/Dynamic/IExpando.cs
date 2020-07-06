@@ -24,6 +24,38 @@ namespace Kephas.Dynamic
     using Kephas.Runtime;
 
     /// <summary>
+    /// Enumerates the
+    /// </summary>
+    [Flags]
+    public enum ExpandoMemberBinderKind
+    {
+        /// <summary>
+        /// No binders should be used.
+        /// </summary>
+        None = 0x00,
+
+        /// <summary>
+        /// Use only the binder for the inner dictionary.
+        /// </summary>
+        InnerDictionary = 0x01,
+
+        /// <summary>
+        /// Use only the binder for the inner object.
+        /// </summary>
+        InnerObject = 0x02,
+
+        /// <summary>
+        /// Use only the binder for the current expando object.
+        /// </summary>
+        This = 0x04,
+
+        /// <summary>
+        /// Use all member binders.
+        /// </summary>
+        All = InnerDictionary | InnerObject | This,
+    }
+
+    /// <summary>
     /// Contract for dynamic objects allowing getting or setting
     /// properties by their name through an indexer.
     /// </summary>

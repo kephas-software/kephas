@@ -56,6 +56,7 @@ namespace Kephas.Commands
         public Args(IDictionary<string, object?> argValues)
             : base(ComputeArgs(argValues))
         {
+            this.MemberBinders = ExpandoMemberBinderKind.InnerDictionary;
         }
 
         /// <summary>
@@ -65,6 +66,7 @@ namespace Kephas.Commands
         public Args(IExpando args)
             : base(ComputeArgs(args.ToDictionary()))
         {
+            this.MemberBinders = ExpandoMemberBinderKind.InnerDictionary;
         }
 
         /// <summary>
@@ -85,22 +87,6 @@ namespace Kephas.Commands
         public override string ToString()
         {
             return string.Join(" ", this.ToCommandArgs());
-        }
-
-        /// <summary>
-        /// Converts the expando to a dictionary having as keys the property names and as values the
-        /// respective properties' values.
-        /// </summary>
-        /// <param name="keyFunc">Optional. The key transformation function.</param>
-        /// <param name="valueFunc">Optional. The value transformation function.</param>
-        /// <returns>
-        /// A dictionary of property values with their associated names.
-        /// </returns>
-        public override IDictionary<string, object?> ToDictionary(Func<string, string>? keyFunc = null, Func<object?, object?>? valueFunc = null)
-        {
-            return this.InnerDictionary.ToDictionary(
-                kv => keyFunc == null ? kv.Key : keyFunc(kv.Key),
-                kv => valueFunc == null ? kv.Value : valueFunc(kv.Value));
         }
 
         /// <summary>
