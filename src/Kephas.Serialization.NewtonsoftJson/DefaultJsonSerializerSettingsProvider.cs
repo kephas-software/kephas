@@ -66,7 +66,7 @@ namespace Kephas.Serialization.Json
         /// <value>
         /// The instance.
         /// </value>
-        public static DefaultJsonSerializerSettingsProvider Instance => instance ??= CreateDefaultInstance();
+        public static IJsonSerializerSettingsProvider Instance => instance ??= CreateDefaultInstance();
 
         /// <summary>
         /// Gets the type resolver.
