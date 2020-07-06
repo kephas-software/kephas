@@ -16,6 +16,7 @@ namespace Kephas.Commands.Messaging.Reflection
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Messaging;
+    using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Reflection.Dynamic;
     using Kephas.Runtime;
@@ -28,7 +29,6 @@ namespace Kephas.Commands.Messaging.Reflection
     public class MessageOperationInfo : DynamicOperationInfo, IPrototype
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
-        private readonly Lazy<IMessageProcessor> lazyMessageProcessor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageOperationInfo"/> class.
@@ -44,7 +44,7 @@ namespace Kephas.Commands.Messaging.Reflection
 
             this.MessageType = messageType;
             this.typeRegistry = typeRegistry;
-            this.lazyMessageProcessor = lazyMessageProcessor;
+            this.LazyMessageProcessor = lazyMessageProcessor;
             var t = messageType;
             this.Name = t.Name.EndsWith("Message")
                 ? t.Name.Substring(0, t.Name.Length - "Message".Length)
@@ -63,6 +63,11 @@ namespace Kephas.Commands.Messaging.Reflection
             var returnType = this.Annotations.OfType<ReturnTypeAttribute>().FirstOrDefault()?.Value ?? typeof(object);
             this.ReturnType = this.typeRegistry.GetTypeInfo(returnType);
         }
+
+        /// <summary>
+        /// Gets the lazy <see cref="IMessageProcessor"/>.
+        /// </summary>
+        protected Lazy<IMessageProcessor> LazyMessageProcessor { get; }
 
         /// <summary>
         /// Gets the message type.
@@ -93,7 +98,7 @@ namespace Kephas.Commands.Messaging.Reflection
             var opToken = argsList.Length > 2 ? (CancellationToken)argsList[2] : default;
 
             var message = this.CreateMessage(values);
-            var operation = new MessageOperation(message, this.lazyMessageProcessor);
+            var operation = this.CreateOperation(message);
             return operation.ExecuteAsync(opContext, opToken);
         }
 
@@ -109,7 +114,17 @@ namespace Kephas.Commands.Messaging.Reflection
             var values = (IExpando?)args?.FirstOrDefault();
             var message = this.CreateMessage(values);
 
-            return new MessageOperation(message, this.lazyMessageProcessor);
+            return this.CreateOperation(message);
+        }
+
+        /// <summary>
+        /// Creates the operation based on the message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns>The operation.</returns>
+        protected internal virtual IOperation CreateOperation(object message)
+        {
+            return new MessageOperation(message, this.LazyMessageProcessor);
         }
 
         /// <summary>
