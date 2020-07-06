@@ -12,9 +12,9 @@ namespace Kephas.Core.Tests.Dynamic
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq; 
 
     using Kephas.Dynamic;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -26,6 +26,87 @@ namespace Kephas.Core.Tests.Dynamic
             var dict = new Dictionary<string, object>();
             dynamic expando = new TestExpando(dict, dict);
             Assert.IsNull(expando.Count);
+        }
+
+        [Test]
+        public void GetDynamicMemberNames_no_duplicates()
+        {
+            var expando = new TestExpando(new Named());
+
+            var members = expando.GetDynamicMemberNames().ToList();
+            Assert.AreEqual(1, members.Count);
+            Assert.AreEqual("Name", members[0]);
+        }
+
+        [Test]
+        public void GetDynamicMemberNames_this_binders()
+        {
+            var expando = new TestExpando(new object(), binders: ExpandoMemberBinderKind.This);
+            expando["Name"] = "gigi";
+            expando["FamilyName"] = "belogea";
+
+            var members = expando.GetDynamicMemberNames().ToList();
+            Assert.AreEqual(1, members.Count);
+            Assert.AreEqual("Name", members[0]);
+        }
+
+        [Test]
+        public void GetDynamicMemberNames_inner_object_binders()
+        {
+            var obj = new Named();
+            var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerObject);
+            expando["Name"] = "gigi";
+            expando["FamilyName"] = "belogea";
+
+            var members = expando.GetDynamicMemberNames().ToList();
+            Assert.AreEqual(1, members.Count);
+            Assert.AreEqual("Name", members[0]);
+        }
+
+        [Test]
+        public void GetDynamicMemberNames_inner_dictionary_binders()
+        {
+            var obj = new Named();
+            var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerDictionary);
+            expando["FamilyName"] = "belogea";
+
+            var members = expando.GetDynamicMemberNames().ToList();
+            Assert.AreEqual(1, members.Count);
+            Assert.AreEqual("FamilyName", members[0]);
+        }
+
+        [Test]
+        public void HasDynamicMember_this_binders()
+        {
+            var expando = new TestExpando(new object(), binders: ExpandoMemberBinderKind.This);
+            expando["Name"] = "gigi";
+            expando["FamilyName"] = "belogea";
+
+            Assert.IsTrue(expando.HasDynamicMember("Name"));
+            Assert.IsFalse(expando.HasDynamicMember("FamilyName"));
+        }
+
+        [Test]
+        public void HasDynamicMember_inner_object_binders()
+        {
+            var obj = new Named();
+            var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerObject);
+            expando["Name"] = "gigi";
+            expando["FamilyName"] = "belogea";
+
+            Assert.IsTrue(expando.HasDynamicMember("Name"));
+            Assert.IsFalse(expando.HasDynamicMember("FamilyName"));
+        }
+
+        [Test]
+        public void HasDynamicMember_inner_dictionary_binders()
+        {
+            var obj = new Named();
+            var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerDictionary);
+            expando["FamilyName"] = "belogea";
+
+            Assert.IsFalse(expando.HasDynamicMember("Name"));
+            Assert.IsTrue(expando.HasDynamicMember("FamilyName"));
         }
 
         [Test]

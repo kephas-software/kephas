@@ -150,31 +150,52 @@ namespace Kephas.Dynamic
         /// </returns>
         public override IEnumerable<string> GetDynamicMemberNames()
         {
-            // TODO check that the member names are not returned twice.
+            var binders = this.MemberBinders;
+            var hashSet = this.ignoreCase ? new HashSet<string>(StringComparer.OrdinalIgnoreCase) : new HashSet<string>();
 
-            // First check for public properties via reflection
-            if (this.innerObject != null)
+            // First check for public properties via reflection in this type
+            if (this != this.innerObject
+                && binders.HasFlag(ExpandoMemberBinderKind.This))
+            {
+                var type = this.GetThisType();
+                foreach (var property in RuntimeTypeInfo.GetTypeProperties(type))
+                {
+                    var propName = property.Name;
+                    if (!hashSet.Contains(propName))
+                    {
+                        hashSet.Add(propName);
+                        yield return propName;
+                    }
+                }
+            }
+
+            // then, check for the properties in the inner object
+            if (this.innerObject != null
+                && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
             {
                 var type = this.GetInnerObjectType();
                 foreach (var property in RuntimeTypeInfo.GetTypeProperties(type!))
                 {
-                    yield return property.Name;
-                }
-            }
-
-            {
-                // then, check the properties in this object
-                var type = this.GetThisType();
-                foreach (var property in RuntimeTypeInfo.GetTypeProperties(type))
-                {
-                    yield return property.Name;
+                    var propName = property.Name;
+                    if (!hashSet.Contains(propName))
+                    {
+                        hashSet.Add(propName);
+                        yield return propName;
+                    }
                 }
             }
 
             // last, check the dictionary for members.
-            foreach (var key in this.innerDictionary.Keys)
+            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
             {
-                yield return key;
+                foreach (var propName in this.innerDictionary.Keys)
+                {
+                    if (!hashSet.Contains(propName))
+                    {
+                        hashSet.Add(propName);
+                        yield return propName;
+                    }
+                }
             }
         }
 
@@ -187,23 +208,31 @@ namespace Kephas.Dynamic
         /// </returns>
         public virtual bool HasDynamicMember(string memberName)
         {
-            // First check for public properties via reflection
-            if (this.innerObject != null)
+            var binders = this.MemberBinders;
+
+            // First check for public properties over this instance
+            if (this != this.innerObject
+                && binders.HasFlag(ExpandoMemberBinderKind.This)
+                && this.TryGetPropertyInfo(this.GetThisType(), memberName) != null)
             {
-                if (this.GetInnerObjectType()!.GetProperty(memberName) != null)
-                {
-                    return true;
-                }
+                return true;
             }
 
-            // then, check the properties in this object
-            if (this.GetThisType().GetProperty(memberName) != null)
+            // then check for public properties in the inner object
+            if (this.innerObject != null
+                && binders.HasFlag(ExpandoMemberBinderKind.InnerObject)
+                && this.TryGetPropertyInfo(this.GetInnerObjectType()!, memberName) != null)
             {
                 return true;
             }
 
             // last, check the dictionary for member
-            return this.innerDictionary.ContainsKey(memberName);
+            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
+            {
+                return this.innerDictionary.ContainsKey(memberName);
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -257,6 +286,8 @@ namespace Kephas.Dynamic
         /// </returns>
         public override bool TryInvokeMember(InvokeMemberBinder binder, object?[] args, out object? result)
         {
+            var binders = this.MemberBinders;
+
             bool TryInvokeDelegateProperty(object? delegateValue, out object? res)
             {
                 if (delegateValue == null)
@@ -304,21 +335,21 @@ namespace Kephas.Dynamic
                 return false;
             }
 
-            if (this.innerObject != null
-                && this.MemberBinders.HasFlag(ExpandoMemberBinderKind.InnerObject)
-                && TryInvokeTypeMember(this.GetInnerObjectType()!, this.innerObject, true, out result))
-            {
-                return true;
-            }
-
             if (this != this.innerObject
-                && this.MemberBinders.HasFlag(ExpandoMemberBinderKind.This)
+                && binders.HasFlag(ExpandoMemberBinderKind.This)
                 && TryInvokeTypeMember(this.GetThisType(), this, false, out result))
             {
                 return true;
             }
 
-            if (this.MemberBinders.HasFlag(ExpandoMemberBinderKind.InnerDictionary)
+            if (this.innerObject != null
+                && binders.HasFlag(ExpandoMemberBinderKind.InnerObject)
+                && TryInvokeTypeMember(this.GetInnerObjectType()!, this.innerObject, true, out result))
+            {
+                return true;
+            }
+
+            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary)
                 && this.innerDictionary.TryGetValue(binder.Name, out var method))
             {
                 return TryInvokeDelegateProperty(method, out result);
