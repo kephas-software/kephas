@@ -48,16 +48,12 @@ namespace Kephas.Serialization.Json
         {
             Requires.NotNull(typeResolver, nameof(typeResolver));
 
-            this.jsonConverters = jsonConverters?.OfType<JsonConverter>().ToList()
-                                    ?? new List<JsonConverter>
-                                                 {
-                                                     new DateTimeJsonConverter(),
-                                                     new TimeSpanJsonConverter(),
-                                                     new StringEnumJsonConverter(),
-                                                     new TypeJsonConverter(typeResolver),
-                                                 };
             this.TypeResolver = typeResolver;
             this.logManager = logManager;
+            var converters = jsonConverters?.OfType<JsonConverter>().ToList()
+                                                ?? new List<JsonConverter>();
+            converters.AddRange(this.GetDefaultJsonConverters(typeResolver));
+            this.jsonConverters = converters;
         }
 
         /// <summary>
@@ -86,6 +82,22 @@ namespace Kephas.Serialization.Json
                 camelCase: true,
                 throwOnMissingMembers: true,
                 converters: this.jsonConverters);
+
+        /// <summary>
+        /// Gets the default JSON converters.
+        /// </summary>
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <returns>The default JSON converters.</returns>
+        protected virtual IEnumerable<JsonConverter> GetDefaultJsonConverters(ITypeResolver typeResolver)
+        {
+            return new List<JsonConverter>
+            {
+                new DateTimeJsonConverter(),
+                new TimeSpanJsonConverter(),
+                new StringEnumJsonConverter(),
+                new TypeJsonConverter(typeResolver),
+            };
+        }
 
         /// <summary>
         /// Configures the json serializer settings.
