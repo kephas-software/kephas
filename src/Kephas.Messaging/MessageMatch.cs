@@ -26,7 +26,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The type of the message.
         /// </value>
-        public Type MessageType { get; set; }
+        public Type? MessageType { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the event.
@@ -34,7 +34,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The identifier of the event.
         /// </value>
-        public object MessageId { get; set; }
+        public object? MessageId { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the envelope.
@@ -42,7 +42,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The type of the envelope.
         /// </value>
-        public Type EnvelopeType { get; set; }
+        public Type? EnvelopeType { get; set; }
 
         /// <summary>
         /// Gets or sets the event type matching.

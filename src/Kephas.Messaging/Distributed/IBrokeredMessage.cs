@@ -125,7 +125,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// A copy of this object.
         /// </returns>
-        IBrokeredMessage Clone(IEnumerable<IEndpoint> recipients = null);
+        IBrokeredMessage Clone(IEnumerable<IEndpoint>? recipients = null);
     }
 
     /// <summary>
@@ -178,7 +178,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// This <paramref name="brokeredMessage"/>.
         /// </returns>
-        public static IBrokeredMessage TraceReply(this IBrokeredMessage brokeredMessage, string requestTrace, string appInstanceId)
+        public static IBrokeredMessage TraceReply(this IBrokeredMessage brokeredMessage, string? requestTrace, string? appInstanceId)
         {
             Requires.NotNull(brokeredMessage, nameof(brokeredMessage));
 

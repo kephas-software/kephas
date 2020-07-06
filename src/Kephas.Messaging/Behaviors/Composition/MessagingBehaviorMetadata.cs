@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Behaviors.Composition
         /// <param name="messageIdMatching">The message ID matching (optional).</param>
         /// <param name="processingPriority">The processing priority (optional).</param>
         /// <param name="overridePriority">The override priority (optional).</param>
-        public MessagingBehaviorMetadata(Type messageType, MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy, object messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.All, int processingPriority = 0, int overridePriority = 0)
+        public MessagingBehaviorMetadata(Type messageType, MessageTypeMatching messageTypeMatching = MessageTypeMatching.TypeOrHierarchy, object? messageId = null, MessageIdMatching messageIdMatching = MessageIdMatching.All, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.MessageType = messageType;
@@ -97,7 +97,7 @@ namespace Kephas.Messaging.Behaviors.Composition
         /// <value>
         /// The ID of the message.
         /// </value>
-        public object MessageId { get; }
+        public object? MessageId { get; }
 
         /// <summary>
         /// Gets the message ID matching.

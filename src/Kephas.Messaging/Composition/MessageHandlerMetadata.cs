@@ -30,14 +30,15 @@ namespace Kephas.Messaging.Composition
         {
             if (metadata == null)
             {
+                this.MessageMatch = new MessageMatch();
                 return;
             }
 
-            this.MessageType = (Type)metadata.TryGetValue(nameof(this.MessageType));
+            this.MessageType = (Type?)metadata.TryGetValue(nameof(this.MessageType));
             this.MessageTypeMatching = metadata.TryGetValue(nameof(this.MessageTypeMatching)) as MessageTypeMatching? ?? default;
             this.MessageId = metadata.TryGetValue(nameof(this.MessageId));
             this.MessageIdMatching = metadata.TryGetValue(nameof(this.MessageIdMatching)) as MessageIdMatching? ?? default;
-            this.EnvelopeType = (Type)metadata.TryGetValue(nameof(this.EnvelopeType));
+            this.EnvelopeType = (Type?)metadata.TryGetValue(nameof(this.EnvelopeType));
             this.EnvelopeTypeMatching = metadata.TryGetValue(nameof(this.EnvelopeTypeMatching)) as MessageTypeMatching? ?? default;
 
             this.MessageMatch = new MessageMatch

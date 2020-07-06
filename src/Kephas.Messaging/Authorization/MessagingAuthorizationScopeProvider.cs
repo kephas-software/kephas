@@ -30,14 +30,14 @@ namespace Kephas.Messaging.Authorization
         /// <returns>
         /// An asynchronous result that yields the authorization scope.
         /// </returns>
-        public Task<(object scope, bool canResolve)> GetAuthorizationScopeAsync(IAuthorizationScopeContext context, CancellationToken cancellationToken = default)
+        public Task<(object? scope, bool canResolve)> GetAuthorizationScopeAsync(IAuthorizationScopeContext context, CancellationToken cancellationToken = default)
         {
             if (context?.CallingContext is IMessagingContext messagingContext)
             {
-                return Task.FromResult((messagingContext.Message.GetContent(), true));
+                return Task.FromResult((messagingContext.Message?.GetContent(), true));
             }
 
-            return Task.FromResult<(object scope, bool canResolve)>((null, false));
+            return Task.FromResult<(object? scope, bool canResolve)>((null, false));
         }
     }
 }
