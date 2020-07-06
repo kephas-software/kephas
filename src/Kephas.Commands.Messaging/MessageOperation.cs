@@ -5,19 +5,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using Kephas.Dynamic;
-using Kephas.Messaging;
-using Kephas.Threading.Tasks;
-
 namespace Kephas.Commands.Messaging
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Kephas.Services;
 
+    using Kephas.Dynamic;
+    using Kephas.Messaging;
     using Kephas.Operations;
     using Kephas.Reflection;
+    using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Operation class based on a message.
@@ -55,7 +54,7 @@ namespace Kephas.Commands.Messaging
                 .GetResultNonLocking();
             return result?.GetContent();
         }
-        
+
         /// <summary>
         /// Executes the operation asynchronously in the given context.
         /// </summary>
