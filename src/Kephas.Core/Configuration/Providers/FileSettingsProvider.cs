@@ -202,7 +202,7 @@ namespace Kephas.Configuration.Providers
         /// <returns>
         /// The file path.
         /// </returns>
-        private string TryGetFilePath(string rootLocation, string fileName)
+        private string? TryGetFilePath(string rootLocation, string fileName)
         {
             var filePath = Path.Combine(rootLocation, fileName);
             if (File.Exists(filePath))

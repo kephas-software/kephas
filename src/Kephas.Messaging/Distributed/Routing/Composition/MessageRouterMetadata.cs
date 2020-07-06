@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. Name of the service.</param>
-        public MessageRouterMetadata(string receiverMatch, bool isFallback = false, bool isOptional = false, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        public MessageRouterMetadata(string receiverMatch, bool isFallback = false, bool isOptional = false, int processingPriority = 0, int overridePriority = 0, string? serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
             this.ReceiverMatch = receiverMatch;
@@ -66,7 +66,7 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. Name of the service.</param>
-        public MessageRouterMetadata(Type receiverMatchProviderType, bool isFallback = false, bool isOptional = false, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        public MessageRouterMetadata(Type receiverMatchProviderType, bool isFallback = false, bool isOptional = false, int processingPriority = 0, int overridePriority = 0, string? serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
             this.ReceiverMatchProviderType = receiverMatchProviderType;

@@ -26,7 +26,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The type of the message.
         /// </value>
-        Type MessageType { get; }
+        Type? MessageType { get; }
 
         /// <summary>
         /// Gets the identifier of the message.
@@ -34,7 +34,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The identifier of the message.
         /// </value>
-        object MessageId { get; }
+        object? MessageId { get; }
 
         /// <summary>
         /// Gets the type of the envelope.
@@ -42,7 +42,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The type of the envelope.
         /// </value>
-        Type EnvelopeType { get; }
+        Type? EnvelopeType { get; }
 
         /// <summary>
         /// Gets the message type matching.

@@ -29,6 +29,51 @@ namespace Kephas.Core.Tests.Dynamic
         }
 
         [Test]
+        public void ToDictionary_this_binders()
+        {
+            var expando = new TestExpando(new object(), binders: ExpandoMemberBinderKind.This);
+            expando["Name"] = "gigi";
+            expando["FamilyName"] = "belogea";
+
+            var dictionary = expando.ToDictionary();
+            Assert.AreEqual(1, dictionary.Count);
+            Assert.AreEqual("gigi", dictionary["Name"]);
+            Assert.AreEqual("gigi", expando.Name);
+            Assert.IsFalse(expando.GetInnerDictionary().ContainsKey("Name"));
+        }
+
+        [Test]
+        public void ToDictionary_inner_object_binders()
+        {
+            var obj = new Named();
+            var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerObject);
+            expando["Name"] = "gigi";
+            expando["FamilyName"] = "belogea";
+
+            var dictionary = expando.ToDictionary();
+            Assert.AreEqual(1, dictionary.Count);
+            Assert.AreEqual("gigi", dictionary["Name"]);
+            Assert.AreEqual("gigi", obj.Name);
+            Assert.IsNull(expando.Name);
+        }
+
+        [Test]
+        public void ToDictionary_inner_dictionary_binders()
+        {
+            var obj = new Named();
+            var expando = new TestExpando(obj, binders: ExpandoMemberBinderKind.InnerDictionary);
+            expando["Name"] = "gigi";
+            expando["FamilyName"] = "belogea";
+
+            var dictionary = expando.ToDictionary();
+            Assert.AreEqual(2, dictionary.Count);
+            Assert.AreEqual("gigi", dictionary["Name"]);
+            Assert.AreEqual("belogea", dictionary["FamilyName"]);
+            Assert.IsNull(obj.Name);
+            Assert.IsNull(expando.Name);
+        }
+
+        [Test]
         public void ToDictionary_duplicated_property()
         {
             var dict = new Dictionary<string, object>();
@@ -115,12 +160,18 @@ namespace Kephas.Core.Tests.Dynamic
 
     public class TestExpando : ExpandoBase
     {
-        public TestExpando(object inner, IDictionary<string, object> innerDictionary = null)
+        public TestExpando(object inner, IDictionary<string, object> innerDictionary = null, ExpandoMemberBinderKind? binders = null)
             : base(inner, innerDictionary)
         {
+            if (binders != null)
+            {
+                this.MemberBinders = binders.Value;
+            }
         }
 
         public string Name { get; set; }
+
+        public IDictionary<string, object?> GetInnerDictionary() => this.InnerDictionary;
     }
 
     public class TestExpandoNonConflicting : ExpandoBase

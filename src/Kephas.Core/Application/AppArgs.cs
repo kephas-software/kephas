@@ -135,7 +135,6 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the log level, if set.
         /// </summary>
-        [DisplayInfo(ShortName = "LogLevel")]
         public virtual LogLevel? LogLevel
         {
             get

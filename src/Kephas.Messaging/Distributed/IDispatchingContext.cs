@@ -58,7 +58,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The new endpoint.
         /// </returns>
-        IEndpoint CreateAppInstanceEndpoint(string endpointId = null, string scheme = null);
+        IEndpoint CreateAppInstanceEndpoint(string? endpointId = null, string? scheme = null);
     }
 
     /// <summary>
@@ -161,7 +161,7 @@ namespace Kephas.Messaging.Distributed
         /// This <paramref name="context"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TContext From<TContext>(this TContext context, string endpointId, string scheme = null)
+        public static TContext From<TContext>(this TContext context, string endpointId, string? scheme = null)
             where TContext : class, IDispatchingContext
         {
             Requires.NotNull(context, nameof(context));
@@ -432,7 +432,7 @@ namespace Kephas.Messaging.Distributed
         /// This <paramref name="context"/>.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TContext ReplyTo<TContext>(this TContext context, string messageId, IEndpoint sender = null, string trace = null)
+        public static TContext ReplyTo<TContext>(this TContext context, string messageId, IEndpoint? sender = null, string? trace = null)
             where TContext : class, IDispatchingContext
         {
             Requires.NotNull(context, nameof(context));

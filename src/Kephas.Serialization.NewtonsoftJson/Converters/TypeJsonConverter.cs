@@ -5,14 +5,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
-using System.Xml;
-using Kephas.Reflection;
-
 namespace Kephas.Serialization.Json.Converters
 {
     using System;
 
+    using Kephas.Reflection;
     using Newtonsoft.Json;
 
     /// <summary>

@@ -30,14 +30,15 @@ namespace Kephas.Messaging.Composition
         {
             if (metadata == null)
             {
+                this.MessageMatch = new MessageMatch();
                 return;
             }
 
-            this.MessageType = (Type)metadata.TryGetValue(nameof(this.MessageType));
+            this.MessageType = (Type?)metadata.TryGetValue(nameof(this.MessageType));
             this.MessageTypeMatching = metadata.TryGetValue(nameof(this.MessageTypeMatching)) as MessageTypeMatching? ?? default;
             this.MessageId = metadata.TryGetValue(nameof(this.MessageId));
             this.MessageIdMatching = metadata.TryGetValue(nameof(this.MessageIdMatching)) as MessageIdMatching? ?? default;
-            this.EnvelopeType = (Type)metadata.TryGetValue(nameof(this.EnvelopeType));
+            this.EnvelopeType = (Type?)metadata.TryGetValue(nameof(this.EnvelopeType));
             this.EnvelopeTypeMatching = metadata.TryGetValue(nameof(this.EnvelopeTypeMatching)) as MessageTypeMatching? ?? default;
 
             this.MessageMatch = new MessageMatch
@@ -62,7 +63,7 @@ namespace Kephas.Messaging.Composition
         /// <param name="envelopeTypeMatching">Optional. The envelope type matching.</param>
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
-        public MessageHandlerMetadata(Type messageType = null, MessageTypeMatching messageTypeMatching = default, object messageId = null, MessageIdMatching messageIdMatching = default, Type envelopeType = null, MessageTypeMatching envelopeTypeMatching = default, int processingPriority = 0, int overridePriority = 0)
+        public MessageHandlerMetadata(Type? messageType = null, MessageTypeMatching messageTypeMatching = default, object? messageId = null, MessageIdMatching messageIdMatching = default, Type? envelopeType = null, MessageTypeMatching envelopeTypeMatching = default, int processingPriority = 0, int overridePriority = 0)
             : base(processingPriority, overridePriority)
         {
             this.MessageType = messageType;
@@ -89,7 +90,7 @@ namespace Kephas.Messaging.Composition
         /// <value>
         /// The type of the message.
         /// </value>
-        public Type MessageType { get; }
+        public Type? MessageType { get; }
 
         /// <summary>
         /// Gets the message type matching.
@@ -105,7 +106,7 @@ namespace Kephas.Messaging.Composition
         /// <value>
         /// The ID of the message.
         /// </value>
-        public object MessageId { get; }
+        public object? MessageId { get; }
 
         /// <summary>
         /// Gets the message ID matching.
@@ -121,7 +122,7 @@ namespace Kephas.Messaging.Composition
         /// <value>
         /// The type of the envelope.
         /// </value>
-        public Type EnvelopeType { get; }
+        public Type? EnvelopeType { get; }
 
         /// <summary>
         /// Gets the envelope type matching.

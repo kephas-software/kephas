@@ -31,7 +31,7 @@ namespace Kephas.Messaging.Distributed
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="authenticationService">The authentication service.</param>
         /// <param name="message">Optional. The message to be dispatched.</param>
-        public DispatchingContext(ICompositionContext compositionContext, IConfiguration<MessagingSettings> messagingConfig, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object message = null)
+        public DispatchingContext(ICompositionContext compositionContext, IConfiguration<MessagingSettings> messagingConfig, IMessageBroker messageBroker, IAppRuntime appRuntime, IAuthenticationService authenticationService, object? message = null)
             : base(compositionContext)
         {
             this.MessageBroker = messageBroker;
@@ -99,7 +99,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The new endpoint.
         /// </returns>
-        public virtual IEndpoint CreateAppInstanceEndpoint(string endpointId = null, string scheme = null)
+        public virtual IEndpoint CreateAppInstanceEndpoint(string? endpointId = null, string? scheme = null)
         {
             return Endpoint.CreateAppInstanceEndpoint(this.AppRuntime, endpointId, scheme: scheme);
         }

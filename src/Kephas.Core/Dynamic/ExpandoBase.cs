@@ -115,6 +115,11 @@ namespace Kephas.Dynamic
         protected IDictionary<string, object?> InnerDictionary => this.innerDictionary;
 
         /// <summary>
+        /// Gets or sets the binders to use when retrieving the expando members.
+        /// </summary>
+        protected ExpandoMemberBinderKind MemberBinders { get; set; } = ExpandoMemberBinderKind.All;
+
+        /// <summary>
         /// Convenience method that provides a string Indexer to the Properties collection AND the
         /// strongly typed properties of the object by name. // dynamic exp["Address"] = "112 nowhere
         /// lane";
@@ -299,17 +304,22 @@ namespace Kephas.Dynamic
                 return false;
             }
 
-            if (this.innerObject != null && TryInvokeTypeMember(this.GetInnerObjectType()!, this.innerObject, true, out result))
+            if (this.innerObject != null
+                && this.MemberBinders.HasFlag(ExpandoMemberBinderKind.InnerObject)
+                && TryInvokeTypeMember(this.GetInnerObjectType()!, this.innerObject, true, out result))
             {
                 return true;
             }
 
-            if (this != this.innerObject && TryInvokeTypeMember(this.GetThisType(), this, false, out result))
+            if (this != this.innerObject
+                && this.MemberBinders.HasFlag(ExpandoMemberBinderKind.This)
+                && TryInvokeTypeMember(this.GetThisType(), this, false, out result))
             {
                 return true;
             }
 
-            if (this.innerDictionary.TryGetValue(binder.Name, out var method))
+            if (this.MemberBinders.HasFlag(ExpandoMemberBinderKind.InnerDictionary)
+                && this.innerDictionary.TryGetValue(binder.Name, out var method))
             {
                 return TryInvokeDelegateProperty(method, out result);
             }
@@ -322,8 +332,8 @@ namespace Kephas.Dynamic
         /// Converts the expando to a dictionary having as keys the property names and as values the
         /// respective properties' values.
         /// </summary>
-        /// <param name="keyFunc">The key transformation function (optional).</param>
-        /// <param name="valueFunc">The value transformation function (optional).</param>
+        /// <param name="keyFunc">Optional. The key transformation function.</param>
+        /// <param name="valueFunc">Optional. The value transformation function.</param>
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>
@@ -331,16 +341,20 @@ namespace Kephas.Dynamic
             Func<string, string>? keyFunc = null,
             Func<object?, object?>? valueFunc = null)
         {
+            var binders = this.MemberBinders;
+
             // add the properties in their overwrite order:
             // first, the values in the dictionary
-            var dictionary = keyFunc == null && valueFunc == null
-                ? new Dictionary<string, object?>(this.innerDictionary)
-                : this.innerDictionary.ToDictionary(
-                    kv => keyFunc == null ? kv.Key : keyFunc(kv.Key),
-                    kv => valueFunc == null ? kv.Value : valueFunc(kv.Value));
+            var dictionary = binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary)
+                ? keyFunc == null && valueFunc == null
+                    ? new Dictionary<string, object?>(this.innerDictionary)
+                    : this.innerDictionary.ToDictionary(
+                        kv => keyFunc == null ? kv.Key : keyFunc(kv.Key),
+                        kv => valueFunc == null ? kv.Value : valueFunc(kv.Value))
+                : new Dictionary<string, object?>();
 
             // second, the values in the inner object
-            if (this.innerObject != null)
+            if (this.innerObject != null && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
             {
                 foreach (var prop in RuntimeTypeInfo.GetTypeProperties(this.GetInnerObjectType()!))
                 {
@@ -351,8 +365,8 @@ namespace Kephas.Dynamic
                 }
             }
 
-            // last, the values in this expando's properties
-            if (this != this.innerObject)
+            // last, the values in this instance's properties
+            if (this != this.innerObject && binders.HasFlag(ExpandoMemberBinderKind.This))
             {
                 foreach (var prop in RuntimeTypeInfo.GetTypeProperties(this.GetThisType()))
                 {
@@ -381,6 +395,8 @@ namespace Kephas.Dynamic
         /// </returns>
         protected virtual bool TryGetValue(string key, out object? value)
         {
+            var binders = this.MemberBinders;
+
             bool? TryGetPropertyValue(Type type, object instance, out object? val)
             {
                 var propInfo = this.TryGetPropertyInfo(type, key);
@@ -401,7 +417,7 @@ namespace Kephas.Dynamic
             }
 
             // first, check the properties in this object
-            if (this != this.innerObject)
+            if (this != this.innerObject && binders.HasFlag(ExpandoMemberBinderKind.This))
             {
                 var canRead = TryGetPropertyValue(this.GetThisType(), this, out value);
                 if (canRead != null)
@@ -411,7 +427,7 @@ namespace Kephas.Dynamic
             }
 
             // then, check the inner object
-            if (this.innerObject != null)
+            if (this.innerObject != null && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
             {
                 var canRead = TryGetPropertyValue(this.GetInnerObjectType()!, this.innerObject, out value);
                 if (canRead != null)
@@ -421,7 +437,13 @@ namespace Kephas.Dynamic
             }
 
             // last, check the dictionary for member
-            return this.innerDictionary.TryGetValue(key, out value);
+            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
+            {
+                return this.innerDictionary.TryGetValue(key, out value);
+            }
+
+            value = null;
+            return false;
         }
 
         /// <summary>
@@ -439,6 +461,8 @@ namespace Kephas.Dynamic
         /// </returns>
         protected virtual bool TrySetValue(string key, object? value)
         {
+            var binders = this.MemberBinders;
+
             bool? TrySetPropertyValue(Type type, object instance)
             {
                 var propInfo = this.TryGetPropertyInfo(type, key);
@@ -457,7 +481,7 @@ namespace Kephas.Dynamic
             }
 
             // first, check the properties in this object
-            if (this != this.innerObject)
+            if (this != this.innerObject && binders.HasFlag(ExpandoMemberBinderKind.This))
             {
                 var canSet = TrySetPropertyValue(this.GetThisType(), this);
                 if (canSet != null)
@@ -467,7 +491,7 @@ namespace Kephas.Dynamic
             }
 
             // then check the inner object
-            if (this.innerObject != null)
+            if (this.innerObject != null && binders.HasFlag(ExpandoMemberBinderKind.InnerObject))
             {
                 var canSet = TrySetPropertyValue(this.GetInnerObjectType()!, this.innerObject);
                 if (canSet != null)
@@ -477,16 +501,21 @@ namespace Kephas.Dynamic
             }
 
             // last, check the dictionary for member
-            if (value == null)
+            if (binders.HasFlag(ExpandoMemberBinderKind.InnerDictionary))
             {
-                this.innerDictionary.Remove(key);
-            }
-            else
-            {
-                this.innerDictionary[key] = value;
+                if (value == null)
+                {
+                    this.innerDictionary.Remove(key);
+                }
+                else
+                {
+                    this.innerDictionary[key] = value;
+                }
+
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -543,9 +572,9 @@ namespace Kephas.Dynamic
             if (this.innerDictionary is Dictionary<string, object?> dict)
             {
                 var comparer = dict.Comparer;
-                this.ignoreCase = comparer == StringComparer.OrdinalIgnoreCase
-                                         || comparer == StringComparer.CurrentCultureIgnoreCase
-                                         || comparer == StringComparer.InvariantCultureIgnoreCase;
+                this.ignoreCase = Equals(comparer, StringComparer.OrdinalIgnoreCase)
+                                         || Equals(comparer, StringComparer.CurrentCultureIgnoreCase)
+                                         || Equals(comparer, StringComparer.InvariantCultureIgnoreCase);
             }
         }
 

@@ -12,6 +12,7 @@ namespace Kephas.Commands
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
@@ -55,6 +56,7 @@ namespace Kephas.Commands
         public Args(IDictionary<string, object?> argValues)
             : base(ComputeArgs(argValues))
         {
+            this.MemberBinders = ExpandoMemberBinderKind.InnerDictionary;
         }
 
         /// <summary>
@@ -64,6 +66,7 @@ namespace Kephas.Commands
         public Args(IExpando args)
             : base(ComputeArgs(args.ToDictionary()))
         {
+            this.MemberBinders = ExpandoMemberBinderKind.InnerDictionary;
         }
 
         /// <summary>

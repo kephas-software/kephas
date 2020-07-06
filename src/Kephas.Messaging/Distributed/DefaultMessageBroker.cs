@@ -282,7 +282,7 @@ namespace Kephas.Messaging.Distributed
         protected virtual void ReceiveReply(
             IMessageRouter router,
             IBrokeredMessage replyMessage,
-            IContext context = null)
+            IContext? context = null)
         {
             var replyToMessageId = replyMessage.ReplyToMessageId;
             if (string.IsNullOrEmpty(replyToMessageId))

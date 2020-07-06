@@ -24,6 +24,38 @@ namespace Kephas.Dynamic
     using Kephas.Runtime;
 
     /// <summary>
+    /// Enumerates the
+    /// </summary>
+    [Flags]
+    public enum ExpandoMemberBinderKind
+    {
+        /// <summary>
+        /// No binders should be used.
+        /// </summary>
+        None = 0x00,
+
+        /// <summary>
+        /// Use only the binder for the inner dictionary.
+        /// </summary>
+        InnerDictionary = 0x01,
+
+        /// <summary>
+        /// Use only the binder for the inner object.
+        /// </summary>
+        InnerObject = 0x02,
+
+        /// <summary>
+        /// Use only the binder for the current expando object.
+        /// </summary>
+        This = 0x04,
+
+        /// <summary>
+        /// Use all member binders.
+        /// </summary>
+        All = InnerDictionary | InnerObject | This,
+    }
+
+    /// <summary>
     /// Contract for dynamic objects allowing getting or setting
     /// properties by their name through an indexer.
     /// </summary>
@@ -42,8 +74,8 @@ namespace Kephas.Dynamic
         /// Converts the expando to a dictionary having as keys the property names and as values the
         /// respective properties' values.
         /// </summary>
-        /// <param name="keyFunc">The key transformation function (optional).</param>
-        /// <param name="valueFunc">The value transformation function (optional).</param>
+        /// <param name="keyFunc">Optional. The key transformation function.</param>
+        /// <param name="valueFunc">Optional. The value transformation function.</param>
         /// <returns>
         /// A dictionary of property values with their associated names.
         /// </returns>

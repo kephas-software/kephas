@@ -47,7 +47,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// The response promise.
         /// </returns>
-        public override Task<IMessage?> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
+        public override Task<IMessage> ProcessAsync(TMessage message, IMessagingContext context, CancellationToken token)
         {
             return this.handlerFunction(message, context, token);
         }

@@ -31,7 +31,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the endpoint.
         /// </value>
-        string EndpointId { get; }
+        string? EndpointId { get; }
 
         /// <summary>
         /// Gets the identifier of the application instance.
@@ -39,7 +39,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the application instance.
         /// </value>
-        string AppInstanceId { get; }
+        string? AppInstanceId { get; }
 
         /// <summary>
         /// Gets the identifier of the application.
@@ -47,6 +47,14 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The identifier of the application.
         /// </value>
-        string AppId { get; }
+        string? AppId { get; }
+
+        /// <summary>
+        /// Gets the scheme.
+        /// </summary>
+        /// <value>
+        /// The scheme.
+        /// </value>
+        string? Scheme { get; }
     }
 }

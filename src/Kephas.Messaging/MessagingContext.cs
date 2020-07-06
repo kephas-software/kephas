@@ -30,7 +30,7 @@ namespace Kephas.Messaging
         public MessagingContext(
             IContext parentContext,
             IMessageProcessor messageProcessor,
-            IMessage message = null)
+            IMessage? message = null)
             : base(parentContext, merge: true)
         {
             Requires.NotNull(parentContext, nameof(parentContext));
@@ -49,7 +49,7 @@ namespace Kephas.Messaging
         public MessagingContext(
             ICompositionContext compositionContext,
             IMessageProcessor messageProcessor,
-            IMessage message = null)
+            IMessage? message = null)
             : base(compositionContext)
         {
             Requires.NotNull(messageProcessor, nameof(messageProcessor));
@@ -80,7 +80,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The message.
         /// </value>
-        public IMessage Message { get; set; }
+        public IMessage? Message { get; set; }
 
         /// <summary>
         /// Gets or sets the response.
@@ -88,7 +88,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The response.
         /// </value>
-        public IMessage Response { get; set; }
+        public IMessage? Response { get; set; }
 
         /// <summary>
         /// Gets or sets the exception.
@@ -96,6 +96,6 @@ namespace Kephas.Messaging
         /// <value>
         /// The exception.
         /// </value>
-        public Exception Exception { get; set; }
+        public Exception? Exception { get; set; }
     }
 }

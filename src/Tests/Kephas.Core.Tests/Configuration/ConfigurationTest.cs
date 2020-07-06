@@ -89,7 +89,8 @@ namespace Kephas.Core.Tests.Configuration
             var configChanged = 0;
             using var subscription = eventHub.Subscribe<ConfigurationChangedSignal>(
                 (s, ctx) =>
-                    configChanged += s.SourceAppInstanceId == appRuntime.GetAppInstanceId() && s.SettingsType == typeof(TestSettings) ? 1 : 0);
+                    configChanged += s.SourceAppInstanceId == appRuntime.GetAppInstanceId()
+                                     && s.SettingsType == typeof(TestSettings).FullName ? 1 : 0);
 
             var config = container.GetExport<IConfiguration<TestSettings>>();
             await config.UpdateSettingsAsync();
@@ -107,7 +108,8 @@ namespace Kephas.Core.Tests.Configuration
             var configChanged = 0;
             using var subscription = eventHub.Subscribe<ConfigurationChangedSignal>(
                 (s, ctx) =>
-                    configChanged += s.SourceAppInstanceId == appRuntime.GetAppInstanceId() && s.SettingsType == typeof(TestSettings) ? 1 : 0);
+                    configChanged += s.SourceAppInstanceId == appRuntime.GetAppInstanceId()
+                                     && s.SettingsType == typeof(TestSettings).FullName ? 1 : 0);
 
             var config = container.GetExport<IConfiguration<TestSettings>>();
             await config.UpdateSettingsAsync(new TestSettings());

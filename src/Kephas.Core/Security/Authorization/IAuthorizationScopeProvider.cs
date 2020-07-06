@@ -30,6 +30,6 @@ namespace Kephas.Security.Authorization
         /// An asynchronous result that yields the authorization scope and a boolean value indicating
         /// whether the resolution was successful or not.
         /// </returns>
-        Task<(object scope, bool canResolve)> GetAuthorizationScopeAsync(IAuthorizationScopeContext context, CancellationToken cancellationToken = default);
+        Task<(object? scope, bool canResolve)> GetAuthorizationScopeAsync(IAuthorizationScopeContext context, CancellationToken cancellationToken = default);
     }
 }
