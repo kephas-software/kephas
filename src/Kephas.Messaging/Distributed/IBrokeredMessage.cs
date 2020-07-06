@@ -100,7 +100,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The custom properties.
         /// </value>
-        IDictionary<string, object>? Properties { get; set; }
+        IDictionary<string, object?>? Properties { get; set; }
 
         /// <summary>
         /// Gets or sets the priority.

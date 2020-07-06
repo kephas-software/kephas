@@ -42,7 +42,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The message.
         /// </value>
-        IMessage Message { get; set; }
+        IMessage? Message { get; set; }
 
         /// <summary>
         /// Gets or sets the response.
@@ -50,7 +50,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The response.
         /// </value>
-        IMessage Response { get; set; }
+        IMessage? Response { get; set; }
 
         /// <summary>
         /// Gets or sets the exception.
@@ -58,7 +58,7 @@ namespace Kephas.Messaging
         /// <value>
         /// The exception.
         /// </value>
-        Exception Exception { get; set; }
+        Exception? Exception { get; set; }
     }
 
     /// <summary>

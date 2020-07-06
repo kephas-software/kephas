@@ -171,7 +171,7 @@ namespace Kephas.Messaging.Distributed
         /// <value>
         /// The custom properties.
         /// </value>
-        public IDictionary<string, object>? Properties { get; set; }
+        public IDictionary<string, object?>? Properties { get; set; }
 
         /// <summary>
         /// Gets or sets the priority.
@@ -197,10 +197,10 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// The indexed item.
         /// </returns>
-        public object this[string key]
+        public object? this[string key]
         {
-            get => (this.Properties ??= new Dictionary<string, object>())[key];
-            set => (this.Properties ??= new Dictionary<string, object>())[key] = value;
+            get => (this.Properties ??= new Dictionary<string, object?>())[key];
+            set => (this.Properties ??= new Dictionary<string, object?>())[key] = value;
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Kephas.Messaging.Distributed
         /// <returns>
         /// A copy of this object.
         /// </returns>
-        public IBrokeredMessage Clone(IEnumerable<IEndpoint> recipients = null)
+        public IBrokeredMessage Clone(IEnumerable<IEndpoint>? recipients = null)
         {
             return new BrokeredMessage
             {
@@ -236,7 +236,7 @@ namespace Kephas.Messaging.Distributed
                 BearerToken = this.BearerToken,
                 content = this.Content,             // write directly into the content field, to avoid validations
                 IsOneWay = this.IsOneWay,
-                Properties = this.Properties == null ? null : new Dictionary<string, object>(this.Properties),
+                Properties = this.Properties == null ? null : new Dictionary<string, object?>(this.Properties),
                 Priority = this.Priority,
                 ReplyToMessageId = this.ReplyToMessageId,
                 Timeout = this.Timeout,

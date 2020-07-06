@@ -81,7 +81,7 @@ namespace Kephas.Messaging
         /// <returns>
         /// An asynchronous result that yields the response message.
         /// </returns>
-        public async Task<IMessage?> ProcessAsync(IMessage message, Action<IMessagingContext> optionsConfig = null, CancellationToken token = default)
+        public async Task<IMessage?> ProcessAsync(IMessage message, Action<IMessagingContext>? optionsConfig = null, CancellationToken token = default)
         {
             Requires.NotNull(message, nameof(message));
 
@@ -176,7 +176,7 @@ namespace Kephas.Messaging
         /// </returns>
         protected virtual IMessagingContext CreateProcessingContext(
             IMessage message,
-            Action<IMessagingContext> optionsConfig)
+            Action<IMessagingContext>? optionsConfig)
         {
             var context = this.ContextFactory.CreateContext<MessagingContext>(this);
             optionsConfig?.Invoke(context);
