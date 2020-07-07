@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Diagnostics.Contracts;
-
 namespace Kephas.Core.Endpoints
 {
     using System;
@@ -18,6 +16,7 @@ namespace Kephas.Core.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Cryptography;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Messaging;
 
     /// <summary>
