@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Diagnostics.Contracts;
+
 namespace Kephas.Core.Endpoints
 {
     using System;
@@ -46,12 +48,14 @@ namespace Kephas.Core.Endpoints
         /// <returns>The response promise.</returns>
         public override async Task<HashResponseMessage> ProcessAsync(HashMessage message, IMessagingContext context, CancellationToken token)
         {
+            Requires.NotNullOrEmpty(message.Value, nameof(message.Value));
+
             await Task.Yield();
 
             var salt = string.IsNullOrEmpty(message.Salt)
                         ? null
                         : Encoding.UTF8.GetBytes(message.Salt);
-            var hash = this.hashingService.Hash(message.Value, ctx => ctx.Salt(salt).UseDefaultSalt(message.UseDefaultSalt));
+            var hash = this.hashingService.Hash(message.Value, ctx => (salt == null ? ctx : ctx.Salt(salt)).UseDefaultSalt(message.UseDefaultSalt));
 
             var response = new HashResponseMessage
             {
