@@ -95,11 +95,10 @@ namespace Kephas.Commands.Messaging.Reflection
 
             var values = argsList.Length > 0 ? (IExpando?)argsList[0] : null;
             var opContext = argsList.Length > 1 ? (IContext?)argsList[1] : null;
-            var opToken = argsList.Length > 2 ? (CancellationToken)argsList[2] : default;
+            var opToken = argsList.Length > 2 ? (CancellationToken?)argsList[2] : default;
 
-            var message = this.CreateMessage(values);
-            var operation = this.CreateOperation(message);
-            return operation.ExecuteAsync(opContext, opToken);
+            var operation = (IOperation)this.CreateInstance(args);
+            return operation.ExecuteAsync(opContext, opToken ?? default);
         }
 
         /// <summary>
@@ -114,15 +113,16 @@ namespace Kephas.Commands.Messaging.Reflection
             var values = (IExpando?)args?.FirstOrDefault();
             var message = this.CreateMessage(values);
 
-            return this.CreateOperation(message);
+            return this.CreateOperation(message, values);
         }
 
         /// <summary>
         /// Creates the operation based on the message.
         /// </summary>
         /// <param name="message">The message.</param>
+        /// <param name="args">The raw arguments.</param>
         /// <returns>The operation.</returns>
-        protected internal virtual IOperation CreateOperation(object message)
+        protected internal virtual IOperation CreateOperation(object message, IExpando? args)
         {
             return new MessageOperation(message, this.LazyMessageProcessor);
         }

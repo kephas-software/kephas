@@ -27,9 +27,6 @@ namespace Kephas.Commands.Messaging
         , IAsyncOperation
 #endif
     {
-        private readonly object message;
-        private readonly Lazy<IMessageProcessor> lazyMessageProcessor;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageOperation"/> class.
         /// </summary>
@@ -37,9 +34,19 @@ namespace Kephas.Commands.Messaging
         /// <param name="lazyMessageProcessor">The lazy message processor.</param>
         protected internal MessageOperation(object message, Lazy<IMessageProcessor> lazyMessageProcessor)
         {
-            this.message = message;
-            this.lazyMessageProcessor = lazyMessageProcessor;
+            this.Message = message;
+            this.LazyMessageProcessor = lazyMessageProcessor;
         }
+
+        /// <summary>
+        /// Gets the message to process.
+        /// </summary>
+        protected object Message { get; }
+
+        /// <summary>
+        /// Gets the lazy message processor.
+        /// </summary>
+        protected Lazy<IMessageProcessor> LazyMessageProcessor { get; }
 
         /// <summary>
         /// Executes the operation in the given context.
@@ -50,7 +57,7 @@ namespace Kephas.Commands.Messaging
         /// </returns>
         public virtual object? Execute(IContext? context = null)
         {
-            var result = this.lazyMessageProcessor.Value.ProcessAsync(this.message, ctx => ctx.Merge(context))
+            var result = this.LazyMessageProcessor.Value.ProcessAsync(this.Message, ctx => ctx.Merge(context))
                 .GetResultNonLocking();
             return result?.GetContent();
         }
@@ -65,8 +72,8 @@ namespace Kephas.Commands.Messaging
         /// </returns>
         public virtual async Task<object?> ExecuteAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
-            var result = await this.lazyMessageProcessor.Value.ProcessAsync(
-                    this.message,
+            var result = await this.LazyMessageProcessor.Value.ProcessAsync(
+                    this.Message,
                     ctx => ctx.Merge(context),
                     cancellationToken).PreserveThreadContext();
             return result?.GetContent();
