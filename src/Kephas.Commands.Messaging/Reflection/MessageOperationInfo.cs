@@ -104,7 +104,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <returns>
         /// The new instance.
         /// </returns>
-        public object CreateInstance(IEnumerable<object?>? args = null)
+        public virtual object CreateInstance(IEnumerable<object?>? args = null)
         {
             var values = (IExpando?)args?.FirstOrDefault();
             var message = this.CreateMessage(values);
