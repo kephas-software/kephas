@@ -130,7 +130,7 @@ namespace Kephas.Model.Elements
         /// </summary>
         /// <param name="args">The arguments.</param>
         /// <returns>The new instance.</returns>
-        public override object CreateInstance(IEnumerable<object>? args = null)
+        public override object CreateInstance(IEnumerable<object?>? args = null)
         {
             if (this.AllowMultiple)
             {
