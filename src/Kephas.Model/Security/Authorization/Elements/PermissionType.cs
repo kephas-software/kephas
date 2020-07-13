@@ -44,7 +44,7 @@ namespace Kephas.Model.Security.Authorization.Elements
         /// </summary>
         /// <remarks>
         /// When this permission is granted, the permissions granted by this are also granted.
-        /// Using this mechanism one can define a hierarchy of permissions.
+        /// Using this mechanism, one can define a hierarchy of permissions.
         /// </remarks>
         /// <value>
         /// The granted permissions.

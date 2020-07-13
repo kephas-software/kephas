@@ -42,7 +42,7 @@ namespace Kephas.Workflow.Runtime
         }
 
         /// <summary>
-        /// Gets the type of the state. Typically it is an enumeration.
+        /// Gets the type of the state. Typically, it is an enumeration.
         /// </summary>
         /// <value>
         /// The type of the state.
@@ -122,7 +122,7 @@ namespace Kephas.Workflow.Runtime
             return base.CreateMemberInfos(AddTransitions);
         }
 
-        private ITypeInfo? ComputeStateType()
+        private ITypeInfo ComputeStateType()
         {
             var stateMachineInterface = this.Type.GetBaseConstructedGenericOf(typeof(IStateMachine<,>));
             if (stateMachineInterface == null)
@@ -133,7 +133,7 @@ namespace Kephas.Workflow.Runtime
             return this.TypeRegistry.GetTypeInfo(stateMachineInterface.GetGenericArguments()[1]);
         }
 
-        private ITypeInfo? ComputeTargetType()
+        private ITypeInfo ComputeTargetType()
         {
             var stateMachineInterface = this.Type.GetBaseConstructedGenericOf(typeof(IStateMachine<,>));
             if (stateMachineInterface == null)
@@ -144,7 +144,7 @@ namespace Kephas.Workflow.Runtime
             return this.TypeRegistry.GetTypeInfo(stateMachineInterface.GetGenericArguments()[0]);
         }
 
-        private IPropertyInfo? ComputeTargetStateProperty()
+        private IPropertyInfo ComputeTargetStateProperty()
         {
             var stateType = this.StateType;
             var stateProperties = this.TargetType.Properties.Where(p => p.ValueType == stateType).ToList();

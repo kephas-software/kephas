@@ -8,22 +8,21 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Reflection;
-using Kephas.Operations;
-using Kephas.Threading.Tasks;
-
 namespace Kephas.Workflow.Model.Elements
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
     using Kephas.Model.Construction;
     using Kephas.Model.Elements;
+    using Kephas.Operations;
     using Kephas.Reflection;
+    using Kephas.Threading.Tasks;
     using Kephas.Workflow.Reflection;
 
     /// <summary>
@@ -32,8 +31,8 @@ namespace Kephas.Workflow.Model.Elements
     public class ActivityType : ClassifierBase<IActivityType>, IActivityType
     {
         private static readonly MethodInfo ExecuteAsyncMethodInfo =
-            ReflectionHelper.GetMethodOf(_ => ((ActivityType)null).ExecuteAsync(null, null, null, null, default));
-        
+            ReflectionHelper.GetMethodOf(_ => ((ActivityType)null!).ExecuteAsync(null!, null, null, null!, default));
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivityType"/> class.
         /// </summary>
