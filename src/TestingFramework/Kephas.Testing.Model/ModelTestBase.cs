@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Model.Tests
+namespace Kephas.Testing.Model
 {
     using System;
     using System.Collections.Generic;
@@ -17,9 +17,9 @@ namespace Kephas.Model.Tests
     using System.Threading.Tasks;
 
     using Kephas.Composition;
+    using Kephas.Model;
     using Kephas.Model.Runtime;
     using Kephas.Testing.Composition;
-
     using NSubstitute;
 
     /// <summary>

@@ -33,8 +33,6 @@ namespace Kephas.Services.Composition
     /// </summary>
     public class AppServiceInfoConventionsRegistrar : IConventionsRegistrar
     {
-        //private readonly IAppServiceMetadataResolver metadataResolver = new AppServiceMetadataResolver();
-
         /// <summary>
         /// Registers the conventions.
         /// </summary>

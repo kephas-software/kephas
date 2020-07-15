@@ -8,15 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Model.Tests.Models.GenericModel
 {
     using System.Linq;
     using System.Threading.Tasks;
 
     using Kephas.Reflection;
-
+    using Kephas.Runtime;
+    using Kephas.Testing.Model;
     using NUnit.Framework;
 
     [TestFixture]

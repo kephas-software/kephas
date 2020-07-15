@@ -111,8 +111,8 @@ namespace Kephas.Model
             this.initialization.Start();
 
             var constructionContext = this.CreateModelConstructionContext(context);
-            var constructedModelSpace = this.CreateModelSpace(constructionContext);
-            constructionContext.ModelSpace = constructedModelSpace;
+            var modelSpace = this.CreateModelSpace(constructionContext);
+            constructionContext.ModelSpace = modelSpace;
 
             try
             {
@@ -120,14 +120,14 @@ namespace Kephas.Model
                 var elementInfos = (await elementInfosCollectorTask.PreserveThreadContext()).SelectMany(e => e).ToList();
 
                 constructionContext.ElementInfos = elementInfos;
-                var writableModelSpace = (IConstructibleElement)constructedModelSpace;
-                writableModelSpace.CompleteConstruction(constructionContext);
-                if (writableModelSpace.ConstructionState.IsFaulted)
+                var constructibleModelSpace = (IConstructibleElement)modelSpace;
+                constructibleModelSpace.CompleteConstruction(constructionContext);
+                if (constructibleModelSpace.ConstructionState.IsFaulted)
                 {
-                    throw writableModelSpace.ConstructionState.Exception;
+                    throw constructibleModelSpace.ConstructionState.Exception!;
                 }
 
-                this.modelSpace = constructedModelSpace;
+                this.modelSpace = modelSpace;
 
                 this.initialization.Complete();
             }

@@ -7,11 +7,13 @@
 //   Implements the diamond inheritance test class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace Kephas.Model.Tests.Models.DiamondInheritanceModel
 {
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Kephas.Testing.Model;
     using NUnit.Framework;
 
     [TestFixture]

@@ -13,6 +13,7 @@ namespace Kephas.Model.Tests.Models.ConflictingBaseMembersModel
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Kephas.Testing.Model;
     using NUnit.Framework;
 
     [TestFixture]

@@ -15,7 +15,7 @@ namespace Kephas.Model.Tests.Models.AppServicesModel
     using System.Threading.Tasks;
 
     using Kephas.Model.Elements;
-
+    using Kephas.Testing.Model;
     using NUnit.Framework;
 
     [TestFixture]
