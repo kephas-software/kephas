@@ -28,9 +28,9 @@ namespace Kephas.Core.Tests.Interaction
         {
             var hub = new DefaultEventHub();
             var stringEvent = string.Empty;
-            IContext stringContext = null;
-            Exception exEvent = null;
-            IContext exContext = null;
+            IContext? stringContext = null;
+            Exception? exEvent = null;
+            IContext? exContext = null;
             using (hub.Subscribe(e => e.GetType() == typeof(string), (e, ctx, token) => { stringEvent = (string)e; stringContext = ctx; return Task.FromResult(0); }))
             using (hub.Subscribe(e => e.GetType() == typeof(Exception), (e, ctx, token) => { exEvent = (Exception)e; exContext = ctx; return Task.FromResult(0); }))
             {
@@ -49,9 +49,9 @@ namespace Kephas.Core.Tests.Interaction
         {
             var hub = new DefaultEventHub();
             var stringEvent = string.Empty;
-            IContext stringContext = null;
-            Exception exEvent = null;
-            IContext exContext = null;
+            IContext? stringContext = null;
+            Exception? exEvent = null;
+            IContext? exContext = null;
             using (hub.Subscribe<string>((e, ctx, token) => { stringEvent = e; stringContext = ctx; return Task.FromResult(0); }))
             using (hub.Subscribe<Exception>((e, ctx, token) => { exEvent = e; exContext = ctx; return Task.FromResult(0); }))
             {
