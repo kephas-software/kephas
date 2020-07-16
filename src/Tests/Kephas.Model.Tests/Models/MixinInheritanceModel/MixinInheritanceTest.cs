@@ -15,7 +15,7 @@ namespace Kephas.Model.Tests.Models.MixinInheritanceModel
 
     using Kephas.Model.Construction.Internal;
     using Kephas.Model.Elements.Annotations;
-
+    using Kephas.Testing.Model;
     using NUnit.Framework;
 
     [TestFixture]

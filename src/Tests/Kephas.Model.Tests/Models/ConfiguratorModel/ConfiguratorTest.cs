@@ -15,7 +15,7 @@ namespace Kephas.Model.Tests.Models.ConfiguratorModel
 
     using Kephas.Model.Runtime.Configuration;
     using Kephas.Reflection;
-
+    using Kephas.Testing.Model;
     using NUnit.Framework;
 
     public class ConfiguratorTest : ModelTestBase
