@@ -127,14 +127,18 @@ namespace Kephas.Application
         {
             try
             {
+                this.Log(LogLevel.Info, null, "Entering the shutdown procedure...");
+
                 this.BeforeAppManagerFinalize();
 
                 var appContext = await this.FinalizeAppManagerAsync(cancellationToken).PreserveThreadContext();
                 appContext?.Dispose();
+
+                this.Log(LogLevel.Info, null, "Completed the shutdown procedure.");
             }
             catch (Exception ex)
             {
-                this.Logger.Fatal(ex, "Errors occurred during shutdown procedure, gracefully terminating the application.");
+                this.Log(LogLevel.Fatal, ex, "Errors occurred during shutdown procedure, gracefully terminating the application.");
             }
             finally
             {
