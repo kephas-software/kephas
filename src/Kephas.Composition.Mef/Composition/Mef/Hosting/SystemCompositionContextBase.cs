@@ -26,7 +26,7 @@ namespace Kephas.Composition.Mef.Hosting
     {
         private static ConcurrentDictionary<CompositionContext, ICompositionContext> map = new ConcurrentDictionary<CompositionContext, ICompositionContext>();
 
-        private CompositionContext innerCompositionContext;
+        private CompositionContext? innerCompositionContext;
 
         /// <summary>
         /// Gets a value indicating whether this object is root.
@@ -47,8 +47,8 @@ namespace Kephas.Composition.Mef.Hosting
             this.AssertNotDisposed();
 
             var component = string.IsNullOrEmpty(serviceName)
-                              ? this.innerCompositionContext.GetExport(contractType)
-                              : this.innerCompositionContext.GetExport(contractType, serviceName);
+                              ? this.innerCompositionContext!.GetExport(contractType)
+                              : this.innerCompositionContext!.GetExport(contractType, serviceName);
             return component;
         }
 
@@ -61,7 +61,7 @@ namespace Kephas.Composition.Mef.Hosting
         {
             this.AssertNotDisposed();
 
-            var components = this.innerCompositionContext.GetExports(contractType);
+            var components = this.innerCompositionContext!.GetExports(contractType);
             return components;
         }
 
@@ -79,8 +79,8 @@ namespace Kephas.Composition.Mef.Hosting
             this.AssertNotDisposed();
 
             var component = string.IsNullOrEmpty(serviceName)
-                              ? this.innerCompositionContext.GetExport<T>()
-                              : this.innerCompositionContext.GetExport<T>(serviceName);
+                              ? this.innerCompositionContext!.GetExport<T>()
+                              : this.innerCompositionContext!.GetExport<T>(serviceName);
             return component;
         }
 
@@ -96,7 +96,7 @@ namespace Kephas.Composition.Mef.Hosting
         {
             this.AssertNotDisposed();
 
-            var components = this.innerCompositionContext.GetExports<T>();
+            var components = this.innerCompositionContext!.GetExports<T>();
             return components;
         }
 
@@ -114,8 +114,8 @@ namespace Kephas.Composition.Mef.Hosting
 
             object component;
             var successful = string.IsNullOrEmpty(serviceName)
-                              ? this.innerCompositionContext.TryGetExport(contractType, out component)
-                              : this.innerCompositionContext.TryGetExport(contractType, serviceName, out component);
+                              ? this.innerCompositionContext!.TryGetExport(contractType, out component)
+                              : this.innerCompositionContext!.TryGetExport(contractType, serviceName, out component);
             return successful ? component : null;
         }
 
@@ -127,14 +127,14 @@ namespace Kephas.Composition.Mef.Hosting
         /// <returns>
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the provided contract was not found.
         /// </returns>
-        public virtual T TryGetExport<T>(string? serviceName = null)
+        public virtual T? TryGetExport<T>(string? serviceName = null)
             where T : class
         {
             this.AssertNotDisposed();
 
             var successful = string.IsNullOrEmpty(serviceName)
-                              ? this.innerCompositionContext.TryGetExport(out T component)
-                              : this.innerCompositionContext.TryGetExport(serviceName, out component);
+                              ? this.innerCompositionContext!.TryGetExport(out T component)
+                              : this.innerCompositionContext!.TryGetExport(serviceName, out component);
             return component;
         }
 

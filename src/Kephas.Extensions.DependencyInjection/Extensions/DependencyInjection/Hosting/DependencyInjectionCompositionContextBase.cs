@@ -47,7 +47,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <returns>
         /// An object implementing <paramref name="contractType" />.
         /// </returns>
-        public object GetExport(Type contractType, string serviceName = null)
+        public object GetExport(Type contractType, string? serviceName = null)
         {
             return this.ServiceProvider.GetRequiredService(contractType);
         }
@@ -72,7 +72,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public T GetExport<T>(string serviceName = null)
+        public T GetExport<T>(string? serviceName = null)
             where T : class
         {
             return this.ServiceProvider.GetRequiredService<T>();
@@ -100,7 +100,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public object TryGetExport(Type contractType, string serviceName = null)
+        public object? TryGetExport(Type contractType, string? serviceName = null)
         {
             return this.ServiceProvider.GetService(contractType);
         }
@@ -114,7 +114,7 @@ namespace Kephas.Extensions.DependencyInjection.Hosting
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public T TryGetExport<T>(string serviceName = null)
+        public T? TryGetExport<T>(string? serviceName = null)
             where T : class
         {
             return this.ServiceProvider.GetService<T>();
