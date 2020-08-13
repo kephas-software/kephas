@@ -106,10 +106,10 @@ namespace Kephas.Composition.Internal
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public T TryGetExport<T>(string? serviceName = null)
+        public T? TryGetExport<T>(string? serviceName = null)
             where T : class
         {
-            return (T)this.serviceProvider.GetService(typeof(T));
+            return (T?)this.serviceProvider.GetService(typeof(T));
         }
 
         /// <summary>

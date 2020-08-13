@@ -25,7 +25,7 @@ namespace Kephas.Composition.Autofac.Hosting
     {
         private readonly ICompositionContainer root;
 
-        private ILifetimeScope innerContainer;
+        private ILifetimeScope? innerContainer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacCompositionContextBase"/> class.
@@ -44,11 +44,11 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// An object implementing <paramref name="contractType" />.
         /// </returns>
-        public object GetExport(Type contractType, string serviceName = null)
+        public object GetExport(Type contractType, string? serviceName = null)
         {
             this.AssertNotDisposed();
 
-            return this.innerContainer.Resolve(contractType);
+            return this.innerContainer!.Resolve(contractType);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Kephas.Composition.Autofac.Hosting
             this.AssertNotDisposed();
 
             var collectionContract = typeof(IEnumerable<>).MakeGenericType(contractType);
-            return (IEnumerable<object>)this.innerContainer.Resolve(collectionContract);
+            return (IEnumerable<object>)this.innerContainer!.Resolve(collectionContract);
         }
 
         /// <summary>
@@ -74,12 +74,12 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// An object implementing <typeparamref name="T" />.
         /// </returns>
-        public T GetExport<T>(string serviceName = null)
+        public T GetExport<T>(string? serviceName = null)
             where T : class
         {
             this.AssertNotDisposed();
 
-            return this.innerContainer.Resolve<T>();
+            return this.innerContainer!.Resolve<T>();
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Kephas.Composition.Autofac.Hosting
         {
             this.AssertNotDisposed();
 
-            return this.innerContainer.Resolve<IEnumerable<T>>();
+            return this.innerContainer!.Resolve<IEnumerable<T>>();
         }
 
         /// <summary>
@@ -106,11 +106,11 @@ namespace Kephas.Composition.Autofac.Hosting
         /// An object implementing <paramref name="contractType" />, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public object TryGetExport(Type contractType, string serviceName = null)
+        public object? TryGetExport(Type contractType, string? serviceName = null)
         {
             this.AssertNotDisposed();
 
-            if (this.innerContainer.TryResolve(contractType, out var service))
+            if (this.innerContainer!.TryResolve(contractType, out var service))
             {
                 return service;
             }
@@ -127,12 +127,12 @@ namespace Kephas.Composition.Autofac.Hosting
         /// An object implementing <typeparamref name="T" />, or <c>null</c> if a service with the
         /// provided contract was not found.
         /// </returns>
-        public T TryGetExport<T>(string serviceName = null)
+        public T? TryGetExport<T>(string? serviceName = null)
             where T : class
         {
             this.AssertNotDisposed();
 
-            if (this.innerContainer.TryResolve<T>(out var service))
+            if (this.innerContainer!.TryResolve<T>(out var service))
             {
                 return service;
             }
@@ -148,7 +148,9 @@ namespace Kephas.Composition.Autofac.Hosting
         /// </returns>
         public ICompositionContext CreateScopedContext()
         {
-            var scope = this.innerContainer.BeginLifetimeScope();
+            this.AssertNotDisposed();
+
+            var scope = this.innerContainer!.BeginLifetimeScope();
             return (this.root ?? (ICompositionContainer)this).GetCompositionContext(scope);
         }
 
