@@ -34,7 +34,7 @@ namespace Kephas.Composition.Autofac.Hosting
             this.map = new ConcurrentDictionary<IComponentContext, ICompositionContext>();
 
             var registration = RegistrationBuilder
-                .ForDelegate((c, p) => this.TryGetCompositionContext(c, createNewIfMissing: true))
+                .ForDelegate((c, p) => this.TryGetCompositionContext(c, createNewIfMissing: true)!)
                 .As<ICompositionContext>()
                 .InstancePerLifetimeScope()
                 .CreateRegistration();
@@ -53,7 +53,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// The composition context wrapper.
         /// </returns>
-        public ICompositionContext TryGetCompositionContext(IComponentContext context, bool createNewIfMissing)
+        public ICompositionContext? TryGetCompositionContext(IComponentContext context, bool createNewIfMissing)
         {
             var lifetimeScope = context.GetLifetimeScope();
             var key = "root".Equals(lifetimeScope.Tag) ? this.container : lifetimeScope;

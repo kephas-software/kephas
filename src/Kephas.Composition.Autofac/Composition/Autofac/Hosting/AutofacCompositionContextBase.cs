@@ -23,7 +23,7 @@ namespace Kephas.Composition.Autofac.Hosting
     /// </summary>
     public abstract class AutofacCompositionContextBase : ICompositionContext
     {
-        private readonly ICompositionContainer root;
+        private readonly ICompositionContainer? root;
 
         private ILifetimeScope? innerContainer;
 
@@ -31,7 +31,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// Initializes a new instance of the <see cref="AutofacCompositionContextBase"/> class.
         /// </summary>
         /// <param name="root">The root.</param>
-        internal AutofacCompositionContextBase(ICompositionContainer root)
+        internal AutofacCompositionContextBase(ICompositionContainer? root)
         {
             this.root = root;
         }

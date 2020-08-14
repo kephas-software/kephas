@@ -34,7 +34,7 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <returns>
         /// The composition context wrapper.
         /// </returns>
-        ICompositionContext TryGetCompositionContext(IComponentContext context, bool createNewIfMissing);
+        ICompositionContext? TryGetCompositionContext(IComponentContext context, bool createNewIfMissing);
 
         /// <summary>
         /// Cleanups the given composition context.
