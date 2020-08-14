@@ -44,8 +44,8 @@ namespace Kephas.Logging.Serilog
         /// </summary>
         public LogLevel MinimumLevel
         {
-            get => ToLogLevel(this.levelSwitch.MinimumLevel);
-            set => this.levelSwitch.MinimumLevel = ToLogEventLevel(value);
+            get => this.levelSwitch.MinimumLevel.ToLogLevel();
+            set => this.levelSwitch.MinimumLevel = value.ToLogEventLevel();
         }
 
         /// <summary>
@@ -73,44 +73,6 @@ namespace Kephas.Logging.Serilog
         public void Dispose()
         {
             this.Dispose(true);
-        }
-
-        /// <summary>
-        /// Converts the log level to Serilog log level.
-        /// </summary>
-        /// <param name="level">The log level.</param>
-        /// <returns>The Serilog log level.</returns>
-        protected internal static LogEventLevel ToLogEventLevel(LogLevel level)
-        {
-            return level switch
-            {
-                LogLevel.Fatal => LogEventLevel.Fatal,
-                LogLevel.Error => LogEventLevel.Error,
-                LogLevel.Warning => LogEventLevel.Warning,
-                LogLevel.Info => LogEventLevel.Information,
-                LogLevel.Debug => LogEventLevel.Debug,
-                LogLevel.Trace => LogEventLevel.Verbose,
-                _ => LogEventLevel.Verbose
-            };
-        }
-
-        /// <summary>
-        /// Converts the Serilog log level to log level.
-        /// </summary>
-        /// <param name="level">The Serilog log level.</param>
-        /// <returns>The log level.</returns>
-        protected internal static LogLevel ToLogLevel(LogEventLevel level)
-        {
-            return level switch
-            {
-                LogEventLevel.Fatal => LogLevel.Fatal,
-                LogEventLevel.Error => LogLevel.Error,
-                LogEventLevel.Warning => LogLevel.Warning,
-                LogEventLevel.Information => LogLevel.Info,
-                LogEventLevel.Debug => LogLevel.Debug,
-                LogEventLevel.Verbose => LogLevel.Trace,
-                _ => LogLevel.Trace
-            };
         }
 
         /// <summary>
