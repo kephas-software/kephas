@@ -13,7 +13,6 @@ namespace Kephas.Logging.Serilog
     using System;
 
     using global::Serilog.Core;
-    using global::Serilog.Events;
 
     /// <summary>
     /// The Serilog logger adapter.
@@ -50,11 +49,11 @@ namespace Kephas.Logging.Serilog
         {
             if (exception == null)
             {
-                this.logger.Write(SerilogManager.ToLogEventLevel(level), messageFormat, args);
+                this.logger.Write(level.ToLogEventLevel(), messageFormat, args);
             }
             else
             {
-                this.logger.Write(SerilogManager.ToLogEventLevel(level), exception, messageFormat, args);
+                this.logger.Write(level.ToLogEventLevel(), exception, messageFormat, args);
             }
 
             return true;
@@ -69,7 +68,7 @@ namespace Kephas.Logging.Serilog
         /// </returns>
         public bool IsEnabled(LogLevel level)
         {
-            return this.logger.IsEnabled(SerilogManager.ToLogEventLevel(level));
+            return this.logger.IsEnabled(level.ToLogEventLevel());
         }
     }
 }
