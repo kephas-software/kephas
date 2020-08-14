@@ -17,6 +17,7 @@ namespace Kephas.Composition.Autofac.Hosting
 
     using Kephas.Composition.Autofac.Resources;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Logging;
 
     /// <summary>
     /// An Autofac composition context base.
@@ -37,6 +38,14 @@ namespace Kephas.Composition.Autofac.Hosting
         }
 
         /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        protected ILogger? Logger { get; set; }
+
+        /// <summary>
         /// Resolves the specified contract type.
         /// </summary>
         /// <param name="contractType">Type of the contract.</param>
@@ -47,6 +56,19 @@ namespace Kephas.Composition.Autofac.Hosting
         public object GetExport(Type contractType, string? serviceName = null)
         {
             this.AssertNotDisposed();
+
+            if (this.Logger.IsDebugEnabled())
+            {
+                try
+                {
+                    return this.innerContainer!.Resolve(contractType);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Debug(ex, "Error while resolving service {service}.", contractType);
+                    throw;
+                }
+            }
 
             return this.innerContainer!.Resolve(contractType);
         }
@@ -63,6 +85,20 @@ namespace Kephas.Composition.Autofac.Hosting
             this.AssertNotDisposed();
 
             var collectionContract = typeof(IEnumerable<>).MakeGenericType(contractType);
+
+            if (this.Logger.IsDebugEnabled())
+            {
+                try
+                {
+                    return (IEnumerable<object>)this.innerContainer!.Resolve(collectionContract);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Debug(ex, "Error while resolving service {service}.", collectionContract);
+                    throw;
+                }
+            }
+
             return (IEnumerable<object>)this.innerContainer!.Resolve(collectionContract);
         }
 
@@ -79,6 +115,19 @@ namespace Kephas.Composition.Autofac.Hosting
         {
             this.AssertNotDisposed();
 
+            if (this.Logger.IsDebugEnabled())
+            {
+                try
+                {
+                    return this.innerContainer!.Resolve<T>();
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Debug(ex, "Error while resolving service {service}.", typeof(T));
+                    throw;
+                }
+            }
+
             return this.innerContainer!.Resolve<T>();
         }
 
@@ -93,6 +142,19 @@ namespace Kephas.Composition.Autofac.Hosting
             where T : class
         {
             this.AssertNotDisposed();
+
+            if (this.Logger.IsDebugEnabled())
+            {
+                try
+                {
+                    return this.innerContainer!.Resolve<IEnumerable<T>>();
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Debug(ex, "Error while resolving service {service}.", typeof(IEnumerable<T>));
+                    throw;
+                }
+            }
 
             return this.innerContainer!.Resolve<IEnumerable<T>>();
         }
@@ -187,6 +249,9 @@ namespace Kephas.Composition.Autofac.Hosting
             Requires.NotNull(container, nameof(container));
 
             this.innerContainer = container;
+            this.Logger = container.TryResolve<ILogManager>(out var logManager)
+                ? logManager.GetLogger(this.GetType())
+                : this.GetType().GetLogger();
         }
 
         /// <summary>
