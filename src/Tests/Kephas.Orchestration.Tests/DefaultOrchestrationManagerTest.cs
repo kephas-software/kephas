@@ -12,6 +12,7 @@ namespace Kephas.Orchestration.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
@@ -89,8 +90,8 @@ namespace Kephas.Orchestration.Tests
 
             var manager = new DefaultOrchestrationManager(
                 appRuntime, 
-                eventHub, 
-                messageBroker, 
+                eventHub,
+                messageBroker,
                 Substitute.For<IMessageProcessor>(), 
                 Substitute.For<IExportFactory<IProcessStarterFactory>>(),
                 config,
@@ -118,7 +119,11 @@ namespace Kephas.Orchestration.Tests
             await manager.FinalizeAsync(appContext);
 
             CollectionAssert.IsNotEmpty(messages);
-            CollectionAssert.AllItemsAreInstancesOfType(messages, typeof(AppHeartbeatEvent));
+            CollectionAssert.AllItemsAreInstancesOfType(
+                messages
+                    .Cast<IMessage>()
+                    .Select(m => m.GetContent()),
+                typeof(AppHeartbeatEvent));
         }
     }
 }
