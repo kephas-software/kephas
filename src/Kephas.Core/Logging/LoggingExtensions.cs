@@ -78,7 +78,7 @@ namespace Kephas.Logging
             }
 
             var logManager = context?.AmbientServices?.LogManager ?? LoggingHelper.DefaultLogManager;
-            return logManager.GetLogger(obj.GetType());
+            return logManager.GetLogger(obj as Type ?? obj.GetType());
         }
     }
 }
