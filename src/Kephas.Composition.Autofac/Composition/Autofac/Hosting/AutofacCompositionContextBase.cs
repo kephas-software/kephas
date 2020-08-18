@@ -27,6 +27,7 @@ namespace Kephas.Composition.Autofac.Hosting
         private readonly ICompositionContainer? root;
 
         private ILifetimeScope? innerContainer;
+        private ILogger? logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacCompositionContextBase"/> class.
@@ -43,7 +44,10 @@ namespace Kephas.Composition.Autofac.Hosting
         /// <value>
         /// The logger.
         /// </value>
-        protected ILogger? Logger { get; set; }
+        protected ILogger? Logger
+        {
+            get => this.logger ?? (this.logger = this.GetLogger(this.innerContainer));
+        }
 
         /// <summary>
         /// Resolves the specified contract type.
@@ -249,9 +253,6 @@ namespace Kephas.Composition.Autofac.Hosting
             Requires.NotNull(container, nameof(container));
 
             this.innerContainer = container;
-            this.Logger = container.TryResolve<ILogManager>(out var logManager)
-                ? logManager.GetLogger(this.GetType())
-                : this.GetType().GetLogger();
         }
 
         /// <summary>
@@ -263,6 +264,20 @@ namespace Kephas.Composition.Autofac.Hosting
             {
                 throw new ObjectDisposedException(Strings.AutofacCompositionContainer_Disposed_Exception);
             }
+        }
+
+        /// <summary>
+        /// Gets the logger from the provided container.
+        /// </summary>
+        /// <param name="container">The container used to get the logger.</param>
+        /// <returns>The logger.</returns>
+        protected ILogger? GetLogger(ILifetimeScope? container)
+        {
+            return container == null
+                ? null
+                : container.TryResolve<ILogManager>(out var logManager)
+                    ? logManager.GetLogger(this.GetType())
+                    : this.GetType().GetLogger();
         }
     }
 }
