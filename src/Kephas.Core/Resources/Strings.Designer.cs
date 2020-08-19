@@ -19,7 +19,7 @@ namespace Kephas.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -142,7 +142,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. The service {1} will be used. Identified eligible parts: {2}..
+        ///   Looks up a localized string similar to Multiple application services registered for the contract {0} and the override priority does not allow a proper service resolution. Identified eligible parts: {1}..
         /// </summary>
         public static string AmbiguousOverrideForAppServiceContract {
             get {
