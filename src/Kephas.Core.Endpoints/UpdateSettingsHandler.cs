@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
-
 namespace Kephas.Core.Endpoints
 {
     using System;
@@ -17,6 +15,7 @@ namespace Kephas.Core.Endpoints
     using Kephas.Composition;
     using Kephas.Configuration;
     using Kephas.ExceptionHandling;
+    using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Operations;
@@ -80,7 +79,7 @@ namespace Kephas.Core.Endpoints
                 settingsType = this.typeResolver.ResolveType(settingsTypeString, throwOnNotFound: false);
                 if (settingsType == null)
                 {
-                    settingsTypeString = settingsTypeString + "Settings";
+                    settingsTypeString += "Settings";
                     settingsType = this.typeResolver.ResolveType(settingsTypeString, throwOnNotFound: false);
                 }
 
