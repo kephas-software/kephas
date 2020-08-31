@@ -93,7 +93,7 @@ namespace Kephas.Commands.Messaging.Reflection
         {
             var argsList = args?.ToArray() ?? Array.Empty<object?>();
 
-            var values = argsList.Length > 0 ? (IExpando?)argsList[0] : null;
+            var opArgs = argsList.Length > 0 ? (IExpando?)argsList[0] : null;
             var opContext = argsList.Length > 1 ? (IContext?)argsList[1] : null;
             var opToken = argsList.Length > 2 ? (CancellationToken?)argsList[2] : default;
 
@@ -110,10 +110,10 @@ namespace Kephas.Commands.Messaging.Reflection
         /// </returns>
         public virtual object CreateInstance(IEnumerable<object?>? args = null)
         {
-            var values = (IExpando?)args?.FirstOrDefault();
-            var message = this.CreateMessage(values);
+            var opArgs = (IExpando?)args?.FirstOrDefault();
+            var message = this.CreateMessage(opArgs);
 
-            return this.CreateOperation(message, values);
+            return this.CreateOperation(message, opArgs);
         }
 
         /// <summary>
