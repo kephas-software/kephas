@@ -52,7 +52,7 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <summary>
         /// Gets the endpoint where the command should be executed.
         /// </summary>
-        public Endpoint Endpoint { get; }
+        public IEndpoint Endpoint { get; }
 
         /// <summary>
         /// Invokes the specified method on the provided instance.
@@ -94,10 +94,16 @@ namespace Kephas.Commands.Messaging.Reflection
             return returnValue;
         }
 
-        private Endpoint GetEndpoint(object runAt)
+        /// <summary>
+        /// Infers the endpoint from the '@runat' argument value.
+        /// </summary>
+        /// <param name="runAt">The '@runat' argument value.</param>
+        /// <returns>The endpoint.</returns>
+        protected virtual IEndpoint GetEndpoint(object runAt)
         {
             var runAtEndpoint = runAt switch
             {
+                Endpoint endpoint => endpoint,
                 Uri uri => new Endpoint(uri),
                 string appInstanceIdOrUri =>
                     Uri.TryCreate(appInstanceIdOrUri, UriKind.Absolute, out var endpointUri)
