@@ -18,7 +18,7 @@ namespace Kephas.Messaging.Distributed
     /// <summary>
     /// A messaging endpoint.
     /// </summary>
-    public class Endpoint : IEndpoint
+    public class Endpoint : IEndpoint, IEquatable<Endpoint>, IEquatable<IEndpoint>
     {
         /// <summary>
         /// The application scheme.
@@ -28,7 +28,7 @@ namespace Kephas.Messaging.Distributed
         /// <summary>
         /// The endpoint URL.
         /// </summary>
-        private Uri url;
+        private Uri? url;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Endpoint"/> class.
@@ -165,6 +165,31 @@ namespace Kephas.Messaging.Distributed
         public static IEndpoint CreateAppInstanceEndpoint(IAppRuntime appRuntime, string? endpointId = null, string? scheme = null)
         {
             return new Endpoint(appRuntime.GetAppId(), appRuntime.GetAppInstanceId(), endpointId, scheme: scheme);
+        }
+
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// <see langword="true" /> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <see langword="false" />.</returns>
+        public bool Equals(Endpoint? other) => this.Equals((IEndpoint?)other);
+
+        /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// <see langword="true" /> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <see langword="false" />.</returns>
+        public bool Equals(IEndpoint? other) => other?.Url.Equals(this.Url) ?? false;
+
+        /// <summary>Determines whether the specified object is equal to the current object.</summary>
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns>
+        /// <see langword="true" /> if the specified object  is equal to the current object; otherwise, <see langword="false" />.</returns>
+        public override bool Equals(object? obj) => obj is IEndpoint e && this.Equals(e);
+
+        /// <summary>Serves as the default hash function.</summary>
+        /// <returns>A hash code for the current object.</returns>
+        public override int GetHashCode()
+        {
+            return this.Url?.GetHashCode() ?? 0;
         }
 
         /// <summary>Returns a string that represents the current object.</summary>
