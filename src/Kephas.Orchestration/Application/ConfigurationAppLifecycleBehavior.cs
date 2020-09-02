@@ -7,6 +7,8 @@
 
 namespace Kephas.Orchestration.Application
 {
+    using System;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -26,6 +28,7 @@ namespace Kephas.Orchestration.Application
         private readonly IAppRuntime appRuntime;
         private readonly IEventHub eventHub;
         private readonly IMessageBroker messageBroker;
+        private readonly Lazy<IOrchestrationManager> lazyOrchestrationManager;
         private IEventSubscription? configChangedSubscription;
 
         /// <summary>
@@ -34,17 +37,20 @@ namespace Kephas.Orchestration.Application
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="eventHub">The event hub.</param>
         /// <param name="messageBroker">The message broker.</param>
+        /// <param name="lazyOrchestrationManager">The lazy orchestration manager.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public ConfigurationAppLifecycleBehavior(
             IAppRuntime appRuntime,
             IEventHub eventHub,
             IMessageBroker messageBroker,
+            Lazy<IOrchestrationManager> lazyOrchestrationManager,
             ILogManager? logManager = null)
             : base(logManager)
         {
             this.appRuntime = appRuntime;
             this.eventHub = eventHub;
             this.messageBroker = messageBroker;
+            this.lazyOrchestrationManager = lazyOrchestrationManager;
         }
 
         /// <summary>
@@ -87,17 +93,30 @@ namespace Kephas.Orchestration.Application
         /// <returns>The asynchronous result.</returns>
         protected virtual async Task HandleConfigurationChangedAsync(ConfigurationChangedSignal signal, IContext context, CancellationToken cancellationToken)
         {
-            if (signal.SourceAppInstanceId != this.appRuntime.GetAppInstanceId())
+            var thisAppInstanceId = this.appRuntime.GetAppInstanceId();
+            var sourceAppInstanceId = signal.SourceAppInstanceId;
+            if (sourceAppInstanceId != thisAppInstanceId)
             {
                 return;
             }
 
-            this.Logger.Info("Notify other peers that the configuration for {settingsType} changed.", signal.SettingsType);
+            var liveApps = await this.lazyOrchestrationManager.Value
+                .GetLiveAppsAsync(ctx => ctx.Impersonate(context), cancellationToken)
+                .PreserveThreadContext();
+            var targetAppInstanceIds = liveApps.Select(a => a.AppInstanceId)
+                .Where(iid => iid != thisAppInstanceId && iid != sourceAppInstanceId)
+                .ToList();
+            var recipients = targetAppInstanceIds
+                .Select(iid => new Endpoint(appInstanceId: iid));
 
-            // notify the other peers (and myself, for now) that the configuration has changed
+            this.Logger.Info("Notify peers {peers} that the configuration for {settingsType} changed.", targetAppInstanceIds, signal.SettingsType);
+
+            // notify the other peers that the configuration has changed
             await this.messageBroker.PublishAsync(
                     signal,
-                    ctx => ctx.Impersonate(context),
+                    ctx => ctx
+                        .Impersonate(context)
+                        .To(recipients),
                     cancellationToken)
                 .PreserveThreadContext();
         }
