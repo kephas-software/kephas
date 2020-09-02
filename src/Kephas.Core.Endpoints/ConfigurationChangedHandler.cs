@@ -53,7 +53,7 @@ namespace Kephas.Core.Endpoints
         {
             if (this.appRuntime.GetAppInstanceId() == message.SourceAppInstanceId)
             {
-                this.Logger.Info($"Ignore {nameof(ConfigurationChangedSignal)} for {{settingsType}}, sent from the same app instance {{app}}.", message.SettingsType, message.SourceAppInstanceId);
+                this.Logger.Debug($"Ignore {nameof(ConfigurationChangedSignal)} for {{settingsType}}, sent from the same app instance {{app}}.", message.SettingsType, message.SourceAppInstanceId);
                 return new ResponseMessage
                 {
                     Message = $"Ignore {nameof(ConfigurationChangedSignal)} for {message.SettingsType}, sent from the same app instance {message.SourceAppInstanceId}.",
