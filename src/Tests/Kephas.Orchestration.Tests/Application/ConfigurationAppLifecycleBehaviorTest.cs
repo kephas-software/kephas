@@ -62,6 +62,39 @@ namespace Kephas.Orchestration.Tests.Application
         }
 
         [Test]
+        public async Task BeforeAppInitializeAsync_from_this_appinstance_only()
+        {
+            var appRuntime = new StaticAppRuntime();
+            var eventHub = new DefaultEventHub();
+            var messageBroker = Substitute.For<IMessageBroker>();
+            var orchManager = Substitute.For<IOrchestrationManager>();
+
+            var thisAppInstanceId = appRuntime.GetAppInstanceId();
+            messageBroker.DispatchAsync(
+                    Arg.Any<object>(),
+                    Arg.Any<Action<IDispatchingContext>>(),
+                    Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult<IMessage?>(null));
+
+            var behavior = new ConfigurationAppLifecycleBehavior(appRuntime, eventHub, messageBroker, new Lazy<IOrchestrationManager>(() => orchManager));
+
+            await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>());
+
+            var signal = new ConfigurationChangedSignal("test")
+            {
+                SourceAppInstanceId = thisAppInstanceId,
+                SettingsType = typeof(string).FullName,
+            };
+
+            await eventHub.PublishAsync(signal, Substitute.For<IContext>());
+
+            messageBroker.Received(0)
+                .DispatchAsync(Arg.Any<object>(), Arg.Any<Action<IDispatchingContext>>(), Arg.Any<CancellationToken>());
+
+            await behavior.AfterAppFinalizeAsync(Substitute.For<IAppContext>());
+        }
+
+        [Test]
         public async Task BeforeAppInitializeAsync_from_this_appinstance()
         {
             var appRuntime = new StaticAppRuntime();

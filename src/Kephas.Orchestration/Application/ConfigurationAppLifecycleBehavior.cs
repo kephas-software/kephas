@@ -106,6 +106,11 @@ namespace Kephas.Orchestration.Application
             var targetAppInstanceIds = liveApps.Select(a => a.AppInstanceId)
                 .Where(iid => iid != thisAppInstanceId && iid != sourceAppInstanceId)
                 .ToList();
+            if (targetAppInstanceIds.Count == 0)
+            {
+                return;
+            }
+
             var recipients = targetAppInstanceIds
                 .Select(iid => new Endpoint(appInstanceId: iid));
 
