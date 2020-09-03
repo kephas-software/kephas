@@ -67,5 +67,10 @@ namespace Kephas.Scheduling.Endpoints
         /// Gets or sets the job information.
         /// </summary>
         public object? JobInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the job information.
+        /// </summary>
+        public object? JobInfoId { get; set; }
     }
 }

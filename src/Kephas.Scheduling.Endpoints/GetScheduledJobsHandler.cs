@@ -46,6 +46,7 @@ namespace Kephas.Scheduling.Endpoints
                     .Select(jobInfo => new ScheduledJobData
                     {
                         JobId = jobInfo.Id,
+                        JobInfoId = jobInfo.Id,
                         JobInfo = jobInfo.ToString(),
                         Triggers = jobInfo.Triggers.Select(t => t.ToString()).ToArray(),
                         IsEnabled = jobInfo.Triggers.Any(t => t.IsEnabled),
