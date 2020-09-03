@@ -237,7 +237,9 @@ namespace Kephas.Plugins.NuGet
             var currentFramework = this.AppRuntime.GetAppFramework();
             var nugetFramework = NuGetFramework.ParseFolder(currentFramework);
 
-            var (pluginPackageIdentity, pluginPackageReader, packageReaders) = await this.GetPackageReadersAsync(pluginIdentity, repositories, cacheContext, nugetFramework, cancellationToken).PreserveThreadContext();
+            var (pluginPackageIdentity, pluginPackageReader, packageReaders)
+                = await this.GetPackageReadersAsync(pluginIdentity, repositories, cacheContext, nugetFramework, cancellationToken)
+                    .PreserveThreadContext();
             pluginIdentity = new AppIdentity(pluginPackageIdentity.Id, pluginPackageIdentity.Version.ToString());
 
             var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginIdentity);
@@ -656,13 +658,22 @@ namespace Kephas.Plugins.NuGet
         {
             const string libFolderName = "lib";
 
-            var libItems = packageReader.GetLibItems();
-            var nearestLibItemFwk = frameworkReducer.GetNearest(nugetFramework, libItems.Select(x => x.TargetFramework));
+            var libItems = await packageReader
+                .GetLibItemsAsync(cancellationToken)
+                .PreserveThreadContext();
+            var nearestLibItemFwk = frameworkReducer.GetNearest(
+                nugetFramework,
+                libItems.Select(x => x.TargetFramework));
 
             var libItem = libItems.FirstOrDefault(l => l.TargetFramework == nearestLibItemFwk);
             if (!(libItem?.HasEmptyFolder ?? true))
             {
-                await packageReader.CopyFilesAsync(pluginLocation, libItem.Items, (src, target, stream) => this.ExtractPackageFile(src, target, libFolderName, flatten: true), this.nativeLogger, cancellationToken).PreserveThreadContext();
+                await packageReader.CopyFilesAsync(
+                    pluginLocation,
+                    libItem.Items,
+                    (src, target, stream) => this.ExtractPackageFile(src, target, libFolderName, flatten: true),
+                    this.nativeLogger,
+                    cancellationToken).PreserveThreadContext();
             }
 
             var libFolder = Path.Combine(pluginLocation, libFolderName);
@@ -724,7 +735,7 @@ namespace Kephas.Plugins.NuGet
                           .Set(SourceCacheContextKey, cacheContext),
                 cancellationToken).PreserveThreadContext();
 
-            var downloadResult = (DownloadResourceResult)opResult.Value;
+            var downloadResult = (DownloadResourceResult)opResult.Value!;
             var pluginPackageIdentity = this.ToPackageIdentity(pluginIdentity);
 
             var dependencies = new HashSet<SourcePackageDependencyInfo>(PackageIdentityComparer.Default);
@@ -789,7 +800,12 @@ namespace Kephas.Plugins.NuGet
             return targetPath;
         }
 
-        private async Task<List<(PackageIdentity packageId, PackageReaderBase packageReader)>> GetPackageReadersAsync(IList<SourceRepository> repositories, SourceCacheContext cacheContext, string packagesFolder, IEnumerable<SourcePackageDependencyInfo> dependenciesToInstall, CancellationToken cancellationToken)
+        private async Task<List<(PackageIdentity packageId, PackageReaderBase packageReader)>> GetPackageReadersAsync(
+            IList<SourceRepository> repositories,
+            SourceCacheContext cacheContext,
+            string packagesFolder,
+            IEnumerable<SourcePackageDependencyInfo> dependenciesToInstall,
+            CancellationToken cancellationToken)
         {
             var downloadContext = new PackageDownloadContext(cacheContext);
             var downloadResources = await this.GetDownloadResourcesAsync(repositories, cancellationToken).PreserveThreadContext();
@@ -798,29 +814,47 @@ namespace Kephas.Plugins.NuGet
 
             cancellationToken.ThrowIfCancellationRequested();
 
+            var packagePathResolver = this.GetPackagePathResolver();
+
             foreach (var dependency in dependenciesToInstall)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var packagePathResolver = this.GetPackagePathResolver();
-                var installedPath = packagePathResolver.GetInstalledPath(dependency);
-                if (installedPath != null)
-                {
-                    packageReaders.Add((dependency, new PackageFolderReader(installedPath)));
-                }
-                else
-                {
-                    var downloadResult = await this.DownloadPackageAsync(
-                            dependency,
-                            packagesFolder,
-                            downloadResources,
-                            downloadContext,
-                            cancellationToken).PreserveThreadContext();
-                    packageReaders.Add((dependency, downloadResult.PackageReader));
-                }
+                var packageReader = await this.GetPackageReaderAsync(
+                    dependency,
+                    packagePathResolver,
+                    packagesFolder,
+                    downloadResources,
+                    downloadContext,
+                    cancellationToken).PreserveThreadContext();
+
+                packageReaders.Add((dependency, packageReader));
             }
 
             return packageReaders;
+        }
+
+        private async Task<PackageReaderBase> GetPackageReaderAsync(
+            PackageIdentity dependency,
+            PackagePathResolver packagePathResolver,
+            string packagesFolder,
+            IEnumerable<DownloadResource> downloadResources,
+            PackageDownloadContext downloadContext,
+            CancellationToken cancellationToken)
+        {
+            var installedPath = packagePathResolver.GetInstalledPath(dependency);
+            if (installedPath != null)
+            {
+                return new PackageFolderReader(installedPath);
+            }
+
+            var downloadResult = await this.DownloadPackageAsync(
+                dependency,
+                packagesFolder,
+                downloadResources,
+                downloadContext,
+                cancellationToken).PreserveThreadContext();
+            return downloadResult.PackageReader;
         }
 
         private async Task<List<DownloadResource>> GetDownloadResourcesAsync(IList<SourceRepository> repositories, CancellationToken cancellationToken = default)
