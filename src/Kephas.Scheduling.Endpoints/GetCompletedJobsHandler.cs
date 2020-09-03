@@ -44,7 +44,7 @@ namespace Kephas.Scheduling.Endpoints
 
             var completedJobsQuery = this.scheduler.GetCompletedJobs();
             var totalCount = completedJobsQuery.Count();
-            var jobsQuery = this.scheduler.GetCompletedJobs()
+            var jobsQuery = completedJobsQuery
                 .OrderByDescending(j => j.StartedAt)
                 .Skip(message.Skip)
                 .Take(message.Take);
