@@ -55,7 +55,7 @@ namespace Kephas.Scheduling.Endpoints
     public class CompletedJobData : RunningJobData
     {
         /// <summary>
-        /// Gets the time when the job ended.
+        /// Gets or sets the time when the job ended.
         /// </summary>
         public DateTimeOffset? EndedAt { get; set; }
     }
