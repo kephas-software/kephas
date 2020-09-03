@@ -47,6 +47,11 @@ namespace Kephas.Scheduling.Endpoints
         /// Gets or sets the jobs data.
         /// </summary>
         public CompletedJobData[] Jobs { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total count.
+        /// </summary>
+        public int? TotalCount { get; set; }
     }
 
     /// <summary>

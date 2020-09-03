@@ -42,7 +42,10 @@ namespace Kephas.Scheduling.Endpoints
         {
             await Task.Yield();
 
+            var completedJobsQuery = this.scheduler.GetCompletedJobs();
+            var totalCount = completedJobsQuery.Count();
             var jobsQuery = this.scheduler.GetCompletedJobs()
+                .OrderByDescending(j => j.StartedAt)
                 .Skip(message.Skip)
                 .Take(message.Take);
 
@@ -61,6 +64,7 @@ namespace Kephas.Scheduling.Endpoints
                         Elapsed = jobResult.Elapsed,
                     })
                     .ToArray(),
+                TotalCount = totalCount,
             };
         }
     }
