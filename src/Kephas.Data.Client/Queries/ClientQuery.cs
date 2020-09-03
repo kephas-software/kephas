@@ -38,5 +38,15 @@ namespace Kephas.Data.Client.Queries
         /// The order.
         /// </value>
         public Expression Order { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of records to skip.
+        /// </summary>
+        public int? Skip { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of records to take.
+        /// </summary>
+        public int? Take { get; set; }
     }
 }

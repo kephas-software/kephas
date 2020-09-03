@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Data.Client.Tests.Queries.Conversion
 {
     using System;
@@ -25,10 +23,9 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
     using Kephas.Data.Client.Queries.Conversion.ExpressionConverters;
     using Kephas.Model;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     using Expression = Kephas.Data.Client.Queries.Expression;
@@ -274,6 +271,70 @@ namespace Kephas.Data.Client.Tests.Queries.Conversion
             for (var i = 0; i < orderedData.Length; i++)
             {
                 Assert.AreEqual(orderedData[i], result[i]);
+            }
+        }
+
+        [Test]
+        [TestCase(arg: new string[] { "hi", "all", "nary-operators", "!" })]
+        [TestCase(arg: new string[] { "hi", "all", "nary-operators" })]
+        [TestCase(arg: new string[] { "hi", "all" })]
+        [TestCase(arg: new string[] { "hi" })]
+        public void ConvertQuery_skip(string[] data)
+        {
+            var typeResolver = this.GetTypeResolverMock(data);
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.DescConverter() },
+                new RuntimeTypeRegistry());
+
+            var dataContext = this.GetDataContextMock(data);
+            var query = new ClientQuery
+            {
+                EntityType = "item-type",
+                Skip = 2,
+            };
+
+            var queryable = (IQueryable<string>)converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext) { UseMemberAccessConvention = true });
+            var result = queryable.ToList();
+
+            var skippedData = data.Skip(2).ToArray();
+            Assert.AreEqual(skippedData.Length, result.Count);
+            for (var i = 0; i < skippedData.Length; i++)
+            {
+                Assert.AreEqual(skippedData[i], result[i]);
+            }
+        }
+
+        [Test]
+        [TestCase(arg: new string[] { "hi", "all", "nary-operators", "!" })]
+        [TestCase(arg: new string[] { "hi", "all", "nary-operators" })]
+        [TestCase(arg: new string[] { "hi", "all" })]
+        [TestCase(arg: new string[] { "hi" })]
+        public void ConvertQuery_take(string[] data)
+        {
+            var typeResolver = this.GetTypeResolverMock(data);
+            var converter = new DefaultClientQueryConverter(
+                typeResolver,
+                this.GetIdempotentProjectedTypeResolver(),
+                new[] { this.DescConverter() },
+                new RuntimeTypeRegistry());
+
+            var dataContext = this.GetDataContextMock(data);
+            var query = new ClientQuery
+            {
+                EntityType = "item-type",
+                Take = 2,
+            };
+
+            var queryable = (IQueryable<string>)converter.ConvertQuery(query, new ClientQueryConversionContext(dataContext) { UseMemberAccessConvention = true });
+            var result = queryable.ToList();
+
+            var takenData = data.Take(2).ToArray();
+            Assert.AreEqual(takenData.Length, result.Count);
+            for (var i = 0; i < takenData.Length; i++)
+            {
+                Assert.AreEqual(takenData[i], result[i]);
             }
         }
 

@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Data.Client.Queries.Conversion
 {
     using System;
@@ -28,6 +26,7 @@ namespace Kephas.Data.Client.Queries.Conversion
     using Kephas.Logging;
     using Kephas.Model;
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Services;
 
     using Expression = Kephas.Data.Client.Queries.Expression;
@@ -116,6 +115,18 @@ namespace Kephas.Data.Client.Queries.Conversion
                     orderByMethod = orderByGenericMethod.MakeGenericMethod(queryEntityType, ExtractKeySelectorType(nextOrder.expression));
                     queryable = (IQueryable)orderByMethod.Call(null, queryable, nextOrder.expression);
                 }
+            }
+
+            if (clientQuery.Skip.HasValue)
+            {
+                var skipMethod = QueryableMethods.QueryableSkipGeneric.MakeGenericMethod(queryEntityType);
+                queryable = (IQueryable)skipMethod.Call(null, queryable, clientQuery.Skip.Value);
+            }
+
+            if (clientQuery.Take.HasValue)
+            {
+                var takeMethod = QueryableMethods.QueryableTakeGeneric.MakeGenericMethod(queryEntityType);
+                queryable = (IQueryable)takeMethod.Call(null, queryable, clientQuery.Take.Value);
             }
 
             return queryable;
