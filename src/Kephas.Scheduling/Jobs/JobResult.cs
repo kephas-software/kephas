@@ -8,15 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using Kephas.Data.Formatting;
-using Kephas.Scheduling.Reflection;
-
 namespace Kephas.Scheduling.Jobs
 {
+    using System;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Formatting;
     using Kephas.Operations;
+    using Kephas.Scheduling.Reflection;
 
     /// <summary>
     /// Encapsulates the result of a job.

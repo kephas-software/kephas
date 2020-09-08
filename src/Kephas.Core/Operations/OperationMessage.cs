@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Dynamic;
-
 namespace Kephas.Operations
 {
     using System;
 
     using Kephas.Data.Formatting;
+    using Kephas.Dynamic;
 
     /// <summary>
     /// An operation message.
