@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Kephas.Scheduling.Jobs
 {
+    using System;
+
     using Kephas.Operations;
     using Kephas.Scheduling.Reflection;
 
@@ -21,12 +21,12 @@ namespace Kephas.Scheduling.Jobs
     public interface IJobResult : IOperationResult
     {
         /// <summary>
-        /// Gets the identifier of the job.
+        /// Gets the identifier of the scheduled job.
         /// </summary>
         /// <value>
-        /// The identifier of the job.
+        /// The identifier of the scheduled job.
         /// </value>
-        object? JobInfoId { get; }
+        object? ScheduledJobId { get; }
 
         /// <summary>
         /// Gets the job information.
@@ -34,23 +34,23 @@ namespace Kephas.Scheduling.Jobs
         /// <value>
         /// The job information.
         /// </value>
-        IJobInfo? JobInfo { get; }
+        IJobInfo? ScheduledJob { get; }
 
         /// <summary>
-        /// Gets the identifier of the job.
+        /// Gets the identifier of the running job.
         /// </summary>
         /// <value>
-        /// The identifier of the job.
+        /// The identifier of the running job.
         /// </value>
-        object? JobId { get; }
+        object? RunningJobId { get; }
 
         /// <summary>
-        /// Gets the job.
+        /// Gets the running job.
         /// </summary>
         /// <value>
-        /// The job.
+        /// The running job.
         /// </value>
-        IJob? Job { get; }
+        IJob? RunningJob { get; }
 
         /// <summary>
         /// Gets the identifier of the trigger.

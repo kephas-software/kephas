@@ -37,7 +37,7 @@ namespace Kephas.Scheduling.Jobs
         public JobResult(object jobId, Task<object?> jobOperation)
             : base(jobOperation)
         {
-            this.JobId = jobId;
+            this.RunningJobId = jobId;
         }
 
         /// <summary>
@@ -52,12 +52,12 @@ namespace Kephas.Scheduling.Jobs
         /// <summary>
         /// Gets or sets the ID of the job information.
         /// </summary>
-        public object? JobInfoId { get; set; }
+        public object? ScheduledJobId { get; set; }
 
         /// <summary>
         /// Gets or sets the job information.
         /// </summary>
-        public IJobInfo? JobInfo { get; set; }
+        public IJobInfo? ScheduledJob { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the job.
@@ -65,7 +65,7 @@ namespace Kephas.Scheduling.Jobs
         /// <value>
         /// The identifier of the job.
         /// </value>
-        public object? JobId { get; set; }
+        public object? RunningJobId { get; set; }
 
         /// <summary>
         /// Gets or sets the job.
@@ -73,7 +73,7 @@ namespace Kephas.Scheduling.Jobs
         /// <value>
         /// The job.
         /// </value>
-        public IJob? Job { get; set; }
+        public IJob? RunningJob { get; set; }
 
         /// <summary>
         /// Gets or sets the trigger identifier.

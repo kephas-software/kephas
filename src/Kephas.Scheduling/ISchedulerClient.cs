@@ -29,14 +29,10 @@ namespace Kephas.Scheduling
     public interface ISchedulerClient
     {
         /// <summary>
-        /// Enqueues a new job asynchronously.
-        /// <para>
-        /// The job information provided may be either an ID, a qualified name, or a
-        /// <see cref="IJobInfo"/>.
-        /// </para>
+        /// Enqueues a new job and starts it asynchronously.
         /// </summary>
-        /// <param name="jobInfo">Information describing the job.</param>
-        /// <param name="target">Target for the.</param>
+        /// <param name="scheduledJob">The scheduled job.</param>
+        /// <param name="target">The target instance used by the job.</param>
         /// <param name="arguments">The arguments.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
@@ -44,21 +40,17 @@ namespace Kephas.Scheduling
         /// An asynchronous result that yields the operation result.
         /// </returns>
         Task<IJobResult> EnqueueAsync(
-            IJobInfo jobInfo,
+            IJobInfo scheduledJob,
             object? target,
             IExpando? arguments,
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Enqueues a new job asynchronously.
-        /// <para>
-        /// The job information provided may be either an ID, a qualified name, or a
-        /// <see cref="IJobInfo"/>.
-        /// </para>
+        /// Enqueues a new job and starts it asynchronously.
         /// </summary>
-        /// <param name="jobInfoId">The ID of the job information.</param>
-        /// <param name="target">Target for the.</param>
+        /// <param name="scheduledJobId">The ID of the scheduled job.</param>
+        /// <param name="target">The target instance used by the job.</param>
         /// <param name="arguments">The arguments.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
@@ -66,46 +58,46 @@ namespace Kephas.Scheduling
         /// An asynchronous result that yields the operation result.
         /// </returns>
         Task<IJobResult> EnqueueAsync(
-            object jobInfoId,
+            object scheduledJobId,
             object? target,
             IExpando? arguments,
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Cancels all running jobs and active triggers related to the provided job information asynchronously.
+        /// Cancels all running jobs and active triggers related to the provided scheduled job asynchronously.
         /// </summary>
-        /// <param name="jobInfo">The job information instance.</param>
+        /// <param name="scheduledJob">The scheduled job instance.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the operation result.
         /// </returns>
-        Task<IJobResult> CancelJobInfoAsync(
-            IJobInfo jobInfo,
+        Task<IJobResult> CancelScheduledJobAsync(
+            IJobInfo scheduledJob,
             CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Cancels all running jobs and active triggers related to the provided job information asynchronously.
+        /// Cancels all running jobs and active triggers related to the provided scheduled job asynchronously.
         /// </summary>
-        /// <param name="jobInfoId">The ID of the job information.</param>
+        /// <param name="scheduledJobId">The ID of the scheduled job.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the operation result.
         /// </returns>
-        Task<IJobResult> CancelJobInfoAsync(
-            object jobInfoId,
+        Task<IJobResult> CancelScheduledJobAsync(
+            object scheduledJobId,
             CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Cancels the running job asynchronously.
         /// </summary>
-        /// <param name="jobId">The job identifier.</param>
+        /// <param name="runningJobId">The identifier of the running job.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result that yields the operation result.
         /// </returns>
-        Task<IJobResult> CancelJobAsync(
-            object jobId,
+        Task<IJobResult> CancelRunningJobAsync(
+            object runningJobId,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -193,7 +185,7 @@ namespace Kephas.Scheduling
         /// Enqueues a new job asynchronously.
         /// </summary>
         /// <param name="scheduler">The scheduler to act on.</param>
-        /// <param name="jobInfo">The job information.</param>
+        /// <param name="scheduledJob">The scheduled job.</param>
         /// <param name="options">Optional. Options for controlling the operation.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
@@ -201,11 +193,11 @@ namespace Kephas.Scheduling
         /// </returns>
         private static Task<IJobResult> EnqueueAsync(
             this ISchedulerClient scheduler,
-            IJobInfo jobInfo,
+            IJobInfo scheduledJob,
             Action<IActivityContext>? options = null,
             CancellationToken cancellationToken = default)
         {
-            return scheduler.EnqueueAsync(jobInfo, null, null, options, cancellationToken);
+            return scheduler.EnqueueAsync(scheduledJob, null, null, options, cancellationToken);
         }
     }
 }
