@@ -46,17 +46,17 @@ namespace Kephas.Scheduling
         /// <summary>
         /// Disables all the triggers of the scheduled job asynchronously.
         /// </summary>
-        /// <param name="job">The ID of the job or the job to be disabled.</param>
+        /// <param name="scheduledJob">The scheduled <see cref="IJobInfo"/> to be disabled or its ID.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>The asynchronous result yielding an operation result.</returns>
-        Task<IOperationResult> DisableScheduledJobAsync(object job, CancellationToken cancellationToken = default);
+        Task<IOperationResult> DisableScheduledJobAsync(object scheduledJob, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Enables all the triggers of the scheduled job asynchronously.
         /// </summary>
-        /// <param name="job">The ID of the job or the job to be enabled.</param>
+        /// <param name="scheduledJob">The scheduled <see cref="IJobInfo"/> to be disabled or its ID.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>The asynchronous result yielding an operation result.</returns>
-        Task<IOperationResult> EnableScheduledJobAsync(object job, CancellationToken cancellationToken = default);
+        Task<IOperationResult> EnableScheduledJobAsync(object scheduledJob, CancellationToken cancellationToken = default);
     }
 }

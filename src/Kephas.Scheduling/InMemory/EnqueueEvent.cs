@@ -22,14 +22,14 @@ namespace Kephas.Scheduling.InMemory
     public class EnqueueEvent
     {
         /// <summary>
-        /// Gets or sets the job information.
+        /// Gets or sets the scheduled job.
         /// </summary>
-        public IJobInfo? JobInfo { get; set; }
+        public IJobInfo? ScheduledJob { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the job information.
+        /// Gets or sets the ID of the scheduled job.
         /// </summary>
-        public object? JobInfoId { get; set; }
+        public object? ScheduledJobId { get; set; }
 
         /// <summary>
         /// Gets or sets the trigger ID.

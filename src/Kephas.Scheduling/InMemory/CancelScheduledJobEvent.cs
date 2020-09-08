@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CancelJobInfoEvent.cs" company="Kephas Software SRL">
+// <copyright file="CancelScheduledJobEvent.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,18 +10,18 @@ namespace Kephas.Scheduling.InMemory
     using Kephas.Scheduling.Reflection;
 
     /// <summary>
-    /// Event for cancelling jobs and triggers based on a given job information.
+    /// Event for cancelling a scheduled job and the associated triggers.
     /// </summary>
-    public class CancelJobInfoEvent
+    public class CancelScheduledJobEvent
     {
         /// <summary>
-        /// Gets or sets the identifier of the job information.
+        /// Gets or sets the identifier of the scheduled job.
         /// </summary>
-        public object? JobInfoId { get; set; }
+        public object? ScheduledJobId { get; set; }
 
         /// <summary>
-        /// Gets or sets the job information instance.
+        /// Gets or sets the scheduled job instance.
         /// </summary>
-        public IJobInfo? JobInfo { get; set; }
+        public IJobInfo? ScheduledJob { get; set; }
     }
 }
