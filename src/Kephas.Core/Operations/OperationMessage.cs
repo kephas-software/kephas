@@ -8,14 +8,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Dynamic;
+
 namespace Kephas.Operations
 {
     using System;
 
+    using Kephas.Data.Formatting;
+
     /// <summary>
     /// An operation message.
     /// </summary>
-    public class OperationMessage : IOperationMessage
+    public class OperationMessage : IOperationMessage, IDataFormattable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OperationMessage"/> class.
@@ -48,6 +52,20 @@ namespace Kephas.Operations
         public override string ToString()
         {
             return $"{this.Timestamp:s} {this.Message}";
+        }
+
+        /// <summary>
+        /// Converts this object to a serialization friendly representation.
+        /// </summary>
+        /// <param name="context">Optional. The formatting context.</param>
+        /// <returns>A serialization friendly object representing this object.</returns>
+        public object ToData(IDataFormattingContext? context = null)
+        {
+            return new Expando
+            {
+                [nameof(this.Message)] = this.Message,
+                [nameof(this.Timestamp)] = this.Timestamp,
+            };
         }
     }
 }

@@ -9,6 +9,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using Kephas.Data.Formatting;
 using Kephas.Scheduling.Reflection;
 
 namespace Kephas.Scheduling.Jobs
@@ -109,6 +110,22 @@ namespace Kephas.Scheduling.Jobs
 
                 return base.Elapsed;
             }
+        }
+
+        /// <summary>
+        /// Converts this object to a serialization friendly representation.
+        /// </summary>
+        /// <param name="context">Optional. The formatting context.</param>
+        /// <returns>A serialization friendly object representing this object.</returns>
+        public override object ToData(IDataFormattingContext? context = null)
+        {
+            var expando = base.ToData(context).ToExpando()!;
+            expando[nameof(this.ScheduledJobId)] = this.ScheduledJobId;
+            expando[nameof(this.RunningJobId)] = this.RunningJobId;
+            expando[nameof(this.TriggerId)] = this.TriggerId;
+            expando[nameof(this.StartedAt)] = this.StartedAt;
+            expando[nameof(this.EndedAt)] = this.EndedAt;
+            return expando;
         }
     }
 }
