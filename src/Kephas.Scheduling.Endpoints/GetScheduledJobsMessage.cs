@@ -36,19 +36,14 @@ namespace Kephas.Scheduling.Endpoints
     public class ScheduledJobData
     {
         /// <summary>
-        /// Gets or sets the job ID.
-        /// </summary>
-        public object? JobId { get; set; }
-
-        /// <summary>
         /// Gets or sets the job info ID.
         /// </summary>
-        public object? JobInfoId { get; set; }
+        public object? ScheduledJobId { get; set; }
 
         /// <summary>
         /// Gets or sets the job information.
         /// </summary>
-        public object? JobInfo { get; set; }
+        public object? ScheduledJob { get; set; }
 
         /// <summary>
         /// Gets or sets the triggers.

@@ -64,13 +64,13 @@ namespace Kephas.Scheduling.Endpoints
         public TimeSpan Elapsed { get; set; }
 
         /// <summary>
-        /// Gets or sets the job information.
+        /// Gets or sets the scheduled job.
         /// </summary>
-        public object? JobInfo { get; set; }
+        public object? ScheduledJob { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the job information.
+        /// Gets or sets the ID of the scheduled job.
         /// </summary>
-        public object? JobInfoId { get; set; }
+        public object? ScheduledJobId { get; set; }
     }
 }
