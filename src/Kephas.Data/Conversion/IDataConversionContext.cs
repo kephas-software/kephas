@@ -51,7 +51,7 @@ namespace Kephas.Data.Conversion
         /// <value>
         /// The type of the root source.
         /// </value>
-        Type RootSourceType { get; set; }
+        Type? RootSourceType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the root target.
@@ -59,7 +59,7 @@ namespace Kephas.Data.Conversion
         /// <value>
         /// The type of the root target.
         /// </value>
-        Type RootTargetType { get; set; }
+        Type? RootTargetType { get; set; }
     }
 
     /// <summary>
