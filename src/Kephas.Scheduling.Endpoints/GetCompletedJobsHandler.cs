@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Data.Formatting;
+
 namespace Kephas.Scheduling.Endpoints
 {
     using System.Linq;
@@ -64,7 +66,7 @@ namespace Kephas.Scheduling.Endpoints
                         StartedAt = jobResult.StartedAt,
                         EndedAt = jobResult.EndedAt,
                         Elapsed = jobResult.Elapsed,
-                        ReturnValue = this.GetJobReturnValue(jobResult),
+                        ReturnValue = this.GetJobReturnValue(jobResult, context),
                     })
                     .ToArray(),
                 TotalCount = totalCount,
@@ -76,12 +78,14 @@ namespace Kephas.Scheduling.Endpoints
         /// optionally converting it to a DTO.
         /// </summary>
         /// <param name="jobResult">The job result.</param>
+        /// <param name="messagingContext">The messaging context.</param>
         /// <returns>A serializable return value.</returns>
-        protected virtual object? GetJobReturnValue(IJobResult jobResult)
+        protected virtual object? GetJobReturnValue(IJobResult jobResult, IMessagingContext messagingContext)
         {
-            // TODO - replace .ToString() with a .ToDto() function to convert the value to a DTO.
-            // Possibly use the Data conversion functionality as subsystem.
-            return jobResult.OperationState == OperationState.Completed ? jobResult.Value?.ToString() : null;
+            using var formattingContext = new DataFormattingContext(messagingContext);
+            return jobResult.OperationState == OperationState.Completed && jobResult.Value != null
+                ? jobResult.Value.ToData(formattingContext)
+                : null;
         }
     }
 }
