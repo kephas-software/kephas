@@ -22,19 +22,27 @@ namespace Kephas.Scheduling.Tests.InMemory
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Runtime;
     using Kephas.Scheduling.Triggers;
-    using Kephas.Testing;
+    using Kephas.Testing.Composition;
     using Kephas.Workflow;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class InMemorySchedulerTest : TestBase
+    public class InMemorySchedulerTest : CompositionTestBase
     {
         private RuntimeTypeRegistry typeRegistry;
 
         public InMemorySchedulerTest()
         {
             this.typeRegistry = new RuntimeTypeRegistry();
+        }
+
+        [Test]
+        public void Composition()
+        {
+            var container = this.CreateContainer(typeof(IScheduler).Assembly, typeof(IWorkflowProcessor).Assembly);
+            var scheduler = container.GetExport<IScheduler>();
+            Assert.IsInstanceOf<InMemoryScheduler>(scheduler);
         }
 
         [Test]
