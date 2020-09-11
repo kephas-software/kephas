@@ -192,8 +192,8 @@ namespace Kephas.Operations
                 [nameof(this.OperationState)] = this.OperationState,
                 [nameof(this.Elapsed)] = this.Elapsed,
                 [nameof(this.PercentCompleted)] = this.PercentCompleted,
-                [nameof(this.Messages)] = this.Messages.Select(m => m.ToData(context)).ToArray(),
-                [nameof(this.Exceptions)] = this.Exceptions.Select(e => new ExceptionData(e)),
+                [nameof(this.Messages)] = this.Messages.Count == 0 ? null : this.Messages.Select(m => m.ToData(context)).ToArray(),
+                [nameof(this.Exceptions)] = this.Exceptions.Count == 0 ? null : this.Exceptions.Select(e => e.ToData(context)).ToArray(),
                 [nameof(this.Value)] = this.OperationState == OperationState.Completed
                     ? this.Value.ToData(context)
                     : null,
