@@ -18,6 +18,7 @@ namespace Kephas.Interaction
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Resources;
     using Kephas.Services;
@@ -49,7 +50,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public virtual async Task PublishAsync(object @event, IContext? context, CancellationToken cancellationToken = default)
+        public virtual async Task<IOperationResult> PublishAsync(object @event, IContext? context, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(@event, nameof(@event));
 
@@ -59,6 +60,7 @@ namespace Kephas.Interaction
                 subscriptionsCopy = this.subscriptions.Where(s => s.Match(@event)).ToList();
             }
 
+            var result = new OperationResult { OperationState = OperationState.Completed };
             foreach (var subscription in subscriptionsCopy)
             {
                 try
@@ -71,9 +73,12 @@ namespace Kephas.Interaction
                 }
                 catch (Exception ex)
                 {
+                    result.Fail(ex);
                     this.Logger.Error(ex, Strings.DefaultEventHub_ErrorWhenInvokingSubscriptionCallback, @event);
                 }
             }
+
+            return result;
         }
 
         /// <summary>

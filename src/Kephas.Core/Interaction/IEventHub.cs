@@ -15,6 +15,7 @@ namespace Kephas.Interaction
     using System.Threading.Tasks;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Services;
 
@@ -33,7 +34,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        Task PublishAsync(object @event, IContext context, CancellationToken cancellationToken = default);
+        Task<IOperationResult> PublishAsync(object @event, IContext context, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Subscribes to the event(s) matching the criteria.
