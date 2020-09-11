@@ -43,7 +43,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
 
             await scheduler.InitializeAsync();
 
@@ -72,7 +72,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
             var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();
@@ -100,7 +100,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
 
             await scheduler.InitializeAsync();
 
@@ -141,7 +141,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
             var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();
@@ -176,7 +176,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
             var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();
@@ -212,7 +212,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
             var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();
@@ -248,7 +248,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
 
             await scheduler.InitializeAsync();
 
@@ -283,7 +283,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
             var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();

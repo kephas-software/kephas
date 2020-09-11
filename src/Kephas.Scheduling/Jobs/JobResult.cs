@@ -11,9 +11,11 @@
 namespace Kephas.Scheduling.Jobs
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Kephas.Data.Formatting;
+    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Scheduling.Reflection;
 
@@ -32,12 +34,12 @@ namespace Kephas.Scheduling.Jobs
         /// <summary>
         /// Initializes a new instance of the <see cref="JobResult"/> class.
         /// </summary>
-        /// <param name="jobId">The job identifier.</param>
+        /// <param name="runningJobId">The running job identifier.</param>
         /// <param name="jobOperation">The job operation.</param>
-        public JobResult(object jobId, Task<object?> jobOperation)
+        public JobResult(object runningJobId, Task<object?> jobOperation)
             : base(jobOperation)
         {
-            this.RunningJobId = jobId;
+            this.RunningJobId = runningJobId;
         }
 
         /// <summary>
@@ -91,6 +93,16 @@ namespace Kephas.Scheduling.Jobs
         public DateTimeOffset? EndedAt { get; set; }
 
         /// <summary>
+        /// Gets or sets the cancellation token source.
+        /// </summary>
+        public CancellationTokenSource? CancellationTokenSource { get; set; }
+
+        /// <summary>
+        /// Gets or sets the logger for the job.
+        /// </summary>
+        public ILogger? Logger { get; set; }
+
+        /// <summary>
         /// Gets or sets the elapsed time.
         /// </summary>
         /// <value>
@@ -125,6 +137,19 @@ namespace Kephas.Scheduling.Jobs
             expando[nameof(this.StartedAt)] = this.StartedAt;
             expando[nameof(this.EndedAt)] = this.EndedAt;
             return expando;
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return this.RunningJobId == null
+                ? base.ToString()
+                : $"[{this.RunningJobId}] {base.ToString()}";
         }
     }
 }
