@@ -140,10 +140,11 @@ namespace Kephas.Scheduling.InMemory
             {
                 RunningJobId = runningJobId,
             };
-            await this.eventHub.PublishAsync(
+            var result = await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
                 cancellationToken).PreserveThreadContext();
+            result.ThrowIfHasErrors();
 
             return new JobResult { RunningJobId = runningJobId }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
@@ -163,10 +164,11 @@ namespace Kephas.Scheduling.InMemory
             {
                 TriggerId = triggerId,
             };
-            await this.eventHub.PublishAsync(
+            var result = await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
                 cancellationToken).PreserveThreadContext();
+            result.ThrowIfHasErrors();
 
             return new JobResult(triggerId)
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
@@ -188,10 +190,11 @@ namespace Kephas.Scheduling.InMemory
                 ScheduledJob = scheduledJob,
                 ScheduledJobId = scheduledJobId ?? scheduledJob?.Id,
             };
-            await this.eventHub.PublishAsync(
+            var result = await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
                 cancellationToken).PreserveThreadContext();
+            result.ThrowIfHasErrors();
 
             return new JobResult { ScheduledJob = scheduledJob, ScheduledJobId = scheduledJobId ?? scheduledJob?.Id }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
@@ -232,10 +235,11 @@ namespace Kephas.Scheduling.InMemory
                 Arguments = arguments,
                 Options = options,
             };
-            await this.eventHub.PublishAsync(
+            var result = await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
                 cancellationToken).PreserveThreadContext();
+            result.ThrowIfHasErrors();
 
             return new JobResult(enqueueEvent.TriggerId) { ScheduledJob = scheduledJob, ScheduledJobId = scheduledJobId ?? scheduledJob?.Id }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
