@@ -50,7 +50,7 @@ namespace Kephas.Operations
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return $"{this.Timestamp:s} {this.Message}";
+            return $"[{this.Timestamp:s}] {this.Message}";
         }
 
         /// <summary>
@@ -60,11 +60,7 @@ namespace Kephas.Operations
         /// <returns>A serialization friendly object representing this object.</returns>
         public object ToData(IDataFormattingContext? context = null)
         {
-            return new Expando
-            {
-                [nameof(this.Message)] = this.Message,
-                [nameof(this.Timestamp)] = this.Timestamp,
-            };
+            return this.ToString();
         }
     }
 }
