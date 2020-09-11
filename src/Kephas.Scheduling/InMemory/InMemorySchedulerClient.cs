@@ -22,6 +22,7 @@ namespace Kephas.Scheduling.InMemory
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
     using Kephas.Workflow;
 
     /// <summary>
@@ -142,7 +143,7 @@ namespace Kephas.Scheduling.InMemory
             await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
-                cancellationToken);
+                cancellationToken).PreserveThreadContext();
 
             return new JobResult { RunningJobId = runningJobId }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
@@ -165,7 +166,7 @@ namespace Kephas.Scheduling.InMemory
             await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
-                cancellationToken);
+                cancellationToken).PreserveThreadContext();
 
             return new JobResult(triggerId)
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
@@ -190,7 +191,7 @@ namespace Kephas.Scheduling.InMemory
             await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
-                cancellationToken);
+                cancellationToken).PreserveThreadContext();
 
             return new JobResult { ScheduledJob = scheduledJob, ScheduledJobId = scheduledJobId ?? scheduledJob?.Id }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
@@ -234,7 +235,7 @@ namespace Kephas.Scheduling.InMemory
             await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
-                cancellationToken);
+                cancellationToken).PreserveThreadContext();
 
             return new JobResult(enqueueEvent.TriggerId) { ScheduledJob = scheduledJob, ScheduledJobId = scheduledJobId ?? scheduledJob?.Id }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
