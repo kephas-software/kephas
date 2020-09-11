@@ -463,7 +463,8 @@ namespace Kephas.Scheduling.InMemory
             }
 
             // first of all cancel all matching triggers...
-            matchingScheduledJobs.ForEach(ji => ji.Triggers.ForEach(t => this.CancelTrigger(t.Id)));
+            // make a copy of the Triggers collection as CancelTrigger removes it from the collection.
+            matchingScheduledJobs.ForEach(ji => ji.Triggers.ToArray().ForEach(t => this.CancelTrigger(t.Id)));
 
             // ...then all matching running jobs.
             var matchingRunningJobs = this.runningJobs
