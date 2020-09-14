@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Xml.Schema;
-
 namespace Kephas.Scheduling.InMemory
 {
     using System;
@@ -155,100 +153,69 @@ namespace Kephas.Scheduling.InMemory
         /// Disables all the triggers of the scheduled job asynchronously.
         /// </summary>
         /// <param name="scheduledJob">The scheduled <see cref="IJobInfo"/> to be disabled or its ID.</param>
+        /// <param name="options">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>The asynchronous result yielding an operation result.</returns>
         public Task<IOperationResult> DisableScheduledJobAsync(
             object scheduledJob,
+            Action<ISchedulingContext>? options = null,
             CancellationToken cancellationToken = default)
-            => this.ToggleScheduledJobAsync(scheduledJob, false, cancellationToken);
+            => this.ToggleScheduledJobAsync(scheduledJob, false, options, cancellationToken);
 
         /// <summary>
         /// Enables all the triggers of the scheduled job asynchronously.
         /// </summary>
         /// <param name="scheduledJob">The scheduled <see cref="IJobInfo"/> to be disabled or its ID.</param>
+        /// <param name="options">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>The asynchronous result yielding an operation result.</returns>
         public virtual Task<IOperationResult> EnableScheduledJobAsync(
             object scheduledJob,
+            Action<ISchedulingContext>? options = null,
             CancellationToken cancellationToken = default)
-            => this.ToggleScheduledJobAsync(scheduledJob, true, cancellationToken);
+            => this.ToggleScheduledJobAsync(scheduledJob, true, options, cancellationToken);
 
         /// <summary>
-        /// Depending on the <paramref name="enabled"/> argument, enables or disables all the triggers
-        /// of the scheduled job asynchronously.
+        /// Enqueues a new job using a job definition or its ID.
         /// </summary>
         /// <param name="scheduledJob">The scheduled <see cref="IJobInfo"/> to be disabled or its ID.</param>
-        /// <param name="enabled">Indicates whether to enable or to disable the scheduled job.</param>
+        /// <param name="options">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>The asynchronous result yielding an operation result.</returns>
-        protected virtual async Task<IOperationResult> ToggleScheduledJobAsync(
+        /// <returns>The asynchronous result.</returns>
+        public virtual async Task<IOperationResult> EnqueueAsync(
             object scheduledJob,
-            bool enabled,
+            Action<ISchedulingContext>? options = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(scheduledJob, nameof(scheduledJob));
 
-            await Task.Yield();
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var jobInfo = scheduledJob as IJobInfo
-                ?? await this.jobStore.GetScheduledJobAsync(scheduledJob!, false, cancellationToken).PreserveThreadContext();
-
-            if (jobInfo == null)
-            {
-                return new OperationResult()
-                    .Fail(new KeyNotFoundException($"Scheduled job '{scheduledJob}' was not found."));
-            }
-
-            foreach (var trigger in jobInfo.Triggers.ToArray())
-            {
-                await this.jobStore.SetTriggerEnabledAsync(trigger, enabled, cancellationToken).PreserveThreadContext();
-            }
-
-            var enableString = enabled ? "enabled" : "disabled";
-            return new OperationResult()
-                .MergeMessage($"Scheduled job '{scheduledJob}' was {enableString}.")
-                .Complete();
-        }
-
-        /// <summary>
-        /// Handles the enqueue event.
-        /// </summary>
-        /// <param name="e">The event to process.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        protected virtual async Task HandleEnqueueAsync(EnqueueEvent e, IContext context, CancellationToken cancellationToken)
-        {
             if (!this.finalizationMonitor.IsNotStarted)
             {
                 this.Logger.Warn("Finalization is started, enqueue requests are rejected.");
-                return;
+                return false.ToOperationResult()
+                    .MergeMessage("Finalization is started, enqueue requests are rejected.");
             }
 
-            if (e.ScheduledJob == null)
+            if (!(scheduledJob is IJobInfo jobInfo))
             {
-                throw new ArgumentException(
-                    $"The {nameof(e.ScheduledJob)} parameter in the {nameof(EnqueueEvent)} is not set.",
-                    nameof(e.ScheduledJob));
+                throw new ArgumentException($"The '{nameof(scheduledJob)}' must be of type '{typeof(IJobInfo)}'.");
             }
 
-            var jobInfo = e.ScheduledJob;
-            var activityContext = this.CreateActivityContext(e.Options);
+            var schedulingContext = this.CreateSchedulingContext(options);
 
-            var trigger = activityContext.Trigger()
-                          ?? new TimerTrigger(e.TriggerId ?? Guid.NewGuid());
+            var trigger = schedulingContext.Trigger()
+                          ?? new TimerTrigger(Guid.NewGuid());
 
             await this.jobStore.AddScheduledJobAsync(jobInfo, cancellationToken).PreserveThreadContext();
             await this.jobStore.AddTriggerAsync(trigger, jobInfo, cancellationToken).PreserveThreadContext();
 
             if (!this.activeTriggers.TryAdd(
                 trigger.Id,
-                (trigger, cts => this.StartJob(jobInfo, e.Target, e.Arguments, e.Options, cts))))
+                (trigger, cts => this.StartJob(jobInfo, schedulingContext.ActivityTarget, schedulingContext.ActivityArguments, schedulingContext.ActivityOptions, cts))))
             {
-                this.Logger.Warn("Cannot enqueue trigger with ID {triggerId}.", trigger.Id);
-                return;
+                this.Logger.Warn("Cannot enqueue trigger '{trigger}' ({triggerId}).", trigger, trigger.Id);
+                return false.ToOperationResult()
+                    .MergeMessage($"Cannot enqueue trigger '{trigger}' ({trigger.Id}).");
             }
 
             async Task OnTriggerOnFireAsync(object sender, FireEventArgs args)
@@ -342,6 +309,73 @@ namespace Kephas.Scheduling.InMemory
             this.Logger.Info("Enqueued job '{scheduledJob}' with trigger '{trigger}'.", jobInfo, trigger);
 
             await ServiceHelper.InitializeAsync(trigger, cancellationToken: cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
+        }
+
+        /// <summary>
+        /// Depending on the <paramref name="enabled"/> argument, enables or disables all the triggers
+        /// of the scheduled job asynchronously.
+        /// </summary>
+        /// <param name="scheduledJob">The scheduled <see cref="IJobInfo"/> to be disabled or its ID.</param>
+        /// <param name="enabled">Indicates whether to enable or to disable the scheduled job.</param>
+        /// <param name="options">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding an operation result.</returns>
+        protected virtual async Task<IOperationResult> ToggleScheduledJobAsync(
+            object scheduledJob,
+            bool enabled,
+            Action<ISchedulingContext>? options = null,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(scheduledJob, nameof(scheduledJob));
+
+            await Task.Yield();
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var jobInfo = scheduledJob as IJobInfo
+                          ?? await this.jobStore.GetScheduledJobAsync(scheduledJob!, false, cancellationToken).PreserveThreadContext();
+
+            if (jobInfo == null)
+            {
+                return new OperationResult()
+                    .Fail(new KeyNotFoundException($"Scheduled job '{scheduledJob}' was not found."));
+            }
+
+            foreach (var trigger in jobInfo.Triggers.ToArray())
+            {
+                await this.jobStore.SetTriggerEnabledAsync(trigger, enabled, cancellationToken).PreserveThreadContext();
+            }
+
+            var enableString = enabled ? "enabled" : "disabled";
+            return new OperationResult()
+                .MergeMessage($"Scheduled job '{scheduledJob}' was {enableString}.")
+                .Complete();
+        }
+
+        /// <summary>
+        /// Handles the enqueue event.
+        /// </summary>
+        /// <param name="e">The event to process.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The asynchronous result.</returns>
+        protected virtual Task HandleEnqueueAsync(EnqueueEvent e, IContext context, CancellationToken cancellationToken)
+        {
+            if (e.ScheduledJob == null || e.ScheduledJobId == null)
+            {
+                throw new ArgumentException(
+                    $"Both {nameof(e.ScheduledJob)} and {nameof(e.ScheduledJobId)} parameters in the {nameof(EnqueueEvent)} are not set. One of them is required.",
+                    nameof(e.ScheduledJob));
+            }
+
+            return this.EnqueueAsync(
+                e.ScheduledJob ?? e.ScheduledJobId,
+                ctx => ctx
+                    .Impersonate(context)
+                    .Activity(e.Target, e.Arguments, e.Options)
+                    .Trigger(e.Trigger),
+                cancellationToken);
         }
 
         /// <summary>
@@ -492,16 +526,6 @@ namespace Kephas.Scheduling.InMemory
         }
 
         /// <summary>
-        /// Creates a new activity context.
-        /// </summary>
-        /// <param name="options">The context options.</param>
-        /// <returns>The new activity context.</returns>
-        protected virtual IActivityContext CreateActivityContext(Action<IActivityContext>? options)
-        {
-            return this.contextFactory.CreateContext<ActivityContext>().Merge(options);
-        }
-
-        /// <summary>
         /// Starts the operation associated to the scheduled job.
         /// </summary>
         /// <param name="scheduledJob">The scheduled job.</param>
@@ -533,6 +557,18 @@ namespace Kephas.Scheduling.InMemory
                 CancellationTokenSource = cancellationTokenSource,
                 Logger = this.Logger,
             };
+        }
+
+        /// <summary>
+        /// Creates the scheduling context.
+        /// </summary>
+        /// <param name="options">Optional. The options configuration.</param>
+        /// <returns>
+        /// The new scope context.
+        /// </returns>
+        protected virtual ISchedulingContext CreateSchedulingContext(Action<ISchedulingContext>? options = null)
+        {
+            return this.contextFactory.CreateContext<SchedulingContext>().Merge(options);
         }
     }
 }

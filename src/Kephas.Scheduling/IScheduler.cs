@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Kephas.Scheduling
 {
     using System.Linq;
@@ -44,19 +46,39 @@ namespace Kephas.Scheduling
         IQueryable<IJobResult> GetCompletedJobs();
 
         /// <summary>
+        /// Enqueues a new job using a scheduled job or its ID.
+        /// </summary>
+        /// <param name="scheduledJob">The scheduled <see cref="IJobInfo"/> to be disabled or its ID.</param>
+        /// <param name="options">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>The asynchronous result yielding the operation output.</returns>
+        Task<IOperationResult> EnqueueAsync(
+            object scheduledJob,
+            Action<ISchedulingContext>? options = null,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Disables all the triggers of the scheduled job asynchronously.
         /// </summary>
         /// <param name="scheduledJob">The scheduled <see cref="IJobInfo"/> to be disabled or its ID.</param>
+        /// <param name="options">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>The asynchronous result yielding an operation result.</returns>
-        Task<IOperationResult> DisableScheduledJobAsync(object scheduledJob, CancellationToken cancellationToken = default);
+        /// <returns>The asynchronous result yielding the operation output.</returns>
+        Task<IOperationResult> DisableScheduledJobAsync(
+            object scheduledJob,
+            Action<ISchedulingContext>? options = null,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Enables all the triggers of the scheduled job asynchronously.
         /// </summary>
         /// <param name="scheduledJob">The scheduled <see cref="IJobInfo"/> to be disabled or its ID.</param>
+        /// <param name="options">Optional. The options configuration.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>The asynchronous result yielding an operation result.</returns>
-        Task<IOperationResult> EnableScheduledJobAsync(object scheduledJob, CancellationToken cancellationToken = default);
+        /// <returns>The asynchronous result yielding the operation output.</returns>
+        Task<IOperationResult> EnableScheduledJobAsync(
+            object scheduledJob,
+            Action<ISchedulingContext>? options = null,
+            CancellationToken cancellationToken = default);
     }
 }

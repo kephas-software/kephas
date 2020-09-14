@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Scheduling.Triggers;
+
 namespace Kephas.Scheduling.InMemory
 {
     using System;
@@ -196,7 +198,11 @@ namespace Kephas.Scheduling.InMemory
                 cancellationToken).PreserveThreadContext();
             result.ThrowIfHasErrors();
 
-            return new JobResult { ScheduledJob = scheduledJob, ScheduledJobId = scheduledJobId ?? scheduledJob?.Id }
+            return new JobResult
+                {
+                    ScheduledJob = scheduledJob,
+                    ScheduledJobId = scheduledJobId ?? scheduledJob?.Id,
+                }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
         }
 
@@ -226,11 +232,12 @@ namespace Kephas.Scheduling.InMemory
         {
             Requires.NotNull(scheduledJob, nameof(scheduledJob));
 
+            var triggerId = Guid.NewGuid();
             var enqueueEvent = new EnqueueEvent
             {
                 ScheduledJob = scheduledJob,
                 ScheduledJobId = scheduledJobId ?? scheduledJob?.Id,
-                TriggerId = Guid.NewGuid(),
+                Trigger = new TimerTrigger(triggerId),
                 Target = target,
                 Arguments = arguments,
                 Options = options,
@@ -241,7 +248,12 @@ namespace Kephas.Scheduling.InMemory
                 cancellationToken).PreserveThreadContext();
             result.ThrowIfHasErrors();
 
-            return new JobResult(enqueueEvent.TriggerId) { ScheduledJob = scheduledJob, ScheduledJobId = scheduledJobId ?? scheduledJob?.Id }
+            return new JobResult
+                {
+                    ScheduledJob = scheduledJob,
+                    ScheduledJobId = scheduledJobId ?? scheduledJob?.Id,
+                    TriggerId = triggerId,
+                }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
         }
     }

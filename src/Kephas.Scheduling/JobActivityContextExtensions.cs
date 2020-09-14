@@ -18,37 +18,5 @@ namespace Kephas.Scheduling
     /// </summary>
     public static class JobActivityContextExtensions
     {
-        private const string TriggerKey = "Trigger";
-
-        /// <summary>
-        /// Sets the provided trigger to the activity context.
-        /// </summary>
-        /// <typeparam name="TContext">Type of the context.</typeparam>
-        /// <param name="context">The activity context.</param>
-        /// <param name="trigger">The trigger.</param>
-        /// <returns>
-        /// A TContext.
-        /// </returns>
-        public static TContext Trigger<TContext>(this TContext context, ITrigger trigger)
-            where TContext : IActivityContext
-        {
-            context[TriggerKey] = trigger;
-
-            return context;
-        }
-
-        /// <summary>
-        /// Gets the trigger from the activity context.
-        /// </summary>
-        /// <typeparam name="TContext">Type of the context.</typeparam>
-        /// <param name="context">The activity context.</param>
-        /// <returns>
-        /// A trigger or <c>null</c>.
-        /// </returns>
-        public static ITrigger? Trigger<TContext>(this TContext context)
-            where TContext : IActivityContext
-        {
-            return context[TriggerKey] as ITrigger;
-        }
     }
 }
