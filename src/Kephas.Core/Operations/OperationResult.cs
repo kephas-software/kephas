@@ -19,12 +19,14 @@ namespace Kephas.Operations
     using System.Threading.Tasks;
 
     using Kephas.Collections;
+    using Kephas.Data.Formatting;
     using Kephas.Dynamic;
+    using Kephas.ExceptionHandling;
 
     /// <summary>
     /// Encapsulates the result of an operation.
     /// </summary>
-    public class OperationResult : Expando, IOperationResult
+    public class OperationResult : Expando, IOperationResult, IDataFormattable
     {
         private object? value;
         private OperationState operationState;
@@ -176,6 +178,26 @@ namespace Kephas.Operations
         public override string ToString()
         {
             return $"{this.OperationState} ({this.PercentCompleted:P1})";
+        }
+
+        /// <summary>
+        /// Converts this object to a serialization friendly representation.
+        /// </summary>
+        /// <param name="context">Optional. The formatting context.</param>
+        /// <returns>A serialization friendly object representing this object.</returns>
+        public virtual object ToData(IDataFormattingContext? context = null)
+        {
+            return new Expando
+            {
+                [nameof(this.OperationState)] = this.OperationState,
+                [nameof(this.Elapsed)] = this.Elapsed,
+                [nameof(this.PercentCompleted)] = this.PercentCompleted,
+                [nameof(this.Messages)] = this.Messages.Count == 0 ? null : this.Messages.Select(m => m.ToData(context)).ToArray(),
+                [nameof(this.Exceptions)] = this.Exceptions.Count == 0 ? null : this.Exceptions.Select(e => e.ToData(context)).ToArray(),
+                [nameof(this.Value)] = this.OperationState == OperationState.Completed
+                    ? this.Value.ToData(context)
+                    : null,
+            };
         }
 
         /// <summary>

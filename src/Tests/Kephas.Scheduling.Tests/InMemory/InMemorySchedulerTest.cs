@@ -22,13 +22,13 @@ namespace Kephas.Scheduling.Tests.InMemory
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Runtime;
     using Kephas.Scheduling.Triggers;
-    using Kephas.Testing;
+    using Kephas.Testing.Composition;
     using Kephas.Workflow;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class InMemorySchedulerTest : TestBase
+    public class InMemorySchedulerTest : CompositionTestBase
     {
         private RuntimeTypeRegistry typeRegistry;
 
@@ -38,12 +38,20 @@ namespace Kephas.Scheduling.Tests.InMemory
         }
 
         [Test]
+        public void Composition()
+        {
+            var container = this.CreateContainer(typeof(IScheduler).Assembly, typeof(IWorkflowProcessor).Assembly);
+            var scheduler = container.GetExport<IScheduler>();
+            Assert.IsInstanceOf<InMemoryScheduler>(scheduler);
+        }
+
+        [Test]
         public async Task InitializeAsync_Enqueue()
         {
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
 
             await scheduler.InitializeAsync();
 
@@ -72,7 +80,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
             var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();
@@ -100,7 +108,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
 
             await scheduler.InitializeAsync();
 
@@ -141,7 +149,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
             var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();
@@ -176,7 +184,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
             var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();
@@ -212,7 +220,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
             var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();
@@ -248,7 +256,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
 
             await scheduler.InitializeAsync();
 
@@ -283,7 +291,7 @@ namespace Kephas.Scheduling.Tests.InMemory
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
-            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor);
+            var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
             var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();

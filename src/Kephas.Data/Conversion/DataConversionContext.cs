@@ -30,8 +30,8 @@ namespace Kephas.Data.Conversion
         public DataConversionContext(
             IDataSpace dataSpace,
             IDataConversionService conversionService,
-            Type rootSourceType = null,
-            Type rootTargetType = null)
+            Type? rootSourceType = null,
+            Type? rootTargetType = null)
             : base(dataSpace)
         {
             Requires.NotNull(conversionService, nameof(conversionService));
@@ -74,7 +74,7 @@ namespace Kephas.Data.Conversion
         /// <value>
         /// The type of the source root object.
         /// </value>
-        public Type RootSourceType { get; set; }
+        public Type? RootSourceType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the target root object.
@@ -82,6 +82,6 @@ namespace Kephas.Data.Conversion
         /// <value>
         /// The type of the target root object.
         /// </value>
-        public Type RootTargetType { get; set; }
+        public Type? RootTargetType { get; set; }
     }
 }

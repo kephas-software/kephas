@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Scheduling.Triggers;
+
 namespace Kephas.Scheduling.InMemory
 {
     using System;
@@ -22,6 +24,7 @@ namespace Kephas.Scheduling.InMemory
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
     using Kephas.Workflow;
 
     /// <summary>
@@ -139,10 +142,11 @@ namespace Kephas.Scheduling.InMemory
             {
                 RunningJobId = runningJobId,
             };
-            await this.eventHub.PublishAsync(
+            var result = await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
-                cancellationToken);
+                cancellationToken).PreserveThreadContext();
+            result.ThrowIfHasErrors();
 
             return new JobResult { RunningJobId = runningJobId }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
@@ -162,10 +166,11 @@ namespace Kephas.Scheduling.InMemory
             {
                 TriggerId = triggerId,
             };
-            await this.eventHub.PublishAsync(
+            var result = await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
-                cancellationToken);
+                cancellationToken).PreserveThreadContext();
+            result.ThrowIfHasErrors();
 
             return new JobResult(triggerId)
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
@@ -187,12 +192,17 @@ namespace Kephas.Scheduling.InMemory
                 ScheduledJob = scheduledJob,
                 ScheduledJobId = scheduledJobId ?? scheduledJob?.Id,
             };
-            await this.eventHub.PublishAsync(
+            var result = await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
-                cancellationToken);
+                cancellationToken).PreserveThreadContext();
+            result.ThrowIfHasErrors();
 
-            return new JobResult { ScheduledJob = scheduledJob, ScheduledJobId = scheduledJobId ?? scheduledJob?.Id }
+            return new JobResult
+                {
+                    ScheduledJob = scheduledJob,
+                    ScheduledJobId = scheduledJobId ?? scheduledJob?.Id,
+                }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
         }
 
@@ -222,21 +232,28 @@ namespace Kephas.Scheduling.InMemory
         {
             Requires.NotNull(scheduledJob, nameof(scheduledJob));
 
+            var triggerId = Guid.NewGuid();
             var enqueueEvent = new EnqueueEvent
             {
                 ScheduledJob = scheduledJob,
                 ScheduledJobId = scheduledJobId ?? scheduledJob?.Id,
-                TriggerId = Guid.NewGuid(),
+                Trigger = new TimerTrigger(triggerId),
                 Target = target,
                 Arguments = arguments,
                 Options = options,
             };
-            await this.eventHub.PublishAsync(
+            var result = await this.eventHub.PublishAsync(
                 enqueueEvent,
                 this.contextFactory.CreateContext<Context>(),
-                cancellationToken);
+                cancellationToken).PreserveThreadContext();
+            result.ThrowIfHasErrors();
 
-            return new JobResult(enqueueEvent.TriggerId) { ScheduledJob = scheduledJob, ScheduledJobId = scheduledJobId ?? scheduledJob?.Id }
+            return new JobResult
+                {
+                    ScheduledJob = scheduledJob,
+                    ScheduledJobId = scheduledJobId ?? scheduledJob?.Id,
+                    TriggerId = triggerId,
+                }
                 .Complete(TimeSpan.Zero, OperationState.InProgress);
         }
     }

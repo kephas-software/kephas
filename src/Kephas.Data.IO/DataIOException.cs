@@ -12,12 +12,13 @@ namespace Kephas.Data.IO
 {
     using System;
 
+    using Kephas.Data.Formatting;
     using Kephas.Operations;
 
     /// <summary>
     /// Exception for signaling data I/O errors.
     /// </summary>
-    public class DataIOException : DataException, IOperationMessage
+    public class DataIOException : DataException, IOperationMessage, IDataFormattable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataIOException"/> class.
@@ -52,7 +53,17 @@ namespace Kephas.Data.IO
         /// <returns>A string representation of the current exception.</returns>
         public override string ToString()
         {
-            return $"{this.Timestamp:s}/{this.Severity} {base.ToString()}";
+            return $"[{this.Timestamp:s} {this.Severity}] {base.ToString()}";
+        }
+
+        /// <summary>
+        /// Converts this object to a serialization friendly representation.
+        /// </summary>
+        /// <param name="context">Optional. The formatting context.</param>
+        /// <returns>A serialization friendly object representing this object.</returns>
+        public object ToData(IDataFormattingContext? context = null)
+        {
+            return this.ToString();
         }
     }
 }

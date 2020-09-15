@@ -11,7 +11,10 @@ namespace Kephas.Scheduling.Endpoints
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Data.Formatting;
     using Kephas.Messaging;
+    using Kephas.Operations;
+    using Kephas.Scheduling.Jobs;
 
     /// <summary>
     /// Handler for the <see cref="GetCompletedJobsMessage"/>.
@@ -62,10 +65,26 @@ namespace Kephas.Scheduling.Endpoints
                         StartedAt = jobResult.StartedAt,
                         EndedAt = jobResult.EndedAt,
                         Elapsed = jobResult.Elapsed,
+                        ReturnValue = this.GetJobReturnValue(jobResult, context),
                     })
                     .ToArray(),
                 TotalCount = totalCount,
             };
+        }
+
+        /// <summary>
+        /// Gets the return value of the job. Makes sure that the output value is serializable,
+        /// optionally converting it to a DTO.
+        /// </summary>
+        /// <param name="jobResult">The job result.</param>
+        /// <param name="messagingContext">The messaging context.</param>
+        /// <returns>A serializable return value.</returns>
+        protected virtual object? GetJobReturnValue(IJobResult jobResult, IMessagingContext messagingContext)
+        {
+            using var formattingContext = new DataFormattingContext(messagingContext);
+            return jobResult.OperationState == OperationState.Completed && jobResult.Value != null
+                ? jobResult.Value.ToData(formattingContext)
+                : null;
         }
     }
 }

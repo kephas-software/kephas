@@ -11,7 +11,10 @@
 namespace Kephas.Scheduling.Jobs
 {
     using System;
+    using System.Threading;
 
+    using Kephas.Data;
+    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Scheduling.Reflection;
 
@@ -69,5 +72,15 @@ namespace Kephas.Scheduling.Jobs
         /// Gets the time when the job ended.
         /// </summary>
         DateTimeOffset? EndedAt { get; }
+
+        /// <summary>
+        /// Gets the cancellation token source.
+        /// </summary>
+        CancellationTokenSource? CancellationTokenSource { get; }
+
+        /// <summary>
+        /// Gets the logger for the job.
+        /// </summary>
+        ILogger? Logger { get; }
     }
 }

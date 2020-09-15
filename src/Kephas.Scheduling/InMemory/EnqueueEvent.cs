@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Scheduling.Triggers;
+
 namespace Kephas.Scheduling.InMemory
 {
     using System;
@@ -32,22 +34,22 @@ namespace Kephas.Scheduling.InMemory
         public object? ScheduledJobId { get; set; }
 
         /// <summary>
-        /// Gets or sets the trigger ID.
+        /// Gets or sets the trigger.
         /// </summary>
-        public object? TriggerId { get; set; }
+        public ITrigger? Trigger { get; set; }
 
         /// <summary>
-        /// Gets or sets the target.
+        /// Gets or sets the activity target.
         /// </summary>
         public object? Target { get; set; }
 
         /// <summary>
-        /// Gets or sets the arguments.
+        /// Gets or sets the activity arguments.
         /// </summary>
         public IExpando? Arguments { get; set; }
 
         /// <summary>
-        /// Gets or sets the options.
+        /// Gets or sets the activity options.
         /// </summary>
         public Action<IActivityContext>? Options { get; set; }
     }

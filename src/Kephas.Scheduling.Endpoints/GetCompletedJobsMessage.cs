@@ -63,5 +63,10 @@ namespace Kephas.Scheduling.Endpoints
         /// Gets or sets the time when the job ended.
         /// </summary>
         public DateTimeOffset? EndedAt { get; set; }
+
+        /// <summary>
+        /// Gets or sets the return value of the executed task.
+        /// </summary>
+        public object? ReturnValue { get; set; }
     }
 }
