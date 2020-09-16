@@ -84,6 +84,25 @@ namespace Kephas.Interaction
         /// Subscribes to the event(s) matching the provided type.
         /// </summary>
         /// <typeparam name="TEvent">Type of the event.</typeparam>
+        /// <typeparam name="TResult">The type of the result returned by the event handler.</typeparam>
+        /// <param name="eventHub">The event hub to act on.</param>
+        /// <param name="callback">The callback.</param>
+        /// <returns>
+        /// An IEventSubscription.
+        /// </returns>
+        public static IEventSubscription Subscribe<TEvent, TResult>(this IEventHub eventHub, Func<TEvent, IContext, CancellationToken, Task<TResult>> callback)
+            where TEvent : class
+        {
+            Requires.NotNull(eventHub, nameof(eventHub));
+            Requires.NotNull(callback, nameof(callback));
+
+            return eventHub.Subscribe(typeof(TEvent), (e, ctx, token) => callback((TEvent)e, ctx, token));
+        }
+
+        /// <summary>
+        /// Subscribes to the event(s) matching the provided type.
+        /// </summary>
+        /// <typeparam name="TEvent">Type of the event.</typeparam>
         /// <param name="eventHub">The event hub to act on.</param>
         /// <param name="callback">The callback.</param>
         /// <returns>
@@ -102,6 +121,31 @@ namespace Kephas.Interaction
                         callback((TEvent)e, ctx);
                         return Task.CompletedTask;
                     });
+        }
+
+        /// <summary>
+        /// Subscribes to the event(s) matching the provided type.
+        /// </summary>
+        /// <typeparam name="TEvent">Type of the event.</typeparam>
+        /// <typeparam name="TResult">The type of the result returned by the event handler.</typeparam>
+        /// <param name="eventHub">The event hub to act on.</param>
+        /// <param name="callback">The callback.</param>
+        /// <returns>
+        /// An IEventSubscription.
+        /// </returns>
+        public static IEventSubscription Subscribe<TEvent, TResult>(this IEventHub eventHub, Func<TEvent, IContext, TResult> callback)
+            where TEvent : class
+        {
+            Requires.NotNull(eventHub, nameof(eventHub));
+            Requires.NotNull(callback, nameof(callback));
+
+            return eventHub.Subscribe(
+                typeof(TEvent),
+                (e, ctx, token) =>
+                {
+                    var result = callback((TEvent)e, ctx);
+                    return Task.FromResult(result);
+                });
         }
     }
 }

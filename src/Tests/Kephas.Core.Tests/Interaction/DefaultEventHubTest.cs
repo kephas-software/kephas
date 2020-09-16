@@ -14,10 +14,9 @@ namespace Kephas.Core.Tests.Interaction
     using System.Threading.Tasks;
 
     using Kephas.Interaction;
+    using Kephas.Operations;
     using Kephas.Services;
-
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -31,16 +30,100 @@ namespace Kephas.Core.Tests.Interaction
             IContext? stringContext = null;
             Exception? exEvent = null;
             IContext? exContext = null;
-            using (hub.Subscribe(e => e.GetType() == typeof(string), (e, ctx, token) => { stringEvent = (string)e; stringContext = ctx; return Task.FromResult(0); }))
-            using (hub.Subscribe(e => e.GetType() == typeof(Exception), (e, ctx, token) => { exEvent = (Exception)e; exContext = ctx; return Task.FromResult(0); }))
+            using (hub.Subscribe(
+                e => e.GetType() == typeof(string),
+                (e, ctx, token) =>
+                {
+                    stringEvent = (string)e;
+                    stringContext = ctx;
+                    return Task.CompletedTask;
+                }))
+            using (hub.Subscribe(
+                e => e.GetType() == typeof(Exception),
+                (e, ctx, token) =>
+                {
+                    exEvent = (Exception)e;
+                    exContext = ctx;
+                    return Task.CompletedTask;
+                }))
             {
                 var expectedContext = Substitute.For<IContext>();
-                await hub.PublishAsync("hello", expectedContext);
+                var result = await hub.PublishAsync("hello", expectedContext);
 
                 Assert.AreEqual("hello", stringEvent);
                 Assert.AreSame(expectedContext, stringContext);
                 Assert.IsNull(exEvent);
                 Assert.IsNull(exContext);
+                Assert.IsFalse(result.HasErrors());
+                Assert.IsNull(result.Value);
+            }
+        }
+
+        [Test]
+        public async Task Subscribe_matching_event_exception()
+        {
+            var hub = new DefaultEventHub();
+            var stringEvent = string.Empty;
+            IContext? stringContext = null;
+            Exception? exEvent = null;
+            IContext? exContext = null;
+            using (hub.Subscribe(
+                e => e.GetType() == typeof(string),
+                (e, ctx, token) =>
+                {
+                    stringEvent = (string)e;
+                    stringContext = ctx;
+                    return Task.FromException(new InvalidOperationException());
+                }))
+            {
+                var expectedContext = Substitute.For<IContext>();
+                var result = await hub.PublishAsync("hello", expectedContext);
+
+                Assert.AreEqual("hello", stringEvent);
+                Assert.AreSame(expectedContext, stringContext);
+                Assert.IsNull(exEvent);
+                Assert.IsNull(exContext);
+                Assert.IsTrue(result.HasErrors());
+                CollectionAssert.AllItemsAreInstancesOfType(result.Exceptions, typeof(InvalidOperationException));
+                Assert.IsNull(result.Value);
+            }
+        }
+
+        [Test]
+        public async Task Subscribe_matching_event_with_return_value()
+        {
+            var hub = new DefaultEventHub();
+            using (hub.Subscribe(
+                e => e.GetType() == typeof(string),
+                (e, ctx, token) => Task.FromResult(12)))
+            using (hub.Subscribe(
+                e => e.GetType() == typeof(Exception),
+                (e, ctx, token) => Task.CompletedTask))
+            {
+                var expectedContext = Substitute.For<IContext>();
+                var result = await hub.PublishAsync("hello", expectedContext);
+
+                Assert.IsFalse(result.HasErrors());
+                Assert.AreEqual(12, result.Value);
+            }
+        }
+
+        [Test]
+        public async Task Subscribe_matching_event_with_return_value_multiple_last_wins()
+        {
+            var hub = new DefaultEventHub();
+            using (hub.Subscribe(
+                e => e.GetType() == typeof(string),
+                (e, ctx, token) => Task.FromResult(12)))
+            using (hub.Subscribe(
+                e => e.GetType() == typeof(string),
+                (e, ctx, token) => Task.FromResult(24)))
+            {
+                var expectedContext = Substitute.For<IContext>();
+                var result = await hub.PublishAsync("hello", expectedContext);
+
+                Assert.IsFalse(result.HasErrors());
+                Assert.AreEqual(24, result.Value);
             }
         }
 
@@ -52,16 +135,65 @@ namespace Kephas.Core.Tests.Interaction
             IContext? stringContext = null;
             Exception? exEvent = null;
             IContext? exContext = null;
-            using (hub.Subscribe<string>((e, ctx, token) => { stringEvent = e; stringContext = ctx; return Task.FromResult(0); }))
-            using (hub.Subscribe<Exception>((e, ctx, token) => { exEvent = e; exContext = ctx; return Task.FromResult(0); }))
+            using (hub.Subscribe<string>(
+                (e, ctx, token) =>
+                {
+                    stringEvent = e;
+                    stringContext = ctx;
+                    return Task.CompletedTask;
+                }))
+            using (hub.Subscribe<Exception>(
+                (e, ctx, token) =>
+                {
+                    exEvent = e;
+                    exContext = ctx;
+                    return Task.CompletedTask;
+                }))
             {
                 var expectedContext = Substitute.For<IContext>();
-                await hub.PublishAsync("hello", expectedContext);
+                var result = await hub.PublishAsync("hello", expectedContext);
 
                 Assert.AreEqual("hello", stringEvent);
                 Assert.AreSame(expectedContext, stringContext);
                 Assert.IsNull(exEvent);
                 Assert.IsNull(exContext);
+                Assert.IsFalse(result.HasErrors());
+                Assert.IsNull(result.Value);
+            }
+        }
+
+        [Test]
+        public async Task Subscribe_typed_matching_event_with_return_value()
+        {
+            var hub = new DefaultEventHub();
+            var stringEvent = string.Empty;
+            IContext? stringContext = null;
+            Exception? exEvent = null;
+            IContext? exContext = null;
+            using (hub.Subscribe<string>(
+                (e, ctx, token) =>
+                {
+                    stringEvent = e;
+                    stringContext = ctx;
+                    return Task.FromResult(12);
+                }))
+            using (hub.Subscribe<Exception>(
+                (e, ctx, token) =>
+                {
+                    exEvent = e;
+                    exContext = ctx;
+                    return Task.CompletedTask;
+                }))
+            {
+                var expectedContext = Substitute.For<IContext>();
+                var result = await hub.PublishAsync("hello", expectedContext);
+
+                Assert.AreEqual("hello", stringEvent);
+                Assert.AreSame(expectedContext, stringContext);
+                Assert.IsNull(exEvent);
+                Assert.IsNull(exContext);
+                Assert.IsFalse(result.HasErrors());
+                Assert.AreEqual(12, result.Value);
             }
         }
     }

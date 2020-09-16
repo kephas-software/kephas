@@ -69,6 +69,7 @@ namespace Kephas.Interaction
                     if (task != null)
                     {
                         await task.PreserveThreadContext();
+                        result.Value = task.GetResult();
                     }
                 }
                 catch (Exception ex)
