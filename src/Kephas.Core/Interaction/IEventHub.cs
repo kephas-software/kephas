@@ -71,7 +71,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        public static IEventSubscription Subscribe<TEvent>(this IEventHub eventHub, Func<TEvent, IContext, CancellationToken, Task> callback)
+        public static IEventSubscription Subscribe<TEvent>(this IEventHub eventHub, Func<TEvent, IContext?, CancellationToken, Task> callback)
             where TEvent : class
         {
             Requires.NotNull(eventHub, nameof(eventHub));
@@ -90,7 +90,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        public static IEventSubscription Subscribe<TEvent, TResult>(this IEventHub eventHub, Func<TEvent, IContext, CancellationToken, Task<TResult>> callback)
+        public static IEventSubscription Subscribe<TEvent, TResult>(this IEventHub eventHub, Func<TEvent, IContext?, CancellationToken, Task<TResult>> callback)
             where TEvent : class
         {
             Requires.NotNull(eventHub, nameof(eventHub));
@@ -108,7 +108,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        public static IEventSubscription Subscribe<TEvent>(this IEventHub eventHub, Action<TEvent, IContext> callback)
+        public static IEventSubscription Subscribe<TEvent>(this IEventHub eventHub, Action<TEvent, IContext?> callback)
             where TEvent : class
         {
             Requires.NotNull(eventHub, nameof(eventHub));
@@ -133,7 +133,7 @@ namespace Kephas.Interaction
         /// <returns>
         /// An IEventSubscription.
         /// </returns>
-        public static IEventSubscription Subscribe<TEvent, TResult>(this IEventHub eventHub, Func<TEvent, IContext, TResult> callback)
+        public static IEventSubscription Subscribe<TEvent, TResult>(this IEventHub eventHub, Func<TEvent, IContext?, TResult> callback)
             where TEvent : class
         {
             Requires.NotNull(eventHub, nameof(eventHub));
