@@ -195,7 +195,7 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeMessages<TResult>(this TResult result, IOperationResult resultToMerge)
+        public static TResult MergeMessages<TResult>(this TResult result, IOperationResult? resultToMerge)
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
@@ -245,7 +245,7 @@ namespace Kephas.Operations
         /// <returns>
         /// The provided result.
         /// </returns>
-        public static TResult MergeAll<TResult>(this TResult result, IOperationResult resultToMerge)
+        public static TResult MergeAll<TResult>(this TResult result, IOperationResult? resultToMerge)
             where TResult : class, IOperationResult
         {
             Requires.NotNull(result, nameof(result));
