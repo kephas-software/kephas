@@ -1,27 +1,26 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnqueueEvent.cs" company="Kephas Software SRL">
+// <copyright file="EnqueueMessage.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the enqueue event class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Scheduling.Triggers;
-
-namespace Kephas.Scheduling.InMemory
+namespace Kephas.Scheduling.Endpoints
 {
     using System;
 
     using Kephas.Dynamic;
+    using Kephas.Messaging;
+    using Kephas.Messaging.Messages;
+    using Kephas.Operations;
     using Kephas.Scheduling.Reflection;
+    using Kephas.Scheduling.Triggers;
     using Kephas.Workflow;
 
     /// <summary>
-    /// An enqueue event.
+    /// Message for enqueuing a job.
     /// </summary>
-    public class EnqueueEvent
+    public class EnqueueMessage : IMessage
     {
         /// <summary>
         /// Gets or sets the scheduled job.
@@ -52,5 +51,16 @@ namespace Kephas.Scheduling.InMemory
         /// Gets or sets the activity options.
         /// </summary>
         public Action<IActivityContext>? Options { get; set; }
+    }
+
+    /// <summary>
+    /// Response for <see cref="EnqueueMessage"/>.
+    /// </summary>
+    public class EnqueueResponseMessage : ResponseMessage
+    {
+        /// <summary>
+        /// Gets or sets the result of the enqueue operation.
+        /// </summary>
+        public IOperationResult<IJobInfo?>? Result { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace Kephas.Scheduling.Tests.InMemory
     [TestFixture]
     public class InMemorySchedulerTest : CompositionTestBase
     {
-        private RuntimeTypeRegistry typeRegistry;
+        private readonly RuntimeTypeRegistry typeRegistry;
 
         public InMemorySchedulerTest()
         {
@@ -46,7 +46,7 @@ namespace Kephas.Scheduling.Tests.InMemory
         }
 
         [Test]
-        public async Task InitializeAsync_Enqueue()
+        public async Task EnqueueAsync_extension()
         {
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
@@ -60,13 +60,14 @@ namespace Kephas.Scheduling.Tests.InMemory
 
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
-            await eventHub.PublishAsync(
-                new EnqueueEvent
+            await scheduler.EnqueueAsync(
+                jobInfo,
+                trigger: new TimerTrigger
                 {
-                    ScheduledJob = jobInfo,
-                    Options = ctx => ctx.Trigger(new TimerTrigger { Count = 2, Interval = TimeSpan.FromMilliseconds(30), IntervalKind = TimerIntervalKind.StartToStart }),
-                },
-                null);
+                    Count = 2,
+                    Interval = TimeSpan.FromMilliseconds(30),
+                    IntervalKind = TimerIntervalKind.StartToStart,
+                });
 
             await Task.Delay(150);
             Assert.AreEqual(2, execution);
@@ -75,13 +76,12 @@ namespace Kephas.Scheduling.Tests.InMemory
         }
 
         [Test]
-        public async Task InitializeAsync_Enqueue_with_client()
+        public async Task EnqueueAsync()
         {
             var eventHub = new DefaultEventHub();
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new ActivityContext(Substitute.For<ICompositionContext>(), workflowProcessor));
             var scheduler = new InMemoryScheduler(eventHub, contextFactory, workflowProcessor, new InMemoryJobStore());
-            var schedulerClient = new InMemorySchedulerClient(eventHub, contextFactory);
 
             await scheduler.InitializeAsync();
 
@@ -90,11 +90,15 @@ namespace Kephas.Scheduling.Tests.InMemory
 
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
-            await schedulerClient.EnqueueAsync(
+            await scheduler.EnqueueAsync(
                 jobInfo,
-                null,
-                null,
-                ctx => ctx.Trigger(new TimerTrigger { Count = 2, Interval = TimeSpan.FromMilliseconds(30) }));
+                ctx => ctx
+                    .Trigger(new TimerTrigger
+                    {
+                        Count = 2,
+                        Interval = TimeSpan.FromMilliseconds(30),
+                        IntervalKind = TimerIntervalKind.StartToStart,
+                    }));
 
             await Task.Delay(150);
             Assert.AreEqual(2, execution);
@@ -118,17 +122,20 @@ namespace Kephas.Scheduling.Tests.InMemory
             var triggerId = 1;
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
-            await eventHub.PublishAsync(
-                new EnqueueEvent
+            await scheduler.EnqueueAsync(
+                jobInfo,
+                ctx => ctx.Trigger(new TimerTrigger(triggerId)
                 {
-                    ScheduledJob = jobInfo,
-                    Options = ctx => ctx.Trigger(new TimerTrigger(triggerId) { Count = null, Interval = TimeSpan.FromMilliseconds(30) }),
-                },
-                null);
+                    Count = null,
+                    Interval = TimeSpan.FromMilliseconds(30),
+                }),
+                default);
 
             await Task.Delay(150);
 
-            await eventHub.PublishAsync(
+            await scheduler.CancelTriggerAsync(
+                jobInfo,
+                ctx => ctx.Trigger(new TimerTrigger(triggerId) { Count = null, Interval = TimeSpan.FromMilliseconds(30) }),
                 new CancelTriggerEvent
                 {
                     TriggerId = triggerId,
@@ -164,7 +171,8 @@ namespace Kephas.Scheduling.Tests.InMemory
                 jobInfo,
                 null,
                 null,
-                ctx => ctx.Trigger(new TimerTrigger(triggerId) { Count = null, Interval = TimeSpan.FromMilliseconds(30) }));
+                null,
+                new TimerTrigger(triggerId) { Count = null, Interval = TimeSpan.FromMilliseconds(30) });
 
             await Task.Delay(150);
 
@@ -199,7 +207,8 @@ namespace Kephas.Scheduling.Tests.InMemory
                 jobInfo,
                 null,
                 null,
-                ctx => ctx.Trigger(new TimerTrigger(triggerId) { Count = null, Interval = TimeSpan.FromMilliseconds(30) }));
+                null,
+                new TimerTrigger(triggerId) { Count = null, Interval = TimeSpan.FromMilliseconds(30) });
 
             await Task.Delay(150);
 
@@ -235,7 +244,8 @@ namespace Kephas.Scheduling.Tests.InMemory
                 jobInfo,
                 null,
                 null,
-                ctx => ctx.Trigger(new TimerTrigger(triggerId) { Count = null, Interval = TimeSpan.FromMilliseconds(30) }));
+                null,
+                new TimerTrigger(triggerId) { Count = null, Interval = TimeSpan.FromMilliseconds(30) });
 
             await Task.Delay(150);
 
@@ -265,13 +275,13 @@ namespace Kephas.Scheduling.Tests.InMemory
 
             workflowProcessor.ExecuteAsync(Arg.Any<IJob>(), Arg.Any<object>(), Arg.Any<IExpando>(), Arg.Any<Action<IActivityContext>>(), Arg.Any<CancellationToken>())
                 .Returns(ci => jobInfo.ExecuteAsync(ci.Arg<IJob>(), null, null, contextFactory.CreateContext<ActivityContext>(), ci.Arg<CancellationToken>()));
-            await eventHub.PublishAsync(
-                new EnqueueEvent
+            await scheduler.EnqueueAsync(
+                jobInfo,
+                ctx => ctx.Trigger(new TimerTrigger
                 {
-                    ScheduledJob = jobInfo,
-                    Options = ctx => ctx.Trigger(new TimerTrigger { Count = null, Interval = TimeSpan.FromMilliseconds(30) }),
-                },
-                null);
+                    Count = null,
+                    Interval = TimeSpan.FromMilliseconds(30),
+                }));
 
             await Task.Delay(150);
 
@@ -305,7 +315,8 @@ namespace Kephas.Scheduling.Tests.InMemory
                 jobInfo,
                 null,
                 null,
-                ctx => ctx.Trigger(new TimerTrigger { Count = null, Interval = TimeSpan.FromMilliseconds(30) }));
+                null,
+                new TimerTrigger { Count = null, Interval = TimeSpan.FromMilliseconds(30) });
 
             await Task.Delay(150);
 

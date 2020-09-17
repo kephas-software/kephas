@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CancelScheduledJobEvent.cs" company="Kephas Software SRL">
+// <copyright file="EnableScheduledJobEvent.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,9 +10,9 @@ namespace Kephas.Scheduling.InMemory
     using Kephas.Scheduling.Reflection;
 
     /// <summary>
-    /// Event for cancelling a scheduled job and the associated triggers.
+    /// Event for enabling a scheduled job and the associated triggers.
     /// </summary>
-    public class CancelScheduledJobEvent
+    public class EnableScheduledJobEvent
     {
         /// <summary>
         /// Gets or sets the identifier of the scheduled job.

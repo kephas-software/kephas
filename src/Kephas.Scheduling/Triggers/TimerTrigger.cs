@@ -14,13 +14,14 @@ namespace Kephas.Scheduling.Triggers
     using System.Runtime.CompilerServices;
     using System.Threading;
 
+    using Kephas.Data.Formatting;
     using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
     /// A timer trigger.
     /// </summary>
-    public class TimerTrigger : TriggerBase, ITimerTrigger
+    public class TimerTrigger : TriggerBase, ITimerTrigger, IDataFormattable
     {
         private Timer? timer;
         private int firedCount = 0;
@@ -121,6 +122,14 @@ namespace Kephas.Scheduling.Triggers
             var enabled = this.IsEnabled ? "enabled" : "disabled";
             return $"{this.GetType().Name}:{this.Id}{period}{times}{interval}/{enabled}";
         }
+
+        /// <summary>
+        /// Converts this object to a serialization friendly representation.
+        /// </summary>
+        /// <param name="context">Optional. The formatting context.</param>
+        /// <returns>A serialization friendly object representing this object.</returns>
+        public virtual object ToData(IDataFormattingContext? context = null)
+            => this.ToString();
 
         /// <summary>
         /// Releases the unmanaged resources used by the <see cref="TriggerBase"/> and optionally

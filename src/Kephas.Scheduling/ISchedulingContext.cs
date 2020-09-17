@@ -123,23 +123,6 @@ namespace Kephas.Scheduling
         }
 
         /// <summary>
-        /// Gets or sets the activity options.
-        /// </summary>
-        /// <param name="context">The scheduling context.</param>
-        /// <param name="activityOptions">The activity options.</param>
-        /// <typeparam name="TContext">The scheduling context type.</typeparam>
-        /// <returns>This scheduling context.</returns>
-        public static TContext ActivityOptions<TContext>(this TContext context, Action<IActivityContext> activityOptions)
-            where TContext : class, ISchedulingContext
-        {
-            Requires.NotNull(context, nameof(context));
-
-            context.ActivityOptions = activityOptions;
-
-            return context;
-        }
-
-        /// <summary>
         /// Gets or sets the activity parameters.
         /// </summary>
         /// <param name="context">The scheduling context.</param>
