@@ -49,6 +49,7 @@ namespace Kephas.Services
         {
             var exportFactories = this.compositionContext
                 .GetExportFactories<TService, AppServiceMetadata>()
+                .Order()
                 .Where(f => f.Metadata.ServiceName == serviceName)
                 .ToList();
             if (exportFactories.Count == 0)
