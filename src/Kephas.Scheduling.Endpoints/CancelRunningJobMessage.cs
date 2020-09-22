@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CancelScheduledJobMessage.cs" company="Kephas Software SRL">
+// <copyright file="CancelRunningJobMessage.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,32 +10,33 @@ namespace Kephas.Scheduling.Endpoints
     using Kephas.Messaging;
     using Kephas.Messaging.Messages;
     using Kephas.Operations;
+    using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
 
     /// <summary>
-    /// Message for cancelling a scheduled job.
+    /// Message for canceling running jobs.
     /// </summary>
-    public class CancelScheduledJobMessage : IMessage
+    public class CancelRunningJobMessage : IMessage
     {
         /// <summary>
-        /// Gets or sets the identifier of the scheduled job.
+        /// Gets or sets the identifier of the running job to be canceled.
         /// </summary>
-        public object? ScheduledJobId { get; set; }
+        public object? RunningJobId { get; set; }
 
         /// <summary>
-        /// Gets or sets the scheduled job instance.
+        /// Gets or sets the running job to be canceled.
         /// </summary>
-        public IJobInfo? ScheduledJob { get; set; }
+        public IJobResult? RunningJob { get; set; }
     }
 
     /// <summary>
-    /// Response for <see cref="CancelScheduledJobMessage"/>.
+    /// Response for <see cref="CancelRunningJobMessage"/>.
     /// </summary>
-    public class CancelScheduledJobResponseMessage : ResponseMessage
+    public class CancelRunningJobResponseMessage : ResponseMessage
     {
         /// <summary>
-        /// Gets or sets the result of the cancel scheduled job operation.
+        /// Gets or sets the result of the cancel running job operation.
         /// </summary>
-        public IOperationResult<IJobInfo?>? Result { get; set; }
+        public IOperationResult<IJobResult?>? Result { get; set; }
     }
 }

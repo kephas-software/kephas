@@ -20,7 +20,6 @@ namespace Kephas.Scheduling.InMemory
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
-    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Scheduling.Jobs;
@@ -38,11 +37,9 @@ namespace Kephas.Scheduling.InMemory
     [OverridePriority(Priority.Low)]
     public class InMemoryScheduler : Loggable, IScheduler
     {
-        private readonly IEventHub eventHub;
         private readonly IContextFactory contextFactory;
         private readonly IWorkflowProcessor workflowProcessor;
         private readonly IJobStore jobStore;
-        private readonly List<IEventSubscription> subscriptions = new List<IEventSubscription>();
 
         private readonly ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationTokenSource, IJobResult> triggerAction)>
             activeTriggers = new ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationTokenSource, IJobResult> triggerAction)>();
@@ -52,20 +49,17 @@ namespace Kephas.Scheduling.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryScheduler"/> class.
         /// </summary>
-        /// <param name="eventHub">The event hub.</param>
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
         /// <param name="jobStore">The job store.</param>
         /// <param name="logManager">The log manager.</param>
         public InMemoryScheduler(
-            IEventHub eventHub,
             IContextFactory contextFactory,
             IWorkflowProcessor workflowProcessor,
             IJobStore jobStore,
             ILogManager? logManager = null)
             : base(logManager)
         {
-            this.eventHub = eventHub;
             this.contextFactory = contextFactory;
             this.workflowProcessor = workflowProcessor;
             this.jobStore = jobStore;
@@ -82,9 +76,6 @@ namespace Kephas.Scheduling.InMemory
         /// </returns>
         public Task InitializeAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
-            this.subscriptions.Add(this.eventHub.Subscribe<CancelRunningJobEvent>(this.HandleCancelRunningJob));
-            this.subscriptions.Add(this.eventHub.Subscribe<CancelTriggerEvent>(this.HandleCancelTriggerAsync));
-
             return Task.CompletedTask;
         }
 
@@ -100,15 +91,13 @@ namespace Kephas.Scheduling.InMemory
         {
             this.finalizationMonitor.Start();
 
-            this.subscriptions.ForEach(s => s.Dispose());
-
             // cancel triggers
             while (this.activeTriggers.Count > 0)
             {
                 var kv = this.activeTriggers.FirstOrDefault();
                 if (kv.Key != null)
                 {
-                    await this.CancelTriggerAsync(kv.Key, cancellationToken).PreserveThreadContext();
+                    await this.CancelTriggerAsync(kv.Key, ctx => ctx.Impersonate(context), cancellationToken).PreserveThreadContext();
                 }
             }
 
@@ -116,7 +105,10 @@ namespace Kephas.Scheduling.InMemory
             var runningJobs = this.jobStore.GetRunningJobs().ToList();
             foreach (var runningJob in runningJobs)
             {
-                await this.CancelRunningJobAsync(runningJob.RunningJobId!, cancellationToken).PreserveThreadContext();
+                await this.CancelRunningJobAsync(
+                    runningJob,
+                    ctx => ctx.Impersonate(context),
+                    cancellationToken).PreserveThreadContext();
             }
 
             // cancel scheduled jobs, if any.
@@ -132,20 +124,23 @@ namespace Kephas.Scheduling.InMemory
         /// <summary>
         /// Gets the scheduled jobs.
         /// </summary>
+        /// <param name="options">Optional. The options configuration.</param>
         /// <returns>A query over the scheduled jobs.</returns>
-        public IQueryable<IJobInfo> GetScheduledJobs() => this.jobStore.GetScheduledJobs();
+        public IQueryable<IJobInfo> GetScheduledJobs(Action<ISchedulingContext>? options = null) => this.jobStore.GetScheduledJobs();
 
         /// <summary>
         /// Gets the running jobs.
         /// </summary>
+        /// <param name="options">Optional. The options configuration.</param>
         /// <returns>A query over the running jobs.</returns>
-        public IQueryable<IJobResult> GetRunningJobs() => this.jobStore.GetRunningJobs();
+        public IQueryable<IJobResult> GetRunningJobs(Action<ISchedulingContext>? options = null) => this.jobStore.GetRunningJobs();
 
         /// <summary>
         /// Gets the completed jobs.
         /// </summary>
+        /// <param name="options">Optional. The options configuration.</param>
         /// <returns>A query over the completed jobs.</returns>
-        public IQueryable<IJobResult> GetCompletedJobs() => this.jobStore.GetCompletedJobs();
+        public IQueryable<IJobResult> GetCompletedJobs(Action<ISchedulingContext>? options = null) => this.jobStore.GetCompletedJobs();
 
         /// <summary>
         /// Disables all the triggers of the scheduled job asynchronously.
@@ -207,7 +202,7 @@ namespace Kephas.Scheduling.InMemory
             // make a copy of the Triggers collection as CancelTriggerAsync removes it from the collection.
             foreach (var trigger in jobInfo.Triggers.ToArray())
             {
-                await this.CancelTriggerAsync(trigger.Id, cancellationToken).PreserveThreadContext();
+                await this.CancelTriggerAsync(trigger.Id, options, cancellationToken).PreserveThreadContext();
             }
 
             // ...then all matching running jobs...
@@ -224,13 +219,82 @@ namespace Kephas.Scheduling.InMemory
             {
                 foreach (var job in matchingRunningJobs)
                 {
-                    await this.CancelRunningJobAsync(job, cancellationToken).PreserveThreadContext();
+                    await this.CancelRunningJobAsync(job, options, cancellationToken).PreserveThreadContext();
                 }
             }
 
             // ... and last remove the scheduled job.
             await this.jobStore.RemoveScheduledJobAsync(jobInfo.Id, cancellationToken).PreserveThreadContext();
             return jobInfo.ToOperationResult()!;
+        }
+
+        /// <summary>
+        /// Cancels the running job asynchronously.
+        /// </summary>
+        /// <param name="runningJob">The identifier of the running job.</param>
+        /// <param name="options">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
+        public virtual async Task<IOperationResult<IJobResult?>> CancelRunningJobAsync(
+            object runningJob,
+            Action<ISchedulingContext>? options = null,
+            CancellationToken cancellationToken = default)
+        {
+            var job = runningJob as IJobResult
+                      ?? await this.jobStore.GetRunningJobAsync(runningJob, false, cancellationToken)
+                          .PreserveThreadContext();
+
+            if (job == null)
+            {
+                this.Logger.Info("Running job '{job}' not found, probably completed or already canceled.", runningJob);
+                return job.ToOperationResult().Fail(new SchedulingException($"Running job '{runningJob}' not found, probably completed or already canceled."));
+            }
+
+            this.Logger.Info("Cancelling running job '{job}'...", job);
+
+            job.CancellationTokenSource?.Cancel();
+            await this.jobStore.RemoveRunningJobAsync(job.RunningJobId!, cancellationToken).PreserveThreadContext();
+
+            this.Logger.Info("Job '{job}' was removed from the list of running jobs and was signaled for cancellation.", job);
+            return job.ToOperationResult()
+                .MergeMessage($"Job '{job}' was removed from the list of running jobs and was signaled for cancellation.")!;
+        }
+
+        /// <summary>
+        /// Cancels the trigger asynchronously.
+        /// </summary>
+        /// <param name="trigger">The trigger to be canceled or its ID.</param>
+        /// <param name="options">Optional. The options configuration.</param>
+        /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
+        /// <returns>
+        /// An asynchronous result that yields the operation result.
+        /// </returns>
+        public virtual async Task<IOperationResult<ITrigger?>> CancelTriggerAsync(
+            object trigger,
+            Action<ISchedulingContext>? options = null,
+            CancellationToken cancellationToken = default)
+        {
+            Requires.NotNull(trigger, nameof(trigger));
+
+            this.Logger.Info("Cancelling trigger '{trigger}'...", trigger);
+
+            var triggerId = trigger is ITrigger triggerInstance ? triggerInstance.Id : trigger;
+            if (!this.activeTriggers.TryRemove(triggerId, out var tuple))
+            {
+                this.Logger.Warn("Trigger '{trigger}' was already removed from the list of active triggers.", trigger);
+                return ((ITrigger?)null).ToOperationResult()
+                    .Fail(new SchedulingException($"Trigger '{trigger}' was already removed from the list of active triggers."));
+            }
+
+            await this.jobStore.SetTriggerEnabledAsync(tuple.trigger, false, cancellationToken).PreserveThreadContext();
+            tuple.trigger.Dispose();
+            await this.jobStore.RemoveTriggerAsync(tuple.trigger.Id, cancellationToken).PreserveThreadContext();
+
+            this.Logger.Info("Trigger '{trigger}' was removed from the list of active triggers and was canceled.", tuple.trigger);
+            return tuple.trigger.ToOperationResult()
+                .MergeMessage($"Trigger '{tuple.trigger}' was removed from the list of active triggers and was canceled.")!;
         }
 
         /// <summary>
@@ -256,7 +320,7 @@ namespace Kephas.Scheduling.InMemory
             {
                 this.Logger.Warn("Finalization is started, enqueue requests are rejected.");
                 return jobInfo.ToOperationResult()
-                    .MergeException(new InvalidOperationException("Finalization is started, enqueue requests are rejected."));
+                    .Fail(new InvalidOperationException("Finalization is started, enqueue requests are rejected."))!;
             }
 
             var schedulingContext = this.CreateSchedulingContext(options);
@@ -273,7 +337,7 @@ namespace Kephas.Scheduling.InMemory
             {
                 this.Logger.Warn("Cannot enqueue trigger '{trigger}' ({triggerId}).", trigger, trigger.Id);
                 return jobInfo.ToOperationResult()
-                    .MergeException(new SchedulingException($"Cannot enqueue trigger '{trigger}' ({trigger.Id})."));
+                    .Fail(new SchedulingException($"Cannot enqueue trigger '{trigger}' ({trigger.Id})."))!;
             }
 
             async Task OnTriggerOnFireAsync(object sender, FireEventArgs args)
@@ -346,10 +410,10 @@ namespace Kephas.Scheduling.InMemory
                 {
                     trigger.Fire -= OnTriggerOnFire;
                     trigger.Disposed -= OnTriggerOnDisposed;
-                    await this.jobStore.RemoveTriggerAsync(triggerId, cancellationToken).PreserveThreadContext();
+                    await this.jobStore.RemoveTriggerAsync(triggerId).PreserveThreadContext();
                     if (!jobInfo!.Triggers.Any())
                     {
-                        await this.jobStore.RemoveScheduledJobAsync(jobInfo.Id, cancellationToken).PreserveThreadContext();
+                        await this.jobStore.RemoveScheduledJobAsync(jobInfo.Id).PreserveThreadContext();
                     }
                 }
 
@@ -410,85 +474,6 @@ namespace Kephas.Scheduling.InMemory
             var enableString = enabled ? "enabled" : "disabled";
             return jobInfo.ToOperationResult()
                 .MergeMessage($"Scheduled job '{scheduledJob}' was {enableString}.")!;
-        }
-
-        /// <summary>
-        /// Handles the cancel trigger event.
-        /// </summary>
-        /// <param name="e">The event to process.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        protected virtual Task HandleCancelTriggerAsync(CancelTriggerEvent e, IContext? context, CancellationToken cancellationToken)
-        {
-            Requires.NotNull(e.TriggerId, nameof(e.TriggerId));
-
-            return this.CancelTriggerAsync(e.TriggerId, cancellationToken);
-        }
-
-        /// <summary>
-        /// Cancels the trigger with the provided ID.
-        /// </summary>
-        /// <param name="triggerId">The trigger ID.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        protected virtual async Task CancelTriggerAsync(object triggerId, CancellationToken cancellationToken)
-        {
-            Requires.NotNull(triggerId, nameof(triggerId));
-
-            this.Logger.Info("Cancelling trigger with ID '{triggerId}'...", triggerId);
-
-            if (!this.activeTriggers.TryRemove(triggerId, out var tuple))
-            {
-                this.Logger.Warn("Trigger with ID '{triggerId}' was already removed from the list of active triggers.", triggerId);
-                return;
-            }
-
-            await this.jobStore.SetTriggerEnabledAsync(tuple.trigger, false, cancellationToken).PreserveThreadContext();
-            tuple.trigger.Dispose();
-            await this.jobStore.RemoveTriggerAsync(tuple.trigger.Id, cancellationToken).PreserveThreadContext();
-
-            this.Logger.Info("Trigger '{trigger}' was removed from the list of active triggers and was canceled.", tuple.trigger);
-        }
-
-        /// <summary>
-        /// Handles the cancel running job event.
-        /// </summary>
-        /// <param name="e">The event to process.</param>
-        /// <param name="context">The context.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        protected virtual Task HandleCancelRunningJob(CancelRunningJobEvent e, IContext? context, CancellationToken cancellationToken)
-        {
-            Requires.NotNull(e.RunningJobId, nameof(e.RunningJobId));
-
-            return this.CancelRunningJobAsync(e.RunningJobId, cancellationToken);
-        }
-
-        /// <summary>
-        /// Cancels the running job with the provided ID.
-        /// </summary>
-        /// <param name="runningJob">The running job or its ID.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        protected virtual async Task CancelRunningJobAsync(object runningJob, CancellationToken cancellationToken)
-        {
-            var job = runningJob as IJobResult
-                      ?? await this.jobStore.GetRunningJobAsync(runningJob, false, cancellationToken)
-                          .PreserveThreadContext();
-
-            if (job == null)
-            {
-                this.Logger.Info("Running job '{job}' not found, probably completed or already canceled.", runningJob);
-                return;
-            }
-
-            this.Logger.Info("Cancelling running job '{job}'...", job);
-
-            job.CancellationTokenSource?.Cancel();
-            await this.jobStore.RemoveRunningJobAsync(job.RunningJobId!, cancellationToken).PreserveThreadContext();
-
-            this.Logger.Info("Job '{job}' was removed from the list of running jobs and was signaled for cancellation.", job);
         }
 
         /// <summary>

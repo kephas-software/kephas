@@ -12,6 +12,7 @@ namespace Kephas.Scheduling.Endpoints
     using System.Threading.Tasks;
 
     using Kephas.Messaging;
+    using Kephas.Services;
 
     /// <summary>
     /// Message handler for <see cref="GetScheduledJobsMessage"/>.
@@ -42,7 +43,7 @@ namespace Kephas.Scheduling.Endpoints
 
             return new GetScheduledJobsResponseMessage
             {
-                Jobs = this.scheduler.GetScheduledJobs()
+                Jobs = this.scheduler.GetScheduledJobs(ctx => ctx.Impersonate(context))
                     .Select(jobInfo => new ScheduledJobData
                     {
                         ScheduledJobId = jobInfo.Id,

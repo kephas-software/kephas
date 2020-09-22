@@ -15,6 +15,7 @@ namespace Kephas.Scheduling.Endpoints
     using Kephas.Messaging;
     using Kephas.Operations;
     using Kephas.Scheduling.Jobs;
+    using Kephas.Services;
 
     /// <summary>
     /// Handler for the <see cref="GetCompletedJobsMessage"/>.
@@ -45,7 +46,7 @@ namespace Kephas.Scheduling.Endpoints
         {
             await Task.Yield();
 
-            var completedJobsQuery = this.scheduler.GetCompletedJobs();
+            var completedJobsQuery = this.scheduler.GetCompletedJobs(ctx => ctx.Impersonate(context));
             var totalCount = completedJobsQuery.Count();
             var jobsQuery = completedJobsQuery
                 .OrderByDescending(j => j.StartedAt)
