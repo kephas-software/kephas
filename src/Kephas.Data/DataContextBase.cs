@@ -36,7 +36,7 @@ namespace Kephas.Data
     /// </summary>
     public abstract class DataContextBase : Context, IDataContext
     {
-        private static readonly MethodInfo QueryMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IDataContext)null).Query<IIdentifiable>(null));
+        private static readonly MethodInfo QueryMethod = ReflectionHelper.GetGenericMethodOf(_ => ((IDataContext)null!).Query<IIdentifiable>(null));
 
         private readonly IDataBehaviorProvider? dataBehaviorProvider;
         private readonly IDataCommandProvider dataCommandProvider;
@@ -79,7 +79,7 @@ namespace Kephas.Data
         /// <value>
         /// The entity activator.
         /// </value>
-        public virtual IActivator EntityActivator { get; private set; }
+        public virtual IActivator EntityActivator { get; private set; } = RuntimeActivator.Instance;
 
         /// <summary>
         /// Gets the local cache where the session entities are stored.
@@ -98,7 +98,7 @@ namespace Kephas.Data
         /// Initializes the service asynchronously.
         /// </summary>
         /// <param name="context">The initialization context.</param>
-        public void Initialize(IContext context)
+        public void Initialize(IContext? context)
         {
             if (!(context is IDataInitializationContext dataInitializationContext))
             {
@@ -131,30 +131,28 @@ namespace Kephas.Data
         {
             this.InitializationMonitor.AssertIsCompletedSuccessfully();
 
-            using (var queryOperationContext = this.CreateQueryOperationContext(queryConfig))
+            using var queryOperationContext = this.CreateQueryOperationContext(queryConfig);
+            var entityType = typeof(T);
+            var implementationTypeInfo = this.EntityActivator.GetImplementationType(
+                entityType.AsRuntimeTypeInfo(),
+                queryOperationContext);
+            var implementationType = ((IRuntimeTypeInfo)implementationTypeInfo).Type;
+            if (implementationType != entityType)
             {
-                var entityType = typeof(T);
-                var implementationTypeInfo = this.EntityActivator.GetImplementationType(
-                    entityType.AsRuntimeTypeInfo(),
-                    queryOperationContext);
-                var implementationType = ((IRuntimeTypeInfo)implementationTypeInfo).Type;
-                if (implementationType != entityType)
-                {
-                    var queryMethod = QueryMethod.MakeGenericMethod(implementationType);
-                    var implementationQuery = queryMethod.Call(this, queryConfig);
-                    return (IQueryable<T>)implementationQuery;
-                }
-
-                var queryBehaviors = this.dataBehaviorProvider?.GetDataBehaviors<IOnQueryBehavior>(typeof(T));
-                queryBehaviors?.ForEach(b => b.BeforeQuery(typeof(T), queryOperationContext));
-
-                var query = this.QueryCore<T>(queryOperationContext);
-                queryOperationContext.Query = query;
-
-                queryBehaviors?.ForEach(b => b.AfterQuery(typeof(T), queryOperationContext));
-                query = (IQueryable<T>)queryOperationContext.Query;
-                return query;
+                var queryMethod = QueryMethod.MakeGenericMethod(implementationType);
+                var implementationQuery = queryMethod.Call(this, queryConfig);
+                return (IQueryable<T>)implementationQuery;
             }
+
+            var queryBehaviors = this.dataBehaviorProvider?.GetDataBehaviors<IOnQueryBehavior>(typeof(T));
+            queryBehaviors?.ForEach(b => b.BeforeQuery(typeof(T), queryOperationContext));
+
+            var query = this.QueryCore<T>(queryOperationContext);
+            queryOperationContext.Query = query;
+
+            queryBehaviors?.ForEach(b => b.AfterQuery(typeof(T), queryOperationContext));
+            query = (IQueryable<T>)queryOperationContext.Query;
+            return query;
         }
 
         /// <summary>
@@ -228,16 +226,37 @@ namespace Kephas.Data
         }
 
         /// <summary>
-        /// Gets the equality expression for of: t =&gt; t.Id == entityEntry.Id.
+        /// Gets the equality expression when querying for the entity ID.
+        /// Typically it should be something like 'e.Id == entityId'.
         /// </summary>
+        /// <param name="entityId">The actual entity ID.</param>
         /// <typeparam name="T">The entity type.</typeparam>
-        /// <param name="entityId">The entity ID.</param>
-        /// <returns>
-        /// The equality expression.
-        /// </returns>
-        protected internal virtual Expression<Func<T, bool>> GetIdEqualityExpression<T>(object entityId)
+        /// <returns>The expression for ID equality test.</returns>
+        public virtual Expression<Func<T, bool>> GetIdEqualityExpression<T>(object entityId)
         {
-            return t => entityId.Equals(((IIdentifiable)t).Id);
+            var idPropertyName = nameof(IIdentifiable.Id);
+            var tp = Expression.Parameter(typeof(T), "t");
+            var idProperty = Expression.Property(tp, idPropertyName);
+            var idPropertyType = ((PropertyInfo)idProperty.Member).PropertyType;
+            var equalsMethod = idPropertyType.GetMethod(nameof(object.Equals), new[] { entityId.GetType() });
+            Expression constId = Expression.Constant(entityId);
+            if (equalsMethod == null)
+            {
+                equalsMethod = idPropertyType.GetMethod(nameof(object.Equals), new[] { typeof(object) });
+                constId = Expression.Convert(constId, typeof(object));
+            }
+            else
+            {
+                var paramType = equalsMethod.GetParameters()[0].ParameterType;
+                if (paramType != entityId.GetType())
+                {
+                    constId = Expression.Convert(constId, paramType);
+                }
+            }
+
+            return Expression.Lambda<Func<T, bool>>(
+                Expression.Call(idProperty, equalsMethod!, constId),
+                tp);
         }
 
         /// <summary>

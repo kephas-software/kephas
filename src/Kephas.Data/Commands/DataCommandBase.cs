@@ -8,12 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Data.Commands
 {
-    using System;
-    using System.Linq.Expressions;
     using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -44,7 +40,7 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="DataCommandBase{TOperationContext,TResult}"/> class.
         /// </summary>
         /// <param name="logManager">Manager for log.</param>
-        protected DataCommandBase(ILogManager logManager)
+        protected DataCommandBase(ILogManager? logManager)
             : base(logManager)
         {
         }
@@ -180,28 +176,13 @@ namespace Kephas.Data.Commands
         }
 
         /// <summary>
-        /// Gets the equality expression for of: t =&gt; t.Id == entityEntry.Id.
-        /// </summary>
-        /// <typeparam name="T">The entity type.</typeparam>
-        /// <param name="dataContext">Context for the data.</param>
-        /// <param name="entityId">The entity ID.</param>
-        /// <returns>
-        /// The equality expression.
-        /// </returns>
-        protected internal virtual Expression<Func<T, bool>> GetIdEqualityExpression<T>(IDataContext dataContext, object entityId)
-        {
-            return (dataContext as DataContextBase)?.GetIdEqualityExpression<T>(entityId)
-                ?? (t => entityId.Equals(((IIdentifiable)t).Id));
-        }
-
-        /// <summary>
         /// Tries to get the data context's local cache.
         /// </summary>
         /// <param name="dataContext">Context for the data.</param>
         /// <returns>
         /// An IDataContextCache.
         /// </returns>
-        protected virtual IDataContextCache TryGetLocalCache(IDataContext dataContext)
+        protected virtual IDataContextCache? TryGetLocalCache(IDataContext dataContext)
         {
             return (dataContext as DataContextBase)?.LocalCache;
         }
@@ -213,7 +194,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// An IActivator.
         /// </returns>
-        protected virtual IActivator TryGetEntityActivator(IDataContext dataContext)
+        protected virtual IActivator? TryGetEntityActivator(IDataContext dataContext)
         {
             return (dataContext as DataContextBase)?.EntityActivator;
         }

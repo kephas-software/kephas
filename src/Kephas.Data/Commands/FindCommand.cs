@@ -61,7 +61,7 @@ namespace Kephas.Data.Commands
         /// </returns>
         protected override Expression<Func<T, bool>> GetFindCriteria<T>(IFindContext findContext)
         {
-            return this.GetIdEqualityExpression<T>(findContext.DataContext, findContext.Id);
+            return findContext.DataContext.GetIdEqualityExpression<T>(findContext.Id);
         }
 
         /// <summary>

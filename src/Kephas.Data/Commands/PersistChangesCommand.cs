@@ -38,7 +38,7 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public PersistChangesCommand(IDataBehaviorProvider behaviorProvider, ILogManager logManager = null)
+        public PersistChangesCommand(IDataBehaviorProvider behaviorProvider, ILogManager? logManager = null)
             : base(logManager)
         {
             Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
@@ -67,7 +67,7 @@ namespace Kephas.Data.Commands
             CancellationToken cancellationToken = default)
         {
             var changes = 0;
-            Exception exception = null;
+            Exception? exception = null;
             var sb = new StringBuilder();
 
             var opResult = await Profiler.WithStopwatchAsync(
