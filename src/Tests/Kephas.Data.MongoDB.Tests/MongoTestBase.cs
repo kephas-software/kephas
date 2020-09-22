@@ -17,10 +17,13 @@ namespace Kephas.Data.MongoDB.Tests
     using Kephas.Services;
     using Kephas.Testing.Composition;
     using Kephas.Threading.Tasks;
+    using Microsoft.Extensions.Configuration;
     using NSubstitute;
 
     public abstract class MongoTestBase : CompositionTestBase
     {
+        private const string MongoTestDataStoreName = "mongotest";
+
         static MongoTestBase()
         {
             var conventionPack = new ConventionPack { new CamelCaseElementNameConvention() };
@@ -74,7 +77,7 @@ namespace Kephas.Data.MongoDB.Tests
             {
                 if (entityType.Name.EndsWith("MongoEntity"))
                 {
-                    return ("mongotest", true);
+                    return (MongoTestDataStoreName, true);
                 }
 
                 return (null, false);
@@ -82,7 +85,7 @@ namespace Kephas.Data.MongoDB.Tests
 
             public (IDataStore? dataStore, bool canHandle) GetDataStore(string dataStoreName, IContext? context = null)
             {
-                if (dataStoreName == "mongotest")
+                if (dataStoreName == MongoTestDataStoreName)
                 {
                     return (this.GetTestDataStore(), true);
                 }
@@ -93,7 +96,7 @@ namespace Kephas.Data.MongoDB.Tests
             private IDataStore GetTestDataStore()
             {
                 return this.dataStore ??= new DataStore(
-                    "mongotest",
+                    MongoTestDataStoreName,
                     DataStoreKind.MongoDB.ToString(),
                     dataContextSettings: new DataContextSettings(this.GetTestConnectionString()));
             }
@@ -102,8 +105,9 @@ namespace Kephas.Data.MongoDB.Tests
             {
                 // For Azure, retryable writes are not supported.
                 // Retryable writes are not supported. Please disable retryable writes by specifying "retrywrites=false" in the connection string or an equivalent driver specific config.
-                return
-                    @"mongodb://dev-unit-testing:dgRWXmr1UaQZWIhvu6e93F9TBuEK69O19uDe2gWXFE05NHWLRT7d5ycGpeGlwfWWSblmEs9m3XqrCYCquUoT9w==@dev-unit-testing.mongo.cosmos.azure.com:10255/test?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@dev-unit-testing@&retrywrites=false";
+                var builder = new ConfigurationBuilder().AddUserSecrets<MongoTestBase>();
+                var connectionString = builder.Build().GetConnectionString(MongoTestDataStoreName);
+                return connectionString;
             }
         }
     }
