@@ -99,7 +99,7 @@ namespace Kephas.Redis
         /// <returns>
         /// An awaitable task.
         /// </returns>
-        public async Task InitializeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public async Task InitializeAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
             this.initMonitor.AssertIsNotStarted();
 
@@ -135,7 +135,7 @@ namespace Kephas.Redis
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public async Task FinalizeAsync(IContext context = null, CancellationToken cancellationToken = default)
+        public async Task FinalizeAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
             this.finMonitor.AssertIsNotStarted();
 
@@ -183,7 +183,7 @@ namespace Kephas.Redis
         /// <returns>
         /// The new Redis logger.
         /// </returns>
-        protected virtual TextWriter CreateRedisLogger(IContext context)
+        protected virtual TextWriter CreateRedisLogger(IContext? context)
         {
             return new RedisLogger(this.logManager);
         }
@@ -195,7 +195,7 @@ namespace Kephas.Redis
         /// <returns>
         /// The new connection.
         /// </returns>
-        protected virtual IConnectionMultiplexer CreateConnectionCore(IContext context)
+        protected virtual IConnectionMultiplexer CreateConnectionCore(IContext? context)
         {
             var connection = ConnectionMultiplexer.Connect(this.GetConfigurationOptions(context), this.CreateRedisLogger(context));
             connection.ConnectionFailed += this.HandleConnectionFailed;
@@ -214,7 +214,7 @@ namespace Kephas.Redis
         /// <returns>
         /// The configuration options.
         /// </returns>
-        protected virtual ConfigurationOptions GetConfigurationOptions(IContext context)
+        protected virtual ConfigurationOptions GetConfigurationOptions(IContext? context)
         {
             var settings = this.redisConfiguration.Settings;
             var configuration = ConfigurationOptions.Parse(settings.ConnectionString);
