@@ -17,6 +17,7 @@ namespace Kephas.Data.MongoDB.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
+    using global::MongoDB.Driver;
     using Kephas.Data.Behaviors;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
@@ -25,8 +26,6 @@ namespace Kephas.Data.MongoDB.Commands
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
-
-    using global::MongoDB.Driver;
 
     /// <summary>
     /// Command for persisting changes targeting <see cref="MongoDataContext"/>.
@@ -39,14 +38,21 @@ namespace Kephas.Data.MongoDB.Commands
         /// </summary>
         private static readonly MethodInfo BulkWriteAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ => ((MongoPersistChangesCommand)null).BulkWriteAsync<IIdentifiable>(null, null, null, CancellationToken.None));
 
+        private readonly IMongoNamingStrategy namingStrategy;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoPersistChangesCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
+        /// <param name="namingStrategy">The naming strategy.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public MongoPersistChangesCommand(IDataBehaviorProvider behaviorProvider, ILogManager logManager = null)
+        public MongoPersistChangesCommand(
+            IDataBehaviorProvider behaviorProvider,
+            IMongoNamingStrategy namingStrategy,
+            ILogManager? logManager = null)
             : base(behaviorProvider, logManager)
         {
+            this.namingStrategy = namingStrategy;
         }
 
         /// <summary>
@@ -74,8 +80,9 @@ namespace Kephas.Data.MongoDB.Commands
             var mongoDocTypes = modifiedMongoDocs.Select(e => e.GetType()).Distinct().ToList();
             foreach (var mongoDocType in mongoDocTypes)
             {
-                var collectionName = dataContext.GetCollectionName(mongoDocType);
-                await ((Task)BulkWriteAsyncMethod.Call(
+                var collectionName = this.namingStrategy.GetCollectionName(dataContext, mongoDocType);
+                var writeAsync = BulkWriteAsyncMethod.MakeGenericMethod(mongoDocType);
+                await ((Task)writeAsync.Call(
                      this,
                      operationContext,
                      changeSet,
@@ -131,8 +138,8 @@ namespace Kephas.Data.MongoDB.Commands
             CancellationToken cancellationToken)
             where T : IIdentifiable
         {
-            BulkWriteResult<T> saveResult = null;
-            Exception exception = null;
+            BulkWriteResult<T>? saveResult = null;
+            Exception? exception = null;
 
             var opResult = await Profiler.WithStopwatchAsync(async () =>
             {
@@ -210,13 +217,13 @@ namespace Kephas.Data.MongoDB.Commands
                         writeModel.Add(new InsertOneModel<T>(entity));
                         break;
                     case ChangeState.AddedOrChanged:
-                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityEntry.EntityId)), entity) { IsUpsert = true });
+                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(operationContext.DataContext.GetIdEqualityExpression<T>(entityEntry.EntityId!)), entity) { IsUpsert = true });
                         break;
                     case ChangeState.Changed:
-                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityEntry.EntityId)), entity));
+                        writeModel.Add(new ReplaceOneModel<T>(new ExpressionFilterDefinition<T>(operationContext.DataContext.GetIdEqualityExpression<T>(entityEntry.EntityId!)), entity));
                         break;
                     case ChangeState.Deleted:
-                        writeModel.Add(new DeleteOneModel<T>(new ExpressionFilterDefinition<T>(this.GetIdEqualityExpression<T>(operationContext.DataContext, entityEntry.EntityId))));
+                        writeModel.Add(new DeleteOneModel<T>(new ExpressionFilterDefinition<T>(operationContext.DataContext.GetIdEqualityExpression<T>(entityEntry.EntityId!))));
                         break;
                 }
             }

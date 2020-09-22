@@ -8,16 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Data.MongoDB
 {
     using System;
     using System.Collections.Concurrent;
     using System.Linq;
+    using System.Security.Authentication;
 
     using global::MongoDB.Driver;
-
     using Kephas.Composition;
     using Kephas.Data.Behaviors;
     using Kephas.Data.Commands.Factory;
@@ -26,6 +24,7 @@ namespace Kephas.Data.MongoDB
     using Kephas.Data.MongoDB.Resources;
     using Kephas.Data.Store;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Runtime;
 
     /// <summary>
     /// A data context for MongoDB.
@@ -37,6 +36,7 @@ namespace Kephas.Data.MongoDB
             new ConcurrentDictionary<string, MongoClient>();
 
         private readonly IRuntimeTypeRegistry typeRegistry;
+        private readonly IMongoNamingStrategy namingStrategy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoDataContext"/> class.
@@ -45,17 +45,23 @@ namespace Kephas.Data.MongoDB
         /// <param name="dataCommandProvider">The data command provider.</param>
         /// <param name="dataBehaviorProvider">The data behavior provider.</param>
         /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="namingStrategy">The naming strategy.</param>
         public MongoDataContext(
             ICompositionContext compositionContext,
             IDataCommandProvider dataCommandProvider,
             IDataBehaviorProvider dataBehaviorProvider,
-            IRuntimeTypeRegistry typeRegistry)
+            IRuntimeTypeRegistry typeRegistry,
+            IMongoNamingStrategy namingStrategy)
             : base(compositionContext, dataCommandProvider, dataBehaviorProvider)
         {
-            this.typeRegistry = typeRegistry;
             Requires.NotNull(compositionContext, nameof(compositionContext));
             Requires.NotNull(dataCommandProvider, nameof(dataCommandProvider));
             Requires.NotNull(dataBehaviorProvider, nameof(dataBehaviorProvider));
+            Requires.NotNull(typeRegistry, nameof(typeRegistry));
+            Requires.NotNull(namingStrategy, nameof(namingStrategy));
+
+            this.typeRegistry = typeRegistry;
+            this.namingStrategy = namingStrategy;
         }
 
         /// <summary>
@@ -75,18 +81,6 @@ namespace Kephas.Data.MongoDB
         public IMongoDatabase Database { get; private set; }
 
         /// <summary>
-        /// Gets the collection name for the provided entity type.
-        /// </summary>
-        /// <param name="entityType">Type of the entity.</param>
-        /// <returns>
-        /// The collection name.
-        /// </returns>
-        protected internal virtual string GetCollectionName(Type entityType)
-        {
-            return entityType.Name;
-        }
-
-        /// <summary>
         /// Gets a query over the entity type for the given query operation context, if any is provided.
         /// </summary>
         /// <typeparam name="T">The entity type.</typeparam>
@@ -96,7 +90,9 @@ namespace Kephas.Data.MongoDB
         /// </returns>
         protected override IQueryable<T> QueryCore<T>(IQueryOperationContext queryOperationContext)
         {
-            var nativeQuery = this.Database.GetCollection<T>(this.GetCollectionName(typeof(T))).AsQueryable();
+            var nativeQuery = this.Database.GetCollection<T>(
+                this.namingStrategy.GetCollectionName(this, typeof(T)))
+                .AsQueryable();
             var provider = new MongoQueryProvider(queryOperationContext, nativeQuery.Provider, this.typeRegistry);
             var query = new MongoQuery<T>(provider, nativeQuery, this.typeRegistry);
             return query;
@@ -108,8 +104,12 @@ namespace Kephas.Data.MongoDB
         /// <param name="dataInitializationContext">The data initialization context.</param>
         protected override void Initialize(IDataInitializationContext dataInitializationContext)
         {
-            Requires.NotNull(dataInitializationContext.DataStore, nameof(dataInitializationContext.DataStore));
-            Requires.NotNull(dataInitializationContext.DataStore.DataContextSettings, nameof(dataInitializationContext.DataStore.DataContextSettings));
+            Requires.NotNull(
+                dataInitializationContext.DataStore,
+                nameof(dataInitializationContext.DataStore));
+            Requires.NotNull(
+                dataInitializationContext.DataStore.DataContextSettings,
+                nameof(dataInitializationContext.DataStore.DataContextSettings));
 
             base.Initialize(dataInitializationContext);
 
@@ -130,7 +130,7 @@ namespace Kephas.Data.MongoDB
         /// </summary>
         /// <param name="mongoUrl">The Mongo URL.</param>
         /// <returns>A mongo client.</returns>
-        private MongoClient GetOrCreateMongoClient(MongoUrl mongoUrl)
+        protected virtual MongoClient GetOrCreateMongoClient(MongoUrl mongoUrl)
         {
             // see https://www.mongodb.com/blog/post/introducing-20-net-driver
             // "The typical pattern is for an application to *create a single MongoClient instance*,
@@ -145,27 +145,38 @@ namespace Kephas.Data.MongoDB
             //  If you do this you will not be using your connection pool as each MongoClient object maintains a separate
             //  pool that is not being reused by your application."
             return MongoClients.GetOrAdd(
-              mongoUrl.ToString(),
-              _ =>
-              {
-                  var settings = MongoClientSettings.FromUrl(mongoUrl);
+                mongoUrl.ToString(),
+                _ => new MongoClient(this.GetClientSettings(mongoUrl)));
+        }
 
-                  // see http://docs.mongolab.com/connecting/#known-issues
-                  // "The most effective workaround we’ve found in working with Azure and our customers
-                  //  has been to set the max connection idle time below four minutes. The idea is to make
-                  //  the driver recycle idle connections before the firewall forces the issue.
-                  //  For example, one customer, who is using the C# driver, set MongoDefaults.MaxConnectionIdleTime
-                  //  to one minute and it cleared up the issue."
-                  settings.MaxConnectionIdleTime = TimeSpan.FromMinutes(1);
-                  settings.MaxConnectionPoolSize = 1000;
-                  settings.ClusterConfigurator = b =>
-                  {
-                      b.ConfigureConnectionPool(s => s.With());
-                      b.Subscribe(new MongoDataContextLogEventSubscriber(this.CompositionContext));
-                  };
+        /// <summary>
+        /// Gets the client settings for the provided MongoDB URL.
+        /// </summary>
+        /// <param name="mongoUrl">The URL.</param>
+        /// <returns>The MongoDB settings.</returns>
+        protected virtual MongoClientSettings GetClientSettings(MongoUrl mongoUrl)
+        {
+            var settings = MongoClientSettings.FromUrl(mongoUrl);
 
-                  return new MongoClient(settings);
-              });
+            // see http://docs.mongolab.com/connecting/#known-issues
+            // "The most effective workaround we’ve found in working with Azure and our customers
+            //  has been to set the max connection idle time below four minutes. The idea is to make
+            //  the driver recycle idle connections before the firewall forces the issue.
+            //  For example, one customer, who is using the C# driver, set MongoDefaults.MaxConnectionIdleTime
+            //  to one minute and it cleared up the issue."
+            settings.MaxConnectionIdleTime = TimeSpan.FromMinutes(1);
+            settings.MaxConnectionPoolSize = 1000;
+            settings.ClusterConfigurator = b =>
+            {
+                b.ConfigureConnectionPool(s => s.With());
+                b.Subscribe(new MongoDataContextLogEventSubscriber(this.CompositionContext));
+            };
+            settings.SslSettings = new SslSettings
+            {
+                EnabledSslProtocols = SslProtocols.Tls12,
+            };
+
+            return settings;
         }
     }
 }

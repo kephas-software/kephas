@@ -37,18 +37,8 @@ namespace Kephas.Data.MongoDB.Application
         /// </returns>
         public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            var originalIsTemporary = Id.IsTemporary;
-            Id.IsTemporary = value =>
-            {
-                if (value is ObjectId id)
-                {
-                    return id < ObjectId.Empty;
-                }
-
-                return originalIsTemporary(value);
-            };
-
             Id.AddEmptyValue(ObjectId.Empty);
+            Id.AddTemporaryValueCheck(value => value is ObjectId id && id < ObjectId.Empty);
 
             return Task.CompletedTask;
         }

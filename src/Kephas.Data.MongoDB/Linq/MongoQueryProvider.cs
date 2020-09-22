@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Data.MongoDB.Linq
 {
     using System.Linq;
@@ -17,10 +15,10 @@ namespace Kephas.Data.MongoDB.Linq
     using System.Threading;
     using System.Threading.Tasks;
 
+    using global::MongoDB.Driver.Linq;
     using Kephas.Data.Linq;
     using Kephas.Reflection;
-
-    using global::MongoDB.Driver.Linq;
+    using Kephas.Runtime;
 
     /// <summary>
     /// A mongo query provider.

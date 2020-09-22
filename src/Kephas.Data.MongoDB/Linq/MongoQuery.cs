@@ -81,7 +81,8 @@ namespace Kephas.Data.MongoDB.Linq
         protected virtual IMongoQueryable<T> GetNativeExecutableQuery()
         {
             var mongoQueryProvider = (MongoQueryProvider)this.Provider;
-            var executableQuery = mongoQueryProvider.NativeQueryProvider.CreateQuery(mongoQueryProvider.GetExecutableExpression(this.Expression));
+            var executableQuery = mongoQueryProvider.NativeQueryProvider
+                .CreateQuery(mongoQueryProvider.GetExecutableExpression(this.Expression));
             return (IMongoQueryable<T>)executableQuery;
         }
     }
