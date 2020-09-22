@@ -58,8 +58,9 @@ namespace Kephas.Application
         /// </remarks>
         public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
         {
-            this.scheduleCommandSubscription = this.eventHub.Subscribe<ScheduleStartupCommandSignal>((signal, ctx, token) =>
-                this.HandleScheduleStartupCommandSignalAsync(signal, appContext, token));
+            this.scheduleCommandSubscription = this.eventHub.Subscribe<ScheduleStartupCommandSignal>(
+                (signal, ctx, token) =>
+                    this.HandleScheduleStartupCommandSignalAsync(signal, appContext, token));
             return base.BeforeAppInitializeAsync(appContext, cancellationToken);
         }
 
