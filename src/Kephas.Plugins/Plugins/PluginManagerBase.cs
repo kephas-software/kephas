@@ -407,7 +407,11 @@ namespace Kephas.Plugins
                                 initializeContext.Operation == PluginOperation.Initialize ? SeverityLevel.Error : SeverityLevel.Warning);
                         }
 
-                        await this.EventHub.PublishAsync(new InitializingPluginSignal(pluginIdentity, initializeContext), initializeContext, cancellationToken).PreserveThreadContext();
+                        var initResult = await this.EventHub.PublishAsync(new InitializingPluginSignal(pluginIdentity, initializeContext), initializeContext, cancellationToken).PreserveThreadContext();
+                        if (initResult.HasErrors())
+                        {
+                            throw new PluginOperationException(initResult);
+                        }
 
                         var initializeComplete = false;
                         try
@@ -439,7 +443,11 @@ namespace Kephas.Plugins
                             throw;
                         }
 
-                        await this.EventHub.PublishAsync(new InitializedPluginSignal(pluginIdentity, initializeContext, result), initializeContext, cancellationToken).PreserveThreadContext();
+                        initResult = await this.EventHub.PublishAsync(new InitializedPluginSignal(pluginIdentity, initializeContext, result), initializeContext, cancellationToken).PreserveThreadContext();
+                        if (initResult.HasErrors())
+                        {
+                            throw new PluginOperationException(initResult);
+                        }
 
                         initializeContext
                             .PluginData(pluginData)
@@ -631,7 +639,14 @@ namespace Kephas.Plugins
                             uninitializeContext.Operation == PluginOperation.Uninitialize ? SeverityLevel.Error : SeverityLevel.Warning);
                     }
 
-                    await this.EventHub.PublishAsync(new UninitializingPluginSignal(pluginIdentity, uninitializeContext), uninitializeContext, cancellationToken).PreserveThreadContext();
+                    var uninitResult = await this.EventHub.PublishAsync(
+                        new UninitializingPluginSignal(pluginIdentity, uninitializeContext),
+                        uninitializeContext,
+                        cancellationToken).PreserveThreadContext();
+                    if (uninitResult.HasErrors())
+                    {
+                        throw new PluginOperationException(uninitResult);
+                    }
 
                     try
                     {
@@ -655,7 +670,14 @@ namespace Kephas.Plugins
                         throw;
                     }
 
-                    await this.EventHub.PublishAsync(new UninitializedPluginSignal(pluginIdentity, uninitializeContext, result), uninitializeContext, cancellationToken).PreserveThreadContext();
+                    uninitResult = await this.EventHub.PublishAsync(
+                        new UninitializedPluginSignal(pluginIdentity, uninitializeContext, result),
+                        uninitializeContext,
+                        cancellationToken).PreserveThreadContext();
+                    if (uninitResult.HasErrors())
+                    {
+                        throw new PluginOperationException(uninitResult);
+                    }
 
                     return plugin;
                 }).PreserveThreadContext();
