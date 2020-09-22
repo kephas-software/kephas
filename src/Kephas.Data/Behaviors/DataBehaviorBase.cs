@@ -27,7 +27,7 @@ namespace Kephas.Data.Behaviors
         /// <summary>
         /// Callback invoked upon entity initialization.
         /// </summary>
-        /// <param name="entity">The entitiy to be initialized.</param>
+        /// <param name="entity">The entity to be initialized.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
         public virtual void Initialize(TEntity entity, IEntityEntry entityEntry, IDataOperationContext operationContext)
@@ -74,7 +74,7 @@ namespace Kephas.Data.Behaviors
         /// <param name="entity">The entity to be persisted.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -89,7 +89,7 @@ namespace Kephas.Data.Behaviors
         /// <param name="entity">The entity to be persisted.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -106,7 +106,7 @@ namespace Kephas.Data.Behaviors
         /// <param name="entity">The entity to be persisted.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -121,7 +121,7 @@ namespace Kephas.Data.Behaviors
         /// <param name="entity">The entity to be persisted.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -135,10 +135,10 @@ namespace Kephas.Data.Behaviors
         /// <summary>
         /// Initializes the entity asynchronously.
         /// </summary>
-        /// <param name="entity">The entitiy to be initialized.</param>
+        /// <param name="entity">The entity to be initialized.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -150,10 +150,10 @@ namespace Kephas.Data.Behaviors
         /// <summary>
         /// Initializes the entity asynchronously.
         /// </summary>
-        /// <param name="entity">The entitiy to be initialized.</param>
+        /// <param name="entity">The entity to be initialized.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -170,7 +170,7 @@ namespace Kephas.Data.Behaviors
         /// <param name="entity">The entity to be validated.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">Context for the validation operation.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="IDataValidationResult"/>.
         /// </returns>
@@ -185,7 +185,7 @@ namespace Kephas.Data.Behaviors
         /// <param name="entity">The entity to be validated.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">Context for the validation operation.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A promise of a <see cref="IDataValidationResult"/>.
         /// </returns>

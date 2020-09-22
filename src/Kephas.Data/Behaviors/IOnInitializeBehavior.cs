@@ -16,14 +16,14 @@ namespace Kephas.Data.Behaviors
     using Kephas.Data.Capabilities;
 
     /// <summary>
-    /// Contract for the behavior invoked upon entity intialization.
+    /// Contract for the behavior invoked upon entity initialization.
     /// </summary>
     public interface IOnInitializeBehavior
     {
         /// <summary>
         /// Initializes the entity asynchronously.
         /// </summary>
-        /// <param name="entity">The entitiy to be initialized.</param>
+        /// <param name="entity">The entity to be initialized.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>

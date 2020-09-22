@@ -26,7 +26,7 @@ namespace Kephas.Data.Behaviors
         /// <param name="entity">The entity to be persisted.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
@@ -38,7 +38,7 @@ namespace Kephas.Data.Behaviors
         /// <param name="entity">The entity to be persisted.</param>
         /// <param name="entityEntry">The entity entry.</param>
         /// <param name="operationContext">The operation context.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// A Task.
         /// </returns>
