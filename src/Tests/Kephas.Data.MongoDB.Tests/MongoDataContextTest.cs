@@ -47,7 +47,7 @@ namespace Kephas.Data.MongoDB.Tests
         }
 
         [Test]
-        public async Task UpdateEntityAsync_with_query_single()
+        public async Task UpdateEntityAsync_with_find()
         {
             var container = this.CreateContainer();
             using var dataSpace = container.GetExport<IDataSpace>();
@@ -63,9 +63,7 @@ namespace Kephas.Data.MongoDB.Tests
 
             using var dataSpace2 = container.GetExport<IDataSpace>();
             var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
-            var entity2 = dataContext
-                .Query<NotificationMongoEntity>()
-                .Single(e => e.Id == entity.Id);
+            var entity2 = await dataContext.FindAsync<NotificationMongoEntity>(entity.Id).PreserveThreadContext();
 
             Assert.AreEqual($"Description for {entity.Id} updated!", entity2.Description);
 
