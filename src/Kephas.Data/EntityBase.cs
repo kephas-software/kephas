@@ -34,15 +34,10 @@ namespace Kephas.Data
         private WeakReference<IEntityEntry> weakEntityEntry;
 
         /// <summary>
-        /// The values.
-        /// </summary>
-        private IDictionary<string, object?> values;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EntityBase"/> class.
         /// </summary>
         protected EntityBase()
-            : this(new Dictionary<string, object>())
+            : this(new Dictionary<string, object?>())
         {
         }
 
@@ -53,12 +48,12 @@ namespace Kephas.Data
         protected EntityBase(IDictionary<string, object?> innerDictionary)
             : base(innerDictionary)
         {
-            this.values = innerDictionary;
+            this.MemberBinders = ExpandoMemberBinderKind.InnerDictionary;
         }
 
         /// <summary>Gets the identifier for this instance.</summary>
         /// <value>The identifier.</value>
-        object IIdentifiable.Id => this[nameof(IIdentifiable.Id)];
+        object IIdentifiable.Id => this[nameof(IIdentifiable.Id)]!;
 
         /// <summary>Gets or sets the change state of the entity.</summary>
         /// <value>The change state.</value>
@@ -121,7 +116,7 @@ namespace Kephas.Data
         /// </returns>
         protected override bool TrySetValue(string key, object? value)
         {
-            if (this.values.TryGetValue(key, out var currentValue))
+            if (this.TryGetValue(key, out var currentValue))
             {
                 if (Equals(currentValue, value))
                 {
@@ -129,7 +124,11 @@ namespace Kephas.Data
                 }
             }
 
-            this.values[key] = value;
+            if (!base.TrySetValue(key, value))
+            {
+                return false;
+            }
+
             var trackable = this as IChangeStateTrackable;
             if (trackable.ChangeState == ChangeState.NotChanged)
             {
