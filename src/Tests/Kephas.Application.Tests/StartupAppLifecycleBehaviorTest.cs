@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Operations;
+
 namespace Kephas.Application.Tests
 {
     using System;
@@ -74,8 +76,16 @@ namespace Kephas.Application.Tests
                     return Substitute.For<IEventSubscription>();
                 });
             eventHub.PublishAsync(Arg.Any<object>(), Arg.Any<IContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => handler?.Invoke(ci.Arg<object>(), ci.Arg<IContext>(), ci.Arg<CancellationToken>()) ??
-                               Task.CompletedTask);
+                .Returns(async ci =>
+                {
+                    var task = handler?.Invoke(ci.Arg<object>(), ci.Arg<IContext>(), ci.Arg<CancellationToken>());
+                    if (task != null)
+                    {
+                        await task;
+                    }
+
+                    return (IOperationResult)true.ToOperationResult();
+                });
             return eventHub;
         }
 

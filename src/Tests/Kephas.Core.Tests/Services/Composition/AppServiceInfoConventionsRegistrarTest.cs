@@ -132,7 +132,7 @@ namespace Kephas.Core.Tests.Services.Composition
             var conventions = new CompositionContainerBuilderBaseTest.TestConventionsBuilder();
 
             var registrar = new AppServiceInfoConventionsRegistrar();
-            Assert.Throws<InvalidOperationException>(() => registrar.RegisterConventions(
+            Assert.Throws<AmbiguousServiceResolutionException>(() => registrar.RegisterConventions(
                 conventions,
                 new[]
                     {

@@ -38,170 +38,148 @@ namespace Kephas.Tests.Plugins
         [Test]
         public void GetInstalledPlugins_empty()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var pluginManager = this.CreatePluginManager(ctx);
+            using var ctx = new PluginsTestContext();
+            var pluginManager = this.CreatePluginManager(ctx);
 
-                var plugins = pluginManager.GetInstalledPlugins();
+            var plugins = pluginManager.GetInstalledPlugins();
 
-                CollectionAssert.IsEmpty(plugins);
-            }
+            CollectionAssert.IsEmpty(plugins);
         }
 
         [Test]
         public async Task InstallPluginAsync_p1()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var pluginManager = this.CreatePluginManager(ctx, (p, pctx) => pctx.Transaction.AddCommand(new TestUndoCommand("h:i", "param|1", "param\n2")));
+            using var ctx = new PluginsTestContext();
+            var pluginManager = this.CreatePluginManager(ctx, (p, pctx) => pctx.Transaction.AddCommand(new TestUndoCommand("h:i", "param|1", "param\n2")));
 
-                var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
+            var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
 
-                Assert.IsNotNull(result);
-                Assert.AreEqual(PluginState.Enabled, result.Value.State);
-                Assert.AreEqual("p1:1.2.3\nEnabled\nEmbedded\n-inst-undo-1:test|h:i|param&pipe;1|param\\n2\n96402984", result.Value.GetPluginData().ToString());
-            }
+            Assert.IsNotNull(result);
+            Assert.AreEqual(PluginState.Enabled, result.Value.State);
+            Assert.AreEqual("p1:1.2.3\nEnabled\nEmbedded\n-inst-undo-1:test|h:i|param&pipe;1|param\\n2\n96402984", result.Value.GetPluginData().ToString());
         }
 
         [Test]
         public async Task InstallPluginAsync_p1_cannot_install()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var pluginManager = this.CreatePluginManager(
-                    ctx,
-                    canInstall: (d, c) => false);
+            using var ctx = new PluginsTestContext();
+            var pluginManager = this.CreatePluginManager(
+                ctx,
+                canInstall: (d, c) => false);
 
-                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3")));
-            }
+            Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3")));
         }
 
         [Test]
         public async Task InstallPluginAsync_p1_cannot_initialize()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var pluginManager = this.CreatePluginManager(
-                    ctx,
-                    canInitialize: (d, c) => false);
+            using var ctx = new PluginsTestContext();
+            var pluginManager = this.CreatePluginManager(
+                ctx,
+                canInitialize: (d, c) => false);
 
-                var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
+            var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
 
-                Assert.IsNotNull(result);
-                Assert.AreEqual(PluginState.PendingInitialization, result.Value.State);
-                Assert.AreEqual("p1:1.2.3\nPendingInitialization\nEmbedded\n\n1878947376", result.Value.GetPluginData().ToString());
-            }
+            Assert.IsNotNull(result);
+            Assert.AreEqual(PluginState.PendingInitialization, result.Value.State);
+            Assert.AreEqual("p1:1.2.3\nPendingInitialization\nEmbedded\n\n1878947376", result.Value.GetPluginData().ToString());
         }
 
         [Test]
         public async Task InstallPluginAsync_p1_cannot_enable()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var pluginManager = this.CreatePluginManager(
-                    ctx,
-                    canEnable: (d, c) => false);
+            using var ctx = new PluginsTestContext();
+            var pluginManager = this.CreatePluginManager(
+                ctx,
+                canEnable: (d, c) => false);
 
-                var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
+            var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
 
-                Assert.IsNotNull(result);
-                Assert.AreEqual(PluginState.Disabled, result.Value.State);
-                Assert.AreEqual("p1:1.2.3\nDisabled\nEmbedded\n\n1878949554", result.Value.GetPluginData().ToString());
-            }
+            Assert.IsNotNull(result);
+            Assert.AreEqual(PluginState.Disabled, result.Value.State);
+            Assert.AreEqual("p1:1.2.3\nDisabled\nEmbedded\n\n1878949554", result.Value.GetPluginData().ToString());
         }
 
         [Test]
         public async Task UninstallPluginAsync_p1()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var callbackCalls = 0;
-                var pluginManager = this.CreatePluginManager(ctx, (p, pctx) => pctx.Transaction.AddCommand(new TestUndoCommand("h:i", "param|1", "param\n2")));
+            using var ctx = new PluginsTestContext();
+            var callbackCalls = 0;
+            var pluginManager = this.CreatePluginManager(ctx, (p, pctx) => pctx.Transaction.AddCommand(new TestUndoCommand("h:i", "param|1", "param\n2")));
 
-                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
-                var uninstResult = await pluginManager.UninstallPluginAsync(new AppIdentity("p1"), pctx => pctx["callback"] = (Action)(() => callbackCalls++));
+            var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
+            var uninstResult = await pluginManager.UninstallPluginAsync(new AppIdentity("p1"), pctx => pctx["callback"] = (Action)(() => callbackCalls++));
 
-                Assert.IsNotNull(uninstResult);
-                Assert.AreEqual(PluginState.None, uninstResult.Value.State);
-                Assert.AreEqual("p1:1.2.3\nNone\nEmbedded\n\n1878946417", uninstResult.Value.GetPluginData().ToString());
-                Assert.AreEqual(1, callbackCalls);
-            }
+            Assert.IsNotNull(uninstResult);
+            Assert.AreEqual(PluginState.None, uninstResult.Value.State);
+            Assert.AreEqual("p1:1.2.3\nNone\nEmbedded\n\n1878946417", uninstResult.Value.GetPluginData().ToString());
+            Assert.AreEqual(1, callbackCalls);
         }
 
         [Test]
         public async Task UninstallPluginAsync_p1_not_installed()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var pluginManager = this.CreatePluginManager(
-                    ctx,
-                    canUninstall: (d, c) => false);
+            using var ctx = new PluginsTestContext();
+            var pluginManager = this.CreatePluginManager(
+                ctx,
+                canUninstall: (d, c) => false);
 
-                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1")));
-            }
+            Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1")));
         }
 
         [Test]
         public async Task UninstallPluginAsync_p1_cannot_uninstall()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var pluginManager = this.CreatePluginManager(
-                    ctx,
-                    canUninstall: (d, c) => false);
+            using var ctx = new PluginsTestContext();
+            var pluginManager = this.CreatePluginManager(
+                ctx,
+                canUninstall: (d, c) => false);
 
-                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
-                var uninstResult = await pluginManager.UninstallPluginAsync(new AppIdentity("p1"));
+            var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
+            var uninstResult = await pluginManager.UninstallPluginAsync(new AppIdentity("p1"));
 
-                Assert.IsNotNull(uninstResult);
-                Assert.AreEqual(PluginState.PendingUninstallation, uninstResult.Value.State);
-                Assert.AreEqual("p1:1.2.3\nPendingUninstallation\nEmbedded\n\n1878943028", uninstResult.Value.GetPluginData().ToString());
-            }
+            Assert.IsNotNull(uninstResult);
+            Assert.AreEqual(PluginState.PendingUninstallation, uninstResult.Value.State);
+            Assert.AreEqual("p1:1.2.3\nPendingUninstallation\nEmbedded\n\n1878943028", uninstResult.Value.GetPluginData().ToString());
         }
 
         [Test]
         public async Task UninstallPluginAsync_p1_cannot_uninitialize()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var pluginManager = this.CreatePluginManager(
-                    ctx,
-                    canUninitialize: (d, c) => false);
+            using var ctx = new PluginsTestContext();
+            var pluginManager = this.CreatePluginManager(
+                ctx,
+                canUninitialize: (d, c) => false);
 
-                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
-                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1")));
-            }
+            var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
+            Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1")));
         }
 
         [Test]
         public async Task UninstallPluginAsync_p1_cannot_disable()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var pluginManager = this.CreatePluginManager(
-                    ctx,
-                    canDisable: (d, c) => false);
+            using var ctx = new PluginsTestContext();
+            var pluginManager = this.CreatePluginManager(
+                ctx,
+                canDisable: (d, c) => false);
 
-                var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
-                Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1", "1.2.3")));
-            }
+            var instResult = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
+            Assert.ThrowsAsync<PluginOperationException>(() => pluginManager.UninstallPluginAsync(new AppIdentity("p1", "1.2.3")));
         }
 
         [Test]
         public async Task UpdatePluginAsync_p1()
         {
-            using (var ctx = new PluginsTestContext())
-            {
-                var pluginManager = this.CreatePluginManager(ctx);
+            using var ctx = new PluginsTestContext();
+            var pluginManager = this.CreatePluginManager(ctx);
 
-                var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
+            var result = await pluginManager.InstallPluginAsync(new AppIdentity("p1", "1.2.3"));
 
-                result = await pluginManager.UpdatePluginAsync(new AppIdentity("p1", "2.0.0"));
+            result = await pluginManager.UpdatePluginAsync(new AppIdentity("p1", "2.0.0"));
 
-                Assert.IsNotNull(result);
-                Assert.AreEqual(PluginState.Enabled, result.Value.State);
-                Assert.AreEqual("p1:1.2.3\nEnabled\nEmbedded\n\n1878948595", result.Value.GetPluginData().ToString());
-            }
+            Assert.IsNotNull(result);
+            Assert.AreEqual(PluginState.Enabled, result.Value.State);
+            Assert.AreEqual("p1:1.2.3\nEnabled\nEmbedded\n\n1878948595", result.Value.GetPluginData().ToString());
         }
 
         private TestPluginManager CreatePluginManager(

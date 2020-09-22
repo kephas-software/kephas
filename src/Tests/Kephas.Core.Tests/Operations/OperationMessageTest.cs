@@ -21,7 +21,7 @@ namespace Kephas.Core.Tests.Operations
         public void ToString_contains_message()
         {
             var msg = new OperationMessage("hello");
-            var expected = $"{msg.Timestamp:s} hello";
+            var expected = $"[{msg.Timestamp:s}] hello";
             Assert.AreEqual(expected, msg.ToString());
         }
     }
