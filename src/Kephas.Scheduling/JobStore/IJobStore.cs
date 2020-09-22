@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Scheduling.Triggers;
-
 namespace Kephas.Scheduling.JobStore
 {
     using System.Linq;
@@ -15,6 +13,7 @@ namespace Kephas.Scheduling.JobStore
 
     using Kephas.Scheduling.Jobs;
     using Kephas.Scheduling.Reflection;
+    using Kephas.Scheduling.Triggers;
     using Kephas.Services;
 
     /// <summary>
