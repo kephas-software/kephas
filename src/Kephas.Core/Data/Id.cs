@@ -21,20 +21,18 @@ namespace Kephas.Data
     /// </summary>
     public static class Id
     {
-        /// <summary>
-        /// Gets the list of unset values.
-        /// </summary>
         private static readonly List<object> EmptyValues = new List<object> { 0, 0L, 0d, string.Empty, Guid.Empty };
+        private static readonly List<Func<object?, bool>> TemporaryChecks = new List<Func<object?, bool>>();
 
         /// <summary>
         /// The predicate for <see cref="IsEmpty"/>.
         /// </summary>
-        private static Func<object, bool> isEmpty;
+        private static Func<object?, bool> isEmpty;
 
         /// <summary>
         /// The predicate for <see cref="IsTemporary"/>.
         /// </summary>
-        private static Func<object, bool> isTemporary;
+        private static Func<object?, bool> isTemporary;
 
         /// <summary>
         /// Initializes static members of the <see cref="Id"/> class.
@@ -42,33 +40,20 @@ namespace Kephas.Data
         static Id()
         {
             isEmpty = value =>
-                {
-                    if (ReferenceEquals(value, null))
-                    {
-                        return true;
-                    }
-
-                    return EmptyValues.Any(v => v.Equals(value));
-                };
+            {
+                return ReferenceEquals(value, null)
+                       || EmptyValues.Any(v => v.Equals(value));
+            };
 
             isTemporary = value =>
                 {
-                    if (ReferenceEquals(value, null))
+                    return value switch
                     {
-                        return false;
-                    }
-
-                    if (value is int)
-                    {
-                        return (int)value < 0;
-                    }
-
-                    if (value is long)
-                    {
-                        return (long)value < 0;
-                    }
-
-                    return false;
+                        null => false,
+                        int intValue => intValue < 0,
+                        long longValue => longValue < 0,
+                        _ => TemporaryChecks.Any(check => check(value))
+                    };
                 };
         }
 
@@ -79,7 +64,7 @@ namespace Kephas.Data
         /// A temporary value indicate that a proper id will be provided at a later time,
         /// for example when creating a new entity.
         /// </remarks>
-        public static Func<object, bool> IsTemporary
+        public static Func<object?, bool> IsTemporary
         {
             get => isTemporary;
 
@@ -94,7 +79,7 @@ namespace Kephas.Data
         /// <summary>
         /// Gets or sets a function to determine whether a specified value is considered empty.
         /// </summary>
-        public static Func<object, bool> IsEmpty
+        public static Func<object?, bool> IsEmpty
         {
             get => isEmpty;
 
@@ -110,7 +95,7 @@ namespace Kephas.Data
         /// Adds a value considered empty.
         /// </summary>
         /// <param name="value">The empty value.</param>
-        public static void AddEmptyValue(object value)
+        public static void AddEmptyValue(object? value)
         {
             if (value != null && !EmptyValues.Contains(value))
             {
@@ -125,7 +110,7 @@ namespace Kephas.Data
         /// <returns>
         /// True if it succeeds, false if it fails.
         /// </returns>
-        public static bool RemoveEmptyValue(object value)
+        public static bool RemoveEmptyValue(object? value)
         {
             if (value != null)
             {
@@ -133,6 +118,34 @@ namespace Kephas.Data
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Adds a check function for temporary value.
+        /// </summary>
+        /// <param name="check">The check function to be added.</param>
+        public static void AddTemporaryValueCheck(Func<object?, bool> check)
+        {
+            Requires.NotNull(check, nameof(check));
+
+            if (!TemporaryChecks.Contains(check))
+            {
+                TemporaryChecks.Add(check);
+            }
+        }
+
+        /// <summary>
+        /// Removes a temporary value check function.
+        /// </summary>
+        /// <param name="check">The check function to be removed.</param>
+        /// <returns>
+        /// True if it succeeds, false if it fails.
+        /// </returns>
+        public static bool RemoveTemporaryValueCheck(Func<object?, bool> check)
+        {
+            Requires.NotNull(check, nameof(check));
+
+            return TemporaryChecks.Remove(check);
         }
     }
 }
