@@ -12,6 +12,7 @@ namespace Kephas.Testing.Composition
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
     using Kephas.Application;
@@ -84,18 +85,20 @@ namespace Kephas.Testing.Composition
         /// The new container.
         /// </returns>
         public virtual ICompositionContext CreateContainer(
-            IAmbientServices ambientServices = null,
-            IEnumerable<Assembly> assemblies = null,
-            IEnumerable<Type> parts = null,
-            Action<LiteCompositionContainerBuilder> config = null,
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<LiteCompositionContainerBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
             ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
+            var allParts = this.GetDefaultParts().ToList();
+            allParts.AddRange(parts ?? new Type[0]);
             var containerBuilder = this.WithContainerBuilder(ambientServices, logManager, appRuntime)
                     .WithAssemblies(this.GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? new Assembly[0])
-                    .WithParts(parts ?? new Type[0]);
+                    .WithParts(allParts);
 
             config?.Invoke(containerBuilder);
 
@@ -104,7 +107,7 @@ namespace Kephas.Testing.Composition
             return container;
         }
 
-        public ICompositionContext CreateContainerWithBuilder(Action<LiteCompositionContainerBuilder> config = null)
+        public ICompositionContext CreateContainerWithBuilder(Action<LiteCompositionContainerBuilder>? config = null)
         {
             var builder = this.WithContainerBuilder()
                 .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly);

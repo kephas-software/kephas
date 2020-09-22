@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Operations;
+
 namespace Kephas.Testing
 {
     using System;
@@ -163,6 +165,8 @@ namespace Kephas.Testing
                         {
                             await func(ci.Arg<object>(), ci.Arg<IContext>(), ci.Arg<CancellationToken>());
                         }
+
+                        return (IOperationResult)true.ToOperationResult();
                     });
 
             eventHub.Subscribe(Arg.Any<Type>(), Arg.Any<Func<object, IContext, CancellationToken, Task>>())
