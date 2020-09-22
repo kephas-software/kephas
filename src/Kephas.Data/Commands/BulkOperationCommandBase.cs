@@ -28,8 +28,8 @@ namespace Kephas.Data.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="BulkOperationCommandBase{TOperationContext,TResult}"/> class.
         /// </summary>
-        /// <param name="logManager">Manager for log.</param>
-        protected BulkOperationCommandBase(ILogManager logManager)
+        /// <param name="logManager">Optional. Manager for log.</param>
+        protected BulkOperationCommandBase(ILogManager? logManager = null)
             : base(logManager)
         {
         }

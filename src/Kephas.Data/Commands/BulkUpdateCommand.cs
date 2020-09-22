@@ -34,13 +34,13 @@ namespace Kephas.Data.Commands
         /// Gets the generic method of <see cref="BulkUpdateAsync{T}"/>.
         /// </summary>
         private static readonly MethodInfo BulkUpdateAsyncMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => ((BulkUpdateCommand)null).BulkUpdateAsync<string>(default, default));
+            ReflectionHelper.GetGenericMethodOf(_ => ((BulkUpdateCommand)null!).BulkUpdateAsync<string>(default, default));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BulkUpdateCommand"/> class.
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public BulkUpdateCommand(ILogManager logManager = null)
+        public BulkUpdateCommand(ILogManager? logManager = null)
             : base(logManager)
         {
         }
