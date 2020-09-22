@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq.Expressions;
+
 namespace Kephas.Data
 {
     using System;
@@ -22,7 +24,7 @@ namespace Kephas.Data
     /// Contract interface for data contexts.
     /// </summary>
     [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(SupportedDataStoreKindsAttribute) })]
-    public interface IDataContext : IContext, IIdentifiable, IDisposable, IInitializable
+    public interface IDataContext : IContext, IIdentifiable, IInitializable
     {
         /// <summary>
         /// Gets a query over the entity type for the given query operation context, if any is provided.
@@ -32,8 +34,17 @@ namespace Kephas.Data
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        IQueryable<T> Query<T>(Action<IQueryOperationContext> queryConfig = null)
+        IQueryable<T> Query<T>(Action<IQueryOperationContext>? queryConfig = null)
             where T : class;
+
+        /// <summary>
+        /// Gets the equality expression when querying for the entity ID.
+        /// Typically it should be something like 'e.Id == entityId'.
+        /// </summary>
+        /// <param name="entityId">The actual entity ID.</param>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <returns>The expression for ID equality test.</returns>
+        Expression<Func<T, bool>> GetIdEqualityExpression<T>(object entityId);
 
         /// <summary>
         /// Creates the command with the provided type.
