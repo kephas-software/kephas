@@ -5,15 +5,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Linq;
-using Kephas.Data.Linq;
-
 namespace Kephas.Data.MongoDB.Tests
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using global::MongoDB.Bson.Serialization.Attributes;
+    using Kephas.Data.Linq;
+    using Kephas.Threading.Tasks;
     using NUnit.Framework;
 
     [TestFixture]
@@ -47,7 +47,7 @@ namespace Kephas.Data.MongoDB.Tests
         }
 
         [Test]
-        public async Task UpdateEntityAsync()
+        public async Task UpdateEntityAsync_with_query_single()
         {
             var container = this.CreateContainer();
             using var dataSpace = container.GetExport<IDataSpace>();
@@ -63,10 +63,63 @@ namespace Kephas.Data.MongoDB.Tests
 
             using var dataSpace2 = container.GetExport<IDataSpace>();
             var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
-            var entity2 = (await dataContext.Query<NotificationMongoEntity>().Where(e => e.Id == entity.Id)
-                .ToListAsync()).Single();
+            var entity2 = dataContext
+                .Query<NotificationMongoEntity>()
+                .Single(e => e.Id == entity.Id);
 
             Assert.AreEqual($"Description for {entity.Id} updated!", entity2.Description);
+
+            dataContext2.Delete(entity2);
+            await dataContext2.PersistChangesAsync();
+        }
+
+        [Test]
+        public async Task Query_ToListAsync()
+        {
+            var container = this.CreateContainer();
+            using var dataSpace = container.GetExport<IDataSpace>();
+            var dataContext = dataSpace[typeof(NotificationMongoEntity)];
+
+            var entity = await dataContext.CreateAsync<NotificationMongoEntity>();
+            entity.Id = container.GetExport<IIdGenerator>().GenerateId();
+            entity.Description = $"Description for {entity.Id}";
+            await dataContext.PersistChangesAsync();
+
+            using var dataSpace2 = container.GetExport<IDataSpace>();
+            var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
+            var entities = await dataContext
+                .Query<NotificationMongoEntity>()
+                .Where(e => e.Id == entity.Id)
+                .ToListAsync().PreserveThreadContext();
+            var entity2 = entities.Single();
+
+            Assert.AreEqual($"Description for {entity.Id}", entity2.Description);
+
+            dataContext2.Delete(entity2);
+            await dataContext2.PersistChangesAsync();
+        }
+
+        [Test]
+        public async Task Query_ToList()
+        {
+            var container = this.CreateContainer();
+            using var dataSpace = container.GetExport<IDataSpace>();
+            var dataContext = dataSpace[typeof(NotificationMongoEntity)];
+
+            var entity = await dataContext.CreateAsync<NotificationMongoEntity>();
+            entity.Id = container.GetExport<IIdGenerator>().GenerateId();
+            entity.Description = $"Description for {entity.Id}";
+            await dataContext.PersistChangesAsync();
+
+            using var dataSpace2 = container.GetExport<IDataSpace>();
+            var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
+            var entities = dataContext
+                .Query<NotificationMongoEntity>()
+                .Where(e => e.Id == entity.Id)
+                .ToList();
+            var entity2 = entities.Single();
+
+            Assert.AreEqual($"Description for {entity.Id}", entity2.Description);
 
             dataContext2.Delete(entity2);
             await dataContext2.PersistChangesAsync();
