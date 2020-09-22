@@ -318,7 +318,7 @@ namespace Kephas.Data
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 
-            persistContext = persistContext ?? new PersistChangesContext(dataContext);
+            persistContext ??= new PersistChangesContext(dataContext);
             if (persistContext.DataContext != dataContext)
             {
                 throw new DataException(Strings.DataContext_MismatchedDataContextInCommand_Exception);
