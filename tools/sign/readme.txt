@@ -24,3 +24,13 @@ For MongoDB packages:
 2. Copy in the sign folder the MongoDB packages and unzip them.
 3. Run: powershell .\mongo-sign.ps1
 4. Indicate the version of the packages.
+
+After building the signed packages:
+
+1. Go to ..\..\externals\nuget folder.
+2. Create the nuget source folders for the new version.
+3. Update the *.signed.nuspec packages.
+4. Return to this folder.
+5. Run: powershell .\mongo-pack.ps1.
+
+After creating the nuget signed packages, publish them on nuget.org.
