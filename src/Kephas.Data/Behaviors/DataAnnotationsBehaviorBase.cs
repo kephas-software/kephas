@@ -55,8 +55,7 @@ namespace Kephas.Data.Behaviors
             }
 
             var typeInfo = entity.GetTypeInfo();
-            var validationFn = typeInfo[ValidationFnKey] as Func<object, IEntityEntry, IDataOperationContext, IDataValidationResult>;
-            if (validationFn == null)
+            if (!(typeInfo[ValidationFnKey] is Func<object, IEntityEntry, IDataOperationContext, IDataValidationResult> validationFn))
             {
                 validationFn = this.CreateValidationFn(typeInfo);
                 typeInfo[ValidationFnKey] = validationFn;
@@ -110,13 +109,13 @@ namespace Kephas.Data.Behaviors
         /// </returns>
         private IDataValidationResult GetDataValidationResult(object entity, List<Func<object, IDataValidationResultItem?>> propValidations)
         {
-            var propResults = propValidations.Select(v => v(entity)!).Where(res => res != null).ToArray();
-            if (propResults.Length == 0)
-            {
-                return DataValidationResult.Success;
-            }
-
-            return new DataValidationResult(propResults);
+            var propResults = propValidations
+                .Select(v => v(entity)!)
+                .Where(res => res != null)
+                .ToArray();
+            return propResults.Length == 0
+                ? DataValidationResult.Success
+                : new DataValidationResult(propResults);
         }
     }
 }
