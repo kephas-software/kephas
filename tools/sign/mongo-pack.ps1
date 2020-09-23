@@ -28,13 +28,21 @@ foreach ($package in $packages) {
 	Copy-Item "$sourceAssemblyNet45.signed.dll" "$targetAssemblyNet45.dll"
 	Copy-Item "$sourceAssemblyNet45.xml" "$targetAssemblyNet45.xml"
 
-    $targetAssemblyNetStandard = "$targetNugetPath\$package.signed.$version\lib\netstandard1.5\$package"
-	Remove-Item -path "$targetAssemblyNetStandard.dll"
-	Remove-Item -path "$targetAssemblyNetStandard.xml"
+    $targetAssemblyNetStandard15 = "$targetNugetPath\$package.signed.$version\lib\netstandard1.5\$package"
+	Remove-Item -path "$targetAssemblyNetStandard15.dll"
+	Remove-Item -path "$targetAssemblyNetStandard15.xml"
 	
-	$sourceAssemblyNetStandard = ".\$package.$version\lib\netstandard1.5\$package"
-	Copy-Item "$sourceAssemblyNetStandard.signed.dll" "$targetAssemblyNetStandard.dll"
-	Copy-Item "$sourceAssemblyNetStandard.xml" "$targetAssemblyNetStandard.xml"
+	$sourceAssemblyNetStandard15 = ".\$package.$version\lib\netstandard1.5\$package"
+	Copy-Item "$sourceAssemblyNetStandard15.signed.dll" "$targetAssemblyNetStandard15.dll"
+	Copy-Item "$sourceAssemblyNetStandard15.xml" "$targetAssemblyNetStandard15.xml"
+
+    $targetAssemblyNetStandard20 = "$targetNugetPath\$package.signed.$version\lib\netstandard2.0\$package"
+	Remove-Item -path "$targetAssemblyNetStandard20.dll"
+	Remove-Item -path "$targetAssemblyNetStandard20.xml"
+	
+	$sourceAssemblyNetStandard20 = ".\$package.$version\lib\netstandard2.0\$package"
+	Copy-Item "$sourceAssemblyNetStandard20.signed.dll" "$targetAssemblyNetStandard20.dll"
+	Copy-Item "$sourceAssemblyNetStandard20.xml" "$targetAssemblyNetStandard20.xml"
 	
 	.\NuGet.exe pack $targetNugetPath$package.signed.$version\$package.signed.nuspec -BasePath $targetNugetPath$package.signed.$version
 	
