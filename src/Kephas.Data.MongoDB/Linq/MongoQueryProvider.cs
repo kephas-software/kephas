@@ -10,21 +10,29 @@
 
 namespace Kephas.Data.MongoDB.Linq
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using global::MongoDB.Driver;
     using global::MongoDB.Driver.Linq;
     using Kephas.Data.Linq;
     using Kephas.Reflection;
     using Kephas.Runtime;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A mongo query provider.
     /// </summary>
     public class MongoQueryProvider : DataContextQueryProvider
     {
+        private static readonly MethodInfo ExecuteEnumerableAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ => ((MongoQueryProvider)null!).ExecuteEnumerableAsync<string>(null!, default));
+        private static readonly MethodInfo ExecuteScalarAsyncMethod = ReflectionHelper.GetGenericMethodOf(_ => ((MongoQueryProvider)null!).ExecuteScalarAsync<string>(null!, default));
+
         private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
@@ -50,13 +58,25 @@ namespace Kephas.Data.MongoDB.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        public override Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
+        public override async Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
         {
             var nativeProviderTypeInfo = this.typeRegistry.GetTypeInfo(this.NativeQueryProvider.GetType());
             var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods[nameof(this.ExecuteAsync)].Single();
-            var executeAsync = executeAsyncMethodInfo.MethodInfo.MakeGenericMethod(typeof(object));
-            var taskResult = (Task<object>)executeAsync.Call(this.NativeQueryProvider, expression, cancellationToken);
-            return taskResult;
+            var entityType = expression.Type.TryGetQueryableItemType();
+            if (entityType != null)
+            {
+                // vector value
+                var executeAsync = ExecuteEnumerableAsyncMethod.MakeGenericMethod(entityType);
+                var executeTask = (Task<object>)executeAsync.Call(this, expression, cancellationToken);
+                return await executeTask.PreserveThreadContext();
+            }
+            else
+            {
+                // scalar value
+                var executeAsync = ExecuteScalarAsyncMethod.MakeGenericMethod(expression.Type);
+                var executeTask = (Task<object>)executeAsync.Call(this, expression, cancellationToken);
+                return await executeTask.PreserveThreadContext();
+            }
         }
 
         /// <summary>
@@ -71,13 +91,10 @@ namespace Kephas.Data.MongoDB.Linq
         /// A task that represents the asynchronous operation.
         /// The task result contains the value that results from executing the specified query.
         /// </returns>
-        public override Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
+        public override async Task<TResult> ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
         {
-            var nativeProviderTypeInfo = this.typeRegistry.GetTypeInfo(this.NativeQueryProvider.GetType());
-            var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods[nameof(this.ExecuteAsync)].Single();
-            var executeAsync = executeAsyncMethodInfo.MethodInfo.MakeGenericMethod(typeof(TResult));
-            var taskResult = (Task<TResult>)executeAsync.Call(this.NativeQueryProvider, expression, cancellationToken);
-            return taskResult;
+            var result = await this.ExecuteAsync(expression, cancellationToken).PreserveThreadContext();
+            return (TResult)result;
         }
 
         /// <summary>
@@ -105,6 +122,44 @@ namespace Kephas.Data.MongoDB.Linq
         protected override IQueryable<TElement> CreateQuery<TElement>(IQueryable<TElement> nativeQuery)
         {
             return new MongoQuery<TElement>(this, (IMongoQueryable<TElement>)nativeQuery, this.typeRegistry);
+        }
+
+        private async Task<object> ExecuteEnumerableAsync<T>(Expression expression, CancellationToken cancellationToken)
+        {
+            var nativeProviderTypeInfo = this.typeRegistry.GetTypeInfo(this.NativeQueryProvider.GetType());
+            var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods["ExecuteAsync"].Single();
+            var executeAsync = executeAsyncMethodInfo.MethodInfo.MakeGenericMethod(typeof(IAsyncCursor<T>));
+            var executeAsyncTask = (Task<IAsyncCursor<T>>)executeAsync.Call(this.NativeQueryProvider, expression, cancellationToken);
+            var asyncCursor = await executeAsyncTask.PreserveThreadContext();
+
+            var dataContext = this.DataContext;
+            var items = new List<T>();
+            while (await asyncCursor.MoveNextAsync(cancellationToken).PreserveThreadContext())
+            {
+                items.AddRange(asyncCursor.Current.Select(e => (T)dataContext.Attach(e!).Entity));
+            }
+
+            return items;
+        }
+
+        private async Task<object?> ExecuteScalarAsync<T>(Expression expression, CancellationToken cancellationToken)
+        {
+            var nativeProviderTypeInfo = this.typeRegistry.GetTypeInfo(this.NativeQueryProvider.GetType());
+            var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods["ExecuteAsync"].Single();
+            var executeAsync = executeAsyncMethodInfo.MethodInfo.MakeGenericMethod(typeof(T));
+            var executeAsyncTask = (Task<T>)executeAsync.Call(this.NativeQueryProvider, expression, cancellationToken);
+            var value = await executeAsyncTask.PreserveThreadContext();
+
+            var valueType = value?.GetType();
+            if (value == null
+                || valueType!.IsValueType
+                || value is string
+                || !this.typeRegistry.GetTypeInfo(valueType!).Properties.ContainsKey(nameof(IIdentifiable.Id)))
+            {
+                return value;
+            }
+
+            return this.DataContext.Attach(value).Entity;
         }
     }
 }

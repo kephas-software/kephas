@@ -72,6 +72,55 @@ namespace Kephas.Data.MongoDB.Tests
         }
 
         [Test]
+        public async Task Query_CountAsync()
+        {
+            var container = this.CreateContainer();
+            using var dataSpace = container.GetExport<IDataSpace>();
+            var dataContext = dataSpace[typeof(NotificationMongoEntity)];
+
+            var entity = await dataContext.CreateAsync<NotificationMongoEntity>();
+            entity.Id = container.GetExport<IIdGenerator>().GenerateId();
+            entity.Description = $"Description for 1";
+            await dataContext.PersistChangesAsync();
+
+            using var dataSpace2 = container.GetExport<IDataSpace>();
+            var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
+            var count = await dataContext
+                .Query<NotificationMongoEntity>()
+                .Where(e => e.Id == entity.Id)
+                .CountAsync().PreserveThreadContext();
+
+            Assert.AreEqual(1, count);
+
+            dataContext.Delete(entity);
+            await dataContext.PersistChangesAsync();
+        }
+
+        [Test]
+        public async Task Query_SingleAsync()
+        {
+            var container = this.CreateContainer();
+            using var dataSpace = container.GetExport<IDataSpace>();
+            var dataContext = dataSpace[typeof(NotificationMongoEntity)];
+
+            var entity = await dataContext.CreateAsync<NotificationMongoEntity>();
+            entity.Id = container.GetExport<IIdGenerator>().GenerateId();
+            entity.Description = $"Description for 1";
+            await dataContext.PersistChangesAsync();
+
+            using var dataSpace2 = container.GetExport<IDataSpace>();
+            var dataContext2 = dataSpace2[typeof(NotificationMongoEntity)];
+            var entity2 = await dataContext
+                .Query<NotificationMongoEntity>()
+                .SingleAsync(e => e.Id == entity.Id).PreserveThreadContext();
+
+            Assert.AreEqual(entity.Id, entity2.Id);
+
+            dataContext2.Delete(entity2);
+            await dataContext.PersistChangesAsync();
+        }
+
+        [Test]
         public async Task Query_ToListAsync()
         {
             var container = this.CreateContainer();
