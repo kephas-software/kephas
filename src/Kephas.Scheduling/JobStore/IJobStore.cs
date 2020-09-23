@@ -40,20 +40,22 @@ namespace Kephas.Scheduling.JobStore
         Task<bool> RemoveScheduledJobAsync(object jobId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Adds a scheduled job asynchronously.
+        /// Adds a scheduled job asynchronously and returns a value indicating whether the job was added.
+        /// A job cannot be added if it is already in the store.
         /// </summary>
         /// <param name="job">The job to add.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        Task AddScheduledJobAsync(IJobInfo job, CancellationToken cancellationToken = default);
+        /// <returns>The asynchronous result yielding a value indicating whether the job was added.</returns>
+        Task<bool> AddScheduledJobAsync(IJobInfo job, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Adds the result of a completed job asynchronously.
+        /// Adds the result of a completed job asynchronously and returns a value indicating whether the job was added.
+        /// A completed job cannot be added if it is already in the store.
         /// </summary>
         /// <param name="completedJob">The completed job result.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        Task AddCompletedJobResultAsync(IJobResult completedJob, CancellationToken cancellationToken = default);
+        /// <returns>The asynchronous result yielding a value indicating whether the completed job was added.</returns>
+        Task<bool> AddCompletedJobResultAsync(IJobResult completedJob, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the running job based on its ID asynchronously.

@@ -328,8 +328,6 @@ namespace Kephas.Scheduling
         {
             Requires.NotNull(scheduler, nameof(scheduler));
 
-            trigger ??= new TimerTrigger(Guid.NewGuid());
-
             return scheduler.EnqueueAsync(
                 scheduledJob ?? scheduledJobId,
                 ctx => ctx

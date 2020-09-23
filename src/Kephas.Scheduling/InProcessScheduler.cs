@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryScheduler.cs" company="Kephas Software SRL">
+// <copyright file="InProcessScheduler.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,7 +8,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scheduling.InMemory
+namespace Kephas.Scheduling
 {
     using System;
     using System.Collections.Concurrent;
@@ -17,7 +17,6 @@ namespace Kephas.Scheduling.InMemory
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
@@ -32,10 +31,10 @@ namespace Kephas.Scheduling.InMemory
     using Kephas.Workflow;
 
     /// <summary>
-    /// An in memory scheduler.
+    /// A scheduler processing jobs in the executing process.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class InMemoryScheduler : Loggable, IScheduler
+    public class InProcessScheduler : Loggable, IScheduler
     {
         private readonly IContextFactory contextFactory;
         private readonly IWorkflowProcessor workflowProcessor;
@@ -47,13 +46,13 @@ namespace Kephas.Scheduling.InMemory
         private readonly FinalizationMonitor<IScheduler> finalizationMonitor;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryScheduler"/> class.
+        /// Initializes a new instance of the <see cref="InProcessScheduler"/> class.
         /// </summary>
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
         /// <param name="jobStore">The job store.</param>
         /// <param name="logManager">The log manager.</param>
-        public InMemoryScheduler(
+        public InProcessScheduler(
             IContextFactory contextFactory,
             IWorkflowProcessor workflowProcessor,
             IJobStore jobStore,
@@ -325,10 +324,10 @@ namespace Kephas.Scheduling.InMemory
 
             var schedulingContext = this.CreateSchedulingContext(options);
 
+            await this.jobStore.AddScheduledJobAsync(jobInfo, cancellationToken).PreserveThreadContext();
             var trigger = schedulingContext.Trigger()
                           ?? new TimerTrigger(Guid.NewGuid());
 
-            await this.jobStore.AddScheduledJobAsync(jobInfo, cancellationToken).PreserveThreadContext();
             await this.jobStore.AddTriggerAsync(trigger, jobInfo, cancellationToken).PreserveThreadContext();
 
             if (!this.activeTriggers.TryAdd(

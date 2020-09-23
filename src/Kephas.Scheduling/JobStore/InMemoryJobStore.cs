@@ -5,7 +5,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Scheduling.InMemory
+namespace Kephas.Scheduling.JobStore
 {
     using System;
     using System.Collections.Concurrent;
@@ -17,7 +17,6 @@ namespace Kephas.Scheduling.InMemory
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Scheduling.Jobs;
-    using Kephas.Scheduling.JobStore;
     using Kephas.Scheduling.Reflection;
     using Kephas.Scheduling.Triggers;
     using Kephas.Services;
@@ -82,35 +81,39 @@ namespace Kephas.Scheduling.InMemory
         }
 
         /// <summary>
-        /// Adds a scheduled job asynchronously.
+        /// Adds a scheduled job asynchronously and returns a value indicating whether the job was added.
+        /// A job cannot be added if it is already in the store.
         /// </summary>
         /// <param name="job">The job to add.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        public Task AddScheduledJobAsync(IJobInfo job, CancellationToken cancellationToken = default)
+        /// <returns>The asynchronous result yielding a value indicating whether the job was added.</returns>
+        public Task<bool> AddScheduledJobAsync(IJobInfo job, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(job, nameof(job));
 
             if (!this.scheduledJobs.TryAdd(job.Id, job))
             {
-                throw new InvalidOperationException($"Could not add the scheduled job '{job}'.");
+                return Task.FromResult(false);
             }
 
-            return Task.CompletedTask;
+            return Task.FromResult(true);
         }
 
         /// <summary>
-        /// Adds the result of a completed job asynchronously.
+        /// Adds the result of a completed job asynchronously and returns a value indicating whether the job was added.
+        /// A completed job cannot be added if it is already in the store.
         /// </summary>
-        /// <param name="completedJob">The job result.</param>
+        /// <param name="completedJob">The completed job result.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
-        /// <returns>The asynchronous result.</returns>
-        public Task AddCompletedJobResultAsync(IJobResult completedJob, CancellationToken cancellationToken = default)
+        /// <returns>The asynchronous result yielding a value indicating whether the completed job was added.</returns>
+        public Task<bool> AddCompletedJobResultAsync(
+            IJobResult completedJob,
+            CancellationToken cancellationToken = default)
         {
             Requires.NotNull(completedJob, nameof(completedJob));
 
             this.completedJobs.Enqueue(completedJob);
-            return Task.CompletedTask;
+            return Task.FromResult(true);
         }
 
         /// <summary>
