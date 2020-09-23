@@ -80,6 +80,6 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information.
         /// </returns>
-        IEntityEntry Detach(IEntityEntry entityEntry);
+        IEntityEntry? Detach(IEntityEntry entityEntry);
     }
 }

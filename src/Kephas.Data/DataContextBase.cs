@@ -218,7 +218,7 @@ namespace Kephas.Data
         /// <returns>
         /// The entity entry information.
         /// </returns>
-        public virtual IEntityEntry Detach(IEntityEntry entityEntry)
+        public virtual IEntityEntry? Detach(IEntityEntry entityEntry)
         {
             Requires.NotNull(entityEntry, nameof(entityEntry));
 
@@ -372,7 +372,7 @@ namespace Kephas.Data
         /// <returns>
         /// The entity extended information, or <c>null</c> if the entity is not attached to this data context.
         /// </returns>
-        protected virtual IEntityEntry DetachCore(IEntityEntry entityEntry, bool detachEntityGraph)
+        protected virtual IEntityEntry? DetachCore(IEntityEntry entityEntry, bool detachEntityGraph)
         {
             if (!this.LocalCache.Remove(entityEntry))
             {
