@@ -60,8 +60,6 @@ namespace Kephas.Data.MongoDB.Linq
         /// </returns>
         public override async Task<object> ExecuteAsync(Expression expression, CancellationToken cancellationToken = default)
         {
-            var nativeProviderTypeInfo = this.typeRegistry.GetTypeInfo(this.NativeQueryProvider.GetType());
-            var executeAsyncMethodInfo = nativeProviderTypeInfo.Methods[nameof(this.ExecuteAsync)].Single();
             var entityType = expression.Type.TryGetQueryableItemType();
             if (entityType != null)
             {
