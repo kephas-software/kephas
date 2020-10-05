@@ -27,7 +27,7 @@
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
-        <PackageIconUrl>https://www.kephas-software.com/wp-content/uploads/kephas.logo_.stone_.png</PackageIconUrl>
+        <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>
@@ -53,7 +53,7 @@
         <Copyright>Copyright © Kephas Software SRL 2010-2020</Copyright>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
-        <PackageIconUrl>https://www.kephas-software.com/wp-content/uploads/kephas.logo_.stone_.png</PackageIconUrl>
+        <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
         <PackageTags>kephas workflow activity model</PackageTags>
@@ -91,6 +91,10 @@
       <Compile Remove="Properties\**" />
       <EmbeddedResource Remove="Properties\**" />
       <None Remove="Properties\**" />
+      <None Update="kephas.logo.stone.png">
+        <Pack>true</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -120,6 +124,10 @@
 
     <ItemGroup>
         <None Include="..\Kephas.snk" Link="Kephas.snk" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

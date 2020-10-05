@@ -27,7 +27,7 @@
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
-        <PackageIconUrl>https://www.kephas-software.com/wp-content/uploads/kephas.logo_.stone_.png</PackageIconUrl>
+        <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>
@@ -74,6 +74,10 @@
       <Compile Remove="Properties\**" />
       <EmbeddedResource Remove="Properties\**" />
       <None Remove="Properties\**" />
+      <None Update="kephas.logo.stone.png">
+        <Pack>true</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -104,6 +108,10 @@
         <ProjectReference Include="..\..\Kephas.Application\Kephas.Application.csproj" />
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Model\Kephas.Model.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>

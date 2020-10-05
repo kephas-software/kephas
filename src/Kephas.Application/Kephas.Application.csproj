@@ -30,7 +30,7 @@
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
-        <PackageIconUrl>https://www.kephas-software.com/wp-content/uploads/kephas.logo_.stone_.png</PackageIconUrl>
+        <PackageIcon>kephas.logo.stone.png</PackageIcon>
         <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
         <RepositoryType>github</RepositoryType>
         <PackageReleaseNotes>
@@ -105,6 +105,10 @@
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Strings.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
     </ItemGroup>
 
 </Project>
