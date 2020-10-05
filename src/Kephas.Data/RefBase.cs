@@ -56,7 +56,7 @@ namespace Kephas.Data
         /// <returns>
         /// The value of the entity property.
         /// </returns>
-        protected virtual object GetEntityPropertyValue(string propertyName)
+        protected virtual object? GetEntityPropertyValue(string propertyName)
         {
             var entity = this.GetContainerEntity();
             return entity is IIndexable expandoEntity
@@ -69,7 +69,7 @@ namespace Kephas.Data
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="value">The value.</param>
-        protected virtual void SetEntityPropertyValue(string propertyName, object value)
+        protected virtual void SetEntityPropertyValue(string propertyName, object? value)
         {
             var entity = this.GetContainerEntity();
             if (entity is IIndexable expandoEntity)

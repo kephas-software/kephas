@@ -19,6 +19,7 @@ namespace Kephas.Data
     /// </summary>
     /// <typeparam name="TService">Type of the referenced service.</typeparam>
     public class ServiceRef<TService> : RefBase, IServiceRef<TService>
+        where TService : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceRef{TService}"/> class.
@@ -37,9 +38,9 @@ namespace Kephas.Data
         /// <value>
         /// The name of the referenced service.
         /// </value>
-        public virtual string ServiceName
+        public virtual string? ServiceName
         {
-            get => (string)this.GetEntityPropertyValue(this.RefFieldName);
+            get => (string?)this.GetEntityPropertyValue(this.RefFieldName);
             set => this.SetEntityPropertyValue(this.RefFieldName, value);
         }
 
@@ -55,9 +56,9 @@ namespace Kephas.Data
         /// Gets the referenced service.
         /// </summary>
         /// <returns>
-        /// The referenced service.
+        /// The referenced service or <c>null</c>.
         /// </returns>
-        public virtual TService GetService()
+        public virtual TService? GetService()
         {
             var serviceName = this.ServiceName;
             if (string.IsNullOrEmpty(serviceName))
@@ -66,16 +67,16 @@ namespace Kephas.Data
             }
 
             var namedServiceProvider = this.GetNamedServiceProvider();
-            return namedServiceProvider.GetNamedService<TService>(serviceName);
+            return namedServiceProvider.GetNamedService<TService>(serviceName!);
         }
 
         /// <summary>
         /// Gets the referenced service.
         /// </summary>
         /// <returns>
-        /// The referenced service.
+        /// The referenced service or <c>null</c>.
         /// </returns>
-        object IServiceRef.GetService() => this.GetService();
+        object? IServiceRef.GetService() => this.GetService();
 
         /// <summary>
         /// Gets the named service provider.

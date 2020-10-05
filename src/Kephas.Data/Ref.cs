@@ -27,7 +27,7 @@ namespace Kephas.Data
         /// <summary>
         /// The referenced entity.
         /// </summary>
-        private T entity;
+        private T? entity;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ref{T}"/> class.
@@ -66,7 +66,7 @@ namespace Kephas.Data
         /// <value>
         /// The referenced entity.
         /// </value>
-        public virtual T Entity
+        public virtual T? Entity
         {
             get => this.entity;
             set => this.entity = value;
@@ -82,10 +82,10 @@ namespace Kephas.Data
         /// <value>
         /// The referenced entity.
         /// </value>
-        object IRef.Entity
+        object? IRef.Entity
         {
             get => this.Entity;
-            set => this.Entity = (T)value;
+            set => this.Entity = (T?)value;
         }
 
         /// <summary>
@@ -102,11 +102,12 @@ namespace Kephas.Data
         /// <value>
         /// The identifier of the referenced entity.
         /// </value>
-        public virtual object Id
+        public virtual object? Id
         {
             get
             {
                 var value = this.GetEntityPropertyValue(this.RefFieldName);
+
                 // if the ID value is not set, but the entity,
                 // try getting the ID from the referenced entity.
                 if (Kephas.Data.Id.IsEmpty(value))
@@ -142,7 +143,7 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        public virtual async Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default)
+        public virtual async Task<T?> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default)
         {
             var id = this.Id;
             var refEntity = this.Entity;
@@ -159,7 +160,7 @@ namespace Kephas.Data
             var containerEntityEntry = this.GetContainerEntityEntry();
             var dataContext = this.GetDataContext(containerEntityEntry);
 
-            var findContext = new FindContext<T>(dataContext, id, throwIfNotFound);
+            var findContext = new FindContext<T>(dataContext, id!, throwIfNotFound);
             refEntity = await dataContext.FindAsync<T>(findContext, cancellationToken).PreserveThreadContext();
             if (refEntity != null)
             {
@@ -177,7 +178,7 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        async Task<object> IRef.GetAsync(bool throwIfNotFound, CancellationToken cancellationToken)
+        async Task<object?> IRef.GetAsync(bool throwIfNotFound, CancellationToken cancellationToken)
         {
             return await this.GetAsync(throwIfNotFound, cancellationToken).PreserveThreadContext();
         }

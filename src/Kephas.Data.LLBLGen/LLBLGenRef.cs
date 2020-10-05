@@ -42,7 +42,7 @@ namespace Kephas.Data.LLBLGen
 
         /// <summary>Gets or sets the identifier of the referenced entity.</summary>
         /// <value>The identifier of the referenced entity.</value>
-        public override object Id
+        public override object? Id
         {
             get
             {
@@ -80,9 +80,9 @@ namespace Kephas.Data.LLBLGen
         /// <value>
         /// The identifier of the referenced entity.
         /// </value>
-        public override T Entity
+        public override T? Entity
         {
-            get => (T)this.GetEntityPropertyValue(this.refName);
+            get => (T?)this.GetEntityPropertyValue(this.refName);
             set => this.SetEntityPropertyValue(this.refName, value);
         }
 
@@ -90,7 +90,7 @@ namespace Kephas.Data.LLBLGen
         /// <param name="throwIfNotFound">If true and the referenced entity is not found, an exception occurs.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>A task promising the referenced entity.</returns>
-        public override async Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default)
+        public override async Task<T?> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default)
         {
             var id = this.Id;
             var entity = this.Entity;

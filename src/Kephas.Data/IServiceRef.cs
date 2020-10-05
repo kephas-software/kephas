@@ -27,7 +27,7 @@ namespace Kephas.Data
         /// <value>
         /// The name of the service.
         /// </value>
-        string ServiceName { get; set; }
+        string? ServiceName { get; set; }
 
         /// <summary>
         /// Gets the type of the referenced service.
@@ -41,9 +41,9 @@ namespace Kephas.Data
         /// Gets the referenced service.
         /// </summary>
         /// <returns>
-        /// The referenced service.
+        /// The referenced service or <c>null</c>.
         /// </returns>
-        object GetService();
+        object? GetService();
     }
 
     /// <summary>
@@ -51,13 +51,14 @@ namespace Kephas.Data
     /// </summary>
     /// <typeparam name="TService">Type of the referenced service.</typeparam>
     public interface IServiceRef<out TService> : IServiceRef
+        where TService : class
     {
         /// <summary>
         /// Gets the referenced service.
         /// </summary>
         /// <returns>
-        /// The referenced service.
+        /// The referenced service or <c>null</c>.
         /// </returns>
-        new TService GetService();
+        new TService? GetService();
     }
 }

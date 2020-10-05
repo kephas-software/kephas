@@ -25,7 +25,7 @@ namespace Kephas.Data
         /// <value>
         /// The identifier of the referenced entity.
         /// </value>
-        new object Id { get; set; }
+        new object? Id { get; set; }
 
         /// <summary>
         /// Gets the type of the referenced entity.
@@ -45,7 +45,7 @@ namespace Kephas.Data
         /// <value>
         /// The referenced entity.
         /// </value>
-        object Entity { get; set; }
+        object? Entity { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the reference is empty/not set.
@@ -63,7 +63,7 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        Task<object> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default);
+        Task<object?> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ namespace Kephas.Data
         /// <value>
         /// The referenced entity.
         /// </value>
-        new T Entity { get; set; }
+        new T? Entity { get; set; }
 
         /// <summary>
         /// Gets the referenced entity asynchronously.
@@ -93,6 +93,6 @@ namespace Kephas.Data
         /// <returns>
         /// A task promising the referenced entity.
         /// </returns>
-        new Task<T> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default);
+        new Task<T?> GetAsync(bool throwIfNotFound = true, CancellationToken cancellationToken = default);
     }
 }
