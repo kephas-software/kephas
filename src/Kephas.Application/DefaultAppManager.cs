@@ -130,7 +130,7 @@ namespace Kephas.Application
             {
                 // set the features in the app manifest.
                 var features = this.FeatureManagerFactories
-                    .Select(f => f.Metadata.FeatureInfo)
+                    .Select(f => f.Metadata.FeatureInfo!)
                     .ToList();
                 this.SetAppRuntimeFeatures(features);
 
@@ -610,15 +610,18 @@ namespace Kephas.Application
         /// The sorted feature manager factories.
         /// </returns>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
-        protected virtual ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> SortEnabledFeatureManagerFactories(ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories)
+        protected virtual ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> SortEnabledFeatureManagerFactories(
+            ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureManagerFactories)
         {
-            var partialOrderedSet = new PartialOrderedSet<IExportFactory<IFeatureManager, FeatureManagerMetadata>>(featureManagerFactories, this.CompareFeatureManagers);
+            var partialOrderedSet = new PartialOrderedSet<IExportFactory<IFeatureManager, FeatureManagerMetadata>>(
+                featureManagerFactories,
+                this.CompareFeatureManagers);
             return partialOrderedSet.ToList();
         }
 
         /// <summary>
         /// Calculates the feature information based on the <see cref="FeatureManagerMetadata"/>
-        /// if not explicitely provided.
+        /// if not explicitly provided.
         /// </summary>
         /// <param name="featureManagerMetadata">The feature manager metadata.</param>
         /// <returns>
@@ -630,7 +633,7 @@ namespace Kephas.Application
         }
 
         /// <summary>
-        /// Compares two feature managers reagarding to their provessing priority.
+        /// Compares two feature managers regarding to their processing priority.
         /// </summary>
         /// <param name="fm1">The first fm.</param>
         /// <param name="fm2">The second fm.</param>
@@ -639,8 +642,8 @@ namespace Kephas.Application
         /// </returns>
         private int? CompareFeatureManagers(IExportFactory<IFeatureManager, FeatureManagerMetadata> fm1, IExportFactory<IFeatureManager, FeatureManagerMetadata> fm2)
         {
-            var fm1Info = fm1.Metadata.FeatureInfo;
-            var fm2Info = fm2.Metadata.FeatureInfo;
+            var fm1Info = fm1.Metadata.FeatureInfo!;
+            var fm2Info = fm2.Metadata.FeatureInfo!;
             if (fm2Info.Dependencies.Contains(fm1Info.Name))
             {
                 return -1;
@@ -687,7 +690,7 @@ namespace Kephas.Application
         private (string featureIdentifier, Type featureType) GetFeatureInfo(IFeatureManager featureManager, FeatureManagerMetadata featureManagerMetadata)
         {
             var featureType = featureManager.GetType();
-            var featureIdentifier = $"'{featureManagerMetadata.FeatureInfo.Name}' ({featureType}, #{featureManagerMetadata.ProcessingPriority})";
+            var featureIdentifier = $"'{featureManagerMetadata.FeatureInfo!.Name}' ({featureType}, #{featureManagerMetadata.ProcessingPriority})";
             return (featureIdentifier, featureType);
         }
 

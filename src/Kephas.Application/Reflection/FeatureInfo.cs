@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.ComponentModel.DataAnnotations;
-
 namespace Kephas.Application.Reflection
 {
     using System;
@@ -17,6 +15,7 @@ namespace Kephas.Application.Reflection
     using System.Collections.ObjectModel;
 
     using Kephas.Application.Composition;
+    using Kephas.ComponentModel.DataAnnotations;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
