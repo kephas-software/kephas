@@ -19,6 +19,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
+    using Kephas.Operations;
     using Kephas.Orchestration.Interaction;
     using Kephas.Orchestration.Resources;
     using Kephas.Services;
@@ -60,8 +61,11 @@ namespace Kephas.Orchestration.Application
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>A Task.</returns>
-        public override async Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> AfterAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
+            var opResult = true.ToOperationResult();
             try
             {
                 var appStartedEvent = this.CreateAppStartedEvent();
@@ -80,7 +84,10 @@ namespace Kephas.Orchestration.Application
             catch (Exception ex)
             {
                 this.Logger.Error(ex, Strings.ApplicationStartedEvent_Exception);
+                opResult.MergeException(ex);
             }
+
+            return opResult;
         }
 
         /// <summary>
@@ -95,8 +102,11 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public override async Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> BeforeAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
+            var opResult = true.ToOperationResult();
             var appStoppedEvent = this.CreateAppStoppedEvent();
             try
             {
@@ -105,7 +115,10 @@ namespace Kephas.Orchestration.Application
             catch (Exception ex)
             {
                 this.Logger.Error(ex, Strings.ApplicationStoppedEvent_Exception);
+                opResult.MergeException(ex);
             }
+
+            return opResult;
         }
 
         private AppStartedEvent CreateAppStartedEvent()

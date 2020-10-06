@@ -14,10 +14,10 @@ namespace Kephas.Scheduling.Quartz.Application
     using System.Threading.Tasks;
 
     using global::Quartz.Logging;
-
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Scheduling.Quartz.Logging;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -48,11 +48,13 @@ namespace Kephas.Scheduling.Quartz.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             LogProvider.SetCurrentLogProvider(new QuartzLogProvider(this.logManager));
 
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -63,9 +65,11 @@ namespace Kephas.Scheduling.Quartz.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -76,9 +80,11 @@ namespace Kephas.Scheduling.Quartz.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -89,9 +95,11 @@ namespace Kephas.Scheduling.Quartz.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Kephas.Security.Authorization.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Security.Authorization.Runtime;
     using Kephas.Services;
@@ -40,11 +41,13 @@ namespace Kephas.Security.Authorization.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.typeRegistry.RegisterFactory(new AuthorizationTypeInfoFactory(this.typeRegistry));
 
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -55,9 +58,11 @@ namespace Kephas.Security.Authorization.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -68,9 +73,11 @@ namespace Kephas.Security.Authorization.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -81,9 +88,11 @@ namespace Kephas.Security.Authorization.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
     }
 }

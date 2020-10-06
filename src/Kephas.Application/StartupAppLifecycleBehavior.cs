@@ -16,6 +16,7 @@ namespace Kephas.Application
     using Kephas.Commands;
     using Kephas.Configuration;
     using Kephas.Interaction;
+    using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Threading.Tasks;
 
@@ -56,7 +57,9 @@ namespace Kephas.Application
         /// <remarks>
         /// To interrupt the application initialization, simply throw an appropriate exception.
         /// </remarks>
-        public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.scheduleCommandSubscription = this.eventHub.Subscribe<ScheduleStartupCommandSignal>(
                 (signal, ctx, token) =>
@@ -72,7 +75,9 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.scheduleCommandSubscription?.Dispose();
             this.scheduleCommandSubscription = null;

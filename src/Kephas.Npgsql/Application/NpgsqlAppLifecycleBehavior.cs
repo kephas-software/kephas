@@ -14,10 +14,10 @@ namespace Kephas.Npgsql.Application
     using System.Threading.Tasks;
 
     using global::Npgsql.Logging;
-
     using Kephas.Application;
     using Kephas.Logging;
     using Kephas.Npgsql.Logging;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -34,11 +34,13 @@ namespace Kephas.Npgsql.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             NpgsqlLogManager.Provider = new NpgsqlLoggingProviderAdapter(appContext.CompositionContext.GetExport<ILogManager>());
 
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -49,9 +51,11 @@ namespace Kephas.Npgsql.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -62,9 +66,11 @@ namespace Kephas.Npgsql.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -75,9 +81,11 @@ namespace Kephas.Npgsql.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
     }
 }

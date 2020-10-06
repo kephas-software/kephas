@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Operations;
+
 namespace Kephas.Application.Tests
 {
     using System;
@@ -49,25 +51,33 @@ namespace Kephas.Application.Tests
 
         public class TestAppLifecycleBehavior : AppLifecycleBehaviorBase
         {
-            public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+            public override Task<IOperationResult> BeforeAppInitializeAsync(
+                IAppContext appContext,
+                CancellationToken cancellationToken = default)
             {
                 this.Logger.Info("BeforeAppInitializeAsync");
                 return base.BeforeAppInitializeAsync(appContext, cancellationToken);
             }
 
-            public override Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+            public override Task<IOperationResult> AfterAppInitializeAsync(
+                IAppContext appContext,
+                CancellationToken cancellationToken = default)
             {
                 this.Logger.Info("AfterAppInitializeAsync");
                 return base.AfterAppInitializeAsync(appContext, cancellationToken);
             }
 
-            public override Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+            public override Task<IOperationResult> BeforeAppFinalizeAsync(
+                IAppContext appContext,
+                CancellationToken cancellationToken = default)
             {
                 this.Logger.Info("BeforeAppFinalizeAsync");
                 return base.BeforeAppFinalizeAsync(appContext, cancellationToken);
             }
 
-            public override Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+            public override Task<IOperationResult> AfterAppFinalizeAsync(
+                IAppContext appContext,
+                CancellationToken cancellationToken = default)
             {
                 this.Logger.Info("AfterAppFinalizeAsync");
                 return base.AfterAppFinalizeAsync(appContext, cancellationToken);

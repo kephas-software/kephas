@@ -13,6 +13,7 @@ namespace Kephas.Plugins.Application
     using Kephas.Application;
     using Kephas.Application.Interaction;
     using Kephas.Interaction;
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -47,10 +48,12 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.setupQuerySubscription = this.eventHub.Subscribe<AppSetupQueryEvent>((e, c) => e.SetupEnabled = e.SetupEnabled && !this.appRuntime.PluginsEnabled());
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -61,9 +64,11 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -78,9 +83,11 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -91,12 +98,14 @@ namespace Kephas.Plugins.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.setupQuerySubscription?.Dispose();
             this.setupQuerySubscription = null;
 
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
     }
 }

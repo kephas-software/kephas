@@ -14,6 +14,7 @@ namespace Kephas.Scheduling.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Scheduling.Runtime;
     using Kephas.Services;
@@ -47,11 +48,13 @@ namespace Kephas.Scheduling.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.typeRegistry.RegisterFactory(new SchedulingTypeInfoFactory(this.typeRegistry));
 
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -62,9 +65,12 @@ namespace Kephas.Scheduling.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public async Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> AfterAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             await ServiceHelper.InitializeAsync(this.scheduler, appContext, cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
         }
 
         /// <summary>
@@ -75,9 +81,12 @@ namespace Kephas.Scheduling.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> BeforeAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             await ServiceHelper.FinalizeAsync(this.scheduler, appContext, cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
         }
 
         /// <summary>
@@ -88,9 +97,11 @@ namespace Kephas.Scheduling.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
     }
 }

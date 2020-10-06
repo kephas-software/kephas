@@ -17,6 +17,7 @@ namespace Kephas.Application.Tests
 
     using Kephas.Application.Composition;
     using Kephas.Logging;
+    using Kephas.Operations;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -49,25 +50,25 @@ namespace Kephas.Application.Tests
 
         public class TestFeatureLifecycleBehavior : FeatureLifecycleBehaviorBase
         {
-            public override Task BeforeInitializeAsync(IAppContext appContext, FeatureManagerMetadata metadata, CancellationToken cancellationToken = default)
+            public override Task<IOperationResult> BeforeInitializeAsync(IAppContext appContext, FeatureManagerMetadata metadata, CancellationToken cancellationToken = default)
             {
                 this.Logger.Info("BeforeInitializeAsync");
                 return base.BeforeInitializeAsync(appContext, null, cancellationToken);
             }
 
-            public override Task AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata metadata, CancellationToken cancellationToken = default)
+            public override Task<IOperationResult> AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata metadata, CancellationToken cancellationToken = default)
             {
                 this.Logger.Info("AfterInitializeAsync");
                 return base.AfterInitializeAsync(appContext, null, cancellationToken);
             }
 
-            public override Task BeforeFinalizeAsync(IAppContext appContext, FeatureManagerMetadata metadata, CancellationToken cancellationToken = default)
+            public override Task<IOperationResult> BeforeFinalizeAsync(IAppContext appContext, FeatureManagerMetadata metadata, CancellationToken cancellationToken = default)
             {
                 this.Logger.Info("BeforeFinalizeAsync");
                 return base.BeforeFinalizeAsync(appContext, null, cancellationToken);
             }
 
-            public override Task AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata metadata, CancellationToken cancellationToken = default)
+            public override Task<IOperationResult> AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata metadata, CancellationToken cancellationToken = default)
             {
                 this.Logger.Info("AfterFinalizeAsync");
                 return base.AfterFinalizeAsync(appContext, null, cancellationToken);

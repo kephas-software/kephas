@@ -14,6 +14,7 @@ namespace Kephas.Application
     using System.Threading.Tasks;
 
     using Kephas.Application.Composition;
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -35,22 +36,28 @@ namespace Kephas.Application
         /// </remarks>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task BeforeInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default);
+        Task<IOperationResult> BeforeInitializeAsync(
+            IAppContext appContext,
+            FeatureManagerMetadata serviceMetadata,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called after a feature completes its asynchronous initialization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task AfterInitializeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default);
+        Task<IOperationResult> AfterInitializeAsync(
+            IAppContext appContext,
+            FeatureManagerMetadata serviceMetadata,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called before a feature starts its asynchronous finalization.
@@ -61,21 +68,27 @@ namespace Kephas.Application
         /// </remarks>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task BeforeFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default);
+        Task<IOperationResult> BeforeFinalizeAsync(
+            IAppContext appContext,
+            FeatureManagerMetadata serviceMetadata,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called after a feature completes its asynchronous finalization.
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task AfterFinalizeAsync(IAppContext appContext, FeatureManagerMetadata serviceMetadata, CancellationToken cancellationToken = default);
+        Task<IOperationResult> AfterFinalizeAsync(
+            IAppContext appContext,
+            FeatureManagerMetadata serviceMetadata,
+            CancellationToken cancellationToken = default);
     }
 }

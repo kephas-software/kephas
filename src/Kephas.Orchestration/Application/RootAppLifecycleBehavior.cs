@@ -23,6 +23,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Dynamic;
     using Kephas.Interaction;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Orchestration.Endpoints;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -106,7 +107,9 @@ namespace Kephas.Orchestration.Application
         /// <remarks>
         /// To interrupt the application initialization, simply throw an appropriate exception.
         /// </remarks>
-        public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.setupQuerySubscription = this.EventHub.Subscribe<AppSetupQueryEvent>((e, c) => e.SetupEnabled = e.SetupEnabled && this.enableAppSetup);
             return base.BeforeAppInitializeAsync(appContext, cancellationToken);
@@ -120,10 +123,13 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public override async Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> AfterAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             await this.StartWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
             this.restartSubscription = this.EventHub.Subscribe<RestartSignal>((signal, ctx, token) => this.HandleRestartSignalAsync(signal, appContext, token));
+            return true.ToOperationResult();
         }
 
         /// <summary>
@@ -138,12 +144,15 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public override Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> BeforeAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.restartSubscription?.Dispose();
             this.restartSubscription = null;
 
-            return this.StopWorkerProcessesAsync(appContext, cancellationToken);
+            await this.StopWorkerProcessesAsync(appContext, cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
         }
 
         /// <summary>
@@ -154,12 +163,15 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.setupQuerySubscription?.Dispose();
             this.setupQuerySubscription = null;
 
-            return base.AfterAppFinalizeAsync(appContext, cancellationToken);
+            await base.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
         }
 
         /// <summary>

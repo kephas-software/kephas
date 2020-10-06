@@ -18,6 +18,7 @@ namespace Kephas.Application
     using Kephas;
     using Kephas.Application.Resources;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -47,7 +48,9 @@ namespace Kephas.Application
         /// <remarks>
         /// To interrupt the application initialization, simply throw an appropriate exception.
         /// </remarks>
-        Task IAppLifecycleBehavior.BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken)
+        Task<IOperationResult> IAppLifecycleBehavior.BeforeAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken)
         {
             this.EnsureInitialized(appContext);
             return this.BeforeAppInitializeAsync(this.GetAppContext(appContext), cancellationToken);
@@ -64,9 +67,11 @@ namespace Kephas.Application
         /// <remarks>
         /// To interrupt the application initialization, simply throw an appropriate exception.
         /// </remarks>
-        public virtual Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public virtual Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -77,7 +82,9 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        Task IAppLifecycleBehavior.AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken)
+        Task<IOperationResult> IAppLifecycleBehavior.AfterAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken)
         {
             this.EnsureInitialized(appContext);
             return this.AfterAppInitializeAsync(this.GetAppContext(appContext), cancellationToken);
@@ -91,9 +98,11 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public virtual Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public virtual Task<IOperationResult> AfterAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -108,7 +117,9 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        Task IAppLifecycleBehavior.BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken)
+        Task<IOperationResult> IAppLifecycleBehavior.BeforeAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken)
         {
             this.EnsureInitialized(appContext);
             return this.BeforeAppFinalizeAsync(this.GetAppContext(appContext), cancellationToken);
@@ -126,9 +137,11 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public virtual Task BeforeAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public virtual Task<IOperationResult> BeforeAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -139,7 +152,9 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        Task IAppLifecycleBehavior.AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken)
+        Task<IOperationResult> IAppLifecycleBehavior.AfterAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken)
         {
             this.EnsureInitialized(appContext);
             return this.AfterAppFinalizeAsync(this.GetAppContext(appContext), cancellationToken);
@@ -153,9 +168,11 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public virtual Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public virtual Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

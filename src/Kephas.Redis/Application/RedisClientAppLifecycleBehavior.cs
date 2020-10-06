@@ -14,6 +14,7 @@ namespace Kephas.Redis.Application
     using System.Threading.Tasks;
 
     using Kephas.Application;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -42,9 +43,12 @@ namespace Kephas.Redis.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public async Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> BeforeAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             await ServiceHelper.InitializeAsync(this.redisClient, appContext, cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
         }
 
         /// <summary>
@@ -55,9 +59,11 @@ namespace Kephas.Redis.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -68,9 +74,11 @@ namespace Kephas.Redis.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -81,9 +89,12 @@ namespace Kephas.Redis.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public async Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> AfterAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             await ServiceHelper.FinalizeAsync(this.redisClient, appContext, cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
         }
     }
 }

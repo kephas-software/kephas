@@ -17,6 +17,7 @@ namespace Kephas.Orchestration.Application
     using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -64,7 +65,9 @@ namespace Kephas.Orchestration.Application
         /// <remarks>
         /// To interrupt the application initialization, simply throw an appropriate exception.
         /// </remarks>
-        public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.configChangedSubscription = this.eventHub.Subscribe<ConfigurationChangedSignal>(this.HandleConfigurationChangedAsync);
             return base.BeforeAppInitializeAsync(appContext, cancellationToken);
@@ -78,10 +81,13 @@ namespace Kephas.Orchestration.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public override async Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            await base.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
+            var baseResult = await base.AfterAppFinalizeAsync(appContext, cancellationToken).PreserveThreadContext();
             this.configChangedSubscription?.Dispose();
+            return baseResult;
         }
 
         /// <summary>
@@ -91,7 +97,7 @@ namespace Kephas.Orchestration.Application
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The asynchronous result.</returns>
-        protected virtual async Task HandleConfigurationChangedAsync(ConfigurationChangedSignal signal, IContext context, CancellationToken cancellationToken)
+        protected virtual async Task HandleConfigurationChangedAsync(ConfigurationChangedSignal signal, IContext? context, CancellationToken cancellationToken)
         {
             var thisAppInstanceId = this.appRuntime.GetAppInstanceId();
             var sourceAppInstanceId = signal.SourceAppInstanceId;

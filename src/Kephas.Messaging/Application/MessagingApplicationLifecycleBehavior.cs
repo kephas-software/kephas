@@ -20,6 +20,7 @@ namespace Kephas.Messaging.Application
     using Kephas.Logging;
     using Kephas.Messaging.Distributed;
     using Kephas.Messaging.Runtime;
+    using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -60,13 +61,16 @@ namespace Kephas.Messaging.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> BeforeAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
             this.typeRegistry.RegisterFactory(new MessagingTypeInfoFactory(this.typeRegistry));
 
             this.InitializeConfig();
 
-            return ServiceHelper.InitializeAsync(this.messageBroker, appContext, cancellationToken);
+            await ServiceHelper.InitializeAsync(this.messageBroker, appContext, cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
         }
 
         /// <summary>
@@ -77,9 +81,11 @@ namespace Kephas.Messaging.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> AfterAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -90,9 +96,11 @@ namespace Kephas.Messaging.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public Task<IOperationResult> BeforeAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -103,9 +111,12 @@ namespace Kephas.Messaging.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default)
+        public async Task<IOperationResult> AfterAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return ServiceHelper.FinalizeAsync(this.messageBroker, appContext, cancellationToken);
+            await ServiceHelper.FinalizeAsync(this.messageBroker, appContext, cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
         }
 
         private void InitializeConfig()

@@ -8,13 +8,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Application
 {
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -36,9 +35,11 @@ namespace Kephas.Application
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task BeforeAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default);
+        Task<IOperationResult> BeforeAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous initialization.
@@ -46,9 +47,11 @@ namespace Kephas.Application
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task AfterAppInitializeAsync(IContext appContext, CancellationToken cancellationToken = default);
+        Task<IOperationResult> AfterAppInitializeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called before the application starts its asynchronous finalization.
@@ -60,9 +63,11 @@ namespace Kephas.Application
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task BeforeAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default);
+        Task<IOperationResult> BeforeAppFinalizeAsync(
+            IContext appContext,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Interceptor called after the application completes its asynchronous finalization.
@@ -70,8 +75,8 @@ namespace Kephas.Application
         /// <param name="appContext">Context for the application.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default);
+        Task<IOperationResult> AfterAppFinalizeAsync(IContext appContext, CancellationToken cancellationToken = default);
     }
 }

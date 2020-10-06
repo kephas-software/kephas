@@ -11,6 +11,7 @@ namespace Kephas.Application
     using System.Threading.Tasks;
 
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -43,9 +44,11 @@ namespace Kephas.Application
         /// <returns>
         /// The asynchronous result.
         /// </returns>
-        public override async Task AfterAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override Task<IOperationResult> AfterAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            await this.appSetupService.SetupAsync(appContext, cancellationToken).PreserveThreadContext();
+            return this.appSetupService.SetupAsync(appContext, cancellationToken);
         }
     }
 }

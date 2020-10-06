@@ -16,6 +16,7 @@ namespace Kephas.Application
 
     using Kephas.Application.Composition;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
@@ -35,9 +36,9 @@ namespace Kephas.Application
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task IFeatureLifecycleBehavior.BeforeInitializeAsync(
+        Task<IOperationResult> IFeatureLifecycleBehavior.BeforeInitializeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken)
@@ -56,14 +57,14 @@ namespace Kephas.Application
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        public virtual Task BeforeInitializeAsync(
+        public virtual Task<IOperationResult> BeforeInitializeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -73,9 +74,9 @@ namespace Kephas.Application
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task IFeatureLifecycleBehavior.AfterInitializeAsync(
+        Task<IOperationResult> IFeatureLifecycleBehavior.AfterInitializeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken)
@@ -91,14 +92,14 @@ namespace Kephas.Application
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// The asynchronous result.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        public virtual Task AfterInitializeAsync(
+        public virtual Task<IOperationResult> AfterInitializeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -110,11 +111,11 @@ namespace Kephas.Application
         /// </remarks>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task IFeatureLifecycleBehavior.BeforeFinalizeAsync(
+        Task<IOperationResult> IFeatureLifecycleBehavior.BeforeFinalizeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken)
@@ -132,16 +133,16 @@ namespace Kephas.Application
         /// </remarks>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        public virtual Task BeforeFinalizeAsync(
+        public virtual Task<IOperationResult> BeforeFinalizeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         /// <summary>
@@ -149,11 +150,11 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        Task IFeatureLifecycleBehavior.AfterFinalizeAsync(
+        Task<IOperationResult> IFeatureLifecycleBehavior.AfterFinalizeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken)
@@ -167,16 +168,16 @@ namespace Kephas.Application
         /// </summary>
         /// <param name="appContext">Context for the application.</param>
         /// <param name="serviceMetadata">The feature manager service metadata.</param>
-        /// <param name="cancellationToken">The cancellation token (optional).</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A Task.
+        /// An asynchronous result yielding the operation result.
         /// </returns>
-        public virtual Task AfterFinalizeAsync(
+        public virtual Task<IOperationResult> AfterFinalizeAsync(
             IAppContext appContext,
             FeatureManagerMetadata serviceMetadata,
             CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            return Task.FromResult((IOperationResult)true.ToOperationResult());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

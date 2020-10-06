@@ -25,14 +25,13 @@ namespace Kephas.Application.Tests
     using Kephas.Composition.ExportFactories;
     using Kephas.Composition.ExportFactoryImporters;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Services.Behaviors;
     using Kephas.Services.Behaviors.Composition;
     using Kephas.Services.Composition;
-
     using NSubstitute;
     using NSubstitute.Core;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -79,18 +78,18 @@ namespace Kephas.Application.Tests
 
             var behavior1 = Substitute.For<IAppLifecycleBehavior>();
             behavior1.BeforeAppInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns(Task.FromResult((IOperationResult)true.ToOperationResult()))
                 .AndDoes(_ => order.Add(11));
             behavior1.AfterAppInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(21));
 
             var behavior2 = Substitute.For<IAppLifecycleBehavior>();
             behavior2.BeforeAppInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(12));
             behavior2.AfterAppInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(22));
 
             var appManager = new DefaultAppManager(
@@ -464,18 +463,18 @@ namespace Kephas.Application.Tests
 
             var behavior1 = Substitute.For<IAppLifecycleBehavior>();
             behavior1.BeforeAppFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(11));
             behavior1.AfterAppFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(21));
 
             var behavior2 = Substitute.For<IAppLifecycleBehavior>();
             behavior2.BeforeAppFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(12));
             behavior2.AfterAppFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => order.Add(22));
 
             var appManager = new DefaultAppManager(
@@ -748,16 +747,16 @@ namespace Kephas.Application.Tests
         {
             var featureManager = Substitute.For<IFeatureLifecycleBehavior>();
             featureManager.BeforeInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => beforeInit?.Invoke(_));
             featureManager.AfterInitializeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => afterInit?.Invoke(_));
             featureManager.BeforeFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => beforeFinalize?.Invoke(_));
             featureManager.AfterFinalizeAsync(Arg.Any<IAppContext>(), Arg.Any<FeatureManagerMetadata>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(0))
+                .Returns((IOperationResult)true.ToOperationResult())
                 .AndDoes(_ => afterFinalize?.Invoke(_));
 
             return featureManager;

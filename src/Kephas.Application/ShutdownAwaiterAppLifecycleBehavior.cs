@@ -13,7 +13,9 @@ namespace Kephas.Application
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Operations;
     using Kephas.Services;
+    using Kephas.Threading.Tasks;
 
     /// <summary>
     /// A shutdown awaiter application lifecycle behavior.
@@ -44,9 +46,12 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> BeforeAppInitializeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return ServiceHelper.InitializeAsync(this.awaiter, appContext, cancellationToken);
+            await ServiceHelper.InitializeAsync(this.awaiter, appContext, cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
         }
 
         /// <summary>
@@ -57,9 +62,12 @@ namespace Kephas.Application
         /// <returns>
         /// A Task.
         /// </returns>
-        public override Task AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> AfterAppFinalizeAsync(
+            IAppContext appContext,
+            CancellationToken cancellationToken = default)
         {
-            return ServiceHelper.FinalizeAsync(this.awaiter, appContext, cancellationToken);
+            await ServiceHelper.FinalizeAsync(this.awaiter, appContext, cancellationToken).PreserveThreadContext();
+            return true.ToOperationResult();
         }
     }
 }
