@@ -23,7 +23,7 @@ namespace Kephas.Composition.Metadata
         /// Initializes a new instance of the <see cref="ExportMetadataBase"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        protected ExportMetadataBase(IDictionary<string, object?> metadata)
+        protected ExportMetadataBase(IDictionary<string, object?>? metadata)
             : base(metadata ?? new Dictionary<string, object?>())
         {
         }

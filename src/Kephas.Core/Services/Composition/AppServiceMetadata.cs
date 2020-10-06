@@ -12,6 +12,7 @@ namespace Kephas.Services.Composition
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Kephas.Collections;
     using Kephas.Composition.Metadata;
@@ -30,7 +31,7 @@ namespace Kephas.Services.Composition
         /// Initializes a new instance of the <see cref="AppServiceMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public AppServiceMetadata(IDictionary<string, object?> metadata)
+        public AppServiceMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)
@@ -108,7 +109,7 @@ namespace Kephas.Services.Composition
         /// <value>
         /// The service dependencies.
         /// </value>
-        public IEnumerable<Type> Dependencies { get; set; }
+        public IEnumerable<Type> Dependencies { get; set; } = Enumerable.Empty<Type>();
 
         /// <summary>
         /// Returns a string that represents the current object.
