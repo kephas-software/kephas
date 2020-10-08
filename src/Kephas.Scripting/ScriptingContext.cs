@@ -71,7 +71,7 @@ namespace Kephas.Scripting
         /// <value>
         /// The execution context.
         /// </value>
-        public IContext ExecutionContext { get; set; }
+        public IContext? ExecutionContext { get; set; }
 
         /// <summary>
         /// Gets or sets the result.
@@ -79,7 +79,7 @@ namespace Kephas.Scripting
         /// <value>
         /// The result.
         /// </value>
-        public object Result { get; set; }
+        public object? Result { get; set; }
 
         /// <summary>
         /// Gets or sets the exception.
@@ -87,6 +87,6 @@ namespace Kephas.Scripting
         /// <value>
         /// The exception.
         /// </value>
-        public Exception Exception { get; set; }
+        public Exception? Exception { get; set; }
     }
 }

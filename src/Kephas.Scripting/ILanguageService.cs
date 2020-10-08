@@ -39,9 +39,9 @@ namespace Kephas.Scripting
         /// </returns>
         Task<object> ExecuteAsync(
             IScript script,
-            IScriptGlobals scriptGlobals = null,
-            IExpando args = null,
-            IContext executionContext = null,
+            IScriptGlobals? scriptGlobals = null,
+            IExpando? args = null,
+            IContext? executionContext = null,
             CancellationToken cancellationToken = default);
 
 #if NETSTANDARD2_1
@@ -57,9 +57,9 @@ namespace Kephas.Scripting
         /// </returns>
         object Execute(
             IScript script,
-            IScriptGlobals scriptGlobals = null,
-            IExpando args = null,
-            IContext executionContext = null)
+            IScriptGlobals? scriptGlobals = null,
+            IExpando? args = null,
+            IContext? executionContext = null)
         {
             return this.ExecuteAsync(script, scriptGlobals, args, executionContext).GetResultNonLocking();
         }
@@ -85,9 +85,9 @@ namespace Kephas.Scripting
         /// </returns>
         object Execute(
             IScript script,
-            IScriptGlobals scriptGlobals = null,
-            IExpando args = null,
-            IContext executionContext = null);
+            IScriptGlobals? scriptGlobals = null,
+            IExpando? args = null,
+            IContext? executionContext = null);
     }
 
     /// <summary>
@@ -109,13 +109,13 @@ namespace Kephas.Scripting
         public static object Execute(
             this ILanguageService languageService,
             IScript script,
-            IScriptGlobals scriptGlobals = null,
-            IExpando args = null,
-            IContext executionContext = null)
+            IScriptGlobals? scriptGlobals = null,
+            IExpando? args = null,
+            IContext? executionContext = null)
         {
             Requires.NotNull(languageService, nameof(languageService));
 
-            if(languageService is ISyncLanguageService syncLanguageService)
+            if (languageService is ISyncLanguageService syncLanguageService)
             {
                 return syncLanguageService.Execute(script, scriptGlobals, args, executionContext);
             }

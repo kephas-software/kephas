@@ -34,7 +34,7 @@ namespace Kephas.Scripting
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        Task<object> ExecuteAsync(
+        Task<object?> ExecuteAsync(
             IScript script,
             IExpando? args = null,
             IContext? executionContext = null,

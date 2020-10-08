@@ -29,14 +29,14 @@ namespace Kephas.Dynamic
         /// <summary>
         /// The inner dictionary.
         /// </summary>
-        private readonly IDictionary<string, object> innerDictionary;
+        private readonly IDictionary<string, object?> innerDictionary;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LazyExpando"/> class.
         /// </summary>
         /// <param name="valueResolver">The value resolver (optional).</param>
-        public LazyExpando(Func<string, object>? valueResolver = null)
-            : this(new Dictionary<string, object>(), valueResolver)
+        public LazyExpando(Func<string, object?>? valueResolver = null)
+            : this(new Dictionary<string, object?>(), valueResolver)
         {
         }
 
@@ -45,7 +45,7 @@ namespace Kephas.Dynamic
         /// </summary>
         /// <param name="dictionary">The dictionary.</param>
         /// <param name="valueResolver">The value resolver (optional).</param>
-        public LazyExpando(IDictionary<string, object> dictionary, Func<string, object>? valueResolver = null)
+        public LazyExpando(IDictionary<string, object?> dictionary, Func<string, object?>? valueResolver = null)
             : base(dictionary)
         {
             Requires.NotNull(dictionary, nameof(dictionary));
@@ -60,7 +60,7 @@ namespace Kephas.Dynamic
         /// <value>
         /// The value resolver.
         /// </value>
-        protected Func<string, object>? ValueResolver { get; set; }
+        protected Func<string, object?>? ValueResolver { get; set; }
 
         /// <summary>Attempts to get the dynamic value with the given key.</summary>
         /// <remarks>
@@ -113,7 +113,7 @@ namespace Kephas.Dynamic
         /// <returns>
         /// <c>true</c> if a value is found, <c>false</c> otherwise.
         /// </returns>
-        protected virtual bool HandleCircularDependency(string key, out object value)
+        protected virtual bool HandleCircularDependency(string key, out object? value)
         {
             throw new CircularDependencyException($"Circular dependency among values involving '{key}'.");
         }

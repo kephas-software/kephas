@@ -117,11 +117,11 @@ namespace Kephas.Scripting
         /// <returns>
         /// A promise of the execution result.
         /// </returns>
-        public async Task<object> ExecuteAsync(
+        public async Task<object?> ExecuteAsync(
             IScript script,
-            IExpando args = null,
-            IContext executionContext = null,
-            Action<IScriptingContext> optionsConfig = null,
+            IExpando? args = null,
+            IContext? executionContext = null,
+            Action<IScriptingContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(script, nameof(script));
@@ -132,6 +132,7 @@ namespace Kephas.Scripting
                 throw new ScriptingException(Strings.DefaultScriptProcessor_ExecuteAsync_MissingLanguageService.FormatWith(script.Language));
             }
 
+            args ??= new Expando();
             var scriptingContext = this.CreateScriptingContext(script, args, executionContext, optionsConfig);
             var behaviors = this.scriptingBehaviorFactories.TryGetValue(script.Language)?.Select(f => f.Value).ToList() ?? new List<IScriptingBehavior>();
 
@@ -180,8 +181,8 @@ namespace Kephas.Scripting
         protected virtual IScriptingContext CreateScriptingContext(
             IScript script,
             IExpando args,
-            IContext executionContext,
-            Action<IScriptingContext> optionsConfig = null)
+            IContext? executionContext,
+            Action<IScriptingContext>? optionsConfig = null)
         {
             var scriptingContext = this.ContextFactory.CreateContext<ScriptingContext>();
             scriptingContext.Impersonate(executionContext);
