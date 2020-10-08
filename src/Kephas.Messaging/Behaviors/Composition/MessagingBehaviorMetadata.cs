@@ -27,7 +27,7 @@ namespace Kephas.Messaging.Behaviors.Composition
         /// Initializes a new instance of the <see cref="MessagingBehaviorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public MessagingBehaviorMetadata(IDictionary<string, object?> metadata)
+        public MessagingBehaviorMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)

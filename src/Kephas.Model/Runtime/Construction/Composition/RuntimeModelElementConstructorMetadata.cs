@@ -26,7 +26,7 @@ namespace Kephas.Model.Runtime.Construction.Composition
         /// Initializes a new instance of the <see cref="RuntimeModelElementConstructorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public RuntimeModelElementConstructorMetadata(IDictionary<string, object?> metadata) 
+        public RuntimeModelElementConstructorMetadata(IDictionary<string, object?>? metadata) 
             : base(metadata)
         {
             this.ModelType = (Type)metadata.TryGetValue(nameof(this.ModelType));

@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Distributed.Routing.Composition
         /// Initializes a new instance of the <see cref="MessageRouterMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public MessageRouterMetadata(IDictionary<string, object?> metadata)
+        public MessageRouterMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)

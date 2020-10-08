@@ -25,7 +25,7 @@ namespace Kephas.Data.LLBLGen.Entities.Composition
         /// Initializes a new instance of the <see cref="EntityFactoryMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public EntityFactoryMetadata(IDictionary<string, object?> metadata)
+        public EntityFactoryMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)

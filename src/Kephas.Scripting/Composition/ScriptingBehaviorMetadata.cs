@@ -25,7 +25,7 @@ namespace Kephas.Scripting.Composition
         /// Initializes a new instance of the <see cref="ScriptingBehaviorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public ScriptingBehaviorMetadata(IDictionary<string, object?> metadata)
+        public ScriptingBehaviorMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)
@@ -43,7 +43,7 @@ namespace Kephas.Scripting.Composition
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. Name of the service.</param>
-        public ScriptingBehaviorMetadata(string[] language, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        public ScriptingBehaviorMetadata(string[] language, int processingPriority = 0, int overridePriority = 0, string? serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
             Requires.NotNullOrEmpty(language, nameof(language));

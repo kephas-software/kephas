@@ -24,7 +24,7 @@ namespace Kephas.Data.IO.DataStreams.Composition
         /// Initializes a new instance of the <see cref="DataStreamWriterMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public DataStreamWriterMetadata(IDictionary<string, object?> metadata)
+        public DataStreamWriterMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)

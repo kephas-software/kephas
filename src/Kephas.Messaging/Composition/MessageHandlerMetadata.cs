@@ -25,7 +25,7 @@ namespace Kephas.Messaging.Composition
         /// Initializes a new instance of the <see cref="MessageHandlerMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public MessageHandlerMetadata(IDictionary<string, object?> metadata)
+        public MessageHandlerMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)

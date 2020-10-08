@@ -95,7 +95,7 @@ namespace Kephas.Core.Tests.Services.Composition
 
         private class TestAppServiceMetadata : AppServiceMetadata
         {
-            public TestAppServiceMetadata(IDictionary<string, object?> metadata) : base(metadata)
+            public TestAppServiceMetadata(IDictionary<string, object?>? metadata) : base(metadata)
             {
             }
 

@@ -26,7 +26,7 @@ namespace Kephas.Services.Behaviors.Composition
         /// Initializes a new instance of the <see cref="ServiceBehaviorRuleMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public ServiceBehaviorRuleMetadata(IDictionary<string, object?> metadata)
+        public ServiceBehaviorRuleMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)

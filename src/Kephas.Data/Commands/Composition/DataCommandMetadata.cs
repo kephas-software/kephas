@@ -26,7 +26,7 @@ namespace Kephas.Data.Commands.Composition
         /// Initializes a new instance of the <see cref="DataCommandMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public DataCommandMetadata(IDictionary<string, object?> metadata)
+        public DataCommandMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)

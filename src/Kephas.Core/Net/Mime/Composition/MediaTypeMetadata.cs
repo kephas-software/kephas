@@ -25,7 +25,7 @@ namespace Kephas.Net.Mime.Composition
         /// Initializes a new instance of the <see cref="MediaTypeMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public MediaTypeMetadata(IDictionary<string, object?> metadata)
+        public MediaTypeMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)

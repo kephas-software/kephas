@@ -24,7 +24,7 @@ namespace Kephas.Data.Composition
         /// Initializes a new instance of the <see cref="DataContextMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public DataContextMetadata(IDictionary<string, object?> metadata)
+        public DataContextMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)

@@ -432,7 +432,7 @@ namespace Kephas.Core.Tests.Composition.Lite.Hosting
 
         public class GenericSvcMetadata : AppServiceMetadata
         {
-            public GenericSvcMetadata(IDictionary<string, object?> metadata) : base(metadata)
+            public GenericSvcMetadata(IDictionary<string, object?>? metadata) : base(metadata)
             {
                 if (metadata == null) { return; }
                 this.ServiceType = (Type)metadata.TryGetValue(nameof(this.ServiceType));

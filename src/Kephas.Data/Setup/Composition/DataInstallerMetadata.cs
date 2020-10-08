@@ -24,7 +24,7 @@ namespace Kephas.Data.Setup.Composition
         /// Initializes a new instance of the <see cref="DataInstallerMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public DataInstallerMetadata(IDictionary<string, object?> metadata)
+        public DataInstallerMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)
@@ -42,7 +42,7 @@ namespace Kephas.Data.Setup.Composition
         /// <param name="processingPriority">Optional. The processing priority.</param>
         /// <param name="overridePriority">Optional. The override priority.</param>
         /// <param name="serviceName">Optional. The name of the service.</param>
-        public DataInstallerMetadata(string target, int processingPriority = 0, int overridePriority = 0, string serviceName = null)
+        public DataInstallerMetadata(string target, int processingPriority = 0, int overridePriority = 0, string? serviceName = null)
             : base(processingPriority, overridePriority, serviceName)
         {
             this.Target = target;
