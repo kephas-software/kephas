@@ -299,6 +299,8 @@ namespace Kephas.Plugins.NuGet
         /// </returns>
         protected virtual async Task<IOperationResult> InstallConfigAsync(PluginData pluginData, string pluginLocation, IPluginContext context, CancellationToken cancellationToken)
         {
+            await Task.Yield();
+
             var sourceConfigFilesFolder = Path.Combine(pluginLocation, this.pluginsSettings.PackageConfigFolder);
             var targetConfigFilesFolder = this.AppRuntime.GetAppConfigLocations().First();
 
@@ -703,14 +705,19 @@ namespace Kephas.Plugins.NuGet
         {
             const string contentFolderName = "content";
 
-            var contentItems = packageReader.GetContentItems();
+            var contentItems = await packageReader.GetContentItemsAsync(cancellationToken).PreserveThreadContext();
             var nearestLibItemFwk = frameworkReducer.GetNearest(nugetFramework, contentItems.Select(x => x.TargetFramework));
 
             var result = new OperationResult();
             var contentItem = contentItems.FirstOrDefault(l => l.TargetFramework == nearestLibItemFwk);
             if (!(contentItem?.HasEmptyFolder ?? true))
             {
-                var copiedFiles = await packageReader.CopyFilesAsync(pluginLocation, contentItem.Items, (src, target, stream) => this.ExtractPackageFile(src, target, contentFolderName, flatten: false), this.nativeLogger, cancellationToken).PreserveThreadContext();
+                var copiedFiles = await packageReader.CopyFilesAsync(
+                    pluginLocation,
+                    contentItem.Items,
+                    (src, target, stream) => this.ExtractPackageFile(src, target, contentFolderName, flatten: false),
+                    this.nativeLogger,
+                    cancellationToken).PreserveThreadContext();
                 result.MergeMessage($"Copied {copiedFiles.Count()} files into {pluginLocation}: '{string.Join("', '", copiedFiles)}'.");
             }
 

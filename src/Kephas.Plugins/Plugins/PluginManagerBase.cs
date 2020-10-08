@@ -813,7 +813,7 @@ namespace Kephas.Plugins
                         throw new ArgumentNullException(nameof(pluginIdentity.Version), $"Please provide the version to which the plugin {pluginIdentity} should be updated.");
                     }
 
-                    // first try to download the plugin, and only if it suceeds then go on with uninstallation and then installation
+                    // first try to download the plugin, and only if it succeeds then go on with uninstallation and then installation
                     var dlResult = await this.DownloadPluginAsync(
                         pluginIdentity,
                         ctx => ctx.Merge(options)

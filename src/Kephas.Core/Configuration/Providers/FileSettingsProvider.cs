@@ -37,8 +37,8 @@ namespace Kephas.Configuration.Providers
     public class FileSettingsProvider : Loggable, ISettingsProvider
     {
         private readonly ICollection<Lazy<IMediaType, MediaTypeMetadata>> mediaTypes;
-        private readonly ConcurrentDictionary<Type, (string filePath, IOperationResult result, Type mediaType)> fileInfos =
-            new ConcurrentDictionary<Type, (string filePath, IOperationResult result, Type mediaType)>();
+        private readonly ConcurrentDictionary<Type, (string? filePath, IOperationResult result, Type? mediaType)> fileInfos =
+            new ConcurrentDictionary<Type, (string? filePath, IOperationResult result, Type? mediaType)>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileSettingsProvider"/> class.
@@ -89,13 +89,13 @@ namespace Kephas.Configuration.Providers
             var (filePath, result, mediaType) = this.GetSettingsFileInfo(settingsType);
             if (filePath == null)
             {
-                this.Logger.Warn(result.Exceptions.First().Message);
+                this.Logger.Info(result.Exceptions.First().Message);
                 return null;
             }
 
             this.Logger.Debug(result.Messages.First().Message);
             var settingsContent = File.ReadAllText(filePath);
-            var settings = this.SerializationService.Deserialize(settingsContent, ctx => ctx.RootObjectType(settingsType).MediaType(mediaType));
+            var settings = this.SerializationService.Deserialize(settingsContent, ctx => ctx.RootObjectType(settingsType).MediaType(mediaType!));
 
             return settings;
         }
@@ -126,7 +126,7 @@ namespace Kephas.Configuration.Providers
                 settings,
                 ctx => ctx
                     .Indent(true)
-                    .MediaType(mediaType)
+                    .MediaType(mediaType!)
                     .IncludeTypeInfo(false)
                     .IncludeNullValues(false),
                 cancellationToken: cancellationToken)
@@ -143,7 +143,7 @@ namespace Kephas.Configuration.Providers
         /// <returns>
         /// The settings file path.
         /// </returns>
-        protected virtual (string filePath, IOperationResult result, Type mediaType) GetSettingsFileInfo(Type settingsType)
+        protected virtual (string? filePath, IOperationResult result, Type? mediaType) GetSettingsFileInfo(Type settingsType)
         {
             return this.fileInfos.GetOrAdd(settingsType, _ => this.ComputeSettingsFileInfo(settingsType));
         }
@@ -157,7 +157,7 @@ namespace Kephas.Configuration.Providers
         /// </returns>
         protected virtual IEnumerable<string> GetProbingFolders() => this.AppRuntime.GetAppConfigLocations();
 
-        private (string filePath, IOperationResult result, Type mediaType) ComputeSettingsFileInfo(Type settingsType)
+        private (string? filePath, IOperationResult result, Type? mediaType) ComputeSettingsFileInfo(Type settingsType)
         {
             var result = new OperationResult();
             var settingsName = settingsType.Name.ToCamelCase();

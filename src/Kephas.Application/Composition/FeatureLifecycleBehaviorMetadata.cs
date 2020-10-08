@@ -23,7 +23,7 @@ namespace Kephas.Application.Composition
         /// Initializes a new instance of the <see cref="FeatureLifecycleBehaviorMetadata"/> class.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
-        public FeatureLifecycleBehaviorMetadata(IDictionary<string, object?> metadata)
+        public FeatureLifecycleBehaviorMetadata(IDictionary<string, object?>? metadata)
             : base(metadata)
         {
             if (metadata == null)
