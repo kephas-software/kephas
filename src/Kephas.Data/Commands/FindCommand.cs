@@ -28,7 +28,7 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="FindCommand"/> class.
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public FindCommand(ILogManager logManager = null)
+        public FindCommand(ILogManager? logManager = null)
             : base(logManager)
         {
         }
@@ -39,7 +39,7 @@ namespace Kephas.Data.Commands
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// A promise of a <see cref="IDataCommandResult"/>.
+        /// A promise of a <see cref="IOperationResult"/>.
         /// </returns>
         public override Task<IFindResult> ExecuteAsync(IFindContext operationContext, CancellationToken cancellationToken = default)
         {

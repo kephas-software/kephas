@@ -51,7 +51,7 @@ namespace Kephas.Data.Commands
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// A promise of a <see cref="IDataCommandResult"/>.
+        /// A promise of a <see cref="IOperationResult"/>.
         /// </returns>
         public override async Task<IBulkDataOperationResult> ExecuteAsync(IBulkUpdateContext operationContext, CancellationToken cancellationToken = default)
         {

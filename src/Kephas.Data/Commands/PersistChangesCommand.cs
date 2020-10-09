@@ -25,13 +25,14 @@ namespace Kephas.Data.Commands
     using Kephas.Diagnostics;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base class for commands which persist dataContext changes.
     /// </summary>
     [DataContextType(typeof(DataContextBase))]
-    public class PersistChangesCommand : DataCommandBase<IPersistChangesContext, IDataCommandResult>, IPersistChangesCommand
+    public class PersistChangesCommand : DataCommandBase<IPersistChangesContext, IOperationResult>, IPersistChangesCommand
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PersistChangesCommand"/> class.
@@ -60,9 +61,9 @@ namespace Kephas.Data.Commands
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// A promise of a <see cref="IDataCommandResult"/>.
+        /// A promise of a <see cref="IOperationResult"/>.
         /// </returns>
-        public override async Task<IDataCommandResult> ExecuteAsync(
+        public override async Task<IOperationResult> ExecuteAsync(
             IPersistChangesContext operationContext,
             CancellationToken cancellationToken = default)
         {
@@ -152,11 +153,12 @@ namespace Kephas.Data.Commands
                     sb);
             }
 
-            return new DataCommandResult(string.Format(Strings.PersistChangesCommand_ResultMessage, changes));
+            return new DataCommandResult(string.Format(Strings.PersistChangesCommand_ResultMessage, changes))
+                .MergeAll(opResult);
         }
 
         /// <summary>
-        /// Accepts the changes of the entities after the persistance.
+        /// Accepts the changes of the entities after the persistence.
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <param name="changeSet">The change set.</param>

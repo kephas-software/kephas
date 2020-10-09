@@ -30,7 +30,7 @@ namespace Kephas.Data.LLBLGen.Commands
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public LLBLGenPersistChangesCommand(IDataBehaviorProvider behaviorProvider, ILogManager logManager = null)
+        public LLBLGenPersistChangesCommand(IDataBehaviorProvider behaviorProvider, ILogManager? logManager = null)
             : base(behaviorProvider, logManager)
         {
         }

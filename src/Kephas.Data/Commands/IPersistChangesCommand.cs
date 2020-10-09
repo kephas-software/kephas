@@ -10,13 +10,14 @@
 
 namespace Kephas.Data.Commands
 {
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
     /// Contract for persist changes commands.
     /// </summary>
     [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
-    public interface IPersistChangesCommand : IDataCommand<IPersistChangesContext, IDataCommandResult>
+    public interface IPersistChangesCommand : IDataCommand<IPersistChangesContext, IOperationResult>
     {
     }
 }

@@ -11,11 +11,12 @@
 namespace Kephas.Data.Commands
 {
     using Kephas.Data.Capabilities;
+    using Kephas.Operations;
 
     /// <summary>
     /// Contract for the create entity result.
     /// </summary>
-    public interface ICreateEntityResult : IDataCommandResult
+    public interface ICreateEntityResult : IOperationResult
     {
         /// <summary>
         /// Gets the newly created entity.

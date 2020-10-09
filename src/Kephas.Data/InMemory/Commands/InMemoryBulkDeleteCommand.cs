@@ -28,7 +28,7 @@ namespace Kephas.Data.InMemory.Commands
         /// Initializes a new instance of the <see cref="InMemoryBulkDeleteCommand"/> class.
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public InMemoryBulkDeleteCommand(ILogManager logManager = null)
+        public InMemoryBulkDeleteCommand(ILogManager? logManager = null)
             : base(logManager)
         {
         }

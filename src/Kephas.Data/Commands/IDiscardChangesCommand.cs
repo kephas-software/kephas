@@ -10,16 +10,17 @@
 
 namespace Kephas.Data.Commands
 {
+    using Kephas.Operations;
     using Kephas.Services;
 
     /// <summary>
     /// Contract for discard changes commands.
     /// </summary>
     [AppServiceContract(AllowMultiple = true, MetadataAttributes = new[] { typeof(DataContextTypeAttribute) })]
-    public interface IDiscardChangesCommand : IDataCommand<IDiscardChangesContext, IDataCommandResult>
+    public interface IDiscardChangesCommand : IDataCommand<IDiscardChangesContext, IOperationResult>
 #if NETSTANDARD2_1
 #else
-        , ISyncDataCommand<IDiscardChangesContext, IDataCommandResult>
+        , ISyncDataCommand<IDiscardChangesContext, IOperationResult>
 #endif
     {
     }

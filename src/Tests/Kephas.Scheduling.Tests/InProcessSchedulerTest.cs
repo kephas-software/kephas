@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Application;
+
 namespace Kephas.Scheduling.Tests
 {
     using System;
@@ -49,7 +51,7 @@ namespace Kephas.Scheduling.Tests
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore());
+            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -84,7 +86,8 @@ namespace Kephas.Scheduling.Tests
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore());
+            var appRuntime = new StaticAppRuntime(appId: "test", appInstanceId: "test-1");
+            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), appRuntime);
 
             await scheduler.InitializeAsync();
 
@@ -119,7 +122,7 @@ namespace Kephas.Scheduling.Tests
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore());
+            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -160,7 +163,7 @@ namespace Kephas.Scheduling.Tests
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore());
+            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -200,7 +203,7 @@ namespace Kephas.Scheduling.Tests
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore());
+            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -240,7 +243,7 @@ namespace Kephas.Scheduling.Tests
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore());
+            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -280,7 +283,7 @@ namespace Kephas.Scheduling.Tests
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore());
+            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 
@@ -314,7 +317,7 @@ namespace Kephas.Scheduling.Tests
         {
             var workflowProcessor = Substitute.For<IWorkflowProcessor>();
             var contextFactory = this.CreateContextFactoryMock(() => new SchedulingContext(Substitute.For<ICompositionContext>()));
-            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore());
+            var scheduler = new InProcessScheduler(contextFactory, workflowProcessor, new InMemoryJobStore(), new StaticAppRuntime());
 
             await scheduler.InitializeAsync();
 

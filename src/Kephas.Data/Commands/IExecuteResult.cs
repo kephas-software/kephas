@@ -10,17 +10,12 @@
 
 namespace Kephas.Data.Commands
 {
+    using Kephas.Operations;
+
     /// <summary>
     /// Interface for execute result.
     /// </summary>
-    public interface IExecuteResult : IDataCommandResult
+    public interface IExecuteResult : IOperationResult
     {
-        /// <summary>
-        /// Gets the execution result.
-        /// </summary>
-        /// <value>
-        /// The execution result.
-        /// </value>
-        object Result { get; }
     }
 }

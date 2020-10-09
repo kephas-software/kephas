@@ -103,6 +103,22 @@ namespace Kephas.Scheduling.Jobs
         public ILogger? Logger { get; set; }
 
         /// <summary>
+        /// Gets or sets the identifier of the application instance running the job.
+        /// </summary>
+        /// <value>
+        /// The identifier of the application instance running the job.
+        /// </value>
+        public string? AppInstanceId { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether cancellation is requested for the background job.
+        /// </summary>
+        /// <value>
+        /// True if cancellation is requested for the background job, false if not.
+        /// </value>
+        public bool IsCancellationRequested => this.CancellationTokenSource?.IsCancellationRequested ?? false;
+
+        /// <summary>
         /// Gets or sets the elapsed time.
         /// </summary>
         /// <value>
@@ -150,6 +166,16 @@ namespace Kephas.Scheduling.Jobs
             return this.RunningJobId == null
                 ? base.ToString()
                 : $"[{this.RunningJobId}] {base.ToString()}";
+        }
+
+        /// <summary>
+        /// Cancels the background job.
+        /// </summary>
+        /// <returns>An operation result to await.</returns>
+        public virtual IOperationResult Cancel()
+        {
+            this.CancellationTokenSource?.Cancel();
+            return true.ToOperationResult();
         }
     }
 }

@@ -17,9 +17,8 @@ namespace Kephas.Data.Tests
 
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
-
+    using Kephas.Operations;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -162,7 +161,7 @@ namespace Kephas.Data.Tests
         {
             var findCommand = Substitute.For<IFindCommand>();
             findCommand.ExecuteAsync(Arg.Any<IDataOperationContext>(), Arg.Any<CancellationToken>())
-                .Returns(ci => Task.FromResult<IDataCommandResult>(new FindResult(findResolver(ci.Arg<IFindContext>().Id, ci.Arg<IFindContext>().ThrowOnNotFound))));
+                .Returns(ci => Task.FromResult<IOperationResult>(new FindResult(findResolver(ci.Arg<IFindContext>().Id, ci.Arg<IFindContext>().ThrowOnNotFound))));
             findCommand.ExecuteAsync(Arg.Any<IFindContext>(), Arg.Any<CancellationToken>())
                 .Returns(ci => Task.FromResult<IFindResult>(new FindResult(findResolver(ci.Arg<IFindContext>().Id, ci.Arg<IFindContext>().ThrowOnNotFound))));
             var dataContext = Substitute.For<IDataContext>();

@@ -24,12 +24,12 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="entity">The created entity.</param>
         /// <param name="entityEntry">Information describing the entity.</param>
-        /// <param name="message">The message (optional).</param>
-        /// <param name="exception">The exception (optional).</param>
-        public CreateEntityResult(object entity, IEntityEntry entityEntry, string message = null, Exception exception = null)
+        /// <param name="message">Optional. The message.</param>
+        /// <param name="exception">Optional. The exception.</param>
+        public CreateEntityResult(object entity, IEntityEntry entityEntry, string? message = null, Exception? exception = null)
             : base(message, exception)
         {
-            this.Entity = entity;
+            this.Value = this.Entity = entity;
             this.EntityEntry = entityEntry;
         }
 

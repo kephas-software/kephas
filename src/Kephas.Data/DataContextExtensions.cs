@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Operations;
+
 namespace Kephas.Data
 {
     using System;
@@ -311,9 +313,9 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the persist result.
         /// </returns>
-        public static async Task<IDataCommandResult> PersistChangesAsync(
+        public static async Task<IOperationResult> PersistChangesAsync(
             this IDataContext dataContext,
-            IPersistChangesContext persistContext = null,
+            IPersistChangesContext? persistContext = null,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
@@ -336,7 +338,7 @@ namespace Kephas.Data
         /// <returns>
         /// The result of discarding the changes.
         /// </returns>
-        public static IDataCommandResult DiscardChanges(this IDataContext dataContext)
+        public static IOperationResult DiscardChanges(this IDataContext dataContext)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
 
@@ -494,7 +496,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the command execution result.
         /// </returns>
-        public static async Task<object> ExecuteAsync(this IDataContext dataContext, string commandText, CancellationToken cancellationToken = default)
+        public static async Task<object?> ExecuteAsync(this IDataContext dataContext, string commandText, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNullOrEmpty(commandText, nameof(commandText));
@@ -503,7 +505,7 @@ namespace Kephas.Data
             var executeContext = new ExecuteContext(dataContext) { CommandText = commandText };
 
             var commandResult = await command.ExecuteAsync(executeContext, cancellationToken).PreserveThreadContext();
-            return commandResult.Result;
+            return commandResult.Value;
         }
 
         /// <summary>
@@ -516,7 +518,7 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the command execution result.
         /// </returns>
-        public static async Task<object> ExecuteAsync(this IDataContext dataContext, IExecuteContext executeContext, CancellationToken cancellationToken = default)
+        public static async Task<object?> ExecuteAsync(this IDataContext dataContext, IExecuteContext executeContext, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataContext, nameof(dataContext));
             Requires.NotNull(executeContext, nameof(executeContext));
@@ -529,7 +531,7 @@ namespace Kephas.Data
             var command = (IExecuteCommand)dataContext.CreateCommand(typeof(IExecuteCommand));
 
             var commandResult = await command.ExecuteAsync(executeContext, cancellationToken).PreserveThreadContext();
-            return commandResult.Result;
+            return commandResult.Value;
         }
 
         /// <summary>

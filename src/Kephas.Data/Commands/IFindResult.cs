@@ -10,10 +10,12 @@
 
 namespace Kephas.Data.Commands
 {
+    using Kephas.Operations;
+
     /// <summary>
     /// Interface for the find result.
     /// </summary>
-    public interface IFindResult : IDataCommandResult
+    public interface IFindResult : IOperationResult
     {
         /// <summary>
         /// Gets the found entity or <c>null</c> if no entity could be found.
@@ -21,6 +23,6 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The found entity.
         /// </value>
-        object Entity { get; }
+        object? Entity { get; }
     }
 }

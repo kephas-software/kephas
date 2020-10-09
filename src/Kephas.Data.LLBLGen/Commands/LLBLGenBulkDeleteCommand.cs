@@ -25,7 +25,7 @@ namespace Kephas.Data.LLBLGen.Commands
         /// Initializes a new instance of the <see cref="LLBLGenBulkDeleteCommand"/> class.
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public LLBLGenBulkDeleteCommand(ILogManager logManager = null)
+        public LLBLGenBulkDeleteCommand(ILogManager? logManager = null)
             : base(logManager)
         {
         }

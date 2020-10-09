@@ -29,7 +29,7 @@ namespace Kephas.Data.InMemory.Commands
         /// Initializes a new instance of the <see cref="InMemoryBulkUpdateCommand"/> class.
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public InMemoryBulkUpdateCommand(ILogManager logManager = null)
+        public InMemoryBulkUpdateCommand(ILogManager? logManager = null)
             : base(logManager)
         {
         }

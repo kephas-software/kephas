@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Operations;
+
 namespace Kephas.Data
 {
     using System;
@@ -36,7 +38,7 @@ namespace Kephas.Data
         /// <returns>
         /// A query over the entity type.
         /// </returns>
-        public static IQueryable<T> Query<T>(this IDataSpace dataSpace, Action<IQueryOperationContext> queryConfig = null)
+        public static IQueryable<T> Query<T>(this IDataSpace dataSpace, Action<IQueryOperationContext>? queryConfig = null)
             where T : class
         {
             Requires.NotNull(dataSpace, nameof(dataSpace));
@@ -321,13 +323,13 @@ namespace Kephas.Data
         /// <returns>
         /// A promise of the persist result.
         /// </returns>
-        public static async Task<IEnumerable<IDataCommandResult>> PersistChangesAsync(
+        public static async Task<IEnumerable<IOperationResult>> PersistChangesAsync(
             this IDataSpace dataSpace,
             CancellationToken cancellationToken = default)
         {
             Requires.NotNull(dataSpace, nameof(dataSpace));
 
-            var results = new List<IDataCommandResult>();
+            var results = new List<IOperationResult>();
             foreach (var dataContext in dataSpace)
             {
                 results.Add(await dataContext.PersistChangesAsync(cancellationToken: cancellationToken).PreserveThreadContext());
@@ -343,11 +345,11 @@ namespace Kephas.Data
         /// <returns>
         /// The result of discarding the changes.
         /// </returns>
-        public static IEnumerable<IDataCommandResult> DiscardChanges(this IDataSpace dataSpace)
+        public static IEnumerable<IOperationResult> DiscardChanges(this IDataSpace dataSpace)
         {
             Requires.NotNull(dataSpace, nameof(dataSpace));
 
-            var results = new List<IDataCommandResult>();
+            var results = new List<IOperationResult>();
             foreach (var dataContext in dataSpace)
             {
                 results.Add(dataContext.DiscardChanges());

@@ -32,7 +32,7 @@ namespace Kephas.Data.Commands
         , ISyncDataCommand<TOperationContext, TResult>
 #endif
         where TOperationContext : IDataOperationContext
-        where TResult : IDataCommandResult
+        where TResult : IOperationResult
     {
         private bool isInitialized;
 
@@ -51,7 +51,7 @@ namespace Kephas.Data.Commands
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of a <see cref="IDataCommandResult"/>.
+        /// A promise of a <see cref="IOperationResult"/>.
         /// </returns>
         public abstract Task<TResult> ExecuteAsync(TOperationContext operationContext, CancellationToken cancellationToken = default);
 
@@ -61,9 +61,9 @@ namespace Kephas.Data.Commands
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
-        /// A promise of a <see cref="IDataCommandResult"/>.
+        /// A promise of a <see cref="IOperationResult"/>.
         /// </returns>
-        async Task<IDataCommandResult> IDataCommand.ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken)
+        async Task<IOperationResult> IDataCommand.ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken)
         {
             if (!(operationContext is TOperationContext typedOperationContext))
             {
@@ -129,7 +129,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        async Task<object> IAsyncOperation.ExecuteAsync(IContext context, CancellationToken cancellationToken)
+        async Task<object?> IAsyncOperation.ExecuteAsync(IContext context, CancellationToken cancellationToken)
         {
             if (!(context is TOperationContext typedOperationContext))
             {
@@ -147,9 +147,9 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
-        /// A <see cref="IDataCommandResult"/>.
+        /// A <see cref="IOperationResult"/>.
         /// </returns>
-        IDataCommandResult ISyncDataCommand.Execute(IDataOperationContext operationContext)
+        IOperationResult ISyncDataCommand.Execute(IDataOperationContext operationContext)
         {
             if (!(operationContext is TOperationContext typedOperationContext))
             {
@@ -168,7 +168,7 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
-        /// A <see cref="IDataCommandResult"/>.
+        /// A <see cref="IOperationResult"/>.
         /// </returns>
         public virtual TResult Execute(TOperationContext operationContext)
         {

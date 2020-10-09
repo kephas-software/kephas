@@ -17,6 +17,7 @@ namespace Kephas.Scheduling
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Logging;
@@ -39,6 +40,7 @@ namespace Kephas.Scheduling
         private readonly IContextFactory contextFactory;
         private readonly IWorkflowProcessor workflowProcessor;
         private readonly IJobStore jobStore;
+        private readonly IAppRuntime appRuntime;
 
         private readonly ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationTokenSource, IJobResult> triggerAction)>
             activeTriggers = new ConcurrentDictionary<object, (ITrigger trigger, Func<CancellationTokenSource, IJobResult> triggerAction)>();
@@ -51,17 +53,20 @@ namespace Kephas.Scheduling
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="workflowProcessor">The workflow processor.</param>
         /// <param name="jobStore">The job store.</param>
+        /// <param name="appRuntime">The application runtime.</param>
         /// <param name="logManager">The log manager.</param>
         public InProcessScheduler(
             IContextFactory contextFactory,
             IWorkflowProcessor workflowProcessor,
             IJobStore jobStore,
+            IAppRuntime appRuntime,
             ILogManager? logManager = null)
             : base(logManager)
         {
             this.contextFactory = contextFactory;
             this.workflowProcessor = workflowProcessor;
             this.jobStore = jobStore;
+            this.appRuntime = appRuntime;
             this.finalizationMonitor = new FinalizationMonitor<IScheduler>(this.GetType());
         }
 
@@ -253,7 +258,7 @@ namespace Kephas.Scheduling
 
             this.Logger.Info("Cancelling running job '{job}'...", job);
 
-            job.CancellationTokenSource?.Cancel();
+            await job.Cancel().AsTask().PreserveThreadContext();
             await this.jobStore.RemoveRunningJobAsync(job.RunningJobId!, cancellationToken).PreserveThreadContext();
 
             this.Logger.Info("Job '{job}' was removed from the list of running jobs and was signaled for cancellation.", job);
@@ -506,6 +511,7 @@ namespace Kephas.Scheduling
                 OperationState = OperationState.InProgress,
                 CancellationTokenSource = cancellationTokenSource,
                 Logger = this.Logger,
+                AppInstanceId = this.appRuntime.GetAppInstanceId(),
             };
         }
 
