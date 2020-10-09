@@ -10,10 +10,12 @@
 
 namespace Kephas.Data.Validation
 {
+    using Kephas.Operations;
+
     /// <summary>
     /// Interface for validation result item.
     /// </summary>
-    public interface IDataValidationResultItem
+    public interface IDataValidationResultItem : IOperationMessage
     {
         /// <summary>
         /// Gets the validation result severity.
@@ -24,19 +26,11 @@ namespace Kephas.Data.Validation
         DataValidationSeverity Severity { get; }
 
         /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        string Message { get; }
-
-        /// <summary>
         /// Gets the name of the member.
         /// </summary>
         /// <value>
         /// The name of the member.
         /// </value>
-        string MemberName { get; }
+        string? MemberName { get; }
     }
 }
