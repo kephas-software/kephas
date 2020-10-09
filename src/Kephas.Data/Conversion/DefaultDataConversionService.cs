@@ -25,6 +25,7 @@ namespace Kephas.Data.Conversion
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -100,6 +101,8 @@ namespace Kephas.Data.Conversion
         public Task<IDataConversionResult> ConvertAsync<TSource, TTarget>(TSource source, TTarget target, IDataConversionContext conversionContext, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(conversionContext, nameof(conversionContext));
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             if (source == null)
             {
@@ -190,13 +193,14 @@ namespace Kephas.Data.Conversion
             target = await this.EnsureTargetEntity(source, target, targetType, conversionContext, cancellationToken).PreserveThreadContext();
 
             result.Target = target;
+            result.Complete();
 
             if (matchingConverters.Count == 0)
             {
                 return result;
             }
 
-            IList<IDataConversionResult> convertersResult = null;
+            IList<IDataConversionResult>? convertersResult = null;
             if (conversionContext.ThrowOnError)
             {
                 convertersResult = await this.InvokeConvertersAsync(matchingConverters, source, target, conversionContext, cancellationToken).PreserveThreadContext();
@@ -209,11 +213,11 @@ namespace Kephas.Data.Conversion
                 }
                 catch (Exception ex)
                 {
-                    result.Exception = ex;
+                    result.Fail(ex);
                 }
             }
 
-            this.AddConverterResultsToOverallResult(result, convertersResult);
+            this.AddConverterResultsToOverallResult(result, convertersResult!);
             return result;
         }
 
@@ -424,26 +428,16 @@ namespace Kephas.Data.Conversion
         /// </summary>
         /// <param name="result">The overall result.</param>
         /// <param name="convertersResult">The converters result.</param>
-        private void AddConverterResultsToOverallResult(IDataConversionResult result, IList<IDataConversionResult> convertersResult)
+        private void AddConverterResultsToOverallResult(IDataConversionResult result, IList<IDataConversionResult>? convertersResult)
         {
             if (convertersResult == null)
             {
                 return;
             }
 
-            var overallExceptions = new List<Exception>();
             foreach (var converterResult in convertersResult)
             {
-                result.Target = converterResult.Target;
-                if (converterResult.Exception != null)
-                {
-                    overallExceptions.Add(converterResult.Exception);
-                }
-            }
-
-            if (overallExceptions.Count > 0)
-            {
-                result.Exception = new AggregateException(overallExceptions);
+                result.MergeAll(converterResult);
             }
         }
     }

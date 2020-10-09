@@ -11,28 +11,25 @@
 namespace Kephas.Data.Conversion
 {
     using System;
-    using Kephas.Dynamic;
+
+    using Kephas.Operations;
 
     /// <summary>
     /// Encapsulates the result of a data conversion.
     /// </summary>
-    public class DataConversionResult : Expando, IDataConversionResult
+    public class DataConversionResult : OperationResult, IDataConversionResult
     {
-        /// <summary>
-        /// Gets or sets the exception, if one occurred during conversion.
-        /// </summary>
-        /// <value>
-        /// The exception.
-        /// </value>
-        public Exception Exception { get; set; }
-
         /// <summary>
         /// Gets or sets the target object as the result of the conversion.
         /// </summary>
         /// <value>
         /// The target object.
         /// </value>
-        public object Target { get; set; }
+        public object? Target
+        {
+            get => this.Value;
+            set => this.Value = value;
+        }
 
         /// <summary>
         /// Initializes a new <see cref="DataConversionResult"/> object from the given exception.
@@ -43,7 +40,7 @@ namespace Kephas.Data.Conversion
         /// </returns>
         public static DataConversionResult FromException(Exception exception)
         {
-            return new DataConversionResult { Exception = exception };
+            return new DataConversionResult().Fail(exception);
         }
 
         /// <summary>
@@ -55,7 +52,7 @@ namespace Kephas.Data.Conversion
         /// </returns>
         public static DataConversionResult FromTarget(object target)
         {
-            return new DataConversionResult { Target = target };
+            return new DataConversionResult().Value(target).Complete();
         }
     }
 }

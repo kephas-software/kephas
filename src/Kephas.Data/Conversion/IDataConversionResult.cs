@@ -10,22 +10,13 @@
 
 namespace Kephas.Data.Conversion
 {
-    using System;
-    using Kephas.Dynamic;
+    using Kephas.Operations;
 
     /// <summary>
     /// Interface for the data conversion result.
     /// </summary>
-    public interface IDataConversionResult : IExpando
+    public interface IDataConversionResult : IOperationResult
     {
-        /// <summary>
-        /// Gets or sets the exception, if one occurred during conversion.
-        /// </summary>
-        /// <value>
-        /// The exception.
-        /// </value>
-        Exception Exception { get; set; }
-
         /// <summary>
         /// Gets or sets the target object as the result of the conversion.
         /// </summary>
@@ -34,12 +25,12 @@ namespace Kephas.Data.Conversion
         /// the converter tries to identify one in the target data context
         /// based on the type and the ID from the source. The identified target
         /// is then set in the <see cref="Target"/> property of the <see cref="IDataConversionResult"/>,
-        /// because the input target parameter in the <see cref="IDataConversionService.ConvertAsync"/>
+        /// because the input target parameter in the <see cref="IDataConversionService.ConvertAsync{TSource,TTarget}"/>
         /// method is an input parameter.
         /// </remarks>
         /// <value>
         /// The target object.
         /// </value>
-        object Target { get; set; }
+        object? Target { get; set; }
     }
 }
