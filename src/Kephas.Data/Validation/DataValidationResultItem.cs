@@ -48,5 +48,17 @@ namespace Kephas.Data.Validation
         /// The name of the member.
         /// </value>
         public string? MemberName { get; }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var member = this.MemberName == null ? null : $": {this.MemberName}";
+            return $"{base.ToString()} ({this.Severity}{member})";
+        }
     }
 }
