@@ -13,24 +13,21 @@ namespace Kephas.Data.Validation
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Operations;
 
     /// <summary>
     /// Encapsulates the result of a data validation.
     /// </summary>
-    public class DataValidationResult : IDataValidationResult
+    public class DataValidationResult : OperationResult, IDataValidationResult
     {
         /// <summary>
         /// The validation result indicating that the validation succeeded without any issues.
         /// </summary>
         public static readonly DataValidationResult Success = new DataValidationResult();
-
-        /// <summary>
-        /// The items.
-        /// </summary>
-        private readonly IList<IDataValidationResultItem> items = new List<IDataValidationResultItem>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataValidationResult"/> class.
@@ -58,7 +55,7 @@ namespace Kephas.Data.Validation
         /// <param name="message">The message.</param>
         /// <param name="memberName">The name of the member.</param>
         /// <param name="severity">The severity.</param>
-        public DataValidationResult(string message, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        public DataValidationResult(string message, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
             Requires.NotNull(message, nameof(message));
 
@@ -72,11 +69,12 @@ namespace Kephas.Data.Validation
         /// <param name="exception">The exception.</param>
         /// <param name="memberName">The name of the member.</param>
         /// <param name="severity">The severity.</param>
-        public DataValidationResult(Exception exception, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        public DataValidationResult(Exception exception, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
             Requires.NotNull(exception, nameof(exception));
 
             this.Add(exception.Message, memberName, severity);
+            this.MergeException(exception);
         }
 
         /// <summary>
@@ -87,7 +85,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         public IEnumerator<IDataValidationResultItem> GetEnumerator()
         {
-            return this.items.GetEnumerator();
+            return this.Messages.OfType<IDataValidationResultItem>().GetEnumerator();
         }
 
         /// <summary>
@@ -98,7 +96,7 @@ namespace Kephas.Data.Validation
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.items.GetEnumerator();
+            return this.Messages.OfType<IDataValidationResultItem>().GetEnumerator();
         }
 
         /// <summary>
@@ -112,7 +110,7 @@ namespace Kephas.Data.Validation
         {
             Requires.NotNull(items, nameof(items));
 
-            this.items.AddRange(items);
+            items.ForEach(m => this.MergeMessage(m));
             return this;
         }
 
@@ -125,11 +123,11 @@ namespace Kephas.Data.Validation
         /// <returns>
         /// This <see cref="DataValidationResult"/>.
         /// </returns>
-        public DataValidationResult Add(string message, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        public DataValidationResult Add(string message, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
         {
             Requires.NotNull(message, nameof(message));
 
-            this.items.Add(new DataValidationResultItem(message, memberName, severity));
+            this.MergeMessage(new DataValidationResultItem(message, memberName, severity));
             return this;
         }
     }

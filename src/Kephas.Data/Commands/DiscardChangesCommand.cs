@@ -18,19 +18,20 @@ namespace Kephas.Data.Commands
 
     using Kephas.Data.Capabilities;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// Base implementation of a <see cref="IDiscardChangesCommand"/>.
     /// </summary>
     [DataContextType(typeof(DataContextBase))]
-    public class DiscardChangesCommand : DataCommandBase<IDiscardChangesContext, IDataCommandResult>, IDiscardChangesCommand
+    public class DiscardChangesCommand : DataCommandBase<IDiscardChangesContext, IOperationResult>, IDiscardChangesCommand
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DiscardChangesCommand"/> class.
         /// </summary>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public DiscardChangesCommand(ILogManager logManager = null)
+        public DiscardChangesCommand(ILogManager? logManager = null)
             : base(logManager)
         {
         }
@@ -40,9 +41,9 @@ namespace Kephas.Data.Commands
         /// </summary>
         /// <param name="operationContext">The operation context.</param>
         /// <returns>
-        /// A <see cref="IDataCommandResult"/>.
+        /// A <see cref="IOperationResult"/>.
         /// </returns>
-        public override IDataCommandResult Execute(IDiscardChangesContext operationContext)
+        public override IOperationResult Execute(IDiscardChangesContext operationContext)
         {
             var dataContext = operationContext.DataContext;
             var modifiedEntries = this.DetectModifiedEntries(operationContext);
@@ -70,7 +71,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A promise of a <see cref="T:Kephas.Data.Commands.IDataCommandResult" />.
         /// </returns>
-        public override async Task<IDataCommandResult> ExecuteAsync(IDiscardChangesContext operationContext, CancellationToken cancellationToken = default)
+        public override async Task<IOperationResult> ExecuteAsync(IDiscardChangesContext operationContext, CancellationToken cancellationToken = default)
         {
             await Task.Yield();
             return this.Execute(operationContext);

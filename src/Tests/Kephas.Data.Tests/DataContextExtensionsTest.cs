@@ -87,7 +87,7 @@ namespace Kephas.Data.Tests
                 ci =>
                     {
                         var res = Substitute.For<IExecuteResult>();
-                        res.Result.Returns(ci.Arg<IExecuteContext>().CommandText + " executed");
+                        res.Value.Returns(ci.Arg<IExecuteContext>().CommandText + " executed");
                         return Task.FromResult(res);
                     });
             dataContext.CreateCommand(typeof(IExecuteCommand)).Returns(command);
@@ -104,7 +104,7 @@ namespace Kephas.Data.Tests
                 ci =>
                     {
                         var res = Substitute.For<IExecuteResult>();
-                        res.Result.Returns(ci.Arg<IExecuteContext>().CommandText + " executed");
+                        res.Value.Returns(ci.Arg<IExecuteContext>().CommandText + " executed");
                         return Task.FromResult(res);
                     });
             dataContext.CreateCommand(typeof(IExecuteCommand)).Returns(command);
@@ -122,7 +122,7 @@ namespace Kephas.Data.Tests
                 ci =>
                     {
                         var res = Substitute.For<IExecuteResult>();
-                        res.Result.Returns(ci.Arg<IExecuteContext>().CommandText + " executed");
+                        res.Value.Returns(ci.Arg<IExecuteContext>().CommandText + " executed");
                         return Task.FromResult(res);
                     });
             dataContext.CreateCommand(typeof(IExecuteCommand)).Returns(command);

@@ -14,11 +14,12 @@ namespace Kephas.Data.Validation
     using System.Linq;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Operations;
 
     /// <summary>
     /// Interface for validation result.
     /// </summary>
-    public interface IDataValidationResult : IEnumerable<IDataValidationResultItem>
+    public interface IDataValidationResult : IOperationResult, IEnumerable<IDataValidationResultItem>
     {
     }
 
@@ -46,7 +47,7 @@ namespace Kephas.Data.Validation
         /// </summary>
         /// <param name="result">The validation result.</param>
         /// <returns>
-        /// An enumration of errors.
+        /// An enumeration of errors.
         /// </returns>
         public static IEnumerable<IDataValidationResultItem> GetErrors(this IDataValidationResult result)
         {

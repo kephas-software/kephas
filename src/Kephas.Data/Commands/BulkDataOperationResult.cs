@@ -23,10 +23,10 @@ namespace Kephas.Data.Commands
         /// <param name="count">The number of affected entities.</param>
         /// <param name="message">Optional. The message.</param>
         /// <param name="exception">Optional. The exception.</param>
-        public BulkDataOperationResult(long count, string message = null, Exception exception = null)
+        public BulkDataOperationResult(long count, string? message = null, Exception? exception = null)
             : base(message, exception)
         {
-            this.Count = count;
+            this.Value = this.Count = count;
         }
 
         /// <summary>

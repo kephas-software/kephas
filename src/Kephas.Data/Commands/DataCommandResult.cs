@@ -13,12 +13,12 @@ namespace Kephas.Data.Commands
     using System;
 
     using Kephas.Data.Resources;
-    using Kephas.Dynamic;
+    using Kephas.Operations;
 
     /// <summary>
     /// Encapsulates the result of a data command.
     /// </summary>
-    public class DataCommandResult : Expando, IDataCommandResult
+    public class DataCommandResult : OperationResult
     {
         /// <summary>
         /// The result representing a successful operation.
@@ -29,27 +29,22 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="DataCommandResult"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="exception">The exception (optional).</param>
-        public DataCommandResult(string message, Exception exception = null)
+        /// <param name="exception">Optional. The exception.</param>
+        public DataCommandResult(string? message, Exception? exception = null)
         {
-            this.Message = message;
-            this.Exception = exception;
+            if (!string.IsNullOrEmpty(message))
+            {
+                this.MergeMessage(message!);
+            }
+
+            if (exception != null)
+            {
+                this.Fail(exception);
+            }
+            else
+            {
+                this.Complete();
+            }
         }
-
-        /// <summary>
-        /// Gets the result message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string Message { get; }
-
-        /// <summary>
-        /// Gets the exception.
-        /// </summary>
-        /// <value>
-        /// The exception.
-        /// </value>
-        public Exception Exception { get; }
     }
 }

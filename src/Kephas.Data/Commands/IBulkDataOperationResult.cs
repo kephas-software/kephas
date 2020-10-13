@@ -10,10 +10,12 @@
 
 namespace Kephas.Data.Commands
 {
+    using Kephas.Operations;
+
     /// <summary>
     /// Interface for returning a bulk operation result.
     /// </summary>
-    public interface IBulkDataOperationResult : IDataCommandResult
+    public interface IBulkDataOperationResult : IOperationResult
     {
         /// <summary>
         /// Gets the number of affected entities.

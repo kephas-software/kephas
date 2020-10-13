@@ -11,11 +11,12 @@
 namespace Kephas.Data.Validation
 {
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Operations;
 
     /// <summary>
     /// A data validation result item.
     /// </summary>
-    public class DataValidationResultItem : IDataValidationResultItem
+    public class DataValidationResultItem : OperationMessage, IDataValidationResultItem
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataValidationResultItem"/> class.
@@ -23,11 +24,11 @@ namespace Kephas.Data.Validation
         /// <param name="message">The message.</param>
         /// <param name="memberName">Optional. the member name.</param>
         /// <param name="severity">Optional. the severity.</param>
-        public DataValidationResultItem(string message, string memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+        public DataValidationResultItem(string message, string? memberName = null, DataValidationSeverity severity = DataValidationSeverity.Error)
+            : base(message)
         {
             Requires.NotNull(message, nameof(message));
 
-            this.Message = message;
             this.MemberName = memberName;
             this.Severity = severity;
         }
@@ -41,19 +42,23 @@ namespace Kephas.Data.Validation
         public DataValidationSeverity Severity { get; }
 
         /// <summary>
-        /// Gets the message.
-        /// </summary>
-        /// <value>
-        /// The message.
-        /// </value>
-        public string Message { get; }
-
-        /// <summary>
         /// Gets the name of the member.
         /// </summary>
         /// <value>
         /// The name of the member.
         /// </value>
-        public string MemberName { get; }
+        public string? MemberName { get; }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            var member = this.MemberName == null ? null : $": {this.MemberName}";
+            return $"{base.ToString()} ({this.Severity}{member})";
+        }
     }
 }

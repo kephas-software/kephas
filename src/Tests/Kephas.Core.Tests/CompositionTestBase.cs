@@ -28,7 +28,7 @@ namespace Kephas.Core.Tests
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class CompositionTestBase : TestBase
     {
-        public virtual LiteCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager logManager = null, IAppRuntime appRuntime = null)
+        public virtual LiteCompositionContainerBuilder WithContainerBuilder(IAmbientServices ambientServices = null, ILogManager? logManager = null, IAppRuntime appRuntime = null)
         {
             logManager = logManager ?? new NullLogManager();
             appRuntime = appRuntime ?? this.CreateDefaultAppRuntime(logManager);

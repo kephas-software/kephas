@@ -26,7 +26,7 @@ namespace Kephas.Data.Client.DTO
         /// <remarks>
         /// The DTO entities do not need behaviors for persistence.
         /// </remarks>
-        public DtoPersistChangesCommand(ILogManager logManager = null)
+        public DtoPersistChangesCommand(ILogManager? logManager = null)
             : base(new DtoDataContext.NoneDataBehaviorProvider(), logManager)
         {
         }

@@ -260,7 +260,7 @@ namespace Kephas.Tests.Plugins
                 IContextFactory contextFactory,
                 IEventHub eventHub,
                 IPluginRepository pluginRepository,
-                ILogManager logManager = null,
+                ILogManager? logManager = null,
                 Action<IPlugin, IPluginContext> onInstall = null,
                 Func<PluginData, IPluginContext, bool> canInstall = null,
                 Func<PluginData, IPluginContext, bool> canUninstall = null,

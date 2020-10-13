@@ -41,7 +41,7 @@ namespace Kephas.Data.LLBLGen.Commands
         public LLBLGenFindOneCommand(
             IEntityActivator entityActivator,
             IRuntimeTypeRegistry typeRegistry,
-            ILogManager logManager = null)
+            ILogManager? logManager = null)
             : base(logManager)
         {
             this.entityActivator = entityActivator;

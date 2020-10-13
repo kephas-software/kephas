@@ -21,12 +21,12 @@ namespace Kephas.Data.Commands
         /// Initializes a new instance of the <see cref="FindResult"/> class.
         /// </summary>
         /// <param name="entity">The found entity.</param>
-        /// <param name="message">The message (optional).</param>
-        /// <param name="exception">The exception (optional).</param>
-        public FindResult(object entity, string message = null, Exception exception = null)
+        /// <param name="message">Optional. The message.</param>
+        /// <param name="exception">Optional. The exception.</param>
+        public FindResult(object? entity, string? message = null, Exception? exception = null)
             : base(message, exception)
         {
-            this.Entity = entity;
+            this.Value = this.Entity = entity;
         }
 
         /// <summary>
@@ -35,6 +35,6 @@ namespace Kephas.Data.Commands
         /// <value>
         /// The found entity.
         /// </value>
-        public object Entity { get; }
+        public object? Entity { get; }
     }
 }

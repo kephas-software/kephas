@@ -22,6 +22,7 @@ namespace Kephas.Data.Commands
     using Kephas.Data.Resources;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Threading.Tasks;
 
@@ -36,13 +37,13 @@ namespace Kephas.Data.Commands
         /// Gets the generic method of <see cref="FindAsync{T}"/>.
         /// </summary>
         private static readonly MethodInfo FindAsyncMethod =
-            ReflectionHelper.GetGenericMethodOf(_ => ((FindCommandBase<TFindContext>)null).FindAsync<string>(default, CancellationToken.None));
+            ReflectionHelper.GetGenericMethodOf(_ => ((FindCommandBase<TFindContext>)null!).FindAsync<string>(default, CancellationToken.None));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FindCommandBase{TFindContext}"/> class.
         /// </summary>
         /// <param name="logManager">Manager for log.</param>
-        protected FindCommandBase(ILogManager logManager)
+        protected FindCommandBase(ILogManager? logManager)
             : base(logManager)
         {
         }
@@ -53,7 +54,7 @@ namespace Kephas.Data.Commands
         /// <param name="operationContext">The operation context.</param>
         /// <param name="cancellationToken">The cancellation token (optional).</param>
         /// <returns>
-        /// A promise of a <see cref="IDataCommandResult"/>.
+        /// A promise of a <see cref="IOperationResult"/>.
         /// </returns>
         public override async Task<IFindResult> ExecuteAsync(TFindContext operationContext, CancellationToken cancellationToken = default)
         {
@@ -122,7 +123,7 @@ namespace Kephas.Data.Commands
         /// <returns>
         /// A query of local cache entities.
         /// </returns>
-        protected virtual IEnumerable<T> TryGetLocalCacheQuery<T>(TFindContext findContext)
+        protected virtual IEnumerable<T>? TryGetLocalCacheQuery<T>(TFindContext findContext)
             where T : class
         {
             var dataContext = findContext.DataContext;
@@ -148,7 +149,7 @@ namespace Kephas.Data.Commands
                 throw new AmbiguousMatchDataException(string.Format(Strings.DataContext_FindAsync_AmbiguousMatch_Exception, this.GetCriteriaString(findContext, criteria)));
             }
 
-            Exception exception = null;
+            Exception? exception = null;
             if (result.Count == 0)
             {
                 exception = new NotFoundDataException(string.Format(Strings.DataContext_FindAsync_NotFound_Exception, this.GetCriteriaString(findContext, criteria)));

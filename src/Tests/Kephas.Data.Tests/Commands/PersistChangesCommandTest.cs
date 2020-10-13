@@ -19,9 +19,8 @@ namespace Kephas.Data.Tests.Commands
     using Kephas.Data.Caching;
     using Kephas.Data.Capabilities;
     using Kephas.Data.Commands;
-
+    using Kephas.Operations;
     using NSubstitute;
-
     using NUnit.Framework;
 
     [TestFixture]
@@ -40,8 +39,8 @@ namespace Kephas.Data.Tests.Commands
             var context = new PersistChangesContext(dataContext);
             var result = await cmd.ExecuteAsync(context);
 
-            Assert.AreEqual("Persisted 1 changes.", result.Message);
-            Assert.IsNull(result.Exception);
+            Assert.AreEqual("Persisted 1 changes.", result.Messages.First().Message);
+            Assert.IsFalse(result.HasErrors());
             Assert.AreEqual(1, localCache.Count);
             Assert.IsTrue(localCache.Values.All(e => e.ChangeState == ChangeState.NotChanged));
         }
@@ -59,8 +58,8 @@ namespace Kephas.Data.Tests.Commands
             var context = new PersistChangesContext(dataContext);
             var result = await cmd.ExecuteAsync(context);
 
-            Assert.AreEqual("Persisted 1 changes.", result.Message);
-            Assert.IsNull(result.Exception);
+            Assert.AreEqual("Persisted 1 changes.", result.Messages.First().Message);
+            Assert.IsFalse(result.HasErrors());
             Assert.AreEqual(1, localCache.Count);
             Assert.IsTrue(localCache.Values.All(e => e.ChangeState == ChangeState.NotChanged));
         }
@@ -78,8 +77,8 @@ namespace Kephas.Data.Tests.Commands
             var context = new PersistChangesContext(dataContext);
             var result = await cmd.ExecuteAsync(context);
 
-            Assert.AreEqual("Persisted 1 changes.", result.Message);
-            Assert.IsNull(result.Exception);
+            Assert.AreEqual("Persisted 1 changes.", result.Messages.First().Message);
+            Assert.IsFalse(result.HasErrors());
             Assert.AreEqual(0, localCache.Count);
         }
 
