@@ -48,7 +48,7 @@ namespace Kephas.Messaging.Distributed
         private readonly IContextFactory contextFactory;
         private readonly IOrderedLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
-        private ICollection<(Regex? regex, bool isFallback, IMessageRouter router)> routerMap;
+        private ICollection<(Regex? regex, bool isFallback, IMessageRouter router)>? routerMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultMessageBroker"/> class.
@@ -187,10 +187,13 @@ namespace Kephas.Messaging.Distributed
         /// </returns>
         public virtual async Task FinalizeAsync(IContext? context = null, CancellationToken cancellationToken = default)
         {
-            foreach (var map in this.routerMap)
+            if (this.routerMap != null)
             {
-                map.router.ReplyReceived -= this.HandleReplyReceived;
-                await ServiceHelper.FinalizeAsync(map.router, cancellationToken: cancellationToken).PreserveThreadContext();
+                foreach (var (_, _, router) in this.routerMap)
+                {
+                    router.ReplyReceived -= this.HandleReplyReceived;
+                    await ServiceHelper.FinalizeAsync(router, cancellationToken: cancellationToken).PreserveThreadContext();
+                }
             }
 
             this.initMonitor.Reset();
