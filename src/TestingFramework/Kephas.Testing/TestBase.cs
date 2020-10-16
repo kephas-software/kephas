@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Operations;
-
 namespace Kephas.Testing
 {
     using System;
@@ -26,6 +24,7 @@ namespace Kephas.Testing
     using Kephas.Cryptography;
     using Kephas.Interaction;
     using Kephas.Logging;
+    using Kephas.Operations;
     using Kephas.Reflection;
     using Kephas.Serialization;
     using Kephas.Serialization.Composition;
@@ -54,7 +53,7 @@ namespace Kephas.Testing
         protected virtual IAppRuntime CreateDefaultAppRuntime(ILogManager logManager)
         {
             var appRuntime = new StaticAppRuntime(
-                                         name => logManager.GetLogger(name),
+                                         logManager.GetLogger,
                                          defaultAssemblyFilter: this.IsNotTestAssembly);
             return appRuntime;
         }
@@ -72,6 +71,7 @@ namespace Kephas.Testing
                 && !assembly.FullName.StartsWith("NUnit", StringComparison.OrdinalIgnoreCase)
                 && !assembly.FullName.StartsWith("xunit", StringComparison.OrdinalIgnoreCase)
                 && !assembly.FullName.StartsWith("JetBrains", StringComparison.OrdinalIgnoreCase)
+                && !assembly.FullName.StartsWith("ReSharper", StringComparison.OrdinalIgnoreCase)
                 && !assembly.Name.EndsWith("Testing", StringComparison.OrdinalIgnoreCase)
                 && !assembly.Name.EndsWith("Test", StringComparison.OrdinalIgnoreCase)
                 && !assembly.Name.EndsWith("Tests", StringComparison.OrdinalIgnoreCase);

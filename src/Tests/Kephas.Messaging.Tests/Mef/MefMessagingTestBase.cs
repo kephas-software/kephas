@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessagingTestBase.cs" company="Kephas Software SRL">
+// <copyright file="MefMessagingTestBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -30,16 +30,19 @@ namespace Kephas.Messaging.Tests
     public class MefMessagingTestBase : MefApplicationTestBase
     {
         public override ICompositionContext CreateContainer(
-            IAmbientServices ambientServices = null,
-            IEnumerable<Assembly> assemblies = null,
-            IEnumerable<Type> parts = null,
-            Action<SystemCompositionContainerBuilder> config = null,
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<SystemCompositionContainerBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
-            assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */
-            return base.CreateContainer(ambientServices, assemblyList, parts, config);
+            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
+            {
+                typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
+            };
+
+            return base.CreateContainer(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
         protected virtual ICompositionContext CreateMessagingContainerMock()

@@ -30,7 +30,7 @@ namespace Kephas.Data.Store
         /// <param name="dataContextType">Optional. The type of the data context.</param>
         /// <param name="dataContextSettings">Optional. The data context settings.</param>
         /// <param name="entityActivator">Optional. The entity activator.</param>
-        public DataStore(string name, string kind, Type dataContextType = null, IDataContextSettings dataContextSettings = null, IActivator entityActivator = null)
+        public DataStore(string name, string kind, Type? dataContextType = null, IDataContextSettings? dataContextSettings = null, IActivator? entityActivator = null)
         {
             Requires.NotNull(name, nameof(name));
             Requires.NotNullOrEmpty(kind, nameof(kind));
@@ -64,7 +64,7 @@ namespace Kephas.Data.Store
         /// <value>
         /// The type of the data context.
         /// </value>
-        public Type DataContextType { get; }
+        public Type? DataContextType { get; }
 
         /// <summary>
         /// Gets the data context settings.
@@ -72,7 +72,7 @@ namespace Kephas.Data.Store
         /// <value>
         /// The data context settings.
         /// </value>
-        public IDataContextSettings DataContextSettings { get; }
+        public IDataContextSettings? DataContextSettings { get; }
 
         /// <summary>
         /// Gets the entity activator.

@@ -31,7 +31,7 @@ namespace Kephas.Mail.Services
         /// <returns>An asynchronous result.</returns>
         public Task SendAsync(
             IEmailMessage emailMessage,
-            IContext context = null,
+            IContext? context = null,
             CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
@@ -44,7 +44,7 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// The new email message builder.
         /// </returns>
-        public IEmailMessageBuilder CreateEmailMessageBuilder(IContext context = null)
+        public IEmailMessageBuilder CreateEmailMessageBuilder(IContext? context = null)
         {
             return new NullEmailMessageBuilder();
         }

@@ -56,7 +56,7 @@ namespace Kephas.Data.Store
             var expando = new Expando(GetConnectionStringSplits(connectionString)
                                     .ToDictionary(
                                         kvp => kvp[0].Trim(),
-                                        kvp => (object)kvp[1].Trim(),
+                                        kvp => (object?)kvp[1].Trim(),
                                         StringComparer.OrdinalIgnoreCase));
 
             return expando;

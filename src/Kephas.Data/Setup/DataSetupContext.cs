@@ -46,6 +46,6 @@ namespace Kephas.Data.Setup
         /// <value>
         /// The data targets.
         /// </value>
-        public IEnumerable<string> Targets { get; set; }
+        public IEnumerable<string>? Targets { get; set; }
     }
 }

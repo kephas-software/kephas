@@ -49,16 +49,19 @@ namespace Kephas.Messaging.Tests.Autofac
     public class AutofacDefaultMessageProcessorTest : AutofacCompositionTestBase
     {
         public override ICompositionContext CreateContainer(
-            IAmbientServices ambientServices = null,
-            IEnumerable<Assembly> assemblies = null,
-            IEnumerable<Type> parts = null,
-            Action<AutofacCompositionContainerBuilder> config = null,
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<AutofacCompositionContainerBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
-            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0]);
-            assemblyList.Add(typeof(IMessageProcessor).GetTypeInfo().Assembly); /* Kephas.Messaging */
-            return base.CreateContainer(ambientServices, assemblyList, parts, config);
+            var assemblyList = new List<Assembly>(assemblies ?? new Assembly[0])
+            {
+                typeof(IMessageProcessor).GetTypeInfo().Assembly, /* Kephas.Messaging */
+            };
+
+            return base.CreateContainer(ambientServices, assemblyList, parts, config, logManager, appRuntime);
         }
 
         [Test]
@@ -535,7 +538,7 @@ namespace Kephas.Messaging.Tests.Autofac
             int processingPriority = 0,
             Priority overridePriority = Priority.Normal)
         {
-            messageType = messageType ?? typeof(IMessage);
+            messageType ??= typeof(IMessage);
             var behavior = new TestBehavior();
             var factory =
                 new ExportFactoryAdapter<IMessagingBehavior, MessagingBehaviorMetadata>(
