@@ -28,6 +28,7 @@ namespace Kephas.Messaging.Distributed
     using Kephas.Messaging.Messages;
     using Kephas.Messaging.Resources;
     using Kephas.Services;
+    using Kephas.Services.Behaviors;
     using Kephas.Services.Transitions;
     using Kephas.Threading.Tasks;
 
@@ -46,6 +47,7 @@ namespace Kephas.Messaging.Distributed
                 new ConcurrentDictionary<string, (CancellationTokenSource?, TaskCompletionSource<IMessage?>)>();
 
         private readonly IContextFactory contextFactory;
+        private readonly IServiceBehaviorProvider? serviceBehaviorProvider;
         private readonly IOrderedLazyServiceCollection<IMessageRouter, MessageRouterMetadata> routerFactories;
         private readonly InitializationMonitor<IMessageBroker> initMonitor;
         private ICollection<(Regex? regex, bool isFallback, IMessageRouter router)>? routerMap;
@@ -56,14 +58,17 @@ namespace Kephas.Messaging.Distributed
         /// <param name="contextFactory">The context factory.</param>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="routerFactories">The router factories.</param>
+        /// <param name="serviceBehaviorProvider">Optional. The service behavior provider.</param>
         public DefaultMessageBroker(
             IContextFactory contextFactory,
             IAppRuntime appRuntime,
-            ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories)
+            ICollection<Lazy<IMessageRouter, MessageRouterMetadata>> routerFactories,
+            IServiceBehaviorProvider? serviceBehaviorProvider = null)
             : base(contextFactory)
         {
             this.initMonitor = new InitializationMonitor<IMessageBroker>(this.GetType());
             this.contextFactory = contextFactory;
+            this.serviceBehaviorProvider = serviceBehaviorProvider;
             this.routerFactories = routerFactories.Order();
             this.Id = $"{appRuntime.GetAppId()}/{appRuntime.GetAppInstanceId()}";
         }
@@ -249,7 +254,7 @@ namespace Kephas.Messaging.Distributed
             {
                 // router results indicating that the broker should process replies
                 // will generate cascade router dispatches, even for 'null' replies.
-                var replyTasks = replies.Select(r => this.RouterDispatchReplyAsync(r, brokeredMessage, context, cancellationToken));
+                var replyTasks = replies.Select(r => this.RouterDispatchReplyAsync(r!, brokeredMessage, context, cancellationToken));
                 await Task.WhenAll(replyTasks).PreserveThreadContext();
             }
         }
@@ -331,6 +336,26 @@ namespace Kephas.Messaging.Distributed
             }
         }
 
+        /// <summary>
+        /// Selects the router handling the message with the provided predicate.
+        /// </summary>
+        /// <param name="map">The router map.</param>
+        /// <param name="predicate">The select predicate.</param>
+        /// <returns>The selected message router or <c>null</c>.</returns>
+        protected virtual IMessageRouter? SelectRouter(
+            ICollection<(Regex? regex, bool isFallback, IMessageRouter router)> map,
+            Func<(Regex? regex, bool isFallback, IMessageRouter router), bool> predicate)
+        {
+            if (this.serviceBehaviorProvider == null)
+            {
+                return map.FirstOrDefault(predicate).router;
+            }
+
+            return this.serviceBehaviorProvider
+                .WhereEnabled(map.Where(predicate).Select(e => e.router))
+                .FirstOrDefault();
+        }
+
         private Regex? GetReceiverMatch(Type receiverMatchProviderType, IContext? context)
         {
             if (!typeof(IReceiverMatchProvider).IsAssignableFrom(receiverMatchProviderType))
@@ -404,7 +429,7 @@ namespace Kephas.Messaging.Distributed
         {
             if (brokeredMessage.Recipients == null || !brokeredMessage.Recipients.Any())
             {
-                var router = this.routerMap.FirstOrDefault(f => f.isFallback).router;
+                var router = this.SelectRouter(this.routerMap!, f => f.isFallback);
                 if (router != null)
                 {
                     var (action, reply) = await this.GetRouterDispatchResultAsync(brokeredMessage, context, router, cancellationToken).PreserveThreadContext();
@@ -415,7 +440,7 @@ namespace Kephas.Messaging.Distributed
             }
 
             var recipientMappings = brokeredMessage.Recipients
-                .Select(r => (recipient: r, router: this.routerMap.FirstOrDefault(f => f.isFallback || (f.regex?.IsMatch(r.Url.ToString()) ?? false)).router))
+                .Select(r => (recipient: r, router: this.SelectRouter(this.routerMap!, f => f.isFallback || (f.regex?.IsMatch(r.Url.ToString()) ?? false))))
                 .ToList();
             var unhandledRecipients = recipientMappings
                 .Where(c => c.router == null)
@@ -429,7 +454,7 @@ namespace Kephas.Messaging.Distributed
             // optimization for the typical case when there is only one router to handle the recipients.
             if (recipientMappings.Count == 1)
             {
-                var router = recipientMappings[0].router;
+                var router = recipientMappings[0].router!;
                 var (action, reply) = await this.GetRouterDispatchResultAsync(brokeredMessage, context, router, cancellationToken).PreserveThreadContext();
                 return new[] { (action, reply, router) };
             }
@@ -442,7 +467,7 @@ namespace Kephas.Messaging.Distributed
 
             var routerTasks = routerMappings.Select(m => (m.router, task: this.GetRouterDispatchResultAsync(brokeredMessage.Clone(m.recipients), context, m.router, cancellationToken))).ToList();
             await Task.WhenAll(routerTasks.Select(rt => rt.task)).PreserveThreadContext();
-            return routerTasks.Select(rt => (rt.task.Result.action, rt.task.Result.reply, rt.router)).ToArray();
+            return routerTasks.Select(rt => (rt.task.Result.action, rt.task.Result.reply, rt.router!)).ToArray();
         }
 
         private async Task<(RoutingInstruction action, IMessage? reply)> GetRouterDispatchResultAsync(
