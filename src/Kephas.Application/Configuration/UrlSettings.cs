@@ -49,12 +49,12 @@ namespace Kephas.Application.Configuration
         /// <summary>
         /// Gets a value indicating whether the <see cref="Url"/> is a wildcard for any IP address.
         /// </summary>
-        public bool IsAnyIP => this.GetUri()?.Host == this.anyIPToken;
+        public bool IsAnyIP => this.GetNormalizedUri()?.Host == this.anyIPToken;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Url"/> has a HTTPS scheme.
         /// </summary>
-        public bool IsHttps => Uri.UriSchemeHttps.Equals(this.GetUri()?.Scheme, StringComparison.OrdinalIgnoreCase);
+        public bool IsHttps => Uri.UriSchemeHttps.Equals(this.GetNormalizedUri()?.Scheme, StringComparison.OrdinalIgnoreCase);
 
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>
@@ -66,6 +66,13 @@ namespace Kephas.Application.Configuration
         }
 
         /// <summary>
+        /// Gets the normalized URI.
+        /// </summary>
+        /// <returns>The normalized URI.</returns>
+        public Uri? GetNormalizedUri()
+            => string.IsNullOrEmpty(this.Url) ? null : new Uri(this.Url.Replace("*", this.anyIPToken));
+
+        /// <summary>
         /// Parses the settings into this instance.
         /// </summary>
         /// <param name="settings">The serialized settings in form of {url}[;{certificate}].</param>
@@ -75,8 +82,5 @@ namespace Kephas.Application.Configuration
             this.Url = splits[0];
             this.Certificate = splits.Length > 1 ? splits[1] : null;
         }
-
-        private Uri? GetUri()
-            => string.IsNullOrEmpty(this.Url) ? null : new Uri(this.Url.Replace("*", this.anyIPToken));
     }
 }
