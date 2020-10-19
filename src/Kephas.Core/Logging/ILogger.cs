@@ -11,7 +11,6 @@
 namespace Kephas.Logging
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Kephas.ExceptionHandling;
@@ -317,7 +316,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Debug(this ILogger? logger, Exception? exception, string messageFormat, params object[] args)
+        public static bool Debug(this ILogger? logger, Exception? exception, string messageFormat, params object?[] args)
         {
             return logger?.Log(LogLevel.Debug, exception, messageFormat, args) ?? false;
         }
@@ -331,7 +330,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Debug(this ILogger? logger, string messageFormat, params object[] args)
+        public static bool Debug(this ILogger? logger, string messageFormat, params object?[] args)
         {
             return logger?.Log(LogLevel.Debug, messageFormat, args) ?? false;
         }
@@ -346,7 +345,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Trace(this ILogger? logger, Exception? exception, string messageFormat, params object[] args)
+        public static bool Trace(this ILogger? logger, Exception? exception, string messageFormat, params object?[] args)
         {
             return logger?.Log(LogLevel.Trace, exception, messageFormat, args) ?? false;
         }
@@ -360,7 +359,7 @@ namespace Kephas.Logging
         /// <returns>
         /// True if the log operation succeeded, false if it failed.
         /// </returns>
-        public static bool Trace(this ILogger? logger, string messageFormat, params object[] args)
+        public static bool Trace(this ILogger? logger, string messageFormat, params object?[] args)
         {
             return logger?.Log(LogLevel.Trace, messageFormat, args) ?? false;
         }
