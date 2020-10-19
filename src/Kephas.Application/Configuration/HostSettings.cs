@@ -10,7 +10,7 @@ namespace Kephas.Application.Configuration
     using Kephas.Dynamic;
 
     /// <summary>
-    /// Settings for the hosting.
+    /// Settings for the hosting services.
     /// </summary>
     public class HostSettings : Expando
     {
@@ -22,6 +22,6 @@ namespace Kephas.Application.Configuration
         /// <summary>
         /// Gets or sets the urls to listen to.
         /// </summary>
-        public string[]? Urls { get; set; }
+        public UrlSettings[]? Urls { get; set; }
     }
 }
