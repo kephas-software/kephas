@@ -45,20 +45,20 @@ namespace Kephas.Application.Tests
             var featureManager2 = this.CreateFeatureManager();
             var featureManager3 = this.CreateFeatureManager();
 
-            Assert.Throws<InvalidOperationException>(() =>
-                new DefaultAppManager(
-                    Substitute.For<IAppRuntime>(),
-                    this.GetCompositionContext(),
-                    this.GetServiceBehaviorProvider(),
-                    new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
-                    new[]
-                        {
-                            this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
-                            this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "1" }),
-                            // make the manager 3 with a lower priority than 1 and 2 which actually depend on it
-                            this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", processingPriority: Priority.Low),
-                        },
-                    null));
+            var appManager = new DefaultAppManager(
+                Substitute.For<IAppRuntime>(),
+                this.GetCompositionContext(),
+                this.GetServiceBehaviorProvider(),
+                new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>(),
+                new[]
+                    {
+                                        this.CreateFeatureManagerFactory(featureManager1, "1", "1.0", dependencies: new[] { "3" }),
+                                        this.CreateFeatureManagerFactory(featureManager2, "2", "1.0", dependencies: new[] { "1" }),
+                                        // make the manager 3 with a lower priority than 1 and 2 which actually depend on it
+                                        this.CreateFeatureManagerFactory(featureManager3, "3", "1.0", processingPriority: Priority.Low),
+                    },
+                null);
+            Assert.Throws<InvalidOperationException>(() => { var x = appManager.FeatureManagerFactories; });
         }
 
         [Test]

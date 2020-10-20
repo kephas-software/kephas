@@ -7,6 +7,7 @@
 
 namespace Kephas.Application.Configuration
 {
+    using Kephas.Collections;
     using Kephas.Configuration;
     using Kephas.Services;
 
@@ -38,7 +39,7 @@ namespace Kephas.Application.Configuration
         {
             var systemSettings = this.systemConfiguration.Settings;
             var appId = this.appRuntime.GetAppId()!;
-            return systemSettings.Instances?[appId];
+            return systemSettings.Instances?.TryGetValue(appId);
         }
     }
 }
