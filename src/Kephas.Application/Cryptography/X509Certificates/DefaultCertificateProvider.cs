@@ -65,7 +65,7 @@ namespace Kephas.Application.Cryptography.X509Certificates
 
             if (!string.IsNullOrEmpty(certificateInfo.FilePath))
             {
-                var filePath = Path.Combine(this.appRuntime.GetAppLocation(), certificateInfo.FilePath);
+                var filePath = Path.Combine(this.appRuntime.GetAppLocation(), certificateInfo.FilePath!);
                 var password = certificateInfo.Password ??
                                this.encryptionService.Decrypt(certificateInfo.EncryptedPassword!);
                 return new X509Certificate2(filePath, password);
@@ -87,7 +87,8 @@ namespace Kephas.Application.Cryptography.X509Certificates
                 var validString = certificateInfo.ValidOnly ? "valid " : string.Empty;
                 this.Logger.Warn(
                     $"No {validString}certificate with {itemName} '{{{itemName}}}' could be found in {{store}}.",
-                    itemValue, $"{certificateInfo.StoreLocation}/{certificateInfo.StoreName}");
+                    itemValue,
+                    $"{certificateInfo.StoreLocation}/{certificateInfo.StoreName}");
             }
 
             return cert;
@@ -99,19 +100,19 @@ namespace Kephas.Application.Cryptography.X509Certificates
             if (!string.IsNullOrEmpty(certificateInfo.Thumbprint))
             {
                 return (store => this.FindByThumbprint(store, certificateInfo), "thumbprint",
-                    certificateInfo.Thumbprint);
+                    certificateInfo.Thumbprint!);
             }
 
             if (!string.IsNullOrEmpty(certificateInfo.SubjectDistinguishedName))
             {
                 return (store => this.FindBySubjectDistinguishedName(store, certificateInfo),
-                    "subjectDistinguishedName", certificateInfo.SubjectDistinguishedName);
+                    "subjectDistinguishedName", certificateInfo.SubjectDistinguishedName!);
             }
 
             if (!string.IsNullOrEmpty(certificateInfo.SubjectName))
             {
                 return (store => this.FindBySubjectName(store, certificateInfo), "subjectName",
-                    certificateInfo.SubjectName);
+                    certificateInfo.SubjectName!);
             }
 
             return (null, string.Empty, string.Empty);
@@ -119,22 +120,28 @@ namespace Kephas.Application.Cryptography.X509Certificates
 
         private X509Certificate2? FindBySubjectName(X509Store store, CertificateSettings certificateInfo)
         {
-            var certs = store.Certificates.Find(X509FindType.FindBySubjectName, certificateInfo.SubjectName,
+            var certs = store.Certificates.Find(
+                X509FindType.FindBySubjectName,
+                certificateInfo.SubjectName!,
                 certificateInfo.ValidOnly);
             return certs.Count == 0 ? null : certs[0];
         }
 
         private X509Certificate2? FindByThumbprint(X509Store store, CertificateSettings certificateInfo)
         {
-            var certs = store.Certificates.Find(X509FindType.FindByThumbprint, certificateInfo.Thumbprint,
+            var certs = store.Certificates.Find(
+                X509FindType.FindByThumbprint,
+                certificateInfo.Thumbprint!,
                 certificateInfo.ValidOnly);
             return certs.Count == 0 ? null : certs[0];
         }
 
         private X509Certificate2? FindBySubjectDistinguishedName(X509Store store, CertificateSettings certificateInfo)
         {
-            var certs = store.Certificates.Find(X509FindType.FindBySubjectDistinguishedName,
-                certificateInfo.SubjectDistinguishedName, certificateInfo.ValidOnly);
+            var certs = store.Certificates.Find(
+                X509FindType.FindBySubjectDistinguishedName,
+                certificateInfo.SubjectDistinguishedName!,
+                certificateInfo.ValidOnly);
             return certs.Count == 0 ? null : certs[0];
         }
     }
