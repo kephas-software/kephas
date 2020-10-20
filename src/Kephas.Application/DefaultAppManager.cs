@@ -36,6 +36,10 @@ namespace Kephas.Application
     [OverridePriority(Priority.Low)]
     public class DefaultAppManager : Loggable, IAppManager
     {
+        private readonly Lazy<ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>> lazyAppLifecycleBehaviorFactories;
+        private readonly Lazy<ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>>> lazyFeatureManagerFactories;
+        private readonly Lazy<ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>> lazyFeatureLifecycleBehaviorFactories;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultAppManager"/> class.
         /// </summary>
@@ -60,24 +64,32 @@ namespace Kephas.Application
             this.AppRuntime = appRuntime;
             this.CompositionContext = compositionContext;
             this.ServiceBehaviorProvider = serviceBehaviorProvider ?? new DefaultServiceBehaviorProvider(compositionContext);
-            this.AppLifecycleBehaviorFactories = appLifecycleBehaviorFactories == null
-                                                     ? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>()
-                                                     : this.ServiceBehaviorProvider.WhereEnabled(appLifecycleBehaviorFactories).Order().ToList();
+            this.lazyAppLifecycleBehaviorFactories = new Lazy<ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>>(
+                () => appLifecycleBehaviorFactories == null
+                                     ? new List<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>>()
+                                     : this.ServiceBehaviorProvider.WhereEnabled(appLifecycleBehaviorFactories).Order().ToList());
 
-            this.EnsureMetadataHasFeatureInfo(featureManagerFactories);
-            this.FeatureManagerFactories = featureManagerFactories == null
-                                               ? new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>()
-                                               : this.SortEnabledFeatureManagerFactories(this.ServiceBehaviorProvider.WhereEnabled(featureManagerFactories).ToList());
+            this.lazyFeatureManagerFactories = new Lazy<ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>>>(
+                () =>
+                {
+                    this.EnsureMetadataHasFeatureInfo(featureManagerFactories);
 
-            this.FeatureLifecycleBehaviorFactories = featureLifecycleBehaviorFactories == null
-                                                         ? new List<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>()
-                                                         : this.ServiceBehaviorProvider.WhereEnabled(featureLifecycleBehaviorFactories).Order().ToList();
+                    return featureManagerFactories == null
+                        ? new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>()
+                        : this.SortEnabledFeatureManagerFactories(this.ServiceBehaviorProvider
+                            .WhereEnabled(featureManagerFactories).ToList());
+                });
+
+            this.lazyFeatureLifecycleBehaviorFactories = new Lazy<ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>>(
+                () => featureLifecycleBehaviorFactories == null
+                                     ? new List<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>()
+                                     : this.ServiceBehaviorProvider.WhereEnabled(featureLifecycleBehaviorFactories).Order().ToList());
         }
 
         /// <summary>
         /// Gets the application runtime.
         /// </summary>
-        public IAppRuntime AppRuntime { get; }
+        protected IAppRuntime AppRuntime { get; }
 
         /// <summary>
         /// Gets the composition context.
@@ -85,12 +97,12 @@ namespace Kephas.Application
         /// <value>
         /// The composition context.
         /// </value>
-        public ICompositionContext CompositionContext { get; }
+        protected ICompositionContext CompositionContext { get; }
 
         /// <summary>
         /// Gets the service behavior provider.
         /// </summary>
-        public IServiceBehaviorProvider ServiceBehaviorProvider { get; }
+        protected IServiceBehaviorProvider ServiceBehaviorProvider { get; }
 
         /// <summary>
         /// Gets the application lifecycle behavior factories.
@@ -98,7 +110,8 @@ namespace Kephas.Application
         /// <value>
         /// The application lifecycle behavior factories.
         /// </value>
-        public ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> AppLifecycleBehaviorFactories { get; }
+        protected internal ICollection<IExportFactory<IAppLifecycleBehavior, AppServiceMetadata>> AppLifecycleBehaviorFactories
+            => this.lazyAppLifecycleBehaviorFactories.Value;
 
         /// <summary>
         /// Gets the feature manager factories.
@@ -106,7 +119,8 @@ namespace Kephas.Application
         /// <value>
         /// The feature manager factories.
         /// </value>
-        public ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> FeatureManagerFactories { get; }
+        protected internal ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> FeatureManagerFactories
+            => this.lazyFeatureManagerFactories.Value;
 
         /// <summary>
         /// Gets the feature lifecycle behavior factories.
@@ -114,7 +128,8 @@ namespace Kephas.Application
         /// <value>
         /// The feature lifecycle behavior factories.
         /// </value>
-        public ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> FeatureLifecycleBehaviorFactories { get; }
+        protected internal ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>> FeatureLifecycleBehaviorFactories
+            => this.lazyFeatureLifecycleBehaviorFactories.Value;
 
         /// <summary>
         /// Initializes the application asynchronously.
@@ -128,12 +143,6 @@ namespace Kephas.Application
         {
             try
             {
-                // set the features in the app manifest.
-                var features = this.FeatureManagerFactories
-                    .Select(f => f.Metadata.FeatureInfo!)
-                    .ToList();
-                this.SetAppRuntimeFeatures(features);
-
                 await Profiler.WithInfoStopwatchAsync(
                     async () =>
                     {
@@ -145,6 +154,12 @@ namespace Kephas.Application
 
                         await this.BeforeAppInitializeAsync(orderedBehaviors, appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
+
+                        // set the features in the app manifest.
+                        var features = this.FeatureManagerFactories
+                            .Select(f => f.Metadata.FeatureInfo!)
+                            .ToList();
+                        this.SetAppRuntimeFeatures(features);
 
                         await this.InitializeFeaturesAsync(appContext, cancellationToken).PreserveThreadContext();
                         cancellationToken.ThrowIfCancellationRequested();
