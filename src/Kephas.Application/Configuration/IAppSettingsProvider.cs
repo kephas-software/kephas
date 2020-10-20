@@ -19,6 +19,6 @@ namespace Kephas.Application.Configuration
         /// Gets the application settings for the executing instance.
         /// </summary>
         /// <returns>The application settings.</returns>
-        AppSettings GetAppSettings();
+        AppSettings? GetAppSettings();
     }
 }

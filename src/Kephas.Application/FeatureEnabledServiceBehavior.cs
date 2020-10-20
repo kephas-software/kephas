@@ -27,22 +27,22 @@ namespace Kephas.Application
     public class FeatureEnabledServiceBehavior : EnabledServiceBehaviorRuleBase<IFeatureManager>
     {
         private readonly IAppRuntime appRuntime;
-        private readonly IConfiguration<SystemSettings> systemConfiguration;
+        private readonly IAppSettingsProvider appSettingsProvider;
         private readonly PartialOrderedSet<string> featuresOrderedSet;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureEnabledServiceBehavior"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="systemConfiguration">The system configuration.</param>
+        /// <param name="appSettingsProvider">The provider for <see cref="AppSettings"/>.</param>
         /// <param name="featureFactories">The feature factories.</param>
         public FeatureEnabledServiceBehavior(
             IAppRuntime appRuntime,
-            IConfiguration<SystemSettings> systemConfiguration,
+            IAppSettingsProvider appSettingsProvider,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureFactories)
         {
             this.appRuntime = appRuntime;
-            this.systemConfiguration = systemConfiguration;
+            this.appSettingsProvider = appSettingsProvider;
             var featuresDictionary = featureFactories
                 .Select(f => FeatureInfo.FromMetadata(f.Metadata))
                 .ToDictionary(f => f.Name.ToLower(), f => f);
@@ -67,13 +67,11 @@ namespace Kephas.Application
                 return BehaviorValue.True;
             }
 
-            var appId = this.appRuntime.GetAppId();
-            if (this.systemConfiguration.Settings.Instances == null ||
-                !this.systemConfiguration.Settings.Instances.TryGetValue(appId, out var appSettings) ||
-                appSettings.EnabledFeatures == null)
+            var appSettings = this.appSettingsProvider.GetAppSettings();
+            if (appSettings?.EnabledFeatures == null)
             {
                 // TODO localization
-                this.Logger.Warn("Cannot identify the application information in the system settings for {app}, therefore feature '{feature}' will be enabled.", appId, featureInfo.Name);
+                this.Logger.Warn("Cannot identify the application information in the system settings for {app}, therefore feature '{feature}' will be enabled.", this.appRuntime.GetAppId(), featureInfo.Name);
                 return BehaviorValue.True;
             }
 

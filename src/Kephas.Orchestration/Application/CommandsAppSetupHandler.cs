@@ -17,7 +17,6 @@ namespace Kephas.Orchestration.Application
     using Kephas.Commands;
     using Kephas.Configuration;
     using Kephas.Dynamic;
-    using Kephas.Interaction;
     using Kephas.Logging;
     using Kephas.Messaging;
     using Kephas.Operations;
@@ -31,33 +30,33 @@ namespace Kephas.Orchestration.Application
     {
         private readonly IAppRuntime appRuntime;
         private readonly IConfiguration<SystemSettings> systemConfiguration;
+        private readonly IAppSettingsProvider appSettingsProvider;
         private readonly ICommandProcessor commandProcessor;
         private readonly IMessageProcessor messageProcessor;
-        private readonly IEventHub eventHub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandsAppSetupHandler"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="systemConfiguration">The system configuration.</param>
+        /// <param name="appSettingsProvider">The provider for <see cref="AppSettings"/>.</param>
         /// <param name="commandProcessor">The command processor.</param>
         /// <param name="messageProcessor">The message processor.</param>
-        /// <param name="eventHub">The event hub.</param>
         /// <param name="logManager">Optional. The log manager.</param>
         public CommandsAppSetupHandler(
             IAppRuntime appRuntime,
             IConfiguration<SystemSettings> systemConfiguration,
+            IAppSettingsProvider appSettingsProvider,
             ICommandProcessor commandProcessor,
             IMessageProcessor messageProcessor,
-            IEventHub eventHub,
             ILogManager? logManager = null)
             : base(logManager)
         {
             this.appRuntime = appRuntime;
             this.systemConfiguration = systemConfiguration;
+            this.appSettingsProvider = appSettingsProvider;
             this.commandProcessor = commandProcessor;
             this.messageProcessor = messageProcessor;
-            this.eventHub = eventHub;
         }
 
         /// <summary>
@@ -89,7 +88,7 @@ namespace Kephas.Orchestration.Application
 
             // get the commands to execute and clear the list of commands
             // so that, if necessary, they can be added by the executed commands
-            var setupCommands = new List<object>(settings.SetupCommands);
+            var setupCommands = new List<object>(settings.SetupCommands!);
             try
             {
                 settings.SetupCommands = null;
@@ -112,13 +111,8 @@ namespace Kephas.Orchestration.Application
         private async Task<IOperationResult> ExecuteInstanceSetupCommandsAsync(IContext appContext, CancellationToken cancellationToken)
         {
             var appId = this.appRuntime.GetAppId()!;
-            var systemSettings = this.systemConfiguration.Settings;
-            if (systemSettings.Instances == null)
-            {
-                return new OperationResult().Complete();
-            }
-
-            if (!systemSettings.Instances.TryGetValue(appId, out var appSettings) || appSettings.SetupCommands == null)
+            var appSettings = this.appSettingsProvider.GetAppSettings();
+            if (appSettings?.SetupCommands == null)
             {
                 return new OperationResult().Complete();
             }

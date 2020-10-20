@@ -34,11 +34,11 @@ namespace Kephas.Application.Configuration
         /// Gets the application settings for the executing instance.
         /// </summary>
         /// <returns>The application settings.</returns>
-        public AppSettings GetAppSettings()
+        public AppSettings? GetAppSettings()
         {
             var systemSettings = this.systemConfiguration.Settings;
             var appId = this.appRuntime.GetAppId()!;
-            return systemSettings.Instances[appId];
+            return systemSettings.Instances?[appId];
         }
     }
 }
