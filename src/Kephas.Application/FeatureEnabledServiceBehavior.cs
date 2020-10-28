@@ -88,12 +88,12 @@ namespace Kephas.Application
             // if enabled or a dependency, enable.
             var enabledFeatures = appSettings.EnabledFeatures?.Select(f => f.ToLower()).ToArray() ?? Array.Empty<string>();
             var featureKey = featureInfo.Name.ToLower();
-            var requiringFeature =
+            var enabledFeature =
                 enabledFeatures.FirstOrDefault(f => (this.featuresOrderedSet.Compare(f, featureKey) ?? -1) >= 0);
-            if (requiringFeature != null)
+            if (enabledFeature != null)
             {
                 // TODO localization
-                this.Logger.Info($"Enabling feature '{{feature}}' for '{{app}}', as it is required by the '{{requiringFeature}}'.", featureInfo.Name, this.appRuntime.GetAppId(), requiringFeature);
+                this.Logger.Info($"Enabling feature '{{feature}}' for '{{app}}', as it is required by the '{{enabledFeature}}'.", featureInfo.Name, this.appRuntime.GetAppId(), enabledFeature);
                 return BehaviorValue.True;
             }
 

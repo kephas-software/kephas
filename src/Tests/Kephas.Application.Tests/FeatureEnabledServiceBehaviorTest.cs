@@ -22,7 +22,20 @@ namespace Kephas.Application.Tests
     public class FeatureEnabledServiceBehaviorTest
     {
         [Test]
-        public void GetValue_true_enabled_optional_dependency_case_insensitive()
+        public void GetValue_true_optional_dependency_of_enabled()
+        {
+            var enabledExportFactory = this.GetFeatureExportFactory("enabled", dependencies: new[] { "test" });
+            var exportFactory = this.GetFeatureExportFactory("test");
+            var behavior = new FeatureEnabledServiceBehavior(
+                new StaticAppRuntime(appId: "test-app"),
+                this.GetAppSettingsProvider(new[] { "enabled" }),
+                new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>> { exportFactory, enabledExportFactory });
+            var value = behavior.GetValue(this.GetServiceBehaviorContext(exportFactory));
+            Assert.IsTrue(value.Value);
+        }
+
+        [Test]
+        public void GetValue_true_enabled_optional_case_insensitive()
         {
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
@@ -34,7 +47,7 @@ namespace Kephas.Application.Tests
         }
 
         [Test]
-        public void GetValue_true_enabled_optional_dependency()
+        public void GetValue_true_enabled_optional()
         {
             var exportFactory = this.GetFeatureExportFactory("test");
             var behavior = new FeatureEnabledServiceBehavior(
