@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Messaging;
+
 namespace Kephas.Orchestration.Application
 {
     using System;
@@ -33,6 +35,7 @@ namespace Kephas.Orchestration.Application
     {
         private readonly IAppRuntime appRuntime;
         private readonly IMessageBroker messageBroker;
+        private readonly IMessageHandlerRegistry messageHandlerRegistry;
         private readonly IEventHub eventHub;
 
         /// <summary>
@@ -40,19 +43,60 @@ namespace Kephas.Orchestration.Application
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
         /// <param name="messageBroker">The application event publisher.</param>
+        /// <param name="messageHandlerRegistry">The message handler registry.</param>
         /// <param name="eventHub">The event hub.</param>
         public OrchestrationAppLifecycleBehavior(
             IAppRuntime appRuntime,
             IMessageBroker messageBroker,
+            IMessageHandlerRegistry messageHandlerRegistry,
             IEventHub eventHub)
         {
             Requires.NotNull(appRuntime, nameof(appRuntime));
             Requires.NotNull(messageBroker, nameof(messageBroker));
+            Requires.NotNull(messageHandlerRegistry, nameof(messageHandlerRegistry));
             Requires.NotNull(eventHub, nameof(eventHub));
 
             this.appRuntime = appRuntime;
             this.messageBroker = messageBroker;
+            this.messageHandlerRegistry = messageHandlerRegistry;
             this.eventHub = eventHub;
+
+            this.messageHandlerRegistry.RegisterHandler<AppStoppedEvent>(this.HandleAppStoppedEventAsync);
+            this.messageHandlerRegistry.RegisterHandler<AppStoppingEvent>(this.HandleAppStoppingEventAsync);
+            this.messageHandlerRegistry.RegisterHandler<AppStartedEvent>(this.HandleAppStartedEventAsync);
+            this.messageHandlerRegistry.RegisterHandler<AppStartingEvent>(this.HandleAppStartingEventAsync);
+        }
+
+        /// <summary>
+        /// Interceptor called before the application starts its asynchronous initialization.
+        /// </summary>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        /// <remarks>
+        /// To interrupt the application initialization, simply throw an appropriate exception.
+        /// </remarks>
+        public override async Task<IOperationResult> BeforeAppInitializeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        {
+            var opResult = true.ToOperationResult();
+            var appStartingEvent = this.CreateAppStartingEvent();
+
+            try
+            {
+                // notify its own manager that it is starting.
+                await this.eventHub.PublishAsync(appStartingEvent, appContext, cancellationToken).PreserveThreadContext();
+
+                this.Logger.Debug("Notified itself that it is starting.");
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, Strings.ApplicationStartedEvent_Exception);
+                opResult.MergeException(ex);
+            }
+
+            return opResult;
         }
 
         /// <summary>
@@ -66,14 +110,20 @@ namespace Kephas.Orchestration.Application
             CancellationToken cancellationToken = default)
         {
             var opResult = true.ToOperationResult();
+            var appStartingEvent = this.CreateAppStartingEvent();
+            var appStartedEvent = this.CreateAppStartedEvent();
+
             try
             {
-                var appStartedEvent = this.CreateAppStartedEvent();
-
                 // first of all notify its own manager that it started...
                 await this.eventHub.PublishAsync(appStartedEvent, appContext, cancellationToken).PreserveThreadContext();
 
-                // ...then the peers.
+                // ...then the peers that it is starting and, at the same time, that it is started.
+                // Reason: during the bootstrap it may happen that the communication channels between the peers are not open.
+                await this.messageBroker.PublishAsync(
+                    appStartingEvent,
+                    ctx => ctx.Impersonate(appContext),
+                    cancellationToken).PreserveThreadContext();
                 await this.messageBroker.PublishAsync(
                     appStartedEvent,
                     ctx => ctx.Impersonate(appContext),
@@ -107,10 +157,26 @@ namespace Kephas.Orchestration.Application
             CancellationToken cancellationToken = default)
         {
             var opResult = true.ToOperationResult();
+            var appStoppingEvent = this.CreateAppStoppingEvent();
             var appStoppedEvent = this.CreateAppStoppedEvent();
+
             try
             {
-                await this.messageBroker.PublishAsync(appStoppedEvent, ctx => ctx.Impersonate(appContext), cancellationToken).PreserveThreadContext();
+                // first of all notify its own manager that it is stopping...
+                await this.eventHub.PublishAsync(appStoppingEvent, appContext, cancellationToken).PreserveThreadContext();
+
+                // ...then the peers that it is stopping and, at the same time, that it is stopped.
+                // Reason: during the shutdown it may happen that the communication channels between the peers are closed.
+                await this.messageBroker.PublishAsync(
+                    appStoppingEvent,
+                    ctx => ctx.Impersonate(appContext),
+                    cancellationToken).PreserveThreadContext();
+                await this.messageBroker.PublishAsync(
+                    appStoppedEvent,
+                    ctx => ctx.Impersonate(appContext),
+                    cancellationToken).PreserveThreadContext();
+
+                this.Logger.Debug("Notified itself and peers that it is stopping.");
             }
             catch (Exception ex)
             {
@@ -121,6 +187,68 @@ namespace Kephas.Orchestration.Application
             return opResult;
         }
 
+        /// <summary>
+        /// Interceptor called after the application completes its asynchronous finalization.
+        /// </summary>
+        /// <param name="appContext">Context for the application.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token.</param>
+        /// <returns>
+        /// The asynchronous result.
+        /// </returns>
+        public override async Task<IOperationResult> AfterAppFinalizeAsync(IAppContext appContext, CancellationToken cancellationToken = default)
+        {
+            var opResult = true.ToOperationResult();
+            var appStoppedEvent = this.CreateAppStoppedEvent();
+
+            try
+            {
+                // now notify its own manager that it is stopped.
+                await this.eventHub.PublishAsync(appStoppedEvent, appContext, cancellationToken).PreserveThreadContext();
+
+                this.Logger.Debug("Notified itself that it is stopped.");
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(ex, Strings.ApplicationStoppedEvent_Exception);
+                opResult.MergeException(ex);
+            }
+
+            return opResult;
+        }
+
+        private async Task<IMessage?> HandleAppStartedEventAsync(AppStartedEvent message, IMessagingContext context, CancellationToken cancellationToken)
+        {
+            await this.eventHub.PublishAsync(message, context, cancellationToken).PreserveThreadContext();
+            return null;
+        }
+
+        private async Task<IMessage?> HandleAppStoppedEventAsync(AppStoppedEvent message, IMessagingContext context, CancellationToken cancellationToken)
+        {
+            await this.eventHub.PublishAsync(message, context, cancellationToken).PreserveThreadContext();
+            return null;
+        }
+
+        private async Task<IMessage?> HandleAppStartingEventAsync(AppStartingEvent message, IMessagingContext context, CancellationToken cancellationToken)
+        {
+            await this.eventHub.PublishAsync(message, context, cancellationToken).PreserveThreadContext();
+            return null;
+        }
+
+        private async Task<IMessage?> HandleAppStoppingEventAsync(AppStoppingEvent message, IMessagingContext context, CancellationToken cancellationToken)
+        {
+            await this.eventHub.PublishAsync(message, context, cancellationToken).PreserveThreadContext();
+            return null;
+        }
+
+        private AppStartingEvent CreateAppStartingEvent()
+        {
+            return new AppStartingEvent
+            {
+                AppInfo = this.appRuntime.GetRuntimeAppInfo(),
+                Timestamp = DateTimeOffset.Now,
+            };
+        }
+
         private AppStartedEvent CreateAppStartedEvent()
         {
             return new AppStartedEvent
@@ -128,6 +256,15 @@ namespace Kephas.Orchestration.Application
                            AppInfo = this.appRuntime.GetRuntimeAppInfo(),
                            Timestamp = DateTimeOffset.Now,
                        };
+        }
+
+        private AppStoppingEvent CreateAppStoppingEvent()
+        {
+            return new AppStoppingEvent
+            {
+                AppInfo = this.appRuntime.GetRuntimeAppInfo(),
+                Timestamp = DateTimeOffset.Now,
+            };
         }
 
         private AppStoppedEvent CreateAppStoppedEvent()
