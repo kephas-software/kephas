@@ -121,6 +121,7 @@ namespace Kephas.Services.Behaviors
         /// <c>true</c> if the service is enabled, <c>false</c> if not.
         /// </returns>
         private bool IsServiceEnabled<TService>(IServiceBehaviorContext<TService> serviceContext, IList<IEnabledServiceBehaviorRule> rules)
+            where TService : class
         {
             var isEnabled = true;
             foreach (var rule in rules.Where(r => r.CanApply(serviceContext)))
