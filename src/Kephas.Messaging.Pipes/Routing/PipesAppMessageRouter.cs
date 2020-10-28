@@ -374,7 +374,7 @@ namespace Kephas.Messaging.Pipes.Routing
             }
         }
 
-        private void HandleAppStoppedEvent(AppStoppedEvent e, IContext context)
+        private void HandleAppStoppedEvent(AppStoppedEvent e, IContext? context)
         {
             var peerAppInstanceId = e.AppInfo.AppInstanceId;
             if (e.AppInfo.AppId == this.AppRuntime.GetAppId() &&
