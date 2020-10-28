@@ -38,10 +38,16 @@ namespace Kephas.Application.Reflection
         /// </summary>
         /// <param name="name">The feature name.</param>
         /// <param name="version">Optional. The feature version.</param>
-        /// <param name="isRequired">Optional. True if this feature is required, false if not.</param>
+        /// <param name="isRequired">Optional. True if this feature is required, false (default) if not.</param>
         /// <param name="dependencies">Optional. The feature dependencies.</param>
-        public FeatureInfo(string name, string? version = null, bool isRequired = false, string[]? dependencies = null)
-            : this(name, version == null ? null : new Version(version), isRequired, dependencies)
+        /// <param name="targetApps">Optional. The target applications where the feature will be loaded.</param>
+        public FeatureInfo(
+            string name,
+            string? version = null,
+            bool isRequired = false,
+            string[]? dependencies = null,
+            string[]? targetApps = null)
+            : this(name, version == null ? null : new Version(version), isRequired, dependencies, targetApps)
         {
         }
 
@@ -50,16 +56,23 @@ namespace Kephas.Application.Reflection
         /// </summary>
         /// <param name="name">The feature name.</param>
         /// <param name="version">Optional. The feature version.</param>
-        /// <param name="isRequired">Optional. True if this feature is required, false if not.</param>
+        /// <param name="isRequired">Optional. True if this feature is required, false (default) if not.</param>
         /// <param name="dependencies">Optional. The feature dependencies.</param>
-        public FeatureInfo(string name, Version? version = null, bool isRequired = false, string[]? dependencies = null)
+        /// <param name="targetApps">Optional. The target applications where the feature will be loaded.</param>
+        public FeatureInfo(
+            string name,
+            Version? version = null,
+            bool isRequired = false,
+            string[]? dependencies = null,
+            string[]? targetApps = null)
         {
             Requires.NotNullOrEmpty(name, nameof(name));
 
             this.Name = name;
             this.IsRequired = isRequired;
             this.Version = version ?? new Version(0, 0);
-            this.Dependencies = dependencies ?? new string[0];
+            this.Dependencies = dependencies ?? Array.Empty<string>();
+            this.TargetApps = targetApps;
         }
 
         /// <summary>
@@ -77,6 +90,11 @@ namespace Kephas.Application.Reflection
         /// The dependencies.
         /// </value>
         public string[] Dependencies { get; }
+
+        /// <summary>
+        /// Gets the target applications where the feature will be loaded.
+        /// </summary>
+        public string[]? TargetApps { get; }
 
         /// <summary>
         /// Gets the feature version.

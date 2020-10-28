@@ -68,19 +68,36 @@ namespace Kephas.Application
             }
 
             var appSettings = this.appSettingsProvider.GetAppSettings();
-            if (appSettings?.EnabledFeatures == null)
+            if (appSettings == null)
             {
                 // TODO localization
-                this.Logger.Warn("Cannot identify the application information in the system settings for {app}, therefore feature '{feature}' will be enabled.", this.appRuntime.GetAppId(), featureInfo.Name);
+                this.Logger.Warn("Cannot identify the application information in the system settings for '{app}', therefore feature '{feature}' will be enabled.", this.appRuntime.GetAppId(), featureInfo.Name);
+                return BehaviorValue.True;
+            }
+
+            // if the feature targets a specific app, enable it.
+            var targetApps = featureInfo.TargetApps ?? Array.Empty<string>();
+            var appId = this.appRuntime.GetAppId();
+            if (targetApps.Contains(appId, StringComparer.OrdinalIgnoreCase))
+            {
+                // TODO localization
+                this.Logger.Info("Enabling feature '{feature}' for '{app}', as it targets the app.", featureInfo.Name, this.appRuntime.GetAppId());
                 return BehaviorValue.True;
             }
 
             // if enabled or a dependency, enable.
-            var enabledFeatures = appSettings.EnabledFeatures.Select(f => f.ToLower()).ToList();
+            var enabledFeatures = appSettings.EnabledFeatures?.Select(f => f.ToLower()).ToArray() ?? Array.Empty<string>();
             var featureKey = featureInfo.Name.ToLower();
-            return enabledFeatures.Any(f => (this.featuresOrderedSet.Compare(f, featureKey) ?? -1) >= 0)
-                ? BehaviorValue.True
-                : BehaviorValue.False;
+            var requiringFeature =
+                enabledFeatures.FirstOrDefault(f => (this.featuresOrderedSet.Compare(f, featureKey) ?? -1) >= 0);
+            if (requiringFeature != null)
+            {
+                // TODO localization
+                this.Logger.Info($"Enabling feature '{{feature}}' for '{{app}}', as it is required by the '{{requiringFeature}}'.", featureInfo.Name, this.appRuntime.GetAppId(), requiringFeature);
+                return BehaviorValue.True;
+            }
+
+            return BehaviorValue.False;
         }
 
         /// <summary>

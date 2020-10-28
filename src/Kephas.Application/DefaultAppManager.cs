@@ -76,8 +76,8 @@ namespace Kephas.Application
 
                     return featureManagerFactories == null
                         ? new List<IExportFactory<IFeatureManager, FeatureManagerMetadata>>()
-                        : this.SortEnabledFeatureManagerFactories(this.ServiceBehaviorProvider
-                            .WhereEnabled(featureManagerFactories).ToList());
+                        : this.SortEnabledFeatureManagerFactories(
+                            this.ServiceBehaviorProvider.WhereEnabled(featureManagerFactories).ToList());
                 });
 
             this.lazyFeatureLifecycleBehaviorFactories = new Lazy<ICollection<IExportFactory<IFeatureLifecycleBehavior, FeatureLifecycleBehaviorMetadata>>>(

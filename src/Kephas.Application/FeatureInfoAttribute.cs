@@ -25,14 +25,15 @@ namespace Kephas.Application
         /// Initializes a new instance of the <see cref="FeatureInfoAttribute"/> class.
         /// </summary>
         /// <param name="feature">The feature.</param>
-        /// <param name="version">The feature version (optional).</param>
-        /// <param name="isRequired">True if this feature is required, false if not (optional).</param>
-        /// <param name="dependencies">The feature dependencies (optional).</param>
-        public FeatureInfoAttribute(string feature, string? version = null, bool isRequired = false, string[]? dependencies = null)
+        /// <param name="version">Optional. The feature version.</param>
+        /// <param name="isRequired">Optional. True if this feature is required, false (default) if not.</param>
+        /// <param name="dependencies">Optional. The feature dependencies.</param>
+        /// <param name="targetApps">Optional. The target applications where the feature will be loaded.</param>
+        public FeatureInfoAttribute(string feature, string? version = null, bool isRequired = false, string[]? dependencies = null, string[]? targetApps = null)
         {
             Requires.NotNullOrEmpty(feature, nameof(feature));
 
-            this.Value = new FeatureInfo(feature, version, isRequired, dependencies);
+            this.Value = new FeatureInfo(feature, version, isRequired, dependencies, targetApps);
         }
 
         /// <summary>
