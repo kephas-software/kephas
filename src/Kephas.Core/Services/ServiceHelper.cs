@@ -29,26 +29,26 @@ namespace Kephas.Services
         /// If the service implements <see cref="IInitializable"/>, the <see cref="IInitializable.Initialize(IContext)"/> method is called and a completed task is returned.
         /// Otherwise nothing happens.
         /// </remarks>
+        /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="service">The service.</param>
         /// <param name="context">Optional. The context.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public static Task InitializeAsync(object service, IContext? context = null, CancellationToken cancellationToken = default)
+        public static Task InitializeAsync<TService>(TService service, IContext? context = null, CancellationToken cancellationToken = default)
+            where TService : class
         {
-            if (service is IAsyncInitializable asyncService)
+            switch (service)
             {
-                return asyncService.InitializeAsync(context, cancellationToken);
+                case IAsyncInitializable asyncService:
+                    return asyncService.InitializeAsync(context, cancellationToken);
+                case IInitializable syncService:
+                    syncService.Initialize(context);
+                    return Task.CompletedTask;
+                default:
+                    return Task.CompletedTask;
             }
-
-            if (service is IInitializable syncService)
-            {
-                syncService.Initialize(context);
-                return Task.CompletedTask;
-            }
-
-            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -59,17 +59,20 @@ namespace Kephas.Services
         /// If the service implements <see cref="IInitializable"/>, the <see cref="IInitializable.Initialize(IContext)"/> method is called.
         /// Otherwise nothing happens.
         /// </remarks>
+        /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="service">The service.</param>
         /// <param name="context">Optional. The context.</param>
-        public static void Initialize(object service, IContext? context = null)
+        public static void Initialize<TService>(TService service, IContext? context = null)
+            where TService : class
         {
-            if (service is IAsyncInitializable asyncService)
+            switch (service)
             {
-                asyncService.InitializeAsync(context).WaitNonLocking();
-            }
-            else if (service is IInitializable syncService)
-            {
-                syncService.Initialize(context);
+                case IAsyncInitializable asyncService:
+                    asyncService.InitializeAsync(context).WaitNonLocking();
+                    break;
+                case IInitializable syncService:
+                    syncService.Initialize(context);
+                    break;
             }
         }
 
@@ -82,39 +85,34 @@ namespace Kephas.Services
         /// If the service implements <see cref="IDisposable"/>, the <see cref="IDisposable.Dispose"/> method is called and a completed task is returned.
         /// Otherwise nothing happens.
         /// </remarks>
+        /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="service">The service.</param>
         /// <param name="context">Optional. The context.</param>
         /// <param name="cancellationToken">Optional. A token that allows processing to be cancelled.</param>
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        public static async Task FinalizeAsync(object service, IContext? context = null, CancellationToken cancellationToken = default)
+        public static async Task FinalizeAsync<TService>(TService service, IContext? context = null, CancellationToken cancellationToken = default)
+            where TService : class
         {
-            if (service is IAsyncFinalizable asyncService)
+            switch (service)
             {
-                await asyncService.FinalizeAsync(context, cancellationToken).PreserveThreadContext();
-                return;
-            }
-
-            if (service is IFinalizable syncService)
-            {
-                syncService.Finalize(context);
-                return;
-            }
-
+                case IAsyncFinalizable asyncService:
+                    await asyncService.FinalizeAsync(context, cancellationToken).PreserveThreadContext();
+                    return;
+                case IFinalizable syncService:
+                    syncService.Finalize(context);
+                    return;
 #if NETSTANDARD2_1
-            if (service is IAsyncDisposable asyncDisposableService)
-            {
-                await asyncDisposableService.DisposeAsync().PreserveThreadContext();
-                return;
-            }
+                case IAsyncDisposable asyncDisposableService:
+                    await asyncDisposableService.DisposeAsync().PreserveThreadContext();
+                    return;
 #endif
-
-            if (service is IDisposable disposableService)
-            {
-                disposableService.Dispose();
-                return;
+                case IDisposable disposableService:
+                    disposableService.Dispose();
+                    return;
             }
+
         }
 
         /// <summary>
@@ -126,28 +124,28 @@ namespace Kephas.Services
         /// If the service implements <see cref="IDisposable"/>, the <see cref="IDisposable.Dispose"/> method is called.
         /// Otherwise nothing happens.
         /// </remarks>
+        /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="service">The service.</param>
         /// <param name="context">Optional. The context.</param>
-        public static void Finalize(object service, IContext? context = null)
+        public static void Finalize<TService>(TService service, IContext? context = null)
+            where TService : class
         {
-            if (service is IAsyncFinalizable asyncService)
+            switch (service)
             {
-                asyncService.FinalizeAsync(context).WaitNonLocking();
-            }
-            else if (service is IFinalizable syncService)
-            {
-                syncService.Finalize(context);
-            }
+                case IAsyncFinalizable asyncService:
+                    asyncService.FinalizeAsync(context).WaitNonLocking();
+                    break;
+                case IFinalizable syncService:
+                    syncService.Finalize(context);
+                    break;
 #if NETSTANDARD2_1
-            else if (service is IAsyncDisposable asyncDisposableService)
-            {
-                asyncDisposableService.DisposeAsync().WaitNonLocking();
-                return;
-            }
+                case IAsyncDisposable asyncDisposableService:
+                    asyncDisposableService.DisposeAsync().WaitNonLocking();
+                    return;
 #endif
-            else if (service is IDisposable disposableService)
-            {
-                disposableService.Dispose();
+                case IDisposable disposableService:
+                    disposableService.Dispose();
+                    break;
             }
         }
     }
