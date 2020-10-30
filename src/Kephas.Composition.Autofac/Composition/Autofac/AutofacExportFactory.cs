@@ -53,6 +53,17 @@ namespace Kephas.Composition.Autofac
         {
             return this.CreateExport();
         }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"Export factory of {typeof(TService).Name}.";
+        }
     }
 
     /// <summary>
@@ -76,9 +87,9 @@ namespace Kephas.Composition.Autofac
         }
 
         /// <summary>
-        /// The metadata.
+        /// Gets the metadata.
         /// </summary>
-        public TMetadata Metadata { get; }
+        public TMetadata Metadata => this.servicePromise.Metadata;
 
         /// <summary>
         /// Create an instance of the exported part.
@@ -89,6 +100,17 @@ namespace Kephas.Composition.Autofac
         public new IExport<TService, TMetadata> CreateExport()
         {
             return new Export<TService, TMetadata>(() => Tuple.Create(this.servicePromise.Value, (Action)(() => { })), this.servicePromise.Metadata);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return $"Export factory of {typeof(TService).Name} with {this.Metadata}.";
         }
     }
 }
