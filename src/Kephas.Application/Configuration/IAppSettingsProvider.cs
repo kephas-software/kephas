@@ -20,5 +20,12 @@ namespace Kephas.Application.Configuration
         /// </summary>
         /// <returns>The application settings.</returns>
         AppSettings? GetAppSettings();
+
+        /// <summary>
+        /// Gets the application settings for the provided application.
+        /// </summary>
+        /// <param name="appId">The application identifier.</param>
+        /// <returns>The application settings.</returns>
+        AppSettings? GetAppSettings(string appId);
     }
 }

@@ -36,9 +36,16 @@ namespace Kephas.Application.Configuration
         /// </summary>
         /// <returns>The application settings.</returns>
         public AppSettings? GetAppSettings()
+            => this.GetAppSettings(this.appRuntime.GetAppId()!);
+
+        /// <summary>
+        /// Gets the application settings for the provided application.
+        /// </summary>
+        /// <param name="appId">The application identifier.</param>
+        /// <returns>The application settings.</returns>
+        public AppSettings? GetAppSettings(string appId)
         {
             var systemSettings = this.systemConfiguration.Settings;
-            var appId = this.appRuntime.GetAppId()!;
             return systemSettings.Instances?.TryGetValue(appId);
         }
     }
