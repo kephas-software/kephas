@@ -15,6 +15,7 @@ namespace Kephas.Composition.Autofac.Metadata
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+
     using global::Autofac;
     using global::Autofac.Builder;
     using global::Autofac.Core;
@@ -30,7 +31,7 @@ namespace Kephas.Composition.Autofac.Metadata
     public class ExportFactoryWithMetadataRegistrationSource : IRegistrationSource
     {
         private static readonly MethodInfo CreateMetaRegistrationMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ((ExportFactoryWithMetadataRegistrationSource)null).CreateMetaRegistration<string, string>(null!, null!, null!));
+            _ => ((ExportFactoryWithMetadataRegistrationSource)null!).CreateMetaRegistration<string, string>(null!, null!, null!));
 
         private readonly IRuntimeTypeRegistry typeRegistry;
 
@@ -101,15 +102,16 @@ namespace Kephas.Composition.Autofac.Metadata
                 .ForDelegate((c, p) =>
                     {
                         var lifetimeScope = c.GetLifetimeScope();
+                        var metadata = (TMetadata)this.typeRegistry
+                            .GetTypeInfo(typeof(TMetadata))
+                            .CreateInstance(new object[] { valueRegistration.Target.Metadata });
                         return new ExportFactory<T, TMetadata>(
                             () =>
-                            {
-                                var request = new ResolveRequest(valueService, valueRegistration, p);
-                                return (T)lifetimeScope.ResolveComponent(request);
-                            },
-                            (TMetadata)this.typeRegistry
-                                .GetTypeInfo(typeof(TMetadata))
-                                .CreateInstance(new object[] { valueRegistration.Target.Metadata }));
+                                {
+                                    var request = new ResolveRequest(valueService, valueRegistration, p);
+                                    return (T)lifetimeScope.ResolveComponent(request);
+                                },
+                            metadata);
                     })
                 .As(providedService)
                 .Targeting(valueRegistration, isAdapterForIndividualComponent: false)

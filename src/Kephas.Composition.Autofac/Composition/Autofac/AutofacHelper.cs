@@ -32,17 +32,13 @@ namespace Kephas.Composition.Autofac
         /// </returns>
         public static ILifetimeScope GetLifetimeScope(this IComponentContext c)
         {
-            if (c is ILifetimeScope lifetimeScope)
+            return c switch
             {
-                return lifetimeScope;
-            }
-
-            if (c is IInstanceLookup instanceLookup)
-            {
-                return instanceLookup.ActivationScope;
-            }
-
-            throw new InvalidOperationException(string.Format(Strings.AutofacCompositionContainer_MismatchedLifetimeScope_Exception, c));
+                ILifetimeScope lifetimeScope => lifetimeScope,
+                IInstanceLookup instanceLookup => instanceLookup.ActivationScope,
+                _ => throw new InvalidOperationException(
+                    string.Format(Strings.AutofacCompositionContainer_MismatchedLifetimeScope_Exception, c))
+            };
         }
     }
 }

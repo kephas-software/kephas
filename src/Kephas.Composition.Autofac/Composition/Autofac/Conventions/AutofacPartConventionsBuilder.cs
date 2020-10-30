@@ -82,7 +82,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
+        public IPartConventionsBuilder Export(Action<IExportConventionsBuilder>? conventionsBuilder = null)
         {
             if (conventionsBuilder != null)
             {
@@ -100,7 +100,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder ExportInterface(Type exportInterface, Action<Type, IExportConventionsBuilder> exportConfiguration = null)
+        public IPartConventionsBuilder ExportInterface(Type exportInterface, Action<Type, IExportConventionsBuilder>? exportConfiguration = null)
         {
             this.descriptorBuilder.ServiceType = exportInterface;
             this.descriptorBuilder.ExportConfiguration = exportConfiguration;
@@ -117,7 +117,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <returns>
         /// A part builder allowing further configuration of the part.
         /// </returns>
-        public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
+        public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
         {
             this.descriptorBuilder.ConstructorSelector = constructorSelector;
 

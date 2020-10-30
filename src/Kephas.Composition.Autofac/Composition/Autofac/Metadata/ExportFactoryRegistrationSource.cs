@@ -29,7 +29,7 @@ namespace Kephas.Composition.Autofac.Metadata
     public class ExportFactoryRegistrationSource : IRegistrationSource
     {
         private static readonly MethodInfo CreateMetaRegistrationMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ExportFactoryRegistrationSource.CreateMetaRegistration<string>(null, null, null));
+            _ => ExportFactoryRegistrationSource.CreateMetaRegistration<string>(null!, null!, null!));
 
         /// <summary>
         /// Gets a value indicating whether the registrations provided by this source are 1:1 adapters on

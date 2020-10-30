@@ -43,7 +43,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <value>
         /// The exported service type.
         /// </value>
-        public Type ServiceType { get; set; }
+        public Type? ServiceType { get; set; }
 
         /// <summary>
         /// Gets or sets the contract type (service key).
@@ -51,7 +51,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <value>
         /// The contract type (service key).
         /// </value>
-        public Type ContractType { get; set; }
+        public Type? ContractType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the implementation.
@@ -59,7 +59,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <value>
         /// The type of the implementation.
         /// </value>
-        public Type ImplementationType { get; set; }
+        public Type? ImplementationType { get; set; }
 
         /// <summary>
         /// Gets or sets the implementation type predicate.
@@ -67,7 +67,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <value>
         /// The implementation type predicate.
         /// </value>
-        public Predicate<Type> ImplementationTypePredicate { get; set; }
+        public Predicate<Type>? ImplementationTypePredicate { get; set; }
 
         /// <summary>
         /// Gets or sets the lifetime.
@@ -83,7 +83,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <value>
         /// A function delegate that yields a ConstructorInfo.
         /// </value>
-        public Func<IEnumerable<ConstructorInfo>, ConstructorInfo> ConstructorSelector { get; set; }
+        public Func<IEnumerable<ConstructorInfo>, ConstructorInfo?>? ConstructorSelector { get; set; }
 
         /// <summary>
         /// Gets or sets the export configuration.
@@ -91,7 +91,7 @@ namespace Kephas.Composition.Autofac.Conventions
         /// <value>
         /// The export configuration.
         /// </value>
-        public Action<Type, IExportConventionsBuilder> ExportConfiguration { get; set; }
+        public Action<Type, IExportConventionsBuilder>? ExportConfiguration { get; set; }
 
         /// <summary>
         /// Builds the information into a service descriptor.
@@ -117,7 +117,7 @@ namespace Kephas.Composition.Autofac.Conventions
             }
 
             throw new InvalidOperationException(
-                $"One of {nameof(ImplementationType)} or {nameof(ImplementationTypePredicate)} must be set.");
+                $"One of {nameof(this.ImplementationType)} or {nameof(this.ImplementationTypePredicate)} must be set.");
         }
 
         /// <summary>
@@ -223,9 +223,9 @@ namespace Kephas.Composition.Autofac.Conventions
                 this.ServiceType = descriptorBuilder.ServiceType;
             }
 
-            public Type ServiceType { get; set; }
+            public Type? ServiceType { get; set; }
 
-            public Type ContractType { get; set; }
+            public Type? ContractType { get; set; }
 
             public IExportConventionsBuilder AsContractType(Type contractType)
             {

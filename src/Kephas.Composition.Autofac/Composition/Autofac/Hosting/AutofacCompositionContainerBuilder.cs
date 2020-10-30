@@ -26,9 +26,9 @@ namespace Kephas.Composition.Autofac.Hosting
     /// </summary>
     public class AutofacCompositionContainerBuilder : CompositionContainerBuilderBase<AutofacCompositionContainerBuilder>
     {
-        private IList<Action<ContainerBuilder>> builderConfigs = new List<Action<ContainerBuilder>>();
+        private readonly IList<Action<ContainerBuilder>> builderConfigs = new List<Action<ContainerBuilder>>();
 
-        private ContainerBuilder containerBuilder;
+        private ContainerBuilder? containerBuilder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacCompositionContainerBuilder"/> class.
@@ -70,7 +70,6 @@ namespace Kephas.Composition.Autofac.Hosting
 
             return this;
         }
-
 
         /// <summary>
         /// Factory method for creating the conventions builder.

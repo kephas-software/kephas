@@ -39,15 +39,12 @@ namespace Kephas.Composition.Autofac.Hosting
         }
 
         /// <summary>
-        /// Gets or sets the logger.
+        /// Gets the logger.
         /// </summary>
         /// <value>
         /// The logger.
         /// </value>
-        protected ILogger? Logger
-        {
-            get => this.logger ?? (this.logger = this.GetLogger(this.innerContainer));
-        }
+        protected ILogger? Logger => this.logger ??= this.GetLogger(this.innerContainer);
 
         /// <summary>
         /// Resolves the specified contract type.
