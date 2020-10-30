@@ -7,6 +7,7 @@
 
 namespace Kephas.Application.Configuration
 {
+    using System;
     using System.Collections.Generic;
 
     using Kephas.Application.Cryptography.X509Certificates;
@@ -20,12 +21,12 @@ namespace Kephas.Application.Configuration
         /// <summary>
         /// Gets or sets the settings for the application instances.
         /// </summary>
-        public IDictionary<string, AppSettings> Instances { get; set; } = new Dictionary<string, AppSettings>();
+        public IDictionary<string, AppSettings> Instances { get; set; } = new Dictionary<string, AppSettings>(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// Gets or sets the certificate information.
         /// </summary>
-        public IDictionary<string, CertificateSettings>? Certificates { get; set; } = new Dictionary<string, CertificateSettings>();
+        public IDictionary<string, CertificateSettings>? Certificates { get; set; } = new Dictionary<string, CertificateSettings>(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// Gets or sets the commands to be executed upon startup, when the application is started for the first time.
