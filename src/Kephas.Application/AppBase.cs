@@ -57,7 +57,7 @@ namespace Kephas.Application
         /// <value>
         /// The application context.
         /// </value>
-        public IAppContext AppContext { get; private set; }
+        public IAppContext? AppContext { get; private set; }
 
         /// <summary>
         /// Gets or sets the cancellation token source used to stop the application.
@@ -70,7 +70,7 @@ namespace Kephas.Application
         /// <value>
         /// The logger.
         /// </value>
-        protected ILogger Logger { get; set; }
+        protected ILogger? Logger { get; set; }
 
         /// <summary>
         /// Bootstraps the application asynchronously.
