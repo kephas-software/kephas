@@ -28,51 +28,51 @@ namespace Kephas.Mail.Services
         /// Sets the address from which the mail is sent.
         /// </summary>
         /// <param name="address">The address.</param>
-        /// <param name="displayName">Name to display.</param>
+        /// <param name="displayName">Optional. Name to display.</param>
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        IEmailMessageBuilder From(string address, string displayName = null);
+        IEmailMessageBuilder From(string address, string? displayName = null);
 
         /// <summary>
         /// Sets the sender address.
         /// </summary>
         /// <param name="address">The address.</param>
-        /// <param name="displayName">Name to display.</param>
+        /// <param name="displayName">Optional. Name to display.</param>
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        IEmailMessageBuilder Sender(string address, string displayName = null);
+        IEmailMessageBuilder Sender(string address, string? displayName = null);
 
         /// <summary>
         /// Sets the recipient address.
         /// </summary>
         /// <param name="address">The address.</param>
-        /// <param name="displayName">Name to display.</param>
+        /// <param name="displayName">Optional. Name to display.</param>
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        IEmailMessageBuilder To(string address, string displayName = null);
+        IEmailMessageBuilder To(string address, string? displayName = null);
 
         /// <summary>
         /// Sets the carbon copy recipient address.
         /// </summary>
         /// <param name="address">The address.</param>
-        /// <param name="displayName">Name to display.</param>
+        /// <param name="displayName">Optional. Name to display.</param>
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        IEmailMessageBuilder Cc(string address, string displayName = null);
+        IEmailMessageBuilder Cc(string address, string? displayName = null);
 
         /// <summary>
         /// Sets the blind carbon copy recipient address.
         /// </summary>
         /// <param name="address">The address.</param>
-        /// <param name="displayName">Name to display.</param>
+        /// <param name="displayName">Optional. Name to display.</param>
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        IEmailMessageBuilder Bcc(string address, string displayName = null);
+        IEmailMessageBuilder Bcc(string address, string? displayName = null);
 
         /// <summary>
         /// Sets the subject.

@@ -24,7 +24,7 @@ namespace Kephas.Cryptography
         /// <value>
         /// The key.
         /// </value>
-        byte[] Key { get; set; }
+        byte[]? Key { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the key.
@@ -49,7 +49,7 @@ namespace Kephas.Cryptography
         /// <returns>
         /// This <paramref name="context"/>.
         /// </returns>
-        public static TContext Key<TContext>(this TContext context, byte[] key)
+        public static TContext Key<TContext>(this TContext context, byte[]? key)
             where TContext : class, IEncryptionContext
         {
             Requires.NotNull(context, nameof(context));

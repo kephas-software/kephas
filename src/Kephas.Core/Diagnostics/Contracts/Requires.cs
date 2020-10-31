@@ -35,8 +35,8 @@ namespace Kephas.Diagnostics.Contracts
         [DebuggerStepThrough]
         [ContractArgumentValidator]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void NotNull<T>(T? value, string parameterName)
-            where T : class
+        public static void NotNull<T>(T value, string parameterName)
+            where T : class?
         {
             if (value == null)
             {
@@ -80,7 +80,7 @@ namespace Kephas.Diagnostics.Contracts
         {
             NotNull(value, parameterName);
 
-            if (value.Length == 0)
+            if (value!.Length == 0)
             {
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
             }
@@ -103,7 +103,7 @@ namespace Kephas.Diagnostics.Contracts
         {
             NotNull(value, parameterName);
 
-            if (!value.Any())
+            if (!value!.Any())
             {
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
             }
@@ -126,7 +126,7 @@ namespace Kephas.Diagnostics.Contracts
         {
             NotNull(value, parameterName);
 
-            if (value.Count == 0)
+            if (value!.Count == 0)
             {
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
             }
@@ -149,7 +149,7 @@ namespace Kephas.Diagnostics.Contracts
         {
             NotNull(value, parameterName);
 
-            if (value.Length == 0)
+            if (value!.Length == 0)
             {
                 throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.Requires_NotNullOrEmpty_EmptyArgument_Exception, parameterName), parameterName);
             }

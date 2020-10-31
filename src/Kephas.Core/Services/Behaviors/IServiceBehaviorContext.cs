@@ -17,6 +17,7 @@ namespace Kephas.Services.Behaviors
     /// </summary>
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
     public interface IServiceBehaviorContext<out TServiceContract> : IContext
+        where TServiceContract : class
     {
         /// <summary>
         /// Gets the behavior context.
@@ -32,7 +33,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service.
         /// </value>
-        TServiceContract Service { get; }
+        TServiceContract? Service { get; }
 
         /// <summary>
         /// Gets the service factory.
@@ -40,7 +41,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service factory.
         /// </value>
-        IExportFactory<TServiceContract> ServiceFactory { get; }
+        IExportFactory<TServiceContract>? ServiceFactory { get; }
 
         /// <summary>
         /// Gets the service metadata.

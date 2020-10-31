@@ -59,7 +59,7 @@ namespace Kephas.Data.Setup
         /// .
         /// </example>
         public async Task<IOperationResult> InstallDataAsync(
-            Action<IDataSetupContext> optionsConfig = null,
+            Action<IDataSetupContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
@@ -89,7 +89,7 @@ namespace Kephas.Data.Setup
         /// An asynchronous result returning the data setup result.
         /// </returns>
         public async Task<IOperationResult> UninstallDataAsync(
-            Action<IDataSetupContext> optionsConfig = null,
+            Action<IDataSetupContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
             using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
@@ -118,7 +118,7 @@ namespace Kephas.Data.Setup
         /// <returns>
         /// The new data setup context.
         /// </returns>
-        protected virtual IDataSetupContext CreateDataSetupContext(Action<IDataSetupContext> optionsConfig = null)
+        protected virtual IDataSetupContext CreateDataSetupContext(Action<IDataSetupContext>? optionsConfig = null)
         {
             return this.contextFactory.CreateContext<DataSetupContext>().Merge(optionsConfig);
         }
@@ -147,7 +147,7 @@ namespace Kephas.Data.Setup
         /// <returns>
         /// The targets.
         /// </returns>
-        protected virtual IList<string> GetTargets(IDataSetupContext dataSetupContext)
+        protected virtual IList<string>? GetTargets(IDataSetupContext dataSetupContext)
         {
             return dataSetupContext?.Targets?.ToList();
         }

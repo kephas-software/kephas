@@ -73,9 +73,16 @@ namespace Kephas.Testing.Composition
             return new AutofacCompositionContainerBuilder(new CompositionRegistrationContext(ambientServices));
         }
 
+        /// <summary>
+        /// Creates a container for the provided convention assemblies and parts.
+        /// </summary>
+        /// <param name="assemblies">Optional. A variable-length parameters list containing assemblies.</param>
+        /// <returns>
+        /// The new container.
+        /// </returns>
         public ICompositionContext CreateContainer(params Assembly[] assemblies)
         {
-            return CreateContainer(assemblies: (IEnumerable<Assembly>)assemblies);
+            return this.CreateContainer(assemblies: (IEnumerable<Assembly>)assemblies);
         }
 
         /// <summary>
@@ -91,16 +98,16 @@ namespace Kephas.Testing.Composition
         /// The new container.
         /// </returns>
         public virtual ICompositionContext CreateContainer(
-            IAmbientServices ambientServices = null,
-            IEnumerable<Assembly> assemblies = null,
-            IEnumerable<Type> parts = null,
-            Action<AutofacCompositionContainerBuilder> config = null,
+            IAmbientServices? ambientServices = null,
+            IEnumerable<Assembly>? assemblies = null,
+            IEnumerable<Type>? parts = null,
+            Action<AutofacCompositionContainerBuilder>? config = null,
             ILogManager? logManager = null,
             IAppRuntime? appRuntime = null)
         {
             ambientServices ??= new AmbientServices(typeRegistry: new RuntimeTypeRegistry());
-            var containerBuilder = WithContainerBuilder(ambientServices, logManager, appRuntime)
-                    .WithAssemblies(GetDefaultConventionAssemblies())
+            var containerBuilder = this.WithContainerBuilder(ambientServices, logManager, appRuntime)
+                    .WithAssemblies(this.GetDefaultConventionAssemblies())
                     .WithAssemblies(assemblies ?? new Assembly[0])
                     .WithParts(parts ?? new Type[0]);
 

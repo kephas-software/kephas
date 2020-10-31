@@ -24,21 +24,21 @@ namespace Kephas.Mail.Services
         /// Sends an email asynchronously.
         /// </summary>
         /// <param name="emailMessage">The email message.</param>
-        /// <param name="context">The sending context.</param>
+        /// <param name="context">Optional. The sending context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>An asynchronous result.</returns>
         Task SendAsync(
             IEmailMessage emailMessage,
-            IContext context = null,
+            IContext? context = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Creates email message builder.
         /// </summary>
-        /// <param name="context">The sending context.</param>
+        /// <param name="context">Optional. The sending context.</param>
         /// <returns>
         /// The new email message builder.
         /// </returns>
-        IEmailMessageBuilder CreateEmailMessageBuilder(IContext context = null);
+        IEmailMessageBuilder CreateEmailMessageBuilder(IContext? context = null);
     }
 }

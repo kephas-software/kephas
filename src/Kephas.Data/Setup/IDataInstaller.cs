@@ -33,7 +33,7 @@ namespace Kephas.Data.Setup
         /// An asynchronous result returning the data setup result.
         /// </returns>
         Task<IOperationResult> InstallDataAsync(
-            Action<IDataSetupContext> optionsConfig = null,
+            Action<IDataSetupContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Kephas.Data.Setup
         /// An asynchronous result returning the data setup result.
         /// </returns>
         Task<IOperationResult> UninstallDataAsync(
-            Action<IDataSetupContext> optionsConfig = null,
+            Action<IDataSetupContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
     }
 }

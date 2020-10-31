@@ -19,7 +19,7 @@ namespace Kephas.Services.Behaviors
     /// </summary>
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
     public class ServiceBehaviorContext<TServiceContract> : Context, IServiceBehaviorContext<TServiceContract>
-            where TServiceContract : class
+        where TServiceContract : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceBehaviorContext{TServiceContract}" />
@@ -57,7 +57,7 @@ namespace Kephas.Services.Behaviors
         /// <param name="service">The service.</param>
         /// <param name="metadata">The metadata.</param>
         /// <param name="context">Context for the behavior (optional).</param>
-        private ServiceBehaviorContext(ICompositionContext compositionContext, IExportFactory<TServiceContract> serviceFactory, TServiceContract service, object? metadata = null, IContext? context = null)
+        private ServiceBehaviorContext(ICompositionContext compositionContext, IExportFactory<TServiceContract>? serviceFactory, TServiceContract? service, object? metadata = null, IContext? context = null)
             : base(compositionContext)
         {
             this.ServiceFactory = serviceFactory;
@@ -80,7 +80,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service.
         /// </value>
-        public TServiceContract Service { get; }
+        public TServiceContract? Service { get; }
 
         /// <summary>
         /// Gets the service factory.
@@ -88,7 +88,7 @@ namespace Kephas.Services.Behaviors
         /// <value>
         /// The service factory.
         /// </value>
-        public IExportFactory<TServiceContract> ServiceFactory { get; }
+        public IExportFactory<TServiceContract>? ServiceFactory { get; }
 
         /// <summary>
         /// Gets the service metadata.

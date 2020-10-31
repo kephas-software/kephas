@@ -27,7 +27,7 @@ namespace Kephas.Messaging
     /// <typeparam name="TResponse">The response type.</typeparam>
     public abstract class MessageHandlerBase<TMessage, TResponse> : Loggable, IMessageHandler<TMessage>
         where TMessage : class
-        where TResponse : class
+        where TResponse : class?
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MessageHandlerBase{TMessage, TResponse}"/> class.
@@ -82,8 +82,7 @@ namespace Kephas.Messaging
             // typed message handlers register themselves for a message type which may not implement IMessage
             // therefore the actual processed message is the message content.
             var content = message.GetContent();
-            var typedMessage = content as TMessage;
-            if (typedMessage == null)
+            if (!(content is TMessage typedMessage))
             {
                 throw new ArgumentException(Strings.MessageHandler_BadMessageType_Exception.FormatWith(typeof(TMessage), content?.GetType()), nameof(message));
             }

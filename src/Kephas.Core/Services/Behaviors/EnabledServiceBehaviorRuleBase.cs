@@ -19,6 +19,7 @@ namespace Kephas.Services.Behaviors
     /// </summary>
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
     public abstract class EnabledServiceBehaviorRuleBase<TServiceContract> : BehaviorRuleBase<IServiceBehaviorContext<TServiceContract>, bool>, IEnabledServiceBehaviorRule<TServiceContract>
+        where TServiceContract : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TServiceContract}"/> class.
@@ -74,6 +75,7 @@ namespace Kephas.Services.Behaviors
     /// <typeparam name="TServiceImplementation">Type of the service implementation.</typeparam>
     public abstract class EnabledServiceBehaviorRuleBase<TServiceContract, TServiceImplementation> : EnabledServiceBehaviorRuleBase<TServiceContract>
         where TServiceImplementation : TServiceContract
+        where TServiceContract : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EnabledServiceBehaviorRuleBase{TServiceContract, TServiceImplementation}"/> class.

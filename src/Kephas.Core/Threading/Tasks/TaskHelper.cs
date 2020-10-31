@@ -283,7 +283,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public static async Task WithTimeout(this Task task, TimeSpan timeout)
         {
-            var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
+            var completedTask = await Task.WhenAny(task, Task.Delay(timeout)).PreserveThreadContext();
             if (completedTask == task)
             {
                 EnsureCompletedSuccessfully(task);
@@ -308,7 +308,7 @@ namespace Kephas.Threading.Tasks
         /// </returns>
         public static async Task<T> WithTimeout<T>(this Task<T> task, TimeSpan timeout)
         {
-            var completedTask = await Task.WhenAny(task, Task.Delay(timeout));
+            var completedTask = await Task.WhenAny(task, Task.Delay(timeout)).PreserveThreadContext();
             if (completedTask == task)
             {
                 EnsureCompletedSuccessfully(task);

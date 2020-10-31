@@ -42,7 +42,7 @@ namespace Kephas.Data.Store
         /// <value>
         /// The type of the data context.
         /// </value>
-        Type DataContextType { get; }
+        Type? DataContextType { get; }
 
         /// <summary>
         /// Gets the data context settings.
@@ -50,7 +50,7 @@ namespace Kephas.Data.Store
         /// <value>
         /// The data context settings.
         /// </value>
-        IDataContextSettings DataContextSettings { get; }
+        IDataContextSettings? DataContextSettings { get; }
 
         /// <summary>
         /// Gets the entity activator.

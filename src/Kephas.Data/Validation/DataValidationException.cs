@@ -63,7 +63,7 @@ namespace Kephas.Data.Validation
         /// <value>
         /// The validated entity.
         /// </value>
-        public object ValidatedEntity { get; }
+        public object? ValidatedEntity { get; }
 
         /// <summary>
         /// Gets the validation result.
@@ -71,6 +71,6 @@ namespace Kephas.Data.Validation
         /// <value>
         /// The validation result.
         /// </value>
-        public IDataValidationResult ValidationResult { get; }
+        public IDataValidationResult? ValidationResult { get; }
     }
 }

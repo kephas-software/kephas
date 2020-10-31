@@ -75,7 +75,7 @@ namespace Kephas.Data.Store
                         var (dataStore, canHandle) = matcher.GetDataStore(dataStoreName, null);
                         if (canHandle)
                         {
-                            return dataStore;
+                            return dataStore!;
                         }
                     }
 
@@ -105,7 +105,7 @@ namespace Kephas.Data.Store
                         var (dataStoreName, canHandle) = matcher.GetDataStoreName(entityType, context);
                         if (canHandle)
                         {
-                            return dataStoreName;
+                            return dataStoreName!;
                         }
                     }
 

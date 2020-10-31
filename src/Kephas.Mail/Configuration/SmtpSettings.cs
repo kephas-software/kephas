@@ -28,7 +28,7 @@ namespace Kephas.Mail.Configuration
         /// <value>
         /// The name of the user.
         /// </value>
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
         /// <summary>
         /// Gets or sets the password.
@@ -37,7 +37,7 @@ namespace Kephas.Mail.Configuration
         /// The password.
         /// </value>
         [Encrypted]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         /// <summary>
         /// Gets or sets the host.
@@ -45,7 +45,7 @@ namespace Kephas.Mail.Configuration
         /// <value>
         /// The host.
         /// </value>
-        public string Host { get; set; }
+        public string? Host { get; set; }
 
         /// <summary>
         /// Gets or sets the port.
@@ -69,7 +69,7 @@ namespace Kephas.Mail.Configuration
         /// <value>
         /// The ssl allowed suites.
         /// </value>
-        public string SslAllowedSuites { get; set; }
+        public string? SslAllowedSuites { get; set; }
 
         /// <summary>
         /// Gets or sets the ssl allowed versions.
@@ -77,6 +77,6 @@ namespace Kephas.Mail.Configuration
         /// <value>
         /// The ssl allowed versions.
         /// </value>
-        public string SslAllowedVersions { get; set; }
+        public string? SslAllowedVersions { get; set; }
     }
 }

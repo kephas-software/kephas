@@ -87,7 +87,7 @@ namespace Kephas.Messaging.Redis.Routing
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected override async Task InitializeCoreAsync(IContext context, CancellationToken cancellationToken)
+        protected override async Task InitializeCoreAsync(IContext? context, CancellationToken cancellationToken)
         {
             await base.InitializeCoreAsync(context, cancellationToken).PreserveThreadContext();
 

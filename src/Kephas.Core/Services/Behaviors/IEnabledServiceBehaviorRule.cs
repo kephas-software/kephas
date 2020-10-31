@@ -25,6 +25,7 @@ namespace Kephas.Services.Behaviors
     /// <typeparam name="TServiceContract">Type of the service contract.</typeparam>
     [SingletonAppServiceContract(ContractType = typeof(IEnabledServiceBehaviorRule), AllowMultiple = true)]
     public interface IEnabledServiceBehaviorRule<in TServiceContract> : IBehaviorRule<IServiceBehaviorContext<TServiceContract>, bool>, IEnabledServiceBehaviorRule
+        where TServiceContract : class
     {
     }
 }

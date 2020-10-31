@@ -54,7 +54,7 @@ namespace Kephas.Orchestration
         private IEventSubscription appStartedSubscription;
         private IEventSubscription appStoppedSubscription;
         private IEventSubscription appHeartbeatSubscription;
-        private Lazy<string> lazyRootAppInstanceId;
+        private readonly Lazy<string> lazyRootAppInstanceId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultOrchestrationManager"/> class.
@@ -485,7 +485,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// The application key.
         /// </returns>
-        protected virtual string? GetAppKey(IRuntimeAppInfo appInfo)
+        protected virtual string? GetAppKey(IRuntimeAppInfo? appInfo)
         {
             if (appInfo == null || (appInfo.AppId == null && appInfo.AppInstanceId == null))
             {

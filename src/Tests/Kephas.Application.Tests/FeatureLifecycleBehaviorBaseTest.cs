@@ -21,6 +21,7 @@ namespace Kephas.Application.Tests
     using NSubstitute;
     using NUnit.Framework;
 
+    [TestFixture]
     public class FeatureLifecycleBehaviorBaseTest
     {
         [Test]

@@ -33,7 +33,7 @@ namespace Kephas.Scripting.Composition
                 return;
             }
 
-            this.Language = (string[])metadata.TryGetValue(nameof(this.Language));
+            this.Language = (string[]?)metadata.TryGetValue(nameof(this.Language));
         }
 
         /// <summary>
@@ -57,6 +57,6 @@ namespace Kephas.Scripting.Composition
         /// <value>
         /// The language array.
         /// </value>
-        public string[] Language { get; }
+        public string[]? Language { get; }
     }
 }

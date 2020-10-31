@@ -10,6 +10,7 @@
 
 namespace Kephas.Mail.Services
 {
+    using System;
     using System.IO;
 
     /// <summary>
@@ -23,7 +24,7 @@ namespace Kephas.Mail.Services
         /// <value>
         /// A message describing the email.
         /// </value>
-        public IEmailMessage EmailMessage => null;
+        public IEmailMessage EmailMessage => throw new NotSupportedException();
 
         /// <summary>
         /// Sets the address from which the mail is sent.
@@ -33,7 +34,7 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        public IEmailMessageBuilder From(string address, string displayName = null)
+        public IEmailMessageBuilder From(string address, string? displayName = null)
         {
             return this;
         }
@@ -46,7 +47,7 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        public IEmailMessageBuilder Sender(string address, string displayName = null)
+        public IEmailMessageBuilder Sender(string address, string? displayName = null)
         {
             return this;
         }
@@ -59,7 +60,7 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        public IEmailMessageBuilder To(string address, string displayName = null)
+        public IEmailMessageBuilder To(string address, string? displayName = null)
         {
             return this;
         }
@@ -72,7 +73,7 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        public IEmailMessageBuilder Cc(string address, string displayName = null)
+        public IEmailMessageBuilder Cc(string address, string? displayName = null)
         {
             return this;
         }
@@ -85,7 +86,7 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// This <see cref="IEmailMessageBuilder"/>.
         /// </returns>
-        public IEmailMessageBuilder Bcc(string address, string displayName = null)
+        public IEmailMessageBuilder Bcc(string address, string? displayName = null)
         {
             return this;
         }

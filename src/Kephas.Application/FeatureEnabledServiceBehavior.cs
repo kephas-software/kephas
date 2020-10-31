@@ -27,22 +27,22 @@ namespace Kephas.Application
     public class FeatureEnabledServiceBehavior : EnabledServiceBehaviorRuleBase<IFeatureManager>
     {
         private readonly IAppRuntime appRuntime;
-        private readonly IConfiguration<SystemSettings> systemConfiguration;
+        private readonly IAppSettingsProvider appSettingsProvider;
         private readonly PartialOrderedSet<string> featuresOrderedSet;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureEnabledServiceBehavior"/> class.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
-        /// <param name="systemConfiguration">The system configuration.</param>
+        /// <param name="appSettingsProvider">The provider for <see cref="AppSettings"/>.</param>
         /// <param name="featureFactories">The feature factories.</param>
         public FeatureEnabledServiceBehavior(
             IAppRuntime appRuntime,
-            IConfiguration<SystemSettings> systemConfiguration,
+            IAppSettingsProvider appSettingsProvider,
             ICollection<IExportFactory<IFeatureManager, FeatureManagerMetadata>> featureFactories)
         {
             this.appRuntime = appRuntime;
-            this.systemConfiguration = systemConfiguration;
+            this.appSettingsProvider = appSettingsProvider;
             var featuresDictionary = featureFactories
                 .Select(f => FeatureInfo.FromMetadata(f.Metadata))
                 .ToDictionary(f => f.Name.ToLower(), f => f);
@@ -67,22 +67,37 @@ namespace Kephas.Application
                 return BehaviorValue.True;
             }
 
-            var appId = this.appRuntime.GetAppId();
-            if (this.systemConfiguration.Settings.Instances == null ||
-                !this.systemConfiguration.Settings.Instances.TryGetValue(appId, out var appSettings) ||
-                appSettings.EnabledFeatures == null)
+            var appSettings = this.appSettingsProvider.GetAppSettings();
+            if (appSettings == null)
             {
                 // TODO localization
-                this.Logger.Warn("Cannot identify the application information in the system settings for {app}, therefore feature '{feature}' will be enabled.", appId, featureInfo.Name);
+                this.Logger.Warn("Cannot identify the application information in the system settings for '{app}', therefore feature '{feature}' will be enabled.", this.appRuntime.GetAppId(), featureInfo.Name);
+                return BehaviorValue.True;
+            }
+
+            // if the feature targets a specific app, enable it.
+            var targetApps = featureInfo.TargetApps ?? Array.Empty<string>();
+            var appId = this.appRuntime.GetAppId();
+            if (targetApps.Contains(appId, StringComparer.OrdinalIgnoreCase))
+            {
+                // TODO localization
+                this.Logger.Info("Enabling feature '{feature}' for '{app}', as it targets the app.", featureInfo.Name, this.appRuntime.GetAppId());
                 return BehaviorValue.True;
             }
 
             // if enabled or a dependency, enable.
-            var enabledFeatures = appSettings.EnabledFeatures.Select(f => f.ToLower()).ToList();
+            var enabledFeatures = appSettings.EnabledFeatures?.Select(f => f.ToLower()).ToArray() ?? Array.Empty<string>();
             var featureKey = featureInfo.Name.ToLower();
-            return enabledFeatures.Any(f => (this.featuresOrderedSet.Compare(f, featureKey) ?? -1) >= 0)
-                ? BehaviorValue.True
-                : BehaviorValue.False;
+            var enabledFeature =
+                enabledFeatures.FirstOrDefault(f => (this.featuresOrderedSet.Compare(f, featureKey) ?? -1) >= 0);
+            if (enabledFeature != null)
+            {
+                // TODO localization
+                this.Logger.Info($"Enabling feature '{{feature}}' for '{{app}}', as it is required by the '{{enabledFeature}}'.", featureInfo.Name, this.appRuntime.GetAppId(), enabledFeature);
+                return BehaviorValue.True;
+            }
+
+            return BehaviorValue.False;
         }
 
         /// <summary>

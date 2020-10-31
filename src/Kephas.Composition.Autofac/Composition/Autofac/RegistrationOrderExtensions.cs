@@ -18,14 +18,30 @@ namespace Kephas.Composition.Autofac
     /// </summary>
     internal static class RegistrationOrderExtensions
     {
+        /// <summary>
+        /// The registration order metadata key.
+        /// </summary>
         internal const string RegistrationOrderMetadataKey = "__RegistrationOrder";
 
+        /// <summary>
+        /// Gets the registration order.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        /// <returns>The registration order.</returns>
         internal static long GetRegistrationOrder(this IComponentRegistration registration)
         {
-            object value;
-            return registration.Metadata.TryGetValue(RegistrationOrderMetadataKey, out value) ? (long)value : long.MaxValue;
+            return registration.Metadata.TryGetValue(RegistrationOrderMetadataKey, out var value) ? (long)value! : long.MaxValue;
         }
 
+        /// <summary>
+        /// Inherits the registration order from the source.
+        /// </summary>
+        /// <param name="registration">The registration builder.</param>
+        /// <param name="source">The source.</param>
+        /// <typeparam name="TLimit">The limit type.</typeparam>
+        /// <typeparam name="TActivatorData">The activator data type.</typeparam>
+        /// <typeparam name="TSingleRegistrationStyle">The single registration style type.</typeparam>
+        /// <returns>The provided registration builder.</returns>
         internal static IRegistrationBuilder<TLimit, TActivatorData, TSingleRegistrationStyle> InheritRegistrationOrderFrom<TLimit, TActivatorData, TSingleRegistrationStyle>(
             this IRegistrationBuilder<TLimit, TActivatorData, TSingleRegistrationStyle> registration,
             IComponentRegistration source)

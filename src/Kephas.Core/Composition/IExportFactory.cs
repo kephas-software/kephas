@@ -96,6 +96,7 @@ namespace Kephas.Composition
         public static T CreateInitializedValue<T>(
             this IExportFactory<T> exportFactory,
             IContext context)
+            where T : class
         {
             Requires.NotNull(exportFactory, nameof(exportFactory));
             Requires.NotNull(context, nameof(context));
@@ -119,6 +120,7 @@ namespace Kephas.Composition
             this IExportFactory<T> exportFactory,
             IContext context,
             CancellationToken cancellationToken = default)
+            where T : class
         {
             Requires.NotNull(exportFactory, nameof(exportFactory));
             Requires.NotNull(context, nameof(context));
