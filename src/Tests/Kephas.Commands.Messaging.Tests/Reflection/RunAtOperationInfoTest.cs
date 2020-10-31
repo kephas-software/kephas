@@ -88,7 +88,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
                 new Lazy<IMessageBroker>(() => broker),
                 new Endpoint(appInstanceId: "webapp"),
                 "help",
-                new Args {["mycmd"] = string.Empty});
+                new Args { ["mycmd"] = string.Empty });
 
             var context = Substitute.For<IContext>();
             var identity = Substitute.For<IIdentity>();
@@ -117,6 +117,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
 
                     ci.Arg<Action<IDispatchingContext>>()(dispContext);
                     Assert.AreSame(identity, dispContext.Identity);
+                    Assert.IsFalse(dispContext.BrokeredMessage.IsOneWay);
 
                     return Task.FromResult<IMessage>(new ExecuteCommandResponseMessage
                     {
@@ -128,6 +129,55 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
             await resultTask;
             var result = resultTask.GetResult();
             Assert.AreEqual("result for help(-yourcmd \"\")", result);
+        }
+
+        [Test]
+        public async Task Invoke_oneway()
+        {
+            var broker = Substitute.For<IMessageBroker>();
+            var opInfo = new RunAtOperationInfo(
+                new Lazy<IMessageBroker>(() => broker),
+                new Endpoint(appInstanceId: "webapp"),
+                "help",
+                new Args { ["mycmd"] = string.Empty },
+                isOneWay: true);
+
+            var context = Substitute.For<IContext>();
+            var identity = Substitute.For<IIdentity>();
+            context.Identity.Returns(identity);
+            var token = new CancellationToken(false);
+            var opArgs = new object?[]
+            {
+                new Args { ["yourcmd"] = string.Empty },
+                context,
+                token,
+            };
+
+            broker.DispatchAsync(
+                    Arg.Any<object>(),
+                    Arg.Any<Action<IDispatchingContext>>(),
+                    Arg.Any<CancellationToken>())
+                .Returns(ci =>
+                {
+                    var dispContext = new DispatchingContext(
+                        Substitute.For<ICompositionContext>(),
+                        Substitute.For<IConfiguration<MessagingSettings>>(),
+                        broker,
+                        Substitute.For<IAppRuntime>(),
+                        Substitute.For<IAuthenticationService>());
+                    var msg = (ExecuteCommandMessage)(ci.Arg<object>() is IMessage message ? message.GetContent() : ci.Arg<object>());
+
+                    ci.Arg<Action<IDispatchingContext>>()(dispContext);
+                    Assert.AreSame(identity, dispContext.Identity);
+                    Assert.IsTrue(dispContext.BrokeredMessage.IsOneWay);
+
+                    return Task.FromResult<IMessage>(null);
+                });
+
+            var resultTask = (Task)opInfo.Invoke(null, opArgs);
+            await resultTask;
+            var result = resultTask.GetResult();
+            Assert.IsNull(result);
         }
     }
 }
