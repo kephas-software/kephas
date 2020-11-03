@@ -251,7 +251,7 @@ namespace Kephas.Orchestration
             await Task.Yield();
 
             var appSettings = appInfo[nameof(AppSettings)] as AppSettings;
-            var processedArguments = this.GetAppExecutableArgs(appInfo, arguments);
+            var processedArguments = this.GetAppExecutableArgs(appInfo, arguments).ToCommandArgs();
             var (executableFile, runtime) = this.GetAppExecutableInfo(appInfo);
 
             var processStarterFactory = this.CreateProcessStarterFactory(appInfo, arguments, optionsConfig)
@@ -538,7 +538,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// The app executable arguments.
         /// </returns>
-        protected virtual IEnumerable<string> GetAppExecutableArgs(IAppInfo appInfo, IExpando arguments)
+        protected virtual IArgs GetAppExecutableArgs(IAppInfo appInfo, IExpando arguments)
         {
             var appArgs = new Args
             {
@@ -548,7 +548,7 @@ namespace Kephas.Orchestration
                 [AppArgs.EnvArgName] = this.GetEnvironment(),
             }.Merge(arguments);
 
-            return appArgs.ToCommandArgs();
+            return appArgs;
         }
 
         /// <summary>
