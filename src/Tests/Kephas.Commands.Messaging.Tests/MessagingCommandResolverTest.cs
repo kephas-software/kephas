@@ -37,6 +37,33 @@ namespace Kephas.Commands.Messaging.Tests
             var opInfo = resolver.ResolveCommand("help", args);
             Assert.IsInstanceOf<RunAtOperationInfo>(opInfo);
             Assert.AreEqual(new Endpoint(appInstanceId: "webapp"), ((RunAtOperationInfo)opInfo).Endpoint);
+            Assert.IsFalse(((RunAtOperationInfo)opInfo).IsOneWay);
+            Assert.IsNull(args[RunAtOperationInfo.RunAtArg]);
+        }
+
+        [Test]
+        public void Resolve_oneway_true()
+        {
+            var messageBroker = Substitute.For<IMessageBroker>();
+            var resolver = new MessagingCommandResolver(new Lazy<IMessageBroker>(() => messageBroker), new List<Lazy<ICommandRegistry, AppServiceMetadata>>());
+            var args = new Args { [RunAtOperationInfo.RunAtArg] = "webapp", [RunAtOperationInfo.OneWayArg] = "true" };
+            var opInfo = resolver.ResolveCommand("help", args);
+            Assert.IsInstanceOf<RunAtOperationInfo>(opInfo);
+            Assert.AreEqual(new Endpoint(appInstanceId: "webapp"), ((RunAtOperationInfo)opInfo).Endpoint);
+            Assert.IsTrue(((RunAtOperationInfo)opInfo).IsOneWay);
+            Assert.IsNull(args[RunAtOperationInfo.RunAtArg]);
+        }
+
+        [Test]
+        public void Resolve_oneway_empty()
+        {
+            var messageBroker = Substitute.For<IMessageBroker>();
+            var resolver = new MessagingCommandResolver(new Lazy<IMessageBroker>(() => messageBroker), new List<Lazy<ICommandRegistry, AppServiceMetadata>>());
+            var args = new Args { [RunAtOperationInfo.RunAtArg] = "webapp", [RunAtOperationInfo.OneWayArg] = string.Empty };
+            var opInfo = resolver.ResolveCommand("help", args);
+            Assert.IsInstanceOf<RunAtOperationInfo>(opInfo);
+            Assert.AreEqual(new Endpoint(appInstanceId: "webapp"), ((RunAtOperationInfo)opInfo).Endpoint);
+            Assert.IsTrue(((RunAtOperationInfo)opInfo).IsOneWay);
             Assert.IsNull(args[RunAtOperationInfo.RunAtArg]);
         }
     }

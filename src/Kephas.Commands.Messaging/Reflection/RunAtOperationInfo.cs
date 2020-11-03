@@ -26,9 +26,14 @@ namespace Kephas.Commands.Messaging.Reflection
     public class RunAtOperationInfo : DynamicOperationInfo
     {
         /// <summary>
-        /// The argument for indicating the app ID where the command should be executed.
+        /// The argument indicating the app ID where the command should be executed.
         /// </summary>
         public static readonly string RunAtArg = "@runat";
+
+        /// <summary>
+        /// The argument indicating whether the invocation will be one way or not.
+        /// </summary>
+        public static readonly string OneWayArg = "@oneway";
 
         private readonly Lazy<IMessageBroker> lazyMessageBroker;
         private readonly string command;
@@ -41,18 +46,25 @@ namespace Kephas.Commands.Messaging.Reflection
         /// <param name="runAt">The application instance where the command should be executed.</param>
         /// <param name="command">The command to be executed.</param>
         /// <param name="args">The command arguments.</param>
-        public RunAtOperationInfo(Lazy<IMessageBroker> lazyMessageBroker, object runAt, string command, IExpando? args)
+        /// <param name="isOneWay">Optional. Indicates whether the operation is one way.</param>
+        public RunAtOperationInfo(Lazy<IMessageBroker> lazyMessageBroker, object runAt, string command, IExpando? args, bool isOneWay = false)
         {
             this.lazyMessageBroker = lazyMessageBroker;
             this.Endpoint = this.GetEndpoint(runAt);
             this.command = command;
             this.args = args;
+            this.IsOneWay = isOneWay;
         }
 
         /// <summary>
         /// Gets the endpoint where the command should be executed.
         /// </summary>
         public IEndpoint Endpoint { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the invocation is one way.
+        /// </summary>
+        public bool IsOneWay { get; }
 
         /// <summary>
         /// Invokes the specified method on the provided instance.
@@ -75,7 +87,7 @@ namespace Kephas.Commands.Messaging.Reflection
         {
             var argsList = args?.ToArray() ?? Array.Empty<object?>();
 
-            var opArgs = argsList.Length > 0 ? (IExpando?)argsList[0] : null;
+            var opArgs = (argsList.Length > 0 ? (IExpando?)argsList[0] : null) ?? this.args;
             var opContext = argsList.Length > 1 ? (IContext?)argsList[1] : null;
             var opToken = argsList.Length > 2 ? (CancellationToken?)argsList[2] : default;
 
@@ -83,9 +95,16 @@ namespace Kephas.Commands.Messaging.Reflection
                 new ExecuteCommandMessage
                 {
                     Command = this.command,
-                    Args = (opArgs ?? this.args)?.AsArgs(),
+                    Args = opArgs?.AsArgs(),
                 },
-                ctx => ctx.To(this.Endpoint).Impersonate(opContext),
+                ctx =>
+                {
+                    ctx.To(this.Endpoint).Impersonate(opContext);
+                    if (this.IsOneWay)
+                    {
+                        ctx.OneWay();
+                    }
+                },
                 opToken ?? default).PreserveThreadContext();
 
             var returnValue = responseMessage is ExecuteCommandResponseMessage response

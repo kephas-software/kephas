@@ -51,14 +51,30 @@ namespace Kephas.Commands.Messaging
         /// <returns>The command as an <see cref="IOperation"/> or <c>null</c>.</returns>
         public override IOperationInfo? ResolveCommand(string command, IExpando? args = null, bool throwOnNotFound = true)
         {
-            var runAt = args?[RunAtOperationInfo.RunAtArg];
-            if (runAt == null)
+            var (_, runAt, isOneWay) = this.ExtractEnvelopeArgs(args);
+            return runAt == null
+                ? base.ResolveCommand(command, args, throwOnNotFound)
+                : new RunAtOperationInfo(this.lazyMessageBroker, runAt, command, args, isOneWay);
+        }
+
+        private (IExpando? args, object? runAt, bool isOneWay) ExtractEnvelopeArgs(IExpando? args)
+        {
+            if (args == null || !args.HasDynamicMember(RunAtOperationInfo.RunAtArg))
             {
-                return base.ResolveCommand(command, args, throwOnNotFound);
+                return (args, null, false);
             }
 
-            args![RunAtOperationInfo.RunAtArg] = null;
-            return new RunAtOperationInfo(this.lazyMessageBroker, runAt, command, args);
+            var runAt = args[RunAtOperationInfo.RunAtArg];
+            args[RunAtOperationInfo.RunAtArg] = null;
+
+            if (!args.HasDynamicMember(RunAtOperationInfo.OneWayArg))
+            {
+                return (args, runAt, false);
+            }
+
+            var oneWay = args.GetLaxValue(RunAtOperationInfo.OneWayArg, true);
+            args[RunAtOperationInfo.OneWayArg] = null;    // try delete the argument.
+            return (args, runAt, oneWay);
         }
     }
 }
