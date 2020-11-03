@@ -187,12 +187,6 @@ namespace Kephas.Orchestration.Application
                 return;
             }
 
-            var appInstanceEntries = this.SystemConfiguration.Settings.Instances;
-            if (appInstanceEntries == null || appInstanceEntries.Count == 0)
-            {
-                return;
-            }
-
             var liveApps =
                 (await this.OrchestrationManager.GetLiveAppsAsync(cancellationToken: cancellationToken)
                     .PreserveThreadContext())
@@ -340,9 +334,14 @@ namespace Kephas.Orchestration.Application
         /// <returns>The settings for all workers.</returns>
         protected virtual IEnumerable<KeyValuePair<string, AppSettings>> GetWorkerSettings(IEnumerable<IRuntimeAppInfo> liveApps)
         {
+            var appInstanceEntries = this.SystemConfiguration.Settings.Instances;
+            if (appInstanceEntries == null || appInstanceEntries.Count == 0)
+            {
+                return Enumerable.Empty<KeyValuePair<string, AppSettings>>();
+            }
+
             // get all the workers which are not already started and are not root.
             var rootAppId = this.AppRuntime.GetAppId()!;
-            var appInstanceEntries = this.SystemConfiguration.Settings.Instances ?? new Dictionary<string, AppSettings>();
             return appInstanceEntries
                 .Where(appInstanceEntry => !rootAppId.Equals(appInstanceEntry.Key, StringComparison.OrdinalIgnoreCase)
                     && !liveApps.Any(app => app.AppId.Equals(appInstanceEntry.Key, StringComparison.OrdinalIgnoreCase)));
