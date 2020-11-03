@@ -335,7 +335,7 @@ namespace Kephas.Orchestration.Application
         protected virtual IEnumerable<KeyValuePair<string, AppSettings>> GetWorkerSettings(IEnumerable<IRuntimeAppInfo> liveApps)
         {
             var appInstanceEntries = this.SystemConfiguration.Settings.Instances;
-            if (appInstanceEntries == null || appInstanceEntries.Count == 0)
+            if (!this.AppRuntime.IsRoot() || appInstanceEntries == null || appInstanceEntries.Count == 0)
             {
                 return Enumerable.Empty<KeyValuePair<string, AppSettings>>();
             }
