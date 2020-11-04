@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Licensing
 {
     using System.Collections.Generic;
@@ -45,18 +43,20 @@ namespace Kephas.Licensing
         /// </summary>
         /// <param name="appIdentity">The app identity requesting the license.</param>
         /// <returns>
-        /// The license data or <c>null</c>, if a license could not be found for the requesting
-        /// application.
+        /// An enumeration of possibly matching license data.
         /// </returns>
-        public LicenseData? GetLicenseData(AppIdentity appIdentity)
+        public IEnumerable<LicenseData> GetLicenseData(AppIdentity appIdentity)
         {
-            var probingFileNames = new[] { $"{LicenseFileName}.lic", $"{appIdentity?.Id ?? LicenseFileName}.lic" };
+            var probingFileNames = this.GetProbingFileNames(appIdentity);
             return (from licenseLocation in this.GetLicenseLocations(appIdentity)
                 from probingFileName in probingFileNames
                 select Path.Combine(licenseLocation, probingFileName)
                 into licenseFilePath
                 where File.Exists(licenseFilePath)
-                select this.GetLicenseData(licenseFilePath)).FirstOrDefault();
+                select this.GetLicenseData(licenseFilePath)
+                into license
+                where license != null
+                select license)!;
         }
 
         /// <summary>
@@ -75,6 +75,23 @@ namespace Kephas.Licensing
 
             var licenseFilePath = Path.Combine(licenseLocation, fileName);
             File.WriteAllText(licenseFilePath, rawLicenseData);
+        }
+
+        private IEnumerable<string> GetProbingFileNames(AppIdentity appIdentity)
+        {
+            if (appIdentity?.Id != null)
+            {
+                var fileName = appIdentity.Id;
+                var itemSeparators = new[] { '.', '-' };
+                while (!string.IsNullOrEmpty(fileName))
+                {
+                    yield return $"{fileName}.lic";
+                    var indexofSep = fileName!.LastIndexOfAny(itemSeparators);
+                    fileName = indexofSep > 0 ? fileName.Substring(0, indexofSep - 1) : null;
+                }
+            }
+
+            yield return $"{LicenseFileName}.lic";
         }
 
         private IEnumerable<string> GetLicenseLocations(AppIdentity appIdentity)

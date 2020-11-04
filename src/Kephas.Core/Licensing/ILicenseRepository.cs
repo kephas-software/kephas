@@ -8,10 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Licensing
 {
+    using System.Collections.Generic;
+
     using Kephas.Application;
 
     /// <summary>
@@ -20,13 +20,13 @@ namespace Kephas.Licensing
     public interface ILicenseRepository
     {
         /// <summary>
-        /// Gets the license information from the store.
+        /// Gets the matching license information from the store.
         /// </summary>
         /// <param name="appIdentity">The app identity requesting the license.</param>
         /// <returns>
-        /// The license data or <c>null</c>, if a license could not be found for the requesting application.
+        /// An enumeration of possibly matching license data.
         /// </returns>
-        LicenseData? GetLicenseData(AppIdentity appIdentity);
+        IEnumerable<LicenseData> GetLicenseData(AppIdentity appIdentity);
 
         /// <summary>
         /// Stores the license data, making it persistable among multiple application runs.

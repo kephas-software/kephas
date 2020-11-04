@@ -11,6 +11,8 @@
 namespace Kephas.Licensing
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -31,7 +33,7 @@ namespace Kephas.Licensing
         , ISyncLicensingManager
 #endif
     {
-        private readonly Func<AppIdentity, LicenseData?> licenseDataGetter;
+        private readonly Func<AppIdentity, IEnumerable<LicenseData>> licenseDataGetter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultLicensingManager"/> class.
@@ -56,7 +58,7 @@ namespace Kephas.Licensing
         /// Initializes a new instance of the <see cref="DefaultLicensingManager"/> class.
         /// </summary>
         /// <param name="licenseDataGetter">The license data getter.</param>
-        public DefaultLicensingManager(Func<AppIdentity, LicenseData?> licenseDataGetter)
+        public DefaultLicensingManager(Func<AppIdentity, IEnumerable<LicenseData>> licenseDataGetter)
         {
             Requires.NotNull(licenseDataGetter, nameof(licenseDataGetter));
 
@@ -73,40 +75,17 @@ namespace Kephas.Licensing
         /// </returns>
         public virtual ILicenseCheckResult CheckLicense(AppIdentity appIdentity, IContext? context = null)
         {
-            var license = this.GetLicenseData(appIdentity);
-            if (license == null)
+            var licenses = this.GetLicenseData(appIdentity);
+            var results = licenses.Select(l => this.CheckLicenseData(l, appIdentity, context));
+            var successful = results.FirstOrDefault(r => r.IsLicensed);
+            if (successful != null)
             {
-                return new LicenseCheckResult(appIdentity, false)
-                    .MergeMessage("Missing license.");
+                return successful;
             }
 
-            var result = new LicenseCheckResult(appIdentity, false);
-            if (license.ValidFrom.HasValue && DateTime.Now.Date < license.ValidFrom.Value)
-            {
-                return result
-                    .MergeMessage($"The license validity starts only on {license.ValidFrom:d}.");
-            }
-
-            if (license.ValidTo.HasValue && DateTime.Now.Date > license.ValidTo.Value)
-            {
-                return result
-                    .MergeMessage($"The license expired on {license.ValidTo:d}.");
-            }
-
-            if (!this.IsMatch(license.AppId, appIdentity.Id))
-            {
-                return result
-                    .MergeMessage($"The license was issued for app '{license.AppId}' not for the requested '{appIdentity}'.");
-            }
-
-            if (!this.IsVersionMatch(license.AppVersionRange, appIdentity.Version))
-            {
-                return result
-                    .MergeMessage($"The license was issued for version range '{license.AppVersionRange}' not for the requested '{appIdentity}'.");
-            }
-
-            return result.Value(true)
-                .MergeMessage("Valid license.");
+            return results.Aggregate(
+                new LicenseCheckResult(appIdentity, false),
+                (acc, r) => acc.MergeMessages(r));
         }
 
         /// <summary>
@@ -135,7 +114,8 @@ namespace Kephas.Licensing
         /// </returns>
         public virtual LicenseData? GetLicense(AppIdentity appIdentity, IContext? context = null)
         {
-            return this.GetLicenseData(appIdentity);
+            return this.GetLicenseData(appIdentity)
+                .FirstOrDefault(l => this.CheckLicenseData(l, appIdentity, context).IsLicensed);
         }
 
         /// <summary>
@@ -162,7 +142,53 @@ namespace Kephas.Licensing
         /// <returns>
         /// The license data.
         /// </returns>
-        protected virtual LicenseData? GetLicenseData(AppIdentity appIdentity) => this.licenseDataGetter(appIdentity);
+        protected virtual IEnumerable<LicenseData> GetLicenseData(AppIdentity appIdentity) => this.licenseDataGetter(appIdentity);
+
+        /// <summary>
+        /// Checks the license for the provided application identity.
+        /// </summary>
+        /// <param name="license">The license data to be checked.</param>
+        /// <param name="appIdentity">Identifier for the application.</param>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The license check result.
+        /// </returns>
+        protected virtual ILicenseCheckResult CheckLicenseData(LicenseData? license, AppIdentity appIdentity, IContext? context = null)
+        {
+            if (license == null)
+            {
+                return new LicenseCheckResult(appIdentity, false)
+                    .MergeMessage($"Missing license for '{appIdentity}'.");
+            }
+
+            var result = new LicenseCheckResult(appIdentity, false);
+            if (license.ValidFrom.HasValue && DateTime.Now.Date < license.ValidFrom.Value)
+            {
+                return result
+                    .MergeMessage($"The validity of license '{license.Id}' starts only on {license.ValidFrom:d}.");
+            }
+
+            if (license.ValidTo.HasValue && DateTime.Now.Date > license.ValidTo.Value)
+            {
+                return result
+                    .MergeMessage($"The license '{license.Id}' expired on {license.ValidTo:d}.");
+            }
+
+            if (!this.IsMatch(license.AppId, appIdentity.Id))
+            {
+                return result
+                    .MergeMessage($"The license '{license.Id}' was issued for app '{license.AppId}' not for the requested '{appIdentity}'.");
+            }
+
+            if (!this.IsVersionMatch(license.AppVersionRange, appIdentity.Version))
+            {
+                return result
+                    .MergeMessage($"The license '{license.Id}' was issued for version range '{license.AppVersionRange}' not for the requested '{appIdentity}'.");
+            }
+
+            return result.Value(true)
+                .MergeMessage($"Valid license '{license.Id}' for '{appIdentity}'.");
+        }
 
         private bool IsVersionMatch(string versionRange, SemanticVersion? version)
         {
