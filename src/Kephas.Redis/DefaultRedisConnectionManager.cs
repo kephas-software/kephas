@@ -107,7 +107,6 @@ namespace Kephas.Redis
 
             try
             {
-                var settings = this.redisConfiguration.Settings;
                 this.appContext = context;
                 using (var connection = this.CreateConnectionCore(context))
                 {
