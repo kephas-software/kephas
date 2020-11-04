@@ -52,7 +52,7 @@ namespace Kephas.Application
         /// <returns>
         /// True if the application runtime contains the indicated feature, false otherwise.
         /// </returns>
-        public static bool ContainsFeature(this IAppRuntime appRuntime, string featureName)
+        public static bool ContainsFeature(this IAppRuntime? appRuntime, string? featureName)
         {
             if (appRuntime == null || featureName == null)
             {
@@ -66,16 +66,16 @@ namespace Kephas.Application
         /// Register the application arguments as <see cref="IAppArgs"/> service.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
-        /// <param name="args">The application arguments.</param>
+        /// <param name="args">Optional. The application arguments. If not provided, they are retrieved from the command line arguments, if not already registered.</param>
         /// <returns>The provided ambient services.</returns>
-        public static IAmbientServices RegisterAppArgs(this IAmbientServices ambientServices, IEnumerable<string>? args = null)
+        public static IAmbientServices RegisterAppArgs(this IAmbientServices ambientServices, IAppArgs? args = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
 
             // register the app args if not already registered or the raw args are provided
             if (args != null)
             {
-                ambientServices.Register<IAppArgs>(b => b.WithInstance(new AppArgs(args)));
+                ambientServices.Register<IAppArgs>(b => b.WithInstance(args));
             }
             else if (!ambientServices.IsRegistered(typeof(IAppArgs)))
             {
@@ -83,6 +83,17 @@ namespace Kephas.Application
             }
 
             return ambientServices;
+        }
+
+        /// <summary>
+        /// Register the application arguments as <see cref="IAppArgs"/> service.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <param name="args">Optional. The application arguments. If not provided, they are retrieved from the command line arguments.</param>
+        /// <returns>The provided ambient services.</returns>
+        public static IAmbientServices RegisterAppArgs(this IAmbientServices ambientServices, IEnumerable<string>? args = null)
+        {
+            return RegisterAppArgs(ambientServices, args == null ? null : new AppArgs(args));
         }
     }
 }

@@ -10,6 +10,8 @@
 
 namespace Kephas.Extensions.Hosting.Application
 {
+    using System;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -53,16 +55,16 @@ namespace Kephas.Extensions.Hosting.Application
         /// <summary>
         /// Bootstraps the application asynchronously.
         /// </summary>
-        /// <param name="rawAppArgs">Optional. The application arguments.</param>
+        /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="T:Kephas.Application.IAppContext" />.
         /// </returns>
         public override Task<(IAppContext? appContext, AppShutdownInstruction instruction)> BootstrapAsync(
-            string[]? rawAppArgs = null,
+            IAppArgs? appArgs = null,
             CancellationToken cancellationToken = default)
         {
-            this.HostBuilder = this.CreateHostBuilder(rawAppArgs);
+            this.HostBuilder = this.CreateHostBuilder(appArgs);
 
             this.HostBuilder
                 .UseServiceProviderFactory(new CompositionServiceProviderFactory(this.AmbientServices));
@@ -85,7 +87,7 @@ namespace Kephas.Extensions.Hosting.Application
 
             this.PostConfigureWorker(this.HostBuilder);
 
-            return base.BootstrapAsync(rawAppArgs, cancellationToken);
+            return base.BootstrapAsync(appArgs, cancellationToken);
         }
 
         /// <summary>
@@ -124,13 +126,13 @@ namespace Kephas.Extensions.Hosting.Application
         /// <summary>
         /// Creates the host builder.
         /// </summary>
-        /// <param name="rawAppArgs">The application arguments.</param>
+        /// <param name="appArgs">The application arguments.</param>
         /// <returns>
         /// The new host builder.
         /// </returns>
-        protected virtual IHostBuilder CreateHostBuilder(string[]? rawAppArgs)
+        protected virtual IHostBuilder CreateHostBuilder(IAppArgs? appArgs)
         {
-            return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(rawAppArgs);
+            return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(appArgs?.ToCommandArgs().ToArray() ?? Array.Empty<string>());
         }
 
         /// <summary>

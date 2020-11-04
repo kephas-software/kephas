@@ -75,20 +75,20 @@ namespace Kephas.Application
         /// <summary>
         /// Bootstraps the application asynchronously.
         /// </summary>
-        /// <param name="rawAppArgs">Optional. The application arguments.</param>
+        /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// The asynchronous result that yields the <see cref="IAppContext"/>.
         /// </returns>
         public virtual async Task<(IAppContext? appContext, AppShutdownInstruction instruction)> BootstrapAsync(
-            string[]? rawAppArgs = null,
+            IAppArgs? appArgs = null,
             CancellationToken cancellationToken = default)
         {
             this.Log(LogLevel.Info, null, Strings.App_BootstrapAsync_Bootstrapping_Message);
 
             await Task.Yield();
 
-            this.BeforeAppManagerInitialize(rawAppArgs);
+            this.BeforeAppManagerInitialize(appArgs);
 
             await this.InitializeAppManagerAsync(this.AppContext, cancellationToken).PreserveThreadContext();
 
@@ -179,11 +179,11 @@ namespace Kephas.Application
         /// registration, its own logger, and other. In the end, the <see cref="BuildServicesContainer"/> method is called
         /// to complete the service registration and build the composition container.
         /// </summary>
-        /// <param name="rawAppArgs">The application arguments.</param>
+        /// <param name="appArgs">The application arguments.</param>
         /// <returns>
         /// True if the initialization was performed, false if it was ignored because of subsequent calls.
         /// </returns>
-        protected virtual bool BeforeAppManagerInitialize(string[]? rawAppArgs)
+        protected virtual bool BeforeAppManagerInitialize(IAppArgs? appArgs)
         {
             if (this.isConfigured)
             {
@@ -199,7 +199,7 @@ namespace Kephas.Application
                 // registers the application context as a global service, so that other services can benefit from it.
                 this.AmbientServices.Register<IAppContext>(b => b.WithFactory(ctx => this.AppContext).AsTransient());
 
-                this.AmbientServices.RegisterAppArgs(rawAppArgs);
+                this.AmbientServices.RegisterAppArgs(appArgs);
 
                 this.BuildServicesContainer(this.AmbientServices);
 

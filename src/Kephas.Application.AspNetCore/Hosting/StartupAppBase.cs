@@ -40,7 +40,7 @@ namespace Kephas.Application.AspNetCore.Hosting
     /// </remarks>
     public abstract class StartupAppBase : AppBase
     {
-        private readonly string[]? appArgs;
+        private readonly IAppArgs? appArgs;
         private Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection;
         private Task bootstrapTask;
 
@@ -51,7 +51,7 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <param name="config">The configuration.</param>
         /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        protected StartupAppBase(IWebHostEnvironment env, IConfiguration config, IAmbientServices? ambientServices = null, string[]? appArgs = null)
+        protected StartupAppBase(IWebHostEnvironment env, IConfiguration config, IAmbientServices? ambientServices = null, IAppArgs? appArgs = null)
             : base(ambientServices)
         {
             this.HostEnvironment = env;
