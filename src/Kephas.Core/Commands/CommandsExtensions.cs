@@ -9,7 +9,6 @@ namespace Kephas.Commands
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
@@ -93,12 +92,21 @@ namespace Kephas.Commands
                     null => string.Empty,
                     bool boolean => $"{boolean.ToString().ToLower()}",
                     int integer => $"{integer}",
+                    string str => string.IsNullOrEmpty(str) ? str : $"\"{str.Replace("\"", "\"\"")}\"",
                     DateTime dateTime => $"\"{dateTime:s}\"",
                     DateTimeOffset dateTimeOffset => $"\"{dateTimeOffset:s}\"",
-                    _ => $"\"{o?.ToString().Replace("\"", "\"\"")}\""
+                    _ => $"\"{o.ToString().Replace("\"", "\"\"")}\""
                 };
 
-            return arguments.Select(a => $"-{a.Key} {ToParamValue(a.Value)}");
+            foreach (var a in arguments)
+            {
+                yield return $"-{a.Key}";
+                var paramValue = ToParamValue(a.Value);
+                if (!string.IsNullOrEmpty(paramValue))
+                {
+                    yield return paramValue;
+                }
+            }
         }
     }
 }
