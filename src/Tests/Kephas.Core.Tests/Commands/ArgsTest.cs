@@ -148,10 +148,13 @@ namespace Kephas.Core.Tests.Commands
             };
 
             var argArray = args.ToCommandArgs().ToArray();
-            Assert.AreEqual("-b true", argArray[0]);
-            Assert.AreEqual("-empty \"\"", argArray[1]);
-            Assert.AreEqual("-date \"2020-12-25T00:00:00\"", argArray[2]);
-            Assert.AreEqual("-int 3", argArray[3]);
+            Assert.AreEqual("-b", argArray[0]);
+            Assert.AreEqual("true", argArray[1]);
+            Assert.AreEqual("-empty", argArray[2]);
+            Assert.AreEqual("-date", argArray[3]);
+            Assert.AreEqual("\"2020-12-25T00:00:00\"", argArray[4]);
+            Assert.AreEqual("-int", argArray[5]);
+            Assert.AreEqual("3", argArray[6]);
         }
 
         [Test]

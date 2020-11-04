@@ -127,7 +127,7 @@ namespace Kephas.Commands.Messaging.Tests.Reflection
             var resultTask = (Task)opInfo.Invoke(null, opArgs);
             await resultTask;
             var result = resultTask.GetResult();
-            Assert.AreEqual("result for help(-yourcmd \"\")", result);
+            Assert.AreEqual("result for help(-yourcmd)", result);
         }
     }
 }
