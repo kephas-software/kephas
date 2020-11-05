@@ -39,6 +39,16 @@ namespace Kephas.Operations
         OperationState OperationState { get; set; }
 
         /// <summary>
+        /// Gets or sets the timestamp when the operation started.
+        /// </summary>
+        DateTimeOffset? StartedAt { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timestamp when the operation ended.
+        /// </summary>
+        DateTimeOffset? EndedAt { get; set; }
+
+        /// <summary>
         /// Gets or sets the percent completed.
         /// </summary>
         /// <value>

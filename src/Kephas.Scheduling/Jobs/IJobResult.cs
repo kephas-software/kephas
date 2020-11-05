@@ -64,16 +64,6 @@ namespace Kephas.Scheduling.Jobs
         object? TriggerId { get; }
 
         /// <summary>
-        /// Gets the time when the job started.
-        /// </summary>
-        DateTimeOffset? StartedAt { get; }
-
-        /// <summary>
-        /// Gets the time when the job ended.
-        /// </summary>
-        DateTimeOffset? EndedAt { get; }
-
-        /// <summary>
         /// Gets the logger for the job.
         /// </summary>
         ILogger? Logger { get; }

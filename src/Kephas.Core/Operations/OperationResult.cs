@@ -31,6 +31,8 @@ namespace Kephas.Operations
         private object? value;
         private OperationState operationState;
         private float percentCompleted;
+        private DateTimeOffset? startedAt;
+        private DateTimeOffset? endedAt;
         private TimeSpan elapsed;
         private OperationResultAwaiter? awaiter;
 
@@ -41,6 +43,7 @@ namespace Kephas.Operations
         {
             this.Exceptions = new ConcurrentCollection<Exception>();
             this.Messages = new ConcurrentCollection<IOperationMessage>();
+            this.startedAt = DateTimeOffset.Now;
         }
 
         /// <summary>
@@ -123,6 +126,24 @@ namespace Kephas.Operations
         {
             get => this.percentCompleted;
             set => this.SetProperty(ref this.percentCompleted, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the time when the job started.
+        /// </summary>
+        public DateTimeOffset? StartedAt
+        {
+            get => this.startedAt;
+            set => this.SetProperty(ref this.startedAt, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the time when the job ended.
+        /// </summary>
+        public DateTimeOffset? EndedAt
+        {
+            get => this.endedAt;
+            set => this.SetProperty(ref this.endedAt, value);
         }
 
         /// <summary>

@@ -76,7 +76,7 @@ namespace Kephas.Operations
         {
             Requires.NotNull(result, nameof(result));
 
-            result.Elapsed = elapsed ?? (result.Elapsed != TimeSpan.Zero ? result.Elapsed : TimeSpan.Zero);
+            result.Elapsed = result.ComputeElapsed(elapsed);
             result.PercentCompleted = 1;
             result.OperationState = operationState ?? Kephas.Operations.OperationState.Completed;
 
@@ -100,7 +100,7 @@ namespace Kephas.Operations
             Requires.NotNull(result, nameof(result));
             Requires.NotNull(exception, nameof(exception));
 
-            result.Elapsed = elapsed ?? (result.Elapsed != TimeSpan.Zero ? result.Elapsed : TimeSpan.Zero);
+            result.Elapsed = result.ComputeElapsed(elapsed);
             result.OperationState = operationState ?? GetOperationState(exception);
             result.MergeException(exception);
 
@@ -425,6 +425,18 @@ namespace Kephas.Operations
                 _ => Operations.OperationState.Failed
             };
             return state;
+        }
+
+        private static TimeSpan ComputeElapsed<TOperationResult>(this TOperationResult result, TimeSpan? elapsed)
+            where TOperationResult : class, IOperationResult
+        {
+            if (elapsed != null)
+            {
+                return elapsed.Value;
+            }
+
+            var endedAt = result.EndedAt ?? DateTimeOffset.Now;
+            return endedAt - result.StartedAt ?? TimeSpan.Zero;
         }
     }
 }

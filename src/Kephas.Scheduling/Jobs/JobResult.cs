@@ -83,16 +83,6 @@ namespace Kephas.Scheduling.Jobs
         public object? TriggerId { get; set; }
 
         /// <summary>
-        /// Gets or sets the time when the job started.
-        /// </summary>
-        public DateTimeOffset? StartedAt { get; set; }
-
-        /// <summary>
-        /// Gets or sets the time when the job ended.
-        /// </summary>
-        public DateTimeOffset? EndedAt { get; set; }
-
-        /// <summary>
         /// Gets or sets the cancellation token source.
         /// </summary>
         public CancellationTokenSource? CancellationTokenSource { get; set; }
@@ -128,6 +118,7 @@ namespace Kephas.Scheduling.Jobs
         {
             get
             {
+                // if the job is not yet completed, the elapsed time is from the start time until now
                 if (base.Elapsed == TimeSpan.Zero && this.StartedAt.HasValue)
                 {
                         return this.EndedAt.HasValue
