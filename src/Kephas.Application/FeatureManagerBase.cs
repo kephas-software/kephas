@@ -32,7 +32,9 @@ namespace Kephas.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureManagerBase"/> class.
         /// </summary>
-        protected FeatureManagerBase()
+        /// <param name="logManager">Optional. The log manager.</param>
+        protected FeatureManagerBase(ILogManager? logManager = null)
+            : base(logManager)
         {
             this.InitializationMonitor = new InitializationMonitor<IFeatureManager>(this.GetType());
             this.FinalizationMonitor = new FinalizationMonitor<IFeatureManager>(this.GetType());
