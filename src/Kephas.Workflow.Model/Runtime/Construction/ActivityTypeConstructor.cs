@@ -8,9 +8,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using Kephas.Model;
+using Kephas.Model.Reflection;
+using Kephas.Workflow.Reflection;
+
 namespace Kephas.Workflow.Model.Runtime.Construction
 {
-    using System.Reflection;
+    using System;
 
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime.Construction;
@@ -25,12 +31,7 @@ namespace Kephas.Workflow.Model.Runtime.Construction
         /// <summary>
         /// The activity discriminator.
         /// </summary>
-        public const string ActivityDiscriminator = "Activity";
-
-        /// <summary>
-        /// The marker interface.
-        /// </summary>
-        private static readonly TypeInfo MarkerInterface = typeof(IActivity).GetTypeInfo();
+        public static readonly string ActivityDiscriminator = "Activity";
 
         /// <summary>
         /// Gets the element name discriminator.
@@ -53,7 +54,7 @@ namespace Kephas.Workflow.Model.Runtime.Construction
         /// </returns>
         protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return MarkerInterface.IsAssignableFrom(runtimeElement.TypeInfo);
+            return runtimeElement is IActivityInfo;
         }
 
         /// <summary>
@@ -69,7 +70,50 @@ namespace Kephas.Workflow.Model.Runtime.Construction
             IModelConstructionContext constructionContext,
             IRuntimeTypeInfo runtimeElement)
         {
-            return new ActivityType(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
+            return new ActivityType(constructionContext, this.TryComputeName(runtimeElement, constructionContext)!);
+        }
+
+        /// <summary>
+        /// Computes the members from the runtime element.
+        /// </summary>
+        /// <param name="constructionContext">The model construction context.</param>
+        /// <param name="runtimeElement">The runtime member information.</param>
+        /// <returns>
+        /// An enumeration of <see cref="INamedElement"/>.
+        /// </returns>
+        protected override IEnumerable<INamedElement> ComputeMembers(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        {
+            var members = new List<INamedElement>(base.ComputeMembers(constructionContext, runtimeElement));
+
+            var parameters = this.ComputeMemberParameters(constructionContext, runtimeElement);
+            if (parameters != null)
+            {
+                members.AddRange(parameters);
+            }
+
+            return members;
+        }
+
+        /// <summary>
+        /// Computes the member properties from the runtime element.
+        /// </summary>
+        /// <param name="constructionContext">The model construction context.</param>
+        /// <param name="runtimeElement">The runtime member information.</param>
+        /// <returns>
+        /// An enumeration of <see cref="INamedElement"/>.
+        /// </returns>
+        protected virtual IEnumerable<INamedElement> ComputeMemberParameters(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        {
+            var runtimeModelElementFactory = constructionContext.RuntimeModelElementFactory;
+            if (!(runtimeElement is IActivityInfo typeInfo))
+            {
+                return new List<INamedElement>();
+            }
+
+            var parameters = typeInfo.Parameters
+                .Select(p => runtimeModelElementFactory.TryCreateModelElement(constructionContext, p))
+                .Where(property => property != null);
+            return parameters;
         }
     }
 }

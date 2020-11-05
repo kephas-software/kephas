@@ -44,6 +44,7 @@
         <ProjectReference Include="..\..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\..\Kephas.Workflow\Kephas.Workflow.csproj" />
         <ProjectReference Include="..\..\Kephas.Workflow.Model\Kephas.Workflow.Model.csproj" />
+        <ProjectReference Include="..\..\TestingFramework\Kephas.Testing.Model\Kephas.Testing.Model.csproj" />
         <ProjectReference Include="..\..\TestingFramework\Kephas.Testing\Kephas.Testing.csproj" />
     </ItemGroup>
 

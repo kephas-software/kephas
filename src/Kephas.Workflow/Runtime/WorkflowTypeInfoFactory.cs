@@ -39,12 +39,12 @@ namespace Kephas.Workflow.Runtime
         /// </returns>
         public IRuntimeTypeInfo? TryCreateRuntimeTypeInfo(Type type)
         {
-            if (typeof(IActivity).IsAssignableFrom(type))
+            if (typeof(IActivity).IsAssignableFrom(type) && typeof(IActivity) != type)
             {
                 return new RuntimeActivityInfo(this.typeRegistry, type);
             }
 
-            if (typeof(IStateMachine).IsAssignableFrom(type))
+            if (typeof(IStateMachine).IsAssignableFrom(type) && typeof(IStateMachine) != type)
             {
                 return new RuntimeStateMachineInfo(this.typeRegistry, type);
             }

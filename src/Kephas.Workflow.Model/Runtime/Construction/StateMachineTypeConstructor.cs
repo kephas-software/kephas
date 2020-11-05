@@ -8,6 +8,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using Kephas.Model;
+using Kephas.Workflow.Reflection;
+
 namespace Kephas.Workflow.Model.Runtime.Construction
 {
     using System.Reflection;
@@ -25,12 +30,7 @@ namespace Kephas.Workflow.Model.Runtime.Construction
         /// <summary>
         /// The state machine discriminator.
         /// </summary>
-        public const string StateMachineDiscriminator = "StateMachine";
-
-        /// <summary>
-        /// The marker interface.
-        /// </summary>
-        private static readonly TypeInfo MarkerInterface = typeof(IStateMachine).GetTypeInfo();
+        public static readonly string StateMachineDiscriminator = "StateMachine";
 
         /// <summary>
         /// Gets the element name discriminator.
@@ -53,7 +53,7 @@ namespace Kephas.Workflow.Model.Runtime.Construction
         /// </returns>
         protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
         {
-            return MarkerInterface.IsAssignableFrom(runtimeElement.TypeInfo);
+            return runtimeElement is IStateMachineInfo;
         }
 
         /// <summary>
@@ -70,6 +70,49 @@ namespace Kephas.Workflow.Model.Runtime.Construction
             IRuntimeTypeInfo runtimeElement)
         {
             return new StateMachineType(constructionContext, this.TryComputeName(runtimeElement, constructionContext));
+        }
+
+        /// <summary>
+        /// Computes the members from the runtime element.
+        /// </summary>
+        /// <param name="constructionContext">The model construction context.</param>
+        /// <param name="runtimeElement">The runtime member information.</param>
+        /// <returns>
+        /// An enumeration of <see cref="INamedElement"/>.
+        /// </returns>
+        protected override IEnumerable<INamedElement> ComputeMembers(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        {
+            var members = new List<INamedElement>(base.ComputeMembers(constructionContext, runtimeElement));
+
+            var transitions = this.ComputeMemberTransitions(constructionContext, runtimeElement);
+            if (transitions != null)
+            {
+                members.AddRange(transitions);
+            }
+
+            return members;
+        }
+
+        /// <summary>
+        /// Computes the member properties from the runtime element.
+        /// </summary>
+        /// <param name="constructionContext">The model construction context.</param>
+        /// <param name="runtimeElement">The runtime member information.</param>
+        /// <returns>
+        /// An enumeration of <see cref="INamedElement"/>.
+        /// </returns>
+        protected virtual IEnumerable<INamedElement> ComputeMemberTransitions(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        {
+            var runtimeModelElementFactory = constructionContext.RuntimeModelElementFactory;
+            if (!(runtimeElement is IStateMachineInfo typeInfo))
+            {
+                return new List<INamedElement>();
+            }
+
+            var transitions = typeInfo.Transitions
+                .Select(p => runtimeModelElementFactory.TryCreateModelElement(constructionContext, p))
+                .Where(property => property != null);
+            return transitions;
         }
     }
 }
