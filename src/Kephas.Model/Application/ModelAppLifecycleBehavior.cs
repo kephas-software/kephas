@@ -52,8 +52,9 @@ namespace Kephas.Model.Application
             IContext appContext,
             CancellationToken cancellationToken = default)
         {
+            var result = new OperationResult(true);
             await this.modelSpaceProvider.InitializeAsync(appContext, cancellationToken).PreserveThreadContext();
-            return true.ToOperationResult();
+            return result.Complete();
         }
 
         /// <summary>
