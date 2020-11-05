@@ -85,7 +85,8 @@ namespace Kephas.Licensing
 
             return results.Aggregate(
                 new LicenseCheckResult(appIdentity, false),
-                (acc, r) => acc.MergeMessages(r));
+                (acc, r) => acc.MergeMessages(r))
+                .Complete();
         }
 
         /// <summary>
@@ -158,36 +159,42 @@ namespace Kephas.Licensing
             if (license == null)
             {
                 return new LicenseCheckResult(appIdentity, false)
-                    .MergeMessage($"Missing license for '{appIdentity}'.");
+                    .MergeMessage($"Missing license for '{appIdentity}'.")
+                    .Complete();
             }
 
             var result = new LicenseCheckResult(appIdentity, false);
             if (license.ValidFrom.HasValue && DateTime.Now.Date < license.ValidFrom.Value)
             {
                 return result
-                    .MergeMessage($"The validity of license '{license.Id}' starts only on {license.ValidFrom:d}.");
+                    .MergeMessage($"The validity of license '{license.Id}' starts only on {license.ValidFrom:d}.")
+                    .Complete();
             }
 
             if (license.ValidTo.HasValue && DateTime.Now.Date > license.ValidTo.Value)
             {
                 return result
-                    .MergeMessage($"The license '{license.Id}' expired on {license.ValidTo:d}.");
+                    .MergeMessage($"The license '{license.Id}' expired on {license.ValidTo:d}.")
+                    .Complete();
             }
 
             if (!this.IsMatch(license.AppId, appIdentity.Id))
             {
                 return result
-                    .MergeMessage($"The license '{license.Id}' was issued for app '{license.AppId}' not for the requested '{appIdentity}'.");
+                    .MergeMessage($"The license '{license.Id}' was issued for app '{license.AppId}' not for the requested '{appIdentity}'.")
+                    .Complete();
             }
 
             if (!this.IsVersionMatch(license.AppVersionRange, appIdentity.Version))
             {
                 return result
-                    .MergeMessage($"The license '{license.Id}' was issued for version range '{license.AppVersionRange}' not for the requested '{appIdentity}'.");
+                    .MergeMessage($"The license '{license.Id}' was issued for version range '{license.AppVersionRange}' not for the requested '{appIdentity}'.")
+                    .Complete();
             }
 
             return result.Value(true)
-                .MergeMessage($"Valid license '{license.Id}' for '{appIdentity}'.");
+                .MergeMessage($"Valid license '{license.Id}' for '{appIdentity}'.")
+                .Complete();
         }
 
         private bool IsVersionMatch(string versionRange, SemanticVersion? version)
