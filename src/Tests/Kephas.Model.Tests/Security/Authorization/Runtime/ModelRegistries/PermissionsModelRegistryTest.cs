@@ -24,11 +24,12 @@ namespace Kephas.Model.Tests.Security.Authorization.Runtime.ModelRegistries
     using Kephas.Security.Authorization;
     using Kephas.Security.Authorization.AttributedModel;
     using Kephas.Testing;
+    using Kephas.Testing.Composition;
     using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class PermissionsModelRegistryTest : TestBase
+    public class PermissionsModelRegistryTest : CompositionTestBase
     {
         [Test]
         public async Task GetRuntimeElementsAsync()

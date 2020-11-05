@@ -37,8 +37,14 @@ namespace Kephas.Testing.Model
 
         public ICompositionContext CreateContainerForModel(params Type[] elements)
         {
+            return this.CreateContainerForModel(ambientServices: null, elements: elements);
+        }
+
+        public ICompositionContext CreateContainerForModel(IAmbientServices? ambientServices, params Type[] elements)
+        {
             var container = this.CreateContainer(
-                assemblies: new [] { typeof(IModelSpace).GetTypeInfo().Assembly }, 
+                ambientServices: ambientServices,
+                assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
                 config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true, allowMultiple: true));
 
             return container;
@@ -46,7 +52,13 @@ namespace Kephas.Testing.Model
 
         public ICompositionContext CreateContainerForModel(Type[] parts, Type[] elements)
         {
+            return this.CreateContainerForModel(ambientServices: null, parts: parts, elements: elements);
+        }
+
+        public ICompositionContext CreateContainerForModel(IAmbientServices? ambientServices, Type[] parts, Type[] elements)
+        {
             var container = this.CreateContainer(
+                ambientServices: ambientServices,
                 assemblies: new[] { typeof(IModelSpace).GetTypeInfo().Assembly },
                 parts: parts,
                 config: b => b.WithFactory(() => this.GetModelRegistry(elements), isSingleton: true, allowMultiple: true));
