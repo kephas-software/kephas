@@ -14,6 +14,7 @@ namespace Kephas.Model.Security.Authorization.Runtime.Construction
     using Kephas.Model.Runtime.Construction;
     using Kephas.Model.Security.Authorization.Elements;
     using Kephas.Runtime;
+    using Kephas.Security.Authorization.Reflection;
 
     /// <summary>
     /// Classifier constructor for <see cref="PermissionType"/>.
@@ -23,7 +24,7 @@ namespace Kephas.Model.Security.Authorization.Runtime.Construction
         /// <summary>
         /// The permission discriminator.
         /// </summary>
-        public const string PermissionDiscriminator = "Permission";
+        public static readonly string PermissionDiscriminator = "Permission";
 
         /// <summary>
         /// Gets the element name discriminator.
@@ -35,6 +36,19 @@ namespace Kephas.Model.Security.Authorization.Runtime.Construction
         /// This discriminator can be used as a suffix in the name to identify the element type.
         /// </remarks>
         protected override string ElementNameDiscriminator => PermissionDiscriminator;
+
+        /// <summary>
+        /// Determines whether a model element can be created for the provided runtime element.
+        /// </summary>
+        /// <param name="constructionContext">Context for the construction.</param>
+        /// <param name="runtimeElement">The runtime element.</param>
+        /// <returns>
+        /// <c>true</c> if a model element can be created, <c>false</c> if not.
+        /// </returns>
+        protected override bool CanCreateModelElement(IModelConstructionContext constructionContext, IRuntimeTypeInfo runtimeElement)
+        {
+            return runtimeElement is IPermissionInfo;
+        }
 
         /// <summary>
         /// Core implementation of trying to get the element information.

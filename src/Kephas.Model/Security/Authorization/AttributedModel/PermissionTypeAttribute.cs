@@ -25,12 +25,13 @@ namespace Kephas.Model.Security.Authorization.AttributedModel
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionTypeAttribute"/> class.
         /// </summary>
-        /// <param name="classifierName">Optional. Name of the classifier.</param>
+        /// <param name="tokenName">Optional. Name of the classifier.</param>
         /// <param name="scoping">Optional. The scoping.</param>
-        public PermissionTypeAttribute(string classifierName = null, Scoping scoping = Scoping.Global)
-            : base(typeof(IPermissionType), classifierName)
+        public PermissionTypeAttribute(string? tokenName = null, Scoping scoping = Scoping.Global)
+            : base(typeof(IPermissionType), classifierName: null)
         {
             this.Scoping = scoping;
+            this.TokenName = tokenName ?? string.Empty;
         }
 
         /// <summary>
@@ -44,6 +45,6 @@ namespace Kephas.Model.Security.Authorization.AttributedModel
         /// <summary>
         /// Gets the token name.
         /// </summary>
-        string IToken.TokenName => this.ClassifierName ?? string.Empty;
+        public string TokenName { get; }
     }
 }
