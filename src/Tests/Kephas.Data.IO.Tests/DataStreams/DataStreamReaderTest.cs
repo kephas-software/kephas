@@ -43,11 +43,9 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
             var reader = new DataStreamReader(serializationService, mediaTypeProvider);
-            using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
-            {
-                var result = await reader.ReadAsync(dataStream);
-                Assert.AreSame(entity, result);
-            }
+            using var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true);
+            var result = await reader.ReadAsync(dataStream, Substitute.For<IDataIOContext>());
+            Assert.AreSame(entity, result);
         }
 
         [Test]
@@ -67,12 +65,10 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
             var reader = new DataStreamReader(serializationService, mediaTypeProvider);
-            using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
-            {
-                await reader.ReadAsync(dataStream, new DataIOContext(Substitute.For<ICompositionContext>()).RootObjectType(typeof(bool)));
-                Assert.IsNotNull(serializationContext);
-                Assert.AreEqual(typeof(bool), serializationContext.RootObjectType);
-            }
+            using var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true);
+            await reader.ReadAsync(dataStream, new DataIOContext(Substitute.For<ICompositionContext>()).RootObjectType(typeof(bool)));
+            Assert.IsNotNull(serializationContext);
+            Assert.AreEqual(typeof(bool), serializationContext.RootObjectType);
         }
 
         [Test]
@@ -92,12 +88,10 @@ namespace Kephas.Data.IO.Tests.DataStreams
             var serializationService = this.CreateSerializationServiceMock<JsonMediaType>(serializer);
 
             var reader = new DataStreamReader(serializationService, mediaTypeProvider);
-            using (var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true))
-            {
-                await reader.ReadAsync(dataStream);
-                Assert.IsNotNull(serializationContext);
-                Assert.AreEqual(typeof(List<object>), serializationContext.RootObjectType);
-            }
+            using var dataStream = new DataStream(new MemoryStream(new byte[] { 0, 1, 2 }), "test", ownsStream: true);
+            await reader.ReadAsync(dataStream, Substitute.For<IDataIOContext>());
+            Assert.IsNotNull(serializationContext);
+            Assert.AreEqual(typeof(List<object>), serializationContext.RootObjectType);
         }
     }
 }
