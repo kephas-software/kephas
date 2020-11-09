@@ -143,6 +143,43 @@ namespace Kephas.Reflection
         }
 
         /// <summary>
+        /// Tries to get the key and item type of the generic dictionary type.
+        /// </summary>
+        /// <param name="type">The enumerable type.</param>
+        /// <returns>The item type if the provided type is enumerable, otherwise <c>null</c>.</returns>
+        public static (Type keyType, Type itemType)? TryGetDictionaryKeyItemType(this Type type)
+        {
+            return TryGetDictionaryKeyItemType(type, typeof(IDictionary<,>));
+        }
+
+        /// <summary>
+        /// Tries to get the key and item type of the generic dictionary type.
+        /// </summary>
+        /// <param name="type">The enumerable type.</param>
+        /// <param name="dictionaryGenericType">The dictionary generic type.</param>
+        /// <returns>The item type if the provided type is enumerable, otherwise <c>null</c>.</returns>
+        public static (Type keyType, Type itemType)? TryGetDictionaryKeyItemType(this Type type, Type dictionaryGenericType)
+        {
+            if (!type.IsDictionary())
+            {
+                return null;
+            }
+
+            bool IsRequestedDictionary(Type t)
+            {
+                return t.IsGenericType && t.GetGenericTypeDefinition() == dictionaryGenericType;
+            }
+
+            var dictionaryType = IsRequestedDictionary(type)
+                ? type
+                : type.GetInterfaces().SingleOrDefault(IsRequestedDictionary);
+
+            return dictionaryType == null
+                ? ((Type keyType, Type itemType)?)null
+                : (dictionaryType.GenericTypeArguments[0], dictionaryType.GenericTypeArguments[1]);
+        }
+
+        /// <summary>
         /// Tries to get the item type of the generic enumerable type.
         /// </summary>
         /// <param name="type">The enumerable type.</param>

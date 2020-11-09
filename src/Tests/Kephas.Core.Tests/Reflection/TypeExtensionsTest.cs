@@ -20,6 +20,29 @@ namespace Kephas.Core.Tests.Reflection
     public class TypeExtensionsTest
     {
         [Test]
+        public void TryGetDictionaryKeyItemType_not_enumerable()
+        {
+            var itemType = typeof(int).TryGetDictionaryKeyItemType();
+            Assert.IsNull(itemType);
+        }
+
+        [Test]
+        public void TryGetDictionaryKeyItemType_closed_generic_dictionary()
+        {
+            var itemType = typeof(IDictionary<int, object?>).TryGetDictionaryKeyItemType();
+            Assert.AreEqual(typeof(int), itemType.Value.keyType);
+            Assert.AreEqual(typeof(object), itemType.Value.itemType);
+        }
+
+        [Test]
+        public void TryGetDictionaryKeyItemType_closed_generic_dictionary_class()
+        {
+            var itemType = typeof(Dictionary<int, object?>).TryGetDictionaryKeyItemType();
+            Assert.AreEqual(typeof(int), itemType.Value.keyType);
+            Assert.AreEqual(typeof(object), itemType.Value.itemType);
+        }
+
+        [Test]
         public void TryGetEnumerableItemType_not_enumerable()
         {
             var itemType = typeof(int).TryGetEnumerableItemType();
@@ -30,6 +53,14 @@ namespace Kephas.Core.Tests.Reflection
         public void TryGetEnumerableItemType_closed_generic_collection()
         {
             var itemType = typeof(ICollection<string>).TryGetEnumerableItemType();
+            Assert.AreEqual(typeof(string), itemType);
+        }
+
+
+        [Test]
+        public void TryGetEnumerableItemType_closed_generic_collection_list()
+        {
+            var itemType = typeof(List<string>).TryGetEnumerableItemType();
             Assert.AreEqual(typeof(string), itemType);
         }
 
