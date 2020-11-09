@@ -18,4 +18,12 @@ namespace Kephas.Serialization.Json.Converters
     public abstract class JsonConverterBase : JsonConverter, IJsonConverter
     {
     }
+
+    /// <summary>
+    /// Base for composable JSON typed converters.
+    /// </summary>
+    /// <typeparam name="T">The object type.</typeparam>
+    public abstract class JsonConverterBase<T> : JsonConverter<T>, IJsonConverter
+    {
+    }
 }

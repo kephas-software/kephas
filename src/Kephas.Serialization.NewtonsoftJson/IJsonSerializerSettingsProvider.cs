@@ -57,8 +57,7 @@ namespace Kephas.Serialization.Json
         /// <returns>
         /// The JSON serializer settings.
         /// </returns>
-        public static JsonSerializerSettings GetJsonSerializerSettings(
-            this IJsonSerializerSettingsProvider settingsProvider)
+        public static JsonSerializerSettings GetJsonSerializerSettings(this IJsonSerializerSettingsProvider settingsProvider)
         {
             Requires.NotNull(settingsProvider, nameof(settingsProvider));
 

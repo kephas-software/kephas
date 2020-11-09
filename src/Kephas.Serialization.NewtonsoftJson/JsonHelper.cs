@@ -91,22 +91,13 @@ namespace Kephas.Serialization.Json
         /// </returns>
         internal static object? Unwrap(this JToken value)
         {
-            if (value is JObject jobj)
+            return value switch
             {
-                return new JObjectDictionary(jobj);
-            }
-
-            if (value is JValue jval)
-            {
-                return jval.Value;
-            }
-
-            if (value is JArray jarr)
-            {
-                return new JObjectList(jarr);
-            }
-
-            return value;
+                JObject jobj => new JObjectDictionary(jobj),
+                JValue jval => jval.Value,
+                JArray jarr => new JObjectList(jarr),
+                _ => value
+            };
         }
 
         /// <summary>

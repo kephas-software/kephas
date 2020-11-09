@@ -15,13 +15,15 @@ namespace Kephas.Serialization.Json
     using System.Linq;
 
     using Kephas.Collections;
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
     using Kephas.Serialization.Json.Converters;
     using Kephas.Serialization.Json.Logging;
     using Kephas.Serialization.Json.Resources;
-
+    using Kephas.Services;
+    using Kephas.Services.Composition;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
@@ -31,7 +33,7 @@ namespace Kephas.Serialization.Json
     public class DefaultJsonSerializerSettingsProvider : Loggable, IJsonSerializerSettingsProvider
     {
         private static DefaultJsonSerializerSettingsProvider? instance;
-        private readonly ICollection<JsonConverter> jsonConverters;
+        private readonly Lazy<ICollection<JsonConverter>> lazyJsonConverters;
         private readonly ILogManager logManager;
 
         /// <summary>
@@ -43,17 +45,14 @@ namespace Kephas.Serialization.Json
         public DefaultJsonSerializerSettingsProvider(
             ITypeResolver typeResolver,
             ILogManager logManager,
-            ICollection<IJsonConverter>? jsonConverters = null)
+            ICollection<IExportFactory<IJsonConverter, AppServiceMetadata>>? jsonConverters = null)
             : base(logManager)
         {
             Requires.NotNull(typeResolver, nameof(typeResolver));
 
             this.TypeResolver = typeResolver;
             this.logManager = logManager;
-            var converters = jsonConverters?.OfType<JsonConverter>().ToList()
-                                                ?? new List<JsonConverter>();
-            converters.AddRange(this.GetDefaultJsonConverters(typeResolver));
-            this.jsonConverters = converters;
+            this.lazyJsonConverters = new Lazy<ICollection<JsonConverter>>(() => this.ComputeJsonConverters(jsonConverters));
         }
 
         /// <summary>
@@ -75,13 +74,17 @@ namespace Kephas.Serialization.Json
         /// <summary>
         /// Configures the provided json serializer settings.
         /// </summary>
+        /// <remarks>
+        /// By default, camel casing is used along with collected json converters.
+        /// Additionally missing members generate exceptions.
+        /// </remarks>
         /// <param name="settings">The serializer settings to configure.</param>
-        public void ConfigureJsonSerializerSettings(JsonSerializerSettings settings) =>
+        public virtual void ConfigureJsonSerializerSettings(JsonSerializerSettings settings) =>
             this.ConfigureJsonSerializerSettings(
                 settings,
                 camelCase: true,
                 throwOnMissingMembers: true,
-                converters: this.jsonConverters);
+                converters: this.lazyJsonConverters.Value);
 
         /// <summary>
         /// Gets the default JSON converters.
@@ -96,6 +99,8 @@ namespace Kephas.Serialization.Json
                 new TimeSpanJsonConverter(),
                 new StringEnumJsonConverter(),
                 new TypeJsonConverter(typeResolver),
+                new DictionaryJsonConverter(),
+                new ArrayJsonConverter(),
             };
         }
 
@@ -112,7 +117,7 @@ namespace Kephas.Serialization.Json
         protected virtual JsonSerializerSettings ConfigureJsonSerializerSettings(
             JsonSerializerSettings serializerSettings,
             bool camelCase,
-            bool throwOnMissingMembers = true,
+            bool throwOnMissingMembers,
             IEnumerable<JsonConverter>? converters = null)
         {
             serializerSettings.NullValueHandling = NullValueHandling.Include;
@@ -128,7 +133,7 @@ namespace Kephas.Serialization.Json
             serializerSettings.SerializationBinder = this.GetSerializationBinder();
             serializerSettings.TraceWriter = new JsonTraceWriter(this.logManager);
 
-            serializerSettings.Converters.AddRange(converters ?? this.jsonConverters);
+            serializerSettings.Converters.AddRange(converters ?? this.lazyJsonConverters.Value);
 
             return serializerSettings;
         }
@@ -167,6 +172,27 @@ namespace Kephas.Serialization.Json
                 args.ErrorContext.Error,
                 Strings.DefaultJsonSerializerSettingsProvider_ErrorOnSerializingObjectMessage,
                 args.CurrentObject?.GetType());
+        }
+
+        /// <summary>
+        /// Computes the JSON converters based on the provided export factories.
+        /// </summary>
+        /// <param name="jsonConverters">The JSON converter export factories.</param>
+        /// <returns>A collection of JSON converters.</returns>
+        protected virtual ICollection<JsonConverter> ComputeJsonConverters(ICollection<IExportFactory<IJsonConverter, AppServiceMetadata>>? jsonConverters)
+        {
+            var converters = jsonConverters?
+                                 .Order()
+                                 .Select(f => f.CreateExportedValue())
+                                 .OfType<JsonConverter>()
+                                 .ToList()
+                             ?? new List<JsonConverter>();
+            if (converters.Count == 0)
+            {
+                converters.AddRange(this.GetDefaultJsonConverters(this.TypeResolver));
+            }
+
+            return converters;
         }
 
         /// <summary>

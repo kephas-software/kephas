@@ -236,11 +236,110 @@ namespace Kephas.Serialization.Json.Tests
             var serializer = new JsonSerializer(settingsProvider);
             var obj = new ExpandoEntity
             {
-                Description = "John Doe"
+                Description = "John Doe",
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+ExpandoEntity"",""description"":""John Doe""}", serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_Array()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new object?[] { "one", 2, null };
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"[""one"",2,null]", serializedObj);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_Array()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            // var obj = new object?[] { "one", 2, null };
+            var obj = await serializer.DeserializeAsync(@"[""one"",2,null]");
+
+            Assert.IsInstanceOf<JObjectList>(obj);
+            var list = (JObjectList)obj;
+            Assert.AreEqual("one", list[0]);
+            Assert.AreEqual(2, list[1]);
+            Assert.IsNull(list[2]);
+        }
+
+        [Test]
+        public async Task SerializeAsync_Array_nested()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new NestedValues
+            {
+                Values = new object?[] { "one", 2, null },
+            };
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+NestedValues"",""values"":[""one"",2,null]}", serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_List()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new List<object?> { "one", 2, null };
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"[""one"",2,null]", serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_Dictionary()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new Dictionary<string, object>
+            {
+                ["Description"] = "John Doe",
+            };
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"{""description"":""John Doe""}", serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_Dictionary_nested()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new NestedValues
+            {
+                Values = new Dictionary<string, object>
+                {
+                    ["Description"] = "John Doe",
+                },
+            };
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+NestedValues"",""values"":{""description"":""John Doe""}}", serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_Dictionary_nested_object_item()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), Substitute.For<ILogManager>());
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new NestedValues
+            {
+                Values = new Dictionary<string, object>
+                {
+                    ["Item"] = new TestEntity { Name = "gigi" },
+                },
+            };
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+NestedValues"",""values"":{""item"":{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+TestEntity"",""name"":""gigi"",""personalSite"":null}}}", serializedObj);
         }
 
         [Test]
@@ -478,6 +577,11 @@ namespace Kephas.Serialization.Json.Tests
         public class TestWithType
         {
             public Type Type { get; set; }
+        }
+
+        public class NestedValues
+        {
+            public object Values { get; set; }
         }
     }
 }
