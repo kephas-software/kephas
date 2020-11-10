@@ -97,23 +97,21 @@ namespace Kephas.Serialization.Json.Converters
             foreach (var (key, item) in value)
             {
                 var propName = key.ToString();
-                WriteProperty(writer, serializer, camelCase ? propName.ToCamelCase() : propName, item);
+                propName = camelCase ? propName.ToCamelCase() : propName;
+                writer.WritePropertyName(propName);
+                serializer.Serialize(writer, value);
             }
 #else
             foreach (var kv in value)
             {
                 var propName = kv.Key.ToString();
-                WriteProperty(writer, serializer, camelCase ? propName.ToCamelCase() : propName, kv.Value);
+                propName = camelCase ? propName.ToCamelCase() : propName;
+                writer.WritePropertyName(propName);
+                serializer.Serialize(writer, value);
             }
 #endif
             writer.WriteEndObject();
             return writer;
-        }
-
-        private static void WriteProperty(JsonWriter writer, JsonSerializer serializer, string propName, object? value)
-        {
-            writer.WritePropertyName(propName);
-            serializer.Serialize(writer, value);
         }
     }
 }
