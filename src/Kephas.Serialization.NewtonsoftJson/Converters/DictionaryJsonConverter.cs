@@ -12,8 +12,8 @@ namespace Kephas.Serialization.Json.Converters
     using System.Reflection;
 
     using Kephas.Reflection;
+    using Kephas.Serialization.Json.ContractResolvers;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     /// JSON converter for dictionaries.
@@ -22,7 +22,7 @@ namespace Kephas.Serialization.Json.Converters
     {
         private static readonly MethodInfo WriteJsonMethod =
             ReflectionHelper.GetGenericMethodOf(_ =>
-                DictionaryJsonConverter.WriteJson<int, int>(null!, null!, null!));
+                WriteJson<int, int>(null!, null!, null!));
 
         private readonly Type dictionaryInterfaceType = typeof(IDictionary<string, object?>);
 
@@ -63,7 +63,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <returns>The object value.</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException("Unnecessary because CanRead is false. The type will skip the converter.");
+            throw new NotSupportedException("Unnecessary because CanRead is false. The type will skip the converter.");
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>
@@ -83,31 +83,25 @@ namespace Kephas.Serialization.Json.Converters
             writeJson.Call(null, writer, value, serializer);
         }
 
-        /// <summary>Writes the JSON representation of the object.</summary>
-        /// <typeparam name="TKey">The key type.</typeparam>
-        /// <typeparam name="TItem">The item type.</typeparam>
-        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="serializer">The calling serializer.</param>
         private static JsonWriter WriteJson<TKey, TItem>(JsonWriter writer, IDictionary<TKey, TItem> value, JsonSerializer serializer)
         {
-            var camelCase = serializer.ContractResolver is CamelCasePropertyNamesContractResolver;
+            var casingResolver = serializer.ContractResolver as ICasingContractResolver;
             writer.WriteStartObject();
 #if NETSTANDARD2_1
             foreach (var (key, item) in value)
             {
                 var propName = key.ToString();
-                propName = camelCase ? propName.ToCamelCase() : propName;
+                propName = casingResolver?.GetSerializedPropertyName(propName) ?? propName;
                 writer.WritePropertyName(propName);
-                serializer.Serialize(writer, value);
+                serializer.Serialize(writer, item);
             }
 #else
             foreach (var kv in value)
             {
                 var propName = kv.Key.ToString();
-                propName = camelCase ? propName.ToCamelCase() : propName;
+                propName = casingResolver?.GetSerializedPropertyName(propName) ?? propName;
                 writer.WritePropertyName(propName);
-                serializer.Serialize(writer, value);
+                serializer.Serialize(writer, kv.Value);
             }
 #endif
             writer.WriteEndObject();

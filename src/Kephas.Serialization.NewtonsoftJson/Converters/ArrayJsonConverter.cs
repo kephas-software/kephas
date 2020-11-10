@@ -59,7 +59,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <returns>The object value.</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException("Unnecessary because CanRead is false. The type will skip the converter.");
+            throw new NotSupportedException("Unnecessary because CanRead is false. The type will skip the converter.");
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>
