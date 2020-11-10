@@ -190,23 +190,19 @@ namespace Kephas.Serialization.Json
             var settings = this.GetJsonSerializerSettings(context);
             var serializer = Newtonsoft.Json.JsonSerializer.Create(settings);
 
-            object? result;
-            using (var jsonReader = new JsonTextReader(textReader))
+            using var jsonReader = new JsonTextReader(textReader);
+            var result = context?.RootObjectFactory?.Invoke();
+            var rootObjectType = context?.RootObjectType ?? typeof(object);
+            if (result != null)
             {
-                result = context?.RootObjectFactory?.Invoke();
-                if (result != null)
-                {
-                    serializer.Populate(jsonReader, result);
-                }
-                else
-                {
-                    result = context?.RootObjectType != null
-                                 ? serializer.Deserialize(jsonReader, context.RootObjectType)
-                                 : serializer.Deserialize(jsonReader);
-                }
+                serializer.Populate(jsonReader, result);
+            }
+            else
+            {
+                result = serializer.Deserialize(jsonReader, rootObjectType);
             }
 
-            return this.PostDeserialize(result, context?.RootObjectType ?? typeof(object));
+            return this.PostDeserialize(result, rootObjectType);
         }
 
         /// <summary>

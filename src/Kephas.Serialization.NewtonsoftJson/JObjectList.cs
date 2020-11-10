@@ -205,9 +205,7 @@ namespace Kephas.Serialization.Json
         {
             return obj is JArray jarr
                 ? ReferenceEquals(this.array, jarr)
-                : obj is JObjectList jlist
-                    ? ReferenceEquals(this, jlist) || ReferenceEquals(this.array, jlist.array)
-                    : false;
+                : obj is JObjectList jlist && (ReferenceEquals(this, jlist) || ReferenceEquals(this.array, jlist.array));
         }
     }
 }

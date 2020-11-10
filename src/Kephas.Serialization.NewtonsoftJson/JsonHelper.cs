@@ -21,6 +21,11 @@ namespace Kephas.Serialization.Json
     /// </summary>
     public static class JsonHelper
     {
+        /// <summary>
+        /// Gets the property name containing the type.
+        /// </summary>
+        internal static readonly string TypePropertyName = "$type";
+
         private const string JsonOptionsKey = "__JsonOptions";
 
         /// <summary>

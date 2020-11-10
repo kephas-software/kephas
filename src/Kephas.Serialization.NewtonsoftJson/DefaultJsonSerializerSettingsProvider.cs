@@ -19,6 +19,8 @@ namespace Kephas.Serialization.Json
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Reflection;
+    using Kephas.Runtime;
+    using Kephas.Serialization.Json.ContractResolvers;
     using Kephas.Serialization.Json.Converters;
     using Kephas.Serialization.Json.Logging;
     using Kephas.Serialization.Json.Resources;
@@ -34,25 +36,33 @@ namespace Kephas.Serialization.Json
     {
         private static DefaultJsonSerializerSettingsProvider? instance;
         private readonly Lazy<ICollection<JsonConverter>> lazyJsonConverters;
-        private readonly ILogManager logManager;
+        private readonly ILogManager? logManager;
+        private readonly Lazy<IContractResolver> lazyCamelCaseResolver;
+        private readonly Lazy<IContractResolver> lazyInvariantCaseResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultJsonSerializerSettingsProvider"/> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="logManager">Manager for log.</param>
         /// <param name="jsonConverters">Optional. The JSON converters.</param>
         public DefaultJsonSerializerSettingsProvider(
             ITypeResolver typeResolver,
-            ILogManager logManager,
+            IRuntimeTypeRegistry typeRegistry,
+            ILogManager? logManager,
             ICollection<IExportFactory<IJsonConverter, AppServiceMetadata>>? jsonConverters = null)
             : base(logManager)
         {
             Requires.NotNull(typeResolver, nameof(typeResolver));
+            Requires.NotNull(typeRegistry, nameof(typeRegistry));
 
             this.TypeResolver = typeResolver;
+            this.TypeRegistry = typeRegistry;
             this.logManager = logManager;
             this.lazyJsonConverters = new Lazy<ICollection<JsonConverter>>(() => this.ComputeJsonConverters(jsonConverters));
+            this.lazyCamelCaseResolver = new Lazy<IContractResolver>(() => new CamelCaseContractResolver(this.lazyJsonConverters.Value));
+            this.lazyInvariantCaseResolver = new Lazy<IContractResolver>(() => new InvariantCaseContractResolver(this.lazyJsonConverters.Value));
         }
 
         /// <summary>
@@ -69,7 +79,12 @@ namespace Kephas.Serialization.Json
         /// <value>
         /// The type resolver.
         /// </value>
-        public ITypeResolver TypeResolver { get; }
+        protected ITypeResolver TypeResolver { get; }
+
+        /// <summary>
+        /// Gets the type registry.
+        /// </summary>
+        protected IRuntimeTypeRegistry TypeRegistry { get; }
 
         /// <summary>
         /// Configures the provided json serializer settings.
@@ -90,8 +105,9 @@ namespace Kephas.Serialization.Json
         /// Gets the default JSON converters.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="typeRegistry">The runtime type registry.</param>
         /// <returns>The default JSON converters.</returns>
-        protected virtual IEnumerable<JsonConverter> GetDefaultJsonConverters(ITypeResolver typeResolver)
+        protected virtual IEnumerable<JsonConverter> GetDefaultJsonConverters(ITypeResolver typeResolver, IRuntimeTypeRegistry typeRegistry)
         {
             return new List<JsonConverter>
             {
@@ -99,8 +115,10 @@ namespace Kephas.Serialization.Json
                 new TimeSpanJsonConverter(),
                 new StringEnumJsonConverter(),
                 new TypeJsonConverter(typeResolver),
+                new ExpandoJsonConverter(typeRegistry),
                 new DictionaryJsonConverter(),
                 new ArrayJsonConverter(),
+                new ObjectJsonConverter(typeRegistry),
             };
         }
 
@@ -158,7 +176,7 @@ namespace Kephas.Serialization.Json
         /// </returns>
         protected virtual IContractResolver GetContractResolver(bool camelCase)
         {
-            return camelCase ? new CamelCasePropertyNamesContractResolver() : new DefaultContractResolver();
+            return camelCase ? this.lazyCamelCaseResolver.Value : this.lazyInvariantCaseResolver.Value;
         }
 
         /// <summary>
@@ -189,7 +207,7 @@ namespace Kephas.Serialization.Json
                              ?? new List<JsonConverter>();
             if (converters.Count == 0)
             {
-                converters.AddRange(this.GetDefaultJsonConverters(this.TypeResolver));
+                converters.AddRange(this.GetDefaultJsonConverters(this.TypeResolver, this.TypeRegistry));
             }
 
             return converters;
@@ -204,7 +222,7 @@ namespace Kephas.Serialization.Json
         private static DefaultJsonSerializerSettingsProvider CreateDefaultInstance()
         {
             var defaultInstance =
-                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), LoggingHelper.DefaultLogManager);
+                new DefaultJsonSerializerSettingsProvider(new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), RuntimeTypeRegistry.Instance, LoggingHelper.DefaultLogManager);
 
             return defaultInstance;
         }
