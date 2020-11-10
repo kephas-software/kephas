@@ -62,22 +62,24 @@ namespace Kephas.Logging
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
         /// <param name="logManager">The log manager.</param>
-        protected Loggable(ILogManager? logManager)
+        /// <param name="logTarget">Optional. The log target type. Defaults to this type.</param>
+        protected Loggable(ILogManager? logManager, Type? logTarget = null)
         {
             this.lazyLogger = new Lazy<ILogger>(
-                () => logManager?.GetLogger(this.GetType())
-                        ?? LoggingExtensions.GetLogger(this, null));
+                () => logManager?.GetLogger(logTarget ?? this.GetType())
+                        ?? (logTarget ?? this.GetType()).GetLogger());
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Loggable"/> class.
         /// </summary>
         /// <param name="logManagerGetter">The log manager getter.</param>
-        protected Loggable(Func<ILogManager> logManagerGetter)
+        /// <param name="logTarget">Optional. The log target type. Defaults to this type.</param>
+        protected Loggable(Func<ILogManager?> logManagerGetter, Type? logTarget = null)
         {
             this.lazyLogger = new Lazy<ILogger>(
-                () => logManagerGetter?.Invoke()?.GetLogger(this.GetType())
-                        ?? LoggingExtensions.GetLogger(this, null));
+                () => logManagerGetter?.Invoke()?.GetLogger(logTarget ?? this.GetType())
+                        ?? (logTarget ?? this.GetType()).GetLogger());
         }
 
         /// <summary>
