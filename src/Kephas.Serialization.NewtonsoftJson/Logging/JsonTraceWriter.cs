@@ -19,17 +19,15 @@ namespace Kephas.Serialization.Json.Logging
     /// <summary>
     /// A JSON trace writer.
     /// </summary>
-    public class JsonTraceWriter : ITraceWriter
+    public class JsonTraceWriter : Loggable, ITraceWriter
     {
-        private ILogger logger;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonTraceWriter"/> class.
         /// </summary>
         /// <param name="logManager">Manager for log.</param>
-        public JsonTraceWriter(ILogManager logManager)
+        public JsonTraceWriter(ILogManager? logManager = null)
+            : base(logManager, typeof(JsonSerializer))
         {
-            this.logger = logManager.GetLogger(typeof(JsonSerializer));
         }
 
         /// <summary>
@@ -46,13 +44,13 @@ namespace Kephas.Serialization.Json.Logging
         /// messages passed to the writer.
         /// </value>
         public TraceLevel LevelFilter
-            => this.logger.IsFatalEnabled() || this.logger.IsErrorEnabled()
+            => this.Logger.IsFatalEnabled() || this.Logger.IsErrorEnabled()
                 ? TraceLevel.Error
-                : this.logger.IsWarningEnabled()
+                : this.Logger.IsWarningEnabled()
                     ? TraceLevel.Warning
-                    : this.logger.IsInfoEnabled()
+                    : this.Logger.IsInfoEnabled()
                         ? TraceLevel.Info
-                        : this.logger.IsDebugEnabled() || this.logger.IsTraceEnabled()
+                        : this.Logger.IsDebugEnabled() || this.Logger.IsTraceEnabled()
                             ? TraceLevel.Verbose
                             : TraceLevel.Off;
 
@@ -63,28 +61,18 @@ namespace Kephas.Serialization.Json.Logging
         ///                     trace.</param>
         /// <param name="message">The trace message.</param>
         /// <param name="ex">The trace exception. This parameter is optional.</param>
-        public void Trace(TraceLevel level, string message, Exception ex)
-        {
-            this.logger.Log(this.ToLogLevel(level), ex, message);
-        }
+        public void Trace(TraceLevel level, string message, Exception ex) =>
+            this.Logger.Log(this.ToLogLevel(level), ex, message);
 
-        private LogLevel ToLogLevel(TraceLevel traceLevel)
-        {
-            switch (traceLevel)
+        private LogLevel ToLogLevel(TraceLevel traceLevel) =>
+            traceLevel switch
             {
-                case TraceLevel.Error:
-                    return LogLevel.Error;
-                case TraceLevel.Warning:
-                    return LogLevel.Warning;
-                case TraceLevel.Info:
-                    return LogLevel.Info;
-                case TraceLevel.Verbose:
-                    return LogLevel.Debug;
-                case TraceLevel.Off:
-                    return LogLevel.Trace;
-                default:
-                    return LogLevel.Trace;
-            }
-        }
+                TraceLevel.Error => LogLevel.Error,
+                TraceLevel.Warning => LogLevel.Warning,
+                TraceLevel.Info => LogLevel.Info,
+                TraceLevel.Verbose => LogLevel.Debug,
+                TraceLevel.Off => LogLevel.Trace,
+                _ => LogLevel.Trace
+            };
     }
 }
