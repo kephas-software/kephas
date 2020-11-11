@@ -15,12 +15,13 @@ namespace Kephas.Serialization.Json
     using System.Collections.Generic;
     using System.Linq;
 
+    using Kephas.Dynamic;
     using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Dictionary of objects.
     /// </summary>
-    public class JObjectDictionary : IDictionary<string, object?>
+    public class JObjectDictionary : IDictionary<string, object?>, IIndexable
     {
         private readonly JObject obj;
 

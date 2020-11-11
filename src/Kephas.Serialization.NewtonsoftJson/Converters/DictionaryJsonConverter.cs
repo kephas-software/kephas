@@ -15,6 +15,7 @@ namespace Kephas.Serialization.Json.Converters
     using Kephas.Runtime;
     using Kephas.Services;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// JSON converter for dictionaries.
@@ -134,14 +135,20 @@ namespace Kephas.Serialization.Json.Converters
 
         private static object ReadJson<TItem>(JsonReader reader, IDictionary<string, TItem> value, JsonSerializer serializer)
         {
+            var unwrap = typeof(TItem) == typeof(object);
             while (reader.TokenType != JsonToken.EndObject)
             {
                 var propName = (string)reader.Value;
 
                 reader.Read();
                 var propValue = serializer.Deserialize(reader, typeof(TItem));
+                if (unwrap)
+                {
+                    propValue = propValue is JToken jtoken ? jtoken.Unwrap() : propValue;
+                }
 
                 value[propName] = (TItem)propValue;
+
                 reader.Read();
             }
 
