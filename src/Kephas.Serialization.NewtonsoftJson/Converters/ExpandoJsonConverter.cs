@@ -73,18 +73,7 @@ namespace Kephas.Serialization.Json.Converters
 
             // check the first property, if it is the type name metadata.
             reader.Read();
-            var propName = (string)reader.Value;
-            if (propName == JsonHelper.TypePropertyName)
-            {
-                reader.Read();
-                var valueTypeName = reader.Value?.ToString();
-                var valueType = this.typeResolver.ResolveType(valueTypeName)!;
-                if (valueType != valueTypeInfo.Type)
-                {
-                    valueTypeInfo = this.typeRegistry.GetTypeInfo(valueType);
-                    createInstance = true;
-                }
-            }
+            valueTypeInfo = JsonHelper.EnsureProperValueType(reader, this.typeResolver, this.typeRegistry, valueTypeInfo, ref createInstance);
 
             if (!this.expandoInterfaceType.IsAssignableFrom(valueTypeInfo.Type))
             {
@@ -97,7 +86,7 @@ namespace Kephas.Serialization.Json.Converters
             var typeProperties = valueTypeInfo.Properties;
             while (reader.TokenType != JsonToken.EndObject)
             {
-                propName = (string)reader.Value!;
+                var propName = (string)reader.Value!;
 
                 reader.Read();
                 var propValue = reader.Value;

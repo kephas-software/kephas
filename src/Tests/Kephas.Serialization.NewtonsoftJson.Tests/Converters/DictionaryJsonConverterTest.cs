@@ -155,6 +155,38 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.AreEqual("gigi", nested.Entities["Customer"].Name);
         }
 
+        [Test]
+        public async Task SerializeAsync_MyDictionary_entities()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new NestedValues
+            {
+                Entities = new MyDictionary
+                {
+                    ["Customer"] = new TestEntity { Name = "gigi" },
+                },
+            };
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.Converters.DictionaryJsonConverterTest+NestedValues"",""values"":{},""entities"":{""$type"":""Kephas.Serialization.Json.Tests.Converters.DictionaryJsonConverterTest+MyDictionary"",""Customer"":{""$type"":""Kephas.Serialization.Json.Tests.Converters.DictionaryJsonConverterTest+TestEntity"",""name"":""gigi"",""personalSite"":null}}}", serializedObj);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_MyDictionary_Entities()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = await serializer.DeserializeAsync(
+                @"{""$type"":""Kephas.Serialization.Json.Tests.Converters.DictionaryJsonConverterTest+NestedValues"",""values"":{},""entities"":{""$type"":""Kephas.Serialization.Json.Tests.Converters.DictionaryJsonConverterTest+MyDictionary"",""Customer"":{""$type"":""Kephas.Serialization.Json.Tests.Converters.DictionaryJsonConverterTest+TestEntity"",""name"":""gigi"",""personalSite"":null}}}");
+
+            Assert.IsInstanceOf<NestedValues>(obj);
+            var nested = (NestedValues)obj;
+            Assert.IsInstanceOf<MyDictionary>(nested.Entities);
+            Assert.IsInstanceOf<TestEntity>(nested.Entities["Customer"]);
+            Assert.AreEqual("gigi", nested.Entities["Customer"].Name);
+        }
+
         public class TestEntity
         {
             public string Name { get; set; }
@@ -167,6 +199,10 @@ namespace Kephas.Serialization.Json.Tests.Converters
             public IDictionary<string, object> Values { get; } = new Dictionary<string, object>();
 
             public IDictionary<string, TestEntity> Entities { get; set; }
+        }
+
+        public class MyDictionary : Dictionary<string, TestEntity>
+        {
         }
     }
 }
