@@ -10,6 +10,7 @@ namespace Kephas.Serialization.Json.Converters
     using System;
 
     using Kephas.Dynamic;
+    using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Serialization.Json.ContractResolvers;
     using Newtonsoft.Json;
@@ -20,15 +21,18 @@ namespace Kephas.Serialization.Json.Converters
     public class ExpandoJsonConverter : JsonConverterBase
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
+        private readonly ITypeResolver typeResolver;
         private readonly Type expandoInterfaceType = typeof(IExpando);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpandoJsonConverter"/> class.
         /// </summary>
         /// <param name="typeRegistry">The runtime type registry.</param>
-        public ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry)
+        /// <param name="typeResolver">The type resolver.</param>
+        public ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver)
         {
             this.typeRegistry = typeRegistry;
+            this.typeResolver = typeResolver;
         }
 
         /// <summary>
@@ -38,15 +42,8 @@ namespace Kephas.Serialization.Json.Converters
         /// <returns>
         /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanConvert(Type objectType)
-        {
-            if (this.expandoInterfaceType.IsAssignableFrom(objectType))
-            {
-                return true;
-            }
-
-            return false;
-        }
+        public override bool CanConvert(Type objectType) =>
+            this.expandoInterfaceType.IsAssignableFrom(objectType);
 
         /// <summary>Reads the JSON representation of the object.</summary>
         /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
@@ -62,28 +59,42 @@ namespace Kephas.Serialization.Json.Converters
                 valueTypeInfo = this.typeRegistry.GetTypeInfo(typeof(Expando));
             }
 
-            var value = existingValue ?? valueTypeInfo.CreateInstance();
-            if (!(value is IExpando expando))
-            {
-                throw new SerializationException($"Cannot read values of type {valueTypeInfo}. Path: {reader.Path}.");
-            }
-
-            var casingResolver = serializer.ContractResolver as ICasingContractResolver;
-            var typeProperties = valueTypeInfo.Properties;
             if (reader.TokenType != JsonToken.StartObject)
             {
                 throw new SerializationException($"Cannot read values of type {valueTypeInfo}. Expected an object at {reader.Path}.");
             }
 
-            while (reader.Read() && reader.TokenType != JsonToken.EndObject)
-            {
-                var propName = (string)reader.Value;
-                reader.Read();
-                if (propName == JsonHelper.TypePropertyName)
-                {
-                    continue;
-                }
+            var createInstance = existingValue == null;
 
+            // check the first property, if it is the type name metadata.
+            reader.Read();
+            var propName = (string)reader.Value;
+            if (propName == JsonHelper.TypePropertyName)
+            {
+                reader.Read();
+                var valueTypeName = reader.Value?.ToString();
+                var valueType = this.typeResolver.ResolveType(valueTypeName)!;
+                if (valueType != valueTypeInfo.Type)
+                {
+                    valueTypeInfo = this.typeRegistry.GetTypeInfo(valueType);
+                    createInstance = true;
+                }
+            }
+
+            if (!this.expandoInterfaceType.IsAssignableFrom(valueTypeInfo.Type))
+            {
+                throw new SerializationException($"Cannot read values of type {valueTypeInfo}. Path: {reader.Path}.");
+            }
+
+            var expando = (IExpando)(createInstance ? valueTypeInfo.CreateInstance() : existingValue)!;
+
+            var casingResolver = serializer.ContractResolver as ICasingContractResolver;
+            var typeProperties = valueTypeInfo.Properties;
+            while (reader.TokenType != JsonToken.EndObject)
+            {
+                propName = (string)reader.Value!;
+
+                reader.Read();
                 var propValue = reader.Value;
                 if (casingResolver != null)
                 {
@@ -95,6 +106,7 @@ namespace Kephas.Serialization.Json.Converters
                 }
 
                 expando[propName] = propValue;
+                reader.Read();
             }
 
             return expando;
@@ -112,13 +124,12 @@ namespace Kephas.Serialization.Json.Converters
                 throw new SerializationException($"Cannot write values of type {valueTypeInfo}.");
             }
 
-            var casingResolver = serializer.ContractResolver as ICasingContractResolver;
-            var typeProperties = valueTypeInfo.Properties;
             writer.WriteStartObject();
 
             // write type information.
-            if (serializer.TypeNameHandling.HasFlag(TypeNameHandling.Objects)
-                || serializer.TypeNameHandling.HasFlag(TypeNameHandling.Auto))
+            if (valueTypeInfo.Type != typeof(Expando)
+                && (serializer.TypeNameHandling.HasFlag(TypeNameHandling.Objects)
+                    || serializer.TypeNameHandling.HasFlag(TypeNameHandling.Auto)))
             {
                 var typeName = serializer.TypeNameAssemblyFormatHandling == TypeNameAssemblyFormatHandling.Simple
                     ? valueTypeInfo.FullName
@@ -126,6 +137,10 @@ namespace Kephas.Serialization.Json.Converters
                 writer.WritePropertyName(JsonHelper.TypePropertyName);
                 writer.WriteValue(typeName);
             }
+
+            // write other properties
+            var casingResolver = serializer.ContractResolver as ICasingContractResolver;
+            var typeProperties = valueTypeInfo.Properties;
 #if NETSTANDARD2_1
             foreach (var (key, item) in expando.ToDictionary())
             {
@@ -146,6 +161,7 @@ namespace Kephas.Serialization.Json.Converters
                 serializer.Serialize(writer, kv.Value);
             }
 #endif
+
             writer.WriteEndObject();
         }
     }

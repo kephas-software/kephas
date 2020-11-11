@@ -12,25 +12,42 @@ namespace Kephas.Serialization.Json.Converters
     using System.Reflection;
 
     using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Serialization.Json.ContractResolvers;
+    using Kephas.Services;
     using Newtonsoft.Json;
 
     /// <summary>
     /// JSON converter for dictionaries.
     /// </summary>
+    /// <remarks>
+    /// Dictionaries should be processed before collections, that's why the higher priority.
+    /// </remarks>
+    [ProcessingPriority(Priority.AboveNormal)]
     public class DictionaryJsonConverter : JsonConverterBase
     {
         private static readonly MethodInfo WriteJsonMethod =
             ReflectionHelper.GetGenericMethodOf(_ =>
-                WriteJson<int, int>(null!, null!, null!));
+                WriteJson<int>(null!, null!, null!));
 
+        private static readonly MethodInfo ReadJsonMethod =
+            ReflectionHelper.GetGenericMethodOf(_ =>
+                ReadJson<int>(null!, null!, null!, null!));
+
+        private readonly IRuntimeTypeRegistry typeRegistry;
+        private readonly ITypeResolver typeResolver;
         private readonly Type dictionaryInterfaceType = typeof(IDictionary<string, object?>);
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter" /> can read JSON.
+        /// Initializes a new instance of the <see cref="DictionaryJsonConverter"/> class.
         /// </summary>
-        /// <value><c>true</c> if this <see cref="T:Newtonsoft.Json.JsonConverter" /> can read JSON; otherwise, <c>false</c>.</value>
-        public override bool CanRead => false;
+        /// <param name="typeRegistry">The runtime type registry.</param>
+        /// <param name="typeResolver">The type resolver.</param>
+        public DictionaryJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver)
+        {
+            this.typeRegistry = typeRegistry;
+            this.typeResolver = typeResolver;
+        }
 
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
@@ -47,12 +64,7 @@ namespace Kephas.Serialization.Json.Converters
             }
 
             var keyItem = objectType.TryGetDictionaryKeyItemType(objectType);
-            if (keyItem?.keyType == typeof(string))
-            {
-                return true;
-            }
-
-            return false;
+            return keyItem?.keyType == typeof(string);
         }
 
         /// <summary>Reads the JSON representation of the object.</summary>
@@ -63,7 +75,50 @@ namespace Kephas.Serialization.Json.Converters
         /// <returns>The object value.</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            throw new NotSupportedException("Unnecessary because CanRead is false. The type will skip the converter.");
+            var valueTypeInfo = this.typeRegistry.GetTypeInfo(existingValue?.GetType() ?? objectType);
+            if (valueTypeInfo.Type == this.dictionaryInterfaceType)
+            {
+                valueTypeInfo = this.typeRegistry.GetTypeInfo(typeof(Dictionary<string, object?>));
+            }
+            else if (valueTypeInfo.Type.IsConstructedGenericOf(typeof(IDictionary<,>)))
+            {
+                var genericArgs = valueTypeInfo.Type.TryGetDictionaryKeyItemType()!;
+                valueTypeInfo = this.typeRegistry.GetTypeInfo(
+                    typeof(Dictionary<,>).MakeGenericType(genericArgs.Value.keyType, genericArgs.Value.itemType));
+            }
+
+            if (reader.TokenType != JsonToken.StartObject)
+            {
+                throw new SerializationException($"Cannot read values of type {valueTypeInfo}. Expected an object at {reader.Path}.");
+            }
+
+            var createInstance = existingValue == null;
+
+            // check the first property, if it is the type name metadata.
+            reader.Read();
+            var propName = (string)reader.Value;
+            if (propName == JsonHelper.TypePropertyName)
+            {
+                reader.Read();
+                var valueTypeName = reader.Value?.ToString();
+                var valueType = this.typeResolver.ResolveType(valueTypeName)!;
+                if (valueType != valueTypeInfo.Type)
+                {
+                    valueTypeInfo = this.typeRegistry.GetTypeInfo(valueType);
+                    createInstance = true;
+                }
+            }
+
+            var keyItem = valueTypeInfo.Type.TryGetDictionaryKeyItemType();
+            if (keyItem == null)
+            {
+                throw new SerializationException($"Cannot read values of type {valueTypeInfo}. Path: {reader.Path}.");
+            }
+
+            var value = (createInstance ? valueTypeInfo.CreateInstance() : existingValue)!;
+
+            var readJson = ReadJsonMethod.MakeGenericMethod(keyItem.Value.itemType);
+            return readJson.Call(null, reader, value, valueTypeInfo, serializer);
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>
@@ -73,32 +128,58 @@ namespace Kephas.Serialization.Json.Converters
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var objectType = value.GetType();
+            var valueTypeInfo = this.typeRegistry.GetTypeInfo(objectType);
             var keyItem = objectType.TryGetDictionaryKeyItemType();
             if (keyItem == null)
             {
-                throw new SerializationException($"Cannot write values of type {objectType}.");
+                throw new SerializationException($"Cannot write values of type {valueTypeInfo}. Path: {writer.Path}.");
             }
 
-            var writeJson = WriteJsonMethod.MakeGenericMethod(keyItem.Value.keyType, keyItem.Value.itemType);
+            var writeJson = WriteJsonMethod.MakeGenericMethod(keyItem.Value.itemType);
             writeJson.Call(null, writer, value, serializer);
         }
 
-        private static JsonWriter WriteJson<TKey, TItem>(JsonWriter writer, IDictionary<TKey, TItem> value, JsonSerializer serializer)
+        private static object ReadJson<TItem>(JsonReader reader, IDictionary<string, TItem> value, IRuntimeTypeInfo valueTypeInfo, JsonSerializer serializer)
+        {
+            var casingResolver = serializer.ContractResolver as ICasingContractResolver;
+            var typeProperties = valueTypeInfo.Properties;
+            while (reader.TokenType != JsonToken.EndObject)
+            {
+                var propName = (string)reader.Value;
+
+                reader.Read();
+                var propValue = serializer.Deserialize(reader, typeof(TItem));
+                if (casingResolver != null)
+                {
+                    var pascalPropName = casingResolver.GetDeserializedPropertyName(propName);
+                    if (pascalPropName != propName && typeProperties.ContainsKey(pascalPropName))
+                    {
+                        propName = pascalPropName;
+                    }
+                }
+
+                value[propName] = (TItem)propValue;
+                reader.Read();
+            }
+
+            return value;
+        }
+
+        private static JsonWriter WriteJson<TItem>(JsonWriter writer, IDictionary<string, TItem> value, JsonSerializer serializer)
         {
             var casingResolver = serializer.ContractResolver as ICasingContractResolver;
             writer.WriteStartObject();
 #if NETSTANDARD2_1
             foreach (var (key, item) in value)
             {
-                var propName = key.ToString();
-                propName = casingResolver?.GetSerializedPropertyName(propName) ?? propName;
+                var propName = casingResolver?.GetSerializedPropertyName(key) ?? key;
                 writer.WritePropertyName(propName);
                 serializer.Serialize(writer, item);
             }
 #else
             foreach (var kv in value)
             {
-                var propName = kv.Key.ToString();
+                var propName = kv.Key;
                 propName = casingResolver?.GetSerializedPropertyName(propName) ?? propName;
                 writer.WritePropertyName(propName);
                 serializer.Serialize(writer, kv.Value);
