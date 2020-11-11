@@ -13,7 +13,6 @@ namespace Kephas.Serialization.Json.Converters
 
     using Kephas.Reflection;
     using Kephas.Runtime;
-    using Kephas.Serialization.Json.ContractResolvers;
     using Kephas.Services;
     using Newtonsoft.Json;
 
@@ -32,7 +31,7 @@ namespace Kephas.Serialization.Json.Converters
 
         private static readonly MethodInfo ReadJsonMethod =
             ReflectionHelper.GetGenericMethodOf(_ =>
-                ReadJson<int>(null!, null!, null!, null!));
+                ReadJson<int>(null!, null!, null!));
 
         private readonly IRuntimeTypeRegistry typeRegistry;
         private readonly ITypeResolver typeResolver;
@@ -63,7 +62,7 @@ namespace Kephas.Serialization.Json.Converters
                 return true;
             }
 
-            var keyItem = objectType.TryGetDictionaryKeyItemType(objectType);
+            var keyItem = objectType.TryGetDictionaryKeyItemType();
             return keyItem?.keyType == typeof(string);
         }
 
@@ -73,8 +72,13 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="existingValue">The existing value of object being read.</param>
         /// <param name="serializer">The calling serializer.</param>
         /// <returns>The object value.</returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.Null)
+            {
+                return null;
+            }
+
             var valueTypeInfo = this.typeRegistry.GetTypeInfo(existingValue?.GetType() ?? objectType);
             if (valueTypeInfo.Type == this.dictionaryInterfaceType)
             {
@@ -118,7 +122,7 @@ namespace Kephas.Serialization.Json.Converters
             var value = (createInstance ? valueTypeInfo.CreateInstance() : existingValue)!;
 
             var readJson = ReadJsonMethod.MakeGenericMethod(keyItem.Value.itemType);
-            return readJson.Call(null, reader, value, valueTypeInfo, serializer);
+            return readJson.Call(null, reader, value, serializer);
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>
@@ -139,24 +143,14 @@ namespace Kephas.Serialization.Json.Converters
             writeJson.Call(null, writer, value, serializer);
         }
 
-        private static object ReadJson<TItem>(JsonReader reader, IDictionary<string, TItem> value, IRuntimeTypeInfo valueTypeInfo, JsonSerializer serializer)
+        private static object ReadJson<TItem>(JsonReader reader, IDictionary<string, TItem> value, JsonSerializer serializer)
         {
-            var casingResolver = serializer.ContractResolver as ICasingContractResolver;
-            var typeProperties = valueTypeInfo.Properties;
             while (reader.TokenType != JsonToken.EndObject)
             {
                 var propName = (string)reader.Value;
 
                 reader.Read();
                 var propValue = serializer.Deserialize(reader, typeof(TItem));
-                if (casingResolver != null)
-                {
-                    var pascalPropName = casingResolver.GetDeserializedPropertyName(propName);
-                    if (pascalPropName != propName && typeProperties.ContainsKey(pascalPropName))
-                    {
-                        propName = pascalPropName;
-                    }
-                }
 
                 value[propName] = (TItem)propValue;
                 reader.Read();
@@ -167,21 +161,17 @@ namespace Kephas.Serialization.Json.Converters
 
         private static JsonWriter WriteJson<TItem>(JsonWriter writer, IDictionary<string, TItem> value, JsonSerializer serializer)
         {
-            var casingResolver = serializer.ContractResolver as ICasingContractResolver;
             writer.WriteStartObject();
 #if NETSTANDARD2_1
             foreach (var (key, item) in value)
             {
-                var propName = casingResolver?.GetSerializedPropertyName(key) ?? key;
-                writer.WritePropertyName(propName);
+                writer.WritePropertyName(key);
                 serializer.Serialize(writer, item);
             }
 #else
             foreach (var kv in value)
             {
-                var propName = kv.Key;
-                propName = casingResolver?.GetSerializedPropertyName(propName) ?? propName;
-                writer.WritePropertyName(propName);
+                writer.WritePropertyName(kv.Key);
                 serializer.Serialize(writer, kv.Value);
             }
 #endif

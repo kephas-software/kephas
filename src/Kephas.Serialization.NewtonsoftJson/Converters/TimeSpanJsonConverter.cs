@@ -62,14 +62,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <returns>
         /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanConvert(Type objectType)
-        {
-            if (objectType != typeof(TimeSpan))
-            {
-                return objectType == typeof(TimeSpan?);
-            }
-
-            return true;
-        }
+        public override bool CanConvert(Type objectType) =>
+            objectType == typeof(TimeSpan) || objectType == typeof(TimeSpan?);
     }
 }

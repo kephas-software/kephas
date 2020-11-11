@@ -20,9 +20,22 @@ namespace Kephas.Serialization.Json.Tests.Converters
     [TestFixture]
     public class ExpandoJsonConverterTest : SerializationTestBase
     {
-
         [Test]
         public async Task SerializeAsync_Expando()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new Expando
+            {
+                ["Description"] = "John Doe",
+            };
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"{""Description"":""John Doe""}", serializedObj);
+        }
+
+        [Test]
+        public async Task SerializeAsync_ExpandoEntity()
         {
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
@@ -33,13 +46,6 @@ namespace Kephas.Serialization.Json.Tests.Converters
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.Converters.ExpandoJsonConverterTest+ExpandoEntity"",""description"":""John Doe""}", serializedObj);
-        }
-
-        private static DefaultJsonSerializerSettingsProvider GetJsonSerializerSettingsProvider()
-        {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(
-                new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), new RuntimeTypeRegistry(), Substitute.For<ILogManager>());
-            return settingsProvider;
         }
 
         public class TestEntity

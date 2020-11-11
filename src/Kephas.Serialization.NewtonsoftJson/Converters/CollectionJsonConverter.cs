@@ -51,7 +51,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <returns>
         /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
-        public override bool CanConvert(Type objectType) => objectType.IsReadOnlyCollection();
+        public override bool CanConvert(Type objectType) => !objectType.IsArray && objectType.IsReadOnlyCollection();
 
         /// <summary>Reads the JSON representation of the object.</summary>
         /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
@@ -59,14 +59,19 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="existingValue">The existing value of object being read.</param>
         /// <param name="serializer">The calling serializer.</param>
         /// <returns>The object value.</returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.Null)
+            {
+                return null;
+            }
+
             var valueType = existingValue?.GetType() ?? objectType;
             if (valueType.IsConstructedGenericOf(typeof(IReadOnlyCollection<>))
                 || valueType.IsConstructedGenericOf(typeof(ICollection<>))
                 || valueType.IsConstructedGenericOf(typeof(IList<>)))
             {
-                valueType = typeof(List<>).MakeGenericType(valueType.TryGetCollectionItemType());
+                valueType = typeof(List<>).MakeGenericType(valueType.TryGetEnumerableItemType());
             }
 
             if (reader.TokenType != JsonToken.StartArray)
@@ -95,7 +100,7 @@ namespace Kephas.Serialization.Json.Converters
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var objectType = value.GetType();
-            var itemType = objectType.TryGetCollectionItemType();
+            var itemType = objectType.TryGetEnumerableItemType();
             if (itemType == null)
             {
                 throw new SerializationException($"Cannot write values of type {objectType}.");

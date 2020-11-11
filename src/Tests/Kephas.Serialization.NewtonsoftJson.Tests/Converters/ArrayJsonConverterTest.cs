@@ -8,18 +8,13 @@
 namespace Kephas.Serialization.Json.Tests.Converters
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
-    using Kephas.Logging;
-    using Kephas.Reflection;
-    using Kephas.Runtime;
-    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
-    public class ArrayJsonConverterTest
+    public class ArrayJsonConverterTest : SerializationTestBase
     {
         [Test]
         public async Task SerializeAsync_Array()
@@ -38,10 +33,12 @@ namespace Kephas.Serialization.Json.Tests.Converters
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
             // var obj = new object?[] { "one", 2, null };
-            var obj = await serializer.DeserializeAsync(@"[""one"",2,null]");
+            var obj = await serializer.DeserializeAsync(
+                @"[""one"",2,null]",
+                this.GetSerializationContext(typeof(object[])));
 
-            Assert.IsInstanceOf<JObjectList>(obj);
-            var list = (JObjectList)obj;
+            Assert.IsInstanceOf<object[]>(obj);
+            var list = (object[])obj;
             Assert.AreEqual("one", list[0]);
             Assert.AreEqual(2, list[1]);
             Assert.IsNull(list[2]);
@@ -58,50 +55,53 @@ namespace Kephas.Serialization.Json.Tests.Converters
             };
             var serializedObj = await serializer.SerializeAsync(obj);
 
-            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+NestedValues"",""values"":[""one"",2,null]}", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+NestedValues"",""values"":[""one"",2,null],""entities"":[]}", serializedObj);
         }
 
         [Test]
-        public async Task SerializeAsync_List()
+        public async Task DeserializeAsync_Array_nested()
         {
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
-            var obj = new List<object?> { "one", 2, null };
+            // var obj = new object?[] { "one", 2, null };
+            var obj = await serializer.DeserializeAsync(
+                @"{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+NestedValues"",""values"":[""one"",2,null]}");
+
+            Assert.IsInstanceOf<NestedValues>(obj);
+            var nestedValues = (NestedValues)obj;
+            Assert.AreEqual("one", nestedValues.Values[0]);
+            Assert.AreEqual(2, nestedValues.Values[1]);
+            Assert.IsNull(nestedValues.Values[2]);
+        }
+
+        [Test]
+        public async Task SerializeAsync_Array_nested_entities()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new NestedValues
+            {
+                Entities = new[] { new TestEntity { Name = "hi" }, new TestEntity { Name = "there" } },
+            };
             var serializedObj = await serializer.SerializeAsync(obj);
 
-            Assert.AreEqual(@"[""one"",2,null]", serializedObj);
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+NestedValues"",""values"":null,""entities"":[{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+TestEntity"",""name"":""hi"",""personalSite"":null},{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+TestEntity"",""name"":""there"",""personalSite"":null}]}", serializedObj);
         }
 
         [Test]
-        public async Task SerializeAsync_HashSet_nested_object()
+        public async Task DeserializeAsync_Array_nested_entities()
         {
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
-            var obj = new HashSet<object?> { "one", new TestEntity { Name = "gigi" } };
-            var serializedObj = await serializer.SerializeAsync(obj);
+            // var obj = new object?[] { "one", 2, null };
+            var obj = await serializer.DeserializeAsync(
+                @"{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+NestedValues"",""values"":null,""entities"":[{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+TestEntity"",""name"":""hi"",""personalSite"":null},{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+TestEntity"",""name"":""there"",""personalSite"":null}]}");
 
-            Assert.AreEqual(@"[""one"",{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+TestEntity"",""name"":""gigi"",""personalSite"":null}]", serializedObj);
-        }
-
-        [Test]
-        public async Task DeserializeAsync_HashSet_nested_object()
-        {
-            var settingsProvider = GetJsonSerializerSettingsProvider();
-            var serializer = new JsonSerializer(settingsProvider);
-
-            var obj = await serializer.DeserializeAsync(@"[""one"",{""$type"":""Kephas.Serialization.Json.Tests.Converters.ArrayJsonConverterTest+TestEntity"",""name"":""gigi"",""personalSite"":null}]");
-
-            Assert.IsInstanceOf<JObjectList>(obj);
-            var list = (JObjectList)obj;
-            Assert.AreEqual("one", list[0]);
-            Assert.IsInstanceOf<TestEntity>(list[1]);
-        }
-
-        private static DefaultJsonSerializerSettingsProvider GetJsonSerializerSettingsProvider()
-        {
-            var settingsProvider = new DefaultJsonSerializerSettingsProvider(
-                new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), new RuntimeTypeRegistry(), Substitute.For<ILogManager>());
-            return settingsProvider;
+            Assert.IsInstanceOf<NestedValues>(obj);
+            var nestedValues = (NestedValues)obj;
+            Assert.AreEqual("hi", nestedValues.Entities[0].Name);
+            Assert.AreEqual("there", nestedValues.Entities[1].Name);
+            Assert.IsNull(nestedValues.Values);
         }
 
         public class TestEntity
@@ -111,19 +111,11 @@ namespace Kephas.Serialization.Json.Tests.Converters
             public Uri PersonalSite { get; set; }
         }
 
-        public class ExpandoEntity : Expando
-        {
-            public string Description { get; set; }
-        }
-
-        public class TestWithType
-        {
-            public Type Type { get; set; }
-        }
-
         public class NestedValues
         {
-            public object Values { get; set; }
+            public object?[] Values { get; set; }
+
+            public TestEntity[] Entities { get; set; } = new TestEntity[0];
         }
     }
 }

@@ -10,10 +10,16 @@
 
 namespace Kephas.Serialization.Json.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
 
+    using Kephas.Composition;
+    using Kephas.Logging;
+    using Kephas.Reflection;
+    using Kephas.Runtime;
     using Kephas.Testing.Composition;
+    using NSubstitute;
 
     public class SerializationTestBase : CompositionTestBase
     {
@@ -24,6 +30,23 @@ namespace Kephas.Serialization.Json.Tests
                                     typeof(JsonSerializer).Assembly,      // Kephas.Serialization.NewtonsoftJson
                                 };
             return assemblies;
+        }
+
+        public virtual ISerializationContext GetSerializationContext(Type rootObjectType)
+        {
+            return new SerializationContext(
+                    Substitute.For<ICompositionContext>(),
+                    Substitute.For<ISerializationService>())
+            {
+                RootObjectType = rootObjectType,
+            };
+        }
+
+        protected static DefaultJsonSerializerSettingsProvider GetJsonSerializerSettingsProvider()
+        {
+            var settingsProvider = new DefaultJsonSerializerSettingsProvider(
+                new DefaultTypeResolver(() => AppDomain.CurrentDomain.GetAssemblies()), new RuntimeTypeRegistry(), Substitute.For<ILogManager>());
+            return settingsProvider;
         }
     }
 }
