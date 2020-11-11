@@ -72,11 +72,30 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.AreEqual("John Doe", expando.Description);
         }
 
-        public class TestEntity
+        [Test]
+        public async Task SerializeAsync_Wrapper()
         {
-            public string Name { get; set; }
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new Wrapper { Value = new ExpandoEntity { Description = "John Doe" } };
+            var serializedObj = await serializer.SerializeAsync(obj);
 
-            public Uri PersonalSite { get; set; }
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.Converters.ExpandoJsonConverterTest+Wrapper"",""value"":{""$type"":""Kephas.Serialization.Json.Tests.Converters.ExpandoJsonConverterTest+ExpandoEntity"",""description"":""John Doe""}}", serializedObj);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_Wrapper()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = await serializer.DeserializeAsync(@"{""$type"":""Kephas.Serialization.Json.Tests.Converters.ExpandoJsonConverterTest+Wrapper"",""value"":{""$type"":""Kephas.Serialization.Json.Tests.Converters.ExpandoJsonConverterTest+ExpandoEntity"",""description"":""John Doe""}}");
+
+            Assert.IsInstanceOf<Wrapper>(obj);
+            var wrapper = (Wrapper)obj;
+
+            Assert.IsInstanceOf<ExpandoEntity>(wrapper.Value);
+            var expando = (ExpandoEntity)wrapper.Value;
+            Assert.AreEqual("John Doe", expando.Description);
         }
 
         public class ExpandoEntity : Expando
@@ -84,14 +103,9 @@ namespace Kephas.Serialization.Json.Tests.Converters
             public string Description { get; set; }
         }
 
-        public class TestWithType
+        public class Wrapper
         {
-            public Type Type { get; set; }
-        }
-
-        public class NestedValues
-        {
-            public object Values { get; set; }
+            public IExpando Value { get; set; }
         }
     }
 }

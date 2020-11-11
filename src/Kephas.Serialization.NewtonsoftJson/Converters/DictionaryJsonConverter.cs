@@ -27,7 +27,7 @@ namespace Kephas.Serialization.Json.Converters
     {
         private static readonly MethodInfo WriteJsonMethod =
             ReflectionHelper.GetGenericMethodOf(_ =>
-                WriteJson<int>(null!, null!, null!));
+                WriteJson<int>(null!, null!, null!, null!));
 
         private static readonly MethodInfo ReadJsonMethod =
             ReflectionHelper.GetGenericMethodOf(_ =>
@@ -100,18 +100,7 @@ namespace Kephas.Serialization.Json.Converters
 
             // check the first property, if it is the type name metadata.
             reader.Read();
-            var propName = (string)reader.Value;
-            if (propName == JsonHelper.TypePropertyName)
-            {
-                reader.Read();
-                var valueTypeName = reader.Value?.ToString();
-                var valueType = this.typeResolver.ResolveType(valueTypeName)!;
-                if (valueType != valueTypeInfo.Type)
-                {
-                    valueTypeInfo = this.typeRegistry.GetTypeInfo(valueType);
-                    createInstance = true;
-                }
-            }
+            valueTypeInfo = JsonHelper.EnsureProperValueType(reader, this.typeResolver, this.typeRegistry, valueTypeInfo, ref createInstance);
 
             var keyItem = valueTypeInfo.Type.TryGetDictionaryKeyItemType();
             if (keyItem == null)
@@ -140,7 +129,7 @@ namespace Kephas.Serialization.Json.Converters
             }
 
             var writeJson = WriteJsonMethod.MakeGenericMethod(keyItem.Value.itemType);
-            writeJson.Call(null, writer, value, serializer);
+            writeJson.Call(null, writer, value, valueTypeInfo, serializer);
         }
 
         private static object ReadJson<TItem>(JsonReader reader, IDictionary<string, TItem> value, JsonSerializer serializer)
@@ -159,9 +148,22 @@ namespace Kephas.Serialization.Json.Converters
             return value;
         }
 
-        private static JsonWriter WriteJson<TItem>(JsonWriter writer, IDictionary<string, TItem> value, JsonSerializer serializer)
+        private static JsonWriter WriteJson<TItem>(JsonWriter writer, IDictionary<string, TItem> value, IRuntimeTypeInfo valueTypeInfo, JsonSerializer serializer)
         {
             writer.WriteStartObject();
+
+            // write type information.
+            if (valueTypeInfo.Type != typeof(Dictionary<string, TItem>)
+                && (serializer.TypeNameHandling.HasFlag(TypeNameHandling.Objects)
+                    || serializer.TypeNameHandling.HasFlag(TypeNameHandling.Auto)))
+            {
+                var typeName = serializer.TypeNameAssemblyFormatHandling == TypeNameAssemblyFormatHandling.Simple
+                    ? valueTypeInfo.FullName
+                    : valueTypeInfo.QualifiedFullName;
+                writer.WritePropertyName(JsonHelper.TypePropertyName);
+                writer.WriteValue(typeName);
+            }
+
 #if NETSTANDARD2_1
             foreach (var (key, item) in value)
             {

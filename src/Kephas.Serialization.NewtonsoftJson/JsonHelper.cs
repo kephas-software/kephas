@@ -8,11 +8,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Reflection;
+
 namespace Kephas.Serialization.Json
 {
     using System;
 
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Runtime;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
@@ -115,6 +118,41 @@ namespace Kephas.Serialization.Json
         internal static JToken Wrap(this object? obj)
         {
             return obj is JToken token ? token : JToken.FromObject(obj);
+        }
+
+        /// <summary>
+        /// Ensures that the inferred value type matches the one set in the reader.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="typeRegistry">The type registry.</param>
+        /// <param name="valueTypeInfo">[ref] The inferred value type.</param>
+        /// <param name="createInstance">[ref] Indicates whether a new instance should be created.</param>
+        /// <returns>The proper value type information.</returns>
+        internal static IRuntimeTypeInfo EnsureProperValueType(
+            JsonReader reader,
+            ITypeResolver typeResolver,
+            IRuntimeTypeRegistry typeRegistry,
+            IRuntimeTypeInfo valueTypeInfo,
+            ref bool createInstance)
+        {
+            var propName = (string)reader.Value;
+            if (propName == JsonHelper.TypePropertyName)
+            {
+                reader.Read();
+                var valueTypeName = reader.Value?.ToString();
+                var valueType = typeResolver.ResolveType(valueTypeName)!;
+                if (valueType != valueTypeInfo.Type)
+                {
+                    valueTypeInfo = typeRegistry.GetTypeInfo(valueType);
+                    createInstance = true;
+                }
+
+                // advance the reader
+                reader.Read();
+            }
+
+            return valueTypeInfo;
         }
     }
 }
