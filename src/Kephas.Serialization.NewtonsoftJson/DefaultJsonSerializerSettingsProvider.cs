@@ -109,16 +109,17 @@ namespace Kephas.Serialization.Json
         /// <returns>The default JSON converters.</returns>
         protected virtual IEnumerable<JsonConverter> GetDefaultJsonConverters(ITypeResolver typeResolver, IRuntimeTypeRegistry typeRegistry)
         {
+            // The order in this list is important, as generic collections should be processed last.
             return new List<JsonConverter>
             {
                 new DateTimeJsonConverter(),
                 new TimeSpanJsonConverter(),
                 new StringEnumJsonConverter(),
                 new TypeJsonConverter(typeResolver),
-                new ExpandoJsonConverter(typeRegistry),
-                new DictionaryJsonConverter(),
+                new ExpandoJsonConverter(typeRegistry, typeResolver),
+                new DictionaryJsonConverter(typeRegistry, typeResolver),
                 new ArrayJsonConverter(),
-                new ObjectJsonConverter(typeRegistry),
+                new CollectionJsonConverter(typeRegistry),
             };
         }
 
@@ -151,7 +152,7 @@ namespace Kephas.Serialization.Json
             serializerSettings.SerializationBinder = this.GetSerializationBinder();
             serializerSettings.TraceWriter = new JsonTraceWriter(this.logManager);
 
-            serializerSettings.Converters.AddRange(converters ?? this.lazyJsonConverters.Value);
+            serializerSettings.Converters.AddRange(converters ?? this.lazyJsonConverters.Value.Where(c => !c.CanRead || !c.CanWrite));
 
             return serializerSettings;
         }
