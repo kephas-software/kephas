@@ -74,6 +74,8 @@ namespace Kephas.Reflection
         /// </returns>
         public Type? ResolveType(string typeName, bool throwOnNotFound = true)
         {
+            Requires.NotNull(typeName, nameof(typeName));
+
             var type = this.typeCache.GetOrAdd(typeName, _ => this.ResolveTypeCore(typeName));
             if (type == null && throwOnNotFound)
             {
