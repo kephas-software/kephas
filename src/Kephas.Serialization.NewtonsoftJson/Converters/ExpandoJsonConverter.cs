@@ -15,6 +15,7 @@ namespace Kephas.Serialization.Json.Converters
     using Kephas.Runtime;
     using Kephas.Serialization.Json.ContractResolvers;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// JSON converter for <see cref="IExpando"/> instances.
@@ -120,9 +121,6 @@ namespace Kephas.Serialization.Json.Converters
             while (reader.TokenType != JsonToken.EndObject)
             {
                 var propName = (string)reader.Value!;
-
-                reader.Read();
-                var propValue = reader.Value;
                 if (casingResolver != null)
                 {
                     var pascalPropName = casingResolver.GetDeserializedPropertyName(propName);
@@ -132,7 +130,12 @@ namespace Kephas.Serialization.Json.Converters
                     }
                 }
 
+                reader.Read();
+                var propValue = serializer.Deserialize(reader, typeof(object));
+                propValue = propValue is JToken jtoken ? jtoken.Unwrap() : propValue;
+
                 expando[propName] = propValue;
+
                 reader.Read();
             }
 

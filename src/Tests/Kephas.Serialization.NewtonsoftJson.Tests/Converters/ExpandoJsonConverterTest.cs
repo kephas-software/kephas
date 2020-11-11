@@ -7,14 +7,10 @@
 
 namespace Kephas.Serialization.Json.Tests.Converters
 {
-    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Kephas.Dynamic;
-    using Kephas.Logging;
-    using Kephas.Reflection;
-    using Kephas.Runtime;
-    using NSubstitute;
     using NUnit.Framework;
 
     [TestFixture]
@@ -96,6 +92,44 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.IsInstanceOf<ExpandoEntity>(wrapper.Value);
             var expando = (ExpandoEntity)wrapper.Value;
             Assert.AreEqual("John Doe", expando.Description);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_Typeless_Expando()
+        {
+            var typelessJson = @"
+{
+  ""connection-strategy"": {
+    ""match"": {
+            ""script-type"": {
+                ""sh"": ""DemoTasks/ConnectionStrategies/Shell/ProxyConnection""
+            }
+        },
+    ""override"": {
+      ""gateway"": {
+        ""ref"": ""Systems-with-gateway-wsdev1/wsdev1""
+      }
+    },
+    ""connection-flow"": [
+      {
+        ""name"": ""one""
+      },
+      {
+        ""name"": ""two""
+      }
+    ]
+  }
+}";
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = await serializer.DeserializeAsync(typelessJson, this.GetSerializationContext(typeof(IExpando)));
+
+            Assert.IsInstanceOf<Expando>(obj);
+            var expando = (Expando)obj;
+            var strategy = (IIndexable)expando["connection-strategy"];
+            Assert.IsNotNull(strategy);
+            var connectionFlow = (IList<object?>)strategy["connection-flow"];
+            Assert.AreEqual(2, connectionFlow.Count);
         }
 
         public class ExpandoEntity : Expando

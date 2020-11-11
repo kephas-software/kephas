@@ -242,12 +242,7 @@ namespace Kephas.Serialization.Json
                 return obj;
             }
 
-            return obj switch
-            {
-                JObject jobj => new JObjectDictionary(jobj),
-                JArray jarr => new JObjectList(jarr),
-                _ => obj
-            };
+            return obj is JToken jtoken ? jtoken.Unwrap() : obj;
         }
     }
 }
