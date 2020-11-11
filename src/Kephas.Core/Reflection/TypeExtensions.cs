@@ -90,6 +90,29 @@ namespace Kephas.Reflection
         /// <returns>
         ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
         /// </returns>
+        public static bool IsReadOnlyCollection(this Type type)
+        {
+            if (type == null)
+            {
+                return false;
+            }
+
+            var collectionType = typeof(IReadOnlyCollection<>);
+            if (type.IsConstructedGenericOf(collectionType))
+            {
+                return true;
+            }
+
+            return type.GetInterfaces().Any(i => i.IsReadOnlyCollection());
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the type implements <see cref="ICollection"/>.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a collection; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsCollection(this Type type)
         {
             if (type == null)
