@@ -35,6 +35,18 @@ namespace Kephas.Serialization.Json.Tests.Converters
         }
 
         [Test]
+        public async Task DeserializeAsync_IExpando()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = await serializer.DeserializeAsync(@"{""Description"":""John Doe""}", GetSerializationContext(typeof(IExpando)));
+
+            Assert.IsInstanceOf<Expando>(obj);
+            var expando = (Expando)obj;
+            Assert.AreEqual("John Doe", expando["Description"]);
+        }
+
+        [Test]
         public async Task SerializeAsync_ExpandoEntity()
         {
             var settingsProvider = GetJsonSerializerSettingsProvider();
@@ -46,6 +58,18 @@ namespace Kephas.Serialization.Json.Tests.Converters
             var serializedObj = await serializer.SerializeAsync(obj);
 
             Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.Converters.ExpandoJsonConverterTest+ExpandoEntity"",""description"":""John Doe""}", serializedObj);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_ExpandoEntity()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = await serializer.DeserializeAsync(@"{""$type"":""Kephas.Serialization.Json.Tests.Converters.ExpandoJsonConverterTest+ExpandoEntity"",""description"":""John Doe""}");
+
+            Assert.IsInstanceOf<ExpandoEntity>(obj);
+            var expando = (ExpandoEntity)obj;
+            Assert.AreEqual("John Doe", expando.Description);
         }
 
         public class TestEntity
