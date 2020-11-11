@@ -120,6 +120,7 @@ namespace Kephas.Serialization.Json
                 new DictionaryJsonConverter(typeRegistry, typeResolver),
                 new ArrayJsonConverter(),
                 new CollectionJsonConverter(typeRegistry),
+                new ObjectJsonConverter(),
             };
         }
 

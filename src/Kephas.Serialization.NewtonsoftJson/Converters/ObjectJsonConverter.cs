@@ -11,7 +11,6 @@ namespace Kephas.Serialization.Json.Converters
     using System.Collections.Generic;
 
     using Kephas.Reflection;
-    using Kephas.Runtime;
     using Kephas.Services;
     using Newtonsoft.Json;
 
@@ -21,17 +20,6 @@ namespace Kephas.Serialization.Json.Converters
     [ProcessingPriority(Priority.Lowest)]
     public class ObjectJsonConverter : JsonConverterBase
     {
-        private readonly IRuntimeTypeRegistry typeRegistry;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectJsonConverter"/> class.
-        /// </summary>
-        /// <param name="typeRegistry">The type registry.</param>
-        public ObjectJsonConverter(IRuntimeTypeRegistry typeRegistry)
-        {
-            this.typeRegistry = typeRegistry;
-        }
-
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
         /// </summary>
@@ -74,33 +62,12 @@ namespace Kephas.Serialization.Json.Converters
             object existingValue,
             JsonSerializer serializer)
         {
-            if (reader.TokenType == JsonToken.Null)
+            return reader.TokenType switch
             {
-                return null;
-            }
-
-            var existingValueType = existingValue?.GetType();
-            switch (reader.TokenType)
-            {
-                case JsonToken.StartArray:
-                    if (existingValue == null || existingValueType!.IsArray || !existingValueType.IsCollection())
-                    {
-                        existingValue = objectType == null || objectType == typeof(object) ? new List<object?>() : this.typeRegistry.GetTypeInfo(objectType).CreateInstance();
-                    }
-
-                    serializer.Populate(reader, existingValue);
-                    return existingValue;
-                case JsonToken.StartObject:
-                    if (existingValue == null)
-                    {
-                        existingValue = objectType == null || objectType == typeof(object) ? new Dictionary<string, object?>() : this.typeRegistry.GetTypeInfo(objectType).CreateInstance();
-                    }
-
-                    serializer.Populate(reader, existingValue);
-                    return existingValue;
-                default:
-                    return serializer.Deserialize(reader);
-            }
+                JsonToken.Null => null,
+                JsonToken.StartArray => serializer.Deserialize(reader, typeof(List<object?>)),
+                _ => serializer.Deserialize(reader)
+            };
         }
     }
 }

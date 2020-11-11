@@ -10,7 +10,6 @@ namespace Kephas.Serialization.Json.Tests.Converters
     using System;
     using System.Threading.Tasks;
 
-    using Kephas.Dynamic;
     using NUnit.Framework;
 
     [TestFixture]
