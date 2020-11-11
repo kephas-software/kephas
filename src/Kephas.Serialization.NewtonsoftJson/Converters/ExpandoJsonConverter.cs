@@ -9,6 +9,7 @@ namespace Kephas.Serialization.Json.Converters
 {
     using System;
 
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
     using Kephas.Runtime;
@@ -22,7 +23,6 @@ namespace Kephas.Serialization.Json.Converters
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
         private readonly ITypeResolver typeResolver;
-        private readonly Type expandoInterfaceType = typeof(IExpando);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExpandoJsonConverter"/> class.
@@ -30,10 +30,43 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="typeRegistry">The runtime type registry.</param>
         /// <param name="typeResolver">The type resolver.</param>
         public ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver)
+            : this(typeRegistry, typeResolver, typeof(IExpando), typeof(Expando))
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExpandoJsonConverter"/> class.
+        /// </summary>
+        /// <param name="typeRegistry">The runtime type registry.</param>
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="interfaceType">The expando interface type.</param>
+        /// <param name="defaultImplementationType">The expando default implementation type.</param>
+        protected ExpandoJsonConverter(IRuntimeTypeRegistry typeRegistry, ITypeResolver typeResolver, Type interfaceType, Type defaultImplementationType)
+        {
+            Requires.NotNull(interfaceType, nameof(interfaceType));
+            Requires.NotNull(defaultImplementationType, nameof(defaultImplementationType));
+
             this.typeRegistry = typeRegistry;
             this.typeResolver = typeResolver;
+
+            if (!typeof(IExpando).IsAssignableFrom(interfaceType))
+            {
+                throw new SerializationException($"The interface type {interfaceType} must be convertible to {typeof(IExpando)}.");
+            }
+
+            this.InterfaceType = interfaceType;
+            this.DefaultImplementationType = defaultImplementationType;
         }
+
+        /// <summary>
+        /// Gets the expando interface type.
+        /// </summary>
+        protected Type InterfaceType { get; }
+
+        /// <summary>
+        /// Gets the expando default implementation type.
+        /// </summary>
+        protected Type DefaultImplementationType { get; }
 
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
@@ -43,7 +76,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
         public override bool CanConvert(Type objectType) =>
-            this.expandoInterfaceType.IsAssignableFrom(objectType);
+            this.InterfaceType.IsAssignableFrom(objectType);
 
         /// <summary>Reads the JSON representation of the object.</summary>
         /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader" /> to read from.</param>
@@ -59,9 +92,9 @@ namespace Kephas.Serialization.Json.Converters
             }
 
             var valueTypeInfo = this.typeRegistry.GetTypeInfo(existingValue?.GetType() ?? objectType);
-            if (valueTypeInfo.Type == this.expandoInterfaceType)
+            if (valueTypeInfo.Type == this.InterfaceType)
             {
-                valueTypeInfo = this.typeRegistry.GetTypeInfo(typeof(Expando));
+                valueTypeInfo = this.typeRegistry.GetTypeInfo(this.DefaultImplementationType);
             }
 
             if (reader.TokenType != JsonToken.StartObject)
@@ -75,7 +108,7 @@ namespace Kephas.Serialization.Json.Converters
             reader.Read();
             valueTypeInfo = JsonHelper.EnsureProperValueType(reader, this.typeResolver, this.typeRegistry, valueTypeInfo, ref createInstance);
 
-            if (!this.expandoInterfaceType.IsAssignableFrom(valueTypeInfo.Type))
+            if (!this.InterfaceType.IsAssignableFrom(valueTypeInfo.Type))
             {
                 throw new SerializationException($"Cannot read values of type {valueTypeInfo}. Path: {reader.Path}.");
             }
@@ -113,15 +146,15 @@ namespace Kephas.Serialization.Json.Converters
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var valueTypeInfo = this.typeRegistry.GetTypeInfo(value.GetType());
-            if (!(value is IExpando expando))
+            if (!this.InterfaceType.IsAssignableFrom(valueTypeInfo.Type))
             {
-                throw new SerializationException($"Cannot write values of type {valueTypeInfo}.");
+                throw new SerializationException($"Cannot write values of type {valueTypeInfo}. Path: {writer.Path}.");
             }
 
             writer.WriteStartObject();
 
             // write type information.
-            if (valueTypeInfo.Type != typeof(Expando)
+            if (valueTypeInfo.Type != this.DefaultImplementationType
                 && (serializer.TypeNameHandling.HasFlag(TypeNameHandling.Objects)
                     || serializer.TypeNameHandling.HasFlag(TypeNameHandling.Auto)))
             {
@@ -135,6 +168,7 @@ namespace Kephas.Serialization.Json.Converters
             // write other properties
             var casingResolver = serializer.ContractResolver as ICasingContractResolver;
             var typeProperties = valueTypeInfo.Properties;
+            var expando = (IExpando)value;
 #if NETSTANDARD2_1
             foreach (var (key, item) in expando.ToDictionary())
             {
