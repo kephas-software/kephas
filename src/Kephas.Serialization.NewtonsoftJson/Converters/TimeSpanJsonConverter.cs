@@ -26,8 +26,14 @@ namespace Kephas.Serialization.Json.Converters
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
+
             var str = ((TimeSpan)value).ToString("c");
             serializer.Serialize(writer, str);
         }
@@ -39,7 +45,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <returns>
         /// The object value.
         /// </returns>
-        public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
             {

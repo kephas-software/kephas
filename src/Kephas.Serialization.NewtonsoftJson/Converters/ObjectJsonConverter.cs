@@ -10,7 +10,6 @@ namespace Kephas.Serialization.Json.Converters
     using System;
     using System.Collections.Generic;
 
-    using Kephas.Reflection;
     using Kephas.Services;
     using Newtonsoft.Json;
 
@@ -36,8 +35,14 @@ namespace Kephas.Serialization.Json.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
+
             var valueType = value.GetType();
             if (valueType == typeof(object))
             {
@@ -59,7 +64,7 @@ namespace Kephas.Serialization.Json.Converters
         public override object? ReadJson(
             JsonReader reader,
             Type objectType,
-            object existingValue,
+            object? existingValue,
             JsonSerializer serializer)
         {
             return reader.TokenType switch
