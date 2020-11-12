@@ -62,22 +62,20 @@ namespace Kephas.Data.Setup
             Action<IDataSetupContext>? optionsConfig = null,
             CancellationToken cancellationToken = default)
         {
-            using (var dataSetupContext = this.CreateDataSetupContext(optionsConfig))
+            using var dataSetupContext = this.CreateDataSetupContext(optionsConfig);
+            var dataInstallers = this.GetOrderedDataInstallers(dataSetupContext);
+
+            var result = new OperationResult();
+            foreach (var dataInstaller in dataInstallers)
             {
-                var dataInstallers = this.GetOrderedDataInstallers(dataSetupContext);
-
-                var result = new OperationResult();
-                foreach (var dataInstaller in dataInstallers)
+                var handlerResult = await dataInstaller.InstallDataAsync(optionsConfig, cancellationToken).PreserveThreadContext();
+                if (handlerResult != null)
                 {
-                    var handlerResult = await dataInstaller.InstallDataAsync(optionsConfig, cancellationToken).PreserveThreadContext();
-                    if (handlerResult != null)
-                    {
-                        result.MergeMessages(handlerResult);
-                    }
+                    result.MergeMessages(handlerResult);
                 }
-
-                return result;
             }
+
+            return result;
         }
 
         /// <summary>
