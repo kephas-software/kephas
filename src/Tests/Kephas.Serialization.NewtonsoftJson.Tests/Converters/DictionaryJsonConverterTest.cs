@@ -156,6 +156,22 @@ namespace Kephas.Serialization.Json.Tests.Converters
         }
 
         [Test]
+        public async Task DeserializeAsync_Dictionary_Entities_no_types()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = await serializer.DeserializeAsync(
+                @"{""entities"":{""Customer"":{""name"":""gigi"",""personalSite"":null}}}",
+                this.GetSerializationContext(typeof(NestedValues)));
+
+            Assert.IsInstanceOf<NestedValues>(obj);
+            var nested = (NestedValues)obj;
+            Assert.IsNotNull(nested.Entities);
+            Assert.IsInstanceOf<TestEntity>(nested.Entities["Customer"]);
+            Assert.AreEqual("gigi", nested.Entities["Customer"].Name);
+        }
+
+        [Test]
         public async Task SerializeAsync_MyDictionary_entities()
         {
             var settingsProvider = GetJsonSerializerSettingsProvider();
