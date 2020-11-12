@@ -29,7 +29,7 @@ namespace Kephas.Composition.Autofac.Metadata
     public class ExportFactoryRegistrationSource : IRegistrationSource
     {
         private static readonly MethodInfo CreateMetaRegistrationMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ExportFactoryRegistrationSource.CreateMetaRegistration<string>(null!, null!, null!));
+            _ => ExportFactoryRegistrationSource.CreateMetaRegistration<string>(null!, null!, default));
 
         /// <summary>
         /// Gets a value indicating whether the registrations provided by this source are 1:1 adapters on
@@ -49,7 +49,7 @@ namespace Kephas.Composition.Autofac.Metadata
         /// <returns>
         /// Registrations providing the service.
         /// </returns>
-        public IEnumerable<IComponentRegistration> RegistrationsFor(Service service, Func<Service, IEnumerable<IComponentRegistration>> registrationAccessor)
+        public IEnumerable<IComponentRegistration> RegistrationsFor(Service service, Func<Service, IEnumerable<ServiceRegistration>> registrationAccessor)
         {
             Requires.NotNull(registrationAccessor, nameof(registrationAccessor));
 
@@ -82,7 +82,7 @@ namespace Kephas.Composition.Autofac.Metadata
             return "IExportFactory<T> support";
         }
 
-        private static IComponentRegistration CreateMetaRegistration<T>(Service providedService, Service valueService, IComponentRegistration valueRegistration)
+        private static IComponentRegistration CreateMetaRegistration<T>(Service providedService, Service valueService, ServiceRegistration valueRegistration)
         {
             var rb = RegistrationBuilder
                 .ForDelegate((c, p) =>
@@ -92,8 +92,8 @@ namespace Kephas.Composition.Autofac.Metadata
                         return new ExportFactory<T>(() => (T)lifetimeScope.ResolveComponent(request));
                     })
                 .As(providedService)
-                .Targeting(valueRegistration, isAdapterForIndividualComponent: false)
-                .InheritRegistrationOrderFrom(valueRegistration);
+                .Targeting(valueRegistration.Registration)
+                .InheritRegistrationOrderFrom(valueRegistration.Registration);
 
             return rb.CreateRegistration();
         }

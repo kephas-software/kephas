@@ -13,8 +13,7 @@ namespace Kephas.Composition.Autofac
     using System;
 
     using global::Autofac;
-    using global::Autofac.Core.Resolving;
-
+    using global::Autofac.Core.Resolving.Pipeline;
     using Kephas.Composition.Autofac.Resources;
 
     /// <summary>
@@ -35,7 +34,7 @@ namespace Kephas.Composition.Autofac
             return c switch
             {
                 ILifetimeScope lifetimeScope => lifetimeScope,
-                IInstanceLookup instanceLookup => instanceLookup.ActivationScope,
+                ResolveRequestContext resolveRequestContext => resolveRequestContext.ActivationScope,
                 _ => throw new InvalidOperationException(
                     string.Format(Strings.AutofacCompositionContainer_MismatchedLifetimeScope_Exception, c))
             };

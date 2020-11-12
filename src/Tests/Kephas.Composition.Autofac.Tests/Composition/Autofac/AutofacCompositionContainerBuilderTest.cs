@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Autofac.Core.Activators.Reflection;
+
 namespace Kephas.Tests.Composition.Autofac
 {
     using System;
@@ -301,12 +303,10 @@ namespace Kephas.Tests.Composition.Autofac
         [Test]
         public void GetExport_AppService_no_constructor()
         {
-            var builder = this.CreateCompositionContainerBuilderWithStringLogger();
-            var container = builder
+            var builder = this.CreateCompositionContainerBuilderWithStringLogger()
                 .WithAssembly(typeof(ICompositionContext).GetTypeInfo().Assembly)
-                .WithParts(new[] { typeof(IConstructorAppService), typeof(NoCompositionConstructorAppService) })
-                .CreateContainer();
-            Assert.Throws<DependencyResolutionException>(() => container.GetExport<IConstructorAppService>());
+                .WithParts(new[] { typeof(IConstructorAppService), typeof(NoCompositionConstructorAppService) });
+            Assert.Throws<NoConstructorsFoundException>(() => builder.CreateContainer());
         }
 
         [Test]

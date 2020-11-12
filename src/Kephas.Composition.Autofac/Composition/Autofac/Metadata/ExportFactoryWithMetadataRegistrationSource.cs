@@ -31,7 +31,7 @@ namespace Kephas.Composition.Autofac.Metadata
     public class ExportFactoryWithMetadataRegistrationSource : IRegistrationSource
     {
         private static readonly MethodInfo CreateMetaRegistrationMethod = ReflectionHelper.GetGenericMethodOf(
-            _ => ((ExportFactoryWithMetadataRegistrationSource)null!).CreateMetaRegistration<string, string>(null!, null!, null!));
+            _ => ((ExportFactoryWithMetadataRegistrationSource)null!).CreateMetaRegistration<string, string>(null!, null!, default));
 
         private readonly IRuntimeTypeRegistry typeRegistry;
 
@@ -62,7 +62,7 @@ namespace Kephas.Composition.Autofac.Metadata
         /// <returns>
         /// Registrations providing the service.
         /// </returns>
-        public IEnumerable<IComponentRegistration> RegistrationsFor(Service service, Func<Service, IEnumerable<IComponentRegistration>> registrationAccessor)
+        public IEnumerable<IComponentRegistration> RegistrationsFor(Service service, Func<Service, IEnumerable<ServiceRegistration>> registrationAccessor)
         {
             Requires.NotNull(registrationAccessor, nameof(registrationAccessor));
 
@@ -96,7 +96,7 @@ namespace Kephas.Composition.Autofac.Metadata
             return "IExportFactory<T, TMetadata> support";
         }
 
-        private IComponentRegistration CreateMetaRegistration<T, TMetadata>(Service providedService, Service valueService, IComponentRegistration valueRegistration)
+        private IComponentRegistration CreateMetaRegistration<T, TMetadata>(Service providedService, Service valueService, ServiceRegistration valueRegistration)
         {
             var rb = RegistrationBuilder
                 .ForDelegate((c, p) =>
@@ -104,7 +104,7 @@ namespace Kephas.Composition.Autofac.Metadata
                         var lifetimeScope = c.GetLifetimeScope();
                         var metadata = (TMetadata)this.typeRegistry
                             .GetTypeInfo(typeof(TMetadata))
-                            .CreateInstance(new object[] { valueRegistration.Target.Metadata });
+                            .CreateInstance(new object[] { valueRegistration.Metadata });
                         return new ExportFactory<T, TMetadata>(
                             () =>
                                 {
@@ -114,8 +114,8 @@ namespace Kephas.Composition.Autofac.Metadata
                             metadata);
                     })
                 .As(providedService)
-                .Targeting(valueRegistration, isAdapterForIndividualComponent: false)
-                .InheritRegistrationOrderFrom(valueRegistration);
+                .Targeting(valueRegistration.Registration)
+                .InheritRegistrationOrderFrom(valueRegistration.Registration);
 
             return rb.CreateRegistration();
         }
