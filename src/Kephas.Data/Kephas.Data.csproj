@@ -107,7 +107,7 @@
         </When>
         <Otherwise>
             <ItemGroup>
-                <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
+                <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
                 <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
                 <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
             </ItemGroup>
