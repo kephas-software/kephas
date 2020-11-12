@@ -9,6 +9,7 @@ namespace Kephas.Serialization.Json.Converters
 {
     using System;
 
+    using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
@@ -131,10 +132,23 @@ namespace Kephas.Serialization.Json.Converters
                 }
 
                 reader.Read();
-                var propValue = serializer.Deserialize(reader, typeof(object));
-                propValue = propValue is JToken jtoken ? jtoken.Unwrap() : propValue;
 
-                expando[propName] = propValue;
+                var propInfo = typeProperties.TryGetValue(propName);
+                if (propInfo?.CanWrite ?? true)
+                {
+                    var propValue = serializer.Deserialize(reader, propInfo?.ValueType.Type ?? typeof(object));
+                    propValue = propValue is JToken jtoken ? jtoken.Unwrap() : propValue;
+
+                    expando[propName] = propValue;
+                }
+                else
+                {
+                    var propValue = expando[propName];
+                    if (propValue != null)
+                    {
+                        serializer.Populate(reader, propValue);
+                    }
+                }
 
                 reader.Read();
             }
