@@ -17,6 +17,7 @@ namespace Kephas.Serialization.Json.Converters
     using Kephas.Serialization.Json.ContractResolvers;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     /// JSON converter for <see cref="IExpando"/> instances.
@@ -106,7 +107,7 @@ namespace Kephas.Serialization.Json.Converters
 
             var createInstance = existingValue == null;
 
-            // check the first property, if it is the type name metadata.
+            // first read type information, if applicable
             reader.Read();
             valueTypeInfo = JsonHelper.EnsureProperValueType(reader, this.typeResolver, this.typeRegistry, valueTypeInfo, ref createInstance);
 
@@ -117,11 +118,15 @@ namespace Kephas.Serialization.Json.Converters
 
             var expando = (IExpando)(createInstance ? valueTypeInfo.CreateInstance() : existingValue)!;
 
+            // then other properties
             var casingResolver = serializer.ContractResolver as ICasingContractResolver;
             var typeProperties = valueTypeInfo.Properties;
+            var typeContractProperties = (serializer.ContractResolver.ResolveContract(valueTypeInfo.Type) as JsonDynamicContract)?.Properties;
+
             while (reader.TokenType != JsonToken.EndObject)
             {
                 var propName = (string)reader.Value!;
+                var serializedPropName = propName;
                 if (casingResolver != null)
                 {
                     var pascalPropName = casingResolver.GetDeserializedPropertyName(propName);
@@ -143,8 +148,14 @@ namespace Kephas.Serialization.Json.Converters
                 }
                 else
                 {
+                    if (typeContractProperties != null && !typeContractProperties.Contains(serializedPropName))
+                    {
+                        // ignore property if the serializer ignored it.
+                        continue;
+                    }
+
                     var propValue = expando[propName];
-                    if (propValue != null)
+                    if (propValue != null && !propInfo.ValueType.Type.IsValueType)
                     {
                         serializer.Populate(reader, propValue);
                     }
@@ -185,27 +196,32 @@ namespace Kephas.Serialization.Json.Converters
             // write other properties
             var casingResolver = serializer.ContractResolver as ICasingContractResolver;
             var typeProperties = valueTypeInfo.Properties;
+            var typeContractProperties = (serializer.ContractResolver.ResolveContract(valueTypeInfo.Type) as JsonDynamicContract)?.Properties;
+
             var expando = (IExpando)value;
 #if NETSTANDARD2_1
-            foreach (var (key, item) in expando.ToDictionary())
+            foreach (var (key, propValue) in expando.ToDictionary())
             {
-                var propName = casingResolver != null && typeProperties.ContainsKey(key)
-                    ? casingResolver.GetSerializedPropertyName(key)
-                    : key;
-                writer.WritePropertyName(propName);
-                serializer.Serialize(writer, item);
-            }
 #else
             foreach (var kv in expando.ToDictionary())
             {
-                var propName = kv.Key;
-                propName = casingResolver != null && typeProperties.ContainsKey(propName)
-                    ? casingResolver.GetSerializedPropertyName(propName)
-                    : propName;
-                writer.WritePropertyName(propName);
-                serializer.Serialize(writer, kv.Value);
-            }
+                var key = kv.Key;
+                var propValue = kv.Value;
 #endif
+                var isClassProperty = typeProperties.ContainsKey(key);
+                var propName = casingResolver != null && isClassProperty
+                    ? casingResolver.GetSerializedPropertyName(key)
+                    : key;
+
+                if (isClassProperty && typeContractProperties != null && !typeContractProperties.Contains(propName))
+                {
+                    // ignore property if the serializer ignored it.
+                    continue;
+                }
+
+                writer.WritePropertyName(propName);
+                serializer.Serialize(writer, propValue);
+            }
 
             writer.WriteEndObject();
         }
