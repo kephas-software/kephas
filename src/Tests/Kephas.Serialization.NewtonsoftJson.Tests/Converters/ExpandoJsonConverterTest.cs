@@ -17,6 +17,52 @@ namespace Kephas.Serialization.Json.Tests.Converters
     [TestFixture]
     public class ExpandoJsonConverterTest : SerializationTestBase
     {
+        private const string SystemSettingsJson = @"
+{
+    ""instances"": {
+        ""JobServer"": {
+            ""autoStart"": true,
+            ""enabledFeatures"": [ ""web"" ],
+            ""host"": {
+                ""urls"": [
+                    {
+                        ""url"": ""http://*:1234"",
+                        ""host"": ""localhost""
+                    },
+                    {
+                        ""url"": ""https://*:1235"",
+                        ""host"": ""localhost"",
+                        ""certificate"": ""my-server""
+                    }
+                ]
+            },
+            ""otherFolder"": ""MyOtherFolder""
+        },
+        ""WebServer"": {
+            ""autoStart"": true,
+            ""enabledFeatures"": [ ""jobs-client"", ""web"" ],
+            ""host"": {
+                ""urls"": [
+                    {
+                        ""url"": ""http://*:2345"",
+                        ""host"": ""localhost""
+                    },
+                    {
+                        ""url"": ""https://*:2346"",
+                        ""host"": ""localhost"",
+                        ""certificate"": ""my-server""
+                    }
+                ]
+            },
+            ""otherFolder"": ""TheOtherFolder""
+        }
+    },
+    ""setupCommands"": [
+        ""installPlugin Plugin1 @latest"",
+        ""installPlugin Plugin2 @latest""
+    ]
+}";
+
         [Test]
         public async Task SerializeAsync_Expando()
         {
@@ -134,53 +180,25 @@ namespace Kephas.Serialization.Json.Tests.Converters
         }
 
         [Test]
-        public async Task DeserializeAsync_Typed_Expando()
+        public async Task SerializeAsync_Typed_Expando_with_extended_properties()
         {
-            var typedJson = @"
-{
-    ""instances"": {
-        ""JobServer"": {
-            ""autoStart"": true,
-            ""enabledFeatures"": [ ""web"" ],
-            ""host"": {
-                ""urls"": [
-                    {
-                        ""url"": ""http://*:1234"",
-                        ""host"": ""localhost""
-                    },
-                    {
-                        ""url"": ""https://*:1235"",
-                        ""host"": ""localhost"",
-                        ""certificate"": ""my-server""
-                    }
-                ]
-            },
-            ""otherFolder"": ""MyOtherFolder""
-        },
-        ""WebServer"": {
-            ""autoStart"": true,
-            ""enabledFeatures"": [ ""jobs-client"", ""web"" ],
-            ""host"": {
-                ""urls"": [
-                    {
-                        ""url"": ""http://*:2345"",
-                        ""host"": ""localhost""
-                    },
-                    {
-                        ""url"": ""https://*:2346"",
-                        ""host"": ""localhost"",
-                        ""certificate"": ""my-server""
-                    }
-                ]
-            },
-            ""otherFolder"": ""TheOtherFolder""
+            var typedJson = SystemSettingsJson;
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = await serializer.DeserializeAsync(typedJson, this.GetSerializationContext(typeof(SystemSettings)));
+
+            var context = this.GetSerializationContext(typeof(SystemSettings));
+            context.RootObjectType = null;
+            context.IncludeTypeInfo = false;
+            var serializedObj = await serializer.SerializeAsync(obj, context);
+
+            Assert.AreEqual(@"{""instances"":{""JobServer"":{""otherFolder"":""MyOtherFolder"",""autoStart"":true,""args"":null,""environmentVariables"":null,""enabledFeatures"":[""web""],""setupCommands"":null,""startupCommands"":null,""shutdownCommands"":null,""host"":{""runAsService"":false,""urls"":[{""host"":""localhost"",""url"":""http://*:1234"",""certificate"":null},{""host"":""localhost"",""url"":""https://*:1235"",""certificate"":""my-server""}]}},""WebServer"":{""otherFolder"":""TheOtherFolder"",""autoStart"":true,""args"":null,""environmentVariables"":null,""enabledFeatures"":[""jobs-client"",""web""],""setupCommands"":null,""startupCommands"":null,""shutdownCommands"":null,""host"":{""runAsService"":false,""urls"":[{""host"":""localhost"",""url"":""http://*:2345"",""certificate"":null},{""host"":""localhost"",""url"":""https://*:2346"",""certificate"":""my-server""}]}}},""setupCommands"":[""installPlugin Plugin1 @latest"",""installPlugin Plugin2 @latest""]}", serializedObj);
         }
-    },
-    ""setupCommands"": [
-        ""installPlugin Plugin1 @latest"",
-        ""installPlugin Plugin2 @latest""
-    ]
-}";
+
+        [Test]
+        public async Task DeserializeAsync_Typed_Expando_with_extended_properties()
+        {
+            var typedJson = SystemSettingsJson;
             var settingsProvider = GetJsonSerializerSettingsProvider();
             var serializer = new JsonSerializer(settingsProvider);
             var obj = await serializer.DeserializeAsync(typedJson, this.GetSerializationContext(typeof(SystemSettings)));
@@ -188,6 +206,10 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.IsInstanceOf<SystemSettings>(obj);
             var systemSettings = (SystemSettings)obj;
             Assert.AreEqual(2, systemSettings.Instances.Count);
+            var jobSettings = systemSettings.Instances["jobserver"];
+            Assert.IsTrue(jobSettings.AutoStart);
+            Assert.AreEqual("MyOtherFolder", jobSettings["otherFolder"]);
+
             Assert.AreEqual(2, systemSettings.SetupCommands.Length);
         }
 
