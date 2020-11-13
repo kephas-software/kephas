@@ -181,12 +181,22 @@ namespace Kephas.Serialization.Json.Converters
 #if NETSTANDARD2_1
             foreach (var (key, item) in value)
             {
+                if (item == null && serializer.NullValueHandling == NullValueHandling.Ignore)
+                {
+                    continue;
+                }
+
                 writer.WritePropertyName(key);
                 serializer.Serialize(writer, item);
             }
 #else
             foreach (var kv in value)
             {
+                if (kv.Value == null && serializer.NullValueHandling == NullValueHandling.Ignore)
+                {
+                    continue;
+                }
+
                 writer.WritePropertyName(kv.Key);
                 serializer.Serialize(writer, kv.Value);
             }

@@ -32,14 +32,17 @@ namespace Kephas.Serialization.Json.Tests
             return assemblies;
         }
 
-        public virtual ISerializationContext GetSerializationContext(Type rootObjectType)
+        public virtual ISerializationContext GetSerializationContext(Type? rootObjectType = null, Action<ISerializationContext>? options = null)
         {
-            return new SerializationContext(
+            var context = new SerializationContext(
                     Substitute.For<ICompositionContext>(),
                     Substitute.For<ISerializationService>())
             {
                 RootObjectType = rootObjectType,
             };
+            
+            options?.Invoke(context);
+            return context;
         }
 
         protected static DefaultJsonSerializerSettingsProvider GetJsonSerializerSettingsProvider()
