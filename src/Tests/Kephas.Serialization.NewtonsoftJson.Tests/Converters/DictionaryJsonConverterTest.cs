@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Newtonsoft.Json.Linq;
+
 namespace Kephas.Serialization.Json.Tests.Converters
 {
     using System;
@@ -201,6 +203,21 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.IsInstanceOf<MyDictionary>(nested.Entities);
             Assert.IsInstanceOf<TestEntity>(nested.Entities["Customer"]);
             Assert.AreEqual("gigi", nested.Entities["Customer"].Name);
+        }
+
+        [Test]
+        public async Task SerializeAsync_JObjectDictionary()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new JObjectDictionary(new JObject
+            {
+                ["name"] = JToken.FromObject("me"),
+                ["age"] = JToken.FromObject(2)
+            });
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"{""name"":""me"",""age"":2}", serializedObj);
         }
 
         public class TestEntity
