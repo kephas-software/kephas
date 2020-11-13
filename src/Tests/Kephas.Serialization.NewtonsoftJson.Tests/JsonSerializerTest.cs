@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.Serialization;
+
 namespace Kephas.Serialization.Json.Tests
 {
     using System;
@@ -450,6 +452,41 @@ namespace Kephas.Serialization.Json.Tests
             Assert.IsInstanceOf<JsonSerializer>(jsonSerializer);
         }
 
+        [Test]
+        public async Task SerializeAsync_datacontract_hierarcy()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new Node
+            {
+                Name = "root",
+                Children = new List<Node>
+                {
+                    new Node { Name = "Left" },
+                    new Node { Name = "Right" },
+                },
+            };
+
+            var serializedObj = await serializer.SerializeAsync(obj);
+
+            Assert.AreEqual(@"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+Node"",""name"":""root"",""children"":[{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+Node"",""name"":""Left"",""children"":null},{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+Node"",""name"":""Right"",""children"":null}]}", serializedObj);
+        }
+
+        [Test]
+        public async Task DeserializeAsync_datacontract_hierarcy()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var serializedObj = @"{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+Node"",""name"":""root"",""children"":[{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+Node"",""name"":""Left""},{""$type"":""Kephas.Serialization.Json.Tests.JsonSerializerTest+Node"",""name"":""Right""}]}";
+            var obj = await serializer.DeserializeAsync(serializedObj);
+
+            Assert.IsInstanceOf<Node>(obj);
+
+            var node = (Node)obj;
+            Assert.AreEqual("root", node.Name);
+            Assert.AreEqual(2, node.Children.Count);
+        }
+
         private static DefaultJsonSerializerSettingsProvider GetJsonSerializerSettingsProvider()
         {
             var settingsProvider = new DefaultJsonSerializerSettingsProvider(
@@ -477,6 +514,18 @@ namespace Kephas.Serialization.Json.Tests
         public class NestedValues
         {
             public object Values { get; set; }
+        }
+
+        [DataContract]
+        public class Node
+        {
+            [DataMember]
+            public string Name { get; set; }
+
+            [DataMember]
+            public ICollection<Node> Children { get; set; }
+
+            public string Path { get; set; }
         }
     }
 }
