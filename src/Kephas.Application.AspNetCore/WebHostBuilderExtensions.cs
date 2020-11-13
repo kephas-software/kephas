@@ -91,8 +91,8 @@ namespace Kephas.Application.AspNetCore
             logger.Debug(
                 "URL: {url}, isAnyIP: {isAnyIP}, isHttps: {isHttps}, cert: {certThumbprint}/{certFriendlyName}",
                 urlSettings.Url,
-                urlSettings.IsAnyIP,
-                urlSettings.IsHttps,
+                urlSettings.IsAnyIP(),
+                urlSettings.IsHttps(),
                 certificate?.Thumbprint,
                 certificate?.FriendlyName);
 
@@ -102,9 +102,9 @@ namespace Kephas.Application.AspNetCore
             }
 
             var uri = urlSettings.GetNormalizedUri()!;
-            if (urlSettings.IsAnyIP)
+            if (urlSettings.IsAnyIP())
             {
-                if (urlSettings.IsHttps)
+                if (urlSettings.IsHttps())
                 {
                     opts.ListenAnyIP(uri.Port, cfg => cfg.UseHttps(certificate));
                 }
@@ -116,7 +116,7 @@ namespace Kephas.Application.AspNetCore
             else
             {
                 var ipAddress = IPAddress.Parse(uri.Host);
-                if (urlSettings.IsHttps)
+                if (urlSettings.IsHttps())
                 {
                     opts.Listen(ipAddress, uri.Port, cfg => cfg.UseHttps(certificate));
                 }
