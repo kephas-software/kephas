@@ -1038,7 +1038,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual Task<IOperationResult> EnablePluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult());
+            return Task.FromResult<IOperationResult>(new OperationResult().Complete());
         }
 
         /// <summary>
@@ -1052,7 +1052,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual Task<IOperationResult> DisablePluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult());
+            return Task.FromResult<IOperationResult>(new OperationResult().Complete());
         }
 
         /// <summary>
@@ -1066,7 +1066,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual Task<IOperationResult> InitializePluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult());
+            return Task.FromResult<IOperationResult>(new OperationResult().Complete());
         }
 
         /// <summary>
@@ -1080,7 +1080,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual Task<IOperationResult> PrepareUninitializePluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult());
+            return Task.FromResult<IOperationResult>(new OperationResult().Complete());
         }
 
         /// <summary>
@@ -1094,7 +1094,7 @@ namespace Kephas.Plugins
         /// </returns>
         protected virtual Task<IOperationResult> UninitializePluginCoreAsync(AppIdentity pluginIdentity, IPluginContext context, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IOperationResult>(new OperationResult());
+            return Task.FromResult<IOperationResult>(new OperationResult().Complete());
         }
 
         /// <summary>
