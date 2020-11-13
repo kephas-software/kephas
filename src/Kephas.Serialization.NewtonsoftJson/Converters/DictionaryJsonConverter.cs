@@ -161,6 +161,7 @@ namespace Kephas.Serialization.Json.Converters
 
             // write type information.
             if (valueTypeInfo.Type != typeof(Dictionary<string, TItem>)
+                && valueTypeInfo.Type != typeof(JObjectDictionary)
                 && (serializer.TypeNameHandling.HasFlag(TypeNameHandling.Objects)
                     || serializer.TypeNameHandling.HasFlag(TypeNameHandling.Auto)))
             {
