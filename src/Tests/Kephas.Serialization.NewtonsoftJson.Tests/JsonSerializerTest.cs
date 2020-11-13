@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Runtime.Serialization;
-
 namespace Kephas.Serialization.Json.Tests
 {
     using System;
@@ -17,6 +15,7 @@ namespace Kephas.Serialization.Json.Tests
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.Serialization;
     using System.Threading.Tasks;
 
     using Kephas.Application;
