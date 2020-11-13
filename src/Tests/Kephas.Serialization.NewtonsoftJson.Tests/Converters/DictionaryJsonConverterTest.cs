@@ -220,6 +220,22 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.AreEqual(@"{""name"":""me"",""age"":2}", serializedObj);
         }
 
+        [Test]
+        public async Task SerializeAsync_Dictionary_ignore_nulls()
+        {
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = new Dictionary<string, object?>
+            {
+                ["name"] = "me",
+                ["age"] = 2,
+                ["description"] = null,
+            };
+            var serializedObj = await serializer.SerializeAsync(obj, this.GetSerializationContext(options: ctx => ctx.IncludeNullValues(false)));
+
+            Assert.AreEqual(@"{""name"":""me"",""age"":2}", serializedObj);
+        }
+
         public class TestEntity
         {
             public string Name { get; set; }

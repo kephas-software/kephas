@@ -213,6 +213,23 @@ namespace Kephas.Serialization.Json.Tests.Converters
             Assert.AreEqual(2, systemSettings.SetupCommands.Length);
         }
 
+        [Test]
+        public async Task SerializeAsync_Typed_Expando_ignore_nulls()
+        {
+            var typedJson = SystemSettingsJson;
+            var settingsProvider = GetJsonSerializerSettingsProvider();
+            var serializer = new JsonSerializer(settingsProvider);
+            var obj = await serializer.DeserializeAsync(typedJson, this.GetSerializationContext(typeof(SystemSettings)));
+
+            var serializedObj = await serializer.SerializeAsync(
+                obj,
+                this.GetSerializationContext(
+                    typeof(SystemSettings),
+                    ctx => ctx.IncludeNullValues(false).RootObjectType(null).IncludeTypeInfo(false)));
+
+            Assert.AreEqual(@"{""instances"":{""JobServer"":{""otherFolder"":""MyOtherFolder"",""autoStart"":true,""enabledFeatures"":[""web""],""host"":{""runAsService"":false,""urls"":[{""host"":""localhost"",""url"":""http://*:1234""},{""host"":""localhost"",""url"":""https://*:1235"",""certificate"":""my-server""}]}},""WebServer"":{""otherFolder"":""TheOtherFolder"",""autoStart"":true,""enabledFeatures"":[""jobs-client"",""web""],""host"":{""runAsService"":false,""urls"":[{""host"":""localhost"",""url"":""http://*:2345""},{""host"":""localhost"",""url"":""https://*:2346"",""certificate"":""my-server""}]}}},""setupCommands"":[""installPlugin Plugin1 @latest"",""installPlugin Plugin2 @latest""]}", serializedObj);
+        }
+
         public class ExpandoEntity : Expando
         {
             public string Description { get; set; }

@@ -208,6 +208,11 @@ namespace Kephas.Serialization.Json.Converters
                 var key = kv.Key;
                 var propValue = kv.Value;
 #endif
+                if (propValue == null && serializer.NullValueHandling == NullValueHandling.Ignore)
+                {
+                    continue;
+                }
+
                 var isClassProperty = typeProperties.ContainsKey(key);
                 var propName = casingResolver != null && isClassProperty
                     ? casingResolver.GetSerializedPropertyName(key)
