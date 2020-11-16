@@ -673,7 +673,7 @@ namespace Kephas.Plugins.NuGet
                 await packageReader.CopyFilesAsync(
                     pluginLocation,
                     libItem.Items,
-                    (src, target, stream) => this.ExtractPackageFile(src, target, libFolderName, flatten: true),
+                    (src, target, stream) => this.ExtractPackageFile(src, target, libFolderName, removeFwkMnemonic: true),
                     this.nativeLogger,
                     cancellationToken).PreserveThreadContext();
             }
@@ -715,7 +715,7 @@ namespace Kephas.Plugins.NuGet
                 var copiedFiles = await packageReader.CopyFilesAsync(
                     pluginLocation,
                     contentItem.Items,
-                    (src, target, stream) => this.ExtractPackageFile(src, target, contentFolderName, flatten: false),
+                    (src, target, stream) => this.ExtractPackageFile(src, target, contentFolderName, removeFwkMnemonic: false),
                     this.nativeLogger,
                     cancellationToken).PreserveThreadContext();
                 result.MergeMessage($"Copied {copiedFiles.Count()} files into {pluginLocation}: '{string.Join("', '", copiedFiles)}'.");
@@ -784,7 +784,7 @@ namespace Kephas.Plugins.NuGet
             return (pluginPackageIdentity, downloadResult.PackageReader, packageReaders);
         }
 
-        private string ExtractPackageFile(string sourceFile, string targetPath, string subFolder, bool flatten)
+        private string ExtractPackageFile(string sourceFile, string targetPath, string subFolder, bool removeFwkMnemonic)
         {
             targetPath = targetPath.Replace('/', Path.DirectorySeparatorChar);
             var fileName = Path.GetFileName(targetPath);
@@ -792,9 +792,15 @@ namespace Kephas.Plugins.NuGet
             var indexSearchTerm = targetPath.IndexOf(searchTerm);
             if (indexSearchTerm >= 0)
             {
-                targetPath = flatten
-                    ? targetPath.Substring(0, indexSearchTerm + 1) + fileName
-                    : targetPath.Substring(0, indexSearchTerm + 1) + targetPath.Substring(indexSearchTerm + searchTerm.Length);
+                var indexStartContent = removeFwkMnemonic
+                    ? targetPath.IndexOf(Path.DirectorySeparatorChar, indexSearchTerm + searchTerm.Length + 1) + 1
+                    : indexSearchTerm + searchTerm.Length;
+                if (indexStartContent <= 0)
+                {
+                    indexStartContent = indexSearchTerm + searchTerm.Length;
+                }
+
+                targetPath = targetPath.Substring(0, indexSearchTerm + 1) + targetPath.Substring(indexStartContent);
             }
 
             var directory = Path.GetDirectoryName(targetPath);
