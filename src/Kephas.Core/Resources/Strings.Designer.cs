@@ -88,15 +88,6 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The globally available instance of the ambient services may be set only once, before reading its value for the first time. Please consider setting its value before any other operation in your application..
-        /// </summary>
-        public static string AmbientServices_Instance_MayBeSetOnlyOnce_Exception {
-            get {
-                return ResourceManager.GetString("AmbientServices_Instance_MayBeSetOnlyOnce_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No composition constructor could be identified for &apos;{0}&apos;. The following parameters could not be resolved: {1}..
         /// </summary>
         public static string AmbientServices_MissingCompositionConstructor_Exception {
@@ -214,7 +205,7 @@ namespace Kephas.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The application shut down successfully. Good bye!.
+        ///   Looks up a localized string similar to The application shut down successfully. Goodbye!.
         /// </summary>
         public static string App_ShutdownAsync_Complete_Message {
             get {
@@ -391,15 +382,6 @@ namespace Kephas.Resources {
         public static string DefaultAppManager_InitializeFaulted_Exception {
             get {
                 return ResourceManager.GetString("DefaultAppManager_InitializeFaulted_Exception", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please use a more specific assembly loader, which can load from a file path, like DefaultAssemblyLoader..
-        /// </summary>
-        public static string DefaultAssemblyLoader_LoadAssemblyFromPathNotSupported_Exception {
-            get {
-                return ResourceManager.GetString("DefaultAssemblyLoader_LoadAssemblyFromPathNotSupported_Exception", resourceCulture);
             }
         }
         

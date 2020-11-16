@@ -119,5 +119,6 @@
   </resheader>
   <data name="AspNetFeatureManager_InvalidAppContext_Exception" xml:space="preserve">
     <value>The provided application context ({0}) is not an ASP.NET Core context (must implement {1}).</value>
+    <comment>The provided application context ({0}) is not an ASP.NET Core context (must implement {1}).</comment>
   </data>
 </root>

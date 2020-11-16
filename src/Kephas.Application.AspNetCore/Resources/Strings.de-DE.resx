@@ -117,8 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MismatchedAppContext_Exception" xml:space="preserve">
-    <value>The provided context cannot be converted to a {0}.</value>
-    <comment>The provided context cannot be converted to a {0}.</comment>
+  <data name="AspNetFeatureManager_InvalidAppContext_Exception" xml:space="preserve">
+    <value>Der bereitgestellte Anwendungskontext ({0}) ist kein ASP.NET Core-Kontext (muss {1} implementieren).</value>
   </data>
 </root>
