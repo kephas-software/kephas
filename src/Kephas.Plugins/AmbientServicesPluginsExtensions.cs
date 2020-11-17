@@ -42,7 +42,6 @@ namespace Kephas
         /// <param name="appArgs">Optional. the application arguments.</param>
         /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
         /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
-        /// <param name="targetFramework">Optional. The target framework.</param>
         /// <param name="config">Optional. The application runtime configuration callback.</param>
         /// <returns>
         /// The provided ambient services.
@@ -60,7 +59,6 @@ namespace Kephas
             IExpando? appArgs = null,
             bool? enablePlugins = null,
             string? pluginsFolder = null,
-            string? targetFramework = null,
             Action<PluginsAppRuntime>? config = null)
         {
             Requires.NotNull(ambientServices, nameof(ambientServices));
@@ -78,8 +76,7 @@ namespace Kephas
                     appVersion,
                     appArgs,
                     enablePlugins,
-                    pluginsFolder,
-                    targetFramework);
+                    pluginsFolder);
             config?.Invoke(appRuntime);
             return ambientServices.WithAppRuntime(appRuntime);
         }

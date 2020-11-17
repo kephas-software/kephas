@@ -43,22 +43,6 @@ namespace Kephas.Tests
         }
 
         [Test]
-        public void GetTargetFramework_configured()
-        {
-            var appRuntime = new PluginsAppRuntime(appArgs: new Expando { [PluginsAppRuntime.TargetFrameworkArgName] = "net461" });
-
-            Assert.AreEqual("net461", appRuntime.GetTargetFramework());
-        }
-
-        [Test]
-        public void GetTargetFramework_unconfigured()
-        {
-            var appRuntime = new PluginsAppRuntime();
-
-            Assert.IsNull(appRuntime.GetTargetFramework());
-        }
-
-        [Test]
         public void GetPluginsInstallationLocations()
         {
             var tempFolder = Path.GetFullPath(Path.GetTempPath());

@@ -39,11 +39,6 @@ namespace Kephas.Plugins.Application
         public const string EnablePluginsArgName = "EnablePlugins";
 
         /// <summary>
-        /// Name of the target framework argument.
-        /// </summary>
-        public const string TargetFrameworkArgName = "TargetFramework";
-
-        /// <summary>
         /// Pathname of the plugins folder.
         /// </summary>
         public const string DefaultPluginsFolder = "Plugins";
@@ -65,7 +60,6 @@ namespace Kephas.Plugins.Application
         /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="enablePlugins">Optional. True to enable, false to disable the plugins.</param>
         /// <param name="pluginsFolder">Optional. Pathname of the plugins folder.</param>
-        /// <param name="targetFramework">Optional. The target framework.</param>
         /// <param name="pluginRepository">Optional. The plugin repository.</param>
         public PluginsAppRuntime(
             Func<string, ILogger>? getLogger = null,
@@ -81,13 +75,11 @@ namespace Kephas.Plugins.Application
             IExpando? appArgs = null,
             bool? enablePlugins = null,
             string? pluginsFolder = null,
-            string? targetFramework = null,
             IPluginRepository? pluginRepository = null)
             : base(getLogger, checkLicense, assemblyFilter, appFolder, configFolders, licenseFolders, isRoot, appId, appInstanceId, appVersion, appArgs)
         {
             this.EnablePlugins = this.ComputeEnablePlugins(enablePlugins, appArgs);
             this.PluginsLocation = this.ComputePluginsLocation(pluginsFolder, appArgs);
-            this.TargetFramework = this.ComputeTargetFramework(targetFramework, appArgs);
             this.PluginRepository = pluginRepository ??
                                     new PluginRepository(appIdentity =>
                                         this.GetAppLocation(appIdentity, throwOnNotFound: false));
@@ -108,14 +100,6 @@ namespace Kephas.Plugins.Application
         /// True to enable plugins, false to disable them.
         /// </value>
         public bool EnablePlugins { get; }
-
-        /// <summary>
-        /// Gets the target framework.
-        /// </summary>
-        /// <value>
-        /// The target framework.
-        /// </value>
-        public string? TargetFramework { get; }
 
         /// <summary>
         /// Gets the plugin repository.
@@ -141,18 +125,7 @@ namespace Kephas.Plugins.Application
                 return location;
             }
 
-            var targetFramework = this.TargetFramework;
             var primaryLocation = Path.Combine(this.PluginsLocation, appIdentity!.Id);
-
-            if (!string.IsNullOrEmpty(targetFramework))
-            {
-                var frameworkSpecificLocation = Path.Combine(primaryLocation, targetFramework);
-                if (Directory.Exists(frameworkSpecificLocation))
-                {
-                    return frameworkSpecificLocation;
-                }
-            }
-
             if (Directory.Exists(primaryLocation))
             {
                 return primaryLocation;
@@ -219,8 +192,6 @@ namespace Kephas.Plugins.Application
         /// </returns>
         public virtual IEnumerable<string> GetPluginsInstallationLocations()
         {
-            var targetFramework = this.TargetFramework;
-
             if (!Directory.Exists(this.PluginsLocation))
             {
                 yield break;
@@ -229,17 +200,7 @@ namespace Kephas.Plugins.Application
             var pluginsDirectories = Directory.EnumerateDirectories(this.PluginsLocation);
             foreach (var pluginDirectory in pluginsDirectories)
             {
-                if (string.IsNullOrEmpty(targetFramework))
-                {
-                    yield return pluginDirectory;
-                }
-                else
-                {
-                    var frameworkSpecificDirectory = Path.Combine(pluginDirectory, targetFramework);
-                    yield return Directory.Exists(frameworkSpecificDirectory)
-                        ? frameworkSpecificDirectory
-                        : pluginDirectory;
-                }
+                yield return pluginDirectory;
             }
         }
 
@@ -268,19 +229,6 @@ namespace Kephas.Plugins.Application
         {
             var pluginsFolder = Path.Combine(this.GetAppLocation(), rawPluginsFolder ?? appArgs?[PluginsFolderArgName] as string ?? DefaultPluginsFolder);
             return Path.GetFullPath(pluginsFolder);
-        }
-
-        /// <summary>
-        /// Calculates the target framework.
-        /// </summary>
-        /// <param name="targetFramework">The target framework.</param>
-        /// <param name="appArgs">The application arguments.</param>
-        /// <returns>
-        /// The calculated target framework.
-        /// </returns>
-        protected virtual string? ComputeTargetFramework(string? targetFramework, IExpando? appArgs)
-        {
-            return targetFramework ?? appArgs?[TargetFrameworkArgName] as string;
         }
 
         /// <summary>
