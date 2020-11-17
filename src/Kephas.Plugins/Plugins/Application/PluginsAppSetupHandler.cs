@@ -15,6 +15,7 @@ namespace Kephas.Plugins.Application
     using Kephas.Application;
     using Kephas.Diagnostics;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace Kephas.Plugins.Application
     /// Application setup handler for installing/uninstalling plugins.
     /// </summary>
     [ProcessingPriority(Priority.High)]
-    public class PluginsAppSetupHandler : IAppSetupHandler
+    public class PluginsAppSetupHandler : Loggable, IAppSetupHandler
     {
         private readonly IPluginManager pluginManager;
 
@@ -31,7 +32,9 @@ namespace Kephas.Plugins.Application
         /// Initializes a new instance of the <see cref="PluginsAppSetupHandler"/> class.
         /// </summary>
         /// <param name="pluginManager">The plugin manager.</param>
-        public PluginsAppSetupHandler(IPluginManager pluginManager)
+        /// <param name="logManager">Optional. The log manager.</param>
+        public PluginsAppSetupHandler(IPluginManager pluginManager, ILogManager? logManager = null)
+            : base(logManager)
         {
             this.pluginManager = pluginManager;
         }
@@ -76,6 +79,7 @@ namespace Kephas.Plugins.Application
                 (p, ctx) => p.State == PluginState.PendingInitialization,
                 (p, ctx, token) => this.pluginManager
                     .InitializePluginAsync(p.Identity, ctx => ctx.Merge(context), token),
+                nameof(this.InitializePendingPluginsAsync),
                 cancellationToken);
         }
 
@@ -96,6 +100,7 @@ namespace Kephas.Plugins.Application
                 (p, ctx) => p.State == PluginState.PendingUninitialization,
                 (p, ctx, token) => this.pluginManager
                     .UninitializePluginAsync(p.Identity, ctx => ctx.Merge(context), token),
+                nameof(this.UninitializePendingPluginsAsync),
                 cancellationToken);
         }
 
@@ -116,6 +121,7 @@ namespace Kephas.Plugins.Application
                 (p, ctx) => p.State == PluginState.PendingUninstallation,
                 (p, ctx, token) => this.pluginManager
                     .UninstallPluginAsync(p.Identity, ctx => ctx.Merge(context), token),
+                nameof(this.UninstallPendingPluginsAsync),
                 cancellationToken);
         }
 
@@ -136,6 +142,7 @@ namespace Kephas.Plugins.Application
                 (p, ctx) => p.GetPluginData().UpdatingToVersion != null,
                 (p, ctx, token) => this.pluginManager
                     .UpdatePluginAsync(new AppIdentity(p.Identity.Id, p.GetPluginData().UpdatingToVersion), ctx => ctx.Merge(context), token),
+                nameof(this.UpdatePendingPluginsAsync),
                 cancellationToken);
         }
 
@@ -145,6 +152,7 @@ namespace Kephas.Plugins.Application
         /// <param name="context">The context.</param>
         /// <param name="filter">The plugin filter.</param>
         /// <param name="asyncOperation">The plugin async operation.</param>
+        /// <param name="operation">The operation name.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>
         /// An asynchronous result.
@@ -153,35 +161,32 @@ namespace Kephas.Plugins.Application
             IContext context,
             Func<IPlugin, IContext, bool> filter,
             Func<IPlugin, IContext, CancellationToken, Task<IOperationResult<IPlugin>>> asyncOperation,
+            string operation,
             CancellationToken cancellationToken = default)
         {
             var installedPlugins = this.pluginManager.GetInstalledPlugins();
 
             var result = new OperationResult();
-            var opResult = await Profiler.WithStopwatchAsync(
-                async () =>
+            foreach (var plugin in installedPlugins.Where(p => filter(p, context)))
+            {
+                try
                 {
-                    foreach (var plugin in installedPlugins.Where(p => filter(p, context)))
-                    {
-                        try
-                        {
-                            var initResult = await asyncOperation(plugin, context, cancellationToken)
-                                .PreserveThreadContext();
-                            result.MergeMessages(initResult);
-                        }
-                        catch (OperationCanceledException cex)
-                        {
-                            result.MergeException(cex);
-                            break;
-                        }
-                        catch (Exception ex)
-                        {
-                            result.MergeException(ex);
-                        }
-                    }
-                }).PreserveThreadContext();
+                    var operationResult = await asyncOperation(plugin, context, cancellationToken)
+                        .PreserveThreadContext();
+                    result.MergeMessages(operationResult);
+                }
+                catch (OperationCanceledException cex)
+                {
+                    result.MergeException(cex);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    result.MergeException(ex);
+                }
+            }
 
-            return result.MergeAll(opResult).Complete(opResult.Elapsed);
+            return result.Complete();
         }
     }
 }

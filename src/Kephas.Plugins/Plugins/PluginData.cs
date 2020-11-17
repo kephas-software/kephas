@@ -17,6 +17,7 @@ namespace Kephas.Plugins
     using System.Linq;
 
     using Kephas.Application;
+    using Kephas.Collections;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Versioning;
 
@@ -90,7 +91,7 @@ namespace Kephas.Plugins
         /// </summary>
         internal string? UpdatingToVersion
         {
-            get => this.Data[nameof(this.UpdatingToVersion)];
+            get => this.Data.TryGetValue(nameof(this.UpdatingToVersion));
             set => this.Data[nameof(this.UpdatingToVersion)] = value;
         }
 
