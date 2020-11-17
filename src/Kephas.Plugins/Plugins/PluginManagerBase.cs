@@ -358,7 +358,7 @@ namespace Kephas.Plugins
 
                     if (!uninstallComplete && !uninitializeComplete)
                     {
-                        throw new PluginOperationException($"Plugin {pluginIdentity} cannot be uninstalled. State: '{pluginData.State}'.", result);
+                        throw new PluginOperationException($"Plugin {pluginIdentity} cannot be uninstalled. State: '{pluginData.State}'. Under certain circumstances it may be necessary to perform the uninstallation in multiple successive steps, for example when plugin binaries need to be unloaded first.", result);
                     }
                 }).PreserveThreadContext();
 

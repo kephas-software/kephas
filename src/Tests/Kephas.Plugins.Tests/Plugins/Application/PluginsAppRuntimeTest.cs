@@ -8,15 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
-
 namespace Kephas.Tests.Plugins.Application
 {
     using System;
-    using System.Collections.Concurrent;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using Kephas.Application;
     using Kephas.Dynamic;
     using Kephas.IO;
@@ -26,7 +24,7 @@ namespace Kephas.Tests.Plugins.Application
     using NUnit.Framework;
 
     [TestFixture]
-    public class PluginsAppRuntimeTest
+    public class PluginsAppRuntimeTest : PluginsTestBase
     {
         [Test]
         public void EnablePlugins_default()
@@ -199,31 +197,6 @@ namespace Kephas.Tests.Plugins.Application
             var pluginsFolder = Path.GetFullPath(Path.Combine(appLocation, "..", "folder"));
             Assert.AreEqual(pluginsFolder, appRuntime.PluginsLocation);
             Assert.AreEqual(pluginsFolder, appRuntime.GetPluginsLocation());
-        }
-
-        public class TestPluginRepository : IPluginRepository
-        {
-            private ConcurrentDictionary<string, PluginData> cache = new ConcurrentDictionary<string, PluginData>();
-
-            public PluginData GetPluginData(AppIdentity pluginIdentity, bool throwOnInvalid = true)
-            {
-                if (this.cache.TryGetValue(pluginIdentity.Id.ToLower(), out var pluginData))
-                {
-                    return pluginData;
-                }
-
-                return new PluginData(pluginIdentity, PluginState.None);
-            }
-
-            public void StorePluginData(PluginData pluginData)
-            {
-                this.cache.AddOrUpdate(pluginData.Identity.Id.ToLower(), pluginData, (_, __) => pluginData);
-            }
-
-            public void RemovePluginData(PluginData pluginData)
-            {
-                this.cache.TryRemove(pluginData.Identity.Id.ToLower(), out _);
-            }
         }
     }
 }
