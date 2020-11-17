@@ -90,5 +90,24 @@ namespace Kephas.Plugins
 
             File.WriteAllText(pluginDataFile, pluginData.ToString());
         }
+
+        /// <summary>
+        /// Removes the plugin data, typically when the plugin is uninstalled.
+        /// </summary>
+        /// <param name="pluginData">Information describing the plugin.</param>
+        public void RemovePluginData(PluginData pluginData)
+        {
+            var pluginLocation = this.pluginLocationResolver(pluginData.Identity);
+            if (string.IsNullOrEmpty(pluginLocation))
+            {
+                throw new DirectoryNotFoundException($"A plugin location could not be resolved for '{pluginData.Identity}'");
+            }
+
+            var pluginDataFile = Path.Combine(pluginLocation, PluginDataFileName);
+            if (File.Exists(pluginDataFile))
+            {
+                File.Delete(pluginDataFile);
+            }
+        }
     }
 }

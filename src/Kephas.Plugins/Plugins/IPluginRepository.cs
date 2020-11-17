@@ -32,5 +32,11 @@ namespace Kephas.Plugins
         /// </summary>
         /// <param name="pluginData">Information describing the plugin.</param>
         void StorePluginData(PluginData pluginData);
+
+        /// <summary>
+        /// Removes the plugin data, typically when the plugin is uninstalled.
+        /// </summary>
+        /// <param name="pluginData">Information describing the plugin.</param>
+        void RemovePluginData(PluginData pluginData);
     }
 }
