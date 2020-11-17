@@ -21,7 +21,7 @@ namespace Kephas.Redis.Configuration
         /// <value>
         /// The Redis connection string.
         /// </value>
-        public string ConnectionString { get; set; }
+        public string? ConnectionString { get; set; }
 
         /// <summary>
         /// Gets or sets the application namespace.
