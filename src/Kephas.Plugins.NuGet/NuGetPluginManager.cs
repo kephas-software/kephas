@@ -71,7 +71,7 @@ namespace Kephas.Plugins.NuGet
 
         private readonly PluginsSettings pluginsSettings;
         private readonly global::NuGet.Common.ILogger nativeLogger;
-        private ISettings? settings;
+        private global::NuGet.Configuration.ISettings? settings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NuGetPluginManager"/> class.
@@ -547,7 +547,7 @@ namespace Kephas.Plugins.NuGet
         /// <returns>
         /// The NuGet settings.
         /// </returns>
-        protected virtual ISettings GetSettings()
+        protected virtual global::NuGet.Configuration.ISettings GetSettings()
         {
             if (this.settings == null)
             {

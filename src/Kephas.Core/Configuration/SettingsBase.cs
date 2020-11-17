@@ -1,30 +1,28 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DistributedMessagingSettings.cs" company="Kephas Software SRL">
+// <copyright file="SettingsBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the distributed messaging settings class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Messaging.Distributed
+namespace Kephas.Configuration
 {
     using System;
+    using System.Collections.Generic;
 
-    using Kephas.Configuration;
+    using Kephas.Dynamic;
 
     /// <summary>
-    /// A distributed messaging settings.
+    /// Base class for settings allowing dynamic access to values, case-insensitive.
     /// </summary>
-    public class DistributedMessagingSettings : SettingsBase
+    public abstract class SettingsBase : Expando
     {
         /// <summary>
-        /// Gets or sets the default timeout.
+        /// Initializes a new instance of the <see cref="SettingsBase"/> class.
         /// </summary>
-        /// <value>
-        /// The default timeout.
-        /// </value>
-        public TimeSpan? DefaultTimeout { get; set; }
+        protected SettingsBase()
+            : base(new Dictionary<string, object?>(StringComparer.InvariantCultureIgnoreCase))
+        {
+        }
     }
 }

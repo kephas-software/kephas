@@ -1,24 +1,18 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SystemSmtpSettings.cs" company="Kephas Software SRL">
+// <copyright file="ISettings.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>
-//   Implements the system email sender settings class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Mail.Configuration
+namespace Kephas.Configuration
 {
-    using Kephas.Configuration;
-    using Kephas.Security.Authorization;
-    using Kephas.Security.Authorization.AttributedModel;
+    using Kephas.Dynamic;
 
     /// <summary>
-    /// A system email sender settings.
+    /// Marker interface for top level settings.
     /// </summary>
-    [RequiresPermission(typeof(AppAdminPermission))]
-    public class SystemSmtpSettings : SmtpSettings, ISettings
+    public interface ISettings : IIndexable
     {
     }
 }

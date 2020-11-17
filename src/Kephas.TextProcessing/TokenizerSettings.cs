@@ -10,10 +10,15 @@
 
 namespace Kephas.TextProcessing
 {
+    using Kephas.Configuration;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
+
     /// <summary>
     /// The tokenizer settings.
     /// </summary>
-    public class TokenizerSettings
+    [RequiresPermission(typeof(AppAdminPermission))]
+    public class TokenizerSettings : SettingsBase, ISettings
     {
         /// <summary>
         /// Gets or sets the word separators.

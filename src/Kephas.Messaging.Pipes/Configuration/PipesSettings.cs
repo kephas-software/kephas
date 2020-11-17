@@ -9,10 +9,15 @@ namespace Kephas.Messaging.Pipes.Configuration
 {
     using System;
 
+    using Kephas.Configuration;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
+
     /// <summary>
     /// Settings for communication over pipes.
     /// </summary>
-    public class PipesSettings
+    [RequiresPermission(typeof(AppAdminPermission))]
+    public class PipesSettings : SettingsBase, ISettings
     {
         /// <summary>
         /// Gets or sets the connection timeout.

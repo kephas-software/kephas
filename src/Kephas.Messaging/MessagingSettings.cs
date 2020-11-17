@@ -10,12 +10,16 @@
 
 namespace Kephas.Messaging
 {
+    using Kephas.Configuration;
     using Kephas.Messaging.Distributed;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// Messaging settings.
     /// </summary>
-    public class MessagingSettings
+    [RequiresPermission(typeof(AppAdminPermission))]
+    public class MessagingSettings : SettingsBase, ISettings
     {
         /// <summary>
         /// Gets or sets the distributed messaging settings.

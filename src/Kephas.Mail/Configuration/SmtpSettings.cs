@@ -10,12 +10,13 @@
 
 namespace Kephas.Mail.Configuration
 {
+    using Kephas.Configuration;
     using Kephas.Cryptography;
 
     /// <summary>
     /// A email sender settings.
     /// </summary>
-    public class SmtpSettings
+    public class SmtpSettings : SettingsBase
     {
         /// <summary>
         /// The default SMTP port.

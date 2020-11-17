@@ -10,13 +10,16 @@
 
 namespace Kephas
 {
-    using Kephas.Application;
+    using Kephas.Configuration;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
     using Kephas.Threading.Tasks;
 
     /// <summary>
     /// The Kephas core settings.
     /// </summary>
-    public class CoreSettings
+    [RequiresPermission(typeof(AppAdminPermission))]
+    public class CoreSettings : SettingsBase, ISettings
     {
         /// <summary>
         /// Gets or sets the task settings.

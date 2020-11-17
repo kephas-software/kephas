@@ -12,10 +12,12 @@ namespace Kephas.Threading.Tasks
 {
     using System;
 
+    using Kephas.Configuration;
+
     /// <summary>
     /// Task settings.
     /// </summary>
-    public class TaskSettings
+    public class TaskSettings : SettingsBase
     {
         /// <summary>
         /// Gets or sets the default value of milliseconds to wait a task in a completion check cycle when simulating synchronous calls.

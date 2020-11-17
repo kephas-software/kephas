@@ -11,12 +11,16 @@ namespace Kephas.Application.Configuration
     using System.Collections.Generic;
 
     using Kephas.Application.Cryptography.X509Certificates;
+    using Kephas.Configuration;
     using Kephas.Dynamic;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// Settings for the application runtime.
     /// </summary>
-    public class SystemSettings : Expando
+    [RequiresPermission(typeof(AppAdminPermission))]
+    public class SystemSettings : SettingsBase, ISettings
     {
         /// <summary>
         /// Gets the settings for the application instances.

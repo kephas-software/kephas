@@ -9,10 +9,15 @@ namespace Kephas.Orchestration.Configuration
 {
     using System;
 
+    using Kephas.Configuration;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
+
     /// <summary>
     /// Settings for orchestration.
     /// </summary>
-    public class OrchestrationSettings
+    [RequiresPermission(typeof(AppAdminPermission))]
+    public class OrchestrationSettings : SettingsBase, ISettings
     {
         /// <summary>
         /// Gets or sets the heartbeat interval.

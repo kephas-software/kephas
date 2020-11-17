@@ -10,8 +10,6 @@
 
 namespace Kephas.Mail.Services
 {
-    using System.Net;
-
     using Kephas.Configuration;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Mail.Configuration;

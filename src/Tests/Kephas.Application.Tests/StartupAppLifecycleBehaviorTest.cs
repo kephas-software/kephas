@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Operations;
-
 namespace Kephas.Application.Tests
 {
     using System;
@@ -17,6 +15,7 @@ namespace Kephas.Application.Tests
     using Kephas.Application.Interaction;
     using Kephas.Configuration;
     using Kephas.Interaction;
+    using Kephas.Operations;
     using Kephas.Runtime;
     using Kephas.Services;
     using NSubstitute;

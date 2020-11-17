@@ -12,11 +12,15 @@ namespace Kephas.Plugins.NuGet
 {
     using global::NuGet.Resolver;
     using Kephas.Application;
+    using Kephas.Configuration;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
 
     /// <summary>
     /// The plugins settings.
     /// </summary>
-    public class PluginsSettings
+    [RequiresPermission(typeof(AppAdminPermission))]
+    public class PluginsSettings : SettingsBase, ISettings
     {
         /// <summary>
         /// Gets or sets the full pathname of the NuGet configuration file.

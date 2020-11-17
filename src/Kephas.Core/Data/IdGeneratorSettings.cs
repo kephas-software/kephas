@@ -12,10 +12,15 @@ namespace Kephas.Data
 {
     using System;
 
+    using Kephas.Configuration;
+    using Kephas.Security.Authorization;
+    using Kephas.Security.Authorization.AttributedModel;
+
     /// <summary>
     /// Settings for the <see cref="DefaultIdGenerator"/>.
     /// </summary>
-    public class IdGeneratorSettings
+    [RequiresPermission(typeof(AppAdminPermission))]
+    public class IdGeneratorSettings : SettingsBase, ISettings
     {
         /// <summary>
         /// Gets or sets the start epoch for the timestamp part of an ID - 2015-06-01.
