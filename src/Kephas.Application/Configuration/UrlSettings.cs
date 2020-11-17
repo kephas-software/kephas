@@ -49,11 +49,13 @@ namespace Kephas.Application.Configuration
         /// <summary>
         /// Gets a value indicating whether the <see cref="Url"/> is a wildcard for any IP address.
         /// </summary>
+        /// <returns>A value indicating whether the <see cref="Url"/> is a wildcard for any IP address.</returns>
         public bool IsAnyIP() => this.GetNormalizedUri()?.Host == this.anyIPToken;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Url"/> has a HTTPS scheme.
         /// </summary>
+        /// <returns>A value indicating whether the <see cref="Url"/> has a HTTPS scheme.</returns>
         public bool IsHttps() => Uri.UriSchemeHttps.Equals(this.GetNormalizedUri()?.Scheme, StringComparison.OrdinalIgnoreCase);
 
         /// <summary>Returns a string that represents the current object.</summary>
