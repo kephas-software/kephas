@@ -179,7 +179,7 @@ namespace Kephas.Tests.Plugins
 
             Assert.IsNotNull(result);
             Assert.AreEqual(PluginState.Enabled, result.Value.State);
-            Assert.AreEqual("p1:1.2.3\nEnabled\nEmbedded\n\n1878948595", result.Value.GetPluginData().ToString());
+            Assert.AreEqual("p1:1.2.3\nEnabled\nEmbedded\nUpdatingToVersion:2.0.0\n1273474485", result.Value.GetPluginData().ToString());
         }
 
         private TestPluginManager CreatePluginManager(
