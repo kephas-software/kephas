@@ -136,7 +136,7 @@ namespace Kephas.Plugins
 
 
 #if NETSTANDARD2_1
-            var data = splits.Length > 3 ? DataParse(splits[3..^4]) : null;
+            var data = splits.Length > 3 ? DataParse(splits[3..^1]) : null;
             if (!int.TryParse(splits[^1], out var checksum))
 #else
             var data = splits.Length > 3 ? DataParse(splits.Skip(3).Take(splits.Length - 4)) : null;
