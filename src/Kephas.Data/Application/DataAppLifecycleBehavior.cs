@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DataApplicationLifecycleBehavior.cs" company="Kephas Software SRL">
+// <copyright file="DataAppLifecycleBehavior.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -24,15 +24,15 @@ namespace Kephas.Data.Application
     /// A data application lifecycle behavior.
     /// </summary>
     [ProcessingPriority(Priority.High)]
-    public class DataApplicationLifecycleBehavior : IAppLifecycleBehavior
+    public class DataAppLifecycleBehavior : IAppLifecycleBehavior
     {
         private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataApplicationLifecycleBehavior"/> class.
+        /// Initializes a new instance of the <see cref="DataAppLifecycleBehavior"/> class.
         /// </summary>
         /// <param name="typeRegistry">The type registry.</param>
-        public DataApplicationLifecycleBehavior(IRuntimeTypeRegistry typeRegistry)
+        public DataAppLifecycleBehavior(IRuntimeTypeRegistry typeRegistry)
         {
             this.typeRegistry = typeRegistry;
         }
