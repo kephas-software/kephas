@@ -860,7 +860,7 @@ namespace Kephas.Plugins
         protected virtual IPlugin ToPlugin(PluginData pluginData, bool offline = false)
         {
             var pluginInfo = new PluginInfo(this.AppRuntime, this.PluginRepository, pluginData.Identity);
-            return (Plugin)pluginInfo.CreateInstance(new object[] { offline ? pluginData : null });
+            return (Plugin)pluginInfo.CreateInstance(new object?[] { offline ? pluginData : null });
         }
 
         /// <summary>
@@ -1169,7 +1169,14 @@ namespace Kephas.Plugins
                 this.EnsurePluginAssembliesProbingPathRemoved(pluginData.Identity);
             }
 
-            this.PluginRepository.StorePluginData(pluginData.ChangeState(state));
+            if (state == PluginState.None)
+            {
+                this.PluginRepository.RemovePluginData(pluginData.ChangeState(state));
+            }
+            else
+            {
+                this.PluginRepository.StorePluginData(pluginData.ChangeState(state));
+            }
         }
 
         private void SetUpdatingToVersion(PluginData pluginData, SemanticVersion version)

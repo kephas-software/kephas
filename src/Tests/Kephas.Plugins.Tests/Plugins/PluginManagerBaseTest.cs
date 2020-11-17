@@ -179,18 +179,40 @@ namespace Kephas.Tests.Plugins
 
             Assert.IsNotNull(result);
             Assert.AreEqual(PluginState.Enabled, result.Value.State);
-            Assert.AreEqual("p1:1.2.3\nEnabled\nEmbedded\nUpdatingToVersion:2.0.0\n1273474485", result.Value.GetPluginData().ToString());
+            Assert.AreEqual("p1:2.0.0\nEnabled\nEmbedded\n\n970928651", result.Value.GetPluginData().ToString());
+        }
+
+        [Test]
+        public async Task UpdatePluginAsync_p1_two_step_uninstall()
+        {
+            using var ctx = new PluginsTestContext();
+            var canUninstall = false;
+            var pluginManager = this.CreatePluginManager(ctx, canUninstall: (p, ctx) => canUninstall);
+
+            var pluginIdentity = new AppIdentity("p1", "1.2.3");
+            var result = await pluginManager.InstallPluginAsync(pluginIdentity);
+
+            Assert.That(async () => await pluginManager.UpdatePluginAsync(new AppIdentity("p1", "2.0.0")), Throws.InstanceOf<PluginOperationException>());
+
+            Assert.AreEqual(PluginState.PendingUninstallation, pluginManager.GetPluginState(pluginIdentity));
+
+            canUninstall = true;
+            result = await pluginManager.UpdatePluginAsync(new AppIdentity("p1", "2.0.0"));
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(PluginState.Enabled, result.Value.State);
+            Assert.AreEqual("p1:2.0.0\nEnabled\nEmbedded\n\n970928651", result.Value.GetPluginData().ToString());
         }
 
         private TestPluginManager CreatePluginManager(
             PluginsTestContext context,
-            Action<IPlugin, IPluginContext> onInstall = null,
-            Func<PluginData, IPluginContext, bool> canInstall = null,
-            Func<PluginData, IPluginContext, bool> canUninstall = null,
-            Func<PluginData, IPluginContext, bool> canInitialize = null,
-            Func<PluginData, IPluginContext, bool> canUninitialize = null,
-            Func<PluginData, IPluginContext, bool> canEnable = null,
-            Func<PluginData, IPluginContext, bool> canDisable = null)
+            Action<IPlugin, IPluginContext>? onInstall = null,
+            Func<PluginData, IPluginContext, bool>? canInstall = null,
+            Func<PluginData, IPluginContext, bool>? canUninstall = null,
+            Func<PluginData, IPluginContext, bool>? canInitialize = null,
+            Func<PluginData, IPluginContext, bool>? canUninitialize = null,
+            Func<PluginData, IPluginContext, bool>? canEnable = null,
+            Func<PluginData, IPluginContext, bool>? canDisable = null)
         {
             var pluginsDataStore = new TestPluginRepository();
             var appRuntime = new PluginsAppRuntime(appFolder: context.AppLocation, pluginsFolder: context.PluginsFolder, pluginRepository: pluginsDataStore);
@@ -241,18 +263,23 @@ namespace Kephas.Tests.Plugins
             {
                 this.cache.AddOrUpdate(pluginData.Identity.Id.ToLower(), pluginData, (_, __) => pluginData);
             }
+
+            public void RemovePluginData(PluginData pluginData)
+            {
+                this.cache.TryRemove(pluginData.Identity.Id.ToLower(), out _);
+            }
         }
 
         public class TestPluginManager : PluginManagerBase
         {
             private readonly PluginsTestContext ctx;
-            private readonly Action<IPlugin, IPluginContext> onInstall;
-            private readonly Func<PluginData, IPluginContext, bool> canInstall;
-            private readonly Func<PluginData, IPluginContext, bool> canUninstall;
-            private readonly Func<PluginData, IPluginContext, bool> canInitialize;
-            private readonly Func<PluginData, IPluginContext, bool> canUninitialize;
-            private readonly Func<PluginData, IPluginContext, bool> canEnable;
-            private readonly Func<PluginData, IPluginContext, bool> canDisable;
+            private readonly Action<IPlugin, IPluginContext>? onInstall;
+            private readonly Func<PluginData, IPluginContext, bool>? canInstall;
+            private readonly Func<PluginData, IPluginContext, bool>? canUninstall;
+            private readonly Func<PluginData, IPluginContext, bool>? canInitialize;
+            private readonly Func<PluginData, IPluginContext, bool>? canUninitialize;
+            private readonly Func<PluginData, IPluginContext, bool>? canEnable;
+            private readonly Func<PluginData, IPluginContext, bool>? canDisable;
 
             public TestPluginManager(
                 PluginsTestContext ctx,
@@ -261,13 +288,13 @@ namespace Kephas.Tests.Plugins
                 IEventHub eventHub,
                 IPluginRepository pluginRepository,
                 ILogManager? logManager = null,
-                Action<IPlugin, IPluginContext> onInstall = null,
-                Func<PluginData, IPluginContext, bool> canInstall = null,
-                Func<PluginData, IPluginContext, bool> canUninstall = null,
-                Func<PluginData, IPluginContext, bool> canInitialize = null,
-                Func<PluginData, IPluginContext, bool> canUninitialize = null,
-                Func<PluginData, IPluginContext, bool> canEnable = null,
-                Func<PluginData, IPluginContext, bool> canDisable = null)
+                Action<IPlugin, IPluginContext>? onInstall = null,
+                Func<PluginData, IPluginContext, bool>? canInstall = null,
+                Func<PluginData, IPluginContext, bool>? canUninstall = null,
+                Func<PluginData, IPluginContext, bool>? canInitialize = null,
+                Func<PluginData, IPluginContext, bool>? canUninitialize = null,
+                Func<PluginData, IPluginContext, bool>? canEnable = null,
+                Func<PluginData, IPluginContext, bool>? canDisable = null)
                 : base(appRuntime, contextFactory, eventHub, pluginRepository, logManager)
             {
                 this.ctx = ctx;

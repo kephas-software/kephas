@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace Kephas.Tests.Plugins.Application
 {
     using System;
@@ -216,6 +218,11 @@ namespace Kephas.Tests.Plugins.Application
             public void StorePluginData(PluginData pluginData)
             {
                 this.cache.AddOrUpdate(pluginData.Identity.Id.ToLower(), pluginData, (_, __) => pluginData);
+            }
+
+            public void RemovePluginData(PluginData pluginData)
+            {
+                this.cache.TryRemove(pluginData.Identity.Id.ToLower(), out _);
             }
         }
     }
