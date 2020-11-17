@@ -18,6 +18,7 @@ namespace Kephas.Plugins
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
+    using Kephas.Versioning;
 
     /// <summary>
     /// A plugin data.
@@ -85,6 +86,15 @@ namespace Kephas.Plugins
         public IDictionary<string, string?> Data { get; }
 
         /// <summary>
+        /// Gets or sets the version towards which the plugin is being updated.
+        /// </summary>
+        internal string? UpdatingToVersion
+        {
+            get => this.Data[nameof(this.UpdatingToVersion)];
+            set => this.Data[nameof(this.UpdatingToVersion)] = value;
+        }
+
+        /// <summary>
         /// Parses the value and returns valid plugin data.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -124,9 +134,14 @@ namespace Kephas.Plugins
                     : new PluginData(appId, PluginState.Corrupt);
             }
 
-            var data = splits.Length > 3 ? DataParse(splits.Skip(3).Take(splits.Length - 4)) : null;
 
+#if NETSTANDARD2_1
+            var data = splits.Length > 3 ? DataParse(splits[3..^4]) : null;
+            if (!int.TryParse(splits[^1], out var checksum))
+#else
+            var data = splits.Length > 3 ? DataParse(splits.Skip(3).Take(splits.Length - 4)) : null;
             if (!int.TryParse(splits[splits.Length - 1], out var checksum))
+#endif
             {
                 return throwOnInvalid
                     ? throw new InvalidPluginDataException($"The plugin data for {appId} is corrupt, probably was manually changed ({ParseChecksumInvalidCode}).", ParseChecksumInvalidCode)
@@ -195,7 +210,7 @@ namespace Kephas.Plugins
         /// <returns>
         /// This <see cref="PluginData"/>.
         /// </returns>
-        public PluginData ChangeData(string key, string value)
+        public PluginData ChangeData(string key, string? value)
         {
             this.Data[key] = value;
             return this;
@@ -211,6 +226,13 @@ namespace Kephas.Plugins
         {
             return $"{this.Identity}\n{this.State}\n{this.Kind}\n{DataToString(this.Data)}\n{this.GetChecksum()}";
         }
+
+        /// <summary>
+        /// Gets or sets the version towards which the plugin is being updated.
+        /// </summary>
+        /// <param name="version">The version to be updated to.</param>
+        internal PluginData ChangeUpdatingToVersion(SemanticVersion? version)
+            => this.ChangeData(nameof(this.UpdatingToVersion), version?.ToString());
 
         private static IDictionary<string, string?> DataParse(IEnumerable<string> values)
         {
@@ -236,7 +258,7 @@ namespace Kephas.Plugins
             return data;
         }
 
-        private static string DataToString(IDictionary<string, string?> data)
+        private static string DataToString(IDictionary<string, string?>? data)
         {
             if (data == null || data.Count == 0)
             {
