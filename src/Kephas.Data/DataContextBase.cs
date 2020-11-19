@@ -40,6 +40,7 @@ namespace Kephas.Data
 
         private readonly IDataBehaviorProvider? dataBehaviorProvider;
         private readonly IDataCommandProvider dataCommandProvider;
+        private readonly IRuntimeTypeRegistry typeRegistry;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextBase"/> class.
@@ -63,6 +64,7 @@ namespace Kephas.Data
             this.Id = Guid.NewGuid();
             this.InitializationMonitor = new InitializationMonitor<DataContextBase>(this.GetType());
             this.Logger = this.AmbientServices.GetLogger(this.GetType());
+            this.typeRegistry = compositionContext.GetExport<IRuntimeTypeRegistry>();
         }
 
         /// <summary>
@@ -134,7 +136,7 @@ namespace Kephas.Data
             using var queryOperationContext = this.CreateQueryOperationContext(queryConfig);
             var entityType = typeof(T);
             var implementationTypeInfo = this.EntityActivator.GetImplementationType(
-                entityType.AsRuntimeTypeInfo(),
+                this.typeRegistry.GetTypeInfo(entityType),
                 queryOperationContext);
             var implementationType = ((IRuntimeTypeInfo)implementationTypeInfo).Type;
             if (implementationType != entityType)

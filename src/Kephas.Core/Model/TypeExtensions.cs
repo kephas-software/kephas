@@ -35,20 +35,6 @@ namespace Kephas.Model
         /// <returns>
         /// The abstract type, or the type itself, if the type is not an implementation type.
         /// </returns>
-        public static ITypeInfo GetAbstractTypeInfo(this Type type)
-        {
-            Requires.NotNull(type, nameof(type));
-
-            return type.AsRuntimeTypeInfo().GetAbstractTypeInfo();
-        }
-
-        /// <summary>
-        /// Gets the abstract type for an implementation type.
-        /// </summary>
-        /// <param name="type">The type to act on.</param>
-        /// <returns>
-        /// The abstract type, or the type itself, if the type is not an implementation type.
-        /// </returns>
         public static ITypeInfo GetAbstractTypeInfo(this ITypeInfo type)
         {
             Requires.NotNull(type, nameof(type));
@@ -56,7 +42,9 @@ namespace Kephas.Model
             if (!(type[AbstractTypeInfoName] is ITypeInfo abstractTypeInfo))
             {
                 var implementationFor = type.GetAttribute<ImplementationForAttribute>();
-                abstractTypeInfo = (implementationFor != null ? implementationFor.AbstractType?.AsRuntimeTypeInfo() : type) ?? type;
+                abstractTypeInfo = implementationFor?.AbstractType != null
+                    ? type.TypeRegistry.GetTypeInfo(implementationFor.AbstractType)!
+                    : type;
                 type[AbstractTypeInfoName] = abstractTypeInfo;
             }
 
@@ -74,7 +62,8 @@ namespace Kephas.Model
         {
             Requires.NotNull(type, nameof(type));
 
-            return ((IRuntimeTypeInfo)GetAbstractTypeInfo(type.AsRuntimeTypeInfo())).Type;
+            var implementationFor = type.GetCustomAttribute<ImplementationForAttribute>();
+            return (implementationFor != null ? implementationFor.AbstractType : type) ?? type;
         }
 
         /// <summary>
@@ -104,28 +93,9 @@ namespace Kephas.Model
 
             return obj switch
             {
-                Type typeObj => GetAbstractType(typeObj),
+                Type typeObj => typeObj.GetAbstractType(),
                 ITypeInfo typeInfoInterface => GetAbstractType(typeInfoInterface),
                 _ => obj.GetType().GetAbstractType()
-            };
-        }
-
-        /// <summary>
-        /// Gets the abstract type for which this instance is an implementation.
-        /// </summary>
-        /// <param name="obj">The object to act on.</param>
-        /// <returns>
-        /// The abstract type.
-        /// </returns>
-        public static ITypeInfo GetAbstractTypeInfo(this object obj)
-        {
-            Requires.NotNull(obj, nameof(obj));
-
-            return obj switch
-            {
-                Type typeObj => GetAbstractTypeInfo(typeObj),
-                ITypeInfo typeInfoInterface => GetAbstractTypeInfo(typeInfoInterface),
-                _ => obj.GetType().GetAbstractTypeInfo()
             };
         }
     }
