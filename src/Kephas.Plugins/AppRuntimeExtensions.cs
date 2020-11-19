@@ -75,23 +75,6 @@ namespace Kephas
         }
 
         /// <summary>
-        /// Gets the application's target framework.
-        /// </summary>
-        /// <param name="appRuntime">The application runtime.</param>
-        /// <returns>
-        /// The target framework.
-        /// </returns>
-        public static string? GetTargetFramework(this IAppRuntime appRuntime)
-        {
-            if (appRuntime is PluginsAppRuntime pluginsAppRuntime)
-            {
-                return pluginsAppRuntime.TargetFramework;
-            }
-
-            return appRuntime?[nameof(PluginsAppRuntime.TargetFramework)] as string;
-        }
-
-        /// <summary>
         /// Gets a value indicating whether the plugins are enabled.
         /// </summary>
         /// <param name="appRuntime">The application runtime.</param>
