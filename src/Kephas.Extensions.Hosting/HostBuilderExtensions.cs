@@ -12,7 +12,7 @@ namespace Kephas.Extensions.Hosting
 
     using Kephas.Application;
     using Kephas.Diagnostics.Contracts;
-    using Kephas.Extensions.Hosting.DependencyInjection;
+    using Kephas.Extensions.DependencyInjection;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
 
