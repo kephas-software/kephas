@@ -208,7 +208,7 @@ namespace Kephas.Orchestration.Application
                 this.enableAppSetup = false;
 
                 var counter = Interlocked.Increment(ref this.workerCounter);
-                var appInstanceId = $"{appId}-{counter}";
+                var appInstanceId = this.GetAppInstanceId(appId, appSettings, counter);
                 var appInfo = new AppInfo(appId) { [nameof(AppSettings)] = appSettings, [AppRuntimeBase.AppInstanceIdKey] = appInstanceId };
                 startTasks.Add(this.StartWorkerProcessAsync(appInfo, appSettings, appContext, cancellationToken));
             }
@@ -229,6 +229,19 @@ namespace Kephas.Orchestration.Application
                 null,
                 TimeSpan.FromMinutes(1),
                 TimeSpan.FromSeconds(30));
+        }
+
+        /// <summary>
+        /// Gets the application instance ID for the new instance.
+        /// </summary>
+        /// <param name="appId">The application ID.</param>
+        /// <param name="appSettings">The application settings.</param>
+        /// <param name="counter">The counter for this application.</param>
+        /// <returns>The application instance ID.</returns>
+        protected virtual string GetAppInstanceId(string appId, AppSettings appSettings, int counter)
+        {
+            var appInstanceId = $"{appId}-{counter}";
+            return appInstanceId;
         }
 
         /// <summary>
