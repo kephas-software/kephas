@@ -8,12 +8,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore.Configuration
+namespace Kephas.Extensions.Hosting.Configuration
 {
-    using Kephas;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Extensions.Configuration;
-
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
 

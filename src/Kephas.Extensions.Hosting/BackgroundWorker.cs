@@ -10,11 +10,11 @@
 
 namespace Kephas.Extensions.Hosting
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Application;
-    using Kephas.Extensions.Hosting.Application;
+    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Microsoft.Extensions.Hosting;
 
@@ -23,18 +23,20 @@ namespace Kephas.Extensions.Hosting
     /// </summary>
     public class BackgroundWorker : BackgroundService
     {
-        private readonly IAppContext appContext;
+        private readonly Func<CancellationToken, Task> executeFunc;
         private CancellationTokenRegistration stopRegistration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BackgroundWorker"/> class.
         /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="appContext">Context for the application.</param>
-        public BackgroundWorker(ILogger<BackgroundWorker> logger, IAppContext appContext)
+        /// <param name="executeFunc">The execute function.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        public BackgroundWorker(Func<CancellationToken, Task> executeFunc, ILogManager? logManager = null)
         {
-            this.Logger = logger;
-            this.appContext = appContext;
+            Requires.NotNull(executeFunc, nameof(executeFunc));
+
+            this.executeFunc = executeFunc;
+            this.Logger = (logManager ?? LoggingHelper.DefaultLogManager).GetLogger(this.GetType());
         }
 
         /// <summary>
@@ -43,7 +45,7 @@ namespace Kephas.Extensions.Hosting
         /// <value>
         /// The logger.
         /// </value>
-        public ILogger<BackgroundWorker> Logger { get; }
+        protected ILogger Logger { get; }
 
         /// <summary>
         /// This method is called when the <see cref="T:Microsoft.Extensions.Hosting.IHostedService" />
@@ -67,7 +69,7 @@ namespace Kephas.Extensions.Hosting
                 this.Logger.Info("Background worker stopped.");
             });
 
-            return this.appContext.InitializeAppManagerAsync()(stoppingToken);
+            return this.executeFunc(stoppingToken);
         }
     }
 }
