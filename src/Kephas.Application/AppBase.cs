@@ -28,6 +28,7 @@ namespace Kephas.Application
     /// </remarks>
     public abstract class AppBase
     {
+        private readonly Action<IAmbientServices>? containerBuilder;
         private bool isConfigured;
 
         /// <summary>
@@ -36,10 +37,12 @@ namespace Kephas.Application
         /// <param name="ambientServices">Optional. The ambient services. If not provided then
         ///                               a new instance of <see cref="Kephas.AmbientServices"/> will be created and used.</param>
         /// <param name="appLifetimeTokenSource">Optional. The cancellation token source used to stop the application.</param>
-        protected AppBase(IAmbientServices? ambientServices = null, CancellationTokenSource? appLifetimeTokenSource = null)
+        /// <param name="containerBuilder">Optional. The container builder.</param>
+        protected AppBase(IAmbientServices? ambientServices = null, CancellationTokenSource? appLifetimeTokenSource = null, Action<IAmbientServices>? containerBuilder = null)
         {
             this.AmbientServices = ambientServices ?? new AmbientServices();
             this.AppLifetimeTokenSource = appLifetimeTokenSource;
+            this.containerBuilder = containerBuilder;
             AppDomain.CurrentDomain.UnhandledException += this.OnCurrentDomainUnhandledException;
         }
 
@@ -245,7 +248,7 @@ namespace Kephas.Application
                 var terminationAwaiter = container.GetExport<IAppShutdownAwaiter>();
                 var (result, instruction) = await terminationAwaiter.WaitForShutdownSignalAsync(cancellationToken)
                     .PreserveThreadContext();
-                this.AppContext.AppResult = result;
+                this.AppContext!.AppResult = result;
 
                 return instruction;
             }
@@ -292,7 +295,14 @@ namespace Kephas.Application
         /// <param name="ambientServices">The ambient services.</param>
         protected virtual void BuildServicesContainer(IAmbientServices ambientServices)
         {
-            ambientServices.BuildWithLite();
+            if (this.containerBuilder != null)
+            {
+                this.containerBuilder(ambientServices);
+            }
+            else
+            {
+                ambientServices.BuildWithLite();
+            }
         }
 
         /// <summary>

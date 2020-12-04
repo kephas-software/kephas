@@ -59,15 +59,15 @@ namespace Kephas.Application
         /// <returns>
         /// An asynchronous result that yields the shutdown result.
         /// </returns>
-        public async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken)
+        public virtual async Task<(IOperationResult result, AppShutdownInstruction instruction)> WaitForShutdownSignalAsync(CancellationToken cancellationToken)
         {
             this.completionSource = new TaskCompletionSource<IOperationResult>();
 
-            var stopwatch = Stopwatch.StartNew();
+            var result = new OperationResult();
 
             using (this.cancellationTokenSource)
-            using (this.cancellationTokenSource.Token.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult())))
-            using (cancellationToken.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult())))
+            using (this.cancellationTokenSource.Token.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult(result))))
+            using (cancellationToken.Register(() => this.completionSource.TrySetResult(this.GetUnattendedResult(result))))
             using (this.shutdownSubscription)
             {
                 if (this.IsAttended)
@@ -78,18 +78,14 @@ namespace Kephas.Application
 
                         this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                        return (this.GetAttendedResult(stopwatch.Elapsed), AppShutdownInstruction.Shutdown);
+                        return (this.GetAttendedResult(result), AppShutdownInstruction.Shutdown);
                     }
                     catch (OperationCanceledException)
                     {
                         return (this.unattendedCompletion
-                                    ? this.GetUnattendedResult(stopwatch.Elapsed)
-                                    : this.GetAttendedResult(stopwatch.Elapsed),
+                                    ? this.GetUnattendedResult(result)
+                                    : this.GetAttendedResult(result),
                                 AppShutdownInstruction.Shutdown);
-                    }
-                    finally
-                    {
-                        stopwatch.Stop();
                     }
                 }
 
@@ -99,15 +95,11 @@ namespace Kephas.Application
 
                     this.cancellationTokenSource.Token.ThrowIfCancellationRequested();
 
-                    return (this.GetUnattendedResult(stopwatch.Elapsed), AppShutdownInstruction.Shutdown);
+                    return (this.GetUnattendedResult(result), AppShutdownInstruction.Shutdown);
                 }
                 catch (OperationCanceledException)
                 {
-                    return (this.GetUnattendedResult(stopwatch.Elapsed), AppShutdownInstruction.Shutdown);
-                }
-                finally
-                {
-                    stopwatch.Stop();
+                    return (this.GetUnattendedResult(result), AppShutdownInstruction.Shutdown);
                 }
             }
         }
@@ -148,23 +140,21 @@ namespace Kephas.Application
         /// <summary>
         /// Gets the unattended result.
         /// </summary>
-        /// <param name="elapsed">The elapsed time.</param>
+        /// <param name="result">The result to be set as canceled.</param>
         /// <returns>
         /// The unattended result.
         /// </returns>
-        protected virtual IOperationResult GetUnattendedResult(TimeSpan? elapsed = null)
-            => new OperationResult()
-                    .Complete(elapsed ?? TimeSpan.Zero, OperationState.Canceled);
+        protected virtual IOperationResult GetUnattendedResult(IOperationResult result)
+            => result.Complete(operationState: OperationState.Canceled);
 
         /// <summary>
         /// Gets the attended result.
         /// </summary>
-        /// <param name="elapsed">Optional. The elapsed time.</param>
+        /// <param name="result">The result to be set as completed.</param>
         /// <returns>
         /// The attended result.
         /// </returns>
-        protected virtual IOperationResult GetAttendedResult(TimeSpan? elapsed = null)
-            => new OperationResult()
-                    .Complete(elapsed ?? TimeSpan.Zero, OperationState.Completed);
+        protected virtual IOperationResult GetAttendedResult(IOperationResult result)
+            => result.Complete(operationState: OperationState.Completed);
     }
 }
