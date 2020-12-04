@@ -1,11 +1,7 @@
 namespace Kephas.Application.AspNetCore.InteractiveTests
 {
-    using System;
-
     using Kephas;
-    using Kephas.Application;
     using Kephas.Application.AspNetCore.Hosting;
-    using Kephas.Logging.Serilog;
     using Kephas.Serialization.Json;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -13,7 +9,6 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Serilog;
 
     public class StartupApp : StartupAppBase
     {
@@ -23,7 +18,7 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         /// <param name="env">The environment.</param>
         /// <param name="config">The configuration.</param>
         public StartupApp(IWebHostEnvironment env, IConfiguration config)
-            : base(env, config)
+            : base(env, config, containerBuilder: ambientServices => ambientServices.BuildWithAutofac())
         {
         }
 
@@ -115,17 +110,6 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
             });
 
             base.Configure(app, appLifetime);
-        }
-
-        /// <summary>Configures the ambient services asynchronously.</summary>
-        /// <remarks>
-        /// Override this method to initialize the startup services, like log manager and configuration manager.
-        /// </remarks>
-        /// <param name="ambientServices">The ambient services.</param>
-        protected override void BuildServicesContainer(IAmbientServices ambientServices)
-        {
-            ambientServices
-                .BuildWithAutofac();
         }
     }
 }
