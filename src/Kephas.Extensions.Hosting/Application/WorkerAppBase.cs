@@ -19,7 +19,6 @@ namespace Kephas.Extensions.Hosting.Application
     using Kephas.Extensions.DependencyInjection;
     using Kephas.Extensions.Hosting.Configuration;
     using Kephas.Extensions.Logging;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
@@ -34,11 +33,13 @@ namespace Kephas.Extensions.Hosting.Application
         /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="appLifetimeTokenSource">Optional. The application lifetime token source.</param>
+        /// <param name="containerBuilder">Optional. The container builder.</param>
         protected WorkerAppBase(
             IAmbientServices? ambientServices = null,
             IAppArgs? appArgs = null,
-            CancellationTokenSource? appLifetimeTokenSource = null)
-            : base(ambientServices, appLifetimeTokenSource)
+            CancellationTokenSource? appLifetimeTokenSource = null,
+            Action<IAmbientServices>? containerBuilder = null)
+            : base(ambientServices, appLifetimeTokenSource, containerBuilder)
         {
             this.AppArgs = appArgs ?? new AppArgs();
         }
@@ -62,7 +63,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <summary>
         /// Gets the application arguments.
         /// </summary>
-        protected IAppArgs? AppArgs { get; }
+        protected IAppArgs AppArgs { get; }
 
         /// <summary>
         /// Bootstraps the application asynchronously.
@@ -142,7 +143,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <param name="ambientServices">The ambient services.</param>
         protected virtual void BuildWorkerServicesContainer(IAmbientServices ambientServices)
         {
-            ambientServices.BuildWithLite();
+            base.BuildServicesContainer(ambientServices);
         }
 
         /// <summary>
