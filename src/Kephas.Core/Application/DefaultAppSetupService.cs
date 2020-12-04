@@ -49,7 +49,7 @@ namespace Kephas.Application
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
         public async Task<IOperationResult> SetupAsync(IContext appContext, CancellationToken cancellationToken = default)
         {
-            var result = new OperationResult { Elapsed = TimeSpan.Zero };
+            var result = new OperationResult();
             foreach (var lazyHandler in this.lazyHandlers)
             {
                 var wrappedResult = await Profiler.WithInfoStopwatchAsync(

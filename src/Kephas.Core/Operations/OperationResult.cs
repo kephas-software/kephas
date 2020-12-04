@@ -33,7 +33,7 @@ namespace Kephas.Operations
         private float percentCompleted;
         private DateTimeOffset? startedAt;
         private DateTimeOffset? endedAt;
-        private TimeSpan? elapsed;
+        private TimeSpan elapsed;
         private OperationResultAwaiter? awaiter;
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Kephas.Operations
         /// </value>
         public virtual TimeSpan Elapsed
         {
-            get => this.elapsed ?? (this.startedAt.HasValue ? DateTimeOffset.Now - this.startedAt.Value : TimeSpan.Zero);
+            get => this.elapsed;
             set => this.SetProperty(ref this.elapsed, value);
         }
 
