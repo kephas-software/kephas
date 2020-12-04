@@ -5,9 +5,9 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
-        <Version>8.4.2</Version>
-        <AssemblyVersion>8.4.2.0</AssemblyVersion>
-        <FileVersion>8.4.0.0</FileVersion>
+        <Version>8.4.3</Version>
+        <AssemblyVersion>8.4.3.0</AssemblyVersion>
+        <FileVersion>8.4.3.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
         <Company>Kephas Software SRL</Company>
         <Product>Kephas Framework</Product>
@@ -99,6 +99,7 @@
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Extensions.Configuration\Kephas.Extensions.Configuration.csproj" />
         <ProjectReference Include="..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
+        <ProjectReference Include="..\Kephas.Extensions.Hosting\Kephas.Extensions.Hosting.csproj" />
         <ProjectReference Include="..\Kephas.Extensions.Logging\Kephas.Extensions.Logging.csproj" />
     </ItemGroup>
 
