@@ -13,9 +13,9 @@ namespace Kephas.Application.AspNetCore.Hosting
     using System;
     using System.Threading.Tasks;
 
-    using Kephas.Application.AspNetCore.Configuration;
     using Kephas.Extensions.Configuration;
     using Kephas.Extensions.DependencyInjection;
+    using Kephas.Extensions.Hosting.Configuration;
     using Kephas.Extensions.Logging;
     using Kephas.Logging;
     using Kephas.Services;
@@ -40,8 +40,7 @@ namespace Kephas.Application.AspNetCore.Hosting
     /// </remarks>
     public abstract class StartupAppBase : AppBase
     {
-        private readonly IAppArgs? appArgs;
-        private Microsoft.Extensions.DependencyInjection.IServiceCollection serviceCollection;
+        private IServiceCollection serviceCollection;
         private Task bootstrapTask;
 
         /// <summary>
@@ -51,12 +50,18 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <param name="config">The configuration.</param>
         /// <param name="ambientServices">Optional. The ambient services.</param>
         /// <param name="appArgs">Optional. The application arguments.</param>
-        protected StartupAppBase(IWebHostEnvironment env, IConfiguration config, IAmbientServices? ambientServices = null, IAppArgs? appArgs = null)
-            : base(ambientServices)
+        /// <param name="containerBuilder">Optional. The container builder.</param>
+        protected StartupAppBase(
+            IWebHostEnvironment env,
+            IConfiguration config,
+            IAmbientServices? ambientServices = null,
+            IAppArgs? appArgs = null,
+            Action<IAmbientServices>? containerBuilder = null)
+            : base(ambientServices, containerBuilder: containerBuilder)
         {
             this.HostEnvironment = env;
             this.Configuration = config;
-            this.appArgs = appArgs;
+            this.AppArgs = appArgs ?? new AppArgs();
         }
 
         /// <summary>
@@ -65,7 +70,7 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <value>
         /// The hosting environment.
         /// </value>
-        public IWebHostEnvironment HostEnvironment { get; }
+        protected IWebHostEnvironment HostEnvironment { get; }
 
         /// <summary>
         /// Gets the configuration.
@@ -73,7 +78,12 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <value>
         /// The configuration.
         /// </value>
-        public IConfiguration Configuration { get; }
+        protected IConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Gets the application arguments.
+        /// </summary>
+        protected IAppArgs AppArgs { get; }
 
         /// <summary>
         /// The <see cref="ConfigureServices"/> method is called by the host before the <see cref="Configure"/>
@@ -117,7 +127,7 @@ namespace Kephas.Application.AspNetCore.Hosting
                     .ConfigureExtensionsOptions()
                     .UseConfiguration(this.Configuration);
 
-                this.BeforeAppManagerInitialize(this.appArgs);
+                this.BeforeAppManagerInitialize(this.AppArgs);
             }
             catch (Exception ex)
             {
@@ -164,7 +174,7 @@ namespace Kephas.Application.AspNetCore.Hosting
             }
 
             // when the configurators are completed, start the bootstrapping procedure.
-            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.BootstrapAsync(this.appArgs));
+            appLifetime.ApplicationStarted.Register(() => this.bootstrapTask = this.BootstrapAsync(this.AppArgs));
 
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopping" event.

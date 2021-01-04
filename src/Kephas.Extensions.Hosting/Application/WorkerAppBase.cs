@@ -17,6 +17,7 @@ namespace Kephas.Extensions.Hosting.Application
 
     using Kephas.Application;
     using Kephas.Extensions.DependencyInjection;
+    using Kephas.Extensions.Hosting.Configuration;
     using Kephas.Extensions.Logging;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -30,10 +31,17 @@ namespace Kephas.Extensions.Hosting.Application
         /// Initializes a new instance of the <see cref="WorkerAppBase"/> class.
         /// </summary>
         /// <param name="ambientServices">Optional. The ambient services.</param>
+        /// <param name="appArgs">Optional. The application arguments.</param>
         /// <param name="appLifetimeTokenSource">Optional. The application lifetime token source.</param>
-        protected WorkerAppBase(IAmbientServices? ambientServices = null, CancellationTokenSource? appLifetimeTokenSource = null)
-            : base(ambientServices, appLifetimeTokenSource)
+        /// <param name="containerBuilder">Optional. The container builder.</param>
+        protected WorkerAppBase(
+            IAmbientServices? ambientServices = null,
+            IAppArgs? appArgs = null,
+            CancellationTokenSource? appLifetimeTokenSource = null,
+            Action<IAmbientServices>? containerBuilder = null)
+            : base(ambientServices, appLifetimeTokenSource, containerBuilder)
         {
+            this.AppArgs = appArgs ?? new AppArgs();
         }
 
         /// <summary>
@@ -42,7 +50,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <value>
         /// The host builder.
         /// </value>
-        protected IHostBuilder HostBuilder { get; private set; }
+        protected IHostBuilder? HostBuilder { get; private set; }
 
         /// <summary>
         /// Gets the host.
@@ -50,7 +58,12 @@ namespace Kephas.Extensions.Hosting.Application
         /// <value>
         /// The host.
         /// </value>
-        protected IHost Host { get; private set; }
+        protected IHost? Host { get; private set; }
+
+        /// <summary>
+        /// Gets the application arguments.
+        /// </summary>
+        protected IAppArgs AppArgs { get; }
 
         /// <summary>
         /// Bootstraps the application asynchronously.
@@ -64,7 +77,7 @@ namespace Kephas.Extensions.Hosting.Application
             IAppArgs? appArgs = null,
             CancellationToken cancellationToken = default)
         {
-            this.HostBuilder = this.CreateHostBuilder(appArgs);
+            this.HostBuilder = this.CreateHostBuilder(appArgs ?? this.AppArgs);
 
             this.HostBuilder
                 .UseServiceProviderFactory(new CompositionServiceProviderFactory(this.AmbientServices));
@@ -76,7 +89,8 @@ namespace Kephas.Extensions.Hosting.Application
 
                     this.AmbientServices
                         .WithServiceCollection(services)
-                        .ConfigureExtensionsLogging();
+                        .ConfigureExtensionsLogging()
+                        .ConfigureExtensionsOptions();
                 });
 
             this.ConfigureWorker(this.HostBuilder)
@@ -86,6 +100,12 @@ namespace Kephas.Extensions.Hosting.Application
                 });
 
             this.PostConfigureWorker(this.HostBuilder);
+
+            if (appArgs?.RunAsService ?? false)
+            {
+                this.HostBuilder.UseWindowsService();
+                this.HostBuilder.UseSystemd();
+            }
 
             return base.BootstrapAsync(appArgs, cancellationToken);
         }
@@ -100,7 +120,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// </returns>
         protected override Task<IAppContext> InitializeAppManagerAsync(IAppContext appContext, CancellationToken cancellationToken)
         {
-            appContext.InitializeAppManagerAsync(token => base.InitializeAppManagerAsync(appContext, token));
+            // delay the initialization of the app manager until the host is started.
             return Task.FromResult(appContext);
         }
 
@@ -110,7 +130,7 @@ namespace Kephas.Extensions.Hosting.Application
         /// <param name="ambientServices">The ambient services.</param>
         protected sealed override void BuildServicesContainer(IAmbientServices ambientServices)
         {
-            this.Host = this.HostBuilder.Build();
+            this.Host = this.HostBuilder!.Build();
         }
 
         /// <summary>
@@ -121,7 +141,10 @@ namespace Kephas.Extensions.Hosting.Application
         /// for configuring the worker ambient services.
         /// </remarks>
         /// <param name="ambientServices">The ambient services.</param>
-        protected abstract void BuildWorkerServicesContainer(IAmbientServices ambientServices);
+        protected virtual void BuildWorkerServicesContainer(IAmbientServices ambientServices)
+        {
+            base.BuildServicesContainer(ambientServices);
+        }
 
         /// <summary>
         /// Creates the host builder.
@@ -130,9 +153,9 @@ namespace Kephas.Extensions.Hosting.Application
         /// <returns>
         /// The new host builder.
         /// </returns>
-        protected virtual IHostBuilder CreateHostBuilder(IAppArgs? appArgs)
+        protected virtual IHostBuilder CreateHostBuilder(IAppArgs appArgs)
         {
-            return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(appArgs?.ToCommandArgs().ToArray() ?? Array.Empty<string>());
+            return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(appArgs.ToCommandArgs().ToArray());
         }
 
         /// <summary>
@@ -176,15 +199,22 @@ namespace Kephas.Extensions.Hosting.Application
         }
 
         /// <summary>
+        /// Runs the background task asynchronously.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The asynchronous result.</returns>
+        protected virtual Task RunBackgroundTaskAsync(CancellationToken cancellationToken)
+        {
+            return base.InitializeAppManagerAsync(this.AppContext!, cancellationToken);
+        }
+
+        /// <summary>
         /// Adds the background worker as a hosted service.
         /// </summary>
         /// <param name="services">The services.</param>
-        /// <example>
-        /// .
-        /// </example>
         protected virtual void AddBackgroundWorker(IServiceCollection services)
         {
-            services.AddHostedService<BackgroundWorker>();
+            services.AddHostedService(svc => new BackgroundWorker(this.RunBackgroundTaskAsync));
         }
     }
 }
