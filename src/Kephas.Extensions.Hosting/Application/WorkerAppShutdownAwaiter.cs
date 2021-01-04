@@ -73,12 +73,9 @@ namespace Kephas.Extensions.Hosting.Application
         /// </returns>
         protected override Task RunUnattendedAsync(CancellationToken cancellationToken)
         {
-            if (this.Host != null)
-            {
-                return this.Host.RunAsync(cancellationToken);
-            }
-
-            return base.RunUnattendedAsync(cancellationToken);
+            return this.Host != null
+                ? this.Host.RunAsync(cancellationToken)
+                : base.RunUnattendedAsync(cancellationToken);
         }
 
         /// <summary>
@@ -90,12 +87,9 @@ namespace Kephas.Extensions.Hosting.Application
         /// </returns>
         protected override Task RunAttendedAsync(CancellationToken cancellationToken)
         {
-            if (this.Host != null)
-            {
-                return this.Host.RunAsync(cancellationToken);
-            }
-
-            return this.StartShellAsync(cancellationToken);
+            return this.Host != null
+                ? this.Host.RunAsync(cancellationToken)
+                : this.StartShellAsync(cancellationToken);
         }
 
         /// <summary>

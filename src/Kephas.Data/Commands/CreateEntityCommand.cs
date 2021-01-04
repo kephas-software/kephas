@@ -27,17 +27,21 @@ namespace Kephas.Data.Commands
     [DataContextType(typeof(DataContextBase))]
     public class CreateEntityCommand : DataCommandBase<ICreateEntityContext, ICreateEntityResult>, ICreateEntityCommand
     {
+        private readonly IRuntimeTypeRegistry typeRegistry;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateEntityCommand"/> class.
         /// </summary>
         /// <param name="behaviorProvider">The behavior provider.</param>
+        /// <param name="typeRegistry">Optional. The type registry.</param>
         /// <param name="logManager">Optional. Manager for log.</param>
-        public CreateEntityCommand(IDataBehaviorProvider behaviorProvider, ILogManager? logManager = null)
+        public CreateEntityCommand(IDataBehaviorProvider behaviorProvider, IRuntimeTypeRegistry? typeRegistry = null, ILogManager? logManager = null)
             : base(logManager)
         {
             Requires.NotNull(behaviorProvider, nameof(behaviorProvider));
 
             this.BehaviorProvider = behaviorProvider;
+            this.typeRegistry = typeRegistry ?? RuntimeTypeRegistry.Instance;
         }
 
         /// <summary>
@@ -108,7 +112,7 @@ namespace Kephas.Data.Commands
         protected virtual object CreateEntity(ICreateEntityContext operationContext)
         {
             var activator = this.TryGetEntityActivator(operationContext.DataContext) ?? RuntimeActivator.Instance;
-            var entity = activator.CreateInstance(operationContext.EntityType.AsRuntimeTypeInfo());
+            var entity = activator.CreateInstance(this.typeRegistry.GetTypeInfo(operationContext.EntityType));
             return entity;
         }
 

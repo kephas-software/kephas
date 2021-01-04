@@ -225,7 +225,7 @@ namespace Kephas.Data.LLBLGen.Entities
         /// </returns>
         protected virtual ITypeInfo ComputeTypeInfo()
         {
-            return this.GetType().GetAbstractTypeInfo();
+            return this.GetType().GetAbstractType().AsRuntimeTypeInfo();
         }
 
         /// <summary>
