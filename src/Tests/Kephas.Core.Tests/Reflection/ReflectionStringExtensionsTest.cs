@@ -18,6 +18,13 @@ namespace Kephas.Core.Tests.Reflection
     public class ReflectionStringExtensionsTest
     {
         [Test]
+        public void ToCamelCase_one_char()
+        {
+            var actual = ReflectionStringExtensions.ToCamelCase("A");
+            Assert.AreEqual("a", actual);
+        }
+
+        [Test]
         public void ToCamelCase_common()
         {
             var actual = ReflectionStringExtensions.ToCamelCase("ToCamelCase");
@@ -29,6 +36,48 @@ namespace Kephas.Core.Tests.Reflection
         {
             var actual = ReflectionStringExtensions.ToCamelCase("SSHKey");
             Assert.AreEqual("sshKey", actual);
+        }
+
+        [Test]
+        public void ToCamelCase_all_caps()
+        {
+            var actual = ReflectionStringExtensions.ToCamelCase("PLUGINSFOLDER");
+            Assert.AreEqual("PLUGINSFOLDER", actual);
+        }
+
+        [Test]
+        public void ToCamelCase_double_underscores()
+        {
+            var actual = ReflectionStringExtensions.ToCamelCase("KEPHAS__PLUGINSFOLDER");
+            Assert.AreEqual("KEPHAS__PLUGINSFOLDER", actual);
+        }
+
+        [Test]
+        public void ToCamelCase_double_dashes()
+        {
+            var actual = ReflectionStringExtensions.ToCamelCase("KEPHAS--PLUGINSFOLDER");
+            Assert.AreEqual("KEPHAS--PLUGINSFOLDER", actual);
+        }
+
+        [Test]
+        public void ToPascalCase_one_char()
+        {
+            var actual = ReflectionStringExtensions.ToPascalCase("a");
+            Assert.AreEqual("A", actual);
+        }
+
+        [Test]
+        public void ToPascalCase_double_underscores()
+        {
+            var actual = ReflectionStringExtensions.ToPascalCase("KEPHAS__PLUGINSFOLDER");
+            Assert.AreEqual("KEPHAS__PLUGINSFOLDER", actual);
+        }
+
+        [Test]
+        public void ToPascalCase_double_dashes()
+        {
+            var actual = ReflectionStringExtensions.ToPascalCase("KEPHAS--PLUGINSFOLDER");
+            Assert.AreEqual("KEPHAS--PLUGINSFOLDER", actual);
         }
     }
 }
