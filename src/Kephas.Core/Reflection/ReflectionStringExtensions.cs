@@ -41,6 +41,7 @@ namespace Kephas.Reflection
             var len = value.Length;
             var newValue = new char[len];
             var firstPart = true;
+            var isAllUpper = true;
 
             for (var i = 0; i < len; ++i)
             {
@@ -58,10 +59,15 @@ namespace Kephas.Reflection
                     firstPart = false;
                 }
 
+                if (!c0isUpper && c0 != '-' && c0 != '_')
+                {
+                    isAllUpper = false;
+                }
+
                 newValue[i] = c0;
             }
 
-            return new string(newValue);
+            return isAllUpper && len > 1 ? value : new string(newValue);
         }
 
         /// <summary>
@@ -80,6 +86,11 @@ namespace Kephas.Reflection
 
             if (value.IndexOf('_') >= 0 || value.IndexOf('-') >= 0)
             {
+                if (value.IndexOf("__") >= 0 || value.IndexOf("--") >= 0)
+                {
+                    return value;
+                }
+
                 var parts = value.Split('_', '-');
                 var sb = StringBuilderThreadStatic.Allocate();
                 foreach (var part in parts)
