@@ -45,8 +45,14 @@ namespace Kephas.Model.Runtime.ModelRegistries
         /// </returns>
         public Task<IEnumerable<object>> GetRuntimeElementsAsync(CancellationToken cancellationToken = default)
         {
+            // get all services, but ignore those not in the list of application assemblies,
+            // for example coming from external libraries.
             var appServiceInfos = this.ambientServices.GetAppServiceInfos();
-            var types = new HashSet<Type>(appServiceInfos.Select(i => i.contractType));
+            var assemblies = this.ambientServices.AppRuntime.GetAppAssemblies().ToList();
+            var types = new HashSet<Type>(
+                from i in appServiceInfos
+                where assemblies.Contains(i.contractType.Assembly)
+                select i.contractType);
 
             return Task.FromResult<IEnumerable<object>>(types);
         }

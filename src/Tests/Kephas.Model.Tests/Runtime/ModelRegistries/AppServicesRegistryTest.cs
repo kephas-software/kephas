@@ -56,11 +56,11 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
         [Test]
         public async Task GetRuntimeElementsAsync_from_Kephas_Model()
         {
-            var ambientServices = new AmbientServices();
+            var ambientServices = new AmbientServices().WithStaticAppRuntime();
             var appServicesInfos = new List<(Type contractType, IAppServiceInfo appServiceInfo)>
                                        {
-                                           (typeof(int), Substitute.For<IAppServiceInfo>()),
-                                           (typeof(string), Substitute.For<IAppServiceInfo>()),
+                                           (typeof(IModelSpace), Substitute.For<IAppServiceInfo>()),
+                                           (typeof(IModelSpaceProvider), Substitute.For<IAppServiceInfo>()),
                                            (typeof(bool), Substitute.For<IAppServiceInfo>()),
                                        };
 
@@ -70,8 +70,8 @@ namespace Kephas.Model.Tests.Runtime.ModelRegistries
             var elements = await registry.GetRuntimeElementsAsync();
             var types = elements.OfType<Type>().ToList();
 
-            Assert.AreEqual(3, types.Count);
-            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractType == t)));
+            Assert.AreEqual(2, types.Count);
+            Assert.IsTrue(types.All(t => appServicesInfos.Any(ti => ti.contractType == t && t.Assembly == typeof(IModelSpace).Assembly)));
         }
     }
 }

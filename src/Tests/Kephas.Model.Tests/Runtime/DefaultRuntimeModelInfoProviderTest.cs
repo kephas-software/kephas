@@ -8,6 +8,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using Kephas.Services.Composition;
+
 namespace Kephas.Model.Tests.Runtime
 {
     using System.Collections.Generic;
@@ -16,6 +19,7 @@ namespace Kephas.Model.Tests.Runtime
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Composition.ExportFactories;
     using Kephas.Model.Construction;
     using Kephas.Model.Runtime;
     using Kephas.Model.Runtime.Construction;
@@ -43,12 +47,14 @@ namespace Kephas.Model.Tests.Runtime
             var registrar = Substitute.For<IRuntimeModelRegistry>();
             registrar.GetRuntimeElementsAsync(CancellationToken.None).Returns(Task.FromResult((IEnumerable<object>)new object[] { typeof(string).GetRuntimeTypeInfo() }));
 
+            var registrarFactory = new ExportFactory<IRuntimeModelRegistry, AppServiceMetadata>(() => registrar, new AppServiceMetadata());
+
             var stringInfoMock = Substitute.For<INamedElement>();
 
             var factory = Substitute.For<IRuntimeModelElementFactory>();
             factory.TryCreateModelElement(Arg.Any<IModelConstructionContext>(), Arg.Is(typeof(string).GetRuntimeTypeInfo())).Returns(stringInfoMock);
 
-            var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { registrar }, this.typeRegistry);
+            var provider = new DefaultRuntimeModelInfoProvider(factory, new[] { registrarFactory }, this.typeRegistry);
 
             var elementInfos = (await provider.GetElementInfosAsync(Substitute.For<IModelConstructionContext>())).ToList();
 

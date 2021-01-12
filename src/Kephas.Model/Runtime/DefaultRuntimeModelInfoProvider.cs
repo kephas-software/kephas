@@ -16,8 +16,8 @@ namespace Kephas.Model.Runtime
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-
     using Kephas.Collections;
+    using Kephas.Composition;
     using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Kephas.Model.Construction;
@@ -26,6 +26,7 @@ namespace Kephas.Model.Runtime
     using Kephas.Reflection;
     using Kephas.Runtime;
     using Kephas.Services;
+    using Kephas.Services.Composition;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -34,23 +35,24 @@ namespace Kephas.Model.Runtime
     [OverridePriority(Priority.Low)]
     public class DefaultRuntimeModelInfoProvider : RuntimeModelInfoProviderBase<DefaultRuntimeModelInfoProvider>
     {
-        private readonly ICollection<IRuntimeModelRegistry> modelRegistries;
+        private readonly ICollection<IExportFactory<IRuntimeModelRegistry, AppServiceMetadata>> modelRegistryFactories;
+        private ICollection<IRuntimeModelRegistry>? modelRegistries;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRuntimeModelInfoProvider" /> class.
         /// </summary>
         /// <param name="runtimeModelElementFactory">The runtime model info factory.</param>
-        /// <param name="modelRegistries">The model registries.</param>
+        /// <param name="modelRegistryFactories">The model registries.</param>
         /// <param name="typeRegistry">The type registry.</param>
         public DefaultRuntimeModelInfoProvider(
             IRuntimeModelElementFactory runtimeModelElementFactory,
-            ICollection<IRuntimeModelRegistry> modelRegistries,
+            ICollection<IExportFactory<IRuntimeModelRegistry, AppServiceMetadata>> modelRegistryFactories,
             IRuntimeTypeRegistry typeRegistry)
             : base(runtimeModelElementFactory)
         {
-            Requires.NotNull(modelRegistries, nameof(modelRegistries));
+            Requires.NotNull(modelRegistryFactories, nameof(modelRegistryFactories));
 
-            this.modelRegistries = modelRegistries;
+            this.modelRegistryFactories = modelRegistryFactories;
             this.TypeRegistry = typeRegistry;
         }
 
@@ -58,6 +60,12 @@ namespace Kephas.Model.Runtime
         /// Gets the type registry.
         /// </summary>
         protected IRuntimeTypeRegistry TypeRegistry { get; }
+
+        /// <summary>
+        /// Gets the ordered model registry factories.
+        /// </summary>
+        protected ICollection<IRuntimeModelRegistry> ModelRegistries
+            => this.modelRegistries ??= this.modelRegistryFactories.Order().GetServices().ToList();
 
         /// <summary>
         /// Tries to get an <see cref="IElementInfo"/> of the model space based on the provided native element information.
@@ -132,7 +140,7 @@ namespace Kephas.Model.Runtime
         private async Task<HashSet<IRuntimeTypeInfo>> GetRuntimeElementInfosAsync(CancellationToken cancellationToken)
         {
             var runtimeElements = new HashSet<IRuntimeTypeInfo>();
-            foreach (var modelRegistry in this.modelRegistries)
+            foreach (var modelRegistry in this.ModelRegistries)
             {
                 var registryElements = await modelRegistry.GetRuntimeElementsAsync(cancellationToken).PreserveThreadContext();
                 runtimeElements.AddRange(registryElements.Select(this.ToRuntimeTypeInfo));
