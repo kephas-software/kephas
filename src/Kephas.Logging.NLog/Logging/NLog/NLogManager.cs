@@ -28,8 +28,17 @@ namespace Kephas.Logging.NLog
         /// </summary>
         /// <param name="configuration">Optional. The configuration.</param>
         public NLogManager(LoggingConfiguration? configuration = null)
+            : this(configuration != null ? new LogFactory(configuration) : LogManager.LogFactory)
         {
-            this.LogFactory = new LogFactory(configuration ?? LogManager.Configuration);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NLogManager"/> class.
+        /// </summary>
+        /// <param name="logFactory">Active NLog LogFactory.</param>
+        public NLogManager(LogFactory logFactory)
+        {
+            this.LogFactory = logFactory;
         }
 
         /// <summary>
@@ -149,7 +158,7 @@ namespace Kephas.Logging.NLog
         protected virtual void Dispose(bool disposing)
         {
             this.loggers.Clear();
-            this.LogFactory.Dispose();
+            this.LogFactory.Shutdown();
         }
     }
 }
