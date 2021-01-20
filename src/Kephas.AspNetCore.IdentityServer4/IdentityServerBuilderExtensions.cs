@@ -18,6 +18,7 @@ namespace Kephas.AspNetCore.IdentityServer4
     using global::IdentityServer4.Validation;
     using Kephas.AspNetCore.IdentityServer4.Configuration;
     using Kephas.AspNetCore.IdentityServer4.Options;
+    using Kephas.AspNetCore.IdentityServer4.Stores;
     using Kephas.Configuration;
     using Kephas.Cryptography.X509Certificates;
     using Kephas.Serialization;
@@ -36,18 +37,20 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// <summary>
         /// Configures defaults on Identity Server for ASP.NET Core scenarios.
         /// </summary>
-        /// <typeparam name="TUser">The <typeparamref name="TUser"/> type.</typeparam>
+        /// <typeparam name="TUser">The type of user.</typeparam>
+        /// <typeparam name="TRole">The type of role.</typeparam>
         /// <param name="builder">The <see cref="IIdentityServerBuilder"/>.</param>
         /// <param name="configure">Optional. The <see cref="Action{ApplicationsOptions}"/>
         /// to configure the <see cref="ApiAuthorizationOptions"/>.</param>
         /// <returns>The provided <see cref="IIdentityServerBuilder"/>.</returns>
-        public static IIdentityServerBuilder AddApiAuthorization<TUser>(
+        public static IIdentityServerBuilder AddApiAuthorization<TUser, TRole>(
             this IIdentityServerBuilder builder,
             Action<ApiAuthorizationOptions>? configure = null)
                 where TUser : class
+                where TRole : class
         {
             builder.AddAspNetIdentity<TUser>()
-                .AddOperationalStores()
+                .AddOperationalStores<TUser, TRole>()
                 .ConfigureReplacedServices()
                 .AddIdentityResources()
                 .AddApiResources()
@@ -65,18 +68,22 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// <summary>
         /// Adds operational stores.
         /// </summary>
+        /// <typeparam name="TUser">The type of the user.</typeparam>
+        /// <typeparam name="TRole">The type of the role.</typeparam>
         /// <param name="builder">The identity server builder.</param>
         /// <returns>The provided identity server builder.</returns>
-        public static IIdentityServerBuilder AddOperationalStores(this IIdentityServerBuilder builder)
+        public static IIdentityServerBuilder AddOperationalStores<TUser, TRole>(this IIdentityServerBuilder builder)
+            where TUser : class
+            where TRole : class
         {
             var services = builder.Services;
 
             // Identity Services
-            services.AddTransient<IUserStore<AppUserIdentity>, AppUserIdentityStore>();
-            services.AddTransient<IRoleStore<AppRole>, AppRoleStore>();
+            services.AddTransient<IUserStore<TUser>>(sp => sp.GetRequiredService<IUserStoreService<TUser>>());
+            services.AddTransient<IRoleStore<TRole>>(sp => sp.GetRequiredService<IRoleStoreService<TRole>>());
 
-            services.AddTransient<IPersistedGrantStore, PersistedGrantStore>();
-            services.AddTransient<IDeviceFlowStore, DeviceFlowStore>();
+            services.AddTransient<IPersistedGrantStore>(sp => sp.GetRequiredService<IPersistedGrantStoreService>());
+            services.AddTransient<IDeviceFlowStore>(sp => sp.GetRequiredService<IDeviceFlowStoreService>());
             // services.AddSingleton<IHostedService, TokenCleanupHost>();
 
             return builder;
