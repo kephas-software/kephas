@@ -1,0 +1,119 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+
+        <Version>9.0.0-dev.1</Version>
+        <AssemblyVersion>9.0.0.0</AssemblyVersion>
+        <FileVersion>9.0.0.0</FileVersion>
+        <Authors>Kephas Software SRL</Authors>
+        <Company>Kephas Software SRL</Company>
+        <Product>Kephas Framework</Product>
+
+        <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+        <Description>
+            Provides the IdentityServer4 integration with Kephas based ASP.NET Core applications.
+            Typically used areas and classes/interfaces/services:
+
+            Kephas Framework ("stone" in aramaic) aims to deliver a solid infrastructure for applications and application ecosystems.
+        </Description>
+        <Copyright>Copyright © Kephas Software SRL 2010-$(CurrentYear)</Copyright>
+
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/kephas-software/kephas</PackageProjectUrl>
+        <PackageIcon>kephas.logo.stone.png</PackageIcon>
+        <RepositoryUrl>https://github.com/kephas-software/kephas</RepositoryUrl>
+        <RepositoryType>github</RepositoryType>
+        <PackageReleaseNotes>
+            Please check https://github.com/kephas-software/kephas/releases for the change log.
+            Also check the documentation and the samples from https://github.com/kephas-software/kephas/wiki and https://github.com/kephas-software/kephas/tree/master/Samples.
+        </PackageReleaseNotes>
+        <PackageTags>kephas identity identityserver4 asp.net aspnetcore</PackageTags>
+
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NeutralLanguage>en</NeutralLanguage>
+        <DefineConstants>KEPHAS</DefineConstants>
+
+        <SignAssembly>True</SignAssembly>
+        <AssemblyOriginatorKeyFile>..\Kephas.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp.1|AnyCPU'">
+        <DefineConstants>TRACE;DEBUG;NETCOREAPP3_1</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
+        <DefineConstants>NETCOREAPP3_1</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Properties\**" />
+      <EmbeddedResource Remove="Properties\**" />
+      <None Remove="Properties\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="stylecop.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\Kephas.snk" Link="Kephas.snk" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="IdentityServer4" Version="4.1.1" />
+        <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.1" />
+        <PackageReference Include="IdentityServer4.Storage" Version="4.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Resources\Strings.Designer.cs">
+            <DependentUpon>Strings.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Strings.resx">
+            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="kephas.logo.stone.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+</Project>
