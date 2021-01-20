@@ -16,8 +16,11 @@ namespace Kephas.AspNetCore.IdentityServer4
     using global::IdentityServer4.Models;
     using global::IdentityServer4.Stores;
     using global::IdentityServer4.Validation;
+    using Kephas.AspNetCore.IdentityServer4.Configuration;
     using Kephas.AspNetCore.IdentityServer4.Options;
+    using Kephas.Configuration;
     using Kephas.Cryptography.X509Certificates;
+    using Kephas.Serialization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -84,7 +87,7 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// IdentityServer:Resources
         /// </summary>
         /// <param name="builder">The <see cref="IIdentityServerBuilder"/>.</param>
-        /// <returns>The <see cref="IIdentityServerBuilder"/>.</returns>
+        /// <returns>The provided <see cref="IIdentityServerBuilder"/>.</returns>
         public static IIdentityServerBuilder AddApiResources(
             this IIdentityServerBuilder builder) => builder.AddApiResources(configuration: null);
 
@@ -92,11 +95,11 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// Adds API resources from the given <paramref name="configuration"/> instance.
         /// </summary>
         /// <param name="builder">The <see cref="IIdentityServerBuilder"/>.</param>
-        /// <param name="configuration">The <see cref="IConfiguration"/> instance containing the API definitions.</param>
-        /// <returns>The <see cref="IIdentityServerBuilder"/>.</returns>
+        /// <param name="configuration">The <see cref="IdentityServerSettings"/> instance containing the API definitions.</param>
+        /// <returns>The provided <see cref="IIdentityServerBuilder"/>.</returns>
         public static IIdentityServerBuilder AddApiResources(
             this IIdentityServerBuilder builder,
-            IConfiguration configuration)
+            IdentityServerSettings? configuration)
         {
             builder.ConfigureReplacedServices();
             builder.AddApiScopes();
@@ -105,7 +108,7 @@ namespace Kephas.AspNetCore.IdentityServer4
                 ServiceDescriptor.Singleton<IConfigureOptions<ApiAuthorizationOptions>, ConfigureApiResources>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<ConfigureApiResources>>();
-                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration>().GetSection("IdentityServer:Resources");
+                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().Settings;
                     var localApiDescriptor = sp.GetService<IIdentityServerJwtDescriptor>();
                     return new ConfigureApiResources(effectiveConfig, localApiDescriptor, logger);
                 }));
@@ -143,7 +146,7 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// IdentityServer:Resources
         /// </summary>
         /// <param name="builder">The <see cref="IIdentityServerBuilder"/>.</param>
-        /// <returns>The <see cref="IIdentityServerBuilder"/>.</returns>
+        /// <returns>The provided <see cref="IIdentityServerBuilder"/>.</returns>
         public static IIdentityServerBuilder AddIdentityResources(
             this IIdentityServerBuilder builder) => builder.AddIdentityResources(configuration: null);
 
@@ -152,7 +155,7 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// </summary>
         /// <param name="builder">The <see cref="IIdentityServerBuilder"/>.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/> instance containing the API definitions.</param>
-        /// <returns>The <see cref="IIdentityServerBuilder"/>.</returns>
+        /// <returns>The provided <see cref="IIdentityServerBuilder"/>.</returns>
         public static IIdentityServerBuilder AddIdentityResources(
             this IIdentityServerBuilder builder,
             IConfiguration configuration)
@@ -183,7 +186,7 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// IdentityServer:Clients
         /// </summary>
         /// <param name="builder">The <see cref="IIdentityServerBuilder"/>.</param>
-        /// <returns>The <see cref="IIdentityServerBuilder"/>.</returns>
+        /// <returns>The provided <see cref="IIdentityServerBuilder"/>.</returns>
         public static IIdentityServerBuilder AddClients(
             this IIdentityServerBuilder builder) => builder.AddClients(configuration: null);
 
@@ -191,11 +194,11 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// Adds clients from the given <paramref name="configuration"/> instance.
         /// </summary>
         /// <param name="builder">The <see cref="IIdentityServerBuilder"/>.</param>
-        /// <param name="configuration">The <see cref="IConfiguration"/> instance containing the client definitions.</param>
-        /// <returns>The <see cref="IIdentityServerBuilder"/>.</returns>
+        /// <param name="configuration">The <see cref="IdentityServerSettings"/> instance containing the client definitions.</param>
+        /// <returns>The provided <see cref="IIdentityServerBuilder"/>.</returns>
         public static IIdentityServerBuilder AddClients(
             this IIdentityServerBuilder builder,
-            IConfiguration configuration)
+            IdentityServerSettings? configuration)
         {
             builder.ConfigureReplacedServices();
             builder.AddInMemoryClients(Enumerable.Empty<Client>());
@@ -207,7 +210,7 @@ namespace Kephas.AspNetCore.IdentityServer4
                 ServiceDescriptor.Singleton<IConfigureOptions<ApiAuthorizationOptions>, ConfigureClients>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<ConfigureClients>>();
-                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration>().GetSection("IdentityServer:Clients");
+                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().Settings;
                     return new ConfigureClients(effectiveConfig, logger);
                 }));
 
@@ -226,7 +229,7 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// IdentityServer:Key
         /// </summary>
         /// <param name="builder">The <see cref="IIdentityServerBuilder"/>.</param>
-        /// <returns>The <see cref="IIdentityServerBuilder"/>.</returns>
+        /// <returns>The provided <see cref="IIdentityServerBuilder"/>.</returns>
         public static IIdentityServerBuilder AddSigningCredentials(
             this IIdentityServerBuilder builder) => builder.AddSigningCredentials(configuration: null);
 
@@ -235,10 +238,10 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// </summary>
         /// <param name="builder">The <see cref="IIdentityServerBuilder"/>.</param>
         /// <param name="configuration">The <see cref="IConfiguration"/>.</param>
-        /// <returns>The <see cref="IIdentityServerBuilder"/>.</returns>
+        /// <returns>The provided <see cref="IIdentityServerBuilder"/>.</returns>
         public static IIdentityServerBuilder AddSigningCredentials(
             this IIdentityServerBuilder builder,
-            IConfiguration configuration)
+            IdentityServerSettings? configuration)
         {
             builder.ConfigureReplacedServices();
             builder.Services.TryAddEnumerable(
@@ -246,8 +249,9 @@ namespace Kephas.AspNetCore.IdentityServer4
                 {
                     var logger = sp.GetRequiredService<ILogger<ConfigureSigningCredentials>>();
                     var certProvider = sp.GetRequiredService<ICertificateProvider>();
-                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration>().GetSection("IdentityServer:Key");
-                    return new ConfigureSigningCredentials(certProvider, effectiveConfig, logger);
+                    var serializationService = sp.GetRequiredService<ISerializationService>();
+                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().Settings;
+                    return new ConfigureSigningCredentials(effectiveConfig, certProvider, serializationService, logger);
                 }));
 
             // We take over the setup for the credentials store as Identity Server registers a singleton
@@ -266,8 +270,8 @@ namespace Kephas.AspNetCore.IdentityServer4
                     new SecurityKeyInfo
                     {
                         Key = options.Value.SigningCredential.Key,
-                        SigningAlgorithm = options.Value.SigningCredential.Algorithm
-                    }
+                        SigningAlgorithm = options.Value.SigningCredential.Algorithm,
+                    },
                 });
             });
 

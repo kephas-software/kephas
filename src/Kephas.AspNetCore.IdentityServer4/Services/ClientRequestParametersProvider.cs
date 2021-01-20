@@ -10,6 +10,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Services
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Kephas.AspNetCore.IdentityServer4.Configuration;
     using Kephas.AspNetCore.IdentityServer4.Options;
     using Kephas.Services;
