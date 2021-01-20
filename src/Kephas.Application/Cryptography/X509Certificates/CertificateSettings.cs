@@ -60,5 +60,10 @@ namespace Kephas.Application.Cryptography.X509Certificates
         /// Gets or sets the encrypted password.
         /// </summary>
         public string? EncryptedPassword { get; set; }
+
+        /// <summary>
+        /// Gets or sets the storage flags.
+        /// </summary>
+        public X509KeyStorageFlags? StorageFlags { get; set; }
     }
 }

@@ -68,7 +68,7 @@ namespace Kephas.Application.Cryptography.X509Certificates
                 var filePath = Path.Combine(this.appRuntime.GetAppLocation(), certificateInfo.FilePath!);
                 var password = certificateInfo.Password ??
                                this.encryptionService.Decrypt(certificateInfo.EncryptedPassword!);
-                return new X509Certificate2(filePath, password);
+                return new X509Certificate2(filePath, password, certificateInfo.StorageFlags ?? X509KeyStorageFlags.DefaultKeySet);
             }
 
             var (find, itemName, itemValue) = this.GetFindOptions(certificateInfo);

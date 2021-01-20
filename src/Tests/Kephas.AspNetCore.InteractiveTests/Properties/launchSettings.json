@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:64340/",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:55795/",
+      "sslPort": 44313
     }
   },
   "profiles": {
@@ -15,13 +15,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Kephas.AspNetCore.InteractiveTests": {
+    "Kephas.Application.AspNetCore.InteractiveTests": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:64346/"
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
   }
 }
