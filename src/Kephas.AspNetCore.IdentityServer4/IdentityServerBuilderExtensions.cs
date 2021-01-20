@@ -131,7 +131,11 @@ namespace Kephas.AspNetCore.IdentityServer4
             return builder;
         }
 
+        /// <summary>
         /// Adds API scopes from the defined resources to the list of API scopes
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <returns>The provided builder.</returns>
         internal static IIdentityServerBuilder AddApiScopes(this IIdentityServerBuilder builder)
         {
             // We take over the setup for the API resources as Identity Server registers the enumerable as a singleton
@@ -165,7 +169,7 @@ namespace Kephas.AspNetCore.IdentityServer4
         /// <returns>The provided <see cref="IIdentityServerBuilder"/>.</returns>
         public static IIdentityServerBuilder AddIdentityResources(
             this IIdentityServerBuilder builder,
-            IConfiguration configuration)
+            IdentityServerSettings? configuration)
         {
             builder.ConfigureReplacedServices();
             builder.AddInMemoryIdentityResources(Enumerable.Empty<IdentityResource>());
@@ -173,7 +177,7 @@ namespace Kephas.AspNetCore.IdentityServer4
                 ServiceDescriptor.Singleton<IConfigureOptions<ApiAuthorizationOptions>, ConfigureIdentityResources>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<ConfigureIdentityResources>>();
-                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration>().GetSection("IdentityServer:Identity");
+                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().Settings;
                     return new ConfigureIdentityResources(effectiveConfig, logger);
                 }));
 

@@ -34,6 +34,14 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
         public IDictionary<string, ClientSettings> Clients { get; set; } = new Dictionary<string, ClientSettings>();
 
         /// <summary>
+        /// Gets or sets the identity.
+        /// </summary>
+        /// <value>
+        /// The identity.
+        /// </value>
+        public IdentityResourceSettings? Identity { get; set; }
+
+        /// <summary>
         /// Gets or sets the key.
         /// </summary>
         /// <value>
