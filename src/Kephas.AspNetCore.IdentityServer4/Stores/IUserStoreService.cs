@@ -15,7 +15,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// </summary>
     /// <typeparam name="TUser">The type of the user.</typeparam>
     /// <seealso cref="IUserStore{TUser}" />
-    [AppServiceContract(AsOpenGeneric = true)]
+    [AppServiceContract(AsOpenGeneric = false)]
     public interface IUserStoreService<TUser> : IUserStore<TUser>
         where TUser : class
     {

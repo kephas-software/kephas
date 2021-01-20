@@ -15,7 +15,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// </summary>
     /// <typeparam name="TRole">The type of the role.</typeparam>
     /// <seealso cref="IRoleStore{TRole}" />
-    [AppServiceContract(AsOpenGeneric = true)]
+    [AppServiceContract(AsOpenGeneric = false)]
     public interface IRoleStoreService<TRole> : IRoleStore<TRole>
         where TRole : class
     {
