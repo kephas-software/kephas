@@ -82,6 +82,41 @@ namespace Kephas.Plugins.NuGet.Tests
             }
         }
 
+        [Test]
+        public async Task InstallPluginAsync_with_contentFiles()
+        {
+            var tempFolder = Path.GetTempPath();
+            var pluginsFolder = Path.Combine(tempFolder, Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(pluginsFolder);
+
+            try
+            {
+                var container = this.CreateContainer(
+                    config: b => b.WithFactory<ISettingsProvider>(
+                        () => new PluginsSettingsProvider("tags:kismsspplugin"),
+                        isSingleton: true,
+                        allowMultiple: true),
+                    appRuntime: this.CreateAppRuntime(new DebugLogManager(), pluginsFolder));
+                var manager = container.GetExport<IPluginManager>();
+
+                var result = await manager.InstallPluginAsync(new AppIdentity("Kis.Logging.Seq", "4.0.0"));
+
+                var pluginData = result.Value;
+                Assert.AreEqual(new AppIdentity("Kis.Logging.Seq", "4.0.0"), pluginData.Identity);
+
+                var pluginLocation = Path.Combine(pluginsFolder, "Kis.Logging.Seq");
+                Assert.AreEqual(pluginLocation, pluginData.Location);
+                Assert.AreEqual(PluginState.Enabled, pluginData.State);
+
+                Assert.IsTrue(File.Exists(Path.Combine(pluginLocation, "Kis.Logging.Seq.dll")), "File Kis.Logging.Seq.dll does not exist.");
+                Assert.IsTrue(File.Exists(Path.Combine(pluginLocation, "Config", "logSettings.json")), "File Config/logSettings.json does not exist.");
+            }
+            finally
+            {
+                Directory.Delete(pluginsFolder, recursive: true);
+            }
+        }
+
         private PluginsAppRuntime CreateAppRuntime(ILogManager logManager, string? pluginsPath = null)
         {
             var appRuntime = new PluginsAppRuntime(
