@@ -328,7 +328,12 @@ namespace Kephas.Plugins.NuGet
                     Directory.CreateDirectory(targetDirectory);
                 }
 
-                if (File.Exists(targetFile))
+                if (configFile.Equals(targetFile, StringComparison.OrdinalIgnoreCase))
+                {
+                    result.MergeMessage($"Configuration file '{targetFile}' exists already in target and is the same as the source file. Check whether the plugin configuration is correct.");
+                    this.Logger.Warn("Configuration file '{targetFile}' exists already in target and is the same as the source file. Check whether the plugin configuration is correct.", targetFile);
+                }
+                else if (File.Exists(targetFile))
                 {
                     if (context.Operation == PluginOperation.Update)
                     {
