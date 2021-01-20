@@ -9,6 +9,7 @@ namespace Kephas.Application.Cryptography.X509Certificates
 {
     using System;
     using System.IO;
+    using System.Runtime.InteropServices;
     using System.Security;
     using System.Security.Cryptography.X509Certificates;
 
@@ -26,6 +27,11 @@ namespace Kephas.Application.Cryptography.X509Certificates
     [OverridePriority(Priority.Low)]
     public class DefaultCertificateProvider : Loggable, ICertificateProvider
     {
+        // We need to cast the underlying int value of the EphemeralKeySet to X509KeyStorageFlags
+        // due to the fact that is not part of .NET Standard. This value is only used with non-windows
+        // platforms (all .NET Core) for which the value is defined on the underlying platform.
+        private const X509KeyStorageFlags UnsafeEphemeralKeySet = (X509KeyStorageFlags)32;
+
         private readonly IAppRuntime appRuntime;
         private readonly IConfiguration<SystemSettings> systemConfiguration;
         private readonly IEncryptionService encryptionService;
@@ -68,7 +74,7 @@ namespace Kephas.Application.Cryptography.X509Certificates
                 var filePath = Path.Combine(this.appRuntime.GetAppLocation(), certificateInfo.FilePath!);
                 var password = certificateInfo.Password ??
                                this.encryptionService.Decrypt(certificateInfo.EncryptedPassword!);
-                return new X509Certificate2(filePath, password, certificateInfo.StorageFlags ?? X509KeyStorageFlags.DefaultKeySet);
+                return new X509Certificate2(filePath, password, certificateInfo.StorageFlags ?? this.GetDefaultX509KeyStorageFlags());
             }
 
             var (find, itemName, itemValue) = this.GetFindOptions(certificateInfo);
@@ -92,6 +98,14 @@ namespace Kephas.Application.Cryptography.X509Certificates
             }
 
             return cert;
+        }
+
+        private X509KeyStorageFlags GetDefaultX509KeyStorageFlags()
+        {
+            var defaultFlags = RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ?
+                UnsafeEphemeralKeySet : (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? X509KeyStorageFlags.PersistKeySet :
+                X509KeyStorageFlags.DefaultKeySet);
+            return defaultFlags;
         }
 
         private (Func<X509Store, X509Certificate2?>? find, string name, string value) GetFindOptions(

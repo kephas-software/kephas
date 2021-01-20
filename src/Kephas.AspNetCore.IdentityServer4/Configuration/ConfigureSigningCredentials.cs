@@ -10,7 +10,6 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
     using System;
     using System.IO;
     using System.Security.Cryptography;
-    using System.Security.Cryptography.X509Certificates;
 
     using Kephas.AspNetCore.IdentityServer4.Options;
     using Kephas.Cryptography.X509Certificates;
@@ -21,10 +20,6 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
 
     internal class ConfigureSigningCredentials : IConfigureOptions<ApiAuthorizationOptions>
     {
-        // We need to cast the underlying int value of the EphemeralKeySet to X509KeyStorageFlags
-        // due to the fact that is not part of .NET Standard. This value is only used with non-windows
-        // platforms (all .NET Core) for which the value is defined on the underlying platform.
-        private const X509KeyStorageFlags UnsafeEphemeralKeySet = (X509KeyStorageFlags)32;
         private const string DefaultTempKeyRelativePath = "obj/tempkey.json";
         private readonly ICertificateProvider certificateProvider;
         private readonly ISerializationService serializationService;
