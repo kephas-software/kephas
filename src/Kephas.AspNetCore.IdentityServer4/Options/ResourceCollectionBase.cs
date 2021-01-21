@@ -54,7 +54,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
                     }
                 }
 
-                throw new InvalidOperationException($"{typeof(T).Name} '{key}' not found.");
+                throw new KeyNotFoundException($"{typeof(T).Name} '{key}' not found.");
             }
         }
 

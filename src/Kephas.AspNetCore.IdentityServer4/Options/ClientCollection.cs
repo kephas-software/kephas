@@ -52,7 +52,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
                     }
                 }
 
-                throw new InvalidOperationException($"Client '{key}' not found.");
+                throw new KeyNotFoundException($"Client '{key}' not found.");
             }
         }
 
@@ -73,6 +73,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         /// </summary>
         /// <param name="clientId">The client id for the single page application.</param>
         /// <param name="configure">The <see cref="Action{ClientBuilder}"/> to configure the default single page application.</param>
+        /// <returns>The newly added client.</returns>
         public Client AddIdentityServerSPA(string clientId, Action<ClientBuilder>? configure = null)
         {
             var app = ClientBuilder.IdentityServerSPA(clientId);
@@ -87,6 +88,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         /// </summary>
         /// <param name="clientId">The client id for the single page application.</param>
         /// <param name="configure">The <see cref="Action{ClientBuilder}"/> to configure the default single page application.</param>
+        /// <returns>The newly added client.</returns>
         public Client AddSPA(string clientId, Action<ClientBuilder>? configure = null)
         {
             var app = ClientBuilder.SPA(clientId);
@@ -101,6 +103,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         /// </summary>
         /// <param name="clientId">The client id for the single page application.</param>
         /// <param name="configure">The <see cref="Action{ClientBuilder}"/> to configure the native application.</param>
+        /// <returns>The newly added client.</returns>
         public Client AddNativeApp(string clientId, Action<ClientBuilder>? configure = null)
         {
             var app = ClientBuilder.NativeApp(clientId);
