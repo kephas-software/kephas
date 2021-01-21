@@ -25,6 +25,23 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         private bool isBuilt = false;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ClientBuilder"/> class.
+        /// </summary>
+        public ClientBuilder()
+            : this(new Client())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientBuilder"/> class.
+        /// </summary>
+        /// <param name="client">A preconfigured client.</param>
+        public ClientBuilder(Client client)
+        {
+            this.client = client;
+        }
+
+        /// <summary>
         /// Creates a new builder for a single page application that coexists with an authorization server.
         /// </summary>
         /// <param name="clientId">The client id for the single page application.</param>
@@ -76,22 +93,6 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientBuilder"/> class.
-        /// </summary>
-        public ClientBuilder() : this(new Client())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new intance of the <see cref="ClientBuilder"/> class.
-        /// </summary>
-        /// <param name="client">A preconfigured client.</param>
-        public ClientBuilder(Client client)
-        {
-            this.client = client;
-        }
-
-        /// <summary>
         /// Updates the client id (and name) of the client.
         /// </summary>
         /// <param name="clientId">The new client id.</param>
@@ -134,7 +135,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         /// Adds the <paramref name="redirectUri"/> to the list of valid redirect uris for the client.
         /// </summary>
         /// <param name="redirectUri">The redirect uri to add.</param>
-        /// <returns>The <see cref="ClientBuilder"/>.</returns>        
+        /// <returns>The <see cref="ClientBuilder"/>.</returns>
         public ClientBuilder WithRedirectUri(string redirectUri)
         {
             this.client.RedirectUris.Add(redirectUri);
@@ -145,7 +146,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         /// Adds the <paramref name="logoutUri"/> to the list of valid logout redirect uris for the client.
         /// </summary>
         /// <param name="logoutUri">The logout uri to add.</param>
-        /// <returns>The <see cref="ClientBuilder"/>.</returns>        
+        /// <returns>The <see cref="ClientBuilder"/>.</returns>
         public ClientBuilder WithLogoutRedirectUri(string logoutUri)
         {
             this.client.PostLogoutRedirectUris.Add(logoutUri);
@@ -195,33 +196,33 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
 
         internal ClientBuilder WithPkce()
         {
-            client.RequirePkce = true;
-            client.AllowPlainTextPkce = false;
+            this.client.RequirePkce = true;
+            this.client.AllowPlainTextPkce = false;
 
             return this;
         }
 
         internal ClientBuilder FromConfiguration()
         {
-            client.Properties[ApplicationProfilesPropertyNames.Source] = ApplicationProfilesPropertyValues.Configuration;
+            this.client.Properties[ApplicationProfilesPropertyNames.Source] = ApplicationProfilesPropertyValues.Configuration;
             return this;
         }
 
         internal ClientBuilder WithAllowedGrants(ICollection<string> grants)
         {
-            client.AllowedGrantTypes = grants;
+            this.client.AllowedGrantTypes = grants;
             return this;
         }
 
         internal ClientBuilder WithAllowedOrigins(params string[] origins)
         {
-            client.AllowedCorsOrigins = origins;
+            this.client.AllowedCorsOrigins = origins;
             return this;
         }
 
         internal ClientBuilder AllowAccessTokensViaBrowser()
         {
-            client.AllowAccessTokensViaBrowser = true;
+            this.client.AllowAccessTokensViaBrowser = true;
             return this;
         }
 
@@ -231,7 +232,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
             {
                 ClientId = name,
                 ClientName = name,
-                RequireConsent = false
+                RequireConsent = false,
             };
 
             return client;

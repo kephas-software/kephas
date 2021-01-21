@@ -64,7 +64,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         {
             foreach (var client in clients)
             {
-                Add(client);
+                this.Add(client);
             }
         }
 
@@ -73,12 +73,12 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         /// </summary>
         /// <param name="clientId">The client id for the single page application.</param>
         /// <param name="configure">The <see cref="Action{ClientBuilder}"/> to configure the default single page application.</param>
-        public Client AddIdentityServerSPA(string clientId, Action<ClientBuilder> configure)
+        public Client AddIdentityServerSPA(string clientId, Action<ClientBuilder>? configure = null)
         {
             var app = ClientBuilder.IdentityServerSPA(clientId);
-            configure(app);
+            configure?.Invoke(app);
             var client = app.Build();
-            Add(client);
+            this.Add(client);
             return client;
         }
 
@@ -87,12 +87,12 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         /// </summary>
         /// <param name="clientId">The client id for the single page application.</param>
         /// <param name="configure">The <see cref="Action{ClientBuilder}"/> to configure the default single page application.</param>
-        public Client AddSPA(string clientId, Action<ClientBuilder> configure)
+        public Client AddSPA(string clientId, Action<ClientBuilder>? configure = null)
         {
             var app = ClientBuilder.SPA(clientId);
-            configure(app);
+            configure?.Invoke(app);
             var client = app.Build();
-            Add(client);
+            this.Add(client);
             return client;
         }
 
@@ -101,12 +101,12 @@ namespace Kephas.AspNetCore.IdentityServer4.Options
         /// </summary>
         /// <param name="clientId">The client id for the single page application.</param>
         /// <param name="configure">The <see cref="Action{ClientBuilder}"/> to configure the native application.</param>
-        public Client AddNativeApp(string clientId, Action<ClientBuilder> configure)
+        public Client AddNativeApp(string clientId, Action<ClientBuilder>? configure = null)
         {
             var app = ClientBuilder.NativeApp(clientId);
-            configure(app);
+            configure?.Invoke(app);
             var client = app.Build();
-            Add(client);
+            this.Add(client);
             return client;
         }
     }
