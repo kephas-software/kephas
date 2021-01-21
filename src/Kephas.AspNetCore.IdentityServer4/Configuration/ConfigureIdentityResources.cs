@@ -11,23 +11,33 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
 
     using global::IdentityServer4;
     using Kephas.AspNetCore.IdentityServer4.Options;
-    using Microsoft.Extensions.Logging;
+    using Kephas.Configuration;
+    using Kephas.Logging;
     using Microsoft.Extensions.Options;
 
-    internal class ConfigureIdentityResources : IConfigureOptions<ApiAuthorizationOptions>
+    internal class ConfigureIdentityResources : Loggable, IConfigureOptions<ApiAuthorizationOptions>
     {
-        private readonly IdentityServerSettings configuration;
-        private readonly ILogger<ConfigureIdentityResources> logger;
+        private readonly Lazy<IdentityResourceSettings?> lazyConfiguration;
 
-        public ConfigureIdentityResources(IdentityServerSettings configuration, ILogger<ConfigureIdentityResources> logger)
+        public ConfigureIdentityResources(Lazy<IConfiguration<IdentityServerSettings>> lazyConfiguration, ILogManager? logManager = null)
+            : this(new Lazy<IdentityResourceSettings?>(() => lazyConfiguration.Value.Settings.Identity), logManager)
         {
-            this.configuration = configuration;
-            this.logger = logger;
+        }
+
+        internal ConfigureIdentityResources(IdentityResourceSettings? configuration, ILogManager? logManager = null)
+            : this(new Lazy<IdentityResourceSettings?>(() => configuration), logManager)
+        {
+        }
+
+        internal ConfigureIdentityResources(Lazy<IdentityResourceSettings?> lazyConfiguration, ILogManager? logManager = null)
+            : base(logManager)
+        {
+            this.lazyConfiguration = lazyConfiguration;
         }
 
         public void Configure(ApiAuthorizationOptions options)
         {
-            var data = this.configuration.Identity;
+            var data = this.lazyConfiguration.Value;
             var scopes = data?.Scopes;
             if (scopes == null)
             {

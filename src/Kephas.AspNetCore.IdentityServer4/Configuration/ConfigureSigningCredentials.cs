@@ -12,30 +12,49 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
     using System.Security.Cryptography;
 
     using Kephas.AspNetCore.IdentityServer4.Options;
+    using Kephas.Configuration;
     using Kephas.Cryptography.X509Certificates;
+    using Kephas.Logging;
     using Kephas.Serialization;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
 
-    internal class ConfigureSigningCredentials : IConfigureOptions<ApiAuthorizationOptions>
+    internal class ConfigureSigningCredentials : Loggable, IConfigureOptions<ApiAuthorizationOptions>
     {
         private const string DefaultTempKeyRelativePath = "obj/tempkey.json";
         private readonly ICertificateProvider certificateProvider;
         private readonly ISerializationService serializationService;
-        private readonly IdentityServerSettings configuration;
-        private readonly ILogger<ConfigureSigningCredentials> logger;
-
+        private readonly Lazy<KeySettings?> lazyConfiguration;
+  
         public ConfigureSigningCredentials(
-            IdentityServerSettings configuration,
+            Lazy<IConfiguration<IdentityServerSettings>> lazyConfiguration,
             ICertificateProvider certificateProvider,
             ISerializationService serializationService,
-            ILogger<ConfigureSigningCredentials> logger)
+            ILogManager? logManager = null)
+            : this(new Lazy<KeySettings?>(() => lazyConfiguration.Value.Settings.Key), certificateProvider, serializationService, logManager)
+        {
+        }
+
+        internal ConfigureSigningCredentials(
+            KeySettings? keySettings,
+            ICertificateProvider certificateProvider,
+            ISerializationService serializationService,
+            ILogManager? logManager = null)
+            : this(new Lazy<KeySettings?>(() => keySettings), certificateProvider, serializationService, logManager)
+        {
+        }
+
+        internal ConfigureSigningCredentials(
+            Lazy<KeySettings?> lazyKeySettings,
+            ICertificateProvider certificateProvider,
+            ISerializationService serializationService,
+            ILogManager? logManager = null)
+            : base(logManager)
         {
             this.certificateProvider = certificateProvider;
             this.serializationService = serializationService;
-            this.configuration = configuration;
-            this.logger = logger;
+            this.lazyConfiguration = lazyKeySettings;
         }
 
         public void Configure(ApiAuthorizationOptions options)
@@ -47,26 +66,26 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
             }
         }
 
-        public SigningCredentials? LoadKey()
+        internal SigningCredentials? LoadKey()
         {
+            var key = this.lazyConfiguration.Value;
+
             // We can't know for sure if there was a configuration section explicitly defined.
             // Check if the current configuration has any children and avoid failing if that's the case.
             // This will avoid failing when no configuration has been specified but will still fail if partial data
             // was defined.
-            if (this.configuration.Key == null)
+            if (key == null)
             {
                 return null;
             }
 
-            var key = this.configuration.Key;
             var keyType = key.Type ?? KeySettings.ProductionType;
-
             switch (keyType)
             {
                 case KeySettings.DevelopmentType:
                     var developmentKeyPath = Path.Combine(Directory.GetCurrentDirectory(), key.FilePath ?? DefaultTempKeyRelativePath);
                     var createIfMissing = key.Persisted ?? true;
-                    this.logger.LogInformation($"Loading development key at '{developmentKeyPath}'.");
+                    this.Logger.Info($"Loading development key at '{developmentKeyPath}'.");
                     var developmentKey = new RsaSecurityKey(LoadDevelopment(this.serializationService, developmentKeyPath, createIfMissing))
                     {
                         KeyId = "Development",
@@ -84,15 +103,12 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
                         throw new InvalidOperationException($"The provider could not find certificate '{key.Certificate ?? "(null)"}'. Check the spelling and the certificate settings store.");
                     }
 
-                    this.logger.LogInformation($"Loading production key from certificate '{key.Certificate}'.");
+                    this.Logger.Info($"Loading production key from certificate '{key.Certificate}'.");
                     return new SigningCredentials(new X509SecurityKey(cert), "RS256");
                 default:
                     throw new InvalidOperationException($"Invalid key type '{key.Type ?? "(null)"}'.");
             }
         }
-
-        // for testing purposes only
-        internal virtual DateTimeOffset GetCurrentTime() => DateTimeOffset.UtcNow;
 
         public static RSA LoadDevelopment(ISerializationService serializationService, string path, bool createIfMissing)
         {

@@ -48,5 +48,13 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
         /// The key.
         /// </value>
         public KeySettings? Key { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user interaction settings.
+        /// </summary>
+        /// <value>
+        /// The user interaction settings.
+        /// </value>
+        public UserInteractionSettings? UserInteraction { get; set; }
     }
 }

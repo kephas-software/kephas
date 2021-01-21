@@ -15,6 +15,7 @@ namespace Kephas.AspNetCore.IdentityServer4
     /// <summary>
     /// Password hasher to use the hashing service.
     /// </summary>
+    /// <typeparam name="TUser">The user type.</typeparam>
     /// <seealso cref="Microsoft.AspNetCore.Identity.IPasswordHasher{TUser}" />
     public class PasswordHasher<TUser> : IPasswordHasher<TUser>
         where TUser : class
