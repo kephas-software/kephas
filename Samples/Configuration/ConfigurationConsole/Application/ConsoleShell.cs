@@ -9,12 +9,12 @@
     /// </summary>
     public class ConsoleShell : AppBase
     {
-        protected override void ConfigureAmbientServices(IAmbientServices ambientServices)
+        protected override void BuildServicesContainer(IAmbientServices ambientServices)
         {
             ambientServices
                 .WithNLogManager()
                 .WithDynamicAppRuntime()
-                .WithAutofacCompositionContainer();
+                .BuildWithAutofac();
         }
     }
 }

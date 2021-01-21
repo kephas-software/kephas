@@ -11,24 +11,14 @@ namespace ConfigurationConsole
 {
     using System.Runtime.Loader;
     using System.Threading.Tasks;
-
+    using Kephas.Application;
     using StartupConsole.Application;
 
     class Program
     {
         public static async Task Main(string[] args)
         {
-            //AssemblyLoadContext.Default.Resolving += (context, name) =>
-            //    {
-            //        if (name.Name.EndsWith(".resources"))
-            //        {
-            //            return null;
-            //        }
-
-            //        return null;
-            //    };
-
-            await new ConsoleShell().BootstrapAsync(args);
+            await new ConsoleShell().BootstrapAsync(new AppArgs(args));
         }
     }
 }

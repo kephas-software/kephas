@@ -15,20 +15,12 @@ namespace RoleGame.Application
 
     public class RoleGameShell : AppBase
     {
-        /// <summary>
-        /// Configures the ambient services asynchronously.
-        /// </summary>
-        /// <remarks>
-        /// Override this method to initialize the startup services, like log manager and configuration
-        /// manager.
-        /// </remarks>
-        /// <param name="ambientServices">The ambient services.</param>
-        protected override void ConfigureAmbientServices(IAmbientServices ambientServices)
+        protected override void BuildServicesContainer(IAmbientServices ambientServices)
         {
             ambientServices
                 .WithNLogManager()
                 .WithDynamicAppRuntime(an => an.Name.StartsWith("Kephas") || an.Name.StartsWith("RoleGame"))
-                .WithMefCompositionContainer();
+                .BuildWithSystemComposition();
         }
     }
 }

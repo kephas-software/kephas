@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>net45;netcoreapp3.0</TargetFrameworks>
+        <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <AutoGenerateBindingRedirects>False</AutoGenerateBindingRedirects>
         <Authors>Kephas Software SRL</Authors>
@@ -36,24 +36,27 @@
         <DefineConstants>NET45</DefineConstants>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Remove="Properties\**" />
+      <EmbeddedResource Remove="Properties\**" />
+      <None Remove="Properties\**" />
+    </ItemGroup>
+
     <!-- common NuGet package refs that affect all projects -->
     <ItemGroup>
-        <PackageReference Include="Kephas.Application" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Application.Console" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Messaging" Version="7.0.0-rc.37" />
+        <PackageReference Include="Kephas.Application" Version="8.4.3" />
+        <PackageReference Include="Kephas.Application.Console" Version="8.4.3" />
+        <PackageReference Include="Kephas.Messaging" Version="8.4.0" />
         <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-        <PackageReference Include="Kephas.Composition.Mef" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Core" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Logging.NLog" Version="7.0.0-rc.37" />
+        <PackageReference Include="Kephas.Composition.Mef" Version="8.4.0" />
+        <PackageReference Include="Kephas.Core" Version="8.4.4" />
+        <PackageReference Include="Kephas.Logging.NLog" Version="8.4.0" />
         <PackageReference Include="System.Composition" Version="1.3.0" />
     </ItemGroup>
     <ItemGroup>
         <None Update="NLog.config">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Properties\" />
     </ItemGroup>
 
 </Project>

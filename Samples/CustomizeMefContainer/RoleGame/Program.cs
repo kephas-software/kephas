@@ -10,14 +10,14 @@
 namespace RoleGame
 {
     using System.Threading.Tasks;
-
+    using Kephas.Application;
     using RoleGame.Application;
 
     class Program
     {
         static Task Main(string[] args)
         {
-            return new RoleGameShell().BootstrapAsync(args);
+            return new RoleGameShell().BootstrapAsync(new AppArgs(args));
         }
     }
 }

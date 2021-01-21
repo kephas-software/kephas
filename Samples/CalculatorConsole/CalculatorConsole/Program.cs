@@ -12,6 +12,7 @@ namespace CalculatorConsole
     using System.Threading.Tasks;
 
     using CalculatorConsole.Application;
+    using Kephas.Application;
 
     /// <summary>
     /// The entry point class.
@@ -20,7 +21,7 @@ namespace CalculatorConsole
     {
         public static Task Main(string[] args)
         {
-            return new CalculatorShell().BootstrapAsync(args);
+            return new CalculatorShell().BootstrapAsync(new AppArgs(args));
         }
     }
 }

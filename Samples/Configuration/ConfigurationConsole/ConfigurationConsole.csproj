@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <ApplicationIcon />
         <StartupObject />
     </PropertyGroup>
@@ -19,19 +19,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Kephas.Application" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Application.Console" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Composition.Autofac" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Configuration.Legacy" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Core" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Logging.NLog" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Messaging" Version="7.0.0-rc.37" />
-        <PackageReference Include="Kephas.Serialization.Json" Version="7.0.0-rc.37" />
+        <PackageReference Include="Kephas.Application" Version="8.4.3" />
+        <PackageReference Include="Kephas.Application.Console" Version="8.4.3" />
+        <PackageReference Include="Kephas.Composition.Autofac" Version="8.4.0" />
+        <PackageReference Include="Kephas.Core" Version="8.4.4" />
+        <PackageReference Include="Kephas.Logging.NLog" Version="8.4.0" />
+        <PackageReference Include="Kephas.Messaging" Version="8.4.0" />
+        <PackageReference Include="Kephas.Serialization.NewtonsoftJson" Version="8.4.6" />
         <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="consoleSettings.json">
+        <None Update="Config\consoleSettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="NLog.config">
