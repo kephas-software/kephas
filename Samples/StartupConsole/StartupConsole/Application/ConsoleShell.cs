@@ -18,12 +18,12 @@ namespace StartupConsole.Application
     /// </summary>
     public class ConsoleShell : AppBase
     {
-        protected override void ConfigureAmbientServices(IAmbientServices ambientServices)
+        protected override void BuildServicesContainer(IAmbientServices ambientServices)
         {
             ambientServices
                 .WithNLogManager()
                 .WithStaticAppRuntime()
-                .WithLiteCompositionContainer();
+                .BuildWithLite();
         }
     }
 }
