@@ -79,19 +79,19 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
                 return null;
             }
 
-            var keyType = key.Type ?? KeySettings.ProductionType;
+            var keyType = key.Type ?? KeySettings.DefaultType;
             switch (keyType)
             {
-                case KeySettings.DevelopmentType:
-                    var developmentKeyPath = Path.Combine(Directory.GetCurrentDirectory(), key.FilePath ?? DefaultTempKeyRelativePath);
+                case KeySettings.TemporaryType:
+                    var temporaryKeyPath = Path.Combine(Directory.GetCurrentDirectory(), key.FilePath ?? DefaultTempKeyRelativePath);
                     var createIfMissing = key.Persisted ?? true;
-                    this.Logger.Info($"Loading development key at '{developmentKeyPath}'.");
-                    var developmentKey = new RsaSecurityKey(LoadDevelopment(this.serializationService, developmentKeyPath, createIfMissing))
+                    this.Logger.Info($"Loading temporary key at '{temporaryKeyPath}'.");
+                    var temporaryKey = new RsaSecurityKey(LoadTemporary(this.serializationService, temporaryKeyPath, createIfMissing))
                     {
-                        KeyId = "Development",
+                        KeyId = KeySettings.TemporaryType,
                     };
-                    return new SigningCredentials(developmentKey, "RS256");
-                case KeySettings.ProductionType:
+                    return new SigningCredentials(temporaryKey, "RS256");
+                case KeySettings.DefaultType:
                     if (key.Certificate == null)
                     {
                         throw new InvalidOperationException($"No certificate provided for production mode.");
@@ -110,7 +110,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
             }
         }
 
-        public static RSA LoadDevelopment(ISerializationService serializationService, string path, bool createIfMissing)
+        internal static RSA LoadTemporary(ISerializationService serializationService, string path, bool createIfMissing)
         {
             var fileExists = File.Exists(path);
             if (!fileExists && !createIfMissing)

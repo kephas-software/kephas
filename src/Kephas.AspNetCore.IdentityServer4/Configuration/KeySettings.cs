@@ -17,14 +17,14 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
     public class KeySettings : Expando
     {
         /// <summary>
-        /// The development type.
+        /// The temporary key type.
         /// </summary>
-        public const string DevelopmentType = "Development";
+        public const string TemporaryType = "Temporary";
 
         /// <summary>
-        /// The production type.
+        /// The default key type.
         /// </summary>
-        public const string ProductionType = "Production";
+        public const string DefaultType = "Default";
 
         /// <summary>
         /// Gets or sets the key type.
