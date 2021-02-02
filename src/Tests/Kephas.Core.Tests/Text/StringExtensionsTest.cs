@@ -72,5 +72,35 @@ namespace Kephas.Core.Tests.Text
                 Assert.AreEqual(expected[i], splits[i]);
             }
         }
+
+        [Test]
+        [TestCase("1{0}4{1}7{2}", new[] { "23", "56", "89" }, "123456789")]
+        [TestCase("1{0}2{1}3{2}4", new[] { " x ", " y ", " z " }, "1 x 2 y 3 z 4")]
+        [TestCase("123456789", new[] { " x ", " y ", " z " }, "123456789")]
+        public void Format_with(string format, string[] args, string expected)
+        {
+            var formatted = StringExtensions.FormatWith(format, args);
+            Assert.AreEqual(expected.Length, formatted.Length);
+            for (var i = 0; i < expected.Length; i++)
+            {
+                Assert.AreEqual(expected[i], formatted[i]);
+            }
+        }
+
+        [Test]
+        [TestCase(",", new[] { "123", "456", "789" }, "123,456,789")]
+        [TestCase("; ", new[] { "123", "456", "789" }, "123; 456; 789")]
+        [TestCase("x", new[] { "123456789" }, "123456789")]
+        [TestCase("xx", new[] { "123 ", " 456 ", " 789" }, "123 xx 456 xx 789")]
+
+        public void Join_with(string separator, string[] args, string expected)
+        {
+            var joined = StringExtensions.JoinWith(separator, args);
+            Assert.AreEqual(expected.Length, joined.Length);
+            for (var i = 0; i < expected.Length; i++)
+            {
+                Assert.AreEqual(expected[i], joined[i]);
+            }
+        }
     }
 }
