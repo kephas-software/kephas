@@ -226,7 +226,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
 
         public class RedisSettingsProvider : ISettingsProvider
         {
-            public object GetSettings(Type settingsType)
+            public object? GetSettings(Type settingsType, IContext? context)
             {
                 if (settingsType == typeof(RedisClientSettings))
                 {
@@ -240,7 +240,7 @@ namespace Kephas.Messaging.Redis.Tests.Routing
                 return null;
             }
 
-            public async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+            public async Task UpdateSettingsAsync(object settings, IContext? context, CancellationToken cancellationToken = default)
             {
                 await Task.Yield();
             }

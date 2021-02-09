@@ -59,7 +59,7 @@ namespace Kephas.Data
         /// <param name="configuration">The configuration.</param>
         [CompositionConstructor]
         public DefaultIdGenerator(IConfiguration<IdGeneratorSettings> configuration)
-            : this(configuration.Settings)
+            : this(configuration.GetSettings())
         {
         }
 

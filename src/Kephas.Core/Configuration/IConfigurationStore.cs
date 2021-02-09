@@ -13,6 +13,7 @@ namespace Kephas.Configuration
     using System;
 
     using Kephas.Dynamic;
+    using Kephas.Services;
 
     /// <summary>
     /// Contract interface for the configuration store.
@@ -34,15 +35,17 @@ namespace Kephas.Configuration
         /// Tries to get the indicated settings.
         /// </summary>
         /// <param name="settingsType">Type of the settings.</param>
+        /// <param name="context">The context.</param>
         /// <returns>
         /// The required settings or <c>null</c>.
         /// </returns>
-        object? TryGetSettings(Type settingsType);
+        object? TryGetSettings(Type settingsType, IContext? context);
 
         /// <summary>
         /// Updates the settings.
         /// </summary>
         /// <param name="settings">The settings to be updated.</param>
-        void UpdateSettings(object settings);
+        /// <param name="context">The context.</param>
+        void UpdateSettings(object settings, IContext? context);
     }
 }

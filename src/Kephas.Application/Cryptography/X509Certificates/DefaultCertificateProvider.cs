@@ -63,7 +63,7 @@ namespace Kephas.Application.Cryptography.X509Certificates
         /// <returns>The certificate.</returns>
         public virtual X509Certificate2? TryGetCertificate(string name, IContext? context = null)
         {
-            var certificates = this.systemConfiguration.Settings.Certificates;
+            var certificates = this.systemConfiguration.GetSettings(context).Certificates;
             if (certificates == null || !certificates.TryGetValue(name, out var certificateInfo))
             {
                 return null;

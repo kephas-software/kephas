@@ -28,10 +28,11 @@ namespace Kephas.Configuration
         /// <summary>
         /// Gets the settings associated to this configuration.
         /// </summary>
-        /// <value>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
         /// The settings.
-        /// </value>
-        TSettings Settings { get; }
+        /// </returns>
+        TSettings GetSettings(IContext? context = null);
 
         /// <summary>
         /// Updates the settings in the configuration store.

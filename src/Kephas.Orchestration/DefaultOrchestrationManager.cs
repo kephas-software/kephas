@@ -89,7 +89,7 @@ namespace Kephas.Orchestration
             this.Configuration = configuration;
             this.processStarterFactoryFactory = processStarterFactoryFactory;
 
-            this.HeartbeatDueTime = this.HeartbeatInterval = this.Configuration.Settings.HeartbeatInterval;
+            this.HeartbeatDueTime = this.HeartbeatInterval = this.Configuration.GetSettings().HeartbeatInterval;
 
             this.lazyRootAppInstanceId = new Lazy<string>(this.ComputeRootAppInstanceId);
         }

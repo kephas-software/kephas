@@ -20,7 +20,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
         private readonly Lazy<IdentityResourceSettings?> lazyConfiguration;
 
         public ConfigureIdentityResources(Lazy<IConfiguration<IdentityServerSettings>> lazyConfiguration, ILogManager? logManager = null)
-            : this(new Lazy<IdentityResourceSettings?>(() => lazyConfiguration.Value.Settings.Identity), logManager)
+            : this(new Lazy<IdentityResourceSettings?>(() => lazyConfiguration.Value.GetSettings().Identity), logManager)
         {
         }
 

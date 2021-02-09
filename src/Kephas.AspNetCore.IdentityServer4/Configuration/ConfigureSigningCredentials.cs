@@ -32,7 +32,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
             ICertificateProvider certificateProvider,
             ISerializationService serializationService,
             ILogManager? logManager = null)
-            : this(new Lazy<KeySettings?>(() => lazyConfiguration.Value.Settings.Key), certificateProvider, serializationService, logManager)
+            : this(new Lazy<KeySettings?>(() => lazyConfiguration.Value.GetSettings().Key), certificateProvider, serializationService, logManager)
         {
         }
 

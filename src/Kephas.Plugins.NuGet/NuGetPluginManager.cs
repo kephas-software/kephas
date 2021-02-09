@@ -90,7 +90,7 @@ namespace Kephas.Plugins.NuGet
             : base(appRuntime, contextFactory, eventHub, logManager)
         {
             this.nativeLogger = new NuGetLogger(this.Logger);
-            this.pluginsSettings = pluginsConfig.Settings;
+            this.pluginsSettings = pluginsConfig.GetSettings();
         }
 
         /// <summary>

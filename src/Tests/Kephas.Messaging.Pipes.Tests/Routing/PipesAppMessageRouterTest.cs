@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
+
 namespace Kephas.Messaging.Pipes.Tests.Routing
 {
     using System;
@@ -272,7 +274,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
 
         public class PipesSettingsProvider : ISettingsProvider
         {
-            public object GetSettings(Type settingsType)
+            public object? GetSettings(Type settingsType, IContext? context)
             {
                 if (settingsType == typeof(PipesSettingsProvider))
                 {
@@ -286,7 +288,7 @@ namespace Kephas.Messaging.Pipes.Tests.Routing
                 return null;
             }
 
-            public async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+            public async Task UpdateSettingsAsync(object settings, IContext? context, CancellationToken cancellationToken = default)
             {
                 await Task.Yield();
             }

@@ -428,7 +428,7 @@ namespace Kephas.Messaging.Pipes.Routing
 
         private string GetChannelName(string appInstanceId)
         {
-            var pipesNS = this.pipesConfiguration.Settings.Namespace;
+            var pipesNS = this.pipesConfiguration.GetSettings().Namespace;
             var prefix = string.IsNullOrEmpty(pipesNS) ? ChannelType : $"{pipesNS}_{ChannelType}";
 
             var channelName = $"{prefix}.{appInstanceId}";

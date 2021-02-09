@@ -120,7 +120,7 @@ namespace Kephas.Messaging.Pipes
             {
                 this.Logger.Debug("Connecting to pipe {server}/{channel} (client mode)...", this.ServerName, this.ChannelName);
 
-                await stream.ConnectAsync((int)this.pipesConfiguration.Settings.ConnectionTimeout.TotalMilliseconds, cancellationToken).PreserveThreadContext();
+                await stream.ConnectAsync((int)this.pipesConfiguration.GetSettings().ConnectionTimeout.TotalMilliseconds, cancellationToken).PreserveThreadContext();
                 stream.ReadMode = PipeTransmissionMode.Message;
 
                 this.Logger.Debug("Connected to pipe {server}/{channel} (client mode).", this.ServerName, this.ChannelName);

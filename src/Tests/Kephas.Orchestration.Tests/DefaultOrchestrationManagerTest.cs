@@ -87,7 +87,7 @@ namespace Kephas.Orchestration.Tests
             var appContext = new AppContext(ambientServices);
 
             var config = Substitute.For<IConfiguration<OrchestrationSettings>>();
-            config.Settings.Returns(new OrchestrationSettings());
+            config.GetSettings().Returns(new OrchestrationSettings());
 
             var manager = new DefaultOrchestrationManager(
                 appRuntime, 

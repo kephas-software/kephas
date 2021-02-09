@@ -58,7 +58,7 @@ namespace Kephas.Core.Endpoints
 
             await Task.Yield();
 
-            var settingsTypeString = message.SettingsType.ToPascalCase();
+            var settingsTypeString = message.SettingsType!.ToPascalCase();
             if (!settingsTypeString.EndsWith(SettingsEnding, StringComparison.OrdinalIgnoreCase))
             {
                 settingsTypeString += SettingsEnding;
@@ -76,7 +76,8 @@ namespace Kephas.Core.Endpoints
 
             var configurationType = typeof(IConfiguration<>).MakeGenericType(settingsType);
             var configuration = this.compositionContext.GetExport(configurationType);
-            var settings = configuration.GetPropertyValue(nameof(IConfiguration<CoreSettings>.Settings));
+            var getSettings = configurationType.GetMethod(nameof(IConfiguration<CoreSettings>.GetSettings));
+            var settings = getSettings?.Call(configuration, context);
             return new GetSettingsResponseMessage
             {
                 Settings = settings,

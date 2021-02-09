@@ -32,7 +32,7 @@ namespace Kephas.Application.Tests
 
             var settings = new SystemSettings();
             var config = Substitute.For<IConfiguration<SystemSettings>>();
-            config.Settings.Returns(settings);
+            config.GetSettings().Returns(settings);
 
             var behavior = new StartupAppLifecycleBehavior(eventHub, config, new RuntimeTypeRegistry());
             await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>(), default);
@@ -51,7 +51,7 @@ namespace Kephas.Application.Tests
 
             var settings = new SystemSettings();
             var config = Substitute.For<IConfiguration<SystemSettings>>();
-            config.Settings.Returns(settings);
+            config.GetSettings().Returns(settings);
 
             var behavior = new StartupAppLifecycleBehavior(eventHub, config, new RuntimeTypeRegistry());
             await behavior.BeforeAppInitializeAsync(Substitute.For<IAppContext>(), default);

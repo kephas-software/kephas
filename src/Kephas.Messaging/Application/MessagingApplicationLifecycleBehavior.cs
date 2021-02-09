@@ -123,7 +123,7 @@ namespace Kephas.Messaging.Application
         {
             try
             {
-                var settings = this.messagingConfig.Settings;
+                var settings = this.messagingConfig.GetSettings();
 
                 if (settings == null)
                 {

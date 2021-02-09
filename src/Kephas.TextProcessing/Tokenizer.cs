@@ -51,7 +51,7 @@ namespace Kephas.TextProcessing
         {
             using (var context = this.CreateTokenizerContext(optionsConfig))
             {
-                var settings = this.tokenizerConfig?.Settings ?? new TokenizerSettings();
+                var settings = this.tokenizerConfig?.GetSettings() ?? new TokenizerSettings();
 
                 var sb = new StringBuilder(text);
                 foreach (var separator in settings.WordSeparators ?? new string[0])

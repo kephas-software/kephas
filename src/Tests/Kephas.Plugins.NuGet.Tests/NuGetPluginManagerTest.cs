@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
+
 namespace Kephas.Plugins.NuGet.Tests
 {
     using System;
@@ -135,7 +137,7 @@ namespace Kephas.Plugins.NuGet.Tests
                 this.searchTerm = searchTerm;
             }
 
-            public object? GetSettings(Type settingsType)
+            public object? GetSettings(Type settingsType, IContext? context)
             {
                 if (typeof(PluginsSettings) != settingsType)
                 {
@@ -155,7 +157,8 @@ namespace Kephas.Plugins.NuGet.Tests
                 return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             }
 
-            public Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+            public Task UpdateSettingsAsync(object settings,
+                IContext? context, CancellationToken cancellationToken = default)
             {
                 throw new NotImplementedException();
             }

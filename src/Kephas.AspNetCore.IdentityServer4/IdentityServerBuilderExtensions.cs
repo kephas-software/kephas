@@ -120,7 +120,7 @@ namespace Kephas.AspNetCore.IdentityServer4
                 ServiceDescriptor.Singleton<IConfigureOptions<ApiAuthorizationOptions>, ConfigureApiResources>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<ConfigureApiResources>>();
-                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().Settings;
+                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().GetSettings();
                     var localApiDescriptor = sp.GetService<IIdentityServerJwtDescriptor>();
                     return new ConfigureApiResources(effectiveConfig, localApiDescriptor, logger);
                 }));
@@ -182,7 +182,7 @@ namespace Kephas.AspNetCore.IdentityServer4
                 ServiceDescriptor.Singleton<IConfigureOptions<ApiAuthorizationOptions>, ConfigureIdentityResources>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogManager>();
-                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().Settings.Identity;
+                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().GetSettings().Identity;
                     return new ConfigureIdentityResources(effectiveConfig, logger);
                 }));
 
@@ -226,7 +226,7 @@ namespace Kephas.AspNetCore.IdentityServer4
                 ServiceDescriptor.Singleton<IConfigureOptions<ApiAuthorizationOptions>, ConfigureClients>(sp =>
                 {
                     var logger = sp.GetRequiredService<ILogger<ConfigureClients>>();
-                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().Settings;
+                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().GetSettings();
                     return new ConfigureClients(effectiveConfig, logger);
                 }));
 
@@ -266,7 +266,7 @@ namespace Kephas.AspNetCore.IdentityServer4
                     var logManager = sp.GetRequiredService<ILogManager>();
                     var certProvider = sp.GetRequiredService<ICertificateProvider>();
                     var serializationService = sp.GetRequiredService<ISerializationService>();
-                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().Settings.Key;
+                    var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().GetSettings().Key;
                     return new ConfigureSigningCredentials(effectiveConfig, certProvider, serializationService, logManager);
                 }));
 

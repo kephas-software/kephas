@@ -83,8 +83,9 @@ namespace Kephas.Configuration.Providers
         /// Gets the settings with the provided type.
         /// </summary>
         /// <param name="settingsType">Type of the settings.</param>
+        /// <param name="context">The context.</param>
         /// <returns>The settings.</returns>
-        public virtual object? GetSettings(Type settingsType)
+        public virtual object? GetSettings(Type settingsType, IContext? context)
         {
             var (filePath, result, mediaType) = this.GetSettingsFileInfo(settingsType);
             if (filePath == null)
@@ -104,9 +105,10 @@ namespace Kephas.Configuration.Providers
         /// Updates the settings asynchronously.
         /// </summary>
         /// <param name="settings">The settings to be updated.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public virtual async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+        public virtual async Task UpdateSettingsAsync(object settings, IContext? context, CancellationToken cancellationToken = default)
         {
             Requires.NotNull(settings, nameof(settings));
 
@@ -131,7 +133,7 @@ namespace Kephas.Configuration.Providers
                     .IncludeNullValues(false),
                 cancellationToken: cancellationToken)
                 .PreserveThreadContext();
-            File.WriteAllText(filePath, settingsString);
+            await File.WriteAllTextAsync(filePath, settingsString, cancellationToken).PreserveThreadContext();
 
             this.Logger.Info("Settings '{settingsType}' updated.", settingsType);
         }

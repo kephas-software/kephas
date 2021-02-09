@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
+
 namespace Kephas.Core.Tests.Configuration
 {
     using System;
@@ -35,7 +37,7 @@ namespace Kephas.Core.Tests.Configuration
         {
             var settings = new Config1();
             var configProvider1 = Substitute.For<ISettingsProvider>();
-            configProvider1.GetSettings(typeof(Config1)).Returns(settings);
+            configProvider1.GetSettings(typeof(Config1), TODO).Returns(settings);
 
             var selector = new DefaultSettingsProviderSelector(new List<IExportFactory<ISettingsProvider, SettingsProviderMetadata>>
                                                                {
@@ -43,7 +45,7 @@ namespace Kephas.Core.Tests.Configuration
                                                                });
             var configuration = new Configuration<Config1>(selector, Substitute.For<IAppRuntime>(), new Lazy<IEventHub>(() => Substitute.For<IEventHub>()));
 
-            var result = configuration.Settings;
+            var result = configuration.GetSettings();
             Assert.AreSame(settings, result);
         }
 
@@ -52,11 +54,11 @@ namespace Kephas.Core.Tests.Configuration
         {
             var settings1 = new Config1();
             var configProvider1 = Substitute.For<ISettingsProvider>();
-            configProvider1.GetSettings(typeof(Config1)).Returns(settings1);
+            configProvider1.GetSettings(typeof(Config1), TODO).Returns(settings1);
 
             var settings2 = new Config2();
             var configProvider2 = Substitute.For<ISettingsProvider>();
-            configProvider2.GetSettings(typeof(Config2)).Returns(settings2);
+            configProvider2.GetSettings(typeof(Config2), TODO).Returns(settings2);
 
             var selector = new DefaultSettingsProviderSelector(new List<IExportFactory<ISettingsProvider, SettingsProviderMetadata>>
                                                                {
@@ -65,7 +67,7 @@ namespace Kephas.Core.Tests.Configuration
                                                                });
             var configuration = new Configuration<Config2>(selector, Substitute.For<IAppRuntime>(), new Lazy<IEventHub>(() => Substitute.For<IEventHub>()));
 
-            var result = configuration.Settings;
+            var result = configuration.GetSettings();
             Assert.AreSame(settings2, result);
         }
 
@@ -76,7 +78,7 @@ namespace Kephas.Core.Tests.Configuration
             var container = this.CreateContainer(parts: new[] { typeof(TestConfigurationProvider) });
 
             var config = container.GetExport<IConfiguration<TestSettings>>();
-            Assert.AreSame(TestConfigurationProvider.Settings, config.Settings);
+            Assert.AreSame(TestConfigurationProvider.Settings, config.GetSettings());
         }
 
         [Test]
@@ -127,12 +129,12 @@ namespace Kephas.Core.Tests.Configuration
         {
             public static TestSettings Settings = new TestSettings();
 
-            public object GetSettings(Type settingsType)
+            public object? GetSettings(Type settingsType, IContext? context)
             {
                 return Settings;
             }
 
-            public async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+            public async Task UpdateSettingsAsync(object settings, IContext? context, CancellationToken cancellationToken = default)
             {
                 await Task.Yield();
             }

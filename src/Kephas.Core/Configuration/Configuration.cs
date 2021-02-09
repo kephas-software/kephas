@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
-
 namespace Kephas.Configuration
 {
     using System;
@@ -23,6 +21,7 @@ namespace Kephas.Configuration
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Interaction;
+    using Kephas.Logging;
     using Kephas.Operations;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
@@ -40,7 +39,7 @@ namespace Kephas.Configuration
         private readonly ISettingsProviderSelector settingsProviderSelector;
         private readonly IAppRuntime appRuntime;
         private readonly Lazy<IEventHub> lazyEventHub;
-        private TSettings? settings;
+        private TSettings? cachedSettings;
         private IEventSubscription? changeSubscription;
 
         /// <summary>
@@ -49,6 +48,7 @@ namespace Kephas.Configuration
         /// <param name="settingsProviderSelector">The settings provider selector.</param>
         /// <param name="appRuntime">Gets the application runtime.</param>
         /// <param name="lazyEventHub">The lazy event hub.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
         public Configuration(
             ISettingsProviderSelector settingsProviderSelector,
             IAppRuntime appRuntime,
@@ -62,21 +62,22 @@ namespace Kephas.Configuration
             this.settingsProviderSelector = settingsProviderSelector;
             this.appRuntime = appRuntime;
             this.lazyEventHub = lazyEventHub;
-            this.Logger = logManager?.GetLogger(this.GetType());
+            this.Logger = logManager?.GetLogger(this.GetType()) ?? this.GetType().GetLogger();
         }
-
-        /// <summary>
-        /// Gets the settings associated to this configuration.
-        /// </summary>
-        /// <value>
-        /// The settings.
-        /// </value>
-        public TSettings Settings => this.settings ??= this.ComputeSettings();
 
         /// <summary>
         /// Gets the logger.
         /// </summary>
         protected ILogger? Logger { get; }
+
+        /// <summary>
+        /// Gets the settings associated to this configuration.
+        /// </summary>
+        /// <param name="context">Optional. The context.</param>
+        /// <returns>
+        /// The settings.
+        /// </returns>
+        public TSettings GetSettings(IContext? context = null) => this.cachedSettings ??= this.ComputeSettings(context);
 
         /// <summary>
         /// Updates the settings in the configuration store.
@@ -93,13 +94,13 @@ namespace Kephas.Configuration
             IContext? context = null,
             CancellationToken cancellationToken = default)
         {
-            if (settings == null && this.settings == null)
+            if (settings == null && this.cachedSettings == null)
             {
                 // settings not retrieved, no values to update.
                 return false.ToOperationResult().MergeMessage("The settings are not changed, skipping update.");
             }
 
-            settings ??= this.settings;
+            settings ??= this.cachedSettings;
             var settingsProvider = this.settingsProviderSelector
                 .TryGetProviders(typeof(TSettings))
                 ?.FirstOrDefault();
@@ -107,8 +108,8 @@ namespace Kephas.Configuration
             {
                 this.Logger.Info("Updating {settingsType}...", typeof(TSettings));
 
-                await settingsProvider.UpdateSettingsAsync(settings, cancellationToken).PreserveThreadContext();
-                this.settings = settings;
+                await settingsProvider.UpdateSettingsAsync(settings!, context, cancellationToken).PreserveThreadContext();
+                this.cachedSettings = settings;
 
                 await this.lazyEventHub.Value.PublishAsync(
                     new ConfigurationChangedSignal(
@@ -136,23 +137,15 @@ namespace Kephas.Configuration
             this.changeSubscription?.Dispose();
         }
 
-        private TSettings ComputeSettings()
+        private TSettings ComputeSettings(IContext? context)
         {
             this.changeSubscription ??= this.lazyEventHub.Value.Subscribe<ConfigurationChangedSignal>(this.HandleConfigurationChangeAsync);
             var settingsProviders = this.settingsProviderSelector.TryGetProviders(typeof(TSettings));
-            if (settingsProviders != null)
-            {
-                foreach (var settingsProvider in settingsProviders)
-                {
-                    var settings = (TSettings?)settingsProvider.GetSettings(typeof(TSettings));
-                    if (settings != null)
-                    {
-                        return settings;
-                    }
-                }
-            }
 
-            return new TSettings();
+            return settingsProviders?
+                       .Select(p => (TSettings?)p.GetSettings(typeof(TSettings), context))
+                       .FirstOrDefault(s => s != null)
+                   ?? new TSettings();
         }
 
         private Task HandleConfigurationChangeAsync(ConfigurationChangedSignal signal, IContext context, CancellationToken cancellationToken)
@@ -163,7 +156,7 @@ namespace Kephas.Configuration
                 return Task.CompletedTask;
             }
 
-            this.settings = default;
+            this.cachedSettings = default;
             return Task.CompletedTask;
         }
     }

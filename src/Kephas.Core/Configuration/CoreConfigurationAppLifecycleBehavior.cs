@@ -51,7 +51,7 @@ namespace Kephas.Configuration
         {
             try
             {
-                var settings = this.coreConfiguration.Settings;
+                var settings = this.coreConfiguration.GetSettings();
                 if (settings == null)
                 {
                     return Task.FromResult((IOperationResult)true.ToOperationResult());

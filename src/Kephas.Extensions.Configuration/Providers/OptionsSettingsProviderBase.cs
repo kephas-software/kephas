@@ -24,6 +24,7 @@ namespace Kephas.Extensions.Configuration.Providers
     using Kephas.Net.Mime;
     using Kephas.Net.Mime.Composition;
     using Kephas.Serialization;
+    using Kephas.Services;
     using Microsoft.Extensions.Options;
 
     /// <summary>
@@ -50,10 +51,11 @@ namespace Kephas.Extensions.Configuration.Providers
         /// Gets the settings with the provided type.
         /// </summary>
         /// <param name="settingsType">Type of the settings.</param>
+        /// <param name="context">The context.</param>
         /// <returns>
         /// The settings.
         /// </returns>
-        public virtual object? GetSettings(Type settingsType)
+        public virtual object? GetSettings(Type settingsType, IContext? context)
         {
             var options = this.compositionContext.TryGetExport(typeof(IOptions<>).MakeGenericType(settingsType));
             return options?.GetPropertyValue(nameof(IOptions<CoreSettings>.Value));
@@ -63,11 +65,12 @@ namespace Kephas.Extensions.Configuration.Providers
         /// Updates the settings asynchronously.
         /// </summary>
         /// <param name="settings">The settings to be updated.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public virtual Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+        public virtual Task UpdateSettingsAsync(object settings, IContext? context, CancellationToken cancellationToken = default)
         {
-            return this.lazyFileSettingsProvider.Value.UpdateSettingsAsync(settings, cancellationToken);
+            return this.lazyFileSettingsProvider.Value.UpdateSettingsAsync(settings, context, cancellationToken);
         }
 
         /// <summary>

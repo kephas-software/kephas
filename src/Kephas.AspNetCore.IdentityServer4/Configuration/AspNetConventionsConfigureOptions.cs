@@ -30,7 +30,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
             options.Events.RaiseFailureEvents = true;
             options.Events.RaiseSuccessEvents = true;
             options.Authentication.CookieAuthenticationScheme = IdentityConstants.ApplicationScheme;
-            options.UserInteraction.ErrorUrl = this.lazyConfiguration.Value.Settings.UserInteraction?.ErrorUrl ?? "/";
+            options.UserInteraction.ErrorUrl = this.lazyConfiguration.Value.GetSettings().UserInteraction?.ErrorUrl ?? "/";
         }
     }
 }

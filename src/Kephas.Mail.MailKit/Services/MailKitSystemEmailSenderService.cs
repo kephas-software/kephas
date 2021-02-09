@@ -45,6 +45,6 @@ namespace Kephas.Mail.Services
         /// <returns>
         /// The email sender settings.
         /// </returns>
-        protected override SmtpSettings GetEmailSenderSettings() => this.systemEmailSenderConfig.Settings;
+        protected override SmtpSettings GetEmailSenderSettings() => this.systemEmailSenderConfig.GetSettings();
     }
 }

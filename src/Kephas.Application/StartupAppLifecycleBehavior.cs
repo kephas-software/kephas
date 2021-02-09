@@ -96,7 +96,7 @@ namespace Kephas.Application
 
         private async Task HandleScheduleStartupCommandSignalAsync(ScheduleStartupCommandSignal signal, IAppContext appContext, CancellationToken token)
         {
-            var settings = this.systemConfiguration.Settings;
+            var settings = this.systemConfiguration.GetSettings(appContext);
             var appId = this.GetAppId(signal);
             if (string.IsNullOrEmpty(appId))
             {

@@ -29,7 +29,7 @@ namespace Kephas.Core.Endpoints.Tests
         {
             var settings = new CoreSettings();
             var config = Substitute.For<IConfiguration<CoreSettings>>();
-            config.Settings.Returns(settings);
+            config.GetSettings().Returns(settings);
             var container = Substitute.For<ICompositionContext>();
             container.GetExport(typeof(IConfiguration<CoreSettings>))
                 .Returns(config);

@@ -45,7 +45,7 @@ namespace Kephas.Application.Configuration
         /// <returns>The application settings.</returns>
         public AppSettings? GetAppSettings(string appId)
         {
-            var systemSettings = this.systemConfiguration.Settings;
+            var systemSettings = this.systemConfiguration.GetSettings();
             return systemSettings.Instances?.TryGetValue(appId);
         }
     }

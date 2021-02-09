@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Runtime;
-
 namespace Kephas.Configuration
 {
     using System;
@@ -19,6 +17,8 @@ namespace Kephas.Configuration
     using Kephas.Diagnostics.Contracts;
     using Kephas.Dynamic;
     using Kephas.Reflection;
+    using Kephas.Runtime;
+    using Kephas.Services;
 
     /// <summary>
     /// Abstract base class for configuration stores.
@@ -31,6 +31,7 @@ namespace Kephas.Configuration
         /// Initializes a new instance of the <see cref="ConfigurationStoreBase"/> class.
         /// </summary>
         /// <param name="store">The store.</param>
+        /// <param name="typeRegistry">The runtime type registry.</param>
         protected ConfigurationStoreBase(IIndexable store, IRuntimeTypeRegistry typeRegistry)
         {
             this.InternalStore = store;
@@ -90,10 +91,11 @@ namespace Kephas.Configuration
         /// Tries to get the indicated settings.
         /// </summary>
         /// <param name="settingsType">Type of the settings.</param>
+        /// <param name="context">The context.</param>
         /// <returns>
         /// The required settings or <c>null</c>.
         /// </returns>
-        public object? TryGetSettings(Type settingsType)
+        public object? TryGetSettings(Type settingsType, IContext? context)
         {
             return this.TryGetOrAddSettings(settingsType, () => this.TypeRegistry.GetTypeInfo(settingsType).CreateInstance());
         }
@@ -102,7 +104,8 @@ namespace Kephas.Configuration
         /// Updates the settings.
         /// </summary>
         /// <param name="settings">The settings to be updated.</param>
-        public void UpdateSettings(object settings)
+        /// <param name="context">The context.</param>
+        public void UpdateSettings(object settings, IContext? context)
         {
             Requires.NotNull(settings, nameof(settings));
 

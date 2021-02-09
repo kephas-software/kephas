@@ -40,26 +40,31 @@ namespace Kephas.Configuration.Providers
         /// Gets the settings with the provided type.
         /// </summary>
         /// <param name="settingsType">Type of the settings.</param>
+        /// <param name="context">The context.</param>
         /// <returns>
         /// The settings.
         /// </returns>
-        public object GetSettings(Type settingsType)
+        public object? GetSettings(Type settingsType, IContext? context)
         {
             Requires.NotNull(settingsType, nameof(settingsType));
 
-            return this.configurationStore.TryGetSettings(settingsType);
+            return this.configurationStore.TryGetSettings(settingsType, context);
         }
 
         /// <summary>
         /// Updates the settings asynchronously.
         /// </summary>
         /// <param name="settings">The settings to be updated.</param>
+        /// <param name="context">The context.</param>
         /// <param name="cancellationToken">Optional. The cancellation token.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task UpdateSettingsAsync(object settings, CancellationToken cancellationToken = default)
+        public async Task UpdateSettingsAsync(
+            object settings,
+            IContext? context,
+            CancellationToken cancellationToken = default)
         {
             await Task.Yield();
-            this.configurationStore.UpdateSettings(settings);
+            this.configurationStore.UpdateSettings(settings, context);
         }
     }
 }
