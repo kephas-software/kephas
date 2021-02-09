@@ -133,7 +133,11 @@ namespace Kephas.Configuration.Providers
                     .IncludeNullValues(false),
                 cancellationToken: cancellationToken)
                 .PreserveThreadContext();
+#if NETSTANDARD2_1
             await File.WriteAllTextAsync(filePath, settingsString, cancellationToken).PreserveThreadContext();
+#else
+            File.WriteAllText(filePath, settingsString);
+#endif
 
             this.Logger.Info("Settings '{settingsType}' updated.", settingsType);
         }
