@@ -18,6 +18,7 @@ namespace Kephas.Core.Endpoints.Tests
     using Kephas.Configuration;
     using Kephas.Messaging;
     using Kephas.Reflection;
+    using Kephas.Services;
     using NSubstitute;
     using NUnit.Framework;
 
@@ -29,7 +30,7 @@ namespace Kephas.Core.Endpoints.Tests
         {
             var settings = new CoreSettings();
             var config = Substitute.For<IConfiguration<CoreSettings>>();
-            config.GetSettings().Returns(settings);
+            config.GetSettings(Arg.Any<IContext?>()).Returns(settings);
             var container = Substitute.For<ICompositionContext>();
             container.GetExport(typeof(IConfiguration<CoreSettings>))
                 .Returns(config);

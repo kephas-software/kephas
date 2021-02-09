@@ -16,6 +16,7 @@ namespace Kephas.Messaging.Pipes
     using Kephas.Configuration;
     using Kephas.Logging;
     using Kephas.Messaging.Pipes.Configuration;
+    using Kephas.Services;
     using Kephas.Threading.Tasks;
 
     /// <summary>
@@ -24,6 +25,7 @@ namespace Kephas.Messaging.Pipes
     internal class ClientChannel : ChannelBase
     {
         private readonly IConfiguration<PipesSettings> pipesConfiguration;
+        private readonly IContext? context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientChannel"/> class.
@@ -34,16 +36,19 @@ namespace Kephas.Messaging.Pipes
         /// <param name="pipesConfiguration">The pipes configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="isSelf">Indicates whether this is a dummy channel to itself.</param>
+        /// <param name="context">The context.</param>
         public ClientChannel(
             string appInstanceId,
             string? serverName,
             string channelName,
             IConfiguration<PipesSettings> pipesConfiguration,
             ILogger logger,
-            bool isSelf)
+            bool isSelf,
+            IContext? context)
             : base(channelName, logger)
         {
             this.pipesConfiguration = pipesConfiguration;
+            this.context = context;
             this.AppInstanceId = appInstanceId;
             this.ServerName = serverName ?? ".";
             this.IsSelf = isSelf;
@@ -120,7 +125,7 @@ namespace Kephas.Messaging.Pipes
             {
                 this.Logger.Debug("Connecting to pipe {server}/{channel} (client mode)...", this.ServerName, this.ChannelName);
 
-                await stream.ConnectAsync((int)this.pipesConfiguration.GetSettings().ConnectionTimeout.TotalMilliseconds, cancellationToken).PreserveThreadContext();
+                await stream.ConnectAsync((int)this.pipesConfiguration.GetSettings(this.context).ConnectionTimeout.TotalMilliseconds, cancellationToken).PreserveThreadContext();
                 stream.ReadMode = PipeTransmissionMode.Message;
 
                 this.Logger.Debug("Connected to pipe {server}/{channel} (client mode).", this.ServerName, this.ChannelName);

@@ -42,9 +42,10 @@ namespace Kephas.Mail.Services
         /// <summary>
         /// Gets the email sender settings.
         /// </summary>
+        /// <param name="context">The context.</param>
         /// <returns>
         /// The email sender settings.
         /// </returns>
-        protected override SmtpSettings GetEmailSenderSettings() => this.systemEmailSenderConfig.GetSettings();
+        protected override SmtpSettings GetEmailSenderSettings(IContext? context) => this.systemEmailSenderConfig.GetSettings(context);
     }
 }

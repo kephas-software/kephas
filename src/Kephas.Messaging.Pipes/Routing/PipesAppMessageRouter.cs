@@ -397,7 +397,14 @@ namespace Kephas.Messaging.Pipes.Routing
             }
 
             var channelName = this.GetOutChannelName(peerAppInstanceId);
-            clientChannel = new ClientChannel(peerAppInstanceId, ".", channelName, this.pipesConfiguration, this.Logger, peerAppInstanceId == this.AppRuntime.GetAppInstanceId());
+            clientChannel = new ClientChannel(
+                peerAppInstanceId,
+                ".",
+                channelName,
+                this.pipesConfiguration,
+                this.Logger,
+                peerAppInstanceId == this.AppRuntime.GetAppInstanceId(),
+                this.AppContext);
             this.outChannels.TryAdd(
                 peerAppInstanceId,
                 clientChannel);
@@ -428,7 +435,7 @@ namespace Kephas.Messaging.Pipes.Routing
 
         private string GetChannelName(string appInstanceId)
         {
-            var pipesNS = this.pipesConfiguration.GetSettings().Namespace;
+            var pipesNS = this.pipesConfiguration.GetSettings(this.AppContext).Namespace;
             var prefix = string.IsNullOrEmpty(pipesNS) ? ChannelType : $"{pipesNS}_{ChannelType}";
 
             var channelName = $"{prefix}.{appInstanceId}";

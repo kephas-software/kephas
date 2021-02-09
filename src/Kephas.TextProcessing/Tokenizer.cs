@@ -49,31 +49,29 @@ namespace Kephas.TextProcessing
         /// </returns>
         public IEnumerable<string> Tokenize(string text, Action<ITokenizerContext>? optionsConfig = null)
         {
-            using (var context = this.CreateTokenizerContext(optionsConfig))
+            using var context = this.CreateTokenizerContext(optionsConfig);
+            var settings = this.tokenizerConfig?.GetSettings(context) ?? new TokenizerSettings();
+
+            var sb = new StringBuilder(text);
+            foreach (var separator in settings.WordSeparators ?? new string[0])
             {
-                var settings = this.tokenizerConfig?.GetSettings() ?? new TokenizerSettings();
-
-                var sb = new StringBuilder(text);
-                foreach (var separator in settings.WordSeparators ?? new string[0])
-                {
-                    sb.Replace(separator, " ");
-                }
-
-                IEnumerable<string> tokens = sb.ToString()
-                    .Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Where(t => !settings.Languages.Any(l =>
-                        {
-                            var culture = CultureInfo.GetCultureInfo(l.Name);
-                            return l.NoiseWords.Any(w => string.Compare(w, t, true, culture) == 0);
-                        }));
-
-                if (context.Transformation != null)
-                {
-                    tokens = tokens.Select(t => context.Transformation(t));
-                }
-
-                return tokens;
+                sb.Replace(separator, " ");
             }
+
+            IEnumerable<string> tokens = sb.ToString()
+                .Split(new[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(t => !settings.Languages.Any(l =>
+                {
+                    var culture = CultureInfo.GetCultureInfo(l.Name);
+                    return l.NoiseWords.Any(w => string.Compare(w, t, true, culture) == 0);
+                }));
+
+            if (context.Transformation != null)
+            {
+                tokens = tokens.Select(t => context.Transformation(t));
+            }
+
+            return tokens;
         }
 
         /// <summary>

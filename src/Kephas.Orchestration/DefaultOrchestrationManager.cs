@@ -412,11 +412,11 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task HandleAppStartedAsync(AppStartedEvent appEvent, IContext context, CancellationToken cancellationToken)
+        protected virtual Task HandleAppStartedAsync(AppStartedEvent appEvent, IContext? context, CancellationToken cancellationToken)
         {
-            this.Logger.Info("App started: {appInstance}.", appEvent?.AppInfo);
+            this.Logger.Info("App started: {appInstance}.", appEvent.AppInfo);
 
-            var appKey = this.GetAppKey(appEvent?.AppInfo);
+            var appKey = this.GetAppKey(appEvent.AppInfo);
             if (appKey == null)
             {
                 return Task.CompletedTask;
@@ -443,7 +443,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task HandleAppStoppedAsync(AppStoppedEvent appEvent, IContext context, CancellationToken cancellationToken)
+        protected virtual Task HandleAppStoppedAsync(AppStoppedEvent appEvent, IContext? context, CancellationToken cancellationToken)
         {
             this.Logger.Info("App stopped: {appInstance}.", appEvent?.AppInfo);
 
@@ -466,7 +466,7 @@ namespace Kephas.Orchestration
         /// <returns>
         /// An asynchronous result.
         /// </returns>
-        protected virtual Task HandleAppHeartbeatAsync(AppHeartbeatEvent appEvent, IContext context, CancellationToken cancellationToken)
+        protected virtual Task HandleAppHeartbeatAsync(AppHeartbeatEvent appEvent, IContext? context, CancellationToken cancellationToken)
         {
             var appKey = this.GetAppKey(appEvent?.AppInfo);
             if (appKey == null)

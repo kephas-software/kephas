@@ -35,9 +35,11 @@ namespace Kephas.Core.Tests.Configuration
         [Test]
         public void GetSettings_default_provider()
         {
+            var context = Substitute.For<IContext>();
+
             var settings = new Config1();
             var configProvider1 = Substitute.For<ISettingsProvider>();
-            configProvider1.GetSettings(typeof(Config1), TODO).Returns(settings);
+            configProvider1.GetSettings(typeof(Config1), context).Returns(settings);
 
             var selector = new DefaultSettingsProviderSelector(new List<IExportFactory<ISettingsProvider, SettingsProviderMetadata>>
                                                                {
@@ -45,20 +47,22 @@ namespace Kephas.Core.Tests.Configuration
                                                                });
             var configuration = new Configuration<Config1>(selector, Substitute.For<IAppRuntime>(), new Lazy<IEventHub>(() => Substitute.For<IEventHub>()));
 
-            var result = configuration.GetSettings();
+            var result = configuration.GetSettings(context);
             Assert.AreSame(settings, result);
         }
 
         [Test]
         public void GetSettings_specific_provider()
         {
+            var context = Substitute.For<IContext>();
+
             var settings1 = new Config1();
             var configProvider1 = Substitute.For<ISettingsProvider>();
-            configProvider1.GetSettings(typeof(Config1), TODO).Returns(settings1);
+            configProvider1.GetSettings(typeof(Config1), context).Returns(settings1);
 
             var settings2 = new Config2();
             var configProvider2 = Substitute.For<ISettingsProvider>();
-            configProvider2.GetSettings(typeof(Config2), TODO).Returns(settings2);
+            configProvider2.GetSettings(typeof(Config2), context).Returns(settings2);
 
             var selector = new DefaultSettingsProviderSelector(new List<IExportFactory<ISettingsProvider, SettingsProviderMetadata>>
                                                                {
@@ -67,7 +71,7 @@ namespace Kephas.Core.Tests.Configuration
                                                                });
             var configuration = new Configuration<Config2>(selector, Substitute.For<IAppRuntime>(), new Lazy<IEventHub>(() => Substitute.For<IEventHub>()));
 
-            var result = configuration.GetSettings();
+            var result = configuration.GetSettings(context);
             Assert.AreSame(settings2, result);
         }
 

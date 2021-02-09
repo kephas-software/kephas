@@ -126,7 +126,7 @@ namespace Kephas.Messaging.Redis.Routing
 
             this.Logger.Info($"Redis initialized, starting initialization of the Redis channel...");
 
-            var redisNS = this.redisConfiguration.GetSettings().Namespace;
+            var redisNS = this.redisConfiguration.GetSettings(this.AppContext).Namespace;
             this.redisRootChannelName = string.IsNullOrEmpty(redisNS) ? ChannelType : $"{redisNS}:{ChannelType}";
 
             this.pubConnection = this.redisConnectionManager.CreateConnection();

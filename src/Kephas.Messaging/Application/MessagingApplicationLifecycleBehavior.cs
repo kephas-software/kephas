@@ -67,7 +67,7 @@ namespace Kephas.Messaging.Application
         {
             this.typeRegistry.RegisterFactory(new MessagingTypeInfoFactory(this.typeRegistry));
 
-            this.InitializeConfig();
+            this.InitializeConfig(appContext);
 
             await ServiceHelper.InitializeAsync(this.messageBroker, appContext, cancellationToken).PreserveThreadContext();
             return true.ToOperationResult();
@@ -119,11 +119,11 @@ namespace Kephas.Messaging.Application
             return true.ToOperationResult();
         }
 
-        private void InitializeConfig()
+        private void InitializeConfig(IContext? appContext)
         {
             try
             {
-                var settings = this.messagingConfig.GetSettings();
+                var settings = this.messagingConfig.GetSettings(appContext);
 
                 if (settings == null)
                 {

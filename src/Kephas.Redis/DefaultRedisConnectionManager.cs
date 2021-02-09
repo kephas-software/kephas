@@ -107,7 +107,7 @@ namespace Kephas.Redis
 
             try
             {
-                var settings = this.redisConfiguration.GetSettings();
+                var settings = this.redisConfiguration.GetSettings(context);
                 this.appContext = context;
                 using (var connection = this.CreateConnectionCore(context))
                 {
@@ -216,7 +216,7 @@ namespace Kephas.Redis
         /// </returns>
         protected virtual ConfigurationOptions GetConfigurationOptions(IContext? context)
         {
-            var settings = this.redisConfiguration.GetSettings();
+            var settings = this.redisConfiguration.GetSettings(context);
             var configuration = ConfigurationOptions.Parse(settings.ConnectionString);
             var connectionId = Interlocked.Increment(ref connectionCounter);
             configuration.ClientName = $"{this.appRuntime.GetAppInstanceId()}-{connectionId}";

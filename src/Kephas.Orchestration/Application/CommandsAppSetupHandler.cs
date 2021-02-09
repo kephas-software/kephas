@@ -80,7 +80,7 @@ namespace Kephas.Orchestration.Application
                 return new OperationResult().Complete();
             }
 
-            var settings = this.systemConfiguration.GetSettings();
+            var settings = this.systemConfiguration.GetSettings(appContext);
             if ((settings.SetupCommands?.Length ?? 0) == 0)
             {
                 return new OperationResult().Complete();

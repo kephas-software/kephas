@@ -56,6 +56,16 @@ namespace Kephas.Mail.Configuration
         public int? Port { get; set; }
 
         /// <summary>
+        /// Gets or sets the email address.
+        /// </summary>
+        public string? Address { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name to display.
+        /// </summary>
+        public string? DisplayName { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the ssl accept all certificates.
         /// </summary>
         /// <value>

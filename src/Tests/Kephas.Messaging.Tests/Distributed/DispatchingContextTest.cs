@@ -8,6 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Services;
+
 namespace Kephas.Messaging.Tests.Distributed
 {
     using Kephas.Application;
@@ -78,7 +80,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public void Timeout_from_config()
         {
             var config = Substitute.For<IConfiguration<MessagingSettings>>();
-            config.GetSettings().Returns(ci => new MessagingSettings { Distributed = new DistributedMessagingSettings { DefaultTimeout = TimeSpan.FromMinutes(10) } });
+            config.GetSettings(Arg.Any<IContext>()).Returns(ci => new MessagingSettings { Distributed = new DistributedMessagingSettings { DefaultTimeout = TimeSpan.FromMinutes(10) } });
 
             var builder = new DispatchingContext(
                 Substitute.For<ICompositionContext>(),
@@ -95,7 +97,7 @@ namespace Kephas.Messaging.Tests.Distributed
         public void Timeout_from_default()
         {
             var config = Substitute.For<IConfiguration<MessagingSettings>>();
-            config.GetSettings().Returns(ci => null);
+            config.GetSettings(Arg.Any<IContext>()).Returns(ci => null);
 
             var builder = new DispatchingContext(
                 Substitute.For<ICompositionContext>(),

@@ -194,7 +194,7 @@ namespace Kephas.Orchestration.Application
             var startTasks = new List<Task<ProcessStartResult>>();
             this.Logger.Info("Starting worker application instances...");
 
-            foreach (var appInstanceEntry in this.GetWorkerSettings(liveApps))
+            foreach (var appInstanceEntry in this.GetWorkerSettings(liveApps, appContext))
             {
                 var appId = appInstanceEntry.Key;
                 var appSettings = appInstanceEntry.Value;
@@ -344,10 +344,13 @@ namespace Kephas.Orchestration.Application
         /// Gets the settings for all workers.
         /// </summary>
         /// <param name="liveApps">The live apps.</param>
+        /// <param name="context">The context.</param>
         /// <returns>The settings for all workers.</returns>
-        protected virtual IEnumerable<KeyValuePair<string, AppSettings>> GetWorkerSettings(IEnumerable<IRuntimeAppInfo> liveApps)
+        protected virtual IEnumerable<KeyValuePair<string, AppSettings>> GetWorkerSettings(
+            IEnumerable<IRuntimeAppInfo> liveApps,
+            IContext? context)
         {
-            var appInstanceEntries = this.SystemConfiguration.GetSettings().Instances;
+            var appInstanceEntries = this.SystemConfiguration.GetSettings(context).Instances;
             if (!this.AppRuntime.IsRoot() || appInstanceEntries == null || appInstanceEntries.Count == 0)
             {
                 return Enumerable.Empty<KeyValuePair<string, AppSettings>>();
