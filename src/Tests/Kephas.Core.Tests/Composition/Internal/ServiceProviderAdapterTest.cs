@@ -51,7 +51,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_ExportFactory_generic_1_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.TryGetExport(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
+            context.GetExport(typeof(IExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IExportFactory<string>?)adapter.GetService(typeof(IExportFactory<string>))!;
@@ -62,7 +62,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_ExportFactory_generic_2_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.TryGetExport(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
+            context.GetExport(typeof(IExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoryImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IExportFactory<string, string>?)adapter.GetService(typeof(IExportFactory<string, string>))!;
@@ -74,7 +74,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_ExportFactories_enumerable_generic_1_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.TryGetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IEnumerable<IExportFactory<string>>?)adapter.GetService(typeof(IEnumerable<IExportFactory<string>>))!;
@@ -86,7 +86,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_ExportFactories_enumerable_generic_2_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.TryGetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IEnumerable<IExportFactory<string, string>>?)adapter.GetService(typeof(IEnumerable<IExportFactory<string, string>>))!;
@@ -99,7 +99,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_ExportFactories_collection_generic_1_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.TryGetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (ICollection<IExportFactory<string>>?)adapter.GetService(typeof(ICollection<IExportFactory<string>>))!;
@@ -111,7 +111,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_ExportFactories_collection_generic_2_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.TryGetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (ICollection<IExportFactory<string, string>>?)adapter.GetService(typeof(ICollection<IExportFactory<string, string>>))!;
@@ -124,7 +124,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_ExportFactories_list_generic_1_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.TryGetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
+            context.GetExport(typeof(ICollectionExportFactoryImporter<string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IList<IExportFactory<string>>?)adapter.GetService(typeof(IList<IExportFactory<string>>))!;
@@ -140,7 +140,7 @@ namespace Kephas.Core.Tests.Composition.Internal
         public void GetService_ExportFactories_list_generic_2_success()
         {
             var context = Substitute.For<ICompositionContext>();
-            context.TryGetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
+            context.GetExport(typeof(ICollectionExportFactoryImporter<string, string>), Arg.Any<string>()).Returns(this.CreateExportFactoriesImporter("exported test", "metadata"));
             var adapter = new ServiceProviderAdapter(context);
 
             var result = (IList<IExportFactory<string, string>>?)adapter.GetService(typeof(IList<IExportFactory<string, string>>))!;
