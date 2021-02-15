@@ -173,12 +173,7 @@ namespace Kephas.Composition.Autofac.Hosting
         {
             this.AssertNotDisposed();
 
-            if (this.innerContainer!.TryResolve(contractType, out var service))
-            {
-                return service;
-            }
-
-            return null;
+            return this.innerContainer!.ResolveOptional(contractType);
         }
 
         /// <summary>
@@ -195,12 +190,7 @@ namespace Kephas.Composition.Autofac.Hosting
         {
             this.AssertNotDisposed();
 
-            if (this.innerContainer!.TryResolve<T>(out var service))
-            {
-                return service;
-            }
-
-            return default;
+            return this.innerContainer!.ResolveOptional<T>();
         }
 
         /// <summary>
