@@ -54,7 +54,7 @@ namespace Kephas.Composition.Internal
         /// A service object of type <paramref name="serviceType" />.-or- null if there is no service
         /// object of type <paramref name="serviceType" />.
         /// </returns>
-        public object GetService(Type serviceType)
+        public object? GetService(Type serviceType)
         {
             if (serviceType.IsConstructedGenericOf(typeof(IExportFactory<>)))
             {
@@ -104,7 +104,7 @@ namespace Kephas.Composition.Internal
                 }
             }
 
-            return this.compositionContext.GetExport(serviceType);
+            return this.compositionContext.TryGetExport(serviceType);
         }
 
         private TEnumerable ToEnumerable<TEnumerable>(IEnumerable<object> exports)
