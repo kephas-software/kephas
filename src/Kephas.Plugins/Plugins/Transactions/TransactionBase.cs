@@ -24,9 +24,6 @@ namespace Kephas.Plugins.Transactions
     /// A transaction base.
     /// </summary>
     public abstract class TransactionBase : ITransaction
-#if NET461
-        , ISyncTransaction
-#endif
     {
         private readonly PluginData pluginData;
 

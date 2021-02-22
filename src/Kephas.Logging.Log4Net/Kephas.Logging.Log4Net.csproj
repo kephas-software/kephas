@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
@@ -62,10 +62,6 @@
 
     <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
         <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
-        <DefineConstants>$(DefineConstants);NET461</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>

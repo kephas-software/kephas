@@ -58,13 +58,11 @@ namespace Kephas.Runtime
         /// </value>
         public static bool IsDomainJoinedMachine => !Environment.MachineName.Equals(Environment.UserDomainName, StringComparison.OrdinalIgnoreCase);
 
-#if NET461
-#else
-        //
-        // Do not use the " { get; } = <expression> " pattern here. Having all the initialization happen in the type initializer
-        // means that one exception anywhere means all tests using PlatformDetection fail. If you feel a value is worth latching,
-        // do it in a way that failures don't cascade.
-        //
+        /*
+         * Do not use the " { get; } = <expression> " pattern here. Having all the initialization happen in the type initializer
+         * means that one exception anywhere means all tests using PlatformDetection fail. If you feel a value is worth latching,
+         * do it in a way that failures don't cascade.
+         */
 
         /// <summary>
         /// Gets a value indicating whether the runtime is the full framework.
@@ -89,10 +87,9 @@ namespace Kephas.Runtime
         /// True if the runtime is the .NET Core, false if not.
         /// </value>
         public static bool IsNetCore => RuntimeInformation.FrameworkDescription.StartsWith(".NET Core", StringComparison.OrdinalIgnoreCase);
-#endif
 
         /// <summary>
-        /// Indicates wheter the application runs on the Mono runtime.
+        /// Indicates whether the application runs on the Mono runtime.
         /// </summary>
         /// <returns>
         /// True if the application runs on the Mono runtime, false if not.

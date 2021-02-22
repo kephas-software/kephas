@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
@@ -64,10 +64,6 @@
         <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
-        <DefineConstants>$(DefineConstants);NET461</DefineConstants>
-    </PropertyGroup>
-
     <ItemGroup>
       <None Remove="stylecop.json" />
       <None Update="kephas.logo.stone.png">
@@ -91,19 +87,6 @@
         <ProjectReference Include="..\Kephas.Model\Kephas.Model.csproj" />
     </ItemGroup>
 
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='net461'">
-            <ItemGroup>
-                <Reference Include="System.ComponentModel.DataAnnotations" />
-            </ItemGroup>
-        </When>
-        <Otherwise>
-            <ItemGroup>
-                <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-            </ItemGroup>
-        </Otherwise>
-    </Choose>
-
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
           <PrivateAssets>all</PrivateAssets>
@@ -113,6 +96,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
     </ItemGroup>
 
     <ItemGroup>

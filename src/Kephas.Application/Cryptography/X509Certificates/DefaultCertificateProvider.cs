@@ -102,16 +102,12 @@ namespace Kephas.Application.Cryptography.X509Certificates
 
         private X509KeyStorageFlags GetDefaultX509KeyStorageFlags()
         {
-#if NET461
-            return X509KeyStorageFlags.DefaultKeySet;
-#else
             var defaultFlags = RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
                 ? UnsafeEphemeralKeySet
                 : (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
                     ? X509KeyStorageFlags.PersistKeySet
                     : X509KeyStorageFlags.DefaultKeySet);
             return defaultFlags;
-#endif
         }
 
         private (Func<X509Store, X509Certificate2?>? find, string name, string value) GetFindOptions(
