@@ -10,8 +10,9 @@ function get-packagename([string]$pathname) {
 
 $paths = @(
     "Kephas.Application",
-    "Kephas.AspNetCore",
     "Kephas.Application.Console",
+    "Kephas.AspNetCore",
+    "Kephas.AspNetCore.IdentityServer4",
     "Kephas.CodeAnalysis",
     "Kephas.Collections",
     "Kephas.Commands",
