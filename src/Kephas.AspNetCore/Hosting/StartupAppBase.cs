@@ -11,6 +11,8 @@
 namespace Kephas.Application.AspNetCore.Hosting
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Kephas.Extensions.Configuration;
@@ -23,10 +25,8 @@ namespace Kephas.Application.AspNetCore.Hosting
     using Kephas.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
 
     using LogLevel = Kephas.Logging.LogLevel;
@@ -94,20 +94,15 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// Adding services to the service container makes them available within the app and in the <see cref="Configure"/> method.
         /// The services are resolved via dependency injection or from ApplicationServices.
         /// </summary>
-        /// <param name="serviceCollection">Collection of services.</param>
-        public virtual void ConfigureServices(IServiceCollection serviceCollection)
+        /// <param name="services">Collection of services.</param>
+        public virtual void ConfigureServices(IServiceCollection services)
         {
-            try
+            foreach (var configurator in this.GetServicesConfigurators(this.AmbientServices))
             {
-                serviceCollection.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            }
-            catch (Exception ex)
-            {
-                this.Log(LogLevel.Fatal, ex, Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception);
-                throw;
+                configurator(services, this.AmbientServices);
             }
 
-            this.serviceCollection = serviceCollection;
+            this.serviceCollection = services;
         }
 
         /// <summary>
@@ -149,7 +144,7 @@ namespace Kephas.Application.AspNetCore.Hosting
             IHostApplicationLifetime appLifetime)
         {
             var env = this.HostEnvironment;
-            var appContext = (IAspNetAppContext)this.AppContext;
+            var appContext = (IAspNetAppContext)this.AppContext!;
             this.Logger.Info("{app} is running in the {environment} environment.", appContext.AppRuntime.GetAppInstanceId(), env.EnvironmentName);
 
             this.AmbientServices
@@ -163,14 +158,10 @@ namespace Kephas.Application.AspNetCore.Hosting
                     await next.Invoke();
                 });
 
-            // use host configurators to setup the application.
-            var container = appContext.CompositionContext;
-            var hostConfigurators = container
-                .GetExport<IOrderedServiceFactoryCollection<IHostConfigurator, AppServiceMetadata>>()
-                .GetServices();
-            foreach (var hostConfigurator in hostConfigurators)
+            // use middleware configurators to setup the application.
+            foreach (var middlewareConfigurator in this.GetMiddlewareConfigurators(appContext))
             {
-                hostConfigurator.Configure(appContext);
+                middlewareConfigurator(appContext);
             }
 
             // when the configurators are completed, start the bootstrapping procedure.
@@ -190,6 +181,29 @@ namespace Kephas.Application.AspNetCore.Hosting
         protected sealed override void AfterAppManagerFinalize()
         {
         }
+
+        /// <summary>
+        /// Gets the middleware configurators.
+        /// </summary>
+        /// <param name="appContext">The application context.</param>
+        /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
+        protected virtual IEnumerable<Action<IAspNetAppContext>> GetMiddlewareConfigurators(IAspNetAppContext appContext)
+        {
+            var container = appContext.CompositionContext;
+            var middlewareConfigurators = container
+                .GetExport<IOrderedServiceFactoryCollection<IMiddlewareConfigurator, AppServiceMetadata>>()
+                .GetServices()
+                .Select(s => (Action<IAspNetAppContext>)s.Configure);
+            return middlewareConfigurators;
+        }
+
+        /// <summary>
+        /// Gets the services configurators.
+        /// </summary>
+        /// <param name="ambientServices">The ambient services.</param>
+        /// <returns>An enumeration of <see cref="IServicesConfigurator"/>.</returns>
+        protected virtual IEnumerable<Action<IServiceCollection, IAmbientServices>> GetServicesConfigurators(IAmbientServices ambientServices)
+            => ambientServices.GetServicesConfigurators().Select(c => (Action<IServiceCollection, IAmbientServices>)c.ConfigureServices);
 
         /// <summary>
         /// Disposes the services container. Replaces the original <see cref="AfterAppManagerFinalize"/>
