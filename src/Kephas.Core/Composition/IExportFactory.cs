@@ -95,7 +95,7 @@ namespace Kephas.Composition
         /// </returns>
         public static T CreateInitializedValue<T>(
             this IExportFactory<T> exportFactory,
-            IContext context)
+            IContext? context)
             where T : class
         {
             Requires.NotNull(exportFactory, nameof(exportFactory));
@@ -118,7 +118,7 @@ namespace Kephas.Composition
         /// </returns>
         public static async Task<T> CreateInitializedValueAsync<T>(
             this IExportFactory<T> exportFactory,
-            IContext context,
+            IContext? context,
             CancellationToken cancellationToken = default)
             where T : class
         {

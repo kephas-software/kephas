@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;netstandard2.0;net461</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
-        <Version>9.0.0-dev.1</Version>
+        <Version>9.0.0-dev.2</Version>
         <AssemblyVersion>9.0.0.0</AssemblyVersion>
         <FileVersion>9.0.0.0</FileVersion>
         <Authors>Kephas Software SRL</Authors>
@@ -77,10 +77,6 @@
         <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
-        <DefineConstants>$(DefineConstants);NET461</DefineConstants>
-    </PropertyGroup>
-
     <ItemGroup>
         <None Remove="stylecop.json" />
         <None Update="kephas.logo.stone.png">
@@ -97,28 +93,6 @@
         <None Include="..\Kephas.snk" Link="Kephas.snk" />
     </ItemGroup>
 
-    <Choose>
-        <When Condition="'$(TargetFramework)'=='net461'">
-            <ItemGroup>
-                <PackageReference Include="System.Runtime" Version="4.3.0" />
-                <Reference Include="System" />
-                <Reference Include="System.ComponentModel.DataAnnotations" />
-                <Reference Include="System.Core" />
-            </ItemGroup>
-        </When>
-        <Otherwise>
-            <ItemGroup>
-                <PackageReference Include="System.ComponentModel" Version="4.3.0" />
-                <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-                <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
-                <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
-                <PackageReference Include="System.Reflection" Version="4.3.0" />
-                <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-                <PackageReference Include="System.Security.Principal" Version="4.3.0" />
-            </ItemGroup>
-        </Otherwise>
-    </Choose>
-
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
           <PrivateAssets>all</PrivateAssets>
@@ -128,6 +102,13 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+        <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+        <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
+        <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
+        <PackageReference Include="System.Reflection" Version="4.3.0" />
+        <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+        <PackageReference Include="System.Security.Principal" Version="4.3.0" />
         <PackageReference Include="System.ValueTuple" Version="4.3.0" />
     </ItemGroup>
 

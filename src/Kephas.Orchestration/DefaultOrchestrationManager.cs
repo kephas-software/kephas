@@ -504,11 +504,7 @@ namespace Kephas.Orchestration
         /// </returns>
         protected virtual (string executablePath, string? runtime) GetAppExecutableInfo(IAppInfo appInfo)
         {
-#if NET461
-            var isNetCore = false;
-#else
             var isNetCore = RuntimeEnvironment.IsNetCore;
-#endif
             var entryAssemblyLocation = Assembly.GetEntryAssembly().Location;
             var currentProcess = Process.GetCurrentProcess();
             if (isNetCore)

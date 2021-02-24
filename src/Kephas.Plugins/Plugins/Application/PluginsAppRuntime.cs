@@ -299,9 +299,8 @@ namespace Kephas.Plugins.Application
         /// </summary>
         protected virtual void EnsureProbingPath()
         {
-#if NET461
-            AppDomain.CurrentDomain.SetupInformation.PrivateBinPath = string.Join(";", this.GetAppBinLocations());
-#endif
+            // TODO check whether this is useful in .NET Standard 2.0+
+            // this was a fix for .NET 4.6.1, maybe is useful in future.
         }
     }
 }
