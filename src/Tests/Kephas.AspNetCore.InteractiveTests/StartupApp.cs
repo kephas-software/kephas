@@ -36,8 +36,6 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
         {
             var ambientServices = services.GetAmbientServices();
 
-            // TODO add assembly parts for MVC controller auto discovery.
-
             services
                 .AddRazorPages()
                 .AddNewtonsoftJson(

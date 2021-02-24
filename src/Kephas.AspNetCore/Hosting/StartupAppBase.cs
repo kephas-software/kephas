@@ -97,9 +97,12 @@ namespace Kephas.Application.AspNetCore.Hosting
         /// <param name="services">Collection of services.</param>
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            foreach (var configurator in this.GetServicesConfigurators(this.AmbientServices))
+            var ambientServices = services.GetAmbientServices() ?? this.AmbientServices;
+            this.AmbientServices = ambientServices;
+
+            foreach (var configurator in this.GetServicesConfigurators(ambientServices))
             {
-                configurator(services, this.AmbientServices);
+                configurator(services, ambientServices);
             }
 
             this.serviceCollection = services;

@@ -72,7 +72,9 @@ namespace Kephas
             var configuratorTypes = ambientServices!.AppRuntime.GetAppAssemblies()
                 .SelectMany(a => DefaultTypeLoader.Instance.GetExportedTypes(a)
                     .Where(t => typeof(IServicesConfigurator).IsAssignableFrom(t)
-                        && t.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null))
+                                && t.IsClass
+                                && !t.IsAbstract
+                                && t.GetCustomAttribute<ExcludeFromCompositionAttribute>() == null))
                 .Select(t => ambientServices.TypeRegistry.GetTypeInfo(t));
             var configurators = configuratorTypes
                 .Select(t => new ExportFactory<IServicesConfigurator, AppServiceMetadata>(
