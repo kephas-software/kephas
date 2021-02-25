@@ -100,9 +100,17 @@ namespace Kephas.Application.AspNetCore.Hosting
             var ambientServices = services.GetAmbientServices() ?? this.AmbientServices;
             this.AmbientServices = ambientServices;
 
-            foreach (var configurator in this.GetServicesConfigurators(ambientServices))
+            try
             {
-                configurator(services, ambientServices);
+                foreach (var configurator in this.GetServicesConfigurators(ambientServices))
+                {
+                    configurator(services, ambientServices);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Log(LogLevel.Fatal, ex, Strings.App_BootstrapAsync_ErrorDuringConfiguration_Exception);
+                throw;
             }
 
             this.serviceCollection = services;
