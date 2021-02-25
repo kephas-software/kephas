@@ -16,7 +16,7 @@ namespace Kephas
     /// <remarks>
     /// The <see cref="SingletonAppServiceContractAttribute"/> marker is provided only to collect
     /// the metadata about the configurators at runtime. Implementors should provide a default constructor,
-    /// otherwise the services will not be created. 
+    /// otherwise the services will not be created.
     /// </remarks>
     [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IServicesConfigurator
