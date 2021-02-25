@@ -7,11 +7,18 @@
 
 namespace Kephas
 {
+    using Kephas.Services;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Marker interface for configuring services of a <see cref="IServiceCollection"/>.
     /// </summary>
+    /// <remarks>
+    /// The <see cref="SingletonAppServiceContractAttribute"/> marker is provided only to collect
+    /// the metadata about the configurators at runtime. Implementors should provide a default constructor,
+    /// otherwise the services will not be created. 
+    /// </remarks>
+    [SingletonAppServiceContract(AllowMultiple = true)]
     public interface IServicesConfigurator
     {
         /// <summary>
