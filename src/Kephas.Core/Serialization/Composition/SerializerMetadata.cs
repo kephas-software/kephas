@@ -33,7 +33,7 @@ namespace Kephas.Serialization.Composition
                 return;
             }
 
-            this.MediaType = (Type)metadata.TryGetValue(nameof(this.MediaType), null);
+            this.MediaType = (Type?)metadata.TryGetValue(nameof(this.MediaType), null);
         }
 
         /// <summary>
@@ -41,9 +41,11 @@ namespace Kephas.Serialization.Composition
         /// </summary>
         /// <param name="mediaType">The media type.</param>
         /// <param name="processingPriority">The processing priority.</param>
-        /// <param name="overridePriority">  The override priority.</param>
-        public SerializerMetadata(Type mediaType, int processingPriority = 0, int overridePriority = 0)
-            : base(processingPriority, overridePriority)
+        /// <param name="overridePriority"> override priority.</param>
+        /// <param name="serviceName">Optional. The name of the service.</param>
+        /// <param name="isOverride">Optional. Indicates whether the service overrides its base.</param>
+        public SerializerMetadata(Type mediaType, int processingPriority = 0, int overridePriority = 0, string? serviceName = null, bool isOverride = false)
+            : base(processingPriority, overridePriority, serviceName, isOverride)
         {
             this.MediaType = mediaType;
         }
@@ -54,6 +56,6 @@ namespace Kephas.Serialization.Composition
         /// <value>
         /// The media type.
         /// </value>
-        public Type MediaType { get; }
+        public Type? MediaType { get; }
     }
 }
