@@ -13,9 +13,9 @@ namespace Kephas.Core.Endpoints
     using Kephas.Services.Reflection;
 
     /// <summary>
-    /// Message for retrieving the application service contracts.
+    /// Message for retrieving metadata of the application service contracts.
     /// </summary>
-    [DisplayInfo(Description = "Gets the application service contracts.")]
+    [DisplayInfo(Description = "Gets the metadata of the application service contracts.")]
     public class GetServiceContractsMessage : IMessage
     {
         /// <summary>
