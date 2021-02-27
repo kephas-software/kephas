@@ -42,7 +42,7 @@ namespace Kephas.Services.Composition
             this.ProcessingPriority = this.GetMetadataValue<ProcessingPriorityAttribute, int>(metadata);
             this.OverridePriority = this.GetMetadataValue<OverridePriorityAttribute, int>(metadata);
             this.ServiceName = this.GetMetadataValue<ServiceNameAttribute, string>(metadata);
-            this.IsOverride = this.GetMetadataValue<OverrideAttribute, bool>(metadata);
+            this.IsOverride = this.GetMetadataValue<OverrideAttribute, bool>(metadata, (bool)metadata.TryGetValue(nameof(this.IsOverride), false)!);
             this.ServiceInstanceType = (Type?)metadata.TryGetValue(nameof(this.ServiceInstanceType));
         }
 
