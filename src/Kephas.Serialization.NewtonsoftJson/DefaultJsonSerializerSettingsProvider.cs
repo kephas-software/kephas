@@ -116,11 +116,14 @@ namespace Kephas.Serialization.Json
                 new TimeSpanJsonConverter(),
                 new StringEnumJsonConverter(),
                 new TypeJsonConverter(typeResolver),
+                new AppServiceMetadataJsonConverter(typeRegistry, typeResolver),
+                new AppServiceInfoJsonConverter(typeRegistry, typeResolver),
                 new ExpandoJsonConverter(typeRegistry, typeResolver),
                 new DictionaryJsonConverter(typeRegistry, typeResolver),
                 new ArrayJsonConverter(),
                 new CollectionJsonConverter(typeRegistry),
                 new ObjectJsonConverter(),
+                new DelegateJsonConverter(),
             };
         }
 
