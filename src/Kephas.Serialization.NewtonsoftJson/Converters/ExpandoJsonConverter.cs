@@ -116,7 +116,7 @@ namespace Kephas.Serialization.Json.Converters
                 throw new SerializationException($"Cannot read values of type {valueTypeInfo}. Path: {reader.Path}.");
             }
 
-            var expando = (IExpando)(createInstance ? valueTypeInfo.CreateInstance() : existingValue)!;
+            var expandoCollector = this.CreateExpandoCollector(valueTypeInfo, existingValue);
 
             // then other properties
             var casingResolver = serializer.ContractResolver as ICasingContractResolver;
@@ -139,12 +139,12 @@ namespace Kephas.Serialization.Json.Converters
                 reader.Read();
 
                 var propInfo = typeProperties.TryGetValue(propName);
-                if (propInfo?.CanWrite ?? true)
+                if (this.CanWriteProperty(propInfo, existingValue))
                 {
                     var propValue = serializer.Deserialize(reader, propInfo?.ValueType.Type ?? typeof(object));
                     propValue = propValue is JToken jtoken ? jtoken.Unwrap() : propValue;
 
-                    expando[propName] = propValue;
+                    expandoCollector[propName] = propValue;
                 }
                 else
                 {
@@ -154,7 +154,7 @@ namespace Kephas.Serialization.Json.Converters
                         continue;
                     }
 
-                    var propValue = expando[propName];
+                    var propValue = expandoCollector[propName];
                     if (propValue != null && !propInfo.ValueType.Type.IsValueType)
                     {
                         serializer.Populate(reader, propValue);
@@ -164,7 +164,19 @@ namespace Kephas.Serialization.Json.Converters
                 reader.Read();
             }
 
-            return expando;
+            return this.GetReadReturnValue(valueTypeInfo, expandoCollector, existingValue);
+        }
+
+        /// <summary>
+        /// Gets the return value of the <see cref="ReadJson"/> operation.
+        /// </summary>
+        /// <param name="expandoTypeInfo">The return value type information.</param>
+        /// <param name="expandoCollector">The expando value collecting the properties.</param>
+        /// <param name="existingValue">The existing value.</param>
+        /// <returns>The read operation's return value.</returns>
+        protected virtual object? GetReadReturnValue(IRuntimeTypeInfo expandoTypeInfo, IExpando expandoCollector, object? existingValue)
+        {
+            return expandoCollector;
         }
 
         /// <summary>Writes the JSON representation of the object.</summary>
@@ -229,6 +241,30 @@ namespace Kephas.Serialization.Json.Converters
             }
 
             writer.WriteEndObject();
+        }
+
+        /// <summary>
+        /// Creates the expando value which should collect the JSON values.
+        /// </summary>
+        /// <param name="expandoTypeInfo">The type information of the target expando value.</param>
+        /// <param name="existingValue">The existing value.</param>
+        /// <returns>The newly created expando collector.</returns>
+        protected virtual IExpando CreateExpandoCollector(IRuntimeTypeInfo expandoTypeInfo, object? existingValue)
+        {
+            var createInstance = existingValue == null;
+            var expando = (IExpando)(createInstance ? expandoTypeInfo.CreateInstance() : existingValue)!;
+            return expando;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the property can be written.
+        /// </summary>
+        /// <param name="propInfo">The property information.</param>
+        /// <param name="existingValue">The existing value.</param>
+        /// <returns>A value indicating whether the property can be written.</returns>
+        protected virtual bool CanWriteProperty(IRuntimePropertyInfo propInfo, object? existingValue)
+        {
+            return propInfo?.CanWrite ?? true;
         }
     }
 }
