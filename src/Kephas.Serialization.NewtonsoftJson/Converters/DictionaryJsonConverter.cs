@@ -75,7 +75,7 @@ namespace Kephas.Serialization.Json.Converters
         /// <returns>The object value.</returns>
         public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
-            if (reader.TokenType == JsonToken.Null)
+            if (reader.TokenType == JsonToken.Null || reader.TokenType == JsonToken.Undefined)
             {
                 return null;
             }
