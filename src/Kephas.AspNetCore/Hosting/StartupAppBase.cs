@@ -99,6 +99,9 @@ namespace Kephas.Application.AspNetCore.Hosting
         {
             var ambientServices = services.GetAmbientServices() ?? this.AmbientServices;
             this.AmbientServices = ambientServices;
+            ambientServices.Register(this.HostEnvironment);
+            ambientServices.Register(this.Configuration);
+            ambientServices.Register(this.AppArgs);
 
             try
             {
