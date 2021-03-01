@@ -48,7 +48,7 @@ namespace Kephas.Core.Endpoints
 
             if (!string.IsNullOrEmpty(message.ContractType))
             {
-                appServiceInfos = appServiceInfos.Where(i => i.ContractType.Name.Contains(message.ContractType));
+                appServiceInfos = appServiceInfos.Where(i => i.ContractType.FullName.Contains(message.ContractType));
             }
 
             if (message.AllowMultiple != null)
