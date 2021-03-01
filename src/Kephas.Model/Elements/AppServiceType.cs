@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Model.Elements
 {
     using System;
@@ -99,7 +97,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The service instance.
         /// </value>
-        public object Instance => this.appServiceInfo.Instance;
+        public object? Instance => this.appServiceInfo.Instance;
 
         /// <summary>
         /// Gets the type of the service instance.
@@ -115,7 +113,7 @@ namespace Kephas.Model.Elements
         /// <value>
         /// The service instance factory.
         /// </value>
-        public Func<ICompositionContext, object> InstanceFactory => this.appServiceInfo.InstanceFactory;
+        public Func<ICompositionContext, object>? InstanceFactory => this.appServiceInfo.InstanceFactory;
 
         /// <summary>
         /// Gets the service lifetime.
