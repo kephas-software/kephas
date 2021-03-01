@@ -9,6 +9,9 @@
 
     <Choose>
         <When Condition="'$(TargetFramework)'=='net461'">
+            <ItemGroup>
+                <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+            </ItemGroup>
         </When>
         <Otherwise>
             <ItemGroup>
