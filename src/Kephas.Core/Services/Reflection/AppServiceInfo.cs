@@ -92,6 +92,35 @@ namespace Kephas.Services.Reflection
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AppServiceInfo"/> class.
+        /// </summary>
+        /// <param name="appServiceInfo">The <see cref="IAppServiceInfo"/> from which the information should be copied.</param>
+        /// <param name="contractType">The contract type, in case the service information does not have it already.</param>
+        internal AppServiceInfo(IAppServiceInfo appServiceInfo, Type? contractType)
+        {
+            Requires.NotNull(contractType, nameof(contractType));
+            Requires.NotNull(appServiceInfo, nameof(appServiceInfo));
+
+            this.SetContractType(contractType ?? appServiceInfo.ContractType);
+            if (appServiceInfo.Instance != null)
+            {
+                this.Instance = appServiceInfo.Instance;
+            }
+            else if (appServiceInfo.InstanceFactory != null)
+            {
+                this.InstanceFactory = appServiceInfo.InstanceFactory;
+            }
+            else if (appServiceInfo.InstanceType != null)
+            {
+                this.InstanceType = appServiceInfo.InstanceType;
+            }
+
+            this.AsOpenGeneric = appServiceInfo.AsOpenGeneric;
+            this.SetLifetime(appServiceInfo.Lifetime);
+            this.MetadataAttributes = appServiceInfo.MetadataAttributes;
+        }
+
+        /// <summary>
         /// Gets the application service lifetime.
         /// </summary>
         /// <value>
@@ -138,7 +167,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The service instance.
         /// </value>
-        public object Instance { get; }
+        public object? Instance { get; }
 
         /// <summary>
         /// Gets the type of the service instance.
@@ -146,7 +175,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The type of the service instance.
         /// </value>
-        public Type InstanceType { get; }
+        public Type? InstanceType { get; }
 
         /// <summary>
         /// Gets the service instance factory.
@@ -154,7 +183,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The service instance factory.
         /// </value>
-        public Func<ICompositionContext, object> InstanceFactory { get; }
+        public Func<ICompositionContext, object>? InstanceFactory { get; }
 
         /// <summary>
         /// Returns a string that represents the current object.

@@ -68,7 +68,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The service instance.
         /// </value>
-        object Instance { get; }
+        object? Instance { get; }
 
         /// <summary>
         /// Gets the type of the service instance.
@@ -76,7 +76,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The type of the service instance.
         /// </value>
-        Type InstanceType { get; }
+        Type? InstanceType { get; }
 
         /// <summary>
         /// Gets the service instance factory.
@@ -84,7 +84,7 @@ namespace Kephas.Services.Reflection
         /// <value>
         /// The service instance factory.
         /// </value>
-        Func<ICompositionContext, object> InstanceFactory { get; }
+        Func<ICompositionContext, object>? InstanceFactory { get; }
     }
 
     /// <summary>

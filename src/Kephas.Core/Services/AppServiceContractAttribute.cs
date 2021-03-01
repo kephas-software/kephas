@@ -123,7 +123,7 @@ namespace Kephas.Services
         /// <value>
         /// The service instance.
         /// </value>
-        object IAppServiceInfo.Instance { get; }
+        object? IAppServiceInfo.Instance => null;
 
         /// <summary>
         /// Gets the type of the service instance.
@@ -131,7 +131,7 @@ namespace Kephas.Services
         /// <value>
         /// The type of the service instance.
         /// </value>
-        Type IAppServiceInfo.InstanceType { get; }
+        Type? IAppServiceInfo.InstanceType => null;
 
         /// <summary>
         /// Gets the service instance factory.
@@ -139,7 +139,7 @@ namespace Kephas.Services
         /// <value>
         /// The service instance factory.
         /// </value>
-        Func<ICompositionContext, object> IAppServiceInfo.InstanceFactory { get; }
+        Func<ICompositionContext, object>? IAppServiceInfo.InstanceFactory => null;
 
         /// <summary>
         /// Registers the provided metadata attribute types as default attributes.

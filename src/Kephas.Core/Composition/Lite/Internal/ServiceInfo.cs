@@ -90,13 +90,13 @@ namespace Kephas.Composition.Lite.Internal
 
         public Type ServiceType { get; internal set; }
 
-        public object Instance { get; internal set; }
+        public object? Instance { get; internal set; }
 
         public bool ExternallyOwned { get; internal set; }
 
-        public Type InstanceType { get; }
+        public Type? InstanceType { get; }
 
-        public Func<ICompositionContext, object> InstanceFactory { get; }
+        public Func<ICompositionContext, object>? InstanceFactory { get; }
 
         /// <summary>
         /// Makes a generic service information with closed generic types.
