@@ -5,20 +5,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Kephas.Composition;
-using Kephas.Services;
-using Kephas.Services.Composition;
-
 namespace Kephas.Core.Endpoints
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Kephas.Composition;
     using Kephas.Messaging;
     using Kephas.Reflection;
+    using Kephas.Services;
+    using Kephas.Services.Composition;
 
     /// <summary>
     /// Message handler for <see cref="GetServicesMessage"/>.
@@ -26,7 +26,7 @@ namespace Kephas.Core.Endpoints
     public class GetServicesHandler : MessageHandlerBase<GetServicesMessage, GetServicesResponseMessage>
     {
         private static readonly MethodInfo GetServicesMetadataMethod =
-            ReflectionHelper.GetMethodOf(_ => ((GetServicesHandler)null!).GetServicesMetadata<int>(true));
+            ReflectionHelper.GetGenericMethodOf(_ => ((GetServicesHandler)null!).GetServicesMetadata<int>(true));
 
         private readonly ITypeResolver typeResolver;
         private readonly ICompositionContext compositionContext;

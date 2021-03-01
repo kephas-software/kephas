@@ -13,6 +13,7 @@ namespace Kephas.Core.Endpoints
 
     using Kephas.Messaging;
     using Kephas.Services.Composition;
+    using Kephas.Services.Reflection;
 
     /// <summary>
     /// Message handler for <see cref="GetServiceContractsMessage"/>.
@@ -43,7 +44,7 @@ namespace Kephas.Core.Endpoints
         {
             var appServiceInfos = this.ambientServices
                 .GetAppServiceInfos()
-                .Select(i => i.appServiceInfo);
+                .Select(i => (IAppServiceInfo)new AppServiceInfo(i.appServiceInfo, i.contractType));
 
             if (!string.IsNullOrEmpty(message.ContractType))
             {
