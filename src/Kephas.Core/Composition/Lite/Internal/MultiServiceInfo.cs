@@ -69,11 +69,11 @@ namespace Kephas.Composition.Lite.Internal
 
         public Type ContractType { get; }
 
-        object IAppServiceInfo.Instance => null;
+        object? IAppServiceInfo.Instance => null;
 
         Type IAppServiceInfo.InstanceType => null;
 
-        Func<ICompositionContext, object> IAppServiceInfo.InstanceFactory => null;
+        Func<ICompositionContext, object>? IAppServiceInfo.InstanceFactory => null;
 
         public Type ServiceType { get; }
 
