@@ -5,11 +5,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Kephas.Application.AspNetCore.InteractiveTests
+namespace Kephas.AspNetCore.InteractiveTests
 {
-    using Kephas.Extensions.DependencyInjection;
+    using System.Threading.Tasks;
+
+    using Kephas.Application;
+    using Kephas.Application.AspNetCore;
+    using Kephas.Application.AspNetCore.InteractiveTests;
     using Kephas.Extensions.Hosting;
-    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
@@ -17,9 +20,9 @@ namespace Kephas.Application.AspNetCore.InteractiveTests
 
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            await CreateHostBuilder(args).Build().RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
