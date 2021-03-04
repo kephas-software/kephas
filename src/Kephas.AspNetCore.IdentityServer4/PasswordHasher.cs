@@ -9,26 +9,34 @@ namespace Kephas.AspNetCore.IdentityServer4
 {
     using System;
 
+    using Kephas.Configuration;
     using Kephas.Cryptography;
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>
     /// Password hasher to use the hashing service.
     /// </summary>
+    /// <remarks>
+    /// This hasher double hashes the plain password. For more information please check
+    /// https://stackoverflow.com/questions/348109/is-double-hashing-a-password-less-secure-than-just-hashing-it-once.
+    /// </remarks>
     /// <typeparam name="TUser">The user type.</typeparam>
     /// <seealso cref="Microsoft.AspNetCore.Identity.IPasswordHasher{TUser}" />
     public class PasswordHasher<TUser> : IPasswordHasher<TUser>
         where TUser : class
     {
         private readonly IServiceProvider serviceProvider;
+        private readonly IConfiguration<CryptographySettings> cryptographyConfiguration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PasswordHasher{TUser}"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
-        public PasswordHasher(IServiceProvider serviceProvider)
+        /// <param name="cryptographyConfiguration">The cryptography configuration.</param>
+        public PasswordHasher(IServiceProvider serviceProvider, IConfiguration<CryptographySettings> cryptographyConfiguration)
         {
             this.serviceProvider = serviceProvider;
+            this.cryptographyConfiguration = cryptographyConfiguration;
         }
 
         /// <summary>
@@ -69,10 +77,16 @@ namespace Kephas.AspNetCore.IdentityServer4
             return PasswordVerificationResult.Failed;
         }
 
-        private string Hash(string value)
+        /// <summary>
+        /// Hashes the value twice.
+        /// </summary>
+        /// <param name="value">The value to be hashed.</param>
+        /// <returns>The hash as a base 64 string.</returns>
+        protected virtual string Hash(string value)
         {
             var hasher = this.serviceProvider.GetRequiredService<IHashingService>();
-            var hash = hasher.Hash(value);
+            var rawPasswordHash = hasher.Hash(value);
+            var hash = hasher.Hash(rawPasswordHash, this.cryptographyConfiguration.GetSettings().GetHashingSaltBytes());
             return Convert.ToBase64String(hash);
         }
     }
