@@ -21,10 +21,10 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>
-    /// An in-memory service for storing <see cref="Expando"/> roles.
+    /// An in-memory service for storing <see cref="IdentityRole"/> instances.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class InMemoryExpandoRoleStoreService : InMemoryExpandoRoleStoreService<Expando>
+    public class InMemoryIdentityRoleStoreService : InMemoryIdentityRoleStoreService<IdentityRole>
     {
     }
 
@@ -33,8 +33,8 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// </summary>
     /// <typeparam name="TRole">The role type.</typeparam>
     [ExcludeFromComposition]
-    public class InMemoryExpandoRoleStoreService<TRole> : ExpandoRoleStoreServiceBase<TRole>
-        where TRole : class, IExpando
+    public class InMemoryIdentityRoleStoreService<TRole> : IdentityRoleStoreServiceBase<TRole>
+        where TRole : IdentityRole
     {
         private readonly ConcurrentDictionary<string, TRole> rolesById = new ConcurrentDictionary<string, TRole>();
 
@@ -46,7 +46,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.</returns>
         public override Task<IdentityResult> CreateAsync(TRole role, CancellationToken cancellationToken)
         {
-            var id = this.GetRoleId(role);
+            var id = role.Id;
             return Task.FromResult(this.rolesById.TryAdd(id, role)
                 ? IdentityResult.Success
                 : IdentityResult.Failed(new IdentityError { Description = $"Role with ID '{id}' already added." }));
@@ -60,7 +60,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.</returns>
         public override Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
         {
-            var id = this.GetRoleId(role);
+            var id = role.Id;
             return Task.FromResult(this.rolesById.TryUpdate(id, role, role)
                 ? IdentityResult.Success
                 : IdentityResult.Failed(new IdentityError { Description = $"Role with ID '{id}' not found." }));
@@ -74,7 +74,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.</returns>
         public override Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken)
         {
-            var id = this.GetRoleId(role);
+            var id = role.Id;
             return Task.FromResult(this.rolesById.TryRemove(id, out _)
                 ? IdentityResult.Success
                 : IdentityResult.Failed(new IdentityError { Description = $"Role with ID '{id}' not found." }));
@@ -89,10 +89,6 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         public override Task<TRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
         {
             var role = this.rolesById.TryGetValue(roleId);
-            if (role == null)
-            {
-                throw new KeyNotFoundException($"Role with ID '{roleId}' not found.");
-            }
 
             return Task.FromResult(role);
         }
@@ -105,11 +101,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that result of the look up.</returns>
         public override Task<TRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
         {
-            var role = this.rolesById.Values.FirstOrDefault(u => normalizedRoleName.Equals(this.GetRoleName(u), StringComparison.OrdinalIgnoreCase));
-            if (role == null)
-            {
-                throw new KeyNotFoundException($"Role with name '{normalizedRoleName}' not found.");
-            }
+            var role = this.rolesById.Values.FirstOrDefault(u => normalizedRoleName.Equals(u.NormalizedName, StringComparison.OrdinalIgnoreCase));
 
             return Task.FromResult(role);
         }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExpandoRoleStoreServiceBase.cs" company="Kephas Software SRL">
+// <copyright file="IdentityRoleStoreServiceBase.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,15 +11,14 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Dynamic;
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>
-    /// Base for classes implementing <see cref="IRoleStoreService{TRole}"/> with role classes implementing <see cref="IExpando"/>.
+    /// Base for classes implementing <see cref="IRoleStoreService{TRole}"/> with role classes specializing <see cref="IdentityRole"/>.
     /// </summary>
     /// <typeparam name="TRole">The role type.</typeparam>
-    public abstract class ExpandoRoleStoreServiceBase<TRole> : IRoleStoreService<TRole>
-        where TRole : class, IExpando
+    public abstract class IdentityRoleStoreServiceBase<TRole> : IRoleStoreService<TRole>
+        where TRole : IdentityRole
     {
         /// <summary>
         /// Creates a new role in a store as an asynchronous operation.
@@ -69,7 +68,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that contains the name of the role.</returns>
         public virtual Task<string> GetNormalizedRoleNameAsync(TRole role, CancellationToken cancellationToken)
         {
-            return Task.FromResult(this.GetRoleName(role));
+            return Task.FromResult(role.Id);
         }
 
         /// <summary>
@@ -80,7 +79,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that contains the ID of the role.</returns>
         public virtual Task<string> GetRoleIdAsync(TRole role, CancellationToken cancellationToken)
         {
-            return Task.FromResult(this.GetRoleId(role));
+            return Task.FromResult(role.Id);
         }
 
         /// <summary>
@@ -91,7 +90,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that contains the name of the role.</returns>
         public virtual Task<string> GetRoleNameAsync(TRole role, CancellationToken cancellationToken)
         {
-            return Task.FromResult(this.GetRoleName(role));
+            return Task.FromResult(role.Name);
         }
 
         /// <summary>
@@ -103,7 +102,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation.</returns>
         public virtual Task SetNormalizedRoleNameAsync(TRole role, string normalizedName, CancellationToken cancellationToken)
         {
-            this.SetRoleName(role, normalizedName.ToLower());
+            role.NormalizedName = normalizedName;
             return Task.CompletedTask;
         }
 
@@ -116,7 +115,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation.</returns>
         public virtual Task SetRoleNameAsync(TRole role, string roleName, CancellationToken cancellationToken)
         {
-            this.SetRoleName(role, roleName.ToLower());
+            role.Name = roleName;
             return Task.CompletedTask;
         }
 
@@ -136,33 +135,5 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         protected virtual void Dispose(bool disposing)
         {
         }
-
-        /// <summary>
-        /// Gets the role ID.
-        /// </summary>
-        /// <param name="role">The role.</param>
-        /// <returns>The role ID.</returns>
-        protected virtual string GetRoleId(TRole role) => role["Id"] as string;
-
-        /// <summary>
-        /// Sets the role ID.
-        /// </summary>
-        /// <param name="role">The role.</param>
-        /// <param name="value">The role ID.</param>
-        protected virtual void SetRoleId(TRole role, string value) => role["Id"] = value;
-
-        /// <summary>
-        /// Gets the role name.
-        /// </summary>
-        /// <param name="role">The role.</param>
-        /// <returns>The role name.</returns>
-        protected virtual string GetRoleName(TRole role) => role["Name"] as string;
-
-        /// <summary>
-        /// Sets the role name.
-        /// </summary>
-        /// <param name="role">The role.</param>
-        /// <param name="value">The role name.</param>
-        protected virtual void SetRoleName(TRole role, string value) => role["Name"] = value;
     }
 }

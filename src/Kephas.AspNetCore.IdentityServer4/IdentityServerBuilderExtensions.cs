@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
-
 namespace Kephas.AspNetCore.IdentityServer4
 {
     using System;
@@ -181,7 +179,7 @@ namespace Kephas.AspNetCore.IdentityServer4
             builder.Services.TryAddEnumerable(
                 ServiceDescriptor.Singleton<IConfigureOptions<ApiAuthorizationOptions>, ConfigureIdentityResources>(sp =>
                 {
-                    var logger = sp.GetRequiredService<ILogManager>();
+                    var logger = sp.GetRequiredService<Kephas.Logging.ILogManager>();
                     var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().GetSettings().Identity;
                     return new ConfigureIdentityResources(effectiveConfig, logger);
                 }));
@@ -263,7 +261,7 @@ namespace Kephas.AspNetCore.IdentityServer4
             builder.Services.TryAddEnumerable(
                 ServiceDescriptor.Singleton<IConfigureOptions<ApiAuthorizationOptions>, ConfigureSigningCredentials>(sp =>
                 {
-                    var logManager = sp.GetRequiredService<ILogManager>();
+                    var logManager = sp.GetRequiredService<Kephas.Logging.ILogManager>();
                     var certProvider = sp.GetRequiredService<ICertificateProvider>();
                     var serializationService = sp.GetRequiredService<ISerializationService>();
                     var effectiveConfig = configuration ?? sp.GetRequiredService<IConfiguration<IdentityServerSettings>>().GetSettings().Key;

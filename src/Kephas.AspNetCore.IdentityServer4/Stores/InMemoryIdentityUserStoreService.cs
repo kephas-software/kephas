@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryClaimsUserStoreService.cs" company="Kephas Software SRL">
+// <copyright file="InMemoryIdentityUserStoreService.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -9,7 +9,6 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading;
@@ -21,20 +20,20 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>
-    /// An in-memory service for storing <see cref="ClaimsIdentity"/> users.
+    /// An in-memory service for storing <see cref="IdentityUser"/> users.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class InMemoryClaimsUserStoreService : InMemoryClaimsUserStoreService<ClaimsIdentity>
+    public class InMemoryIdentityUserStoreService : InMemoryIdentityUserStoreService<IdentityUser>
     {
     }
 
     /// <summary>
-    /// An in-memory service for storing <see cref="ClaimsIdentity"/> based users.
+    /// An in-memory service for storing <see cref="IdentityUser"/> based users.
     /// </summary>
     /// <typeparam name="TUser">The user type.</typeparam>
     [ExcludeFromComposition]
-    public class InMemoryClaimsUserStoreService<TUser> : ClaimsUserStoreServiceBase<TUser>
-        where TUser : ClaimsIdentity
+    public class InMemoryIdentityUserStoreService<TUser> : IdentityUserStoreServiceBase<TUser>
+        where TUser : IdentityUser
     {
         private readonly ConcurrentDictionary<string, TUser> usersById = new ConcurrentDictionary<string, TUser>();
 
@@ -46,7 +45,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the creation operation.</returns>
         public override Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
         {
-            var id = this.GetUserId(user);
+            var id = user.Id;
             return Task.FromResult(this.usersById.TryAdd(id, user)
                 ? IdentityResult.Success
                 : IdentityResult.Failed(new IdentityError { Description = $"User with ID '{id}' already added." }));
@@ -60,7 +59,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the update operation.</returns>
         public override Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken)
         {
-            var id = this.GetUserId(user);
+            var id = user.Id;
             return Task.FromResult(this.usersById.TryUpdate(id, user, user)
                 ? IdentityResult.Success
                 : IdentityResult.Failed(new IdentityError { Description = $"User with ID '{id}' not found." }));
@@ -74,7 +73,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the update operation.</returns>
         public override Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken)
         {
-            var id = this.GetUserId(user);
+            var id = user.Id;
             return Task.FromResult(this.usersById.TryRemove(id, out _)
                 ? IdentityResult.Success
                 : IdentityResult.Failed(new IdentityError { Description = $"User with ID '{id}' not found." }));
@@ -91,11 +90,6 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         public override Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
             var user = this.usersById.TryGetValue(userId);
-            if (user == null)
-            {
-                throw new KeyNotFoundException($"User with ID '{userId}' not found.");
-            }
-
             return Task.FromResult(user);
         }
 
@@ -109,12 +103,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// </returns>
         public override Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            var user = this.usersById.Values.FirstOrDefault(u => normalizedUserName.Equals(this.GetUserName(u), StringComparison.OrdinalIgnoreCase));
-            if (user == null)
-            {
-                throw new KeyNotFoundException($"User with name '{normalizedUserName}' not found.");
-            }
-
+            var user = this.usersById.Values.FirstOrDefault(u => normalizedUserName.Equals(u.NormalizedUserName, StringComparison.OrdinalIgnoreCase));
             return Task.FromResult(user);
         }
 
@@ -128,30 +117,8 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// </returns>
         public override Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
-            var user = this.usersById.Values.FirstOrDefault(u => normalizedEmail.Equals(this.GetUserEmail(u), StringComparison.OrdinalIgnoreCase));
-            if (user == null)
-            {
-                throw new KeyNotFoundException($"User with ID '{normalizedEmail}' not found.");
-            }
-
+            var user = this.usersById.Values.FirstOrDefault(u => normalizedEmail.Equals(u.NormalizedEmail, StringComparison.OrdinalIgnoreCase));
             return Task.FromResult(user);
-        }
-
-        /// <summary>
-        /// Returns a list of users who contain the specified <see cref="T:System.Security.Claims.Claim" />.
-        /// </summary>
-        /// <param name="claim">The claim to look for.</param>
-        /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>
-        /// A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the result of the asynchronous query, a list of <typeparamref name="TUser" /> who
-        /// contain the specified claim.
-        /// </returns>
-        public override Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
-        {
-            IList<TUser> users = this.usersById.Values
-                .Where(u => u.HasClaim(claim.Type, claim.Value))
-                .ToList();
-            return Task.FromResult(users);
         }
     }
 }
