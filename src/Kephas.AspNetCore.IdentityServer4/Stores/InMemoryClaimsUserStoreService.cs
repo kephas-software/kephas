@@ -16,6 +16,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using System.Threading.Tasks;
 
     using Kephas.Collections;
+    using Kephas.Composition.AttributedModel;
     using Kephas.Services;
     using Microsoft.AspNetCore.Identity;
 
@@ -31,6 +32,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// An in-memory service for storing <see cref="ClaimsIdentity"/> based users.
     /// </summary>
     /// <typeparam name="TUser">The user type.</typeparam>
+    [ExcludeFromComposition]
     public class InMemoryClaimsUserStoreService<TUser> : ClaimsUserStoreServiceBase<TUser>
         where TUser : ClaimsIdentity
     {

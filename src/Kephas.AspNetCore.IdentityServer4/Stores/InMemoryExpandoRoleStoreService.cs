@@ -15,6 +15,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using System.Threading.Tasks;
 
     using Kephas.Collections;
+    using Kephas.Composition.AttributedModel;
     using Kephas.Dynamic;
     using Kephas.Services;
     using Microsoft.AspNetCore.Identity;
@@ -31,6 +32,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// An in-memory service for storing <see cref="IExpando"/> based roles.
     /// </summary>
     /// <typeparam name="TRole">The role type.</typeparam>
+    [ExcludeFromComposition]
     public class InMemoryExpandoRoleStoreService<TRole> : ExpandoRoleStoreServiceBase<TRole>
         where TRole : class, IExpando
     {
