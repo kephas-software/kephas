@@ -214,9 +214,9 @@ namespace Kephas.Core.Tests.Composition
                 return this;
             }
 
-            public Func<IEnumerable<ConstructorInfo>, ConstructorInfo> ConstructorSelector { get; private set; }
+            public Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> ConstructorSelector { get; private set; }
 
-            public IPartConventionsBuilder Export(Action<IExportConventionsBuilder> conventionsBuilder = null)
+            public IPartConventionsBuilder Export(Action<IExportConventionsBuilder>? conventionsBuilder = null)
             {
                 conventionsBuilder?.Invoke(this.ExportBuilder);
 
@@ -225,12 +225,12 @@ namespace Kephas.Core.Tests.Composition
 
             public IPartConventionsBuilder ExportInterface(
                 Type exportInterface,
-                Action<Type, IExportConventionsBuilder> exportConfiguration = null)
+                Action<Type, IExportConventionsBuilder>? exportConfiguration = null)
             {
                 return this;
             }
 
-            public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder> importConfiguration = null)
+            public IPartConventionsBuilder SelectConstructor(Func<IEnumerable<ConstructorInfo>, ConstructorInfo?> constructorSelector, Action<ParameterInfo, IImportConventionsBuilder>? importConfiguration = null)
             {
                 this.ConstructorSelector = constructorSelector;
                 return this;

@@ -55,7 +55,7 @@ namespace Kephas.Core.Tests.Activation
 
             protected override ITypeInfo ComputeImplementationType(
                 ITypeInfo abstractType,
-                IContext activationContext = null,
+                IContext? activationContext = null,
                 bool throwOnNotFound = true)
             {
                 return this.converter(abstractType);

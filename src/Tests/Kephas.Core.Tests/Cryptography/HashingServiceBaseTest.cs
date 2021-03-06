@@ -40,9 +40,9 @@ namespace Kephas.Core.Tests.Cryptography
             {
             }
 
-            public IHashingContext LastHashingContext { get; private set; }
+            public IHashingContext? LastHashingContext { get; private set; }
 
-            protected override HashAlgorithm CreateHashAlgorithm(IHashingContext context = null)
+            protected override HashAlgorithm CreateHashAlgorithm(IHashingContext? context = null)
             {
                 this.LastHashingContext = context;
                 return Substitute.For<HashAlgorithm>();
