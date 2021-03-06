@@ -182,8 +182,7 @@ namespace Kephas.Workflow.Runtime
             return obj?.GetPropertyValue(this.Name);
         }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the display information.
         /// </summary>

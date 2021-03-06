@@ -31,7 +31,8 @@ namespace Kephas.Runtime
         IEnumerable<TAttribute> GetAttributes<TAttribute>()
             where TAttribute : Attribute;
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Gets the single attribute of the provided type.
         /// </summary>
@@ -47,8 +48,7 @@ namespace Kephas.Runtime
 #endif
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Provides extension methods for <see cref="IAttributeProvider"/>.
     /// </summary>

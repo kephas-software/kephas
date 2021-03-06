@@ -97,8 +97,7 @@ namespace Kephas.Model.Elements
         /// </value>
         public abstract IEnumerable<IAnnotation> Annotations { get; }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the parent element declaring this element.
         /// </summary>

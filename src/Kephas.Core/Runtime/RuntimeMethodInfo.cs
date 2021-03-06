@@ -124,8 +124,7 @@ namespace Kephas.Runtime
         /// </value>
         public IRuntimeTypeInfo ReturnType => this.TypeRegistry.GetTypeInfo(this.MethodInfo.ReturnType);
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the display information.
         /// </summary>

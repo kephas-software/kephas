@@ -28,8 +28,7 @@ namespace Kephas.Serialization.Bson
     /// </summary>
     [OverridePriority(Priority.Low)]
     public class BsonSerializer : ISerializer<BsonMediaType>
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         , ISyncSerializer
 #endif
     {

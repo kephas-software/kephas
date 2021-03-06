@@ -21,7 +21,8 @@ namespace Kephas.Serialization.Json
     [SingletonAppServiceContract]
     public interface IJsonSerializerSettingsProvider
     {
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Gets the JSON serializer settings.
         /// </summary>
@@ -43,8 +44,7 @@ namespace Kephas.Serialization.Json
         void ConfigureJsonSerializerSettings(JsonSerializerSettings settings);
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Extension methods for <see cref="IJsonSerializerSettingsProvider"/>.
     /// </summary>

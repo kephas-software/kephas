@@ -137,7 +137,8 @@ namespace Kephas.Threading.Tasks
             return default;
         }
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Waits the task avoiding the current thread to be locked.
         /// </summary>
@@ -228,7 +229,8 @@ namespace Kephas.Threading.Tasks
             return new ThreadContextAwaiter(task);
         }
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Gets a task awaiter preserving the current context upon continuation.
         /// </summary>

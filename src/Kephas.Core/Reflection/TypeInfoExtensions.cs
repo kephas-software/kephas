@@ -30,8 +30,7 @@ namespace Kephas.Reflection
         /// </summary>
         internal static readonly TypeInfo ObjectTypeInfo = IntrospectionExtensions.GetTypeInfo(typeof(object));
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the <see cref="Type"/> for the provided <see cref="ITypeInfo"/> instance.
         /// </summary>

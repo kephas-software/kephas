@@ -217,14 +217,14 @@ namespace Kephas.Serialization.Json.Converters
             var typeContractProperties = (serializer.ContractResolver.ResolveContract(valueTypeInfo.Type) as JsonDynamicContract)?.Properties;
 
             var expando = (IExpando)value;
-#if NETSTANDARD2_1
-            foreach (var (key, propValue) in expando.ToDictionary())
-            {
-#else
+#if NETSTANDARD2_0
             foreach (var kv in expando.ToDictionary())
             {
                 var key = kv.Key;
                 var propValue = kv.Value;
+#else
+            foreach (var (key, propValue) in expando.ToDictionary())
+            {
 #endif
                 if (propValue == null && serializer.NullValueHandling == NullValueHandling.Ignore)
                 {

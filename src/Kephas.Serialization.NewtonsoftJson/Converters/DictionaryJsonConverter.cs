@@ -178,9 +178,15 @@ namespace Kephas.Serialization.Json.Converters
                 writer.WriteValue(typeName);
             }
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+            foreach (var kv in value)
+            {
+                var key = kv.Key;
+                var item = kv.Value;
+#else
             foreach (var (key, item) in value)
             {
+#endif
                 if (item == null && serializer.NullValueHandling == NullValueHandling.Ignore)
                 {
                     continue;
@@ -189,18 +195,7 @@ namespace Kephas.Serialization.Json.Converters
                 writer.WritePropertyName(key);
                 serializer.Serialize(writer, item);
             }
-#else
-            foreach (var kv in value)
-            {
-                if (kv.Value == null && serializer.NullValueHandling == NullValueHandling.Ignore)
-                {
-                    continue;
-                }
 
-                writer.WritePropertyName(kv.Key);
-                serializer.Serialize(writer, kv.Value);
-            }
-#endif
             writer.WriteEndObject();
             return writer;
         }

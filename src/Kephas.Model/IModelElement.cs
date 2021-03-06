@@ -39,7 +39,8 @@ namespace Kephas.Model
         /// <returns>The member with the provided qualified name or <c>null</c>.</returns>
         INamedElement? GetMember(string qualifiedName, bool throwOnNotFound = true);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Gets the model element's own members, excluding those declared by the base element or mixins.
         /// </summary>
@@ -51,8 +52,7 @@ namespace Kephas.Model
 #endif
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Extensions for <see cref="IModelElement"/>.
     /// </summary>

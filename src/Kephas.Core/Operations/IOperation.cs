@@ -30,16 +30,17 @@ namespace Kephas.Operations
         /// <returns>
         /// An object.
         /// </returns>
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+        object? Execute(IContext? context = null);
+#else
         object? Execute(IContext? context = null)
         {
             return this.ExecuteAsync(context).GetResultNonLocking();
         }
-#else
-        object? Execute(IContext? context = null);
 #endif
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Executes the operation asynchronously in the given context.
         /// </summary>
@@ -57,8 +58,7 @@ namespace Kephas.Operations
 #endif
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Defines the contract of an executable asynchronous operation.
     /// </summary>

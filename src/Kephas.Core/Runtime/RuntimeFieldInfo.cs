@@ -102,8 +102,7 @@ namespace Kephas.Runtime
         /// </value>
         ITypeInfo IValueElementInfo.ValueType => this.TypeRegistry.GetTypeInfo(this.FieldInfo.FieldType);
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the display information.
         /// </summary>

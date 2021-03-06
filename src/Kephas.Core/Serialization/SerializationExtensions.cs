@@ -25,8 +25,7 @@ namespace Kephas.Serialization
     /// </summary>
     public static class SerializationExtensions
     {
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Serializes the object with the provided options.
         /// </summary>
@@ -676,8 +675,7 @@ namespace Kephas.Serialization
             return Serialize<XmlMediaType>(serializationService, obj, optionsConfig);
         }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Serializes the provided object.
         /// </summary>

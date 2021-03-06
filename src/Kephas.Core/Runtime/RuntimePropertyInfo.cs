@@ -119,8 +119,7 @@ namespace Kephas.Runtime
         /// </value>
         public virtual bool CanRead => this.PropertyInfo.CanRead;
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the display information.
         /// </summary>

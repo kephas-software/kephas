@@ -28,8 +28,7 @@ namespace Kephas.Licensing
     /// The default licensing manager.
     /// </summary>
     public class DefaultLicensingManager : ILicensingManager
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         , ISyncLicensingManager
 #endif
     {

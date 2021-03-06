@@ -65,20 +65,20 @@ namespace Kephas.Composition.Lite.Internal
         bool IsRegistered(Type serviceType);
 
         /// <summary>
-        /// Registers the service described by serviceInfo.
+        /// Registers the service described by <paramref name="serviceInfo"/>.
         /// </summary>
         /// <param name="serviceInfo">Information describing the service.</param>
         /// <returns>
-        /// This service serviceRegistry.
+        /// This service registry.
         /// </returns>
         ServiceRegistry RegisterService(IServiceInfo serviceInfo);
 
         /// <summary>
-        /// Registers the source described by serviceSource.
+        /// Registers the source described by <paramref name="serviceSource"/>.
         /// </summary>
         /// <param name="serviceSource">The service source.</param>
         /// <returns>
-        /// This service serviceRegistry.
+        /// This service registry.
         /// </returns>
         ServiceRegistry RegisterSource(IServiceSource serviceSource);
     }

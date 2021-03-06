@@ -236,8 +236,7 @@ namespace Kephas.Core.Tests.Services
 
         public class Test : IInstance
         {
-#if NETSTANDARD2_1
-#else
+#if NETCOREAPP2_1 || NET461
             public ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo();
 #endif
         }

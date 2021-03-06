@@ -20,10 +20,10 @@ namespace Kephas.Data.Commands
     /// Contract for data commands.
     /// </summary>
     public interface IDataCommand
-#if NETSTANDARD2_1
-        : IOperation
-#else
+#if NETSTANDARD2_0
         : IAsyncOperation
+#else
+        : IOperation
 #endif
     {
         /// <summary>
@@ -36,7 +36,8 @@ namespace Kephas.Data.Commands
         /// </returns>
         Task<IOperationResult> ExecuteAsync(IDataOperationContext operationContext, CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Executes the data command.
         /// </summary>
@@ -70,7 +71,8 @@ namespace Kephas.Data.Commands
         /// </returns>
         Task<TResult> ExecuteAsync(TOperationContext operationContext, CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Executes the data command.
         /// </summary>
@@ -85,8 +87,7 @@ namespace Kephas.Data.Commands
 #endif
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Contract for synchronous data commands.
     /// </summary>

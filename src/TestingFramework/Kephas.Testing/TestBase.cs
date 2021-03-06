@@ -226,20 +226,20 @@ namespace Kephas.Testing
         /// </returns>
         protected virtual IEncryptionService CreateEncryptionServiceMock()
         {
-#if NETSTANDARD2_1
-            var encryptionService = Substitute.For<IEncryptionService>();
-
-            encryptionService.WhenForAnyArgs(s => s.Encrypt(null, null, null))
-                .Do(this.ReverseBytes);
-            encryptionService.WhenForAnyArgs(s => s.Decrypt(null, null, null))
-                .Do(this.ReverseBytes);
-#else
+#if NETSTANDARD2_0
             var encryptionService = Substitute.For<IEncryptionService, ISyncEncryptionService>();
 
             var syncEncryptionService = (ISyncEncryptionService)encryptionService;
             syncEncryptionService.WhenForAnyArgs(s => s.Encrypt(null, null, null))
                 .Do(this.ReverseBytes);
             syncEncryptionService.WhenForAnyArgs(s => s.Decrypt(null, null, null))
+                .Do(this.ReverseBytes);
+#else
+            var encryptionService = Substitute.For<IEncryptionService>();
+
+            encryptionService.WhenForAnyArgs(s => s.Encrypt(null, null, null))
+                .Do(this.ReverseBytes);
+            encryptionService.WhenForAnyArgs(s => s.Decrypt(null, null, null))
                 .Do(this.ReverseBytes);
 #endif
             encryptionService.EncryptAsync(null, null, null, default)

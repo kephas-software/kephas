@@ -176,8 +176,7 @@ namespace Kephas.Model.Elements
         /// </value>
         public ITypeInfo? GenericTypeDefinition { get; private set; }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the enumeration of properties.
         /// </summary>

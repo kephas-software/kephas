@@ -28,8 +28,7 @@ namespace Kephas.Scripting.Lua
     /// </summary>
     [Language(Language)]
     public class LuaLanguageService : ILanguageService
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         , ISyncLanguageService
 #endif
     {

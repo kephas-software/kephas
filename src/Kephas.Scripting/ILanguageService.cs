@@ -44,7 +44,8 @@ namespace Kephas.Scripting
             IContext? executionContext = null,
             CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Executes the script synchronously.
         /// </summary>
@@ -66,8 +67,7 @@ namespace Kephas.Scripting
 #endif
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Interface for synchronous language service.
     /// </summary>

@@ -28,8 +28,7 @@ namespace Kephas.Cryptography
     /// </summary>
     /// <typeparam name="TAlgorithm">Type of the algorithm.</typeparam>
     public abstract class SymmetricEncryptionServiceBase<TAlgorithm> : IEncryptionService
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         , ISyncEncryptionService
 #endif
        where TAlgorithm : SymmetricAlgorithm

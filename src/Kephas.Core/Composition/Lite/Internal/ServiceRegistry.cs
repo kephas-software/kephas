@@ -51,12 +51,11 @@ namespace Kephas.Composition.Lite.Internal
         }
 
         /// <summary>
-        /// Registers the service described by serviceInfo.
+        /// Registers the service described by <paramref name="serviceInfo"/>.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the requested operation is invalid.</exception>
         /// <param name="serviceInfo">Information describing the service.</param>
         /// <returns>
-        /// This service serviceRegistry.
+        /// This service registry.
         /// </returns>
         public ServiceRegistry RegisterService(IServiceInfo serviceInfo)
         {
@@ -91,6 +90,13 @@ namespace Kephas.Composition.Lite.Internal
             return this;
         }
 
+        /// <summary>
+        /// Registers the source described by <paramref name="serviceSource"/>.
+        /// </summary>
+        /// <param name="serviceSource">The service source.</param>
+        /// <returns>
+        /// This service registry.
+        /// </returns>
         public ServiceRegistry RegisterSource(IServiceSource serviceSource)
         {
             this.serviceSources.Add(serviceSource);
@@ -111,7 +117,7 @@ namespace Kephas.Composition.Lite.Internal
         /// <returns>
         /// The enumerator.
         /// </returns>
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
         /// <summary>
         /// Gets or registers a service.

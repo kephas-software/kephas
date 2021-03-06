@@ -51,7 +51,23 @@ namespace Kephas.Model
         /// </value>
         IModelProjection? Projection { get; }
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+        /// <summary>
+        /// Gets the classifier properties.
+        /// </summary>
+        /// <value>
+        /// The classifier properties.
+        /// </value>
+        new IEnumerable<IProperty> Properties { get; }
+
+        /// <summary>
+        /// Gets the classifier methods.
+        /// </summary>
+        /// <value>
+        /// The classifier methods.
+        /// </value>
+        IEnumerable<IMethod> Methods { get; }
+#else
         /// <summary>
         /// Gets the classifier properties.
         /// </summary>
@@ -93,22 +109,6 @@ namespace Kephas.Model
         /// The requested member, or <c>null</c>.
         /// </returns>
         IElementInfo? ITypeInfo.GetMember(string name, bool throwIfNotFound) => this.GetMember(name, throwIfNotFound);
-#else
-        /// <summary>
-        /// Gets the classifier properties.
-        /// </summary>
-        /// <value>
-        /// The classifier properties.
-        /// </value>
-        new IEnumerable<IProperty> Properties { get; }
-
-        /// <summary>
-        /// Gets the classifier methods.
-        /// </summary>
-        /// <value>
-        /// The classifier methods.
-        /// </value>
-        IEnumerable<IMethod> Methods { get; }
 #endif
 
         /// <summary>

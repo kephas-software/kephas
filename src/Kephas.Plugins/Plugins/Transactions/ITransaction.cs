@@ -42,7 +42,8 @@ namespace Kephas.Plugins.Transactions
         /// </returns>
         Task<IOperationResult> RollbackAsync(IPluginContext context, CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Undoes the operations in the given context.
         /// </summary>
@@ -57,8 +58,7 @@ namespace Kephas.Plugins.Transactions
 #endif
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Interface for sync operations transaction.
     /// </summary>
@@ -80,8 +80,7 @@ namespace Kephas.Plugins.Transactions
     /// </summary>
     public static class TransactionExtensions
     {
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Undoes the operations in the given context.
         /// </summary>

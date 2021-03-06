@@ -43,7 +43,8 @@ namespace Kephas.Security.Authorization
             Action<IAuthorizationContext>? authConfig = null,
             CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Query whether the authorization context has the requested permissions.
         /// </summary>
@@ -65,8 +66,7 @@ namespace Kephas.Security.Authorization
 #endif
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
 
     /// <summary>
     /// Interface providing synchronous methods for the authorization service.

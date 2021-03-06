@@ -200,8 +200,7 @@ namespace Kephas.Runtime
             return this.assembly.GetCustomAttributes<TAttribute>();
         }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the display information.
         /// </summary>

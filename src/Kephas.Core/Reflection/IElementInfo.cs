@@ -52,18 +52,18 @@ namespace Kephas.Reflection
         /// </value>
         IElementInfo? DeclaringContainer { get; }
 
-#if NETSTANDARD2_1
-        /// <summary>
-        /// Gets the display information.
-        /// </summary>
-        /// <returns>The display information.</returns>
-        IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the display information.
         /// </summary>
         /// <returns>The display information.</returns>
         IDisplayInfo? GetDisplayInfo();
+#else
+        /// <summary>
+        /// Gets the display information.
+        /// </summary>
+        /// <returns>The display information.</returns>
+        IDisplayInfo? GetDisplayInfo() => ElementInfoHelper.GetDisplayInfo(this);
 #endif
     }
 }

@@ -67,7 +67,8 @@ namespace Kephas.Cryptography
             Action<IEncryptionContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Encrypts the input stream and writes the encrypted content into the output stream.
         /// </summary>
@@ -98,8 +99,7 @@ namespace Kephas.Cryptography
 #endif
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Application service contract for synchronous encryption.
     /// </summary>
@@ -134,8 +134,7 @@ namespace Kephas.Cryptography
     /// </summary>
     public static class EncryptionServiceExtensions
     {
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Encrypts the input stream and writes the encrypted content into the output stream.
         /// </summary>

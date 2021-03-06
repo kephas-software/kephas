@@ -27,8 +27,7 @@ namespace Kephas.Data.Commands
     /// <typeparam name="TOperationContext">Type of the operationContext.</typeparam>
     /// <typeparam name="TResult">Type of the result.</typeparam>
     public abstract class DataCommandBase<TOperationContext, TResult> : Loggable, IDataCommand<TOperationContext, TResult>
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         , ISyncDataCommand<TOperationContext, TResult>
 #endif
         where TOperationContext : IDataOperationContext
@@ -76,7 +75,49 @@ namespace Kephas.Data.Commands
             return result;
         }
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+        /// <summary>
+        /// Executes the asynchronous operation.
+        /// </summary>
+        /// <exception cref="DataException">Thrown when a Data error condition occurs.</exception>
+        /// <param name="context">Optional. The context.</param>
+        /// <param name="cancellationToken">Optional. The cancellation token .</param>
+        /// <returns>
+        /// An asynchronous result.
+        /// </returns>
+        async Task<object?> IAsyncOperation.ExecuteAsync(IContext? context, CancellationToken cancellationToken)
+        {
+            if (!(context is TOperationContext typedOperationContext))
+            {
+                // TODO localization
+                throw new DataException($"{typeof(TOperationContext)} context expected, instead provided an {context?.GetType()}.");
+            }
+
+            this.EnsureInitialized(context);
+            var result = await this.ExecuteAsync(typedOperationContext, cancellationToken).PreserveThreadContext();
+            return result;
+        }
+
+        /// <summary>
+        /// Executes the data command.
+        /// </summary>
+        /// <param name="operationContext">The operation context.</param>
+        /// <returns>
+        /// A <see cref="IOperationResult"/>.
+        /// </returns>
+        IOperationResult ISyncDataCommand.Execute(IDataOperationContext operationContext)
+        {
+            if (!(operationContext is TOperationContext typedOperationContext))
+            {
+                // TODO localization
+                throw new DataException($"{typeof(TOperationContext)} context expected, instead provided an {operationContext?.GetType()}.");
+            }
+
+            this.EnsureInitialized(operationContext);
+            var result = this.Execute(typedOperationContext);
+            return result;
+        }
+#else
         /// <summary>
         /// Executes the asynchronous operation.
         /// </summary>
@@ -116,48 +157,6 @@ namespace Kephas.Data.Commands
             }
 
             this.EnsureInitialized(context);
-            var result = this.Execute(typedOperationContext);
-            return result;
-        }
-#else
-        /// <summary>
-        /// Executes the asynchronous operation.
-        /// </summary>
-        /// <exception cref="DataException">Thrown when a Data error condition occurs.</exception>
-        /// <param name="context">Optional. The context.</param>
-        /// <param name="cancellationToken">Optional. The cancellation token .</param>
-        /// <returns>
-        /// An asynchronous result.
-        /// </returns>
-        async Task<object?> IAsyncOperation.ExecuteAsync(IContext context, CancellationToken cancellationToken)
-        {
-            if (!(context is TOperationContext typedOperationContext))
-            {
-                // TODO localization
-                throw new DataException($"{typeof(TOperationContext)} context expected, instead provided an {context?.GetType()}.");
-            }
-
-            this.EnsureInitialized(context);
-            var result = await this.ExecuteAsync(typedOperationContext, cancellationToken).PreserveThreadContext();
-            return result;
-        }
-
-        /// <summary>
-        /// Executes the data command.
-        /// </summary>
-        /// <param name="operationContext">The operation context.</param>
-        /// <returns>
-        /// A <see cref="IOperationResult"/>.
-        /// </returns>
-        IOperationResult ISyncDataCommand.Execute(IDataOperationContext operationContext)
-        {
-            if (!(operationContext is TOperationContext typedOperationContext))
-            {
-                // TODO localization
-                throw new DataException($"{typeof(TOperationContext)} context expected, instead provided an {operationContext?.GetType()}.");
-            }
-
-            this.EnsureInitialized(operationContext);
             var result = this.Execute(typedOperationContext);
             return result;
         }

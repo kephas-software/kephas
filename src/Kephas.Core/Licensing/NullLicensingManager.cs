@@ -53,7 +53,8 @@ namespace Kephas.Licensing
             return Task.FromResult<LicenseData?>(this.GetLicenseData(appIdentity));
         }
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Gets the app licensing state.
         /// </summary>

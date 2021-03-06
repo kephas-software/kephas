@@ -333,8 +333,7 @@ namespace Kephas.Operations
                 this.Enqueue(item);
             }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
             /// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</summary>
             /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</exception>
             void ICollection<T>.Clear()

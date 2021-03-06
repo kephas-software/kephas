@@ -22,8 +22,7 @@ namespace Kephas.Commands.Messaging
     /// Operation class based on a message.
     /// </summary>
     public class MessageOperation : IOperation
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         , IAsyncOperation
 #endif
     {

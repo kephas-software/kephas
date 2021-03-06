@@ -79,7 +79,8 @@ namespace Kephas.Model
         /// </value>
         new IModelElement? DeclaringContainer { get; }
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Gets the element annotations.
         /// </summary>

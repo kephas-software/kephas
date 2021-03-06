@@ -8,8 +8,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
 namespace Kephas.Licensing
 {
     using System.Threading;
@@ -47,7 +45,8 @@ namespace Kephas.Licensing
         /// </returns>
         Task<LicenseData?> GetLicenseAsync(AppIdentity appIdentity, IContext? context = null, CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Checks the license for the provided application identity.
         /// </summary>
@@ -76,8 +75,7 @@ namespace Kephas.Licensing
 #endif
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Interface for licensing manager.
     /// </summary>

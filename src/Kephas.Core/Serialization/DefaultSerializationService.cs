@@ -30,8 +30,7 @@ namespace Kephas.Serialization
     /// </summary>
     [OverridePriority(Priority.Low)]
     public class DefaultSerializationService : ISerializationService
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         , ISyncSerializationService
 #endif
     {

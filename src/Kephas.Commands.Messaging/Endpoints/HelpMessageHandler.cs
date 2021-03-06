@@ -67,12 +67,12 @@ namespace Kephas.Commands.Messaging.Endpoints
             }
             else if (commands.Count == 1)
             {
-#if NETSTANDARD2_1
-                var (name, command) = commands.First();
-#else
+#if NETSTANDARD2_0
                 var kv = commands.First();
                 var name = kv.Key;
                 var command = kv.Value;
+#else
+                var (name, command) = commands.First();
 #endif
                 response.Command = name;
                 response.Description = command.GetDisplayInfo()?.GetDescription();

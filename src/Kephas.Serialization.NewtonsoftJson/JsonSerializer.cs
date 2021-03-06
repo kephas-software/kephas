@@ -27,8 +27,7 @@ namespace Kephas.Serialization.Json
     /// </summary>
     [OverridePriority(Priority.Low)]
     public class JsonSerializer : ISerializer<JsonMediaType>
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         , ISyncSerializer
 #endif
     {

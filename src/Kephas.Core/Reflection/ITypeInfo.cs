@@ -111,7 +111,8 @@ namespace Kephas.Reflection
         /// </returns>
         ITypeInfo MakeGenericType(IEnumerable<ITypeInfo> typeArguments, IContext? constructionContext = null);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Gets the <see cref="Type"/> for the provided <see cref="ITypeInfo"/> instance.
         /// </summary>

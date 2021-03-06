@@ -263,16 +263,16 @@ namespace Kephas.Commands
 
         private static string Unescape(string value)
         {
-#if NETSTANDARD2_1
-            if (value.StartsWith('"') && value.EndsWith('"'))
-            {
-                value = value[1..^1];
-                return value.Replace("\\\"", "\"");
-            }
-#else
+#if NETSTANDARD2_0
             if (value.StartsWith("\"") && value.EndsWith("\""))
             {
                 value = value.Substring(1, value.Length - 2);
+                return value.Replace("\\\"", "\"");
+            }
+#else
+            if (value.StartsWith('"') && value.EndsWith('"'))
+            {
+                value = value[1..^1];
                 return value.Replace("\\\"", "\"");
             }
 #endif

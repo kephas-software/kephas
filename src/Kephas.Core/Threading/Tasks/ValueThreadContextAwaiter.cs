@@ -8,9 +8,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-#nullable enable
-
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
 
 namespace Kephas.Threading.Tasks
 {

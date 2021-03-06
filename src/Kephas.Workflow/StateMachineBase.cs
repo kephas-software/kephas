@@ -155,7 +155,8 @@ namespace Kephas.Workflow
                 return task.ContinueWith(t => t.GetPropertyValue(nameof(Task<int>.Result)), cancellationToken);
             }
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
             if (returnType == typeof(ValueTask))
             {
                 var valueTask = (ValueTask)this.InvokeTransition(transitionInfo, context, cancellationToken)!;

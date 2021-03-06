@@ -23,10 +23,10 @@ namespace Kephas
         /// <returns>
         /// The type information.
         /// </returns>
-#if NETSTANDARD2_1
-        ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo();
-#else
+#if NETSTANDARD2_0
         ITypeInfo GetTypeInfo();
+#else
+        ITypeInfo GetTypeInfo() => this.GetType().AsRuntimeTypeInfo();
 #endif
     }
 
@@ -43,10 +43,10 @@ namespace Kephas
         /// <returns>
         /// The type information.
         /// </returns>
-#if NETSTANDARD2_1
-        new T GetTypeInfo() => (T)((IInstance)this).GetTypeInfo();
-#else
+#if NETSTANDARD2_0
         new T GetTypeInfo();
+#else
+        new T GetTypeInfo() => (T)((IInstance)this).GetTypeInfo();
 #endif
     }
 }

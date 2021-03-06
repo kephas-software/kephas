@@ -68,7 +68,8 @@ namespace Kephas.Reflection
                 await taskResult.PreserveThreadContext();
                 result = taskResult.GetResult();
             }
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
             else if (result is ValueTask valueTaskResult)
             {
                 taskResult = valueTaskResult.AsTask();

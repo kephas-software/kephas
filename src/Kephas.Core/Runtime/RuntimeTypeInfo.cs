@@ -383,8 +383,7 @@ namespace Kephas.Runtime
             return this.Type.GetHashCode();
         }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
         /// <summary>
         /// Gets the display information.
         /// </summary>

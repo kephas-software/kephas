@@ -67,7 +67,8 @@ namespace Kephas.Security.Authentication
             Action<IContext>? optionsConfig = null,
             CancellationToken cancellationToken = default);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Authenticates the user.
         /// </summary>
@@ -109,8 +110,7 @@ namespace Kephas.Security.Authentication
 #endif
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Interface for a synchronous authentication service.
     /// </summary>

@@ -25,7 +25,8 @@ namespace Kephas.Runtime
         /// <returns>A runtime type.</returns>
         IRuntimeTypeInfo GetTypeInfo(Type type);
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_0
+#else
         /// <summary>
         /// Gets the runtime type information.
         /// </summary>
@@ -58,8 +59,7 @@ namespace Kephas.Runtime
         void RegisterFactory(IRuntimeTypeInfoFactory factory);
     }
 
-#if NETSTANDARD2_1
-#else
+#if NETSTANDARD2_0
     /// <summary>
     /// Extension methods for <see cref="IRuntimeTypeRegistry"/>.
     /// </summary>
