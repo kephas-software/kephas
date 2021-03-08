@@ -20,19 +20,25 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// In-memory identity repository.
     /// </summary>
     [OverridePriority(Priority.Low)]
-    public class InMemoryIdentityRepository : IInMemoryIdentityRepository
+    public class InMemoryIdentityRepository : IIdentityRepository
     {
         private readonly ConcurrentDictionary<Type, ConcurrentDictionary<string, object>> repository = new ();
 
         /// <summary>
-        /// Gets the query over a certain type.
+        /// Gets the result of executing a query transformation over a certain type.
         /// </summary>
         /// <typeparam name="T">The element type.</typeparam>
-        /// <returns>The query.</returns>
-        public IQueryable<T> Query<T>()
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="transformation">The query transformation.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of executing the query transformation.</returns>
+        public Task<TResult> QueryAsync<T, TResult>(
+            Func<IIdentityRepository, IQueryable<T>, CancellationToken, Task<TResult>> transformation,
+            CancellationToken cancellationToken)
         {
             var repo = this.repository.GetOrAdd(typeof(T), _ => new ());
-            return repo.Values.Cast<T>().AsQueryable();
+            var query = repo.Values.Cast<T>().AsQueryable();
+            return transformation(this, query, cancellationToken);
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryDeviceFlowStoreService.cs" company="Kephas Software SRL">
+// <copyright file="DeviceFlowStoreService.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,18 +15,18 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Application service for in-memory device flow store.
+    /// A repository based service for device flow store.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class InMemoryDeviceFlowStoreService : IDeviceFlowStoreService
+    public class DeviceFlowStoreService : IDeviceFlowStoreService
     {
-        private readonly IInMemoryIdentityRepository repository;
+        private readonly IIdentityRepository repository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryDeviceFlowStoreService"/> class.
+        /// Initializes a new instance of the <see cref="DeviceFlowStoreService"/> class.
         /// </summary>
         /// <param name="repository">The in-memory repository.</param>
-        public InMemoryDeviceFlowStoreService(IInMemoryIdentityRepository repository)
+        public DeviceFlowStoreService(IIdentityRepository repository)
         {
             this.repository = repository;
         }
@@ -40,9 +40,10 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
             => this.repository.CreateAsync(new InMemoryDeviceAuthorization(deviceCode, userCode, data), deviceCode, default);
 
         public Task<DeviceCode> FindByUserCodeAsync(string userCode)
-            => Task.FromResult(this.repository.Query<InMemoryDeviceAuthorization>()
-                .FirstOrDefault(d => d.UserCode == userCode)
-                ?.Data);
+            => this.repository.QueryAsync<InMemoryDeviceAuthorization, DeviceCode>(
+                (r, q, ct) =>
+                    Task.FromResult(q.FirstOrDefault(d => d.UserCode == userCode)?.Data),
+                default);
 
         /// <summary>Finds device authorization by device code.</summary>
         /// <param name="deviceCode">The device code.</param>
@@ -58,8 +59,9 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>The asynchronous result.</returns>
         public async Task UpdateByUserCodeAsync(string userCode, DeviceCode data)
         {
-            var item = this.repository.Query<InMemoryDeviceAuthorization>()
-                .FirstOrDefault(d => d.UserCode == userCode);
+            var item = await this.repository.QueryAsync<InMemoryDeviceAuthorization, InMemoryDeviceAuthorization>(
+                    (r, q, ct) => Task.FromResult(q.FirstOrDefault(d => d.UserCode == userCode)),
+                    default).PreserveThreadContext();
 
             if (item != null)
             {

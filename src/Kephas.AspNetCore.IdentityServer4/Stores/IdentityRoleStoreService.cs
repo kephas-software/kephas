@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryIdentityRoleStoreService.cs" company="Kephas Software SRL">
+// <copyright file="IdentityRoleStoreService.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,36 +18,36 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>
-    /// An in-memory service for storing <see cref="IdentityRole"/> instances.
+    /// A service for storing <see cref="IdentityRole"/> instances.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class InMemoryIdentityRoleStoreService : InMemoryIdentityRoleStoreService<IdentityRole>
+    public class IdentityRoleStoreService : IdentityRoleStoreService<IdentityRole>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryIdentityRoleStoreService"/> class.
+        /// Initializes a new instance of the <see cref="IdentityRoleStoreService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        public InMemoryIdentityRoleStoreService(IInMemoryIdentityRepository repository)
+        public IdentityRoleStoreService(IIdentityRepository repository)
             : base(repository)
         {
         }
     }
 
     /// <summary>
-    /// An in-memory service for storing <see cref="IExpando"/> based roles.
+    /// A service for storing <see cref="IExpando"/> based roles.
     /// </summary>
     /// <typeparam name="TRole">The role type.</typeparam>
     [ExcludeFromComposition]
-    public class InMemoryIdentityRoleStoreService<TRole> : IdentityRoleStoreServiceBase<TRole>
+    public class IdentityRoleStoreService<TRole> : IdentityRoleStoreServiceBase<TRole>
         where TRole : IdentityRole
     {
-        private readonly IInMemoryIdentityRepository repository;
+        private readonly IIdentityRepository repository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryIdentityRoleStoreService{TRole}"/> class.
+        /// Initializes a new instance of the <see cref="IdentityRoleStoreService{TRole}"/> class.
         /// </summary>
         /// <param name="repository">The in-memory repository.</param>
-        public InMemoryIdentityRoleStoreService(IInMemoryIdentityRepository repository)
+        public IdentityRoleStoreService(IIdentityRepository repository)
         {
             this.repository = repository;
         }
@@ -95,8 +95,9 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that result of the look up.</returns>
         public override Task<TRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
-            => Task.FromResult(this.repository
-                .Query<TRole>()
-                .FirstOrDefault(u => normalizedRoleName.Equals(u.NormalizedName, StringComparison.OrdinalIgnoreCase)));
+            => this.repository.QueryAsync<TRole, TRole>(
+                (r, q, ct) =>
+                Task.FromResult(q.FirstOrDefault(u => normalizedRoleName.Equals(u.NormalizedName, StringComparison.OrdinalIgnoreCase))),
+                default);
     }
 }

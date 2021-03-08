@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryIdentityUserStoreService.cs" company="Kephas Software SRL">
+// <copyright file="IdentityUserStoreService.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -17,36 +17,36 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>
-    /// An in-memory service for storing <see cref="IdentityUser"/> users.
+    /// A repository based service for storing <see cref="IdentityUser"/> users.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class InMemoryIdentityUserStoreService : InMemoryIdentityUserStoreService<IdentityUser>
+    public class IdentityUserStoreService : IdentityUserStoreService<IdentityUser>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryIdentityUserStoreService"/> class.
+        /// Initializes a new instance of the <see cref="IdentityUserStoreService"/> class.
         /// </summary>
         /// <param name="repository">The in-memory repository.</param>
-        public InMemoryIdentityUserStoreService(IInMemoryIdentityRepository repository)
+        public IdentityUserStoreService(IIdentityRepository repository)
             : base(repository)
         {
         }
     }
 
     /// <summary>
-    /// An in-memory service for storing <see cref="IdentityUser"/> based users.
+    /// A repository based service for storing <see cref="IdentityUser"/> based users.
     /// </summary>
     /// <typeparam name="TUser">The user type.</typeparam>
     [ExcludeFromComposition]
-    public class InMemoryIdentityUserStoreService<TUser> : IdentityUserStoreServiceBase<TUser>
+    public class IdentityUserStoreService<TUser> : IdentityUserStoreServiceBase<TUser>
         where TUser : IdentityUser
     {
-        private readonly IInMemoryIdentityRepository repository;
+        private readonly IIdentityRepository repository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryIdentityUserStoreService{TUser}"/> class.
+        /// Initializes a new instance of the <see cref="IdentityUserStoreService{TUser}"/> class.
         /// </summary>
         /// <param name="repository">The in-memory repository.</param>
-        public InMemoryIdentityUserStoreService(IInMemoryIdentityRepository repository)
+        public IdentityUserStoreService(IIdentityRepository repository)
         {
             this.repository = repository;
         }
@@ -98,8 +98,10 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing the user matching the specified <paramref name="normalizedUserName" /> if it exists.
         /// </returns>
         public override Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
-            => Task.FromResult(this.repository.Query<TUser>()
-                .FirstOrDefault(u => normalizedUserName.Equals(u.NormalizedUserName, StringComparison.OrdinalIgnoreCase)));
+            => this.repository.QueryAsync<TUser, TUser>(
+                    (r, q, ct) =>
+                        Task.FromResult(q.FirstOrDefault(u => normalizedUserName.Equals(u.NormalizedUserName, StringComparison.OrdinalIgnoreCase))),
+                    default);
 
         /// <summary>
         /// Gets the user, if any, associated with the specified, normalized email address.
@@ -110,7 +112,9 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// The task object containing the results of the asynchronous lookup operation, the user if any associated with the specified normalized email address.
         /// </returns>
         public override Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
-            => Task.FromResult(this.repository.Query<TUser>()
-                .FirstOrDefault(u => normalizedEmail.Equals(u.NormalizedEmail, StringComparison.OrdinalIgnoreCase)));
+            => this.repository.QueryAsync<TUser, TUser>(
+                    (r, q, ct) =>
+                        Task.FromResult(q.FirstOrDefault(u => normalizedEmail.Equals(u.NormalizedEmail, StringComparison.OrdinalIgnoreCase))),
+                    default);
     }
 }

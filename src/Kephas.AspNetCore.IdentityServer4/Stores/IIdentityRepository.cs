@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IInMemoryIdentityRepository.cs" company="Kephas Software SRL">
+// <copyright file="IIdentityRepository.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,6 +7,7 @@
 
 namespace Kephas.AspNetCore.IdentityServer4.Stores
 {
+    using System;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -18,14 +19,19 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// Service for storing items.
     /// </summary>
     [SingletonAppServiceContract]
-    public interface IInMemoryIdentityRepository
+    public interface IIdentityRepository
     {
         /// <summary>
-        /// Gets the query over a certain type.
+        /// Gets the result of executing a query transformation over a certain type.
         /// </summary>
         /// <typeparam name="T">The element type.</typeparam>
-        /// <returns>The query.</returns>
-        IQueryable<T> Query<T>();
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="transformation">The query transformation.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of executing the query transformation.</returns>
+        Task<TResult> QueryAsync<T, TResult>(
+            Func<IIdentityRepository, IQueryable<T>, CancellationToken, Task<TResult>> transformation,
+            CancellationToken cancellationToken);
 
         /// <summary>
         /// Creates a new item in a store as an asynchronous operation.

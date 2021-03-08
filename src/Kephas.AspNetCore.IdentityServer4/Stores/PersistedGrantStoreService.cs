@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryPersistedGrantStoreService.cs" company="Kephas Software SRL">
+// <copyright file="PersistedGrantStoreService.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,7 +7,6 @@
 
 namespace Kephas.AspNetCore.IdentityServer4.Stores
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -19,18 +18,18 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using Kephas.Threading.Tasks;
 
     /// <summary>
-    /// Application service for in-memory persisted grant store.
+    /// A repository based service for persisted grant store.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class InMemoryPersistedGrantStoreService : IPersistedGrantStoreService
+    public class PersistedGrantStoreService : IPersistedGrantStoreService
     {
-        private readonly IInMemoryIdentityRepository repository;
+        private readonly IIdentityRepository repository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InMemoryPersistedGrantStoreService"/> class.
+        /// Initializes a new instance of the <see cref="PersistedGrantStoreService"/> class.
         /// </summary>
         /// <param name="repository">The in-memory repository.</param>
-        public InMemoryPersistedGrantStoreService(IInMemoryIdentityRepository repository)
+        public PersistedGrantStoreService(IIdentityRepository repository)
         {
             this.repository = repository;
         }
@@ -65,9 +64,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         {
             filter.Validate();
 
-            var items = this.Filter(filter);
-
-            return Task.FromResult(items);
+            return this.FilterAsync(filter);
         }
 
         /// <summary>Removes the grant by key.</summary>
@@ -86,7 +83,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         {
             filter.Validate();
 
-            var items = this.Filter(filter);
+            var items = await this.FilterAsync(filter).PreserveThreadContext();
 
             foreach (var item in items)
             {
@@ -94,32 +91,34 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
             }
         }
 
-        private IEnumerable<PersistedGrant> Filter(PersistedGrantFilter filter)
+        private Task<IEnumerable<PersistedGrant>> FilterAsync(PersistedGrantFilter filter)
         {
-            var query = this.repository.Query<PersistedGrant>();
+            return this.repository.QueryAsync<PersistedGrant, IEnumerable<PersistedGrant>>(
+                (r, query, ct) =>
+                {
+                    if (!string.IsNullOrWhiteSpace(filter.ClientId))
+                    {
+                        query = query.Where(x => x.ClientId == filter.ClientId);
+                    }
 
-            if (!string.IsNullOrWhiteSpace(filter.ClientId))
-            {
-                query = query.Where(x => x.ClientId == filter.ClientId);
-            }
+                    if (!string.IsNullOrWhiteSpace(filter.SessionId))
+                    {
+                        query = query.Where(x => x.SessionId == filter.SessionId);
+                    }
 
-            if (!string.IsNullOrWhiteSpace(filter.SessionId))
-            {
-                query = query.Where(x => x.SessionId == filter.SessionId);
-            }
+                    if (!string.IsNullOrWhiteSpace(filter.SubjectId))
+                    {
+                        query = query.Where(x => x.SubjectId == filter.SubjectId);
+                    }
 
-            if (!string.IsNullOrWhiteSpace(filter.SubjectId))
-            {
-                query = query.Where(x => x.SubjectId == filter.SubjectId);
-            }
+                    if (!string.IsNullOrWhiteSpace(filter.Type))
+                    {
+                        query = query.Where(x => x.Type == filter.Type);
+                    }
 
-            if (!string.IsNullOrWhiteSpace(filter.Type))
-            {
-                query = query.Where(x => x.Type == filter.Type);
-            }
-
-            var items = query.ToArray().AsEnumerable();
-            return items;
+                    return Task.FromResult(query.ToArray().AsEnumerable());
+                },
+                default);
         }
     }
 }
