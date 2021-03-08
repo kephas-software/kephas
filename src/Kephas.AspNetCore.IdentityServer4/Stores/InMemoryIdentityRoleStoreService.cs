@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InMemoryExpandoRoleStoreService.cs" company="Kephas Software SRL">
+// <copyright file="InMemoryIdentityRoleStoreService.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,13 +8,10 @@
 namespace Kephas.AspNetCore.IdentityServer4.Stores
 {
     using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Kephas.Collections;
     using Kephas.Composition.AttributedModel;
     using Kephas.Dynamic;
     using Kephas.Services;
@@ -26,6 +23,14 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     [OverridePriority(Priority.Lowest)]
     public class InMemoryIdentityRoleStoreService : InMemoryIdentityRoleStoreService<IdentityRole>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InMemoryIdentityRoleStoreService"/> class.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        public InMemoryIdentityRoleStoreService(IInMemoryIdentityRepository repository)
+            : base(repository)
+        {
+        }
     }
 
     /// <summary>
@@ -36,7 +41,16 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     public class InMemoryIdentityRoleStoreService<TRole> : IdentityRoleStoreServiceBase<TRole>
         where TRole : IdentityRole
     {
-        private readonly ConcurrentDictionary<string, TRole> rolesById = new ConcurrentDictionary<string, TRole>();
+        private readonly IInMemoryIdentityRepository repository;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InMemoryIdentityRoleStoreService{TRole}"/> class.
+        /// </summary>
+        /// <param name="repository">The in-memory repository.</param>
+        public InMemoryIdentityRoleStoreService(IInMemoryIdentityRepository repository)
+        {
+            this.repository = repository;
+        }
 
         /// <summary>
         /// Creates a new role in a store as an asynchronous operation.
@@ -45,12 +59,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.</returns>
         public override Task<IdentityResult> CreateAsync(TRole role, CancellationToken cancellationToken)
-        {
-            var id = role.Id;
-            return Task.FromResult(this.rolesById.TryAdd(id, role)
-                ? IdentityResult.Success
-                : IdentityResult.Failed(new IdentityError { Description = $"Role with ID '{id}' already added." }));
-        }
+            => this.repository.CreateAsync(role, role.Id, cancellationToken);
 
         /// <summary>
         /// Updates a role in a store as an asynchronous operation.
@@ -59,12 +68,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.</returns>
         public override Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
-        {
-            var id = role.Id;
-            return Task.FromResult(this.rolesById.TryUpdate(id, role, role)
-                ? IdentityResult.Success
-                : IdentityResult.Failed(new IdentityError { Description = $"Role with ID '{id}' not found." }));
-        }
+            => this.repository.UpdateAsync(role, role.Id, cancellationToken);
 
         /// <summary>
         /// Deletes a role from the store as an asynchronous operation.
@@ -73,12 +77,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.</returns>
         public override Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken)
-        {
-            var id = role.Id;
-            return Task.FromResult(this.rolesById.TryRemove(id, out _)
-                ? IdentityResult.Success
-                : IdentityResult.Failed(new IdentityError { Description = $"Role with ID '{id}' not found." }));
-        }
+            => this.repository.DeleteAsync(role, role.Id, cancellationToken);
 
         /// <summary>
         /// Finds the role who has the specified ID as an asynchronous operation.
@@ -87,11 +86,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that result of the look up.</returns>
         public override Task<TRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
-        {
-            var role = this.rolesById.TryGetValue(roleId);
-
-            return Task.FromResult(role);
-        }
+            => this.repository.FindByIdAsync<TRole>(roleId, cancellationToken);
 
         /// <summary>
         /// Finds the role who has the specified normalized name as an asynchronous operation.
@@ -100,10 +95,8 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> that result of the look up.</returns>
         public override Task<TRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
-        {
-            var role = this.rolesById.Values.FirstOrDefault(u => normalizedRoleName.Equals(u.NormalizedName, StringComparison.OrdinalIgnoreCase));
-
-            return Task.FromResult(role);
-        }
+            => Task.FromResult(this.repository
+                .Query<TRole>()
+                .FirstOrDefault(u => normalizedRoleName.Equals(u.NormalizedName, StringComparison.OrdinalIgnoreCase)));
     }
 }
