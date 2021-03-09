@@ -5,6 +5,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging;
+
 namespace Kephas.AspNetCore.IdentityServer4.Stores
 {
     using System;
@@ -25,9 +27,10 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityUserStoreService"/> class.
         /// </summary>
-        /// <param name="repository">The in-memory repository.</param>
-        public IdentityUserStoreService(IIdentityRepository repository)
-            : base(repository)
+        /// <param name="repository">The identity repository.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        public IdentityUserStoreService(IIdentityRepository repository, ILogManager? logManager = null)
+            : base(repository, logManager)
         {
         }
     }
@@ -45,8 +48,10 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityUserStoreService{TUser}"/> class.
         /// </summary>
-        /// <param name="repository">The in-memory repository.</param>
-        public IdentityUserStoreService(IIdentityRepository repository)
+        /// <param name="repository">The identity repository.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        public IdentityUserStoreService(IIdentityRepository repository, ILogManager? logManager = null)
+            : base(logManager)
         {
             this.repository = repository;
         }

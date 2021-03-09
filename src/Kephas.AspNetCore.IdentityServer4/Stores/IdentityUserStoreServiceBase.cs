@@ -11,15 +11,25 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Logging;
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>
     /// Base class for in-memory user store service.
     /// </summary>
     /// <typeparam name="TUser">The user type.</typeparam>
-    public abstract class IdentityUserStoreServiceBase<TUser> : IUserStoreService<TUser>, IUserPasswordStore<TUser>, IUserEmailStore<TUser>
+    public abstract class IdentityUserStoreServiceBase<TUser> : Loggable, IUserStoreService<TUser>, IUserPasswordStore<TUser>, IUserEmailStore<TUser>, IUserConfirmation<TUser>
         where TUser : IdentityUser
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IdentityUserStoreServiceBase{TUser}"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. The log manager.</param>
+        protected IdentityUserStoreServiceBase(ILogManager? logManager = null)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Creates the specified <paramref name="user" /> in the user store.
         /// </summary>
@@ -247,6 +257,17 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         {
             user.NormalizedEmail = normalizedEmail;
             return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <paramref name="user" /> is confirmed.
+        /// </summary>
+        /// <param name="manager">The <see cref="T:Microsoft.AspNetCore.Identity.UserManager`1" /> that can be used to retrieve user properties.</param>
+        /// <param name="user">The user.</param>
+        /// <returns>Whether the user is confirmed.</returns>
+        public virtual Task<bool> IsConfirmedAsync(UserManager<TUser> manager, TUser user)
+        {
+            return Task.FromResult(user.EmailConfirmed);
         }
 
         /// <summary>

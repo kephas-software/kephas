@@ -11,6 +11,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using System.Threading.Tasks;
 
     using global::IdentityServer4.Models;
+    using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -18,15 +19,17 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// A repository based service for device flow store.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class DeviceFlowStoreService : IDeviceFlowStoreService
+    public class DeviceFlowStoreService : Loggable, IDeviceFlowStoreService
     {
         private readonly IIdentityRepository repository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeviceFlowStoreService"/> class.
         /// </summary>
-        /// <param name="repository">The in-memory repository.</param>
-        public DeviceFlowStoreService(IIdentityRepository repository)
+        /// <param name="repository">The identity repository.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        public DeviceFlowStoreService(IIdentityRepository repository, ILogManager? logManager = null)
+            : base(logManager)
         {
             this.repository = repository;
         }

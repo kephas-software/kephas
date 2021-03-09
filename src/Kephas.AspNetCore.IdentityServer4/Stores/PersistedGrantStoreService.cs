@@ -14,6 +14,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using global::IdentityServer4.Extensions;
     using global::IdentityServer4.Models;
     using global::IdentityServer4.Stores;
+    using Kephas.Logging;
     using Kephas.Services;
     using Kephas.Threading.Tasks;
 
@@ -21,15 +22,17 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// A repository based service for persisted grant store.
     /// </summary>
     [OverridePriority(Priority.Lowest)]
-    public class PersistedGrantStoreService : IPersistedGrantStoreService
+    public class PersistedGrantStoreService : Loggable, IPersistedGrantStoreService
     {
         private readonly IIdentityRepository repository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PersistedGrantStoreService"/> class.
         /// </summary>
-        /// <param name="repository">The in-memory repository.</param>
-        public PersistedGrantStoreService(IIdentityRepository repository)
+        /// <param name="repository">The identity repository.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        public PersistedGrantStoreService(IIdentityRepository repository, ILogManager? logManager = null)
+            : base(logManager)
         {
             this.repository = repository;
         }

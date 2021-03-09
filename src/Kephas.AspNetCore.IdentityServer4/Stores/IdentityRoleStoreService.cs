@@ -14,6 +14,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
 
     using Kephas.Composition.AttributedModel;
     using Kephas.Dynamic;
+    using Kephas.Logging;
     using Kephas.Services;
     using Microsoft.AspNetCore.Identity;
 
@@ -26,9 +27,10 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityRoleStoreService"/> class.
         /// </summary>
-        /// <param name="repository">The repository.</param>
-        public IdentityRoleStoreService(IIdentityRepository repository)
-            : base(repository)
+        /// <param name="repository">The identity repository.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        public IdentityRoleStoreService(IIdentityRepository repository, ILogManager? logManager = null)
+            : base(repository, logManager)
         {
         }
     }
@@ -46,8 +48,10 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityRoleStoreService{TRole}"/> class.
         /// </summary>
-        /// <param name="repository">The in-memory repository.</param>
-        public IdentityRoleStoreService(IIdentityRepository repository)
+        /// <param name="repository">The identity repository.</param>
+        /// <param name="logManager">Optional. The log manager.</param>
+        public IdentityRoleStoreService(IIdentityRepository repository, ILogManager? logManager = null)
+            : base(logManager)
         {
             this.repository = repository;
         }

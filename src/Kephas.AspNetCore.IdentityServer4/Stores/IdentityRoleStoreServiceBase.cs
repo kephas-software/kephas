@@ -11,15 +11,25 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Kephas.Logging;
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>
     /// Base for classes implementing <see cref="IRoleStoreService{TRole}"/> with role classes specializing <see cref="IdentityRole"/>.
     /// </summary>
     /// <typeparam name="TRole">The role type.</typeparam>
-    public abstract class IdentityRoleStoreServiceBase<TRole> : IRoleStoreService<TRole>
+    public abstract class IdentityRoleStoreServiceBase<TRole> : Loggable, IRoleStoreService<TRole>
         where TRole : IdentityRole
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IdentityRoleStoreServiceBase{TRole}"/> class.
+        /// </summary>
+        /// <param name="logManager">Optional. The log manager.</param>
+        protected IdentityRoleStoreServiceBase(ILogManager? logManager = null)
+            : base(logManager)
+        {
+        }
+
         /// <summary>
         /// Creates a new role in a store as an asynchronous operation.
         /// </summary>
