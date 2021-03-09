@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PasswordHasher.cs" company="Kephas Software SRL">
+// <copyright file="PasswordDoubleHasher.cs" company="Kephas Software SRL">
 //   Copyright (c) Kephas Software SRL. All rights reserved.
 //   Licensed under the MIT license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -22,18 +22,18 @@ namespace Kephas.AspNetCore.IdentityServer4
     /// </remarks>
     /// <typeparam name="TUser">The user type.</typeparam>
     /// <seealso cref="Microsoft.AspNetCore.Identity.IPasswordHasher{TUser}" />
-    public class PasswordHasher<TUser> : IPasswordHasher<TUser>
+    public class PasswordDoubleHasher<TUser> : IPasswordHasher<TUser>
         where TUser : class
     {
         private readonly IServiceProvider serviceProvider;
         private readonly IConfiguration<CryptographySettings> cryptographyConfiguration;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordHasher{TUser}"/> class.
+        /// Initializes a new instance of the <see cref="PasswordDoubleHasher{TUser}"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         /// <param name="cryptographyConfiguration">The cryptography configuration.</param>
-        public PasswordHasher(IServiceProvider serviceProvider, IConfiguration<CryptographySettings> cryptographyConfiguration)
+        public PasswordDoubleHasher(IServiceProvider serviceProvider, IConfiguration<CryptographySettings> cryptographyConfiguration)
         {
             this.serviceProvider = serviceProvider;
             this.cryptographyConfiguration = cryptographyConfiguration;
