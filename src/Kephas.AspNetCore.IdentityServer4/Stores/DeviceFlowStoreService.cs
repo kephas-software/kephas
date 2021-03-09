@@ -42,6 +42,9 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         public Task StoreDeviceAuthorizationAsync(string deviceCode, string userCode, DeviceCode data)
             => this.repository.CreateAsync(new InMemoryDeviceAuthorization(deviceCode, userCode, data), deviceCode, default);
 
+        /// <summary>Finds device authorization by user code.</summary>
+        /// <param name="userCode">The user code.</param>
+        /// <returns>An asynchronous result yielding the device code.</returns>
         public Task<DeviceCode> FindByUserCodeAsync(string userCode)
             => this.repository.QueryAsync<InMemoryDeviceAuthorization, DeviceCode>(
                 (r, q, ct) =>
@@ -93,9 +96,9 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         {
             public InMemoryDeviceAuthorization(string deviceCode, string userCode, DeviceCode data)
             {
-                DeviceCode = deviceCode;
-                UserCode = userCode;
-                Data = data;
+                this.DeviceCode = deviceCode;
+                this.UserCode = userCode;
+                this.Data = data;
             }
 
             public string DeviceCode { get; }
