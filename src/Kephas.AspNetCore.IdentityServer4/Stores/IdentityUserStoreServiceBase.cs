@@ -18,7 +18,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     /// Base class for in-memory user store service.
     /// </summary>
     /// <typeparam name="TUser">The user type.</typeparam>
-    public abstract class IdentityUserStoreServiceBase<TUser> : Loggable, IUserStoreService<TUser>, IUserPasswordStore<TUser>, IUserEmailStore<TUser>, IUserConfirmation<TUser>
+    public abstract class IdentityUserStoreServiceBase<TUser> : Loggable, IUserStoreService<TUser>, IUserPasswordStore<TUser>, IUserEmailStore<TUser>, IUserConfirmation<TUser>, IUserLockoutStore<TUser>
         where TUser : IdentityUser
     {
         /// <summary>
@@ -214,7 +214,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <param name="user">The user whose password hash to retrieve.</param>
         /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, returning the password hash for the specified <paramref name="user" />.</returns>
-        public Task<string> GetPasswordHashAsync(TUser user, CancellationToken cancellationToken)
+        public virtual Task<string> GetPasswordHashAsync(TUser user, CancellationToken cancellationToken)
         {
             return Task.FromResult(user.PasswordHash);
         }
@@ -228,7 +228,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, returning true if the specified <paramref name="user" /> has a password
         /// otherwise false.
         /// </returns>
-        public Task<bool> HasPasswordAsync(TUser user, CancellationToken cancellationToken)
+        public virtual Task<bool> HasPasswordAsync(TUser user, CancellationToken cancellationToken)
         {
             return Task.FromResult(!string.IsNullOrEmpty(user.PasswordHash));
         }
@@ -240,7 +240,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <param name="passwordHash">The password hash to set.</param>
         /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation.</returns>
-        public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)
+        public virtual Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)
         {
             user.PasswordHash = passwordHash;
             return Task.CompletedTask;
@@ -268,6 +268,92 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         public virtual Task<bool> IsConfirmedAsync(UserManager<TUser> manager, TUser user)
         {
             return Task.FromResult(user.EmailConfirmed);
+        }
+
+        /// <summary>
+        /// Retrieves the current failed access count for the specified <paramref name="user" />.
+        /// </summary>
+        /// <param name="user">The user whose failed access count should be retrieved.</param>
+        /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing the failed access count.</returns>
+        public virtual Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.AccessFailedCount);
+        }
+
+        /// <summary>
+        /// Retrieves a flag indicating whether user lockout can enabled for the specified user.
+        /// </summary>
+        /// <param name="user">The user whose ability to be locked out should be returned.</param>
+        /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>
+        /// The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, true if a user can be locked out, otherwise false.
+        /// </returns>
+        public virtual Task<bool> GetLockoutEnabledAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.LockoutEnabled);
+        }
+
+        /// <summary>
+        /// Gets the last <see cref="T:System.DateTimeOffset" /> a user's last lockout expired, if any.
+        /// Any time in the past should be indicates a user is not locked out.
+        /// </summary>
+        /// <param name="user">The user whose lockout date should be retrieved.</param>
+        /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>
+        /// A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the result of the asynchronous query, a <see cref="T:System.DateTimeOffset" /> containing the last time
+        /// a user's lockout expired, if any.
+        /// </returns>
+        public virtual Task<DateTimeOffset?> GetLockoutEndDateAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.LockoutEnd);
+        }
+
+        /// <summary>
+        /// Records that a failed access has occurred, incrementing the failed access count.
+        /// </summary>
+        /// <param name="user">The user whose cancellation count should be incremented.</param>
+        /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing the incremented failed access count.</returns>
+        public virtual Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.AccessFailedCount++);
+        }
+
+        /// <summary>Resets a user's failed access count.</summary>
+        /// <param name="user">The user whose failed access count should be reset.</param>
+        /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation.</returns>
+        /// <remarks>This is typically called after the account is successfully accessed.</remarks>
+        public virtual Task ResetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.AccessFailedCount = 0);
+        }
+
+        /// <summary>
+        /// Set the flag indicating if the specified <paramref name="user" /> can be locked out.
+        /// </summary>
+        /// <param name="user">The user whose ability to be locked out should be set.</param>
+        /// <param name="enabled">A flag indicating if lock out can be enabled for the specified <paramref name="user" />.</param>
+        /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation.</returns>
+        public virtual Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)
+        {
+            user.LockoutEnabled = enabled;
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Locks out a user until the specified end date has passed. Setting a end date in the past immediately unlocks a user.
+        /// </summary>
+        /// <param name="user">The user whose lockout date should be set.</param>
+        /// <param name="lockoutEnd">The <see cref="T:System.DateTimeOffset" /> after which the <paramref name="user" />'s lockout should end.</param>
+        /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken" /> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation.</returns>
+        public virtual Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
+        {
+            user.LockoutEnd = lockoutEnd;
+            return Task.CompletedTask;
         }
 
         /// <summary>
