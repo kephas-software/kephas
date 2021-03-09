@@ -94,6 +94,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Kephas.AspNetCore\Kephas.AspNetCore.csproj" />
         <ProjectReference Include="..\Kephas.Core\Kephas.Core.csproj" />
         <ProjectReference Include="..\Kephas.Extensions.DependencyInjection\Kephas.Extensions.DependencyInjection.csproj" />
     </ItemGroup>
