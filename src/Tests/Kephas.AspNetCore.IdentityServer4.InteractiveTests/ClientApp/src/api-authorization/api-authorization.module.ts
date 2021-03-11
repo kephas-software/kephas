@@ -4,8 +4,10 @@ import { LoginMenuComponent } from './login-menu/login-menu.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { RouterModule } from '@angular/router';
-import { ApplicationPaths } from './api-authorization.constants';
 import { HttpClientModule } from '@angular/common/http';
+import { AppAuthenticationSettingsProvider } from '../app/services/appAuthorizationSettingsProvider';
+
+const applicationPaths = AppAuthenticationSettingsProvider.instance.settings.applicationPaths;
 
 @NgModule({
   imports: [
@@ -13,14 +15,14 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     RouterModule.forChild(
       [
-        { path: ApplicationPaths.Register, component: LoginComponent },
-        { path: ApplicationPaths.Profile, component: LoginComponent },
-        { path: ApplicationPaths.Login, component: LoginComponent },
-        { path: ApplicationPaths.LoginFailed, component: LoginComponent },
-        { path: ApplicationPaths.LoginCallback, component: LoginComponent },
-        { path: ApplicationPaths.LogOut, component: LogoutComponent },
-        { path: ApplicationPaths.LoggedOut, component: LogoutComponent },
-        { path: ApplicationPaths.LogOutCallback, component: LogoutComponent }
+        { path: applicationPaths.Register, component: LoginComponent },
+        { path: applicationPaths.Profile, component: LoginComponent },
+        { path: applicationPaths.Login, component: LoginComponent },
+        { path: applicationPaths.LoginFailed, component: LoginComponent },
+        { path: applicationPaths.LoginCallback, component: LoginComponent },
+        { path: applicationPaths.LogOut, component: LogoutComponent },
+        { path: applicationPaths.LoggedOut, component: LogoutComponent },
+        { path: applicationPaths.LogOutCallback, component: LogoutComponent }
       ]
     )
   ],

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationResultStatus, AuthorizeService } from '../authorize.service';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { LogoutActions, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import {
+  LogoutActions, ReturnUrlType, AuthenticationResultStatus,
+  AuthenticationService, AuthenticationSettingsProvider
+} from '@kephas/angular-oidc';
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
@@ -17,9 +19,10 @@ export class LogoutComponent implements OnInit {
   public message = new BehaviorSubject<string>(null);
 
   constructor(
-    private authorizeService: AuthorizeService,
+    private authenticationService: AuthenticationService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private authSettingsProvider: AuthenticationSettingsProvider) { }
 
   async ngOnInit() {
     const action = this.activatedRoute.snapshot.url[1];
@@ -46,11 +49,11 @@ export class LogoutComponent implements OnInit {
 
   private async logout(returnUrl: string): Promise<void> {
     const state: INavigationState = { returnUrl };
-    const isauthenticated = await this.authorizeService.isAuthenticated().pipe(
+    const isauthenticated = await this.authenticationService.isAuthenticated().pipe(
       take(1)
     ).toPromise();
     if (isauthenticated) {
-      const result = await this.authorizeService.signOut(state);
+      const result = await this.authenticationService.signOut(state);
       switch (result.status) {
         case AuthenticationResultStatus.Redirect:
           break;
@@ -70,7 +73,7 @@ export class LogoutComponent implements OnInit {
 
   private async processLogoutCallback(): Promise<void> {
     const url = window.location.href;
-    const result = await this.authorizeService.completeSignOut(url);
+    const result = await this.authenticationService.completeSignOut(url);
     switch (result.status) {
       case AuthenticationResultStatus.Redirect:
         // There should not be any redirects as the only time completeAuthentication finishes
@@ -105,7 +108,7 @@ export class LogoutComponent implements OnInit {
     }
     return (state && state.returnUrl) ||
       fromQuery ||
-      ApplicationPaths.LoggedOut;
+      this.authSettingsProvider.settings.applicationPaths.LoggedOut;
   }
 }
 

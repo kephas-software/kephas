@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthorizeService, AuthenticationResultStatus } from '../authorize.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { LoginActions, QueryParameterNames, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import {
+  LoginActions, QueryParameterNames, AuthenticationSettingsProvider,
+  ReturnUrlType, AuthenticationService, AuthenticationResultStatus
+} from '@kephas/angular-oidc';
 
 // The main responsibility of this component is to handle the user's login process.
 // This is the starting point for the login process. Any component that needs to authenticate
@@ -17,9 +19,10 @@ export class LoginComponent implements OnInit {
   public message = new BehaviorSubject<string>(null);
 
   constructor(
-    private authorizeService: AuthorizeService,
+    private authenticationService: AuthenticationService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private authSettingsProvider: AuthenticationSettingsProvider) { }
 
   async ngOnInit() {
     const action = this.activatedRoute.snapshot.url[1];
@@ -45,11 +48,12 @@ export class LoginComponent implements OnInit {
     }
   }
 
-
   private async login(returnUrl: string): Promise<void> {
     const state: INavigationState = { returnUrl };
-    const result = await this.authorizeService.signIn(state);
+    const result = await this.authenticationService.signIn(state);
     this.message.next(undefined);
+
+    const applicationPaths = this.authSettingsProvider.settings.applicationPaths;
     switch (result.status) {
       case AuthenticationResultStatus.Redirect:
         break;
@@ -57,7 +61,7 @@ export class LoginComponent implements OnInit {
         await this.navigateToReturnUrl(returnUrl);
         break;
       case AuthenticationResultStatus.Fail:
-        await this.router.navigate(ApplicationPaths.LoginFailedPathComponents, {
+        await this.router.navigate(applicationPaths.LoginFailedPathComponents, {
           queryParams: { [QueryParameterNames.Message]: result.message }
         });
         break;
@@ -68,7 +72,7 @@ export class LoginComponent implements OnInit {
 
   private async processLoginCallback(): Promise<void> {
     const url = window.location.href;
-    const result = await this.authorizeService.completeSignIn(url);
+    const result = await this.authenticationService.completeSignIn(url);
     switch (result.status) {
       case AuthenticationResultStatus.Redirect:
         // There should not be any redirects as completeSignIn never redirects.
@@ -83,12 +87,14 @@ export class LoginComponent implements OnInit {
   }
 
   private redirectToRegister(): any {
+    const applicationPaths = this.authSettingsProvider.settings.applicationPaths;
     this.redirectToApiAuthorizationPath(
-      `${ApplicationPaths.IdentityRegisterPath}?returnUrl=${encodeURI('/' + ApplicationPaths.Login)}`);
+      `${applicationPaths.IdentityRegisterPath}?returnUrl=${encodeURI('/' + applicationPaths.Login)}`);
   }
 
   private redirectToProfile(): void {
-    this.redirectToApiAuthorizationPath(ApplicationPaths.IdentityManagePath);
+    const applicationPaths = this.authSettingsProvider.settings.applicationPaths;
+    this.redirectToApiAuthorizationPath(applicationPaths.IdentityManagePath);
   }
 
   private async navigateToReturnUrl(returnUrl: string) {
@@ -100,6 +106,7 @@ export class LoginComponent implements OnInit {
   }
 
   private getReturnUrl(state?: INavigationState): string {
+    const applicationPaths = this.authSettingsProvider.settings.applicationPaths;
     const fromQuery = (this.activatedRoute.snapshot.queryParams as INavigationState).returnUrl;
     // If the url is comming from the query string, check that is either
     // a relative url or an absolute url
@@ -111,7 +118,7 @@ export class LoginComponent implements OnInit {
     }
     return (state && state.returnUrl) ||
       fromQuery ||
-      ApplicationPaths.DefaultLoginRedirectPath;
+      applicationPaths.DefaultLoginRedirectPath;
   }
 
   private redirectToApiAuthorizationPath(apiAuthorizationPath: string) {
