@@ -5,10 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging.Serilog;
-using Microsoft.Extensions.Configuration;
-using Serilog;
-
 namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
 {
     using System;
@@ -20,29 +16,33 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
     using Kephas.Application;
     using Kephas.Cryptography;
     using Kephas.Diagnostics.Logging;
+    using Kephas.Logging.Serilog;
     using Kephas.Serialization.Json;
+    using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
+    using Serilog;
 
     public static class AmbientServicesAppExtensions
     {
-
         /// <summary>
         /// Pre-configures the ambient services asynchronously.
         /// </summary>
         /// <param name="ambientServices">The ambient services.</param>
         /// <param name="args">The application arguments.</param>
         /// <param name="encryptionServiceFactory">The encryption service factory.</param>
-        /// <param name="debugMode">The debug mode.</param>
+        /// <param name="configurationBuilder">The configuration.</param>
         /// <param name="appLifetimeTokenSource">Optional. The application lifetime token source.</param>
         /// <returns>The provided ambient services.</returns>
         public static IAmbientServices PreConfigureAmbientServices(
             this IAmbientServices ambientServices,
             IAppArgs args,
             Func<IAmbientServices, IEncryptionService> encryptionServiceFactory,
-            bool debugMode = false,
+            IConfigurationBuilder configurationBuilder,
             CancellationTokenSource? appLifetimeTokenSource = null)
         {
             var rootMode = args.RunAsRoot;
+
+            var configuration = configurationBuilder.Build();
 
             // leave the serilog last, because only so it can take advantage of the
             // assembly resolution from the KisAppRuntime

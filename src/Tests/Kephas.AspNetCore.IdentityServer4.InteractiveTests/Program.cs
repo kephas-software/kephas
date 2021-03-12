@@ -57,7 +57,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests
                                 .ConfigureAmbientServices(
                                     ambientServices,
                                     args,
-                                    (ctx, b, svc) => svc.PreConfigureAmbientServices(appArgs, CreateEncryptionService, false /* TODO debug mode */, appLifetimeTokenSource))
+                                    (ctx, b, svc) => svc.PreConfigureAmbientServices(appArgs, CreateEncryptionService, b, appLifetimeTokenSource))
                                 .ConfigureWebHostDefaults(
                                     webBuilder => webBuilder
                                                     .ConfigureAppConfiguration((hostingContext, config) =>
