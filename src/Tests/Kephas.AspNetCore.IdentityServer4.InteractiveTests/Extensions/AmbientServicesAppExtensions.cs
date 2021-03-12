@@ -5,6 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Kephas.Logging.Serilog;
+using Microsoft.Extensions.Configuration;
+using Serilog;
+
 namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
 {
     using System;
@@ -40,22 +44,14 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
         {
             var rootMode = args.RunAsRoot;
 
-            if (debugMode)
-            {
-                ambientServices.WithDebugLogManager();
-            }
-            else
-            {
-                ambientServices.WithSerilogManager();
-            }
-
             // leave the serilog last, because only so it can take advantage of the
             // assembly resolution from the KisAppRuntime
             ambientServices
                 .WithDefaultLicensingManager(encryptionServiceFactory(ambientServices))
                 .WithDynamicAppRuntime(
                     assemblyFilter: asm => asm.Name.StartsWith("Kephas") || asm.Name.StartsWith("WebApp"),
-                    isRoot: rootMode);
+                    isRoot: rootMode)
+                .WithSerilogManager(configuration.GetLoggerConfiguration(ambientServices.AppRuntime, args));
 
             if (args.LogLevel.HasValue)
             {
@@ -84,6 +80,25 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
                 .GetExport<IJsonSerializerSettingsProvider>();
             jsonSettingsProvider.ConfigureJsonSerializerSettings(settings);
             settings.TypeNameHandling = TypeNameHandling.Auto;
+        }
+
+        /// <summary>
+        /// Gets the logger configuration.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="appRuntime">The application runtime.</param>
+        /// <param name="args">The application arguments.</param>
+        /// <returns>
+        /// The logger configuration.
+        /// </returns>
+        internal static LoggerConfiguration GetLoggerConfiguration(this IConfiguration configuration, IAppRuntime appRuntime, IAppArgs args)
+        {
+            var loggerConfig = new LoggerConfiguration();
+            loggerConfig
+                .ReadFrom.Configuration(configuration)
+                .Enrich.With(new AppLogEventEnricher(appRuntime));
+
+            return loggerConfig;
         }
     }
 }
