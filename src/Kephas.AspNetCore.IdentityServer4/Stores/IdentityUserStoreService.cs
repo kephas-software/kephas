@@ -5,8 +5,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Kephas.Logging;
-
 namespace Kephas.AspNetCore.IdentityServer4.Stores
 {
     using System;
@@ -15,6 +13,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
     using System.Threading.Tasks;
 
     using Kephas.Composition.AttributedModel;
+    using Kephas.Logging;
     using Kephas.Services;
     using Microsoft.AspNetCore.Identity;
 
