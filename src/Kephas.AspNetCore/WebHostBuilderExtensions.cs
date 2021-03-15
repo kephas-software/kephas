@@ -16,7 +16,6 @@ namespace Kephas.Application.AspNetCore
     using Kephas.Collections;
     using Kephas.Composition;
     using Kephas.Cryptography.X509Certificates;
-    using Kephas.Diagnostics.Contracts;
     using Kephas.Logging;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -26,23 +25,6 @@ namespace Kephas.Application.AspNetCore
     /// </summary>
     public static class WebHostBuilderExtensions
     {
-        /// <summary>
-        /// Configures the web host builder using the ambient services.
-        /// </summary>
-        /// <param name="webHostBuilder">The web host builder.</param>
-        /// <param name="ambientServices">The ambient services.</param>
-        /// <returns>The provided web host builder.</returns>
-        public static IWebHostBuilder UseAmbientServices(this IWebHostBuilder webHostBuilder, IAmbientServices ambientServices)
-        {
-            Requires.NotNull(webHostBuilder, nameof(webHostBuilder));
-            Requires.NotNull(ambientServices, nameof(ambientServices));
-
-            webHostBuilder
-                .UseSetting(WebHostDefaults.ApplicationKey, ambientServices.AppRuntime.GetAppId());
-
-            return webHostBuilder;
-        }
-
         /// <summary>
         /// An IHostBuilder extension method that configures the logger.
         /// </summary>
