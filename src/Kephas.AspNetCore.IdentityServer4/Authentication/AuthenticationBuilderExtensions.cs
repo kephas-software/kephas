@@ -10,6 +10,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
     using System;
 
     using Kephas.AspNetCore.IdentityServer4.Configuration;
+    using Kephas.AspNetCore.IdentityServer4.Services;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Hosting;
@@ -56,8 +57,8 @@ namespace Kephas.AspNetCore.IdentityServer4.Authentication
                 var schemeName = IdentityServerJwtConstants.IdentityServerJwtBearerScheme;
 
                 var localApiDescriptor = sp.GetRequiredService<IIdentityServerJwtDescriptor>();
-                var hostingEnvironment = sp.GetRequiredService<IWebHostEnvironment>();
-                var apiName = hostingEnvironment.ApplicationName + IdentityServerJwtNameSuffix;
+                var appIdProvider = sp.GetRequiredService<IIdentityAppIdProvider>();
+                var apiName = appIdProvider.GetIdentityAppId().Id + IdentityServerJwtNameSuffix;
 
                 return new IdentityServerJwtBearerOptionsConfiguration(schemeName, apiName, localApiDescriptor);
             }
