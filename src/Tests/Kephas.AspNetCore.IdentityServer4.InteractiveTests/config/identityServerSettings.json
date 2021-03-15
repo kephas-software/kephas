@@ -3,7 +3,7 @@
         "certificate": "web-server"
     },
     "clients": {
-        "IdServer4.InteractiveTests": {
+        "my-id-server-test": {
             "profile": "IdentityServerSPA"
         }
     }

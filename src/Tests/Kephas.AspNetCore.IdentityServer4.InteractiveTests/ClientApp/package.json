@@ -23,7 +23,7 @@
     "@angular/platform-server": "11.2.5",
     "@angular/router": "11.2.5",
     "@kephas/angular": "^0.1103.10",
-    "@kephas/angular-oidc": "^0.1103.20",
+    "@kephas/angular-oidc": "^0.1103.21",
     "@kephas/commands": "^0.4.3",
     "@kephas/core": "^0.4.4",
     "@kephas/messaging": "^0.4.3",
