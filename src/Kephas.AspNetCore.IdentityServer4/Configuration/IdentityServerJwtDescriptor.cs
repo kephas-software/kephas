@@ -9,8 +9,8 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
 {
     using System.Collections.Generic;
 
+    using Kephas.AspNetCore.IdentityServer4.Services;
     using Kephas.Services;
-    using Microsoft.AspNetCore.Hosting;
 
     /// <summary>
     /// Provider of JWT resource settings.
@@ -22,19 +22,19 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
         /// <summary>
         /// Initializes a new instance of the <see cref="IdentityServerJwtDescriptor"/> class.
         /// </summary>
-        /// <param name="environment">The environment.</param>
-        public IdentityServerJwtDescriptor(IWebHostEnvironment environment)
+        /// <param name="appIdProvider">The application identity provider.</param>
+        public IdentityServerJwtDescriptor(IIdentityAppIdProvider appIdProvider)
         {
-            this.Environment = environment;
+            this.AppIdProvider = appIdProvider;
         }
 
         /// <summary>
-        /// Gets the environment.
+        /// Gets the application identity provider.
         /// </summary>
         /// <value>
-        /// The environment.
+        /// The application identity provider.
         /// </value>
-        public IWebHostEnvironment Environment { get; }
+        protected IIdentityAppIdProvider AppIdProvider { get; }
 
         /// <summary>
         /// Gets the resource settings.
@@ -46,7 +46,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Configuration
         {
             return new Dictionary<string, ResourceSettings>
             {
-                [this.Environment.ApplicationName + "API"] = new ResourceSettings { Profile = ApplicationProfiles.IdentityServerJwt },
+                [this.AppIdProvider.GetIdentityAppId().Id + "API"] = new ResourceSettings { Profile = ApplicationProfiles.IdentityServerJwt },
             };
         }
     }

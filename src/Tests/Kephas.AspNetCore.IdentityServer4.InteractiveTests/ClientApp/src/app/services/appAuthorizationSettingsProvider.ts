@@ -9,6 +9,6 @@ export class AppAuthenticationSettingsProvider extends AuthenticationSettingsPro
    * @memberof AppAuthenticationSettingsProvider
    */
   constructor() {
-    super("IdServer4.InteractiveTests");
+    super("my-id-server-test");
   }
 }

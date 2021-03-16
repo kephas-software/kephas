@@ -31,7 +31,6 @@ namespace Kephas.AspNetCore.InteractiveTests
                     .ConfigureAmbientServices(ambientServices, args, PreconfigureAmbientServices)
                     .ConfigureWebHostDefaults(
                         webBuilder => webBuilder
-                                        .UseAmbientServices(ambientServices)
                                         .UseUrls("http://*:5100", "https://*:5101")
                                         .UseStartup<StartupApp>())
                     .ConfigureAppConfiguration(b => b.AddJsonFile("appSettings.json"));

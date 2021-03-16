@@ -1,4 +1,25 @@
 ﻿{
+    "instances": {
+        "my-id-server-test": {
+            "autoStart": true,
+            "environmentVariables": {
+            },
+            "host": {
+                "urls": [
+                    {
+                        "url": "http://*:5201",
+                        "host": "localhost"
+                    },
+                    {
+                        "url": "https://*:5202",
+                        "host": "localhost",
+                        "certificate": "web-server"
+                    }
+                ]
+            },
+            "webRootFolder": "ClientApp"
+        }
+    },
     "certificates": {
         "web-server": {
             "storeLocation": "CurrentUser",

@@ -1,12 +1,14 @@
 ﻿{
-  "profiles": {
-    "Kephas.AspNetCore.IdentityServer4.InteractiveTests": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:5201;http://localhost:5200",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+    "profiles": {
+        "IdServer4.InteractiveTests": {
+            "commandName": "Project",
+            "launchBrowser": true,
+            "applicationUrl": "http://localhost:5201;https://localhost:5202",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5201;https://localhost:5202"
+            },
+            "commandLineArgs": "-isRoot true -appId my-id-server-test"
+        }
     }
-  }
 }
