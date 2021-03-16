@@ -11,7 +11,6 @@ namespace Kephas.AspNetCore.InteractiveTests
 
     using Kephas.Application;
     using Kephas.Application.AspNetCore;
-    using Kephas.Application.AspNetCore.InteractiveTests;
     using Kephas.Extensions.Hosting;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
