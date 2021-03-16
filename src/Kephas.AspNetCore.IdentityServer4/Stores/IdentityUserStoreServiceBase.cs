@@ -317,7 +317,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <returns>The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing the incremented failed access count.</returns>
         public virtual Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.AccessFailedCount++);
+            return Task.FromResult(++user.AccessFailedCount);
         }
 
         /// <summary>Resets a user's failed access count.</summary>
@@ -419,7 +419,7 @@ namespace Kephas.AspNetCore.IdentityServer4.Stores
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <param name="disposing">True if called from <see cref="Dispose"/>, false otherwise.</param>
+        /// <param name="disposing">True if called from <see cref="Dispose()"/>, false otherwise.</param>
         protected virtual void Dispose(bool disposing)
         {
         }
