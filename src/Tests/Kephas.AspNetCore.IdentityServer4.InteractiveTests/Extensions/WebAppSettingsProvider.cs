@@ -11,6 +11,7 @@ namespace Kephas.AspNetCore.IdentityServer4.InteractiveTests.Extensions
     using System.Collections.Generic;
 
     using Kephas.Application;
+    using Kephas.Application.AspNetCore.Configuration;
     using Kephas.Configuration.Providers;
     using Kephas.Logging;
     using Kephas.Net.Mime;
