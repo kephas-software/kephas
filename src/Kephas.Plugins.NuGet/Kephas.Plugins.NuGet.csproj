@@ -82,13 +82,13 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="NuGet.Common" Version="5.8.0" />
-        <PackageReference Include="NuGet.Configuration" Version="5.8.0" />
-        <PackageReference Include="NuGet.Frameworks" Version="5.8.0" />
-        <PackageReference Include="NuGet.Packaging.Core" Version="5.8.0" />
-        <PackageReference Include="NuGet.Protocol" Version="5.8.0" />
-        <PackageReference Include="NuGet.Resolver" Version="5.8.0" />
-        <PackageReference Include="NuGet.Versioning" Version="5.8.0" />
+        <PackageReference Include="NuGet.Common" Version="5.9.0" />
+        <PackageReference Include="NuGet.Configuration" Version="5.9.0" />
+        <PackageReference Include="NuGet.Frameworks" Version="5.9.0" />
+        <PackageReference Include="NuGet.Packaging.Core" Version="5.9.0" />
+        <PackageReference Include="NuGet.Protocol" Version="5.9.0" />
+        <PackageReference Include="NuGet.Resolver" Version="5.9.0" />
+        <PackageReference Include="NuGet.Versioning" Version="5.9.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
