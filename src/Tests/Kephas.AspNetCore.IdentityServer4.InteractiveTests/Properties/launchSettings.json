@@ -3,10 +3,8 @@
         "IdServer4.InteractiveTests": {
             "commandName": "Project",
             "launchBrowser": true,
-            "applicationUrl": "http://localhost:5201;https://localhost:5202",
             "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "http://localhost:5201;https://localhost:5202"
+                "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "commandLineArgs": "-isRoot true -appId my-id-server-test"
         }
