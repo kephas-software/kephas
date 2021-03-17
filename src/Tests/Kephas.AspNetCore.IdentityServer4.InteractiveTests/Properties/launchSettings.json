@@ -6,7 +6,8 @@
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
-            "commandLineArgs": "-isRoot true -appId my-id-server-test"
+            "commandLineArgs": "-isRoot true -appId my-id-server-test",
+            "applicationUrl": "http://*:5201;https://*:5202"
         }
     }
 }
